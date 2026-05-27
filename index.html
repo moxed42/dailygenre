@@ -1398,9 +1398,9 @@
       if (!months.length) {
         select.innerHTML = '<option value="">No months yet</option>';
         document.getElementById('monthlySummary').textContent = 'No listened genres saved yet.';
-        document.getElementById('window._monthlyItems = items;
-window._monthlyLabel = current; monthlyList').innerHTML = '';
-        return;
+        window._monthlyItems = [];
+        window._monthlyLabel = '';
+        document.getElementById('monthlyList').innerHTML = '';        return;
       }
 
       const current = select.value && months.includes(select.value) ? select.value : months[0];
