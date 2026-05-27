@@ -1383,7 +1383,6 @@
               <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-edit-id="${g.id}">Edit</button>
             </div>
           </div>
-          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
           <div class="status-row">
             <span class="tag">${g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))} ★`}</span>
             ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
@@ -1398,10 +1397,13 @@
         </div>
       `).join('');
 [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.onclick = () => {
     const genre = genres.find(g => String(g.id) === btn.dataset.editId);
-    if (genre) { loadListenScreen(genre); switchScreen('listen'); }
-  });
+    if (genre) {
+      loadListenScreen(genre);
+      switchScreen('listen');
+    }
+  };
 });
     }
 
