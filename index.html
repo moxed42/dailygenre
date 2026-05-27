@@ -849,17 +849,17 @@
       'cpop': {"rating":"3","rank_order":46},
       'celtic rock': {"rating":"3","rank_order":47},
       'hipster hop': {"rating":"3","rank_order":48},
-      'memphis horrorcore': {"rating":"3","rank_order":49},
+      'memphis rap': {"rating":"3","rank_order":49},
       'psychedelic break beat': {"rating":"3","rank_order":50},
       'jungle': {"rating":"3","rank_order":51},
       'brazilian rock': {"rating":"3","rank_order":52},
       'electro swing': {"rating":"3","rank_order":53},
       'indian pop': {"rating":"3","rank_order":54},
-      'free funk jazz': {"rating":"3","rank_order":55},
+      'avant garde jazz': {"rating":"3","rank_order":55},
       'samba': {"rating":"3","rank_order":56},
       'punk jazz': {"rating":"3","rank_order":57},
       'beatdown hardcore': {"rating":"3","rank_order":58},
-      'post progressive rock': {"rating":"3","rank_order":59},
+      'post prog': {"rating":"3","rank_order":59},
       'soul blues': {"rating":"3","rank_order":60},
       'psychedelic music': {"rating":"3","rank_order":61},
       'tropical house': {"rating":"3","rank_order":62},
@@ -1253,7 +1253,7 @@
         await doSaveWithPassword(appPassword);
         updateRemainingCount();
         populateMonthFilter();
-        renderHistory();
+        ;
         renderMonthly();
         renderRankings();
         alert('Saved to GitHub successfully.');
@@ -1360,7 +1360,13 @@
         <div class="list-item">
           <div class="row" style="justify-content:space-between;">
             <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-            <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
+              <div class="small" style="margin-top:4px;">${escapeHtml(categoryLine(g))}</div>
+            </div>
+            <div class="row" style="gap:8px;flex-shrink:0;">
+              <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
+              <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-edit-id="${g.id}">Edit</button>
+            </div>
+            <div style="display:none">
           </div>
           <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
           <div class="status-row">
@@ -1376,6 +1382,9 @@
           ${(g.songs_listened || []).length ? `<div class="small" style="margin-top:10px;">Songs logged: ${escapeHtml(String(g.songs_listened.length))}</div>` : ''}
         </div>
       `).join('');
+      [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
+  btn.addEventListener('click', () => loadListenScreen(genres.find(g => String(g.id) === btn.dataset.editId)) || switchScreen('listen'));
+});
     }
 
     function renderMonthly() {
