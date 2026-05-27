@@ -11590,7 +11590,7 @@
     "date_raw": "5/3",
     "date_normalized": "2026-05-03",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -11599,8 +11599,32 @@
     "key_artists": "Three 6 Mafia, DJ Paul, Juicy J, Gangsta Pat, Tommy Wright III (originators/major figures)",
     "suggested_songs": "Three 6 Mafia — Half on a Sack, Tommy Wright III — Ready to Die, Gangsta Pat — Who's the Killaz",
     "vibe": "Hip-hop recorded in the dark, passed hand to hand on cassette.",
-    "songs_listened": [],
-    "rank_order": 49
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5zzcStevEtH2sUZuBzqLGO",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/4J2gqaHBsVeY0PAf4VraRL",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/2raq77uNmq3fGzVmB8myr5",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/190CNHp6TmBJWHeoTf9msD",
+        "source": "spotify",
+        "added": "2026-05-27"
+      }
+    ],
+    "rank_order": 49,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 552,
