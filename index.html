@@ -1059,11 +1059,11 @@
         <div class="meta-grid">
           <div class="meta-box">
             <h3>Key artists</h3>
-            <p>${genre.keyartists ? escapeHtml(genre.keyartists) : 'Not added yet.'}</p>
+            <p>${genre.key_artists ? escapeHtml(genre.key_artists) : 'Not added yet.'}</p>
           </div>
           <div class="meta-box">
             <h3>Suggested songs</h3>
-            <p>${genre.suggestedsongs ? escapeHtml(genre.suggestedsongs) : 'Not added yet.'}</p>
+            <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
           </div>
         </div>
         <div class="spin-actions" style="justify-content:flex-start; margin-top:20px;">
@@ -1106,9 +1106,9 @@
       let text = `Today's Genre is: ${currentGenre.genre || 'Unknown'}\n\n`;
       if (currentGenre.vibe) text += `${genreEmoji(currentGenre)} ${currentGenre.vibe}\n\n`;
       if (currentGenre.summary) text += `${currentGenre.summary}\n\n`;
-      if (currentGenre.keyartists) text += `🎤 Key Artists: ${currentGenre.keyartists}`;
-      if (includeSongs && currentGenre.suggestedsongs) {
-        const songs = currentGenre.suggestedsongs.split(',').map(s => s.trim()).filter(Boolean);
+      if (currentGenre.key_artists) text += `🎤 Key Artists: ${currentGenre.key_artists}`;
+      if (includeSongs && currentGenre.suggested_songs) {
+        const songs = currentGenre.suggested_songs.split(',').map(s => s.trim()).filter(Boolean);
         text += `\n\n🎶 Suggested Songs:\n` + songs.map(s => `• ${s}`).join('\n');
       }
       return text.trim();
@@ -1161,11 +1161,11 @@
         <div class="meta-grid">
           <div class="meta-box">
             <h3>Key artists</h3>
-            <p>${genre.keyartists ? escapeHtml(genre.keyartists) : 'Not added yet.'}</p>
+            <p>${genre.key_artists ? escapeHtml(genre.key_artists) : 'Not added yet.'}</p>
           </div>
           <div class="meta-box">
             <h3>Suggested songs</h3>
-            <p>${genre.suggestedsongs ? escapeHtml(genre.suggestedsongs) : 'Not added yet.'}</p>
+            <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
           </div>
         </div>
       `;
