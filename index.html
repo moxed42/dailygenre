@@ -1055,7 +1055,7 @@
       animateSpinnerToGenre(genre);
     }
 
-function renderSpinResult(genre) {
+    function renderSpinResult(genre) {
   spinResult.classList.add('show');
   spinResult.innerHTML = `
     <div class="eyebrow">Today’s pull</div>
@@ -1106,8 +1106,8 @@ function renderSpinResult(genre) {
   }
 }
 
-    function parseSongLinks(text) {
-    return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
+function parseSongLinks(text) {
+  return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
     const p=line.split('|').map(x=>x.trim());
     const raw=p[1]?parseInt(p[1],10):null;
     return { url:p[0]||'', score:(!isNaN(raw)&&raw>=1&&raw<=5)?raw:null, reason:p[2]||'',
@@ -1354,21 +1354,18 @@ function renderSpinResult(genre) {
         confirmPanel.innerHTML = '';
       }
     }
-window.toggleSongLog = function(wrapId) {
+  window.toggleSongLog = function(wrapId) {
   const wrap = document.getElementById(wrapId);
   if (!wrap) return;
-
   const list = wrap.querySelector('.song-log-list');
   const btn = wrap.querySelector('.song-log-toggle');
   if (!list || !btn) return;
-
-  const isHidden = getComputedStyle(list).display === 'none';
+  const isHidden = getComputedStyle(list).display === 'none' || list.style.display === 'none' || list.style.display === '';
   list.style.display = isHidden ? 'grid' : 'none';
-
   const count = list.querySelectorAll(':scope > div').length;
   btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
 };
-    function renderHistory() {
+function renderHistory() {
   const month = document.getElementById('historyMonthFilter').value;
   const rating = document.getElementById('historyRatingFilter').value;
   const category = document.getElementById('historyCategoryFilter').value.trim().toLowerCase();
@@ -1440,7 +1437,7 @@ window.toggleSongLog = function(wrapId) {
   });
 }
 
-    function renderMonthly() {
+function renderMonthly() {
   const select = document.getElementById('monthlySelect');
   const listened = genres.filter(g => (g.status || '').toLowerCase() === 'listened' && dateValue(g));
   const months = [...new Set(listened.map(g => dateValue(g).slice(0,7)))].sort((a, b) => a.localeCompare(b)).reverse();
@@ -1505,7 +1502,7 @@ window.toggleSongLog = function(wrapId) {
   `).join('');
 }
 
-    function populateMonthFilter() {
+function populateMonthFilter() {
       const months = [...new Set(
         genres.filter(g => dateValue(g)).map(g => dateValue(g).slice(0,7))
       )].sort().reverse();
@@ -1676,10 +1673,8 @@ window.toggleSongLog = function(wrapId) {
     document.getElementById('historyRatingFilter').addEventListener('change', renderHistory);
     document.getElementById('historyCategoryFilter').addEventListener('input', renderHistory);
     document.getElementById('monthlySelect').addEventListener('change', renderMonthly);
-document.getElementById('monthlySortBtn').addEventListener('click',()=>{
+    document.getElementById('monthlySortBtn').addEventListener('click',()=>{
   monthlySortAsc=!monthlySortAsc;
-
-
   document.getElementById('monthlySortBtn').textContent=monthlySortAsc?'Oldest first':'Newest first';
   renderMonthly();
 });
