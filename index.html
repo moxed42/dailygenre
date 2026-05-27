@@ -1538,12 +1538,9 @@
     spinBtn.addEventListener('click', spinWheel);
     manualToggleBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
 
-    const manualSearch1 = document.getElementById('manualSearch');
-    const manualResults1 = document.getElementById('manualResults');
     const manualSearch2 = document.getElementById('manualSearch2');
     const manualResults2 = document.getElementById('manualResults2');
 
-    manualSearch1.addEventListener('input', () => searchGenresInto(manualSearch1, manualResults1));
     manualSearch2.addEventListener('input', () => searchGenresInto(manualSearch2, manualResults2));
 
     document.getElementById('includeSongsToggle').addEventListener('change', updateDiscordBlock);
