@@ -1354,131 +1354,156 @@ function renderSpinResult(genre) {
         confirmPanel.innerHTML = '';
       }
     }
-  window.toggleSongLog = function(id) {
-  const wrap = document.getElementById('sl-' + id);
+window.toggleSongLog = function(wrapId) {
+  const wrap = document.getElementById(wrapId);
   if (!wrap) return;
+
   const list = wrap.querySelector('.song-log-list');
   const btn = wrap.querySelector('.song-log-toggle');
   if (!list || !btn) return;
-  const isHidden = list.style.display === 'none' || list.style.display === '';
+
+  const isHidden = getComputedStyle(list).display === 'none';
   list.style.display = isHidden ? 'grid' : 'none';
+
   const count = list.querySelectorAll(':scope > div').length;
   btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
-}
+};
     function renderHistory() {
-      const month = document.getElementById('historyMonthFilter').value;
-      const rating = document.getElementById('historyRatingFilter').value;
-      const category = document.getElementById('historyCategoryFilter').value.trim().toLowerCase();
+  const month = document.getElementById('historyMonthFilter').value;
+  const rating = document.getElementById('historyRatingFilter').value;
+  const category = document.getElementById('historyCategoryFilter').value.trim().toLowerCase();
 
-      const listened = genres
-        .filter(g => ['listened', 'veto'].includes((g.status || '').toLowerCase()))
-        .filter(g => !month || dateValue(g).startsWith(month))
-        .filter(g => !rating || String(g.rating || '') === rating)
-        .filter(g => !category || categoryLine(g).toLowerCase().includes(category) || (g.genre || '').toLowerCase().includes(category))
-        .sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || String(a.genre).localeCompare(String(b.genre)));
+  const listened = genres
+    .filter(g => ['listened', 'veto'].includes((g.status || '').toLowerCase()))
+    .filter(g => !month || dateValue(g).startsWith(month))
+    .filter(g => !rating || String(g.rating || '') === rating)
+    .filter(g => !category || categoryLine(g).toLowerCase().includes(category) || (g.genre || '').toLowerCase().includes(category))
+    .sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || String(a.genre).localeCompare(String(b.genre)));
 
-      const list = document.getElementById('historyList');
-      if (!listened.length) {
-        list.innerHTML = `<div class="small">No matching entries yet.</div>`;
-        return;
-      }
+  const list = document.getElementById('historyList');
+  if (!listened.length) {
+    list.innerHTML = `<div class="small">No matching entries yet.</div>`;
+    return;
+  }
 
-            list.innerHTML = listened.map(g => `
-        <div class="list-item">
-          <div class="row" style="justify-content:space-between;align-items:flex-start;">
-            <div>
-              <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-              <div class="small" style="margin-top:4px;">${escapeHtml(categoryLine(g))}</div>
-            </div>
-            <div class="row" style="gap:8px;flex-shrink:0;">
-              <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
-              <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-edit-id="${g.id}">Edit</button>
-            </div>
-          </div>
-          <div class="status-row">
-            <span class="tag">${g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))} ★`}</span>
-            ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
-            ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : ''}
-          </div>
-          ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
-            g.favoritesongurl
-              ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
-              : escapeHtml(g.favoritesong)
-          }</div>` : ''}
-          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">                   <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">                     ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}                     <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>                   </a>                   ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}                 </div>                 ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}               </div>`).join('')}             </div>           </div>` : ''}
+  list.innerHTML = listened.map(g => `
+    <div class="list-item">
+      <div class="row" style="justify-content:space-between;align-items:flex-start;">
+        <div>
+          <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+          <div class="small" style="margin-top:4px;">${escapeHtml(categoryLine(g))}</div>
         </div>
-      `).join('');
-[...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
-  btn.onclick = () => {
-    const genre = genres.find(g => String(g.id) === btn.dataset.editId);
-    if (genre) {
+        <div class="row" style="gap:8px;flex-shrink:0;">
+          <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
+          <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-edit-id="${g.id}">Edit</button>
+        </div>
+      </div>
+
+      <div class="status-row">
+        <span class="tag">${g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))} ★`}</span>
+        ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
+        ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : ''}
+      </div>
+
+      ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
+        g.favoritesongurl
+          ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
+          : escapeHtml(g.favoritesong)
+      }</div>` : ''}
+
+      ${(g.songs_listened || []).length ? `
+        <div class="song-log-wrap" id="hist-sl-${g.id}" style="margin-top:10px;">
+          <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('hist-sl-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
+          <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
+            ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">
+                <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">
+                  ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}
+                  <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>
+                </a>
+                ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}
+              </div>
+              ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}
+            </div>`).join('')}
+          </div>
+        </div>` : ''}
+    </div>
+  `).join('');
+
+  [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
+    btn.onclick = () => {
+      const genre = genres.find(g => String(g.id) === btn.dataset.editId);
+      if (!genre) return;
       loadListenScreen(genre);
       switchScreen('listen');
-    }
-  };
-});
-    }
+    };
+  });
+}
 
     function renderMonthly() {
-      const select = document.getElementById('monthlySelect');
-      const listened = genres.filter(g => (g.status || '').toLowerCase() === 'listened' && dateValue(g));
-      const months = [...new Set(listened.map(g => dateValue(g).slice(0,7)))].sort((a, b) => a.localeCompare(b)).reverse();
+  const select = document.getElementById('monthlySelect');
+  const listened = genres.filter(g => (g.status || '').toLowerCase() === 'listened' && dateValue(g));
+  const months = [...new Set(listened.map(g => dateValue(g).slice(0,7)))].sort((a, b) => a.localeCompare(b)).reverse();
 
-      if (!months.length) {
-        select.innerHTML = '<option value="">No months yet</option>';
-        document.getElementById('monthlySummary').textContent = 'No listened genres saved yet.';
-        window._monthlyItems = [];
-        window._monthlyLabel = '';
-        document.getElementById('monthlyList').innerHTML = '';        return;
-      }
+  if (!months.length) {
+    select.innerHTML = '<option value="">No months yet</option>';
+    document.getElementById('monthlySummary').textContent = 'No listened genres saved yet.';
+    window._monthlyItems = [];
+    window._monthlyLabel = '';
+    document.getElementById('monthlyList').innerHTML = '';
+    return;
+  }
 
-      const current = select.value && months.includes(select.value) ? select.value : months[0];
-      select.innerHTML = months.map(m => `<option value="${m}" ${m === current ? 'selected' : ''}>${m}</option>`).join('');
+  const current = select.value && months.includes(select.value) ? select.value : months[0];
+  select.innerHTML = months.map(m => `<option value="${m}" ${m === current ? 'selected' : ''}>${m}</option>`).join('');
 
-      const monthItems = listened
-        .filter(g => dateValue(g).startsWith(current))
-        .sort((a,b) => monthlySortAsc
-  ? (dateValue(a)||'').localeCompare(dateValue(b)||'') || String(a.genre).localeCompare(String(b.genre))
-  : (dateValue(b)||'').localeCompare(dateValue(a)||'') || String(a.genre).localeCompare(String(b.genre)))
-      document.getElementById('monthlySummary').textContent = `${monthItems.length} genres logged in ${current}.`;
-      window._monthlyItems = monthItems;
-      window._monthlyLabel = current;
+  const monthItems = listened
+    .filter(g => dateValue(g).startsWith(current))
+    .sort((a,b) => monthlySortAsc
+      ? (dateValue(a)||'').localeCompare(dateValue(b)||'') || String(a.genre).localeCompare(String(b.genre))
+      : (dateValue(b)||'').localeCompare(dateValue(a)||'') || String(a.genre).localeCompare(String(b.genre)));
 
-      document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
-        <div class="list-item">
-          <div class="row" style="justify-content:space-between;">
-            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-            <span class="small">${escapeHtml(dateValue(g) || '')}</span>
+  document.getElementById('monthlySummary').textContent = `${monthItems.length} genres logged in ${current}.`;
+  window._monthlyItems = monthItems;
+  window._monthlyLabel = current;
+
+  document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
+    <div class="list-item">
+      <div class="row" style="justify-content:space-between;">
+        <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+        <span class="small">${escapeHtml(dateValue(g) || '')}</span>
+      </div>
+      <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
+      <div class="status-row">
+        <span class="tag">${escapeHtml(String(g.rating || '—'))}${g.rating && g.rating !== 'zanger' ? ' ★' : ''}</span>
+        ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
+      </div>
+
+      ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
+        g.favoritesongurl
+          ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
+          : escapeHtml(g.favoritesong)
+      }</div>` : ''}
+
+      ${(g.songs_listened || []).length ? `
+        <div class="song-log-wrap" id="month-sl-${g.id}" style="margin-top:10px;">
+          <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('month-sl-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
+          <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
+            ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">
+                <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">
+                  ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}
+                  <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>
+                </a>
+                ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}
+              </div>
+              ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}
+            </div>`).join('')}
           </div>
-          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
-          <div class="status-row">
-            <span class="tag">${escapeHtml(String(g.rating || '—'))}${g.rating && g.rating !== 'zanger' ? ' ★' : ''}</span>
-            ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
-          </div>
-          ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
-            g.favoritesongurl
-              ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
-              : escapeHtml(g.favoritesong)
-          }</div>` : ''}
-          ${(g.songs_listened || []).length ? `
-          <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">
-            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
-            <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
-              ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">
-                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">
-                  <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">
-                    ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}
-                    <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>
-                  </a>
-                  ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}
-                </div>
-                ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}
-              </div>`).join('')}
-            </div>
-          </div>` : ''}
-        </div>
-      `).join('');
-    }
+        </div>` : ''}
+    </div>
+  `).join('');
+}
 
     function populateMonthFilter() {
       const months = [...new Set(
