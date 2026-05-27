@@ -1055,44 +1055,56 @@
       animateSpinnerToGenre(genre);
     }
 
-    function renderSpinResult(genre) {
-      spinResult.classList.add('show');
-      spinResult.innerHTML = `
-        <div class="eyebrow">Today’s pull</div>
-        <h2 class="genre-title">${escapeHtml(genre.genre || 'Unknown genre')}</h2>
-        <div class="subtle">${escapeHtml(categoryLine(genre))}</div>
-        ${genre.vibe ? `<div class="vibe">${genreEmoji(genre)} ${escapeHtml(genre.vibe)}</div>` : ''}
-        <p>${genre.summary ? escapeHtml(genre.summary) : '<span class="small">No summary added yet.</span>'}</p>
-        <div class="meta-grid">
-          <div class="meta-box">
-            <h3>Key artists</h3>
-            <p>${genre.key_artists ? escapeHtml(genre.key_artists) : 'Not added yet.'}</p>
-          </div>
-          <div class="meta-box">
-            <h3>Suggested songs</h3>
-            <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
-          </div>
-        </div>
-        <div class="spin-actions" style="justify-content:flex-start; margin-top:20px;">
-          <button class="btn btn-secondary" id="respinBtn">Respin / Skip</button>
-          <button class="btn btn-danger" id="vetoBtn">Veto (Zanger)</button>
-          <button class="btn btn-primary" id="listenBtn">I’ll Listen to This</button>
-        </div>
-      `;
+function renderSpinResult(genre) {
+  spinResult.classList.add('show');
+  spinResult.innerHTML = `
+    <div class="eyebrow">Today’s pull</div>
+    <h2 class="genre-title">${escapeHtml(genre.genre || 'Unknown genre')}</h2>
+    <div class="subtle">${escapeHtml(categoryLine(genre))}</div>
+    ${genre.vibe ? `<div class="vibe">${genreEmoji(genre)} ${escapeHtml(genre.vibe)}</div>` : ''}
+    <p>${genre.summary ? escapeHtml(genre.summary) : '<span class="small">No summary added yet.</span>'}</p>
+    <div class="meta-grid">
+      <div class="meta-box">
+        <h3>Key artists</h3>
+        <p>${genre.key_artists ? escapeHtml(genre.key_artists) : 'Not added yet.'}</p>
+      </div>
+      <div class="meta-box">
+        <h3>Suggested songs</h3>
+        <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
+      </div>
+    </div>
+    <div class="spin-actions" style="justify-content:flex-start; margin-top:20px;">
+      <button class="btn btn-secondary" id="respinBtn">Respin / Skip</button>
+      <button class="btn btn-danger" id="vetoBtn">Veto (Zanger)</button>
+      <button class="btn btn-primary" id="listenBtn">I’ll Listen to This</button>
+    </div>
+  `;
 
-      spinResult.querySelector('#respinBtn').onclick = spinWheel;
-      spinResult.querySelector('#vetoBtn').onclick = () => {
-        genre.status = 'veto';
-        genre.rating = 'zanger';
-        genre.rank_order = null;
-        loadListenScreen(genre);
-        switchScreen('listen');
-      };
-      spinResult.querySelector('#listenBtn').onclick = () => {
-        loadListenScreen(genre);
-        switchScreen('listen');
-      };
-    }
+  const respinBtn = spinResult.querySelector('#respinBtn');
+  const vetoBtn = spinResult.querySelector('#vetoBtn');
+  const listenBtn = spinResult.querySelector('#listenBtn');
+
+  if (respinBtn) {
+    respinBtn.onclick = spinWheel;
+  }
+
+  if (vetoBtn) {
+    vetoBtn.onclick = () => {
+      genre.status = 'veto';
+      genre.rating = 'zanger';
+      genre.rank_order = null;
+      loadListenScreen(genre);
+      switchScreen('listen');
+    };
+  }
+
+  if (listenBtn) {
+    listenBtn.onclick = () => {
+      loadListenScreen(genre);
+      switchScreen('listen');
+    };
+  }
+}
 
     function parseSongLinks(text) {
     return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
