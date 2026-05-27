@@ -930,6 +930,7 @@
     let appPassword = '';
     let pendingSaveAction = null;
     let unmatchedSeeds = [];
+    let monthlySortAsc = true;
 
     const spinnerTrack = document.getElementById('spinnerTrack');
     const remainingCount = document.getElementById('remainingCount');
@@ -1079,19 +1080,21 @@
         </div>
       `;
 
-      document.getElementById('respinBtn').onclick = spinWheel;
-      document.getElementById('vetoBtn').onclick = () => {
+      const _respin = spinResult.querySelector('#respinBtn');
+      const _veto   = spinResult.querySelector('#vetoBtn');
+      const _listen = spinResult.querySelector('#listenBtn');
+      if (_respin) _respin.onclick = spinWheel;
+      if (_veto) _veto.onclick = () => {
         genre.status = 'veto';
         genre.rating = 'zanger';
         genre.rank_order = null;
         loadListenScreen(genre);
         switchScreen('listen');
       };
-      document.getElementById('listenBtn').onclick = () => {
+      if (_listen) _listen.onclick = () => {
         loadListenScreen(genre);
         switchScreen('listen');
       };
-    }
 
     function parseSongLinks(text) {
   return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
@@ -1346,10 +1349,11 @@
   if (!wrap) return;
   const list = wrap.querySelector('.song-log-list');
   const btn = wrap.querySelector('.song-log-toggle');
-  const open = list.style.display === 'none' || list.style.display === '';
-  list.style.display = open ? 'grid' : 'none';
-  const count = wrap.querySelectorAll('.song-log-list > div').length;
-  btn.textContent = (open ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
+  if (!list || !btn) return;
+  const isHidden = list.style.display === 'none' || list.style.display === '';
+  list.style.display = isHidden ? 'grid' : 'none';
+  const count = list.querySelectorAll(':scope > div').length;
+  btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
 }
     function renderHistory() {
       const month = document.getElementById('historyMonthFilter').value;
@@ -1369,17 +1373,17 @@
         return;
       }
 
-      list.innerHTML = listened.map(g => `
+            list.innerHTML = listened.map(g => `
         <div class="list-item">
-          <div class="row" style="justify-content:space-between;">
-            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+          <div class="row" style="justify-content:space-between;align-items:flex-start;">
+            <div>
+              <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
               <div class="small" style="margin-top:4px;">${escapeHtml(categoryLine(g))}</div>
             </div>
             <div class="row" style="gap:8px;flex-shrink:0;">
               <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
               <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-edit-id="${g.id}">Edit</button>
             </div>
-            <div style="display:none">
           </div>
           <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
           <div class="status-row">
@@ -1424,8 +1428,9 @@
         .sort((a,b) => monthlySortAsc
   ? (dateValue(a)||'').localeCompare(dateValue(b)||'') || String(a.genre).localeCompare(String(b.genre))
   : (dateValue(b)||'').localeCompare(dateValue(a)||'') || String(a.genre).localeCompare(String(b.genre)))
-
       document.getElementById('monthlySummary').textContent = `${monthItems.length} genres logged in ${current}.`;
+      window._monthlyItems = monthItems;
+      window._monthlyLabel = current;
 
       document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
         <div class="list-item">
@@ -1634,9 +1639,10 @@
     document.getElementById('historyRatingFilter').addEventListener('change', renderHistory);
     document.getElementById('historyCategoryFilter').addEventListener('input', renderHistory);
     document.getElementById('monthlySelect').addEventListener('change', renderMonthly);
-    let monthlySortAsc = true;
 document.getElementById('monthlySortBtn').addEventListener('click',()=>{
   monthlySortAsc=!monthlySortAsc;
+
+
   document.getElementById('monthlySortBtn').textContent=monthlySortAsc?'Oldest first':'Newest first';
   renderMonthly();
 });
