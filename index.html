@@ -692,7 +692,7 @@
             <label for="songsListenedBulk">Songs listened — one per line</label>
 <div class="small" style="margin-bottom:8px;color:var(--muted);">Simple: paste a URL &bull; With detail: <code>URL | 1-5 | reason it fits or doesn't</code></div>
 <textarea id="songsListenedBulk" style="min-height:130px;font-size:.88rem;font-family:monospace;"
-  placeholder="https://open.spotify.com/track/abc | 5 | Three 6 Mafia quintessential&#10;https://open.spotify.com/track/xyz | 3 | Leans more trap"></textarea>
+  placeholder=placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist"</textarea>
             <div class="small" style="margin-top:8px;">These are stored on the genre as an array so you can later reverse-engineer what you actually listened to.</div>
           </div>
 
@@ -1230,6 +1230,7 @@
       currentGenre.monthlycontender = document.getElementById('monthlyContender').checked;
       currentGenre.notes = document.getElementById('notes').value.trim();
       currentGenre.songs_listened = parseSongLinks(document.getElementById('songsListenedBulk').value);
+      currentGenre.songs_listened = await resolveSpotifyTitles(currentGenre.songs_listened);
 
       if (!dateValue(currentGenre)) {
         currentGenre.date_normalized = new Date().toISOString().slice(0,10);
@@ -1391,7 +1392,7 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `<div class="small" style="margin-top:10px;">Songs logged: ${escapeHtml(String(g.songs_listened.length))}</div>` : ''}
+          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">                   <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">                     ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}                     <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>                   </a>                   ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}                 </div>                 ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}               </div>`).join('')}             </div>           </div>` : ''}
         </div>
       `).join('');
       [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
@@ -1440,16 +1441,21 @@
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
           ${(g.songs_listened || []).length ? `
-<div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">
-  <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
-  <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
-    ${g.songs_listened.map(s=>`<div style="display:flex;gap:8px;align-items:flex-start;padding:8px 10px;background:var(--surface-2);border-radius:12px;border:1px solid var(--border);">
-      <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:700;text-decoration:none;flex-shrink:0;font-size:.82rem;">${s.url.includes('spotify')?'🎵':'▶'} Open ↗</a>
-      ${s.score!=null?`<span style="background:var(--accent);color:white;border-radius:999px;padding:1px 8px;font-size:.78rem;font-weight:800;flex-shrink:0;">${s.score}★</span>`:''}
-      ${s.reason?`<span style="color:var(--muted);font-size:.83rem;font-style:italic;line-height:1.4;">${escapeHtml(s.reason)}</span>`:''}
-    </div>`).join('')}
-  </div>
-</div>` : ''}
+          <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">
+            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
+            <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
+              ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">
+                  <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">
+                    ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}
+                    <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>
+                  </a>
+                  ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}
+                </div>
+                ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}
+              </div>`).join('')}
+            </div>
+          </div>` : ''}
         </div>
       `).join('');
     }
