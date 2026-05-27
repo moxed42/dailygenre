@@ -1080,17 +1080,18 @@
         </div>
       `;
 
-      const _respin = spinResult.querySelector('#respinBtn');
-      const _veto   = spinResult.querySelector('#vetoBtn');
-      const _listen = spinResult.querySelector('#listenBtn');
-      if (_respin) _respin.onclick = spinWheel;
-      if (_veto) _veto.onclick = () => {
+            spinResult.querySelector('#respinBtn').onclick = spinWheel;
+      spinResult.querySelector('#vetoBtn').onclick = () => {
         genre.status = 'veto';
         genre.rating = 'zanger';
         genre.rank_order = null;
         loadListenScreen(genre);
         switchScreen('listen');
-      }};
+      };
+      spinResult.querySelector('#listenBtn').onclick = () => {
+        loadListenScreen(genre);
+        switchScreen('listen');
+      };
       if (_listen) _listen.onclick = () => {
         loadListenScreen(genre);
         switchScreen('listen');
