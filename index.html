@@ -267,15 +267,6 @@
       box-shadow:0 0 0 7px rgba(183,121,31,.14);
     }
 
-    .spinner-caption {
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      color:var(--muted);
-      font-size:.94rem;
-      margin-top:14px;
-    }
-
     .spin-actions, .row {
       display:flex;
       gap:12px;
@@ -623,7 +614,6 @@
       </div>
       <div class="top-actions">
         <div class="pill" id="remainingCount">Loading genres...</div>
-        <div class="pill" id="saveStatePill">Read only until you save</div>
       </div>
     </header>
 
@@ -636,31 +626,12 @@
     </nav>
 
     <section class="screen active" id="screen-spin">
-      <div class="hero-grid">
-        <div class="card">
-          <div class="eyebrow">Spin screen</div>
-          <h2 class="hero-title">A horizontal wheel with a clean finish.</h2>
-          <p class="hero-copy">The app pulls from genres still marked <strong>unlistened</strong>, animates the lane like a game-show picker, and lands on a single genre you can skip, veto, or take into the listening workflow [file:1].</p>
-        </div>
 
-        <div class="card">
-          <div class="eyebrow">Manual pick</div>
-          <label for="manualSearch">Jump straight to a genre</label>
-          <input id="manualSearch" type="text" placeholder="Type a genre name..." />
-          <div class="small" style="margin-top:10px;">Partial matches work. Pick one result to bypass the spinner and go straight to the listening screen [file:1].</div>
-          <div class="list" id="manualResults" style="margin-top:14px;"></div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:20px;">
+            <div class="card" style="margin-top:20px;">
         <div class="spinner-shell">
           <div class="spinner-window">
             <div class="spinner-marker"></div>
             <div class="spinner-track" id="spinnerTrack"></div>
-          </div>
-          <div class="spinner-caption">
-            <span>Jimmy-Fallon-style horizontal lane, but cleaner.</span>
-            <span id="poolCaption">Loading pool…</span>
           </div>
         </div>
 
@@ -708,13 +679,13 @@
           </div>
 
           <div>
-            <label for="favoriteSong">Favorite song</label>
-            <input id="favoriteSong" type="text" placeholder="Track title" />
-          </div>
-
-          <div>
-            <label for="favoriteSongUrl">Favorite song Spotify URL</label>
-            <input id="favoriteSongUrl" type="url" placeholder="https://open.spotify.com/..." />
+            <label for="favoriteSongUrl">Favorite song — Spotify URL</label>
+            <input id="favoriteSongUrl" type="url" placeholder="https://open.spotify.com/track/..." />
+            <div class="small" style="margin-top:8px;" id="favoriteSongFetchStatus"></div>
+            <div style="margin-top:10px;">
+              <label for="favoriteSong" style="font-weight:500; color:var(--muted); font-size:.92rem; margin-bottom:6px;">Track title (auto-filled from URL, or type manually)</label>
+              <input id="favoriteSong" type="text" placeholder="Paste URL above to auto-fill…" />
+            </div>
           </div>
 
           <div>
@@ -956,8 +927,6 @@
 
     const spinnerTrack = document.getElementById('spinnerTrack');
     const remainingCount = document.getElementById('remainingCount');
-    const saveStatePill = document.getElementById('saveStatePill');
-    const poolCaption = document.getElementById('poolCaption');
     const spinBtn = document.getElementById('spinBtn');
     const spinResult = document.getElementById('spinResult');
     const manualPanel = document.getElementById('manualPanel');
@@ -1008,8 +977,6 @@
 
     function updateRemainingCount() {
       remainingCount.textContent = `${getUnlistened().length} genres remaining`;
-      poolCaption.textContent = `${getUnlistened().length} still in the spin pool`;
-      saveStatePill.textContent = appPassword ? 'Save unlocked for this session' : 'Read only until you save';
     }
 
     function genreEmoji(genre) {
@@ -1401,7 +1368,11 @@
             ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
             ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : ''}
           </div>
-          ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${escapeHtml(g.favoritesong)}</div>` : ''}
+          ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
+            g.favoritesongurl
+              ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
+              : escapeHtml(g.favoritesong)
+          }</div>` : ''}
           ${(g.songs_listened || []).length ? `<div class="small" style="margin-top:10px;">Songs logged: ${escapeHtml(String(g.songs_listened.length))}</div>` : ''}
         </div>
       `).join('');
@@ -1439,7 +1410,11 @@
             <span class="tag">${escapeHtml(String(g.rating || '—'))}${g.rating && g.rating !== 'zanger' ? ' ★' : ''}</span>
             ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
           </div>
-          ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${escapeHtml(g.favoritesong)}</div>` : ''}
+          ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
+            g.favoritesongurl
+              ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
+              : escapeHtml(g.favoritesong)
+          }</div>` : ''}
           ${(g.songs_listened || []).length ? `<div class="small" style="margin-top:10px;">Songs logged: ${(g.songs_listened || []).map(s => escapeHtml(s.url)).join('<br>')}</div>` : ''}
         </div>
       `).join('');
@@ -1572,6 +1547,33 @@
     manualSearch2.addEventListener('input', () => searchGenresInto(manualSearch2, manualResults2));
 
     document.getElementById('includeSongsToggle').addEventListener('change', updateDiscordBlock);
+
+    // Auto-fetch Spotify track title from oEmbed when URL is pasted
+    document.getElementById('favoriteSongUrl').addEventListener('change', async function() {
+      const url = this.value.trim();
+      const statusEl = document.getElementById('favoriteSongFetchStatus');
+      const titleEl = document.getElementById('favoriteSong');
+      if (!url) { statusEl.textContent = ''; return; }
+      if (!url.includes('spotify.com/track/')) {
+        statusEl.textContent = 'Paste a Spotify track URL to auto-fill the title.';
+        return;
+      }
+      statusEl.textContent = 'Fetching title…';
+      try {
+        const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(url));
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const raw = data.title || '';
+        // Spotify oEmbed titles are "Track · Artist", split on middle dot or em dash
+        const clean = raw.split(/[·\u2013\u2014]/)[0].trim() || raw;
+        titleEl.value = clean;
+        if (currentGenre) currentGenre.favoritesong = clean;
+        statusEl.textContent = '✓ Title fetched';
+        setTimeout(() => { statusEl.textContent = ''; }, 3000);
+      } catch(e) {
+        statusEl.textContent = 'Could not auto-fetch — type the title manually.';
+      }
+    });
 
     document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
       await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
