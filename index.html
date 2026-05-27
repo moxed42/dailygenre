@@ -1612,16 +1612,18 @@ document.getElementById('monthlySortBtn').addEventListener('click',()=>{
   document.getElementById('monthlySortBtn').textContent=monthlySortAsc?'Oldest first':'Newest first';
   renderMonthly();
 });
-document.getElementById('monthlyCopyBtn').addEventListener('click',async()=>{
-  const items=window._monthlyItems||[];
-  if(!items.length) return;
-  const text=(window._monthlyLabel||'')+'\n'+items.map(g=>{
-    const p=(g.datenormalized||'').split('-');
-    return (p.length===3?p[1]+'-'+p[2]:g.datenormalized)+': '+(g.genre||'Unknown');
-  }).join('\n');
+document.getElementById('monthlyCopyBtn').addEventListener('click', async () => {
+  const items = window._monthlyItems || [];
+  if (!items.length) return;
+  const lines = items.map(g => {
+    const p = (g.datenormalized || '').split('-');
+    return (p.length === 3 ? p[1] + '-' + p[2] : g.datenormalized) + ': ' + (g.genre || 'Unknown');
+  });
+  const text = (window._monthlyLabel || '') + '\n' + lines.join('\n');
   await navigator.clipboard.writeText(text);
-  const btn=document.getElementById('monthlyCopyBtn');
-  btn.textContent='Copied!'; setTimeout(()=>{btn.textContent='Copy list';},2000);
+  const btn = document.getElementById('monthlyCopyBtn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => { btn.textContent = 'Copy list'; }, 2000);
 });
 
     passwordSubmitBtn.addEventListener('click', async () => {
