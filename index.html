@@ -1095,6 +1095,10 @@
         loadListenScreen(genre);
         switchScreen('listen');
       };
+      if (_listen) _listen.onclick = () => {
+        loadListenScreen(genre);
+        switchScreen('listen');
+      };
 
     function parseSongLinks(text) {
   return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
