@@ -10202,7 +10202,7 @@
     "date_raw": "5/2",
     "date_normalized": "2026-05-02",
     "parse_notes": "",
-    "rating": "3",
+    "rating": 3,
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -10211,47 +10211,8 @@
     "key_artists": "Burial (foundational influence), Shortstuff, Synkro, Arovane, Indigo (originators/major figures)",
     "suggested_songs": "Burial — Archangel, Synkro — Lost, Shortstuff — Dusk, Indigo — Fade",
     "vibe": "UK garage remembered as a feeling rather than played as a style.",
-    "songs_listened": [
-      {
-        "url": "https://open.spotify.com/track/4bZAsC7ftR11pHpRNk2Mhc",
-        "source": "spotify",
-        "added": "2026-05-27"
-      },
-      {
-        "url": "https://open.spotify.com/track/0fiTN2N5HEIefAHtm00vYG",
-        "source": "spotify",
-        "added": "2026-05-27"
-      },
-      {
-        "url": "https://open.spotify.com/track/78Ct2qlEtSMw3CG6zWwAyz",
-        "source": "spotify",
-        "added": "2026-05-27"
-      },
-      {
-        "url": "https://open.spotify.com/track/0FVuyC9RP5MACjp4lgU3qZ",
-        "source": "spotify",
-        "added": "2026-05-27"
-      },
-      {
-        "url": "https://open.spotify.com/track/6FlIvNPC3qqjYs0CETp5YQ",
-        "source": "spotify",
-        "added": "2026-05-27"
-      },
-      {
-        "url": "https://open.spotify.com/track/0UgLrEaEcTnoGOLawTvPts",
-        "source": "spotify",
-        "added": "2026-05-27"
-      },
-      {
-        "url": "https://open.spotify.com/track/4Z4i631BesV0P6LTvfLAdL",
-        "source": "spotify",
-        "added": "2026-05-27"
-      }
-    ],
-    "rank_order": 72,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "songs_listened": [],
+    "rank_order": 72
   },
   {
     "id": 478,
@@ -20990,7 +20951,7 @@
     "date_raw": "5:1",
     "date_normalized": "2026-05-01",
     "parse_notes": "",
-    "rating": "3",
+    "rating": 3,
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -20999,22 +20960,8 @@
     "key_artists": "Starshooter, Guilty Razors, Marie et les Garcons, Oberkampf (major figures)",
     "suggested_songs": "Starshooter -- Betsy Party, Guilty Razors -- Je Suis Desespere, Marie et les Garcons -- Fais Semblant, Oberkampf -- Crack",
     "vibe": "French punk that decided heartbreak deserved the same volume as revolution.",
-    "songs_listened": [
-      {
-        "url": "https://open.spotify.com/track/6JG0FH1PTgz7M4HbGExsA6",
-        "source": "spotify",
-        "added": "2026-05-27"
-      },
-      {
-        "url": "https://open.spotify.com/track/2OiVDraURYmk23JNFXqN4F",
-        "source": "spotify",
-        "added": "2026-05-27"
-      }
-    ],
-    "rank_order": 71,
-    "favoritesong": "Please Don't Piss in My Microwave",
-    "favoritesongurl": "https://open.spotify.com/track/6JG0FH1PTgz7M4HbGExsA6",
-    "monthlycontender": false
+    "songs_listened": [],
+    "rank_order": 71
   },
   {
     "id": 1083,
