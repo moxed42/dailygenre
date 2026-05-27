@@ -11583,7 +11583,7 @@
       }
     ],
     "rank_order": 49,
-    "favoritesong": "",
+    "favoritesong": "Please Don't Piss in My Microwave",
     "favoritesongurl": "",
     "monthlycontender": false
   },
@@ -20951,7 +20951,7 @@
     "date_raw": "5:1",
     "date_normalized": "2026-05-01",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -20960,8 +20960,32 @@
     "key_artists": "Starshooter, Guilty Razors, Marie et les Garcons, Oberkampf (major figures)",
     "suggested_songs": "Starshooter -- Betsy Party, Guilty Razors -- Je Suis Desespere, Marie et les Garcons -- Fais Semblant, Oberkampf -- Crack",
     "vibe": "French punk that decided heartbreak deserved the same volume as revolution.",
-    "songs_listened": [],
-    "rank_order": 71
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5zzcStevEtH2sUZuBzqLGO",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/4J2gqaHBsVeY0PAf4VraRL",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/2raq77uNmq3fGzVmB8myr5",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/190CNHp6TmBJWHeoTf9msD",
+        "source": "spotify",
+        "added": "2026-05-27"
+      }
+    ],
+    "rank_order": 71,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1083,
