@@ -10202,7 +10202,7 @@
     "date_raw": "5/2",
     "date_normalized": "2026-05-02",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -10211,8 +10211,47 @@
     "key_artists": "Burial (foundational influence), Shortstuff, Synkro, Arovane, Indigo (originators/major figures)",
     "suggested_songs": "Burial — Archangel, Synkro — Lost, Shortstuff — Dusk, Indigo — Fade",
     "vibe": "UK garage remembered as a feeling rather than played as a style.",
-    "songs_listened": [],
-    "rank_order": 72
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4bZAsC7ftR11pHpRNk2Mhc",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/0fiTN2N5HEIefAHtm00vYG",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/78Ct2qlEtSMw3CG6zWwAyz",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/0FVuyC9RP5MACjp4lgU3qZ",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/6FlIvNPC3qqjYs0CETp5YQ",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/0UgLrEaEcTnoGOLawTvPts",
+        "source": "spotify",
+        "added": "2026-05-27"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Z4i631BesV0P6LTvfLAdL",
+        "source": "spotify",
+        "added": "2026-05-27"
+      }
+    ],
+    "rank_order": 72,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 478,
