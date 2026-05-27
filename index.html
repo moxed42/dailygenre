@@ -1340,7 +1340,16 @@
         confirmPanel.innerHTML = '';
       }
     }
-
+  function toggleSongLog(id) {
+  const wrap = document.getElementById('sl-' + id);
+  if (!wrap) return;
+  const list = wrap.querySelector('.song-log-list');
+  const btn = wrap.querySelector('.song-log-toggle');
+  const open = list.style.display === 'none' || list.style.display === '';
+  list.style.display = open ? 'grid' : 'none';
+  const count = wrap.querySelectorAll('.song-log-list > div').length;
+  btn.textContent = (open ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
+}
     function renderHistory() {
       const month = document.getElementById('historyMonthFilter').value;
       const rating = document.getElementById('historyRatingFilter').value;
@@ -1430,7 +1439,17 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `<div class="small" style="margin-top:10px;">Songs logged: ${(g.songs_listened || []).map(s => escapeHtml(s.url)).join('<br>')}</div>` : ''}
+          ${(g.songs_listened || []).length ? `
+<div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">
+  <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
+  <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
+    ${g.songs_listened.map(s=>`<div style="display:flex;gap:8px;align-items:flex-start;padding:8px 10px;background:var(--surface-2);border-radius:12px;border:1px solid var(--border);">
+      <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:700;text-decoration:none;flex-shrink:0;font-size:.82rem;">${s.url.includes('spotify')?'🎵':'▶'} Open ↗</a>
+      ${s.score!=null?`<span style="background:var(--accent);color:white;border-radius:999px;padding:1px 8px;font-size:.78rem;font-weight:800;flex-shrink:0;">${s.score}★</span>`:''}
+      ${s.reason?`<span style="color:var(--muted);font-size:.83rem;font-style:italic;line-height:1.4;">${escapeHtml(s.reason)}</span>`:''}
+    </div>`).join('')}
+  </div>
+</div>` : ''}
         </div>
       `).join('');
     }
