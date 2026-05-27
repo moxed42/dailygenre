@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Genre</title>
+  <style>
+    :root{
+      --bg:#f7f4ee;
+      --surface:#fffdf8;
+      --surface-2:#f1ece3;
+      --text:#1f1a14;
+      --muted:#6f675d;
+      --border:#ddd4c7;
+      --accent:#b7791f;
+      --accent-dark:#8a5a14;
+      --danger:#8b2e2e;
+      --success:#2f6b3b;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(45,30,12,.08);
+    }
+
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .app {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .topbar {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:24px;
+    }
+
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .count-pill {
+      background:var(--surface);
+      border:1px solid var(--border);
+      padding:10px 14px;
+      border-radius:999px;
+      color:var(--muted);
+    }
+
+    .tabs {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .tab-btn, .btn {
+      border:none;
+      border-radius:999px;
+      padding:12px 16px;
+      font:inherit;
+      cursor:pointer;
+    }
+
+    .tab-btn {
+      background:var(--surface);
+      border:1px solid var(--border);
+    }
+
+    .tab-btn.active {
+      background:var(--text);
+      color:white;
+      border-color:var(--text);
+    }
+
+    .screen { display:none; }
+    .screen.active { display:block; }
+
+    .hero-card, .panel {
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero-card { padding:24px; }
+
+    .spinner-wrap {
+      padding:28px 20px;
+      margin-bottom:20px;
+    }
+
+    .spinner-window {
+      position:relative;
+      overflow:hidden;
+      border-radius:20px;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, #fffdf9, #f4eee4);
+      padding:18px 0;
+    }
+
+    .spinner-window::before,
+    .spinner-window::after{
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:90px;
+      z-index:2;
+      pointer-events:none;
+    }
+
+    .spinner-window::before{
+      left:0;
+      background:linear-gradient(90deg, rgba(247,244,238,1), rgba(247,244,238,0));
+    }
+
+    .spinner-window::after{
+      right:0;
+      background:linear-gradient(270deg, rgba(247,244,238,1), rgba(247,244,238,0));
+    }
+
+    .spinner-marker {
+      position:absolute;
+      top:8px;
+      bottom:8px;
+      left:50%;
+      transform:translateX(-50%);
+      width:4px;
+      background:var(--accent);
+      border-radius:999px;
+      z-index:3;
+      box-shadow:0 0 0 6px rgba(183,121,31,.12);
+    }
+
+    .spinner-track {
+      display:flex;
+      gap:12px;
+      width:max-content;
+      padding:0 18px;
+      transform:translateX(0);
+      will-change:transform;
+    }
+
+    .genre-chip {
+      flex:0 0 auto;
+      min-width:180px;
+      text-align:center;
+      padding:18px 20px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:white;
+      font-weight:700;
+      letter-spacing:-.02em;
+    }
+
+    .spin-actions {
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      margin-top:18px;
+    }
+
+    .btn-primary {
+      background:var(--accent);
+      color:white;
+    }
+
+    .btn-secondary {
+      background:var(--surface);
+      border:1px solid var(--border);
+      color:var(--text);
+    }
+
+    .btn-danger {
+      background:#f8e8e8;
+      color:var(--danger);
+      border:1px solid #e8c1c1;
+    }
+
+    .result-card {
+      padding:24px;
+      margin-top:20px;
+    }
+
+    .eyebrow {
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:.8rem;
+      margin-bottom:10px;
+    }
+
+    .genre-title {
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height:1;
+      margin:0 0 12px;
+      letter-spacing:-.05em;
+    }
+
+    .category-path, .meta {
+      color:var(--muted);
+      margin-bottom:16px;
+    }
+
+    .vibe {
+      font-style:italic;
+      font-size:1.1rem;
+      margin-bottom:18px;
+    }
+
+    .result-actions {
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:22px;
+    }
+
+    .grid-2 {
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:20px;
+    }
+
+    .panel {
+      padding:20px;
+    }
+
+    label {
+      display:block;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    input, textarea, select {
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:white;
+      font:inherit;
+    }
+
+    textarea {
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .stars {
+      display:flex;
+      gap:10px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+
+    .star-btn {
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:1px solid var(--border);
+      background:white;
+      cursor:pointer;
+      font-size:1.1rem;
+    }
+
+    .star-btn.active {
+      background:var(--accent);
+      color:white;
+      border-color:var(--accent);
+    }
+
+    .list {
+      display:grid;
+      gap:14px;
+    }
+
+    .list-item {
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .small {
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .row {
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .hidden { display:none !important; }
+
+    @media (max-width: 860px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .app { padding:16px; }
+      .genre-chip { min-width:140px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">Daily Genre</div>
+      <div class="count-pill" id="remainingCount">Loading genres...</div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-screen="spin">Spin</button>
+      <button class="tab-btn" data-screen="listen">Listening</button>
+      <button class="tab-btn" data-screen="history">History</button>
+      <button class="tab-btn" data-screen="monthly">Monthly</button>
+    </nav>
+
+    <section class="screen active" id="screen-spin">
+      <div class="hero-card spinner-wrap">
+        <div class="spinner-window">
+          <div class="spinner-marker"></div>
+          <div class="spinner-track" id="spinnerTrack"></div>
+        </div>
+
+        <div class="spin-actions">
+          <button class="btn btn-primary" id="spinBtn">SPIN</button>
+          <button class="btn btn-secondary" id="manualPickBtn">Pick manually</button>
+        </div>
+      </div>
+
+      <div class="panel hidden" id="manualPanel">
+        <label for="manualSearch">Search for a genre</label>
+        <input id="manualSearch" type="text" placeholder="Type a genre name..." />
+        <div class="list" id="manualResults" style="margin-top:12px;"></div>
+      </div>
+
+      <div class="panel result-card hidden" id="spinResult"></div>
+    </section>
+
+    <section class="screen" id="screen-listen">
+      <div class="grid-2">
+        <div class="panel">
+          <div id="listenDetails">Spin or choose a genre first.</div>
+        </div>
+
+        <div class="panel">
+          <label style="display:flex; gap:10px; align-items:center; margin-bottom:14px;">
+            <input type="checkbox" id="includeSongsToggle" style="width:auto;" />
+            Include suggested songs in Discord block
+          </label>
+
+          <label for="discordBlock">Discord post</label>
+          <textarea id="discordBlock" readonly></textarea>
+          <div class="row" style="margin-top:12px; margin-bottom:20px;">
+            <button class="btn btn-secondary" id="copyDiscordBtn">Copy block</button>
+          </div>
+
+          <label>Rating</label>
+          <div class="stars" id="ratingStars"></div>
+          <div class="row" style="margin-bottom:16px;">
+            <button class="btn btn-danger" id="zangerBtn">Zanger / Veto</button>
+            <span class="small" id="ratingStatus">No rating selected</span>
+          </div>
+
+          <label for="favoriteSong">Favorite song</label>
+          <input id="favoriteSong" type="text" placeholder="Track title" />
+
+          <label for="favoriteSongUrl" style="margin-top:14px;">Favorite song Spotify URL</label>
+          <input id="favoriteSongUrl" type="url" placeholder="https://open.spotify.com/..." />
+
+          <label style="display:flex; gap:10px; align-items:center; margin-top:14px;">
+            <input type="checkbox" id="monthlyContender" style="width:auto;" />
+            Mark as monthly contender
+          </label>
+
+          <label for="notes" style="margin-top:14px;">Notes</label>
+          <textarea id="notes" placeholder="Thoughts, standout artists, context..."></textarea>
+
+          <div class="row" style="margin-top:16px;">
+            <button class="btn btn-primary" id="saveBtn">Save</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-history">
+      <div class="panel">
+        <div class="row" style="margin-bottom:16px;">
+          <select id="historyMonthFilter">
+            <option value="">All months</option>
+          </select>
+          <select id="historyRatingFilter">
+            <option value="">All ratings</option>
+            <option value="1">1 star</option>
+            <option value="2">2 stars</option>
+            <option value="3">3 stars</option>
+            <option value="4">4 stars</option>
+            <option value="5">5 stars</option>
+            <option value="zanger">Zanger</option>
+          </select>
+          <input id="historyCategoryFilter" type="text" placeholder="Filter by category..." />
+        </div>
+        <div class="list" id="historyList"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-monthly">
+      <div class="panel">
+        <div class="row" style="justify-content:space-between; margin-bottom:16px;">
+          <h2 style="margin:0;">Monthly view</h2>
+          <select id="monthlySelect"></select>
+        </div>
+        <div class="small" id="monthlySummary"></div>
+        <div class="list" id="monthlyList" style="margin-top:16px;"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data.json';
+    const WORKER_URL = 'https://genre-spinner.sam-moxed.workers.dev/';
+
+    let genres = [];
+    let currentGenre = null;
+    let selectedRating = '';
+    let appPassword = '';
+
+    const spinnerTrack = document.getElementById('spinnerTrack');
+    const remainingCount = document.getElementById('remainingCount');
+    const spinBtn = document.getElementById('spinBtn');
+    const spinResult = document.getElementById('spinResult');
+    const manualPickBtn = document.getElementById('manualPickBtn');
+    const manualPanel = document.getElementById('manualPanel');
+    const manualSearch = document.getElementById('manualSearch');
+    const manualResults = document.getElementById('manualResults');
+
+    function escapeHtml(value='') {
+      return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function switchScreen(name) {
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(`screen-${name}`).classList.add('active');
+      document.querySelector(`.tab-btn[data-screen="${name}"]`).classList.add('active');
+    }
+
+    function getUnlistened() {
+      return genres.filter(g => (g.status || '').toLowerCase() === 'unlistened');
+    }
+
+    function updateRemainingCount() {
+      remainingCount.textContent = `${getUnlistened().length} genres remaining`;
+    }
+
+    function buildSpinnerPool() {
+      const pool = getUnlistened().slice(0, 30);
+      spinnerTrack.innerHTML = pool.map(g => `<div class="genre-chip">${escapeHtml(g.genre || 'Unknown')}</div>`).join('');
+    }
+
+    function randomGenre() {
+      const pool = getUnlistened();
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function categoryLine(genre) {
+      return genre.categorypath || genre.subcategory || 'Uncategorized';
+    }
+
+    function genreEmoji(genre) {
+      const c = (genre.categorypath || genre.subcategory || '').toLowerCase();
+      if (c.includes('jazz')) return '🎷';
+      if (c.includes('rock')) return '🎸';
+      if (c.includes('classical')) return '🎹';
+      if (c.includes('world')) return '🌍';
+      if (c.includes('electronic')) return '🎛️';
+      if (c.includes('hip hop')) return '🎤';
+      if (c.includes('country')) return '🤠';
+      if (c.includes('latin')) return '💃';
+      return '🎵';
+    }
+
+    function renderSpinResult(genre) {
+      spinResult.classList.remove('hidden');
+      spinResult.innerHTML = `
+        <div class="eyebrow">Today’s pull</div>
+        <h1 class="genre-title">${escapeHtml(genre.genre || 'Unknown genre')}</h1>
+        <div class="category-path">${escapeHtml(categoryLine(genre))}</div>
+        ${genre.vibe ? `<div class="vibe">${genreEmoji(genre)} ${escapeHtml(genre.vibe)}</div>` : ''}
+        ${genre.summary ? `<p>${escapeHtml(genre.summary)}</p>` : '<p class="small">No summary added yet.</p>'}
+        ${genre.keyartists ? `<p><strong>Key artists:</strong> ${escapeHtml(genre.keyartists)}</p>` : ''}
+        ${genre.suggestedsongs ? `<p><strong>Suggested songs:</strong> ${escapeHtml(genre.suggestedsongs)}</p>` : ''}
+        <div class="result-actions">
+          <button class="btn btn-secondary" id="respinBtn">Respin / Skip</button>
+          <button class="btn btn-danger" id="vetoBtn">Veto (Zanger)</button>
+          <button class="btn btn-primary" id="listenBtn">I’ll Listen to This</button>
+        </div>
+      `;
+
+      document.getElementById('respinBtn').onclick = spinWheel;
+      document.getElementById('vetoBtn').onclick = () => {
+        genre.status = 'veto';
+        genre.rating = 'zanger';
+        renderSpinResult(genre);
+        loadListenScreen(genre);
+        updateRemainingCount();
+      };
+      document.getElementById('listenBtn').onclick = () => {
+        loadListenScreen(genre);
+        switchScreen('listen');
+      };
+    }
+
+    function animateSpinnerToGenre(genre) {
+      const names = [];
+      for (let i = 0; i < 24; i++) {
+        const pick = randomGenre();
+        if (pick) names.push(pick.genre || 'Genre');
+      }
+      names.push(genre.genre || 'Genre');
+      for (let i = 0; i < 10; i++) {
+        const pick = randomGenre();
+        if (pick) names.push(pick.genre || 'Genre');
+      }
+
+      spinnerTrack.innerHTML = names.map(name => `<div class="genre-chip">${escapeHtml(name)}</div>`).join('');
+      const chips = [...spinnerTrack.children];
+      const targetIndex = 24;
+      const targetChip = chips[targetIndex];
+      const containerWidth = spinnerTrack.parentElement.clientWidth;
+      const targetCenter = targetChip.offsetLeft + targetChip.offsetWidth / 2;
+      const finalX = -(targetCenter - containerWidth / 2);
+
+      spinnerTrack.animate(
+        [
+          { transform: 'translateX(0px)' },
+          { transform: `translateX(${finalX}px)` }
+        ],
+        {
+          duration: 2600,
+          easing: 'cubic-bezier(0.12, 0.8, 0.18, 1)',
+          fill: 'forwards'
+        }
+      );
+
+      setTimeout(() => renderSpinResult(genre), 2620);
+    }
+
+    function spinWheel() {
+      const genre = randomGenre();
+      if (!genre) {
+        alert('No unlistened genres remaining.');
+        return;
+      }
+      currentGenre = genre;
+      animateSpinnerToGenre(genre);
+    }
+
+    function loadListenScreen(genre) {
+      currentGenre = genre;
+      selectedRating = genre.rating && genre.rating !== 'zanger' ? genre.rating : '';
+      document.getElementById('favoriteSong').value = genre.favoritesong || '';
+      document.getElementById('favoriteSongUrl').value = genre.favoritesongurl || '';
+      document.getElementById('monthlyContender').checked = !!genre.monthlycontender;
+      document.getElementById('notes').value = genre.notes || '';
+      document.getElementById('includeSongsToggle').checked = false;
+
+      document.getElementById('listenDetails').innerHTML = `
+        <div class="eyebrow">Listening now</div>
+        <h2 style="margin:0 0 10px; font-size:2rem;">${escapeHtml(genre.genre || 'Unknown genre')}</h2>
+        <div class="meta">${escapeHtml(categoryLine(genre))}</div>
+        ${genre.vibe ? `<p class="vibe">${genreEmoji(genre)} ${escapeHtml(genre.vibe)}</p>` : ''}
+        ${genre.summary ? `<p>${escapeHtml(genre.summary)}</p>` : '<p class="small">No summary available yet.</p>'}
+        ${genre.keyartists ? `<p><strong>Key artists:</strong> ${escapeHtml(genre.keyartists)}</p>` : ''}
+        ${genre.suggestedsongs ? `<p><strong>Suggested songs:</strong> ${escapeHtml(genre.suggestedsongs)}</p>` : ''}
+      `;
+
+      renderStars();
+      updateDiscordBlock();
+    }
+
+    function renderStars() {
+      const starsEl = document.getElementById('ratingStars');
+      starsEl.innerHTML = [1,2,3,4,5].map(n =>
+        `<button class="star-btn ${String(n) === String(selectedRating) ? 'active' : ''}" data-rating="${n}">★</button>`
+      ).join('');
+
+      [...starsEl.querySelectorAll('.star-btn')].forEach(btn => {
+        btn.onclick = () => {
+          selectedRating = btn.dataset.rating;
+          document.getElementById('ratingStatus').textContent = `${selectedRating} star${selectedRating === '1' ? '' : 's'} selected`;
+          renderStars();
+        };
+      });
+
+      document.getElementById('ratingStatus').textContent =
+        currentGenre?.rating === 'zanger' ? 'Marked as Zanger' :
+        selectedRating ? `${selectedRating} star${selectedRating === '1' ? '' : 's'} selected` :
+        'No rating selected';
+    }
+
+    function buildDiscordBlock() {
+      if (!currentGenre) return '';
+      const includeSongs = document.getElementById('includeSongsToggle').checked;
+      let text = `Today's Genre is: ${currentGenre.genre || 'Unknown'}\n\n`;
+      if (currentGenre.vibe) text += `${genreEmoji(currentGenre)} ${currentGenre.vibe}\n\n`;
+      if (currentGenre.summary) text += `${currentGenre.summary}\n\n`;
+      if (currentGenre.keyartists) text += `🎤 Key Artists: ${currentGenre.keyartists}\n\n`;
+      text += `Drop your suggestions below 👇`;
+      if (includeSongs && currentGenre.suggestedsongs) {
+        const songs = currentGenre.suggestedsongs.split(',').map(s => s.trim()).filter(Boolean);
+        text += `\n\n🎶 Suggested Songs:\n` + songs.map(s => `• ${s}`).join('\n');
+      }
+      return text;
+    }
+
+    function updateDiscordBlock() {
+      document.getElementById('discordBlock').value = buildDiscordBlock();
+    }
+
+    async function saveCurrentGenre() {
+      if (!currentGenre) {
+        alert('Choose a genre first.');
+        return;
+      }
+
+      currentGenre.rating = selectedRating || currentGenre.rating || '';
+      currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
+      currentGenre.favoritesongurl = document.getElementById('favoriteSongUrl').value.trim();
+      currentGenre.monthlycontender = document.getElementById('monthlyContender').checked;
+      currentGenre.notes = document.getElementById('notes').value.trim();
+      currentGenre.datenormalized = currentGenre.datenormalized || new Date().toISOString().slice(0,10);
+      currentGenre.status = currentGenre.rating === 'zanger' ? 'veto' : 'listened';
+
+      if (!appPassword) {
+        appPassword = prompt('Enter app password to save:') || '';
+      }
+      if (!appPassword) return;
+
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Password': appPassword
+        },
+        body: JSON.stringify(genres)
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        alert('Save failed. Check password or Worker logs.');
+        return;
+      }
+
+      alert('Saved to GitHub successfully.');
+      updateRemainingCount();
+      renderHistory();
+      renderMonthly();
+    }
+
+    function renderHistory() {
+      const month = document.getElementById('historyMonthFilter').value;
+      const rating = document.getElementById('historyRatingFilter').value;
+      const category = document.getElementById('historyCategoryFilter').value.trim().toLowerCase();
+
+      const listened = genres
+        .filter(g => ['listened', 'veto'].includes((g.status || '').toLowerCase()))
+        .filter(g => !month || (g.datenormalized || '').startsWith(month))
+        .filter(g => !rating || String(g.rating || '') === rating)
+        .filter(g => !category || categoryLine(g).toLowerCase().includes(category))
+        .sort((a,b) => (b.datenormalized || '').localeCompare(a.datenormalized || ''));
+
+      const list = document.getElementById('historyList');
+      if (!listened.length) {
+        list.innerHTML = `<div class="small">No matching entries yet.</div>`;
+        return;
+      }
+
+      list.innerHTML = listened.map(g => `
+        <div class="list-item">
+          <div class="row" style="justify-content:space-between;">
+            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+            <span class="small">${escapeHtml(g.datenormalized || 'No date')}</span>
+          </div>
+          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
+          <div style="margin-top:8px;">${g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))} ★`}</div>
+          ${g.favoritesong ? `<div class="small" style="margin-top:8px;">Favorite song: ${escapeHtml(g.favoritesong)}</div>` : ''}
+          ${g.monthlycontender ? `<div class="small" style="margin-top:8px;">📌 Monthly contender</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function renderMonthly() {
+      const select = document.getElementById('monthlySelect');
+      const listened = genres.filter(g => (g.status || '').toLowerCase() === 'listened' && g.datenormalized);
+      const months = [...new Set(listened.map(g => g.datenormalized.slice(0,7)))].sort().reverse();
+
+      if (!months.length) {
+        select.innerHTML = '<option value="">No months yet</option>';
+        document.getElementById('monthlySummary').textContent = 'No listened genres saved yet.';
+        document.getElementById('monthlyList').innerHTML = '';
+        return;
+      }
+
+      const current = select.value && months.includes(select.value) ? select.value : months[0];
+      select.innerHTML = months.map(m => `<option value="${m}" ${m === current ? 'selected' : ''}>${m}</option>`).join('');
+
+      const monthItems = listened
+        .filter(g => g.datenormalized.startsWith(current))
+        .sort((a,b) => a.datenormalized.localeCompare(b.datenormalized));
+
+      document.getElementById('monthlySummary').textContent = `${monthItems.length} genres logged in ${current}.`;
+
+      document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
+        <div class="list-item">
+          <div class="row" style="justify-content:space-between;">
+            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+            <span class="small">${escapeHtml(g.datenormalized || '')}</span>
+          </div>
+          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
+          <div style="margin-top:8px;">${escapeHtml(String(g.rating || '—'))} ${g.rating && g.rating !== 'zanger' ? '★' : ''}</div>
+          ${g.favoritesong ? `<div class="small" style="margin-top:8px;">Favorite song: ${escapeHtml(g.favoritesong)}</div>` : ''}
+          ${g.monthlycontender ? `<div class="small" style="margin-top:8px;">📌 Monthly contender</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function populateMonthFilter() {
+      const months = [...new Set(
+        genres.filter(g => g.datenormalized).map(g => g.datenormalized.slice(0,7))
+      )].sort().reverse();
+
+      document.getElementById('historyMonthFilter').innerHTML =
+        `<option value="">All months</option>` +
+        months.map(m => `<option value="${m}">${m}</option>`).join('');
+    }
+
+    function searchManualGenres() {
+      const q = manualSearch.value.trim().toLowerCase();
+      if (!q) {
+        manualResults.innerHTML = '';
+        return;
+      }
+
+      const matches = genres
+        .filter(g => (g.genre || '').toLowerCase().includes(q))
+        .slice(0, 12);
+
+      manualResults.innerHTML = matches.map(g => `
+        <button class="list-item" data-id="${g.id}" style="text-align:left; cursor:pointer;">
+          <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
+        </button>
+      `).join('');
+
+      [...manualResults.querySelectorAll('[data-id]')].forEach(btn => {
+        btn.onclick = () => {
+          const picked = genres.find(g => String(g.id) === btn.dataset.id);
+          if (!picked) return;
+          loadListenScreen(picked);
+          switchScreen('listen');
+        };
+      });
+    }
+
+    async function loadData() {
+      remainingCount.textContent = 'Loading genres...';
+      const res = await fetch(DATA_URL);
+      genres = await res.json();
+      updateRemainingCount();
+      buildSpinnerPool();
+      populateMonthFilter();
+      renderHistory();
+      renderMonthly();
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
+    });
+
+    spinBtn.addEventListener('click', spinWheel);
+    manualPickBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
+    manualSearch.addEventListener('input', searchManualGenres);
+    document.getElementById('includeSongsToggle').addEventListener('change', updateDiscordBlock);
+    document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
+    });
+    document.getElementById('saveBtn').addEventListener('click', saveCurrentGenre);
+    document.getElementById('zangerBtn').addEventListener('click', () => {
+      selectedRating = '';
+      if (currentGenre) currentGenre.rating = 'zanger';
+      document.getElementById('ratingStatus').textContent = 'Marked as Zanger';
+      renderStars();
+    });
+    document.getElementById('historyMonthFilter').addEventListener('change', renderHistory);
+    document.getElementById('historyRatingFilter').addEventListener('change', renderHistory);
+    document.getElementById('historyCategoryFilter').addEventListener('input', renderHistory);
+    document.getElementById('monthlySelect').addEventListener('change', renderMonthly);
+
+    loadData();
+  </script>
+</body>
+</html>
