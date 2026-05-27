@@ -1341,7 +1341,7 @@
         confirmPanel.innerHTML = '';
       }
     }
-  function toggleSongLog(id) {
+  window.toggleSongLog = function(id) {
   const wrap = document.getElementById('sl-' + id);
   if (!wrap) return;
   const list = wrap.querySelector('.song-log-list');
@@ -1360,7 +1360,7 @@
         .filter(g => ['listened', 'veto'].includes((g.status || '').toLowerCase()))
         .filter(g => !month || dateValue(g).startsWith(month))
         .filter(g => !rating || String(g.rating || '') === rating)
-        .filter(g => !category || categoryLine(g).toLowerCase().includes(category))
+        .filter(g => !category || categoryLine(g).toLowerCase().includes(category) || (g.genre || '').toLowerCase().includes(category))
         .sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || String(a.genre).localeCompare(String(b.genre)));
 
       const list = document.getElementById('historyList');
