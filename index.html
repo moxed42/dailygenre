@@ -1080,7 +1080,7 @@
         </div>
       `;
 
-            spinResult.querySelector('#respinBtn').onclick = spinWheel;
+      spinResult.querySelector('#respinBtn').onclick = spinWheel;
       spinResult.querySelector('#vetoBtn').onclick = () => {
         genre.status = 'veto';
         genre.rating = 'zanger';
@@ -1092,17 +1092,10 @@
         loadListenScreen(genre);
         switchScreen('listen');
       };
-      if (_listen) _listen.onclick = () => {
-        loadListenScreen(genre);
-        switchScreen('listen');
-      };
-      if (_listen) _listen.onclick = () => {
-        loadListenScreen(genre);
-        switchScreen('listen');
-      };
+    }
 
     function parseSongLinks(text) {
-  return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
+    return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
     const p=line.split('|').map(x=>x.trim());
     const raw=p[1]?parseInt(p[1],10):null;
     return { url:p[0]||'', score:(!isNaN(raw)&&raw>=1&&raw<=5)?raw:null, reason:p[2]||'',
