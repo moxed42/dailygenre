@@ -14273,11 +14273,11 @@
     "subsubcategory": "",
     "subsubsubcategory": "",
     "category_path": "Pop",
-    "status": "unlistened",
+    "status": "veto",
     "date_raw": "",
-    "date_normalized": "",
+    "date_normalized": "2026-05-28",
     "parse_notes": "",
-    "rating": "",
+    "rating": "zanger",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -14286,7 +14286,22 @@
     "key_artists": "Kreayshawn, Rebecca Black, 100 gecs, Caroline Polachek, PinkPantheress (artists often discussed around the label)",
     "suggested_songs": "Rebecca Black — Friday, Kreayshawn — Gucci Gucci, 100 gecs — money machine, Caroline Polachek — So Hot You’re Hurting My Feelings, PinkPantheress — Pain",
     "vibe": "Painfully self-aware pop that turns secondhand embarrassment into emotional texture.",
-    "songs_listened": []
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1KEdF3FNF9bKRCxN3KUMbx?si=K4EACal3Q0Cxh8MR5uIk6g",
+        "score": null,
+        "title": "Friday",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023589de3ede5dabf351227be9"
+      }
+    ],
+    "rank_order": null,
+    "favoritesong": "Friday",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023589de3ede5dabf351227be9",
+    "favoritesongurl": "https://open.spotify.com/track/1KEdF3FNF9bKRCxN3KUMbx?si=K4EACal3Q0Cxh8MR5uIk6g",
+    "monthlycontender": false
   },
   {
     "id": 685,
