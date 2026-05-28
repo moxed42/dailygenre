@@ -1225,6 +1225,25 @@
       });
     }
 
+    
+    async function resolveSpotifyTitles(songs) {
+      if (!songs || !songs.length) return songs;
+      const resolved = await Promise.all(songs.map(async s => {
+        if (s.title || !s.url || !s.url.includes('spotify.com/track/')) return s;
+        try {
+          const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(s.url));
+          if (!res.ok) return s;
+          const data = await res.json();
+          const raw = data.title || '';
+          const clean = raw.split(/[·\u2013\u2014]/)[0].trim() || raw;
+          return { ...s, title: clean };
+        } catch(e) {
+          return s;
+        }
+      }));
+      return resolved;
+    }
+
     async function prepareAndSaveCurrentGenre() {
       if (!currentGenre) {
         alert('Choose a genre first.');
