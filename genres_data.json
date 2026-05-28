@@ -550,7 +550,54 @@
     "key_artists": "John Lee Hooker, Baby Boy Warren, Eddie Burns, Bobo Jenkins, Little Sonny (originators)",
     "suggested_songs": "John Lee Hooker — Boogie Chillen, John Lee Hooker — Boom Boom, Baby Boy Warren — Sanafee, Eddie Burns — Burning Blues",
     "vibe": "Blues in a city with machine rhythms already in the air.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6peCtspu8qjTpIWUOPprmH",
+        "score": 5,
+        "reason": "Alberta Adams singing classic Detroit blues — canonical example",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Long Gone"
+      },
+      {
+        "url": "https://open.spotify.com/track/1MwR07lZv0tu8kJePTLVAh",
+        "score": 2,
+        "reason": "Gentle acoustic blues-adjacent, lacks Detroit grit — better fits: folk blues",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "For You and Me"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/search/Alberta%20Adams%20Detroit%20Blues",
+        "score": 5,
+        "reason": "Same artist, raw urban electric blues, pure Detroit",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
+        "score": 4,
+        "reason": "Named Detroit Blues Band, urban electric blues groove, solid fit",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Bum's Rush"
+      },
+      {
+        "url": "https://open.spotify.com/track/5B5JM1VxUe1aZNmtt0M5Zy",
+        "score": 3,
+        "reason": "Great blues but more broadly Michigan/Chicago than specifically Detroit style",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "One Bourbon, One Scotch, One Beer"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3tBJNiMnAlUsKSJTnkGLYK",
+        "score": 5,
+        "reason": "Recorded in Detroit, raw one-chord stomp — the quintessential Detroit blues track",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
     "rank_order": 31,
     "favoritesong": "",
     "favoritesongurl": "",
