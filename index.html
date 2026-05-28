@@ -1419,7 +1419,7 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">                   <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">                     ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}                     <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>                   </a>                   ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}                 </div>                 ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}               </div>`).join('')}             </div>           </div>` : ''}
+          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">                   <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">                     ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}                     <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>                   </a>                   ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}                 </div>                 ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}               </div>`).join('')}             </div>           </div>` : ''}
         </div>
       `).join('');
 [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
@@ -1472,7 +1472,7 @@
           }</div>` : ''}
           ${(g.songs_listened || []).length ? `
           <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">
-            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
+            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
               ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">
                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">
@@ -1714,6 +1714,22 @@ document.getElementById('monthlyCopyBtn').addEventListener('click', async () => 
     });
 
     loadData();
+  
+    // Song log toggle - event delegation (works for dynamically rendered lists)
+    document.addEventListener('click', function(e) {
+      const btn = e.target.closest('[data-song-id]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-song-id');
+      const wrap = document.getElementById('sl-' + id);
+      if (!wrap) return;
+      const list = wrap.querySelector('.song-log-list');
+      if (!list) return;
+      const isHidden = list.style.display === 'none' || list.style.display === '';
+      list.style.display = isHidden ? 'grid' : 'none';
+      const count = list.querySelectorAll(':scope > div').length;
+      btn.textContent = (isHidden ? '\u25BC ' : '\u25B6 ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
+    });
+
   </script>
 </body>
 </html>
