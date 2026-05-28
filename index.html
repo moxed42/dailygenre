@@ -1154,8 +1154,15 @@
           added: new Date().toISOString().slice(0, 10)
         };
         if (!song.url) continue;
-        if (isLevelUp && songs.length > 0) {
-          songs[songs.length - 1].levelUp = song;
+        if (isLevelUp) {
+          // Mark for flat JSON storage so normalise can re-nest on reload
+          song.isLevelUp = true;
+          if (songs.length > 0) {
+            // Also nest immediately for in-session rendering
+            songs[songs.length - 1].levelUp = song;
+          } else {
+            songs.push(song);
+          }
         } else {
           songs.push(song);
         }
@@ -1261,14 +1268,15 @@
       if (_monthly) _monthly.checked = !!genre.monthlycontender;
       if (_notes) _notes.value = genre.notes || '';
       if (_songs) _songs.value = (genre.songs_listened || []).flatMap(s => {
-      const parts = [s.url, s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='');
-      const out = [parts.join(' | ')];
-      if (s.levelUp) {
-        const lp = [s.levelUp.url, s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='');
-        out.push('🔼 LEVEL UP: ' + lp.join(' | '));
-      }
-      return out;
-    }).join('\n');
+        const parts = [s.url, s.score != null ? s.score : null, s.reason || null, s.title || null].filter(x => x !== null && x !== '');
+        const out = [parts.join(' | ')];
+        if (s.levelUp) {
+          const lu = s.levelUp;
+          const lp = [lu.url, lu.score != null ? lu.score : null, lu.reason || null, lu.title || null].filter(x => x !== null && x !== '');
+          out.push('🔼 LEVEL UP: ' + lp.join(' | '));
+        }
+        return out;
+      }).join('\n');
       if (_toggle) _toggle.checked = false;
 
       const listenedDate = dateValue(genre);
@@ -1579,9 +1587,14 @@
 
       document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
         <div class="list-item">
-          <div class="row" style="justify-content:space-between;">
-            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-            <span class="small">${escapeHtml(dateValue(g) || '')}</span>
+          <div class="row" style="justify-content:space-between;align-items:flex-start;">
+            <div>
+              <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+            </div>
+            <div class="row" style="gap:8px;flex-shrink:0;align-items:center;">
+              <span class="small">${escapeHtml(dateValue(g) || '')}</span>
+              <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-monthly-edit-id="${g.id}">Edit</button>
+            </div>
           </div>
           <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
           <div class="status-row">
@@ -1602,6 +1615,13 @@
           </div>` : ''}
         </div>
       `).join('');
+
+      [...document.getElementById('monthlyList').querySelectorAll('[data-monthly-edit-id]')].forEach(btn => {
+        btn.addEventListener('click', () => {
+          const genre = genres.find(g => String(g.id) === btn.dataset.monthlyEditId);
+          if (genre) { loadListenScreen(genre); switchScreen('listen'); }
+        });
+      });
     }
 
     function populateMonthFilter() {
@@ -1697,6 +1717,35 @@
       [1,2,3,4,5].forEach(ensureRankOrderForRating);
     }
 
+    function normaliseSongsListened(arr) {
+      // Accepts the raw array from JSON (flat or already nested) and returns
+      // a properly nested array where Level Up entries are children of the
+      // song they upgrade rather than standalone siblings.
+      if (!Array.isArray(arr)) return [];
+
+      // Already nested correctly (first item already has levelUp children or
+      // no items are marked isLevelUp) — check if any flat-level levelUp markers
+      // exist, otherwise return as-is.
+      const hasFlat = arr.some(s => s.isLevelUp === true);
+      if (!hasFlat) {
+        // Data is already nested (or has no levelUp entries); just ensure
+        // no undefined sneaks through.
+        return arr.filter(Boolean);
+      }
+
+      // Re-nest: any item with isLevelUp:true becomes a child of the previous item.
+      const nested = [];
+      for (const s of arr) {
+        if (s.isLevelUp && nested.length > 0) {
+          const parent = nested[nested.length - 1];
+          if (!parent.levelUp) parent.levelUp = { ...s, isLevelUp: undefined };
+        } else {
+          nested.push({ ...s });
+        }
+      }
+      return nested;
+    }
+
     async function loadData() {
       remainingCount.textContent = 'Loading genres...';
       const res = await fetch(DATA_URL);
@@ -1704,6 +1753,7 @@
 
       genres.forEach(g => {
         if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
+        g.songs_listened = normaliseSongsListened(g.songs_listened);
       });
 
       applyRankSeed();
