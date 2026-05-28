@@ -572,7 +572,8 @@
         "score": 5,
         "reason": "Same artist, raw urban electric blues, pure Detroit",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-28",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
@@ -595,7 +596,8 @@
         "score": 5,
         "reason": "Recorded in Detroit, raw one-chord stomp — the quintessential Detroit blues track",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-28",
+        "isLevelUp": true
       }
     ],
     "rank_order": 31,
@@ -17469,7 +17471,8 @@
         "score": 5,
         "reason": "Same artist, raw urban electric blues, pure Detroit",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-28",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
@@ -17492,7 +17495,8 @@
         "score": 5,
         "reason": "Recorded in Detroit, raw one-chord stomp — the quintessential Detroit blues track",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-28",
+        "isLevelUp": true
       }
     ],
     "rank_order": 9,
@@ -19942,20 +19946,28 @@
     "vibe": "Metal that sounds like it came out of a drainage ditch and is proud of it.",
     "songs_listened": [
       {
+        "url": "https://open.spotify.com/track/3tneXkNFGHUJTxSJ5gCv8M",
+        "score": 5,
+        "reason": "Melvins at their most crushing and slow — the definitive sludge metal sound",
+        "title": "Melvins — Lysol",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
         "url": "https://open.spotify.com/track/4nx2Nlkded5dYhqVhu1ea8",
         "score": 5,
-        "reason": "Melvins at their most quintessential — slow, crushing, distorted, defining sludge metal",
+        "reason": "Melvins quintessential sludge metal — slow, crushing, distorted",
+        "title": "Melvins — The Bit",
         "source": "spotify",
-        "added": "2026-05-28",
-        "title": "The Bit"
+        "added": "2026-05-28"
       },
       {
         "url": "https://open.spotify.com/track/5ScZu89HBd1n8fyUncpipA",
         "score": 4,
         "reason": "Acid Bath sludge doom — heavy, dark, perfectly fits the genre",
+        "title": "Acid Bath — Paegen Love Song",
         "source": "spotify",
-        "added": "2026-05-28",
-        "title": "Paegen Love Song"
+        "added": "2026-05-28"
       }
     ],
     "rank_order": 32,
