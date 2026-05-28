@@ -1374,7 +1374,7 @@
   const btn = wrap.querySelector('.song-log-toggle');
   if (!list || !btn) return;
   const isHidden = getComputedStyle(list).display === 'none' || list.style.display === 'none' || list.style.display === '';
-  list.style.display = isHidden ? 'grid' : 'none';
+  list.style.display = isHidden ? 'flex' : 'none'; if(isHidden){list.style.flexDirection='column';}
   const count = list.querySelectorAll(':scope > div').length;
   btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
 };
@@ -1725,7 +1725,7 @@ document.getElementById('monthlyCopyBtn').addEventListener('click', async () => 
       const list = wrap.querySelector('.song-log-list');
       if (!list) return;
       const isHidden = list.style.display === 'none' || list.style.display === '';
-      list.style.display = isHidden ? 'grid' : 'none';
+      list.style.display = isHidden ? 'flex' : 'none'; if(isHidden){list.style.flexDirection='column';}
       const count = list.querySelectorAll(':scope > div').length;
       btn.textContent = (isHidden ? '\u25BC ' : '\u25B6 ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
     });
