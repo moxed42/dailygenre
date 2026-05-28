@@ -13303,28 +13303,38 @@
         "url": "https://open.spotify.com/track/07qoAjE0wObVAAfyIevTNV",
         "score": 3,
         "reason": "Proto-punk rawness but no jazz elements — better fits: proto-punk/garage rock",
+        "title": "The Stooges — Fun House",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6OH2bzGZLjZ6aE9R7WsHtn",
+        "score": 4,
+        "reason": "The Stooges with prominent free-sax skronk, much closer to punk colliding with jazz",
+        "title": "The Stooges — L.A. Blues",
         "source": "spotify",
         "added": "2026-05-28",
-        "title": "Fun House"
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4mvTcdOP0nx50zpnnhfPdD",
         "score": 5,
         "reason": "Lounge Lizards are the definitive punk jazz band — free jazz chaos with punk attitude",
+        "title": "The Lounge Lizards — Bob the Bob",
         "source": "spotify",
-        "added": "2026-05-28",
-        "title": "Bob the Bob"
+        "added": "2026-05-28"
       },
       {
-        "url": "https://open.spotify.com/track/1INxOP4EeDRGzCcxQE7EQLp",
+        "url": "https://open.spotify.com/track/1INxOP4EeDRGzCcxQE7EXL",
         "score": 4,
         "reason": "Contortions noise-funk post-punk with jazz dissonance — classic No Wave punk jazz",
+        "title": "The Contortions — Design to Kill",
         "source": "spotify",
         "added": "2026-05-28"
       }
     ],
     "rank_order": 56,
-    "favoritesong": "Please Don't Piss in My Microwave",
+    "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false
   },
