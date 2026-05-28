@@ -20412,7 +20412,7 @@
     "date_raw": "118",
     "date_normalized": "2026-01-18",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -20421,8 +20421,135 @@
     "key_artists": "Nightwish, Epica, Within Temptation, Evanescence, Amaranthe (major figures)",
     "suggested_songs": "Nightwish -- Ghost Love Score, Epica -- Consign to Oblivion, Within Temptation -- Mother Earth, Evanescence -- Bring Me to Life, Amaranthe -- Hunger",
     "vibe": "Metal with an orchestra on retainer and a soprano who can also scream.",
-    "songs_listened": [],
-    "rank_order": 3
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1uiqXrzXWv4sMULkjh72F8",
+        "score": 4,
+        "reason": "Big orchestral backdrops, dramatic vocal and metal rhythm section — solid, if slightly less iconic, example of Euro symphonic metal",
+        "title": "Krypteria — All Systems Go",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/6IKk2Z7LO59UDnVEw8JCBj",
+        "score": 5,
+        "reason": "Nightwish at full bombast: film‑score strings, double‑kick drums and Tarja’s operatic vocal define the symphonic metal template",
+        "title": "Nightwish — Wish I Had an Angel [web:104][web:107][web:113]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/5KRuT1HU5BtXELm6zXKhfQ",
+        "score": 5,
+        "reason": "Gothic choirs, string pads and chugging guitars under a soaring vocal — classic Within Temptation symphonic metal",
+        "title": "Within Temptation — See Who I Am [web:106][web:112]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/6EJfuLTl01JoGXt8rtM1rd",
+        "score": 3,
+        "reason": "Epic, orchestrated melodeath with symphonic touches, but the core identity is melodic death/folk metal rather than symphonic metal proper",
+        "title": "Wintersun — Sons of Winter and Stars [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2avdxj8xZi49i41HgJsQnn",
+        "score": 5,
+        "reason": "Nightwish combining cinematic orchestration, huge chorus and galloping power‑metal rhythm — absolutely central to the genre",
+        "title": "Nightwish — Wish I Had an Angel (alt pick if you want two Nightwish cuts in the set) [web:104][web:107]",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/14FYoYL1fg7cD0fhjzxcot",
+        "score": 4,
+        "reason": "Dark, doom‑leaning but heavily orchestrated, with gothic choirs — comfortably within the more somber edge of symphonic metal",
+        "title": "Tristania — Crushed Dreams [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/0tbbaYdhiFLFH0YUvvajI8",
+        "score": 5,
+        "reason": "Nightwish’s big single ballad, marrying string arrangements, power‑metal riffing and operatic vocals — genre staple",
+        "title": "Nightwish — Nemo [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/4k2MUm5uMlRH1P9ZQBr0ER",
+        "score": 5,
+        "reason": "Multi‑movement, choir‑laden epic — often cited as one of the towering achievements of symphonic metal",
+        "title": "Nightwish — Ghost Love Score [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/1otw1I6vguSWf6Pxn9m1oC",
+        "score": 5,
+        "reason": "High‑energy, orchestral banger with bombastic chorus — a more modern but still quintessential Nightwish symphonic track",
+        "title": "Nightwish — Storytime [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/2EO2MCzUHcZ1L8NWx2vYSJ",
+        "score": 5,
+        "reason": "Epica’s blend of operatic soprano, choirs and full orchestra over heavy riffing is straight down the center of symphonic metal",
+        "title": "Epica — Unleashed [web:105][web:108][web:111]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/6VOxRb9IAJQDDyHBlyEdPF",
+        "score": 5,
+        "reason": "Gothic duet with big orchestral swells and metal crunch — another archetypal Nightwish symphonic piece",
+        "title": "Nightwish — The Phantom Of The Opera [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/69VoMBUMOPPKfbnYaj2KUw",
+        "score": 2,
+        "reason": "Cinematic alt‑metal with some strings; symphonic flourishes, but the song’s heart is mainstream modern rock",
+        "title": "Evanescence; Lindsey Stirling — Hi‑Lo",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2EO2MCzUHcZ1L8NWx2vYSJ",
+        "score": 5,
+        "reason": "Keeps the lush, violin‑friendly feel but in a band where orchestra and choir are integral, not ornamental",
+        "title": "Epica — Unleashed [web:105][web:108]",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7gQmh1MbKIbXfcVhKS8cZP",
+        "score": 2,
+        "reason": "Punishing, orchestral deathcore; symphonic elements are strong but the core is breakdown‑driven extreme metal rather than classic symphonic metal",
+        "title": "Synestia; Disembodied Tyrant; Ben Duerr — The Poetic Edda [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2EO2MCzUHcZ1L8NWx2vYSJ",
+        "score": 5,
+        "reason": "If you want a single, unambiguous symphonic‑metal exemplar in this slot, this Epica track covers the same “extreme plus orchestra” urge much more canonically",
+        "title": "Epica — Unleashed [web:105][web:108]",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      }
+    ],
+    "rank_order": 3,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1011,
