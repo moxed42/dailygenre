@@ -562,10 +562,17 @@
       {
         "url": "https://open.spotify.com/track/1MwR07lZv0tu8kJePTLVAh",
         "score": 2,
-        "reason": "Gentle acoustic blues-adjacent but more folk/Americana feel, lacks Detroit grit — better fits: folk blues",
+        "reason": "Gentle acoustic blues-adjacent, lacks Detroit grit — better fits: folk blues",
         "source": "spotify",
         "added": "2026-05-28",
         "title": "For You and Me"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/search/Alberta%20Adams%20Detroit%20Blues",
+        "score": 5,
+        "reason": "Same artist, raw urban electric blues, pure Detroit",
+        "source": "spotify",
+        "added": "2026-05-28"
       },
       {
         "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
@@ -578,14 +585,21 @@
       {
         "url": "https://open.spotify.com/track/5B5JM1VxUe1aZNmtt0M5Zy",
         "score": 3,
-        "reason": "Great blues track but John Lee Hooker is more broadly Michigan/Chicago blues than specifically Detroit style",
+        "reason": "Great blues but more broadly Michigan/Chicago than specifically Detroit style",
         "source": "spotify",
         "added": "2026-05-28",
         "title": "One Bourbon, One Scotch, One Beer"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3tBJNiMnAlUsKSJTnkGLYK",
+        "score": 5,
+        "reason": "Recorded in Detroit, raw one-chord stomp — the quintessential Detroit blues track",
+        "source": "spotify",
+        "added": "2026-05-28"
       }
     ],
     "rank_order": 31,
-    "favoritesong": "",
+    "favoritesong": "Please Don't Piss in My Microwave",
     "favoritesongurl": "",
     "monthlycontender": false
   },
