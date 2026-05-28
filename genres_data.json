@@ -7348,7 +7348,7 @@
     "date_raw": "1/8",
     "date_normalized": "2026-01-08",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -7357,8 +7357,36 @@
     "key_artists": "Chief Keef, Lil Durk, G Herbo, Chance the Rapper (early), Polo G (originators) • Pop Smoke, Central Cee (international variants)",
     "suggested_songs": "Chief Keef — I Don't Like, Lil Durk — India, G Herbo — Wraith, Polo G — Pop Out",
     "vibe": "Music from a specific zip code, with no interest in explaining itself to outsiders.",
-    "songs_listened": [],
-    "rank_order": 5
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5G5pLNLzdKcefWRQNgkGqe",
+        "score": 5,
+        "reason": "Canonical Chicago drill: ominous minor-key beat, sliding 808s and Keef’s dead-eyed delivery that helped launch drill into the mainstream",
+        "title": "Chief Keef; Lil Reese — I Don't Like",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/79s5XnCN4TJKTVMSmOx8Ep",
+        "score": 5,
+        "reason": "Archetypal Brooklyn/New York drill: dark UK-influenced production, sliding bass, and Pop Smoke’s gravelly delivery",
+        "title": "Pop Smoke — Dior",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/01Lr5YepbgjXAWR9iOEyH1",
+        "score": 5,
+        "reason": "Another defining Chicago drill anthem: lurching, menacing beat and repetitive hook, widely regarded as a seminal drill track",
+        "title": "Chief Keef — Love Sosa",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 5,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 340,
