@@ -14561,7 +14561,7 @@
     "date_raw": "1/16",
     "date_normalized": "2026-01-16",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -14570,8 +14570,45 @@
     "key_artists": "Alisha Chinai, Daler Mehndi, Lucky Ali, Baba Sehgal, Usha Uthup (major figures across eras)",
     "suggested_songs": "Alisha Chinai — Made in India, Daler Mehndi — Tunak Tunak Tun, Lucky Ali — O Sanam, Baba Sehgal — Thanda Thanda Pani, Usha Uthup — Hari Om Hari",
     "vibe": "Mass-appeal melodies where filmi glamour, local rhythm, and star charisma keep crossing paths.",
-    "songs_listened": [],
-    "rank_order": 54
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/59JemC1a4KDC1WxNAt7Zpt",
+        "score": 4,
+        "reason": "Iconic Bollywood film song, lush strings and big romantic chorus — classic 90s Hindi filmi pop",
+        "title": "Lata Mangeshkar; Kumar Sanu — Tujhe Dekha To",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/7tCmUu18EkTlGhGV2wmE7x",
+        "score": 2,
+        "reason": "Indian-American alt‑R&B with some South Asian influence, but stylistically more neo‑soul/dream‑pop than Indian pop",
+        "title": "Raveena — Mystery",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8",
+        "score": 5,
+        "reason": "High‑energy bhangra / Indi‑pop crossover smash, exactly the sort of pan‑Indian pop anthem the genre implies",
+        "title": "Daler Mehndi — Tunak Tunak Tun",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8",
+        "score": 5,
+        "reason": "Bhangra‑driven Indi‑pop juggernaut; massive hook and synthetic sheen nail the Indian pop brief",
+        "title": "Daler Mehndi — Tunak Tunak Tun",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 54,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 704,
