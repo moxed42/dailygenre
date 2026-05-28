@@ -1,2 +1,2 @@
 # dailygenre
-Daily Random Music Genre
+Daily Random Music Genre :)
