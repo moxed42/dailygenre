@@ -1061,6 +1061,225 @@
       .song-title-link { min-width:120px; white-space:normal; }
     }
 
+
+    /* === UX polish: Log + Archive IA === */
+    .archive-panel { overflow:hidden; }
+    .archive-topline {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:18px;
+      margin-bottom:16px;
+    }
+    .archive-title {
+      margin:0;
+      font-size:clamp(2rem, 4vw, 3.8rem);
+      line-height:.9;
+      letter-spacing:-.075em;
+    }
+    .archive-subtitle { max-width:62ch; margin:8px 0 0; }
+    .archive-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .archive-view-tabs {
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      margin:16px 0;
+      padding:10px;
+      border-radius:18px;
+      background:rgba(45,27,14,.12);
+      border:1px solid rgba(119,75,26,.20);
+    }
+    .archive-view-btn {
+      border:none;
+      border-radius:13px;
+      padding:10px 13px;
+      color:#fff5df;
+      background:linear-gradient(180deg, #4a3322, #24170f);
+      border:1px solid rgba(255,245,223,.18);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.10), inset 0 -4px 0 rgba(0,0,0,.14);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .archive-view-btn.active {
+      color:#25160c;
+      background:linear-gradient(180deg, #ffdc8e, #d88c28);
+      border-color:#f2bd5f;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.55), inset 0 -4px 0 rgba(91,53,10,.16), 0 0 18px rgba(217,141,37,.22);
+    }
+    .archive-filters {
+      display:grid;
+      grid-template-columns: minmax(240px, 1.5fr) repeat(4, minmax(130px, 1fr));
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .archive-summary {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin:8px 0 16px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+    .archive-stat-chip {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      color:#ffe0a1;
+      background:#332013;
+      border:1px solid rgba(255,222,161,.24);
+      font-weight:850;
+      font-size:.82rem;
+    }
+    .archive-list .list-item { padding:17px; }
+    .archive-card-main {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+    }
+    .archive-card-title {
+      margin:0;
+      font-size:1.18rem;
+      letter-spacing:-.045em;
+      line-height:1.05;
+    }
+    .archive-card-meta { margin-top:5px; }
+    .archive-card-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .song-log-wrap { margin-top:12px; }
+    .song-log-list { display:none; gap:9px; margin-top:10px; }
+    .song-card {
+      position:relative;
+      border-radius:16px;
+      padding:11px 12px;
+      background:rgba(255,252,241,.78);
+      border:1px solid rgba(127,82,28,.22);
+      box-shadow:0 8px 18px rgba(64,38,13,.08);
+    }
+    .song-card-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .song-title-link {
+      color:var(--text);
+      font-weight:900;
+      text-decoration:none;
+      font-size:.92rem;
+      flex:1;
+      min-width:0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .song-link-arrow { color:var(--accent); font-size:.8rem; margin-left:4px; }
+    .song-score-badge {
+      display:inline-flex;
+      align-items:center;
+      gap:3px;
+      background:#332013;
+      border:1px solid rgba(255,222,161,.24);
+      color:#ffe0a1;
+      border-radius:999px;
+      padding:3px 9px;
+      font-size:.78rem;
+      font-weight:900;
+      flex-shrink:0;
+    }
+    .song-reason {
+      color:var(--muted);
+      font-size:.84rem;
+      font-style:italic;
+      line-height:1.42;
+      margin-top:6px;
+    }
+    .song-card-dim { opacity:.86; }
+    .song-card-alt {
+      color:var(--text);
+      background:linear-gradient(180deg, #ffe6ab, #f6cd82);
+      border-color:rgba(181,110,23,.44);
+      box-shadow:0 12px 24px rgba(127,70,12,.10), inset 0 1px 0 rgba(255,255,255,.36);
+    }
+    .alt-take-wrap {
+      margin:10px 0 0 28px;
+      padding-left:20px;
+      border-left:4px solid var(--accent);
+      position:relative;
+    }
+    .alt-take-wrap::before {
+      content:"";
+      position:absolute;
+      left:-4px;
+      top:26px;
+      width:18px;
+      height:4px;
+      background:var(--accent);
+      border-radius:999px;
+      box-shadow:0 0 12px rgba(217,141,37,.26);
+    }
+    .alt-take-label {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:8px;
+      color:#ffe0a1;
+      background:#2c1a10;
+      border:1px solid rgba(255,224,161,.26);
+      border-radius:999px;
+      padding:5px 10px 5px 7px;
+      text-transform:uppercase;
+      letter-spacing:.075em;
+      font-size:.68rem;
+      font-weight:1000;
+      box-shadow:0 8px 18px rgba(0,0,0,.12), inset 0 0 16px rgba(217,141,37,.08);
+    }
+    .alt-take-icon {
+      width:21px;
+      height:21px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      color:#2c1a10;
+      background:#ffe0a1;
+      font-weight:1000;
+    }
+    .log-section-card {
+      padding:16px;
+      border-radius:20px;
+      background:rgba(255,252,241,.42);
+      border:1px solid rgba(127,82,28,.18);
+    }
+    .log-section-card + .log-section-card { margin-top:14px; }
+    .log-section-title {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:12px;
+    }
+    .log-section-title h3 {
+      margin:0;
+      font-size:1rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:#4e321c;
+    }
+    .empty-log-state {
+      padding:18px;
+      border-radius:20px;
+      background:rgba(255,252,241,.45);
+      border:1px dashed rgba(127,82,28,.28);
+    }
+    @media (max-width: 980px) {
+      .archive-filters { grid-template-columns:1fr 1fr; }
+      .archive-topline { flex-direction:column; }
+      .archive-actions { justify-content:flex-start; }
+    }
+    @media (max-width: 720px) {
+      .archive-filters { grid-template-columns:1fr; }
+      .archive-card-main { flex-direction:column; }
+      .archive-card-actions { justify-content:flex-start; }
+      .alt-take-wrap { margin-left:10px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1080,9 +1299,8 @@
 
     <nav class="tabs">
       <button class="tab-btn active" data-screen="spin">Spin</button>
-      <button class="tab-btn" data-screen="listen">Listening</button>
-      <button class="tab-btn" data-screen="history">History</button>
-      <button class="tab-btn" data-screen="monthly">Monthly</button>
+      <button class="tab-btn" data-screen="listen">Log</button>
+      <button class="tab-btn" data-screen="history">Archive</button>
       <button class="tab-btn" data-screen="ranking">Ranking</button>
     </nav>
 
@@ -1114,7 +1332,16 @@
     <section class="screen" id="screen-listen">
       <div class="listen-grid">
         <div class="panel">
-          <div id="listenDetails">Spin or pick a genre first.</div>
+          <div id="listenDetails">
+            <div class="empty-log-state">
+              <div class="eyebrow">Log / Edit</div>
+              <h2 style="margin:0 0 8px; letter-spacing:-.055em;">No genre loaded</h2>
+              <p class="small">Spin a random genre, use the manual picker, or edit something from the Archive.</p>
+              <div class="row" style="margin-top:14px;">
+                <button class="btn btn-primary" onclick="switchScreen('spin')">Go to Spin</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="panel stack">
@@ -1177,8 +1404,28 @@
     </section>
 
     <section class="screen" id="screen-history">
-      <div class="panel">
-        <div class="history-filters">
+      <div class="panel archive-panel">
+        <div class="archive-topline">
+          <div>
+            <div class="eyebrow">Archive</div>
+            <h2 class="archive-title">Listening archive</h2>
+            <p class="small archive-subtitle">Search everything you have logged, review a month, find Alt Takes, or jump back in to edit a genre.</p>
+          </div>
+          <div class="archive-actions">
+            <button class="btn btn-secondary" id="archiveCopyBtn">Copy current view</button>
+          </div>
+        </div>
+
+        <div class="archive-view-tabs" aria-label="Archive views">
+          <button class="archive-view-btn active" data-archive-view="all">All</button>
+          <button class="archive-view-btn" data-archive-view="monthly">This Month</button>
+          <button class="archive-view-btn" data-archive-view="contenders">Contenders</button>
+          <button class="archive-view-btn" data-archive-view="zangers">Zangers</button>
+          <button class="archive-view-btn" data-archive-view="alttakes">Alt Takes</button>
+        </div>
+
+        <div class="archive-filters">
+          <input id="archiveSearchInput" type="search" placeholder="Search genres, songs, notes, artists..." />
           <select id="historyMonthFilter">
             <option value="">All months</option>
           </select>
@@ -1191,27 +1438,27 @@
             <option value="5">5 stars</option>
             <option value="zanger">Zanger</option>
           </select>
-          <input id="historyCategoryFilter" type="text" placeholder="Filter by category..." />
+          <select id="archiveFlagFilter">
+            <option value="">Any flags</option>
+            <option value="contender">Monthly contender</option>
+            <option value="alt">Has Alt Take</option>
+            <option value="songs">Has song log</option>
+            <option value="favorite">Has favorite song</option>
+            <option value="notes">Has notes</option>
+            <option value="zanger">Zanger</option>
+          </select>
+          <select id="archiveSortFilter">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="rating-desc">Rating high to low</option>
+            <option value="rating-asc">Rating low to high</option>
+            <option value="genre">Genre A–Z</option>
+            <option value="rank">Rank order</option>
+          </select>
         </div>
-        <div class="list" id="historyList"></div>
-      </div>
-    </section>
 
-    <section class="screen" id="screen-monthly">
-      <div class="panel">
-        <div class="row" style="justify-content:space-between; margin-bottom:16px;">
-          <div>
-            <div class="eyebrow">Monthly view</div>
-            <h2 style="margin:0; letter-spacing:-.04em;">What you heard this month</h2>
-          </div>
-          <div class="row" style="gap:10px;flex-wrap:wrap;align-items:center;">
-  <select id="monthlySelect" style="max-width:200px;"></select>
-  <button class="btn btn-secondary" id="monthlySortBtn">Oldest first</button>
-  <button class="btn btn-secondary" id="monthlyCopyBtn">Copy list</button>
-</div>
-        </div>
-        <div class="small" id="monthlySummary"></div>
-        <div class="list" id="monthlyList" style="margin-top:16px;"></div>
+        <div class="archive-summary" id="archiveSummary"></div>
+        <div class="list archive-list" id="historyList"></div>
       </div>
     </section>
 
@@ -1392,6 +1639,9 @@
     let pendingSaveAction = null;
     let unmatchedSeeds = [];
     let monthlySortAsc = true;
+    let archiveView = 'all';
+    let archiveCurrentItems = [];
+    let archiveCurrentLabel = 'All';
 
     const spinnerTrack = document.getElementById('spinnerTrack');
     const remainingCount = document.getElementById('remainingCount');
@@ -1852,7 +2102,6 @@
         updateRemainingCount();
         populateMonthFilter();
         renderHistory();
-        renderMonthly();
         renderRankings();
         showSaveToast('Saved to GitHub successfully.', false);
       } catch (e) {
@@ -1947,49 +2196,150 @@
   const count = list.querySelectorAll('a[target="_blank"]').length || list.querySelectorAll(':scope > div').length;
   btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
 }
+    function hasAltTake(genre) {
+      return normalizeSongsListened(genre.songs_listened || []).some(song => !!song.levelUp);
+    }
+
+    function songSearchText(genre) {
+      return normalizeSongsListened(genre.songs_listened || []).flatMap(song => {
+        const parts = [song.title, song.reason, song.url, song.source];
+        if (song.levelUp) parts.push(song.levelUp.title, song.levelUp.reason, song.levelUp.url, song.levelUp.source);
+        return parts;
+      }).filter(Boolean).join(' ');
+    }
+
+    function numericRating(genre) {
+      const n = parseInt(genre.rating, 10);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function renderArchiveSummary(items, label) {
+      const summary = document.getElementById('archiveSummary');
+      if (!summary) return;
+      const altCount = items.filter(hasAltTake).length;
+      const contenderCount = items.filter(g => !!g.monthlycontender).length;
+      const zangerCount = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto').length;
+      const songCount = items.reduce((total, g) => total + countSongsForDisplay(g.songs_listened || []), 0);
+      const rated = items.map(numericRating).filter(Boolean);
+      const avg = rated.length ? (rated.reduce((a,b) => a+b, 0) / rated.length).toFixed(1) : '—';
+      summary.innerHTML = `
+        <span>${escapeHtml(label)} · ${items.length} entr${items.length === 1 ? 'y' : 'ies'}</span>
+        <span class="archive-stat-chip">avg ${escapeHtml(avg)} ★</span>
+        <span class="archive-stat-chip">${songCount} song${songCount === 1 ? '' : 's'}</span>
+        <span class="archive-stat-chip">${altCount} Alt Take${altCount === 1 ? '' : 's'}</span>
+        <span class="archive-stat-chip">${contenderCount} contender${contenderCount === 1 ? '' : 's'}</span>
+        <span class="archive-stat-chip">${zangerCount} zanger${zangerCount === 1 ? '' : 's'}</span>
+      `;
+    }
+
     function renderHistory() {
-      const month = document.getElementById('historyMonthFilter').value;
-      const rating = document.getElementById('historyRatingFilter').value;
-      const category = document.getElementById('historyCategoryFilter').value.trim().toLowerCase();
-
-      const listened = genres
-        .filter(g => ['listened', 'veto'].includes((g.status || '').toLowerCase()))
-        .filter(g => !month || dateValue(g).startsWith(month))
-        .filter(g => !rating || String(g.rating || '') === rating)
-        .filter(g => !category || categoryLine(g).toLowerCase().includes(category) || (g.genre || '').toLowerCase().includes(category))
-        .sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || String(a.genre).localeCompare(String(b.genre)));
-
+      const monthEl = document.getElementById('historyMonthFilter');
+      const ratingEl = document.getElementById('historyRatingFilter');
+      const searchEl = document.getElementById('archiveSearchInput') || document.getElementById('historyCategoryFilter');
+      const flagEl = document.getElementById('archiveFlagFilter');
+      const sortEl = document.getElementById('archiveSortFilter');
       const list = document.getElementById('historyList');
-      if (!listened.length) {
+      if (!list) return;
+
+      const month = monthEl ? monthEl.value : '';
+      const rating = ratingEl ? ratingEl.value : '';
+      const query = searchEl ? searchEl.value.trim().toLowerCase() : '';
+      const flag = flagEl ? flagEl.value : '';
+      const sort = sortEl ? sortEl.value : 'newest';
+
+      const listenedAll = genres
+        .filter(g => ['listened', 'veto'].includes((g.status || '').toLowerCase()))
+        .filter(g => dateValue(g));
+
+      const months = [...new Set(listenedAll.map(g => dateValue(g).slice(0,7)))].sort((a,b) => b.localeCompare(a));
+      const latestMonth = months[0] || '';
+      const effectiveMonth = archiveView === 'monthly' && !month ? latestMonth : month;
+
+      let items = listenedAll.slice();
+      let label = 'All logs';
+
+      if (archiveView === 'monthly') {
+        label = effectiveMonth ? `Monthly view · ${effectiveMonth}` : 'Monthly view';
+        if (effectiveMonth) items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
+      } else if (archiveView === 'contenders') {
+        label = 'Monthly contenders';
+        items = items.filter(g => !!g.monthlycontender);
+      } else if (archiveView === 'zangers') {
+        label = 'Zangers';
+        items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
+      } else if (archiveView === 'alttakes') {
+        label = 'Genres with Alt Takes';
+        items = items.filter(hasAltTake);
+      }
+
+      if (effectiveMonth && archiveView !== 'monthly') items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
+      if (rating) items = items.filter(g => String(g.rating || '') === rating);
+
+      if (flag === 'contender') items = items.filter(g => !!g.monthlycontender);
+      if (flag === 'alt') items = items.filter(hasAltTake);
+      if (flag === 'songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0);
+      if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
+      if (flag === 'notes') items = items.filter(g => !!g.notes);
+      if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
+
+      if (query) {
+        items = items.filter(g => [
+          g.genre,
+          categoryLine(g),
+          g.notes,
+          g.favoritesong,
+          g.favoritesongurl,
+          songSearchText(g)
+        ].join(' ').toLowerCase().includes(query));
+      }
+
+      const byGenre = (a,b) => String(a.genre || '').localeCompare(String(b.genre || ''));
+      if (sort === 'oldest') items.sort((a,b) => (dateValue(a) || '').localeCompare(dateValue(b) || '') || byGenre(a,b));
+      else if (sort === 'rating-desc') items.sort((a,b) => numericRating(b) - numericRating(a) || byGenre(a,b));
+      else if (sort === 'rating-asc') items.sort((a,b) => numericRating(a) - numericRating(b) || byGenre(a,b));
+      else if (sort === 'genre') items.sort(byGenre);
+      else if (sort === 'rank') items.sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || numericRating(b) - numericRating(a) || byGenre(a,b));
+      else items.sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || byGenre(a,b));
+
+      archiveCurrentItems = items;
+      archiveCurrentLabel = label;
+      renderArchiveSummary(items, label);
+
+      if (!items.length) {
         list.innerHTML = `<div class="small">No matching entries yet.</div>`;
         return;
       }
 
-      list.innerHTML = listened.map(g => `
-        <div class="list-item">
-          <div class="row" style="justify-content:space-between;align-items:flex-start;">
+      list.innerHTML = items.map(g => {
+        const songs = normalizeSongsListened(g.songs_listened || []);
+        const songCount = countSongsForDisplay(songs);
+        const ratingLabel = g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))}${g.rating ? ' ★' : ''}`;
+        return `
+        <div class="list-item archive-card">
+          <div class="archive-card-main">
             <div>
-              <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-              <div class="small" style="margin-top:4px;">${escapeHtml(categoryLine(g))}</div>
+              <h3 class="archive-card-title">${escapeHtml(g.genre || 'Unknown')}</h3>
+              <div class="small archive-card-meta">${escapeHtml(categoryLine(g))}</div>
             </div>
-            <div class="row" style="gap:8px;flex-shrink:0;">
+            <div class="archive-card-actions">
               <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
-              <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-edit-id="${g.id}">Edit</button>
+              <button class="btn btn-primary" style="padding:7px 13px;font-size:.86rem;" data-edit-id="${g.id}">Edit</button>
             </div>
           </div>
           <div class="status-row">
-            <span class="tag">${g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))} ★`}</span>
+            <span class="tag">${ratingLabel}</span>
             ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
             ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : ''}
+            ${hasAltTake(g) ? '<span class="tag">Alt Take</span>' : ''}
           </div>
           ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
             g.favoritesongurl
-              ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
+              ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${countSongsForDisplay(g.songs_listened)} song${countSongsForDisplay(g.songs_listened)===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
-        </div>
-      `).join('');
+          ${songCount ? `<div class="song-log-wrap" id="sl-h-${g.id}"><button type="button" class="btn btn-ghost song-log-toggle" style="padding:6px 11px;font-size:.82rem;font-weight:900;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${songCount} song${songCount===1?'':'s'} logged</button><div class="song-log-list">${songs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
+        </div>`;
+      }).join('');
 
       [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2000,62 +2350,9 @@
     }
 
     function renderMonthly() {
-      const select = document.getElementById('monthlySelect');
-      const listened = genres.filter(g => (g.status || '').toLowerCase() === 'listened' && dateValue(g));
-      const months = [...new Set(listened.map(g => dateValue(g).slice(0,7)))].sort((a, b) => a.localeCompare(b)).reverse();
-
-      if (!months.length) {
-        select.innerHTML = '<option value="">No months yet</option>';
-        document.getElementById('monthlySummary').textContent = 'No listened genres saved yet.';
-        window._monthlyItems = [];
-        window._monthlyLabel = '';
-        document.getElementById('monthlyList').innerHTML = '';
-        return;
-      }
-
-      const current = select.value && months.includes(select.value) ? select.value : months[0];
-      select.innerHTML = months.map(m => `<option value="${m}" ${m === current ? 'selected' : ''}>${m}</option>`).join('');
-
-      const monthItems = listened
-        .filter(g => dateValue(g).startsWith(current))
-        .sort((a,b) => monthlySortAsc ? (dateValue(a)||'').localeCompare(dateValue(b)||'') || String(a.genre).localeCompare(String(b.genre)) : (dateValue(b)||'').localeCompare(dateValue(a)||'') || String(a.genre).localeCompare(String(b.genre)));
-
-      document.getElementById('monthlySummary').textContent = `${monthItems.length} genres logged in ${current}.`;
-      window._monthlyItems = monthItems;
-      window._monthlyLabel = current;
-
-      const listEl = document.getElementById('monthlyList');
-      listEl.innerHTML = monthItems.map(g => `
-        <div class="list-item">
-          <div class="row" style="justify-content:space-between;align-items:flex-start;">
-            <div>
-              <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-            </div>
-            <div class="row" style="gap:8px;flex-shrink:0;align-items:center;">
-              <span class="small">${escapeHtml(dateValue(g) || '')}</span>
-              <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-monthly-edit-id="${g.id}">Edit</button>
-            </div>
-          </div>
-          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
-          <div class="status-row">
-            <span class="tag">${escapeHtml(String(g.rating || '—'))}${g.rating && g.rating !== 'zanger' ? ' ★' : ''}</span>
-            ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
-          </div>
-          ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
-            g.favoritesongurl
-              ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
-              : escapeHtml(g.favoritesong)
-          }</div>` : ''}
-          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-m-${g.id}')">▶ ${countSongsForDisplay(g.songs_listened)} song${countSongsForDisplay(g.songs_listened)===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
-        </div>
-      `).join('');
-
-      [...listEl.querySelectorAll('[data-monthly-edit-id]')].forEach(btn => {
-        btn.addEventListener('click', () => {
-          const genre = genres.find(g => String(g.id) === btn.dataset.monthlyEditId);
-          if (genre) { loadListenScreen(genre); switchScreen('listen'); }
-        });
-      });
+      archiveView = 'monthly';
+      document.querySelectorAll('.archive-view-btn').forEach(b => b.classList.toggle('active', b.dataset.archiveView === archiveView));
+      renderHistory();
     }
 
     function populateMonthFilter() {
@@ -2063,9 +2360,12 @@
         genres.filter(g => dateValue(g)).map(g => dateValue(g).slice(0,7))
       )].sort().reverse();
 
-      document.getElementById('historyMonthFilter').innerHTML =
-        `<option value="">All months</option>` +
-        months.map(m => `<option value="${m}">${m}</option>`).join('');
+      const historyMonth = document.getElementById('historyMonthFilter');
+      if (historyMonth) {
+        historyMonth.innerHTML =
+          `<option value="">All months</option>` +
+          months.map(m => `<option value="${m}">${m}</option>`).join('');
+      }
     }
 
     function searchGenresInto(inputEl, resultsEl) {
@@ -2167,7 +2467,6 @@
       buildSpinnerPool();
       populateMonthFilter();
       renderHistory();
-      renderMonthly();
       renderRankings();
     }
 
@@ -2266,7 +2565,6 @@ document.getElementById('monthlyCopyBtn').addEventListener('click', async () => 
         updateRemainingCount();
         populateMonthFilter();
         renderHistory();
-        renderMonthly();
         renderRankings();
         showSaveToast('Saved to GitHub successfully.', false);
       } catch (e) {
@@ -2287,349 +2585,6 @@ document.getElementById('monthlyCopyBtn').addEventListener('click', async () => 
     loadData();
   </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
-
-  <script>
-  /* DAILY GENRE FORCE HOTFIX 2026-05-27
-     Purpose: forcibly replace Monthly rendering + Level Up rendering at runtime.
-     You should see the lower-left "HOTFIX 0527 ACTIVE" badge when this exact file is loaded.
-  */
-  (function(){
-    'use strict';
-
-    window.DG_HOTFIX_VERSION = 'HOTFIX-0527-FORCE-MONTHLY-LEVELUP';
-
-    function ready(fn) {
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
-      else fn();
-    }
-
-    function addBadge() {
-      if (document.getElementById('dgHotfixBadge')) return;
-      const b = document.createElement('div');
-      b.id = 'dgHotfixBadge';
-      b.className = 'dg-hotfix-badge';
-      b.textContent = 'HOTFIX 0527 ACTIVE';
-      document.body.appendChild(b);
-    }
-
-    function safeEscape(value) {
-      if (typeof window.escapeHtml === 'function') return window.escapeHtml(value);
-      return String(value == null ? '' : value)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
-    function safeDateValue(g) {
-      if (typeof window.dateValue === 'function') return window.dateValue(g);
-      return g?.date_normalized || g?.datenormalized || '';
-    }
-
-    function safeCategoryLine(g) {
-      if (typeof window.categoryLine === 'function') return window.categoryLine(g);
-      return g?.categorypath || g?.subcategory || 'Uncategorized';
-    }
-
-    function normalizeSongUrlForce(url) {
-      return String(url || '').replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
-    }
-
-    function extractMarkdownUrlForce(value) {
-      const v = String(value || '').trim();
-      const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
-      return md ? md[1].trim() : v;
-    }
-
-    function normalizeSongsListenedForce(arr) {
-      if (!Array.isArray(arr)) return [];
-      const nested = [];
-      for (const raw of arr) {
-        if (!raw) continue;
-
-        const rawUrl = String(raw.url || '');
-        const flagged = raw.isLevelUp === true || /^🔼\s*LEVEL\s*UP:\s*/i.test(rawUrl);
-        const song = {
-          ...raw,
-          url: normalizeSongUrlForce(rawUrl),
-        };
-        delete song.isLevelUp;
-
-        if (song.levelUp) {
-          song.levelUp = {
-            ...song.levelUp,
-            url: normalizeSongUrlForce(song.levelUp.url)
-          };
-        }
-
-        if (flagged && nested.length > 0) {
-          const parent = nested[nested.length - 1];
-          parent.levelUp = song;
-        } else if (flagged && nested.length === 0) {
-          nested.push(song);
-        } else {
-          nested.push(song);
-        }
-      }
-      return nested;
-    }
-
-    function countSongsForce(arr) {
-      return normalizeSongsListenedForce(arr || []).reduce((total, song) => {
-        return total + 1 + (song.levelUp ? 1 : 0);
-      }, 0);
-    }
-
-    function cleanSongForSaveForce(song, isLevelUp) {
-      const out = { ...(song || {}) };
-      delete out.levelUp;
-      out.url = normalizeSongUrlForce(out.url);
-      if (isLevelUp) {
-        out.url = '🔼 LEVEL UP: ' + out.url;
-        out.isLevelUp = true;
-      } else {
-        delete out.isLevelUp;
-      }
-      if (out.score === null || out.score === undefined || out.score === '') delete out.score;
-      if (!out.reason) delete out.reason;
-      if (!out.title) delete out.title;
-      return out;
-    }
-
-    function flattenSongsForStorageForce(arr) {
-      const flat = [];
-      normalizeSongsListenedForce(arr || []).forEach(song => {
-        flat.push(cleanSongForSaveForce(song, false));
-        if (song.levelUp) flat.push(cleanSongForSaveForce(song.levelUp, true));
-      });
-      return flat;
-    }
-
-    function renderSongEntryForce(song, isChild) {
-      const s = { ...(song || {}), url: normalizeSongUrlForce(song?.url) };
-      if (s.levelUp) s.levelUp = { ...s.levelUp, url: normalizeSongUrlForce(s.levelUp.url) };
-
-      const score = s.score !== undefined && s.score !== null && s.score !== '' ? String(s.score) : '';
-      const title = s.title
-        ? safeEscape(s.title)
-        : (String(s.url || '').includes('spotify') ? '🎵 Spotify track' : '▶ Track');
-      const href = safeEscape(normalizeSongUrlForce(s.url));
-      const scoreBadge = score
-        ? '<span class="song-score ' + (Number(score) <= 2 ? 'low' : '') + '" title="Genre match score">' + safeEscape(score) + '/5</span>'
-        : '';
-      const reasonHtml = s.reason
-        ? '<div class="song-reason">' + safeEscape(s.reason) + '</div>'
-        : '';
-
-      const childHtml = (!isChild && s.levelUp)
-        ? '<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">↳</span><span>Alt Take</span></div>' + renderSongEntryForce(s.levelUp, true) + '</div>'
-        : '';
-
-      return '' +
-        '<div class="song-card dg-song-card ' + (isChild ? 'song-card-alt dg-song-child' : '') + ((!isChild && Number(s.score) <= 2) ? ' song-card-dim' : '') + '">' +
-          '<div class="song-card-row">' +
-            '<a href="' + href + '" target="_blank" rel="noopener noreferrer" class="song-title-link">' +
-              title + '<span class="song-link-arrow">↗</span>' +
-            '</a>' +
-            scoreBadge +
-          '</div>' +
-          reasonHtml +
-          childHtml +
-        '</div>';
-    }
-
-    function parseSongLinksForce(text) {
-      const lines = String(text || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-      const songs = [];
-
-      for (const line of lines) {
-        const isLevelUp = /^🔼\s*LEVEL\s*UP:\s*/i.test(line);
-        const clean = line.replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
-        const parts = clean.split('|').map(x => x.trim());
-        const url = normalizeSongUrlForce(extractMarkdownUrlForce(parts[0] || ''));
-        const rawScore = parts[1] ? parseInt(parts[1], 10) : null;
-        const score = (!Number.isNaN(rawScore) && rawScore >= 1 && rawScore <= 5) ? rawScore : null;
-
-        if (!url) continue;
-
-        const song = {
-          url,
-          score,
-          reason: parts[2] || '',
-          title: parts.slice(3).join(' | '),
-          source: url.includes('spotify.com') ? 'spotify' : ((url.includes('youtube') || url.includes('youtu.be')) ? 'youtube' : 'other'),
-          added: new Date().toISOString().slice(0,10)
-        };
-
-        if (isLevelUp && songs.length > 0) {
-          song.isLevelUp = true;
-          songs[songs.length - 1].levelUp = song;
-        } else {
-          songs.push(song);
-        }
-      }
-      return songs;
-    }
-
-    function forceNormalizeAllGenres() {
-      if (!Array.isArray(window.genres)) return;
-      window.genres.forEach(g => {
-        if (!Array.isArray(g.songs_listened)) {
-          g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
-        }
-        g.songs_listened = normalizeSongsListenedForce(g.songs_listened);
-      });
-    }
-
-    function renderMonthlyForce() {
-      addBadge();
-      forceNormalizeAllGenres();
-
-      const select = document.getElementById('monthlySelect');
-      const summary = document.getElementById('monthlySummary');
-      const listEl = document.getElementById('monthlyList');
-      if (!select || !summary || !listEl || !Array.isArray(window.genres)) return;
-
-      const listened = window.genres.filter(g => (g.status || '').toLowerCase() === 'listened' && safeDateValue(g));
-      const months = [...new Set(listened.map(g => safeDateValue(g).slice(0,7)))].sort((a,b) => a.localeCompare(b)).reverse();
-
-      if (!months.length) {
-        select.innerHTML = '<option value="">No months yet</option>';
-        summary.textContent = 'No listened genres saved yet.';
-        window._monthlyItems = [];
-        window._monthlyLabel = '';
-        listEl.innerHTML = '';
-        return;
-      }
-
-      const current = select.value && months.includes(select.value) ? select.value : months[0];
-      select.innerHTML = months.map(m => '<option value="' + safeEscape(m) + '"' + (m === current ? ' selected' : '') + '>' + safeEscape(m) + '</option>').join('');
-
-      const asc = (typeof window.monthlySortAsc === 'boolean') ? window.monthlySortAsc : true;
-      const monthItems = listened
-        .filter(g => safeDateValue(g).startsWith(current))
-        .sort((a,b) => asc
-          ? (safeDateValue(a)||'').localeCompare(safeDateValue(b)||'') || String(a.genre || '').localeCompare(String(b.genre || ''))
-          : (safeDateValue(b)||'').localeCompare(safeDateValue(a)||'') || String(a.genre || '').localeCompare(String(b.genre || ''))
-        );
-
-      window._monthlyItems = monthItems;
-      window._monthlyLabel = current;
-      summary.textContent = monthItems.length + ' genres logged in ' + current + '. Hotfix renderer active.';
-
-      listEl.innerHTML = monthItems.map((g, idx) => {
-        const songs = normalizeSongsListenedForce(g.songs_listened || []);
-        const songCount = countSongsForce(songs);
-
-        return '' +
-          '<div class="list-item" data-monthly-card-index="' + idx + '">' +
-            '<div class="row" style="justify-content:space-between;align-items:flex-start;gap:12px;">' +
-              '<div style="min-width:0;flex:1;">' +
-                '<strong>' + safeEscape(g.genre || 'Unknown') + '</strong>' +
-                '<div class="small" style="margin-top:6px;">' + safeEscape(safeCategoryLine(g)) + '</div>' +
-              '</div>' +
-              '<div class="row" style="gap:8px;flex-shrink:0;align-items:center;">' +
-                '<span class="small">' + safeEscape(safeDateValue(g) || '') + '</span>' +
-                '<button type="button" class="btn btn-primary dg-monthly-edit-force" style="padding:7px 13px;font-size:.86rem;" data-monthly-edit-index="' + idx + '" data-monthly-edit-id="' + safeEscape(g.id ?? '') + '">Edit</button>' +
-              '</div>' +
-            '</div>' +
-            '<div class="status-row">' +
-              '<span class="tag">' + safeEscape(String(g.rating || '—')) + (g.rating && g.rating !== 'zanger' ? ' ★' : '') + '</span>' +
-              (g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : '') +
-            '</div>' +
-            (g.favoritesong ? '<div class="small" style="margin-top:10px;">Favorite song: ' + (
-              g.favoritesongurl
-                ? '<a href="' + safeEscape(g.favoritesongurl) + '" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:700;text-decoration:none;">' + safeEscape(g.favoritesong) + ' ↗</a>'
-                : safeEscape(g.favoritesong)
-            ) + '</div>' : '') +
-            (songs.length ? '<div class="song-log-wrap" id="sl-m-hotfix-' + idx + '" style="margin-top:10px;">' +
-              '<button type="button" class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:700;">▶ ' + songCount + ' song' + (songCount === 1 ? '' : 's') + ' logged</button>' +
-              '<div class="song-log-list" style="display:none;gap:8px;margin-top:8px;">' + songs.map(song => renderSongEntryForce(song, false)).join('') + '</div>' +
-            '</div>' : '') +
-          '</div>';
-      }).join('');
-
-      listEl.querySelectorAll('[data-monthly-edit-index]').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const idx = parseInt(btn.getAttribute('data-monthly-edit-index'), 10);
-          const genre = window._monthlyItems && window._monthlyItems[idx];
-          if (genre && typeof window.loadListenScreen === 'function' && typeof window.switchScreen === 'function') {
-            window.loadListenScreen(genre);
-            window.switchScreen('listen');
-          } else {
-            alert('Could not open this genre for editing. The hotfix loaded, but the main app functions are unavailable.');
-          }
-        });
-      });
-
-      listEl.querySelectorAll('.song-log-wrap').forEach(wrap => {
-        const btn = wrap.querySelector('.song-log-toggle');
-        const log = wrap.querySelector('.song-log-list');
-        if (!btn || !log) return;
-        btn.addEventListener('click', function() {
-          const hidden = log.style.display === 'none' || log.style.display === '';
-          log.style.display = hidden ? 'grid' : 'none';
-          btn.textContent = (hidden ? '▼ ' : '▶ ') + btn.textContent.replace(/^[▶▼]\s*/, '');
-        });
-      });
-    }
-
-    function patchGlobals() {
-      try {
-        window.normalizeSongUrl = normalizeSongUrlForce;
-        window.normalizeSongsListened = normalizeSongsListenedForce;
-        window.countSongsForDisplay = countSongsForce;
-        window.renderSongEntry = renderSongEntryForce;
-        window.parseSongLinks = parseSongLinksForce;
-        window.flattenSongsForStorage = flattenSongsForStorageForce;
-        window.genresForSave = function() {
-          return (Array.isArray(window.genres) ? window.genres : []).map(g => {
-            const out = { ...g };
-            if (Array.isArray(out.songs_listened)) out.songs_listened = flattenSongsForStorageForce(out.songs_listened);
-            return out;
-          });
-        };
-
-        window.renderMonthly = renderMonthlyForce;
-
-        // Also reassign bare global bindings in browsers where top-level function declarations are mutable global bindings.
-        try { normalizeSongUrl = normalizeSongUrlForce; } catch(e) {}
-        try { normalizeSongsListened = normalizeSongsListenedForce; } catch(e) {}
-        try { countSongsForDisplay = countSongsForce; } catch(e) {}
-        try { renderSongEntry = renderSongEntryForce; } catch(e) {}
-        try { parseSongLinks = parseSongLinksForce; } catch(e) {}
-        try { flattenSongsForStorage = flattenSongsForStorageForce; } catch(e) {}
-        try { genresForSave = window.genresForSave; } catch(e) {}
-        try { renderMonthly = renderMonthlyForce; } catch(e) {}
-      } catch (err) {
-        console.error('Daily Genre hotfix failed while patching globals:', err);
-      }
-    }
-
-    ready(function(){
-      addBadge();
-      patchGlobals();
-
-      // Re-render monthly after the main async data load likely completes.
-      // This is intentionally repeated briefly so it wins against older renderMonthly calls.
-      let tries = 0;
-      const timer = setInterval(function(){
-        patchGlobals();
-        if (Array.isArray(window.genres) && window.genres.length) {
-          renderMonthlyForce();
-        }
-        tries += 1;
-        if (tries >= 20) clearInterval(timer);
-      }, 250);
-
-      document.addEventListener('click', function(e) {
-        const monthlyTab = e.target && e.target.closest && e.target.closest('.tab-btn[data-screen="monthly"]');
-        if (monthlyTab) setTimeout(renderMonthlyForce, 0);
-      }, true);
-    });
-  })();
-  </script>
 
 </body>
 </html>
