@@ -1127,38 +1127,53 @@
     }
 
     function parseSongLinks(rawText) {
-      const lines = String(rawText || '').split('\n').map(s => s.trim()).filter(Boolean);
+      const lines = String(rawText || '')
+        .split('\n')
+        .map(s => s.trim())
+        .filter(Boolean);
       const songs = [];
 
       const extractUrl = (value) => {
         const v = String(value || '').trim();
-        const markdownMatch = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
+        // Support markdown links: [text](https://...)
+        const markdownMatch = v.match(/^\[[^\]]*]\((https?:\/\/[^\s)]+)\)$/i);
         return markdownMatch ? markdownMatch[1].trim() : v;
       };
 
       for (const line of lines) {
+        // Detect LEVEL UP prefix (case-insensitive)
         const isLevelUp = /^🔼\s*LEVEL\s*UP:\s*/i.test(line);
         const clean = line.replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
         const p = clean.split('|').map(x => x.trim());
+
         const url = extractUrl(p[0] || '');
         const rawScore = p[1] ? parseInt(p[1], 10) : null;
-        const score = (Number.isInteger(rawScore) && rawScore >= 1 && rawScore <= 5) ? rawScore : null;
+        const score = (Number.isInteger(rawScore) && rawScore >= 1 && rawScore <= 5)
+          ? rawScore
+          : null;
+
         const song = {
           url,
           score,
           reason: p[2] || '',
+          // allow titles with embedded pipes by joining the rest
           title: p.slice(3).join(' | '),
-          source: url.includes('spotify.com') ? 'spotify'
-                : (url.includes('youtube') || url.includes('youtu.be')) ? 'youtube'
-                : 'other',
+          source: url.includes('spotify.com')
+            ? 'spotify'
+            : (url.includes('youtube') || url.includes('youtu.be'))
+              ? 'youtube'
+              : 'other',
           added: new Date().toISOString().slice(0, 10)
         };
+
         if (!song.url) continue;
+
         if (isLevelUp) {
-          // Mark for flat JSON storage so normalise can re-nest on reload
+          // mark so JSON storage knows this was a LEVEL UP line
           song.isLevelUp = true;
+
+          // in-memory: attach as child of previous song when present
           if (songs.length > 0) {
-            // Also nest immediately for in-session rendering
             songs[songs.length - 1].levelUp = song;
           } else {
             songs.push(song);
@@ -1167,9 +1182,10 @@
           songs.push(song);
         }
       }
+
       return songs;
     }
-
+    
     function scoreBadgeStyle(score) {
       if (score === 5) return 'color:#6daa45;border-color:#3a4435;background:#23291e;';
       if (score === 4) return 'color:#4f98a3;border-color:#313b3b;background:#1c2828;';
@@ -1585,7 +1601,7 @@
       window._monthlyItems = monthItems;
       window._monthlyLabel = current;
 
-      document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
+            document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
         <div class="list-item">
           <div class="row" style="justify-content:space-between;align-items:flex-start;">
             <div>
@@ -1593,7 +1609,9 @@
             </div>
             <div class="row" style="gap:8px;flex-shrink:0;align-items:center;">
               <span class="small">${escapeHtml(dateValue(g) || '')}</span>
-              <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-monthly-edit-id="${g.id}">Edit</button>
+              <button class="btn btn-secondary"
+                      style="padding:6px 12px;font-size:.85rem;"
+                      data-monthly-edit-id="${g.id}">Edit</button>
             </div>
           </div>
           <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
@@ -1608,14 +1626,34 @@
           }</div>` : ''}
           ${(g.songs_listened || []).length ? `
           <div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;">
-            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-m-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
-            <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
+            <button class="btn btn-ghost song-log-toggle"
+                    style="padding:5px 10px;font-size:.82rem;font-weight:600;"
+                    onclick="toggleSongLog('sl-m-${g.id}')">
+              ▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged
+            </button>
+            <div class="song-log-list"
+                 style="display:none;gap:6px;margin-top:8px;">
               ${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}
             </div>
           </div>` : ''}
         </div>
       `).join('');
 
+      // Wire up monthly edit buttons
+      [...document.getElementById('monthlyList')
+        .querySelectorAll('[data-monthly-edit-id]')]
+        .forEach(btn => {
+          btn.addEventListener('click', () => {
+            const genre = genres.find(
+              g => String(g.id) === btn.dataset.monthlyEditId
+            );
+            if (genre) {
+              loadListenScreen(genre);
+              switchScreen('listen');
+            }
+          });
+        });
+      
       [...document.getElementById('monthlyList').querySelectorAll('[data-monthly-edit-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
           const genre = genres.find(g => String(g.id) === btn.dataset.monthlyEditId);
@@ -1746,13 +1784,44 @@
       return nested;
     }
 
+    function normaliseSongsListened(arr) {
+      // Accepts the raw array from JSON (flat or already nested) and returns
+      // a properly nested array where Level Up entries are children of the
+      // song they upgrade rather than standalone siblings.
+      if (!Array.isArray(arr)) return [];
+
+      // If nothing was tagged as LEVEL UP in storage, just return the array.
+      const hasFlat = arr.some(s => s && s.isLevelUp === true);
+      if (!hasFlat) {
+        return arr.filter(Boolean);
+      }
+
+      const nested = [];
+      for (const s of arr) {
+        if (!s) continue;
+        if (s.isLevelUp && nested.length > 0) {
+          const parent = nested[nested.length - 1];
+          if (!parent.levelUp) {
+            // drop the isLevelUp flag on the nested child
+            const { isLevelUp, ...rest } = s;
+            parent.levelUp = rest;
+          }
+        } else {
+          nested.push({ ...s });
+        }
+      }
+      return nested;
+    }
+
     async function loadData() {
       remainingCount.textContent = 'Loading genres...';
       const res = await fetch(DATA_URL);
       genres = await res.json();
 
       genres.forEach(g => {
-        if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
+        if (!Array.isArray(g.songs_listened)) {
+          g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
+        }
         g.songs_listened = normaliseSongsListened(g.songs_listened);
       });
 
