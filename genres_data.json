@@ -17456,7 +17456,7 @@
     "date_raw": "1/12",
     "date_normalized": "2026-01-12",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -17465,8 +17465,53 @@
     "key_artists": "The Sonics, The Stooges, The White Stripes, The Strokes, The Hives (major figures across eras)",
     "suggested_songs": "The Sonics — Have Love Will Travel, ? and the Mysterians — 96 Tears, The Stooges — I Wanna Be Your Dog, The White Stripes — Seven Nation Army, The Strokes — Hard to Explain",
     "vibe": "Rock stripped to three chords, a grudge, and a rehearsal room.",
-    "songs_listened": [],
-    "rank_order": 2
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7zPxIh1c3kJaNwmjdZ3GQX",
+        "score": 4,
+        "reason": "Minimal, overdriven guitar, loose drums and raw vocals — modern blues‑garage that fits the garage rock ethos well",
+        "title": "The White Stripes — Hello Operator",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/09r1j5kfshLMalNcJmOZoh",
+        "score": 5,
+        "reason": "Mid‑60s fuzz, sneering vocal and primitive stomp — a canonical 60s garage rock single",
+        "title": "Count Five — Psychotic Reaction",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/6pW2lKORQaIC6JR4qBNG9e",
+        "score": 3,
+        "reason": "Psychedelic blues‑rock; it has attitude, but the playing is more refined and jammy than typical knuckle‑dragging garage",
+        "title": "The Yardbirds — The Train Kept A‑Rollin'",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3yFl9G98QwxXbtP6VvLZq6",
+        "score": 4,
+        "reason": "Raw, pounding, barely‑together performance — closer to the chaotic, teen‑band garage rock feel",
+        "title": "The Yardbirds — Mister, You’re a Better Man Than I",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/78JmElAFmrPNhLjovDR9Jm",
+        "score": 4,
+        "reason": "Short, riff‑driven, brash and slightly unhinged; an early British record that became a major garage‑punk touchstone",
+        "title": "The Kinks — All Day and All of the Night",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 2,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 869,
