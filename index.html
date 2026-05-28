@@ -1765,7 +1765,8 @@
       remainingCount.textContent = 'Loading genres...';
       const res = await fetch(DATA_URL);
       genres = await res.json();
-
+      window.genres = genres;
+    
       genres.forEach(g => {
         if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
         g.songs_listened = normalizeSongsListened(g.songs_listened);
