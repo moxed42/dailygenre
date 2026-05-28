@@ -1359,6 +1359,9 @@
       gap:12px;
       align-items:center;
     }
+    .song-card-row.no-art {
+      grid-template-columns:1fr auto;
+    }
     .song-artwork {
       width:58px;
       height:58px;
@@ -1506,6 +1509,64 @@
       .rank-controls { grid-column:1 / -1; }
     }
 
+
+    /* UX polish patch: prevent detail header overlap, simplify Archive action, compact Zanger button */
+    .screen-detail .listen-grid {
+      grid-template-columns:minmax(0, 1fr) minmax(360px, 1fr);
+      align-items:start;
+    }
+    .detail-record-card {
+      width:100%;
+      max-width:100%;
+      min-width:0;
+      grid-template-columns:104px minmax(0, 1fr);
+      gap:16px;
+      align-items:center;
+    }
+    .detail-record-card .genre-art {
+      width:104px;
+      height:104px;
+      border-radius:18px;
+    }
+    .detail-record-card h2 {
+      max-width:100%;
+      overflow-wrap:anywhere;
+      word-break:normal;
+      font-size:clamp(2rem, 3.4vw, 3.35rem);
+      line-height:.92;
+    }
+    .detail-record-card .status-row {
+      gap:7px;
+    }
+    .detail-actions {
+      margin-top:12px;
+    }
+    .detail-actions .btn {
+      padding:10px 14px;
+    }
+    .archive-open-row .archive-primary-action {
+      padding:7px 13px;
+      font-size:.86rem;
+    }
+    .btn-danger.btn-compact,
+    #zangerBtn {
+      padding:8px 12px;
+      min-height:auto;
+      font-size:.9rem;
+      border-radius:13px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.14), inset 0 -3px 0 rgba(0,0,0,.13), 0 8px 16px rgba(0,0,0,.12);
+    }
+    #ratingStatus {
+      align-self:center;
+    }
+    @media (max-width: 980px) {
+      .screen-detail .listen-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width: 560px) {
+      .detail-record-card { grid-template-columns:1fr; }
+      .detail-record-card .genre-art { width:112px; height:112px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1589,7 +1650,7 @@
             <label>Rating</label>
             <div class="stars" id="ratingStars"></div>
             <div class="row" style="margin-top:10px;">
-              <button class="btn btn-danger" id="zangerBtn">Zanger / Veto</button>
+              <button class="btn btn-danger btn-compact" id="zangerBtn">Zanger / Veto</button>
               <span class="small" id="ratingStatus">No rating selected</span>
             </div>
           </div>
@@ -2041,27 +2102,45 @@
     function parseSongLinks(text) {
       const lines = String(text || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const songs = [];
+      const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
       const extractUrl = (value) => {
         const v = String(value || '').trim();
         const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
-        return md ? md[1].trim() : v;
+        if (md) return md[1].trim();
+        const inline = v.match(/https?:\/\/[^\s)]+/i);
+        return inline ? inline[0].trim() : '';
+      };
+      const isRealUrl = (value) => /^https?:\/\//i.test(String(value || '').trim());
+      const parseFreeformAltTake = (value) => {
+        const text = String(value || '').trim();
+        const quoted = text.match(/[“"]([^”"]+)[”"]/);
+        const byArtist = text.match(/\bby\s+([^–—-]+?)(?:\s+[–—-]\s+|$)/i);
+        return {
+          title: quoted ? quoted[1].trim() : (text.split(/[–—-]/)[0] || 'Alt Take').replace(/^try\s+/i, '').trim(),
+          artist: byArtist ? byArtist[1].trim() : '',
+          reason: text
+        };
       };
       for (const line of lines) {
-        const isLevelUp = /^🔼\s*LEVEL\s*UP:\s*/i.test(line);
-        const clean = line.replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
+        const isLevelUp = levelUpPrefix.test(line);
+        const clean = line.replace(levelUpPrefix, '').trim();
         const p = clean.split('|').map(x => x.trim());
         const url = extractUrl(p[0] || '');
         const raw = p[1] ? parseInt(p[1], 10) : null;
         const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
+        const freeform = (!url && isLevelUp) ? parseFreeformAltTake(clean) : null;
+        const title = p.slice(3).join(' | ') || freeform?.title || '';
         const song = {
           url,
           score,
-          reason: p[2] || '',
-          title: p.slice(3).join(' | '),
-          source: url.includes('spotify.com') ? 'spotify' : ((url.includes('youtube') || url.includes('youtu.be')) ? 'youtube' : 'other'),
+          reason: p[2] || freeform?.reason || '',
+          title,
+          artist: freeform?.artist || '',
+          source: url.includes('spotify.com') ? 'spotify' : ((url.includes('youtube') || url.includes('youtu.be')) ? 'youtube' : (url ? 'other' : 'manual')),
           added: new Date().toISOString().slice(0,10)
         };
-        if (!song.url) continue;
+        if (!song.url && !song.title && !song.reason) continue;
+        if (!isLevelUp && !song.url) continue;
         if (isLevelUp) {
           song.isLevelUp = true;
           if (songs.length > 0) songs[songs.length - 1].levelUp = song;
@@ -2085,7 +2164,7 @@
     }
 
     function normalizeSongUrl(url) {
-      return String(url || '').replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
+      return String(url || '').replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '').trim();
     }
 
     function normalizeSongsListened(arr) {
@@ -2094,7 +2173,7 @@
       for (const raw of arr) {
         if (!raw) continue;
         const s = { ...raw, url: normalizeSongUrl(raw.url) };
-        const flagged = raw.isLevelUp === true || /^🔼\s*LEVEL\s*UP:\s*/i.test(String(raw.url || ''));
+        const flagged = raw.isLevelUp === true || /^(?:🔼\s*)?LEVEL\s*UP:\s*/i.test(String(raw.url || ''));
         if (flagged && nested.length > 0) {
           const parent = nested[nested.length - 1];
           const { isLevelUp, ...rest } = s;
@@ -2145,15 +2224,21 @@
     }
 
     function renderSongEntry(s, isChild) {
-      const titleText = s.title ? escapeHtml(s.title) : (String(s.url || '').includes('spotify') ? 'Spotify track' : 'Track');
-      const href = escapeHtml(normalizeSongUrl(s.url));
+      const rawUrl = normalizeSongUrl(s.url || '');
+      const hasHref = /^https?:\/\//i.test(rawUrl);
+      const titleText = escapeHtml(s.title || (hasHref && rawUrl.includes('spotify') ? 'Spotify track' : (hasHref ? 'Track' : 'Alt Take')));
+      const href = escapeHtml(rawUrl);
       const scoreBadge = s.score != null ? `<span class="song-score ${Number(s.score) <= 2 ? 'low' : ''}" title="Genre match score">${s.score}/5</span>` : '';
       const reasonHtml = s.reason ? `<div class="song-reason">${escapeHtml(s.reason)}</div>` : '';
-      const art = artworkHtml(s.artwork || '', 'song-artwork', s.title || 'Album art');
+      const showArtwork = !!s.artwork || !isChild;
+      const art = showArtwork ? artworkHtml(s.artwork || '', 'song-artwork', s.title || 'Album art') : '';
+      const titleHtml = hasHref
+        ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>`
+        : `<span class="song-title-link">${titleText}</span>`;
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">↳</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}"><div class="song-card-row">${art}<div><a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}"><div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div>${titleHtml}${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
@@ -2228,7 +2313,6 @@
               </div>
               <div class="detail-actions">
                 <button type="button" class="btn btn-secondary" onclick="switchScreen('history')">Back to Archive</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('songsListenedBulk')?.focus()">Edit Log</button>
               </div>
             </div>
           </div>
@@ -2441,7 +2525,7 @@
       [...wrap.querySelectorAll('[data-rank-open-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
           const genre = genres.find(g => String(g.id) === btn.dataset.rankOpenId);
-          if (genre) openGenreDetail(genre, false);
+          if (genre) openGenreDetail(genre, true);
         });
       });
 
@@ -2665,8 +2749,7 @@
                 : escapeHtml(g.favoritesong)
             }</div>` : ''}
             <div class="archive-open-row">
-              <button class="btn btn-secondary" style="padding:7px 13px;font-size:.86rem;" data-open-id="${g.id}">Open</button>
-              <button class="btn btn-primary" style="padding:7px 13px;font-size:.86rem;" data-edit-id="${g.id}">Edit</button>
+              <button class="btn btn-primary archive-primary-action" data-open-id="${g.id}">Open / Edit</button>
               <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
             </div>
             ${songCount ? `<div class="song-log-wrap" id="sl-h-${g.id}"><button type="button" class="btn btn-ghost song-log-toggle" style="padding:6px 11px;font-size:.82rem;font-weight:900;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${songCount} song${songCount===1?'':'s'} logged</button><div class="song-log-list">${songs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
@@ -2677,12 +2760,6 @@
       [...list.querySelectorAll('[data-open-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
           const genre = genres.find(g => String(g.id) === btn.dataset.openId);
-          if (genre) openGenreDetail(genre, false);
-        });
-      });
-      [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
-        btn.addEventListener('click', () => {
-          const genre = genres.find(g => String(g.id) === btn.dataset.editId);
           if (genre) openGenreDetail(genre, true);
         });
       });
@@ -2810,7 +2887,7 @@
       if (hashMatch) {
         const id = decodeURIComponent(hashMatch[1]);
         const genre = genres.find(g => String(g.id) === String(id));
-        if (genre) openGenreDetail(genre, false);
+        if (genre) openGenreDetail(genre, true);
       }
     }
 
