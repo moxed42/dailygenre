@@ -1232,11 +1232,11 @@
       }
 
       currentGenre.rating = currentGenre.rating === 'zanger' ? 'zanger' : (selectedRating || currentGenre.rating || '');
-      currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
-      currentGenre.favoritesongurl = document.getElementById('favoriteSongUrl').value.trim();
+      currentGenre.favoritesong = (document.getElementById('favoriteSong') || {}).value?.trim() || currentGenre.favoritesong || '';
+      currentGenre.favoritesongurl = (document.getElementById('favoriteSongUrl') || {}).value?.trim() || currentGenre.favoritesongurl || '';
       currentGenre.monthlycontender = !!(document.getElementById('monthlyContender') && document.getElementById('monthlyContender').checked);
-      currentGenre.notes = document.getElementById('notes').value.trim();
-      currentGenre.songs_listened = parseSongLinks(document.getElementById('songsListenedBulk').value);
+      currentGenre.notes = (document.getElementById('notes') || {}).value?.trim() || currentGenre.notes || '';
+      currentGenre.songs_listened = parseSongLinks((document.getElementById('songsListenedBulk') || {value:''}).value);
       currentGenre.songs_listened = await resolveSpotifyTitles(currentGenre.songs_listened);
 
       if (!dateValue(currentGenre)) {
