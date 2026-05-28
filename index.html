@@ -2203,8 +2203,7 @@
       document.getElementById('favoriteSongUrl').value = genre.favoritesongurl || '';
       document.getElementById('monthlyContender').checked = !!genre.monthlycontender;
       document.getElementById('notes').value = genre.notes || '';
-      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).flatMap(s => { const out = [[normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('
-');
+      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).flatMap(s => { const out = [[normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\\n');
       document.getElementById('includeSongsToggle').checked = false;
 
       const listenedDate = dateValue(genre);
