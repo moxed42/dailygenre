@@ -13349,7 +13349,7 @@
     "date_raw": "1/6",
     "date_normalized": "2026-01-06",
     "parse_notes": "alias: samba",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -13358,8 +13358,36 @@
     "key_artists": "Sérgio Mendes (early), Edison Machado, Dom Um Romão, Tamba Trio, J.T. Meirelles (major figures)",
     "suggested_songs": "Edison Machado — Tristeza de Nós Dois, Tamba Trio — Mas Que Nada, Dom Um Romão — Braza",
     "vibe": "Brazilian rhythm with jazz chops and more forward motion.",
-    "songs_listened": [],
-    "rank_order": 75
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5PefzF0hUblBWflkgaE4I6",
+        "score": 5,
+        "reason": "Elis Regina over a bouncy samba rhythm with jazz harmony and arranging — archetypal samba‑jazz",
+        "title": "Elis Regina — Madalena [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/5fBzQNeFIiWfAMS5x4hvg5",
+        "score": 4,
+        "reason": "João Donato’s electric, harmonically rich samba groove — modern but firmly in the samba‑jazz lineage",
+        "title": "João Donato — Espalhado [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/0aOH62uqDzuvCvN2jdVtZs",
+        "score": 4,
+        "reason": "Getz/Byrd bossa classic with strong Brazilian jazz phrasing — sits right on the samba‑jazz/bossa border",
+        "title": "Stan Getz & Charlie Byrd — Desafinado [file:3]",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 75,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 645,
