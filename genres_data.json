@@ -1613,7 +1613,7 @@
     "date_raw": "1/15",
     "date_normalized": "2026-01-15",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -1622,8 +1622,45 @@
     "key_artists": "Joe Ely, Butch Hancock, Jimmie Dale Gilmore, Terry Allen, Lloyd Maines (originators)",
     "suggested_songs": "Joe Ely — Fingernails, Jimmie Dale Gilmore — Dallas, Butch Hancock — If You Were a Bluebird, Terry Allen — Lubbock (On Everything)",
     "vibe": "Music from a flat place that goes on forever and makes you think.",
-    "songs_listened": [],
-    "rank_order": 27
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2OARIMw1hpehr86Iwmv04c",
+        "score": 3,
+        "reason": "Buddy Holly is literally Lubbock’s favorite son, but this particular cut reads more as classic rockabilly/rock ’n’ roll than the later “Lubbock sound” singer‑songwriter strain",
+        "title": "Buddy Holly — Peggy Sue",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4LQH85CgbxCzF82xMyIwT0",
+        "score": 5,
+        "reason": "Terry Allen’s wry storytelling, dry Texas band sound and Lubbock (on everything) context make this the definitive Lubbock‑sound anthem",
+        "title": "Terry Allen — Amarillo Highway (for Dave Hickey)",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1kSZDiVXvChkCRyrbWBmpg",
+        "score": 3,
+        "reason": "Written by Crickets member Sonny Curtis and cut in Texas, but more a classic early rock ’n’ roll tune than a showcase for the Lubbock singer‑songwriter aesthetic",
+        "title": "The Crickets — I Fought The Law",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/3LO6evXvbopPHiVG9AKax7",
+        "score": 5,
+        "reason": "Terry Allen’s dry, narrative songwriting and plains‑country arrangement embody exactly what people mean by the Lubbock sound",
+        "title": "Terry Allen — Amarillo Highway (for Dave Hickey)",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 27,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 75,
