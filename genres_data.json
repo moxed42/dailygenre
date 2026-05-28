@@ -2735,25 +2735,43 @@
         "url": "https://open.spotify.com/track/2JsQdDbuwFYNwykifahaYL",
         "score": 5,
         "reason": "DJ Rashad is the definitive footwork artist — juke rhythms, Chicago underground, textbook",
+        "title": "DJ Rashad — In Da Club Before Eleven O' Clock",
         "source": "spotify",
-        "added": "2026-05-28",
-        "title": "In Da Club Before Eleven O' Clock"
+        "added": "2026-05-28"
       },
       {
         "url": "https://open.spotify.com/track/4zBRdLegVtJFYsxVZMHDUt",
         "score": 2,
         "reason": "Baltimore club energy with rap overlay, shares DNA but isn't footwork — better fits: Baltimore club",
+        "title": "Kid Sister ft. Kanye West — Pro Nails",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5O5OJJEiLAFvBPTLsNgVbW",
+        "score": 4,
+        "reason": "DJ Rashad & Spinn classic footwork collab — frenetic 160BPM juke energy, pure Chicago footwork",
+        "title": "DJ Rashad & DJ Spinn — Rollin",
         "source": "spotify",
         "added": "2026-05-28",
-        "title": "Pro Nails"
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1bTRxssA4CIfyZyKI5MFuO",
         "score": 1,
         "reason": "Straight Chicago rap, no footwork production elements whatsoever — better fits: rap",
+        "title": "Twista — Pimp Like Me",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6dqDKIGFmS9R3L8xr7LqMN",
+        "score": 4,
+        "reason": "RP Boo — the originator of footwork, chopped vocal loops and machine-gun kicks",
+        "title": "RP Boo — Itz 'Bout 4's",
         "source": "spotify",
         "added": "2026-05-28",
-        "title": "Pimp Like Me"
+        "isLevelUp": true
       }
     ],
     "rank_order": 7,
