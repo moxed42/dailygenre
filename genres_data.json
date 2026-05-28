@@ -12807,7 +12807,7 @@
     "date_raw": "1/10",
     "date_normalized": "2026-01-10",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -12816,8 +12816,45 @@
     "key_artists": "Ornette Coleman's Prime Time, James Blood Ulmer, Ronald Shannon Jackson, Defunkt (originators/major figures)",
     "suggested_songs": "Ornette Coleman — Dancing in Your Head, James Blood Ulmer — Are You Glad to Be in America, Defunkt — Defunkt",
     "vibe": "Funk with all the rules about notes removed.",
-    "songs_listened": [],
-    "rank_order": 76
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7dL3hsLENc5jlnJ1WTx6H8",
+        "score": 5,
+        "reason": "Ornette Coleman’s Prime Time literally defined electric free funk: harmolodic, loose, and funk-driven under his sax lines",
+        "title": "Ornette Coleman; Prime Time — Bourgeois Boogie",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/0MaHcPE1h1GtnxnRZp0AKv",
+        "score": 4,
+        "reason": "Ronald Shannon Jackson’s Decoding Society fuses dense grooves with free jazz phrasing — an archetypal free funk ensemble sound",
+        "title": "Ronald Shannon Jackson; The Decoding Society — African Séance",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/1P9c1vgJwKCVqbxfXkZK1J",
+        "score": 3,
+        "reason": "James Blood Ulmer here leans more into free jazz/blues guitar with only a light funk underpinning",
+        "title": "James Blood Ulmer — Crying (Live)",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6JES50CQkcFJaVJHHyHqbf",
+        "score": 5,
+        "reason": "Ulmer explicitly yokes loose funk rhythm to harmolodic jazz guitar — a clearer, more driving free funk statement",
+        "title": "James Blood Ulmer — JAZZ IS THE TEACHER (FUNK IS THE PREACHER)",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      }
+    ],
+    "rank_order": 76,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 621,
