@@ -16101,7 +16101,7 @@
     "date_raw": "1/15",
     "date_normalized": "2026-01-15",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -16110,8 +16110,36 @@
     "key_artists": "Smokey Robinson, Anita Baker, Luther Vandross, Sade, Freddie Jackson (major figures)",
     "suggested_songs": "Smokey Robinson — Quiet Storm, Anita Baker — Sweet Love, Luther Vandross — Here and Now, Sade — No Ordinary Love, Freddie Jackson — You Are My Lady",
     "vibe": "Midnight R&B built for dim lights, soft voices, and a long exhale.",
-    "songs_listened": [],
-    "rank_order": 30
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7pLuEMFougkSHXrPBtNxTR",
+        "score": 5,
+        "reason": "Silky, restrained groove, smoky vocal and late‑night mood — quintessential quiet storm template",
+        "title": "Sade — Smooth Operator",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/2VjXGuPVVxyhMgER3Uz2Fe",
+        "score": 5,
+        "reason": "Slow, emotionally raw neo‑soul ballad that sits squarely in the 90s quiet‑storm lane",
+        "title": "Ms. Lauryn Hill — Ex-Factor",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/4oPNN7syJYSjzDhRerF966",
+        "score": 4,
+        "reason": "Seven‑minute slow burn with intimate vocals and spacious arrangement, very much in the sensual quiet‑storm tradition",
+        "title": "D’Angelo — Untitled (How Does It Feel)",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 30,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 787,
