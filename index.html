@@ -1093,15 +1093,81 @@
       };
     }
 
-    function parseSongLinks(text) {
-  return text.split(/\n/).map(s=>s.trim()).filter(Boolean).map(line=>{
-    const p=line.split('|').map(x=>x.trim());
-    const raw=p[1]?parseInt(p[1],10):null;
-    return { url:p[0]||'', score:(!isNaN(raw)&&raw>=1&&raw<=5)?raw:null, reason:p[2]||'',
-      source:(p[0]||'').includes('spotify.com')?'spotify':((p[0]||'').includes('youtube')||(p[0]||'').includes('youtu.be'))?'youtube':'other',
-      added:new Date().toISOString().slice(0,10) };
-  }).filter(s=>s.url);
+    function parseSongLinks(rawText) {
+  const lines = rawText.split('\n').map(s => s.trim()).filter(Boolean);
+  const songs = [];
+  for (const line of lines) {
+    const isLevelUp = line.startsWith('\u{1F53C} LEVEL UP:') || line.startsWith('🔼 LEVEL UP:');
+    const clean = isLevelUp ? line.replace(/^🔼\s*LEVEL UP:\s*/, '') : line;
+    const p = clean.split('|').map(x => x.trim());
+    const rawScore = p[1] ? parseInt(p[1], 10) : null;
+    const score = (rawScore && rawScore >= 1 && rawScore <= 5) ? rawScore : null;
+    const song = {
+      url: p[0] || '',
+      score,
+      reason: p[2] || '',
+      title: p[3] || '',
+      source: (p[0]||'').includes('spotify.com') ? 'spotify'
+            : ((p[0]||'').includes('youtube') || (p[0]||'').includes('youtu.be')) ? 'youtube'
+            : 'other',
+      added: new Date().toISOString().slice(0, 10)
+    };
+    if (!song.url) continue;
+    if (isLevelUp && songs.length > 0) {
+      songs[songs.length - 1].levelUp = song;
+    } else {
+      songs.push(song);
+    }
+  }
+  return songs;
 }
+
+    function scoreBadgeStyle(score) {
+      if (score === 5) return 'color:#6daa45;border-color:#3a4435;background:#23291e;';
+      if (score === 4) return 'color:#4f98a3;border-color:#313b3b;background:#1c2828;';
+      if (score === 3) return 'color:#9a8a5a;border-color:#3a3425;background:#242018;';
+      if (score === 2) return 'color:#bb653b;border-color:#3d2e28;background:#231e1a;';
+      if (score === 1) return 'color:#a13544;border-color:#3a2528;background:#221a1b;';
+      return 'color:var(--muted);border:1px solid var(--border);background:var(--surface);';
+    }
+
+    function renderSongEntry(s, isChild) {
+      const dimStyle = (!isChild && s.score != null && s.score <= 2) ? 'opacity:0.82;' : '';
+      const cardBg = isChild
+        ? 'background:#1e2620;border:1px solid #3a4435;'
+        : 'background:var(--surface-2);border:1px solid var(--border);';
+      const titleText = s.title
+        ? escapeHtml(s.title)
+        : (s.url.includes('spotify') ? '🎵 Spotify track' : '▶ Track');
+      const scoreBadge = s.score != null
+        ? `<span title="Genre match score" style="display:inline-flex;align-items:center;gap:3px;${scoreBadgeStyle(s.score)}border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;">★ ${s.score}/5</span>`
+        : '';
+      const reasonHtml = s.reason
+        ? `<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;margin-top:6px;">${escapeHtml(s.reason)}</div>`
+        : '';
+      const levelUpHtml = (!isChild && s.levelUp)
+        ? `<div style="margin-top:10px;margin-left:14px;padding-left:12px;border-left:2px solid #3a4435;">
+            <div style="background:#1e2620;border:1px solid #3a4435;border-radius:10px;padding:10px 12px;">
+              <div style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6daa45;margin-bottom:6px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+                Better fit
+              </div>
+              ${renderSongEntry(s.levelUp, true)}
+            </div>
+          </div>`
+        : '';
+      return `<div style="${cardBg}border-radius:${isChild ? '8px' : '14px'};padding:10px 12px;${dimStyle}">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer"
+             style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+            ${titleText}<span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>
+          </a>
+          ${scoreBadge}
+        </div>
+        ${reasonHtml}
+        ${levelUpHtml}
+      </div>`;
+    }
 
     function buildDiscordBlock() {
       if (!currentGenre) return '';
@@ -1157,7 +1223,15 @@
       if (_favUrl) _favUrl.value = genre.favoritesongurl || '';
       if (_monthly) _monthly.checked = !!genre.monthlycontender;
       if (_notes) _notes.value = genre.notes || '';
-      if (_songs) _songs.value = (genre.songs_listened || []).map(s=>[s.url,s.score!=null?s.score:null,s.reason||null].filter(x=>x!==null&&x!=='').join(' | ')).join('\n');
+      if (_songs) _songs.value = (genre.songs_listened || []).flatMap(s => {
+      const parts = [s.url, s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='');
+      const out = [parts.join(' | ')];
+      if (s.levelUp) {
+        const lp = [s.levelUp.url, s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='');
+        out.push('🔼 LEVEL UP: ' + lp.join(' | '));
+      }
+      return out;
+    }).join('\n');
       if (_toggle) _toggle.checked = false;
 
       const listenedDate = dateValue(genre);
@@ -1419,7 +1493,7 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">                   <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">                     ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}                     <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>                   </a>                   ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}                 </div>                 ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}               </div>`).join('')}             </div>           </div>` : ''}
+          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="h-${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${[...(g.songs_listened)].sort((a,b)=>(b.score??-1)-(a.score??-1)).map(s=>renderSongEntry(s,false)).join('')}             </div>           </div>` : ''}
         </div>
       `).join('');
 [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
@@ -1471,19 +1545,10 @@
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
           ${(g.songs_listened || []).length ? `
-          <div class="song-log-wrap" id="sl-${g.id}" style="margin-top:10px;">
-            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
+          <div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;">
+            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="m-${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
-              ${g.songs_listened.map(s=>`<div style="padding:10px 12px;background:var(--surface-2);border-radius:14px;border:1px solid var(--border);">
-                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${s.reason?'6px':'0'};">
-                  <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;">
-                    ${s.title ? escapeHtml(s.title) : (s.url.includes('spotify')?'🎵 Spotify track':'▶ Track')}
-                    <span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>
-                  </a>
-                  ${s.score!=null?`<span title="Genre match score — how well this track represents the genre" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>${s.score}/5</span>`:''}
-                </div>
-                ${s.reason?`<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;">${escapeHtml(s.reason)}</div>`:''}
-              </div>`).join('')}
+              ${[...(g.songs_listened)].sort((a,b)=>(b.score??-1)-(a.score??-1)).map(s=>renderSongEntry(s,false)).join('')}
             </div>
           </div>` : ''}
         </div>
