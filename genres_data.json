@@ -16330,7 +16330,7 @@
     "date_raw": "1/12",
     "date_normalized": "2026-01-12",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -16339,8 +16339,78 @@
     "key_artists": "Nirvana, Pearl Jam, Soundgarden, Alice in Chains, Mudhoney (major figures)",
     "suggested_songs": "Nirvana — Smells Like Teen Spirit, Pearl Jam — Alive, Soundgarden — Outshined, Alice in Chains — Would?, Mudhoney — Touch Me I'm Sick",
     "vibe": "Heavy guitar music that sounds disgusted with the whole performance of rock stardom.",
-    "songs_listened": [],
-    "rank_order": 18
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5jSINPjqeHjmPOvOmxtITL",
+        "score": 2,
+        "reason": "Heavy and noisy but more alt‑rock/post‑grunge; lacks the murky, sludgy Pacific Northwest feel",
+        "title": "Violent Soho — Dope Calypso",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ghIJDpPoe3CfHMGu71E6T",
+        "score": 5,
+        "reason": "Sludgy guitars, strained vocals and Seattle scene DNA — core early‑90s grunge",
+        "title": "Soundgarden — Outshined",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2iWQrd8LABqESP9gC4jfYW",
+        "score": 2,
+        "reason": "Big, distorted rock song but closer to modern alt‑rock than scene‑defining grunge",
+        "title": "Violent Soho — Love Is A Heavy Word",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ghIJDpPoe3CfHMGu71E6T",
+        "score": 4,
+        "reason": "Same recommendation applies; you could also swap in Alice In Chains for an even doomier variant",
+        "title": "Soundgarden — Outshined",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0CkspLl535ZxdwCRs8AdZ4",
+        "score": 5,
+        "reason": "Thick guitars, anguished vocals and a quintessential early‑90s radio‑grunge sound",
+        "title": "Stone Temple Pilots — Plush",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/5b7XGW6Ss95mofffZdzXuy",
+        "score": 4,
+        "reason": "Gritty, mid‑tempo heaviness with shout‑along chorus — very much in grunge’s alt‑radio wing",
+        "title": "Toadies — Backslider",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/5L3H63sBURBch3bUJ2acIJ",
+        "score": 4,
+        "reason": "Bleary, noisy and hostile, sitting right at the riot grrrl / grunge intersection",
+        "title": "Hole — Teenage Whore",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/3w5Ekq9O8g0gGFEsT77Ydi",
+        "score": 5,
+        "reason": "Classic Nirvana: abrasive guitar tone, dynamic quiet‑loud structure, and In Utero’s caustic production",
+        "title": "Nirvana — Serve The Servants",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 18,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 800,
