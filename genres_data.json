@@ -12460,7 +12460,7 @@
     "date_raw": "1/4",
     "date_normalized": "2026-01-04",
     "parse_notes": "",
-    "rating": "3",
+    "rating": 3,
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -12469,36 +12469,8 @@
     "key_artists": "Charlie Parker, Dizzy Gillespie, Thelonious Monk, Bud Powell, Miles Davis (early) (originators/major figures)",
     "suggested_songs": "Charlie Parker — Ko-Ko, Thelonious Monk — Round Midnight, Dizzy Gillespie — A Night in Tunisia, Bud Powell — Un Poco Loco",
     "vibe": "Jazz deciding it was serious, and proving it at impossible speeds.",
-    "songs_listened": [
-      {
-        "url": "https://open.spotify.com/track/1xicvSO4CJ2ymqYgpk7DFh",
-        "score": 4,
-        "reason": "Miles Davis classic session with Coltrane — hard bop leaning but bebop foundations are clear",
-        "source": "spotify",
-        "added": "2026-05-28",
-        "title": "Milestones (feat. John Coltrane, Cannonball Adderley, Red Garland, Paul Chambers & Philly Joe Jones)"
-      },
-      {
-        "url": "https://open.spotify.com/track/4XZSUds3wcqjbP6Lq7jFrm",
-        "score": 5,
-        "reason": "Charlie Parker's Mood — core bebop repertoire, pitch perfect example",
-        "source": "spotify",
-        "added": "2026-05-28",
-        "title": "Parker's Mood"
-      },
-      {
-        "url": "https://open.spotify.com/track/2ul1uIgptw43J3BkpA2g69",
-        "score": 5,
-        "reason": "Thelonious Monk's Blue Monk — bebop composition cornerstone",
-        "source": "spotify",
-        "added": "2026-05-28",
-        "title": "Blue Monk"
-      }
-    ],
-    "rank_order": 46,
-    "favoritesong": "Please Don't Piss in My Microwave",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "songs_listened": [],
+    "rank_order": 46
   },
   {
     "id": 607,
@@ -13283,7 +13255,7 @@
     "date_raw": "1/5",
     "date_normalized": "2026-01-05",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -13292,8 +13264,35 @@
     "key_artists": "James Chance and the Contortions, Lounge Lizards, John Zorn, The Flying Luttenbachers, Naked City (major figures)",
     "suggested_songs": "James Chance — Contort Yourself, Lounge Lizards — Do the Wrong Thing, Naked City — Batman",
     "vibe": "Jazz that got angry, impatient, and louder.",
-    "songs_listened": [],
-    "rank_order": 56
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/07qoAjE0wObVAAfyIevTNV",
+        "score": 3,
+        "reason": "Proto-punk rawness but no jazz elements — better fits: proto-punk/garage rock",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Fun House"
+      },
+      {
+        "url": "https://open.spotify.com/track/4mvTcdOP0nx50zpnnhfPdD",
+        "score": 5,
+        "reason": "Lounge Lizards are the definitive punk jazz band — free jazz chaos with punk attitude",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Bob the Bob"
+      },
+      {
+        "url": "https://open.spotify.com/track/1INxOP4EeDRGzCcxQE7EQLp",
+        "score": 4,
+        "reason": "Contortions noise-funk post-punk with jazz dissonance — classic No Wave punk jazz",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 56,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 644,
