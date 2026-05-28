@@ -2705,7 +2705,7 @@
     "date_raw": "1/3",
     "date_normalized": "2026-01-03",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -2714,8 +2714,36 @@
     "key_artists": "DJ Rashad, RP Boo, DJ Spinn, Traxman, DJ Clent (originators) • Jlin (modern/experimental)",
     "suggested_songs": "DJ Rashad — Feelin, RP Boo — Baby Come On, Traxman — Footworkin on Air, Jlin — Black Ballet",
     "vibe": "Rhythm moving faster than your body thinks it can.",
-    "songs_listened": [],
-    "rank_order": 7
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2JsQdDbuwFYNwykifahaYL",
+        "score": 5,
+        "reason": "DJ Rashad is the definitive footwork artist — juke rhythms, Chicago underground, textbook",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "In Da Club Before Eleven O' Clock"
+      },
+      {
+        "url": "https://open.spotify.com/track/4zBRdLegVtJFYsxVZMHDUt",
+        "score": 2,
+        "reason": "Baltimore club energy with rap overlay, shares DNA but isn't footwork — better fits: Baltimore club",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Pro Nails"
+      },
+      {
+        "url": "https://open.spotify.com/track/1bTRxssA4CIfyZyKI5MFuO",
+        "score": 1,
+        "reason": "Straight Chicago rap, no footwork production elements whatsoever — better fits: rap",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Pimp Like Me"
+      }
+    ],
+    "rank_order": 7,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 126,
