@@ -1368,7 +1368,7 @@
       }
     }
   window.toggleSongLog = function(wrapId) {
-  const wrap = document.getElementById(wrapId);
+  const wrap = document.getElementById('sl-' + wrapId) || document.getElementById(wrapId);
   if (!wrap) return;
   const list = wrap.querySelector('.song-log-list');
   const btn = wrap.querySelector('.song-log-toggle');
