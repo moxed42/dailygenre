@@ -19812,7 +19812,7 @@
     "date_raw": "1/2/26",
     "date_normalized": "2026-01-02",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -19821,8 +19821,36 @@
     "key_artists": "Eyehategod, Crowbar, Melvins, Acid Bath, Buzzov-en (major figures)",
     "suggested_songs": "Eyehategod -- Dixie Whisky, Crowbar -- Planets Collide, Melvins -- Hooch, Acid Bath -- Jezebel, Buzzov-en -- At a Loss",
     "vibe": "Metal that sounds like it came out of a drainage ditch and is proud of it.",
-    "songs_listened": [],
-    "rank_order": 32
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1aFP0G0GHQAAH9gfC95wT1",
+        "score": 1,
+        "reason": "Hyperpop/alt pop with no sludge metal characteristics — better fits: hyperpop",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "EAT SPIT! (feat. Royal & the Serpent)"
+      },
+      {
+        "url": "https://open.spotify.com/track/4nx2Nlkded5dYhqVhu1ea8",
+        "score": 5,
+        "reason": "Melvins at their most quintessential — slow, crushing, distorted, defining sludge metal",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "The Bit"
+      },
+      {
+        "url": "https://open.spotify.com/track/5ScZu89HBd1n8fyUncpipA",
+        "score": 4,
+        "reason": "Acid Bath sludge doom — heavy, dark, perfectly fits the genre",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Paegen Love Song"
+      }
+    ],
+    "rank_order": 32,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1009,
