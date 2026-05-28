@@ -601,33 +601,26 @@
       }
     }
 
-    /* ── LEVEL UP song entries ── */
-    .song-log-levelup-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      color: var(--accent-dark);
-      background: var(--accent-soft);
-      border: 1px solid var(--accent);
-      border-radius: 999px;
-      padding: 2px 9px;
-      margin-bottom: 7px;
+    .save-toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 2000;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: .92rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
     }
-    .song-log-connector {
-      margin-left: 18px;
-      height: 12px;
-      border-left: 2px dashed var(--border);
-      margin-bottom: -2px;
-    }
-    .song-log-entry-levelup {
-      margin-left: 18px;
-      border-left: 3px solid var(--accent) !important;
-      background: linear-gradient(to right, var(--accent-soft), var(--surface-2)) !important;
-    }
+    .save-toast.show { opacity: 1; transform: translateY(0); }
+    .btn[disabled] { opacity:.65; cursor:wait; }
   </style>
 </head>
 <body>
@@ -1109,9 +1102,8 @@
       `;
 
       const _respin = spinResult.querySelector('#respinBtn');
-      const _veto = spinResult.querySelector('#vetoBtn');
+      const _veto   = spinResult.querySelector('#vetoBtn');
       const _listen = spinResult.querySelector('#listenBtn');
-
       if (_respin) _respin.onclick = spinWheel;
       if (_veto) _veto.onclick = () => {
         genre.status = 'veto';
@@ -1124,114 +1116,92 @@
         loadListenScreen(genre);
         switchScreen('listen');
       };
-    }
 
-    function parseSongLinks(rawText) {
-      const lines = String(rawText || '')
-        .split('\n')
-        .map(s => s.trim())
-        .filter(Boolean);
+    function parseSongLinks(text) {
+      const lines = String(text || '').split(/
+/).map(s => s.trim()).filter(Boolean);
       const songs = [];
-
       const extractUrl = (value) => {
         const v = String(value || '').trim();
-        // Support markdown links: [text](https://...)
-        const markdownMatch = v.match(/^\[[^\]]*]\((https?:\/\/[^\s)]+)\)$/i);
-        return markdownMatch ? markdownMatch[1].trim() : v;
+        const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
+        return md ? md[1].trim() : v;
       };
-
       for (const line of lines) {
-        // Detect LEVEL UP prefix (case-insensitive)
         const isLevelUp = /^🔼\s*LEVEL\s*UP:\s*/i.test(line);
         const clean = line.replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
         const p = clean.split('|').map(x => x.trim());
-
         const url = extractUrl(p[0] || '');
-        const rawScore = p[1] ? parseInt(p[1], 10) : null;
-        const score = (Number.isInteger(rawScore) && rawScore >= 1 && rawScore <= 5)
-          ? rawScore
-          : null;
-
+        const raw = p[1] ? parseInt(p[1], 10) : null;
+        const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
         const song = {
           url,
           score,
           reason: p[2] || '',
-          // allow titles with embedded pipes by joining the rest
           title: p.slice(3).join(' | '),
-          source: url.includes('spotify.com')
-            ? 'spotify'
-            : (url.includes('youtube') || url.includes('youtu.be'))
-              ? 'youtube'
-              : 'other',
-          added: new Date().toISOString().slice(0, 10)
+          source: url.includes('spotify.com') ? 'spotify' : ((url.includes('youtube') || url.includes('youtu.be')) ? 'youtube' : 'other'),
+          added: new Date().toISOString().slice(0,10)
         };
-
         if (!song.url) continue;
-
         if (isLevelUp) {
-          // mark so JSON storage knows this was a LEVEL UP line
           song.isLevelUp = true;
-
-          // in-memory: attach as child of previous song when present
-          if (songs.length > 0) {
-            songs[songs.length - 1].levelUp = song;
-          } else {
-            songs.push(song);
-          }
+          if (songs.length > 0) songs[songs.length - 1].levelUp = song;
+          else songs.push(song);
         } else {
           songs.push(song);
         }
       }
-
       return songs;
     }
-    
-    function scoreBadgeStyle(score) {
-      if (score === 5) return 'color:#6daa45;border-color:#3a4435;background:#23291e;';
-      if (score === 4) return 'color:#4f98a3;border-color:#313b3b;background:#1c2828;';
-      if (score === 3) return 'color:#9a8a5a;border-color:#3a3425;background:#242018;';
-      if (score === 2) return 'color:#bb653b;border-color:#3d2e28;background:#231e1a;';
-      if (score === 1) return 'color:#a13544;border-color:#3a2528;background:#221a1b;';
-      return 'color:var(--muted);border:1px solid var(--border);background:var(--surface);';
+
+    function showSaveToast(message, isError) {
+      const el = document.getElementById('saveToast');
+      if (!el) return;
+      el.textContent = message;
+      el.style.borderColor = isError ? 'var(--danger)' : 'var(--border)';
+      el.style.color = isError ? 'var(--danger)' : 'var(--text)';
+      el.classList.add('show');
+      clearTimeout(window.__saveToastTimer);
+      window.__saveToastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    function normalizeSongUrl(url) {
+      return String(url || '').replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
+    }
+
+    function normalizeSongsListened(arr) {
+      if (!Array.isArray(arr)) return [];
+      const nested = [];
+      for (const raw of arr) {
+        if (!raw) continue;
+        const s = { ...raw, url: normalizeSongUrl(raw.url) };
+        const flagged = raw.isLevelUp === true || /^🔼\s*LEVEL\s*UP:\s*/i.test(String(raw.url || ''));
+        if (flagged && nested.length > 0) {
+          const parent = nested[nested.length - 1];
+          const { isLevelUp, ...rest } = s;
+          parent.levelUp = rest;
+        } else {
+          nested.push(s);
+        }
+      }
+      return nested;
     }
 
     function renderSongEntry(s, isChild) {
       const dimStyle = (!isChild && s.score != null && s.score <= 2) ? 'opacity:0.82;' : '';
-      const cardBg = isChild
-        ? 'background:#1e2620;border:1px solid #3a4435;'
-        : 'background:var(--surface-2);border:1px solid var(--border);';
-      const titleText = s.title
-        ? escapeHtml(s.title)
-        : (s.url.includes('spotify') ? '🎵 Spotify track' : '▶ Track');
-      const scoreBadge = s.score != null
-        ? `<span title="Genre match score" style="display:inline-flex;align-items:center;gap:3px;${scoreBadgeStyle(s.score)}border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;">★ ${s.score}/5</span>`
-        : '';
-      const reasonHtml = s.reason
-        ? `<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;margin-top:6px;">${escapeHtml(s.reason)}</div>`
-        : '';
+      const cardBg = isChild ? 'background:var(--surface);border:1px solid var(--accent);' : 'background:var(--surface-2);border:1px solid var(--border);';
+      const titleText = s.title ? escapeHtml(s.title) : (String(s.url || '').includes('spotify') ? '🎵 Spotify track' : '▶ Track');
+      const scoreBadge = s.score != null ? `<span title="Genre match score" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;flex-shrink:0;cursor:help;">${s.score}/5</span>` : '';
+      const reasonHtml = s.reason ? `<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;margin-top:6px;">${escapeHtml(s.reason)}</div>` : '';
       const levelUpHtml = (!isChild && s.levelUp)
-        ? `<div class="song-log-connector"></div>
-           <div class="song-log-entry-levelup" style="border-radius:12px;padding:10px 12px;margin-top:0;">
-             <div class="song-log-levelup-badge">🔼 Level Up</div>
-             ${renderSongEntry(s.levelUp, true)}
-           </div>`
+        ? `<div style="margin:8px 0 0 24px;padding-left:14px;border-left:3px solid var(--accent);"><div style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-dark);background:var(--accent-soft);border:1px solid var(--accent);border-radius:999px;padding:2px 9px;margin:0 0 7px 0;">🔼 Level Up</div>${renderSongEntry(s.levelUp, true)}</div>`
         : '';
-      return `<div style="${cardBg}border-radius:${isChild ? '8px' : '14px'};padding:10px 12px;${dimStyle}">
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer"
-             style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-            ${titleText}<span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>
-          </a>
-          ${scoreBadge}
-        </div>
-        ${reasonHtml}
-        ${levelUpHtml}
-      </div>`;
+      return `<div style="${cardBg}border-radius:${isChild ? '10px' : '14px'};padding:10px 12px;${dimStyle}"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><a href="${escapeHtml(normalizeSongUrl(s.url))}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${titleText}<span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span></a>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
+    function buildDiscordBlock() {
       if (!currentGenre) return '';
-      const _ist = document.getElementById('includeSongsToggle'); const includeSongs = !!(_ist && _ist.checked);
+      const includeSongs = document.getElementById('includeSongsToggle').checked;
       let text = `Today's Genre is: ${currentGenre.genre || 'Unknown'}\n\n`;
       if (currentGenre.vibe) text += `${genreEmoji(currentGenre)} ${currentGenre.vibe}\n\n`;
       if (currentGenre.summary) text += `${currentGenre.summary}\n\n`;
@@ -1244,7 +1214,7 @@
     }
 
     function updateDiscordBlock() {
-      const _db = document.getElementById('discordBlock'); if (_db) _db.value = buildDiscordBlock();
+      document.getElementById('discordBlock').value = buildDiscordBlock();
     }
 
     function renderStars() {
@@ -1272,28 +1242,12 @@
       currentGenre = genre;
       selectedRating = genre.rating && genre.rating !== 'zanger' ? String(genre.rating) : '';
 
-      const _fav = document.getElementById('favoriteSong');
-      const _favUrl = document.getElementById('favoriteSongUrl');
-      const _monthly = document.getElementById('monthlyContender');
-      const _notes = document.getElementById('notes');
-      const _songs = document.getElementById('songsListenedBulk');
-      const _toggle = document.getElementById('includeSongsToggle');
-
-      if (_fav) _fav.value = genre.favoritesong || '';
-      if (_favUrl) _favUrl.value = genre.favoritesongurl || '';
-      if (_monthly) _monthly.checked = !!genre.monthlycontender;
-      if (_notes) _notes.value = genre.notes || '';
-      if (_songs) _songs.value = (genre.songs_listened || []).flatMap(s => {
-        const parts = [s.url, s.score != null ? s.score : null, s.reason || null, s.title || null].filter(x => x !== null && x !== '');
-        const out = [parts.join(' | ')];
-        if (s.levelUp) {
-          const lu = s.levelUp;
-          const lp = [lu.url, lu.score != null ? lu.score : null, lu.reason || null, lu.title || null].filter(x => x !== null && x !== '');
-          out.push('🔼 LEVEL UP: ' + lp.join(' | '));
-        }
-        return out;
-      }).join('\n');
-      if (_toggle) _toggle.checked = false;
+      document.getElementById('favoriteSong').value = genre.favoritesong || '';
+      document.getElementById('favoriteSongUrl').value = genre.favoritesongurl || '';
+      document.getElementById('monthlyContender').checked = !!genre.monthlycontender;
+      document.getElementById('notes').value = genre.notes || '';
+      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).flatMap(s => { const out = [[normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
+      document.getElementById('includeSongsToggle').checked = false;
 
       const listenedDate = dateValue(genre);
       document.getElementById('listenDetails').innerHTML = `
@@ -1324,7 +1278,7 @@
       passwordNotice.textContent = '';
       passwordInput.value = appPassword || '';
       passwordModal.classList.add('show');
-      setTimeout(() => passwordInput.focus(), 20);
+      passwordInput.focus();
     }
 
     function closePasswordModal() {
@@ -1360,32 +1314,25 @@
       });
     }
 
-    
     async function resolveSpotifyTitles(songs) {
       if (!songs || !songs.length) return songs;
-
       async function resolveOne(song) {
         const next = { ...song };
-
+        next.url = normalizeSongUrl(next.url);
         if (!next.title && next.url && next.url.includes('spotify.com/track/')) {
           try {
             const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(next.url));
             if (res.ok) {
               const data = await res.json();
               const raw = data.title || '';
-              const clean = raw.split(/[·\u2013\u2014]/)[0].trim() || raw;
+              const clean = raw.split(/[·–—]/)[0].trim() || raw;
               if (clean) next.title = clean;
             }
           } catch(e) {}
         }
-
-        if (next.levelUp) {
-          next.levelUp = await resolveOne(next.levelUp);
-        }
-
+        if (next.levelUp) next.levelUp = await resolveOne(next.levelUp);
         return next;
       }
-
       return Promise.all(songs.map(resolveOne));
     }
 
@@ -1396,11 +1343,11 @@
       }
 
       currentGenre.rating = currentGenre.rating === 'zanger' ? 'zanger' : (selectedRating || currentGenre.rating || '');
-      currentGenre.favoritesong = (document.getElementById('favoriteSong') || {}).value?.trim() || currentGenre.favoritesong || '';
-      currentGenre.favoritesongurl = (document.getElementById('favoriteSongUrl') || {}).value?.trim() || currentGenre.favoritesongurl || '';
-      currentGenre.monthlycontender = !!(document.getElementById('monthlyContender') && document.getElementById('monthlyContender').checked);
-      currentGenre.notes = (document.getElementById('notes') || {}).value?.trim() || currentGenre.notes || '';
-      currentGenre.songs_listened = parseSongLinks((document.getElementById('songsListenedBulk') || {value:''}).value);
+      currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
+      currentGenre.favoritesongurl = document.getElementById('favoriteSongUrl').value.trim();
+      currentGenre.monthlycontender = document.getElementById('monthlyContender').checked;
+      currentGenre.notes = document.getElementById('notes').value.trim();
+      currentGenre.songs_listened = parseSongLinks(document.getElementById('songsListenedBulk').value);
       currentGenre.songs_listened = await resolveSpotifyTitles(currentGenre.songs_listened);
 
       if (!dateValue(currentGenre)) {
@@ -1420,6 +1367,7 @@
       }
 
       if (!appPassword) {
+        showSaveToast('Waiting for password…', false);
         openPasswordModal('save');
         return;
       }
@@ -1428,14 +1376,15 @@
         await doSaveWithPassword(appPassword);
         updateRemainingCount();
         populateMonthFilter();
-        ;
+        renderHistory();
         renderMonthly();
         renderRankings();
-        alert('Saved to GitHub successfully.');
+        showSaveToast('Saved to GitHub successfully.', false);
       } catch (e) {
         appPassword = '';
         openPasswordModal('save');
         passwordNotice.textContent = 'Password failed. Try again.';
+        showSaveToast('Save failed. Check password.', true);
       }
     }
 
@@ -1512,18 +1461,17 @@
         confirmPanel.innerHTML = '';
       }
     }
-  window.toggleSongLog = function(wrapId) {
-    const wrap = document.getElementById(wrapId);
-    if (!wrap) return;
-    const list = wrap.querySelector('.song-log-list');
-    const btn = wrap.querySelector('.song-log-toggle');
-    if (!list || !btn) return;
-    const isHidden = list.style.display === 'none' || list.style.display === '';
-    list.style.display = isHidden ? 'flex' : 'none';
-    if (isHidden) { list.style.flexDirection = 'column'; list.style.gap = '6px'; }
-    const count = list.querySelectorAll(':scope > div').length;
-    btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
-  };
+  window.toggleSongLog = function(id) {
+  const wrap = document.getElementById(id) || document.getElementById('sl-' + id);
+  if (!wrap) return;
+  const list = wrap.querySelector('.song-log-list');
+  const btn = wrap.querySelector('.song-log-toggle');
+  if (!list || !btn) return;
+  const isHidden = list.style.display === 'none' || list.style.display === '';
+  list.style.display = isHidden ? 'grid' : 'none';
+  const count = list.querySelectorAll(':scope > div').length;
+  btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
+}
     function renderHistory() {
       const month = document.getElementById('historyMonthFilter').value;
       const rating = document.getElementById('historyRatingFilter').value;
@@ -1564,15 +1512,16 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}             </div>           </div>` : ''}
+          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
         </div>
       `).join('');
-[...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
-  btn.addEventListener('click', () => {
-    const genre = genres.find(g => String(g.id) === btn.dataset.editId);
-    if (genre) { loadListenScreen(genre); switchScreen('listen'); }
-  });
-});
+
+      [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
+        btn.addEventListener('click', () => {
+          const genre = genres.find(g => String(g.id) === btn.dataset.editId);
+          if (genre) { loadListenScreen(genre); switchScreen('listen'); }
+        });
+      });
     }
 
     function renderMonthly() {
@@ -1585,7 +1534,8 @@
         document.getElementById('monthlySummary').textContent = 'No listened genres saved yet.';
         window._monthlyItems = [];
         window._monthlyLabel = '';
-        document.getElementById('monthlyList').innerHTML = '';        return;
+        document.getElementById('monthlyList').innerHTML = '';
+        return;
       }
 
       const current = select.value && months.includes(select.value) ? select.value : months[0];
@@ -1593,15 +1543,14 @@
 
       const monthItems = listened
         .filter(g => dateValue(g).startsWith(current))
-        .sort((a,b) => monthlySortAsc
-  ? (dateValue(a)||'').localeCompare(dateValue(b)||'') || String(a.genre).localeCompare(String(b.genre))
-  : (dateValue(b)||'').localeCompare(dateValue(a)||'') || String(a.genre).localeCompare(String(b.genre)))
+        .sort((a,b) => monthlySortAsc ? (dateValue(a)||'').localeCompare(dateValue(b)||'') || String(a.genre).localeCompare(String(b.genre)) : (dateValue(b)||'').localeCompare(dateValue(a)||'') || String(a.genre).localeCompare(String(b.genre)));
 
       document.getElementById('monthlySummary').textContent = `${monthItems.length} genres logged in ${current}.`;
       window._monthlyItems = monthItems;
       window._monthlyLabel = current;
 
-            document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
+      const listEl = document.getElementById('monthlyList');
+      listEl.innerHTML = monthItems.map(g => `
         <div class="list-item">
           <div class="row" style="justify-content:space-between;align-items:flex-start;">
             <div>
@@ -1609,9 +1558,7 @@
             </div>
             <div class="row" style="gap:8px;flex-shrink:0;align-items:center;">
               <span class="small">${escapeHtml(dateValue(g) || '')}</span>
-              <button class="btn btn-secondary"
-                      style="padding:6px 12px;font-size:.85rem;"
-                      data-monthly-edit-id="${g.id}">Edit</button>
+              <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-monthly-edit-id="${g.id}">Edit</button>
             </div>
           </div>
           <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
@@ -1624,37 +1571,11 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `
-          <div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;">
-            <button class="btn btn-ghost song-log-toggle"
-                    style="padding:5px 10px;font-size:.82rem;font-weight:600;"
-                    onclick="toggleSongLog('sl-m-${g.id}')">
-              ▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged
-            </button>
-            <div class="song-log-list"
-                 style="display:none;gap:6px;margin-top:8px;">
-              ${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}
-            </div>
-          </div>` : ''}
+          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-m-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
         </div>
       `).join('');
 
-      // Wire up monthly edit buttons
-      [...document.getElementById('monthlyList')
-        .querySelectorAll('[data-monthly-edit-id]')]
-        .forEach(btn => {
-          btn.addEventListener('click', () => {
-            const genre = genres.find(
-              g => String(g.id) === btn.dataset.monthlyEditId
-            );
-            if (genre) {
-              loadListenScreen(genre);
-              switchScreen('listen');
-            }
-          });
-        });
-      
-      [...document.getElementById('monthlyList').querySelectorAll('[data-monthly-edit-id]')].forEach(btn => {
+      [...listEl.querySelectorAll('[data-monthly-edit-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
           const genre = genres.find(g => String(g.id) === btn.dataset.monthlyEditId);
           if (genre) { loadListenScreen(genre); switchScreen('listen'); }
@@ -1662,6 +1583,7 @@
       });
     }
 
+    function populateMonthFilter() {
     function populateMonthFilter() {
       const months = [...new Set(
         genres.filter(g => dateValue(g)).map(g => dateValue(g).slice(0,7))
@@ -1755,74 +1677,14 @@
       [1,2,3,4,5].forEach(ensureRankOrderForRating);
     }
 
-    function normaliseSongsListened(arr) {
-      // Accepts the raw array from JSON (flat or already nested) and returns
-      // a properly nested array where Level Up entries are children of the
-      // song they upgrade rather than standalone siblings.
-      if (!Array.isArray(arr)) return [];
-
-      // Already nested correctly (first item already has levelUp children or
-      // no items are marked isLevelUp) — check if any flat-level levelUp markers
-      // exist, otherwise return as-is.
-      const hasFlat = arr.some(s => s.isLevelUp === true);
-      if (!hasFlat) {
-        // Data is already nested (or has no levelUp entries); just ensure
-        // no undefined sneaks through.
-        return arr.filter(Boolean);
-      }
-
-      // Re-nest: any item with isLevelUp:true becomes a child of the previous item.
-      const nested = [];
-      for (const s of arr) {
-        if (s.isLevelUp && nested.length > 0) {
-          const parent = nested[nested.length - 1];
-          if (!parent.levelUp) parent.levelUp = { ...s, isLevelUp: undefined };
-        } else {
-          nested.push({ ...s });
-        }
-      }
-      return nested;
-    }
-
-    function normaliseSongsListened(arr) {
-      // Accepts the raw array from JSON (flat or already nested) and returns
-      // a properly nested array where Level Up entries are children of the
-      // song they upgrade rather than standalone siblings.
-      if (!Array.isArray(arr)) return [];
-
-      // If nothing was tagged as LEVEL UP in storage, just return the array.
-      const hasFlat = arr.some(s => s && s.isLevelUp === true);
-      if (!hasFlat) {
-        return arr.filter(Boolean);
-      }
-
-      const nested = [];
-      for (const s of arr) {
-        if (!s) continue;
-        if (s.isLevelUp && nested.length > 0) {
-          const parent = nested[nested.length - 1];
-          if (!parent.levelUp) {
-            // drop the isLevelUp flag on the nested child
-            const { isLevelUp, ...rest } = s;
-            parent.levelUp = rest;
-          }
-        } else {
-          nested.push({ ...s });
-        }
-      }
-      return nested;
-    }
-
     async function loadData() {
       remainingCount.textContent = 'Loading genres...';
       const res = await fetch(DATA_URL);
       genres = await res.json();
 
       genres.forEach(g => {
-        if (!Array.isArray(g.songs_listened)) {
-          g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
-        }
-        g.songs_listened = normaliseSongsListened(g.songs_listened);
+        if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
+        g.songs_listened = normalizeSongsListened(g.songs_listened);
       });
 
       applyRankSeed();
@@ -1879,7 +1741,7 @@
       await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
     });
 
-    document.getElementById('saveBtn').addEventListener('click', prepareAndSaveCurrentGenre);
+    document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.textContent = 'Saving…'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.textContent = old; } });
 
     document.getElementById('zangerBtn').addEventListener('click', () => {
       selectedRating = '';
@@ -1896,6 +1758,8 @@
     document.getElementById('monthlySelect').addEventListener('change', renderMonthly);
 document.getElementById('monthlySortBtn').addEventListener('click',()=>{
   monthlySortAsc=!monthlySortAsc;
+
+
   document.getElementById('monthlySortBtn').textContent=monthlySortAsc?'Oldest first':'Newest first';
   renderMonthly();
 });
@@ -1946,22 +1810,7 @@ document.getElementById('monthlyCopyBtn').addEventListener('click', async () => 
     });
 
     loadData();
-  
-    // Song log toggle - event delegation (works for dynamically rendered lists)
-    document.addEventListener('click', function(e) {
-      const btn = e.target.closest('[data-song-id]');
-      if (!btn) return;
-      const id = btn.getAttribute('data-song-id');
-      const wrap = document.getElementById('sl-' + id);
-      if (!wrap) return;
-      const list = wrap.querySelector('.song-log-list');
-      if (!list) return;
-      const isHidden = list.style.display === 'none' || list.style.display === '';
-      list.style.display = isHidden ? 'flex' : 'none'; if(isHidden){list.style.flexDirection='column';}
-      const count = list.querySelectorAll(':scope > div').length;
-      btn.textContent = (isHidden ? '\u25BC ' : '\u25B6 ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
-    });
-
   </script>
+  <div id="saveToast" class="save-toast" aria-live="polite"></div>
 </body>
 </html>
