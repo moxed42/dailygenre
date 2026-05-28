@@ -541,7 +541,7 @@
     "date_raw": "1/1/2026",
     "date_normalized": "2026-01-01",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -550,8 +550,44 @@
     "key_artists": "John Lee Hooker, Baby Boy Warren, Eddie Burns, Bobo Jenkins, Little Sonny (originators)",
     "suggested_songs": "John Lee Hooker — Boogie Chillen, John Lee Hooker — Boom Boom, Baby Boy Warren — Sanafee, Eddie Burns — Burning Blues",
     "vibe": "Blues in a city with machine rhythms already in the air.",
-    "songs_listened": [],
-    "rank_order": 31
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6peCtspu8qjTpIWUOPprmH",
+        "score": 5,
+        "reason": "Alberta Adams singing classic Detroit blues — canonical example",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Long Gone"
+      },
+      {
+        "url": "https://open.spotify.com/track/1MwR07lZv0tu8kJePTLVAh",
+        "score": 2,
+        "reason": "Gentle acoustic blues-adjacent but more folk/Americana feel, lacks Detroit grit — better fits: folk blues",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "For You and Me"
+      },
+      {
+        "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
+        "score": 4,
+        "reason": "Named Detroit Blues Band, urban electric blues groove, solid fit",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "Bum's Rush"
+      },
+      {
+        "url": "https://open.spotify.com/track/5B5JM1VxUe1aZNmtt0M5Zy",
+        "score": 3,
+        "reason": "Great blues track but John Lee Hooker is more broadly Michigan/Chicago blues than specifically Detroit style",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "title": "One Bourbon, One Scotch, One Beer"
+      }
+    ],
+    "rank_order": 31,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 25,
