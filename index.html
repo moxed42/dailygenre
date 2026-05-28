@@ -621,6 +621,54 @@
     }
     .save-toast.show { opacity: 1; transform: translateY(0); }
     .btn[disabled] { opacity:.65; cursor:wait; }
+
+    .dg-hotfix-badge {
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      z-index: 3000;
+      background: #1f1a14;
+      color: #fffdf8;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .03em;
+      box-shadow: 0 10px 26px rgba(0,0,0,.18);
+      opacity: .88;
+    }
+    .dg-monthly-edit-force {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      min-width: 52px;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 3 !important;
+    }
+    .dg-levelup-nest {
+      margin: 10px 0 0 26px;
+      padding-left: 16px;
+      border-left: 4px solid var(--accent);
+    }
+    .dg-levelup-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 3px 10px;
+      margin: 0 0 8px 0;
+    }
+
   </style>
 </head>
 <body>
@@ -1848,5 +1896,353 @@ document.getElementById('monthlyCopyBtn').addEventListener('click', async () => 
     loadData();
   </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
+
+  <script>
+  /* DAILY GENRE FORCE HOTFIX 2026-05-27
+     Purpose: forcibly replace Monthly rendering + Level Up rendering at runtime.
+     You should see the lower-left "HOTFIX 0527 ACTIVE" badge when this exact file is loaded.
+  */
+  (function(){
+    'use strict';
+
+    window.DG_HOTFIX_VERSION = 'HOTFIX-0527-FORCE-MONTHLY-LEVELUP';
+
+    function ready(fn) {
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+      else fn();
+    }
+
+    function addBadge() {
+      if (document.getElementById('dgHotfixBadge')) return;
+      const b = document.createElement('div');
+      b.id = 'dgHotfixBadge';
+      b.className = 'dg-hotfix-badge';
+      b.textContent = 'HOTFIX 0527 ACTIVE';
+      document.body.appendChild(b);
+    }
+
+    function safeEscape(value) {
+      if (typeof window.escapeHtml === 'function') return window.escapeHtml(value);
+      return String(value == null ? '' : value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function safeDateValue(g) {
+      if (typeof window.dateValue === 'function') return window.dateValue(g);
+      return g?.date_normalized || g?.datenormalized || '';
+    }
+
+    function safeCategoryLine(g) {
+      if (typeof window.categoryLine === 'function') return window.categoryLine(g);
+      return g?.categorypath || g?.subcategory || 'Uncategorized';
+    }
+
+    function normalizeSongUrlForce(url) {
+      return String(url || '').replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
+    }
+
+    function extractMarkdownUrlForce(value) {
+      const v = String(value || '').trim();
+      const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
+      return md ? md[1].trim() : v;
+    }
+
+    function normalizeSongsListenedForce(arr) {
+      if (!Array.isArray(arr)) return [];
+      const nested = [];
+      for (const raw of arr) {
+        if (!raw) continue;
+
+        const rawUrl = String(raw.url || '');
+        const flagged = raw.isLevelUp === true || /^🔼\s*LEVEL\s*UP:\s*/i.test(rawUrl);
+        const song = {
+          ...raw,
+          url: normalizeSongUrlForce(rawUrl),
+        };
+        delete song.isLevelUp;
+
+        if (song.levelUp) {
+          song.levelUp = {
+            ...song.levelUp,
+            url: normalizeSongUrlForce(song.levelUp.url)
+          };
+        }
+
+        if (flagged && nested.length > 0) {
+          const parent = nested[nested.length - 1];
+          parent.levelUp = song;
+        } else if (flagged && nested.length === 0) {
+          nested.push(song);
+        } else {
+          nested.push(song);
+        }
+      }
+      return nested;
+    }
+
+    function countSongsForce(arr) {
+      return normalizeSongsListenedForce(arr || []).reduce((total, song) => {
+        return total + 1 + (song.levelUp ? 1 : 0);
+      }, 0);
+    }
+
+    function cleanSongForSaveForce(song, isLevelUp) {
+      const out = { ...(song || {}) };
+      delete out.levelUp;
+      out.url = normalizeSongUrlForce(out.url);
+      if (isLevelUp) {
+        out.url = '🔼 LEVEL UP: ' + out.url;
+        out.isLevelUp = true;
+      } else {
+        delete out.isLevelUp;
+      }
+      if (out.score === null || out.score === undefined || out.score === '') delete out.score;
+      if (!out.reason) delete out.reason;
+      if (!out.title) delete out.title;
+      return out;
+    }
+
+    function flattenSongsForStorageForce(arr) {
+      const flat = [];
+      normalizeSongsListenedForce(arr || []).forEach(song => {
+        flat.push(cleanSongForSaveForce(song, false));
+        if (song.levelUp) flat.push(cleanSongForSaveForce(song.levelUp, true));
+      });
+      return flat;
+    }
+
+    function renderSongEntryForce(song, isChild) {
+      const s = { ...(song || {}), url: normalizeSongUrlForce(song?.url) };
+      if (s.levelUp) s.levelUp = { ...s.levelUp, url: normalizeSongUrlForce(s.levelUp.url) };
+
+      const score = s.score !== undefined && s.score !== null && s.score !== '' ? String(s.score) : '';
+      const title = s.title
+        ? safeEscape(s.title)
+        : (String(s.url || '').includes('spotify') ? '🎵 Spotify track' : '▶ Track');
+      const href = safeEscape(normalizeSongUrlForce(s.url));
+      const scoreBadge = score
+        ? '<span title="Genre match score" style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:800;flex-shrink:0;cursor:help;">' + safeEscape(score) + '/5</span>'
+        : '';
+      const reasonHtml = s.reason
+        ? '<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;margin-top:6px;">' + safeEscape(s.reason) + '</div>'
+        : '';
+
+      const childHtml = (!isChild && s.levelUp)
+        ? '<div class="dg-levelup-nest"><div class="dg-levelup-badge">🔼 Level Up</div>' + renderSongEntryForce(s.levelUp, true) + '</div>'
+        : '';
+
+      return '' +
+        '<div class="' + (isChild ? 'dg-song-card dg-song-child' : 'dg-song-card') + '" style="' +
+          (isChild ? 'background:var(--surface);border:1px solid var(--accent);' : 'background:var(--surface-2);border:1px solid var(--border);') +
+          'border-radius:' + (isChild ? '12px' : '14px') + ';padding:10px 12px;' +
+          (!isChild && Number(s.score) <= 2 ? 'opacity:.86;' : '') +
+        '">' +
+          '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+            '<a href="' + href + '" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:800;text-decoration:none;font-size:.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+              title + '<span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span>' +
+            '</a>' +
+            scoreBadge +
+          '</div>' +
+          reasonHtml +
+          childHtml +
+        '</div>';
+    }
+
+    function parseSongLinksForce(text) {
+      const lines = String(text || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const songs = [];
+
+      for (const line of lines) {
+        const isLevelUp = /^🔼\s*LEVEL\s*UP:\s*/i.test(line);
+        const clean = line.replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
+        const parts = clean.split('|').map(x => x.trim());
+        const url = normalizeSongUrlForce(extractMarkdownUrlForce(parts[0] || ''));
+        const rawScore = parts[1] ? parseInt(parts[1], 10) : null;
+        const score = (!Number.isNaN(rawScore) && rawScore >= 1 && rawScore <= 5) ? rawScore : null;
+
+        if (!url) continue;
+
+        const song = {
+          url,
+          score,
+          reason: parts[2] || '',
+          title: parts.slice(3).join(' | '),
+          source: url.includes('spotify.com') ? 'spotify' : ((url.includes('youtube') || url.includes('youtu.be')) ? 'youtube' : 'other'),
+          added: new Date().toISOString().slice(0,10)
+        };
+
+        if (isLevelUp && songs.length > 0) {
+          song.isLevelUp = true;
+          songs[songs.length - 1].levelUp = song;
+        } else {
+          songs.push(song);
+        }
+      }
+      return songs;
+    }
+
+    function forceNormalizeAllGenres() {
+      if (!Array.isArray(window.genres)) return;
+      window.genres.forEach(g => {
+        if (!Array.isArray(g.songs_listened)) {
+          g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
+        }
+        g.songs_listened = normalizeSongsListenedForce(g.songs_listened);
+      });
+    }
+
+    function renderMonthlyForce() {
+      addBadge();
+      forceNormalizeAllGenres();
+
+      const select = document.getElementById('monthlySelect');
+      const summary = document.getElementById('monthlySummary');
+      const listEl = document.getElementById('monthlyList');
+      if (!select || !summary || !listEl || !Array.isArray(window.genres)) return;
+
+      const listened = window.genres.filter(g => (g.status || '').toLowerCase() === 'listened' && safeDateValue(g));
+      const months = [...new Set(listened.map(g => safeDateValue(g).slice(0,7)))].sort((a,b) => a.localeCompare(b)).reverse();
+
+      if (!months.length) {
+        select.innerHTML = '<option value="">No months yet</option>';
+        summary.textContent = 'No listened genres saved yet.';
+        window._monthlyItems = [];
+        window._monthlyLabel = '';
+        listEl.innerHTML = '';
+        return;
+      }
+
+      const current = select.value && months.includes(select.value) ? select.value : months[0];
+      select.innerHTML = months.map(m => '<option value="' + safeEscape(m) + '"' + (m === current ? ' selected' : '') + '>' + safeEscape(m) + '</option>').join('');
+
+      const asc = (typeof window.monthlySortAsc === 'boolean') ? window.monthlySortAsc : true;
+      const monthItems = listened
+        .filter(g => safeDateValue(g).startsWith(current))
+        .sort((a,b) => asc
+          ? (safeDateValue(a)||'').localeCompare(safeDateValue(b)||'') || String(a.genre || '').localeCompare(String(b.genre || ''))
+          : (safeDateValue(b)||'').localeCompare(safeDateValue(a)||'') || String(a.genre || '').localeCompare(String(b.genre || ''))
+        );
+
+      window._monthlyItems = monthItems;
+      window._monthlyLabel = current;
+      summary.textContent = monthItems.length + ' genres logged in ' + current + '. Hotfix renderer active.';
+
+      listEl.innerHTML = monthItems.map((g, idx) => {
+        const songs = normalizeSongsListenedForce(g.songs_listened || []);
+        const songCount = countSongsForce(songs);
+
+        return '' +
+          '<div class="list-item" data-monthly-card-index="' + idx + '">' +
+            '<div class="row" style="justify-content:space-between;align-items:flex-start;gap:12px;">' +
+              '<div style="min-width:0;flex:1;">' +
+                '<strong>' + safeEscape(g.genre || 'Unknown') + '</strong>' +
+                '<div class="small" style="margin-top:6px;">' + safeEscape(safeCategoryLine(g)) + '</div>' +
+              '</div>' +
+              '<div class="row" style="gap:8px;flex-shrink:0;align-items:center;">' +
+                '<span class="small">' + safeEscape(safeDateValue(g) || '') + '</span>' +
+                '<button type="button" class="btn btn-primary dg-monthly-edit-force" style="padding:7px 13px;font-size:.86rem;" data-monthly-edit-index="' + idx + '" data-monthly-edit-id="' + safeEscape(g.id ?? '') + '">Edit</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="status-row">' +
+              '<span class="tag">' + safeEscape(String(g.rating || '—')) + (g.rating && g.rating !== 'zanger' ? ' ★' : '') + '</span>' +
+              (g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : '') +
+            '</div>' +
+            (g.favoritesong ? '<div class="small" style="margin-top:10px;">Favorite song: ' + (
+              g.favoritesongurl
+                ? '<a href="' + safeEscape(g.favoritesongurl) + '" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:700;text-decoration:none;">' + safeEscape(g.favoritesong) + ' ↗</a>'
+                : safeEscape(g.favoritesong)
+            ) + '</div>' : '') +
+            (songs.length ? '<div class="song-log-wrap" id="sl-m-hotfix-' + idx + '" style="margin-top:10px;">' +
+              '<button type="button" class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:700;">▶ ' + songCount + ' song' + (songCount === 1 ? '' : 's') + ' logged</button>' +
+              '<div class="song-log-list" style="display:none;gap:8px;margin-top:8px;">' + songs.map(song => renderSongEntryForce(song, false)).join('') + '</div>' +
+            '</div>' : '') +
+          '</div>';
+      }).join('');
+
+      listEl.querySelectorAll('[data-monthly-edit-index]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const idx = parseInt(btn.getAttribute('data-monthly-edit-index'), 10);
+          const genre = window._monthlyItems && window._monthlyItems[idx];
+          if (genre && typeof window.loadListenScreen === 'function' && typeof window.switchScreen === 'function') {
+            window.loadListenScreen(genre);
+            window.switchScreen('listen');
+          } else {
+            alert('Could not open this genre for editing. The hotfix loaded, but the main app functions are unavailable.');
+          }
+        });
+      });
+
+      listEl.querySelectorAll('.song-log-wrap').forEach(wrap => {
+        const btn = wrap.querySelector('.song-log-toggle');
+        const log = wrap.querySelector('.song-log-list');
+        if (!btn || !log) return;
+        btn.addEventListener('click', function() {
+          const hidden = log.style.display === 'none' || log.style.display === '';
+          log.style.display = hidden ? 'grid' : 'none';
+          btn.textContent = (hidden ? '▼ ' : '▶ ') + btn.textContent.replace(/^[▶▼]\s*/, '');
+        });
+      });
+    }
+
+    function patchGlobals() {
+      try {
+        window.normalizeSongUrl = normalizeSongUrlForce;
+        window.normalizeSongsListened = normalizeSongsListenedForce;
+        window.countSongsForDisplay = countSongsForce;
+        window.renderSongEntry = renderSongEntryForce;
+        window.parseSongLinks = parseSongLinksForce;
+        window.flattenSongsForStorage = flattenSongsForStorageForce;
+        window.genresForSave = function() {
+          return (Array.isArray(window.genres) ? window.genres : []).map(g => {
+            const out = { ...g };
+            if (Array.isArray(out.songs_listened)) out.songs_listened = flattenSongsForStorageForce(out.songs_listened);
+            return out;
+          });
+        };
+
+        window.renderMonthly = renderMonthlyForce;
+
+        // Also reassign bare global bindings in browsers where top-level function declarations are mutable global bindings.
+        try { normalizeSongUrl = normalizeSongUrlForce; } catch(e) {}
+        try { normalizeSongsListened = normalizeSongsListenedForce; } catch(e) {}
+        try { countSongsForDisplay = countSongsForce; } catch(e) {}
+        try { renderSongEntry = renderSongEntryForce; } catch(e) {}
+        try { parseSongLinks = parseSongLinksForce; } catch(e) {}
+        try { flattenSongsForStorage = flattenSongsForStorageForce; } catch(e) {}
+        try { genresForSave = window.genresForSave; } catch(e) {}
+        try { renderMonthly = renderMonthlyForce; } catch(e) {}
+      } catch (err) {
+        console.error('Daily Genre hotfix failed while patching globals:', err);
+      }
+    }
+
+    ready(function(){
+      addBadge();
+      patchGlobals();
+
+      // Re-render monthly after the main async data load likely completes.
+      // This is intentionally repeated briefly so it wins against older renderMonthly calls.
+      let tries = 0;
+      const timer = setInterval(function(){
+        patchGlobals();
+        if (Array.isArray(window.genres) && window.genres.length) {
+          renderMonthlyForce();
+        }
+        tries += 1;
+        if (tries >= 20) clearInterval(timer);
+      }, 250);
+
+      document.addEventListener('click', function(e) {
+        const monthlyTab = e.target && e.target.closest && e.target.closest('.tab-btn[data-screen="monthly"]');
+        if (monthlyTab) setTimeout(renderMonthlyForce, 0);
+      }, true);
+    });
+  })();
+  </script>
+
 </body>
 </html>
