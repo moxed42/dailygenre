@@ -15745,7 +15745,7 @@
     "date_raw": "1/11",
     "date_normalized": "2026-01-11",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -15754,8 +15754,62 @@
     "key_artists": "Zapp, Cameo, Prince, The Gap Band, Dâm-Funk (major figures across eras)",
     "suggested_songs": "Zapp — More Bounce to the Ounce, Cameo — Candy, Prince — Controversy, The Gap Band — Burn Rubber on Me (Why You Wanna Hurt Me), Dâm-Funk — Hood Pass Intact",
     "vibe": "Funk wired through circuitry without giving up the body.",
-    "songs_listened": [],
-    "rank_order": 12
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6qCqCsRUhGSuRgg7jX0WM4",
+        "score": 5,
+        "reason": "Tight drum machine groove, rubbery bass and bright synth stabs — quintessential 80s synth‑funk from Prince",
+        "title": "Prince — D.M.S.R.",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "https://open.spotify.com/track/6aBUnkXuCEQQHAlTokv9or",
+        "score": 3,
+        "reason": "New wave/art‑rock with a funky undertow but guitars and organic drums dominate over synth bass",
+        "title": "Talking Heads — This Must Be the Place (Naive Melody)",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3HfB5hBU0dmBt8T0iCmH42",
+        "score": 4,
+        "reason": "Still Talking Heads, but with a much clearer, synthy funk pulse and dance‑floor focus",
+        "title": "Talking Heads — Burning Down the House",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/07OzC5JlcaDwEkzWmvqp6y",
+        "score": 3,
+        "reason": "Classic new jack swing: punchy drum machines and funk influence, but it lives more in R&B/hip‑hop crossover than synth‑funk proper",
+        "title": "Janet Jackson — Nasty",
+        "source": "spotify",
+        "added": "2026-05-28"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0nLiqZ6A27jJRIa0O0QzQJ",
+        "score": 4,
+        "reason": "Jam & Lewis at their slickest — synth‑bass driven, chrome‑plated groove right in the synth‑funk lane",
+        "title": "The S.O.S. Band — Just Be Good to Me",
+        "source": "spotify",
+        "added": "2026-05-28",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/69kOkLUCkxIZYexIgSG8rq",
+        "score": 4,
+        "reason": "Modern disco‑funk with Nile Rodgers’ guitar and a smooth synth bed, comfortably in the lineage of glossy synth‑funk",
+        "title": "Daft Punk; Pharrell Williams; Nile Rodgers — Get Lucky",
+        "source": "spotify",
+        "added": "2026-05-28"
+      }
+    ],
+    "rank_order": 12,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 770,
