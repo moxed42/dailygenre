@@ -2310,6 +2310,7 @@
         return;
       }
 
+      window._archiveItems = items;
       list.innerHTML = items.map(g => {
         const songs = normalizeSongsListened(g.songs_listened || []);
         const songCount = countSongsForDisplay(songs);
@@ -2526,30 +2527,38 @@
       renderStars();
     });
 
-    document.getElementById('historyMonthFilter').addEventListener('change', renderHistory);
-    document.getElementById('historyRatingFilter').addEventListener('change', renderHistory);
-    document.getElementById('historyCategoryFilter').addEventListener('input', renderHistory);
-    document.getElementById('monthlySelect').addEventListener('change', renderMonthly);
-document.getElementById('monthlySortBtn').addEventListener('click',()=>{
-  monthlySortAsc=!monthlySortAsc;
+    const historyMonthFilter = document.getElementById('historyMonthFilter');
+    const historyRatingFilter = document.getElementById('historyRatingFilter');
+    const archiveSearchInput = document.getElementById('archiveSearchInput');
+    const archiveFlagFilter = document.getElementById('archiveFlagFilter');
+    const archiveSortFilter = document.getElementById('archiveSortFilter');
+    const archiveCopyBtn = document.getElementById('archiveCopyBtn');
 
+    if (historyMonthFilter) historyMonthFilter.addEventListener('change', renderHistory);
+    if (historyRatingFilter) historyRatingFilter.addEventListener('change', renderHistory);
+    if (archiveSearchInput) archiveSearchInput.addEventListener('input', renderHistory);
+    if (archiveFlagFilter) archiveFlagFilter.addEventListener('change', renderHistory);
+    if (archiveSortFilter) archiveSortFilter.addEventListener('change', renderHistory);
 
-  document.getElementById('monthlySortBtn').textContent=monthlySortAsc?'Oldest first':'Newest first';
-  renderMonthly();
-});
-document.getElementById('monthlyCopyBtn').addEventListener('click', async () => {
-  const items = window._monthlyItems || [];
-  if (!items.length) return;
-  const lines = items.map(g => {
-    const p = (g.datenormalized || '').split('-');
-    return (p.length === 3 ? p[1] + '-' + p[2] : g.datenormalized) + ': ' + (g.genre || 'Unknown');
-  });
-  const text = (window._monthlyLabel || '') + '\n' + lines.join('\n');
-  await navigator.clipboard.writeText(text);
-  const btn = document.getElementById('monthlyCopyBtn');
-  btn.textContent = 'Copied!';
-  setTimeout(() => { btn.textContent = 'Copy list'; }, 2000);
-});
+    document.querySelectorAll('.archive-view-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        archiveView = btn.dataset.archiveView || 'all';
+        document.querySelectorAll('.archive-view-btn').forEach(b => b.classList.toggle('active', b === btn));
+        renderHistory();
+      });
+    });
+
+    if (archiveCopyBtn) {
+      archiveCopyBtn.addEventListener('click', async () => {
+        const items = window._archiveItems || [];
+        if (!items.length) return;
+        const lines = items.map(g => `${dateValue(g) || 'No date'}: ${g.genre || 'Unknown'}${g.rating ? ` (${g.rating}★)` : ''}`);
+        await navigator.clipboard.writeText(lines.join('\n'));
+        const old = archiveCopyBtn.textContent;
+        archiveCopyBtn.textContent = 'Copied!';
+        setTimeout(() => { archiveCopyBtn.textContent = old; }, 2000);
+      });
+    }
 
     passwordSubmitBtn.addEventListener('click', async () => {
       const pw = passwordInput.value.trim();
