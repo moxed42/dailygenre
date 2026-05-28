@@ -1127,33 +1127,41 @@
     }
 
     function parseSongLinks(rawText) {
-  const lines = rawText.split('\n').map(s => s.trim()).filter(Boolean);
-  const songs = [];
-  for (const line of lines) {
-    const isLevelUp = line.startsWith('\u{1F53C} LEVEL UP:') || line.startsWith('🔼 LEVEL UP:');
-    const clean = isLevelUp ? line.replace(/^🔼\s*LEVEL UP:\s*/, '') : line;
-    const p = clean.split('|').map(x => x.trim());
-    const rawScore = p[1] ? parseInt(p[1], 10) : null;
-    const score = (rawScore && rawScore >= 1 && rawScore <= 5) ? rawScore : null;
-    const song = {
-      url: p[0] || '',
-      score,
-      reason: p[2] || '',
-      title: p[3] || '',
-      source: (p[0]||'').includes('spotify.com') ? 'spotify'
-            : ((p[0]||'').includes('youtube') || (p[0]||'').includes('youtu.be')) ? 'youtube'
-            : 'other',
-      added: new Date().toISOString().slice(0, 10)
-    };
-    if (!song.url) continue;
-    if (isLevelUp && songs.length > 0) {
-      songs[songs.length - 1].levelUp = song;
-    } else {
-      songs.push(song);
+      const lines = String(rawText || '').split('\n').map(s => s.trim()).filter(Boolean);
+      const songs = [];
+
+      const extractUrl = (value) => {
+        const v = String(value || '').trim();
+        const markdownMatch = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
+        return markdownMatch ? markdownMatch[1].trim() : v;
+      };
+
+      for (const line of lines) {
+        const isLevelUp = /^🔼\s*LEVEL\s*UP:\s*/i.test(line);
+        const clean = line.replace(/^🔼\s*LEVEL\s*UP:\s*/i, '').trim();
+        const p = clean.split('|').map(x => x.trim());
+        const url = extractUrl(p[0] || '');
+        const rawScore = p[1] ? parseInt(p[1], 10) : null;
+        const score = (Number.isInteger(rawScore) && rawScore >= 1 && rawScore <= 5) ? rawScore : null;
+        const song = {
+          url,
+          score,
+          reason: p[2] || '',
+          title: p.slice(3).join(' | '),
+          source: url.includes('spotify.com') ? 'spotify'
+                : (url.includes('youtube') || url.includes('youtu.be')) ? 'youtube'
+                : 'other',
+          added: new Date().toISOString().slice(0, 10)
+        };
+        if (!song.url) continue;
+        if (isLevelUp && songs.length > 0) {
+          songs[songs.length - 1].levelUp = song;
+        } else {
+          songs.push(song);
+        }
+      }
+      return songs;
     }
-  }
-  return songs;
-}
 
     function scoreBadgeStyle(score) {
       if (score === 5) return 'color:#6daa45;border-color:#3a4435;background:#23291e;';
@@ -1331,20 +1339,30 @@
     
     async function resolveSpotifyTitles(songs) {
       if (!songs || !songs.length) return songs;
-      const resolved = await Promise.all(songs.map(async s => {
-        if (s.title || !s.url || !s.url.includes('spotify.com/track/')) return s;
-        try {
-          const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(s.url));
-          if (!res.ok) return s;
-          const data = await res.json();
-          const raw = data.title || '';
-          const clean = raw.split(/[·\u2013\u2014]/)[0].trim() || raw;
-          return { ...s, title: clean };
-        } catch(e) {
-          return s;
+
+      async function resolveOne(song) {
+        const next = { ...song };
+
+        if (!next.title && next.url && next.url.includes('spotify.com/track/')) {
+          try {
+            const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(next.url));
+            if (res.ok) {
+              const data = await res.json();
+              const raw = data.title || '';
+              const clean = raw.split(/[·\u2013\u2014]/)[0].trim() || raw;
+              if (clean) next.title = clean;
+            }
+          } catch(e) {}
         }
-      }));
-      return resolved;
+
+        if (next.levelUp) {
+          next.levelUp = await resolveOne(next.levelUp);
+        }
+
+        return next;
+      }
+
+      return Promise.all(songs.map(resolveOne));
     }
 
     async function prepareAndSaveCurrentGenre() {
@@ -1522,7 +1540,7 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${[...(g.songs_listened)].sort((a,b)=>(b.score??-1)-(a.score??-1)).map(s=>renderSongEntry(s,false)).join('')}             </div>           </div>` : ''}
+          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}             </div>           </div>` : ''}
         </div>
       `).join('');
 [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
@@ -1579,7 +1597,7 @@
           <div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;">
             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-m-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
-              ${[...(g.songs_listened)].sort((a,b)=>(b.score??-1)-(a.score??-1)).map(s=>renderSongEntry(s,false)).join('')}
+              ${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}
             </div>
           </div>` : ''}
         </div>
