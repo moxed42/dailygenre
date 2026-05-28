@@ -600,6 +600,34 @@
         grid-column: 1 / -1;
       }
     }
+
+    /* ── LEVEL UP song entries ── */
+    .song-log-levelup-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 2px 9px;
+      margin-bottom: 7px;
+    }
+    .song-log-connector {
+      margin-left: 18px;
+      height: 12px;
+      border-left: 2px dashed var(--border);
+      margin-bottom: -2px;
+    }
+    .song-log-entry-levelup {
+      margin-left: 18px;
+      border-left: 3px solid var(--accent) !important;
+      background: linear-gradient(to right, var(--accent-soft), var(--surface-2)) !important;
+    }
   </style>
 </head>
 <body>
@@ -930,6 +958,7 @@
     let appPassword = '';
     let pendingSaveAction = null;
     let unmatchedSeeds = [];
+    let monthlySortAsc = true;
 
     const spinnerTrack = document.getElementById('spinnerTrack');
     const remainingCount = document.getElementById('remainingCount');
@@ -1079,15 +1108,19 @@
         </div>
       `;
 
-      document.getElementById('respinBtn').onclick = spinWheel;
-      document.getElementById('vetoBtn').onclick = () => {
+      const _respin = spinResult.querySelector('#respinBtn');
+      const _veto = spinResult.querySelector('#vetoBtn');
+      const _listen = spinResult.querySelector('#listenBtn');
+
+      if (_respin) _respin.onclick = spinWheel;
+      if (_veto) _veto.onclick = () => {
         genre.status = 'veto';
         genre.rating = 'zanger';
         genre.rank_order = null;
         loadListenScreen(genre);
         switchScreen('listen');
       };
-      document.getElementById('listenBtn').onclick = () => {
+      if (_listen) _listen.onclick = () => {
         loadListenScreen(genre);
         switchScreen('listen');
       };
@@ -1146,15 +1179,11 @@
         ? `<div style="color:var(--muted);font-size:.82rem;font-style:italic;line-height:1.45;margin-top:6px;">${escapeHtml(s.reason)}</div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
-        ? `<div style="margin-top:10px;margin-left:14px;padding-left:12px;border-left:2px solid #3a4435;">
-            <div style="background:#1e2620;border:1px solid #3a4435;border-radius:10px;padding:10px 12px;">
-              <div style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6daa45;margin-bottom:6px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-                Better fit
-              </div>
-              ${renderSongEntry(s.levelUp, true)}
-            </div>
-          </div>`
+        ? `<div class="song-log-connector"></div>
+           <div class="song-log-entry-levelup" style="border-radius:12px;padding:10px 12px;margin-top:0;">
+             <div class="song-log-levelup-badge">🔼 Level Up</div>
+             ${renderSongEntry(s.levelUp, true)}
+           </div>`
         : '';
       return `<div style="${cardBg}border-radius:${isChild ? '8px' : '14px'};padding:10px 12px;${dimStyle}">
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -1442,16 +1471,17 @@
       }
     }
   window.toggleSongLog = function(wrapId) {
-  const wrap = document.getElementById('sl-' + wrapId) || document.getElementById(wrapId);
-  if (!wrap) return;
-  const list = wrap.querySelector('.song-log-list');
-  const btn = wrap.querySelector('.song-log-toggle');
-  if (!list || !btn) return;
-  const isHidden = getComputedStyle(list).display === 'none' || list.style.display === 'none' || list.style.display === '';
-  list.style.display = isHidden ? 'flex' : 'none'; if(isHidden){list.style.flexDirection='column';}
-  const count = list.querySelectorAll(':scope > div').length;
-  btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
-};
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    const list = wrap.querySelector('.song-log-list');
+    const btn = wrap.querySelector('.song-log-toggle');
+    if (!list || !btn) return;
+    const isHidden = list.style.display === 'none' || list.style.display === '';
+    list.style.display = isHidden ? 'flex' : 'none';
+    if (isHidden) { list.style.flexDirection = 'column'; list.style.gap = '6px'; }
+    const count = list.querySelectorAll(':scope > div').length;
+    btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
+  };
     function renderHistory() {
       const month = document.getElementById('historyMonthFilter').value;
       const rating = document.getElementById('historyRatingFilter').value;
@@ -1472,17 +1502,16 @@
 
       list.innerHTML = listened.map(g => `
         <div class="list-item">
-          <div class="row" style="justify-content:space-between;">
-            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+          <div class="row" style="justify-content:space-between;align-items:flex-start;">
+            <div>
+              <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
               <div class="small" style="margin-top:4px;">${escapeHtml(categoryLine(g))}</div>
             </div>
             <div class="row" style="gap:8px;flex-shrink:0;">
               <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
               <button class="btn btn-secondary" style="padding:6px 12px;font-size:.85rem;" data-edit-id="${g.id}">Edit</button>
             </div>
-            <div style="display:none">
           </div>
-          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
           <div class="status-row">
             <span class="tag">${g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))} ★`}</span>
             ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
@@ -1493,7 +1522,7 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="h-${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${[...(g.songs_listened)].sort((a,b)=>(b.score??-1)-(a.score??-1)).map(s=>renderSongEntry(s,false)).join('')}             </div>           </div>` : ''}
+          ${(g.songs_listened || []).length ? `           <div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;">             <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">               ${[...(g.songs_listened)].sort((a,b)=>(b.score??-1)-(a.score??-1)).map(s=>renderSongEntry(s,false)).join('')}             </div>           </div>` : ''}
         </div>
       `).join('');
 [...list.querySelectorAll('[data-edit-id]')].forEach(btn => {
@@ -1527,6 +1556,8 @@
   : (dateValue(b)||'').localeCompare(dateValue(a)||'') || String(a.genre).localeCompare(String(b.genre)))
 
       document.getElementById('monthlySummary').textContent = `${monthItems.length} genres logged in ${current}.`;
+      window._monthlyItems = monthItems;
+      window._monthlyLabel = current;
 
       document.getElementById('monthlyList').innerHTML = monthItems.map(g => `
         <div class="list-item">
@@ -1546,7 +1577,7 @@
           }</div>` : ''}
           ${(g.songs_listened || []).length ? `
           <div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;">
-            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" data-song-id="m-${g.id}">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
+            <button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-m-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button>
             <div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">
               ${[...(g.songs_listened)].sort((a,b)=>(b.score??-1)-(a.score??-1)).map(s=>renderSongEntry(s,false)).join('')}
             </div>
@@ -1726,7 +1757,6 @@
     document.getElementById('historyRatingFilter').addEventListener('change', renderHistory);
     document.getElementById('historyCategoryFilter').addEventListener('input', renderHistory);
     document.getElementById('monthlySelect').addEventListener('change', renderMonthly);
-    let monthlySortAsc = true;
 document.getElementById('monthlySortBtn').addEventListener('click',()=>{
   monthlySortAsc=!monthlySortAsc;
   document.getElementById('monthlySortBtn').textContent=monthlySortAsc?'Oldest first':'Newest first';
