@@ -713,7 +713,7 @@
             <label for="songsListenedBulk">Songs listened — one per line</label>
 <div class="small" style="margin-bottom:8px;color:var(--muted);">Simple: paste a URL &bull; With detail: <code>URL | 1-5 | reason it fits or doesn't</code></div>
 <textarea id="songsListenedBulk" style="min-height:130px;font-size:.88rem;font-family:monospace;"
-  placeholder=placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist"</textarea>
+  placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title"></textarea>
             <div class="small" style="margin-top:8px;">These are stored on the genre as an array so you can later reverse-engineer what you actually listened to.</div>
           </div>
 
@@ -789,7 +789,7 @@
   <div class="modal-backdrop" id="passwordModal">
     <div class="modal">
       <h3>Save changes</h3>
-      <p>Enter the app password to send the full updated genre file through your Cloudflare Worker and commit it back to GitHub [file:1].</p>
+      <p>Enter the app password to send the full updated genre file through your Cloudflare Worker and commit it back to GitHub.</p>
       <input id="passwordInput" type="password" placeholder="App password" />
       <div class="row" style="margin-top:14px;">
         <button class="btn btn-primary" id="passwordSubmitBtn">Save now</button>
@@ -1116,10 +1116,10 @@
         loadListenScreen(genre);
         switchScreen('listen');
       };
+    }
 
     function parseSongLinks(text) {
-      const lines = String(text || '').split(/
-/).map(s => s.trim()).filter(Boolean);
+      const lines = String(text || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const songs = [];
       const extractUrl = (value) => {
         const v = String(value || '').trim();
@@ -1186,6 +1186,44 @@
       return nested;
     }
 
+    function countSongsForDisplay(arr) {
+      return normalizeSongsListened(arr || []).reduce((total, song) => total + 1 + (song.levelUp ? 1 : 0), 0);
+    }
+
+    function cleanSongForSave(song, isLevelUp) {
+      const out = { ...(song || {}) };
+      const nested = out.levelUp;
+      delete out.levelUp;
+      out.url = normalizeSongUrl(out.url);
+      if (isLevelUp) {
+        out.url = `🔼 LEVEL UP: ${out.url}`;
+        out.isLevelUp = true;
+      } else {
+        delete out.isLevelUp;
+      }
+      if (out.title === '') delete out.title;
+      if (out.reason === '') delete out.reason;
+      void nested;
+      return out;
+    }
+
+    function flattenSongsForStorage(arr) {
+      const flat = [];
+      normalizeSongsListened(arr || []).forEach(song => {
+        flat.push(cleanSongForSave(song, false));
+        if (song.levelUp) flat.push(cleanSongForSave(song.levelUp, true));
+      });
+      return flat;
+    }
+
+    function genresForSave() {
+      return genres.map(g => {
+        const out = { ...g };
+        if (Array.isArray(out.songs_listened)) out.songs_listened = flattenSongsForStorage(out.songs_listened);
+        return out;
+      });
+    }
+
     function renderSongEntry(s, isChild) {
       const dimStyle = (!isChild && s.score != null && s.score <= 2) ? 'opacity:0.82;' : '';
       const cardBg = isChild ? 'background:var(--surface);border:1px solid var(--accent);' : 'background:var(--surface-2);border:1px solid var(--border);';
@@ -1198,7 +1236,6 @@
       return `<div style="${cardBg}border-radius:${isChild ? '10px' : '14px'};padding:10px 12px;${dimStyle}"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><a href="${escapeHtml(normalizeSongUrl(s.url))}" target="_blank" rel="noopener noreferrer" style="color:var(--text);font-weight:700;text-decoration:none;font-size:.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${titleText}<span style="color:var(--accent);font-size:.8rem;margin-left:4px;">↗</span></a>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
     }
 
-    function buildDiscordBlock() {
     function buildDiscordBlock() {
       if (!currentGenre) return '';
       const includeSongs = document.getElementById('includeSongsToggle').checked;
@@ -1294,7 +1331,7 @@
           'Content-Type': 'application/json',
           'X-Password': password
         },
-        body: JSON.stringify(genres)
+        body: JSON.stringify(genresForSave())
       });
 
       const data = await res.json().catch(() => ({}));
@@ -1469,7 +1506,7 @@
   if (!list || !btn) return;
   const isHidden = list.style.display === 'none' || list.style.display === '';
   list.style.display = isHidden ? 'grid' : 'none';
-  const count = list.querySelectorAll(':scope > div').length;
+  const count = list.querySelectorAll('a[target="_blank"]').length || list.querySelectorAll(':scope > div').length;
   btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
 }
     function renderHistory() {
@@ -1512,7 +1549,7 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
+          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-h-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${countSongsForDisplay(g.songs_listened)} song${countSongsForDisplay(g.songs_listened)===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
         </div>
       `).join('');
 
@@ -1571,7 +1608,7 @@
               ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
               : escapeHtml(g.favoritesong)
           }</div>` : ''}
-          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-m-${g.id}')">▶ ${g.songs_listened.length} song${g.songs_listened.length===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
+          ${(g.songs_listened || []).length ? `<div class="song-log-wrap" id="sl-m-${g.id}" style="margin-top:10px;"><button class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.82rem;font-weight:600;" onclick="toggleSongLog('sl-m-${g.id}')">▶ ${countSongsForDisplay(g.songs_listened)} song${countSongsForDisplay(g.songs_listened)===1?'':'s'} logged</button><div class="song-log-list" style="display:none;gap:6px;margin-top:8px;">${(g.songs_listened || []).map(s => renderSongEntry(s, false)).join('')}</div></div>` : ''}
         </div>
       `).join('');
 
@@ -1583,7 +1620,6 @@
       });
     }
 
-    function populateMonthFilter() {
     function populateMonthFilter() {
       const months = [...new Set(
         genres.filter(g => dateValue(g)).map(g => dateValue(g).slice(0,7))
@@ -1793,7 +1829,7 @@ document.getElementById('monthlyCopyBtn').addEventListener('click', async () => 
         renderHistory();
         renderMonthly();
         renderRankings();
-        alert('Saved to GitHub successfully.');
+        showSaveToast('Saved to GitHub successfully.', false);
       } catch (e) {
         passwordNotice.textContent = 'That password did not work.';
       }
