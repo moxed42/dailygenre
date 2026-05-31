@@ -1562,10 +1562,15 @@
     @media (max-width: 980px) {
       .screen-detail .listen-grid { grid-template-columns:1fr; }
     }
+    @media (max-width: 560px) {
+      .detail-record-card { grid-template-columns:1fr; }
+      .detail-record-card .genre-art { width:112px; height:112px; }
+    }
 
+  
     .song-card-add {
-      border-color: rgba(47, 107, 59, .40) !important;
-      box-shadow: 0 8px 18px rgba(20, 60, 20, .08);
+      border-color: rgba(47,107,59,.40) !important;
+      box-shadow: 0 8px 18px rgba(20,60,20,.08);
     }
     .add-badge {
       display: inline-flex;
@@ -1593,87 +1598,33 @@
       font-weight: 1000;
       font-size: .75rem;
     }
-    @media (max-width: 560px) {
-      .detail-record-card { grid-template-columns:1fr; }
-      .detail-record-card .genre-art { width:112px; height:112px; }
+    .song-card-pending {
+      opacity: .78;
+      background: rgba(200,195,185,.22) !important;
+      border-color: rgba(127,82,28,.14) !important;
+      box-shadow: none !important;
     }
-
-    /* Suggested songs renderer */
-.song-suggestion-list {
-  display:grid;
-  gap:8px;
-  margin:0;
-}
-
-.song-suggestion-item {
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  padding:10px 12px;
-  background:var(--surface-2);
-  border:1px solid var(--border);
-  border-radius:14px;
-  font-size:.9rem;
-}
-
-.song-suggestion-item.is-added {
-  background:#eef7f0;
-  border-color:#b6dfc0;
-}
-
-.song-sugg-body {
-  flex:1;
-  min-width:0;
-}
-
-.song-sugg-link {
-  font-weight:700;
-  color:var(--text);
-  text-decoration:none;
-  display:block;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.song-sugg-link:hover {
-  color:var(--accent);
-}
-
-.song-sugg-reason {
-  color:var(--muted);
-  font-style:italic;
-  font-size:.84rem;
-  margin-top:3px;
-  line-height:1.45;
-}
-
-.song-sugg-score {
-  flex-shrink:0;
-  font-size:.78rem;
-  font-weight:700;
-  color:var(--muted);
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:999px;
-  padding:2px 9px;
-  white-space:nowrap;
-}
-
-.badge-added {
-  flex-shrink:0;
-  font-size:.72rem;
-  font-weight:800;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  color:#2a6b3a;
-  background:#d4f0db;
-  border:1px solid #b0debb;
-  border-radius:999px;
-  padding:3px 8px;
-  white-space:nowrap;
-}
-
+    .song-card-pending .song-title-link {
+      color: var(--muted) !important;
+    }
+    .pending-note {
+      margin-top: 6px;
+      font-size: .8rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .btn-inline {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font: inherit;
+      font-size: .8rem;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+    }
+    .btn-inline-danger { color: var(--danger); }
   </style>
 </head>
 <body>
@@ -1776,7 +1727,7 @@
             <label for="songsListenedBulk">Songs listened — one per line</label>
 <div class="small" style="margin-bottom:8px;color:var(--muted);">Simple: paste a URL &bull; With detail: <code>URL | 1-5 | reason it fits or doesn't</code></div>
 <textarea id="songsListenedBulk" style="min-height:130px;font-size:.88rem;font-family:monospace;"
-  placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title&#10;🔼 ADD: https://open.spotify.com/track/abc | 4 | added after session | Late Add Title"></textarea>
+  placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title"></textarea>
             <div class="small" style="margin-top:8px;">These are stored on the genre as an array so you can later reverse-engineer what you actually listened to.</div>
           </div>
 
@@ -1818,6 +1769,7 @@
           <button class="archive-view-btn" data-archive-view="contenders">Contenders</button>
           <button class="archive-view-btn" data-archive-view="zangers">Zangers</button>
           <button class="archive-view-btn" data-archive-view="alttakes">Alt Takes</button>
+          <button class="archive-view-btn" data-archive-view="pending">Pending</button>
         </div>
 
         <div class="archive-filters">
@@ -1838,6 +1790,7 @@
             <option value="">Any flags</option>
             <option value="contender">Monthly contender</option>
             <option value="alt">Has Alt Take</option>
+            <option value="pending">Has Pending</option>
             <option value="songs">Has song log</option>
             <option value="favorite">Has favorite song</option>
             <option value="missing-songs">Missing song log</option>
@@ -2207,10 +2160,10 @@
     }
 
     function parseSongLinks(text) {
-      const lines = String(text || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const lines = String(text || '').replace(/\\n/g, '\n').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const songs = [];
-      const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
-      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
+      const levelUpPrefix
+      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i; = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
       const extractUrl = (value) => {
         const v = String(value || '').trim();
         const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
@@ -2239,15 +2192,20 @@
         const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
         const freeform = (!url && isLevelUp) ? parseFreeformAltTake(clean) : null;
         const title = p.slice(3).join(' | ') || freeform?.title || '';
+        const rawReason = p[2] || freeform?.reason || '';
+        const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
+        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
+        const cleanReason = pendingGenreTag ? rawReason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : rawReason;
         const song = {
           url,
           score,
-          reason: p[2] || freeform?.reason || '',
+          reason: cleanReason,
           title,
           artist: freeform?.artist || '',
           source: url.includes('spotify.com') ? 'spotify' : ((url.includes('youtube') || url.includes('youtu.be')) ? 'youtube' : (url ? 'other' : 'manual')),
           added: new Date().toISOString().slice(0,10)
         };
+        if (pendingGenreTag) song._pendingGenreTag = pendingGenreTag;
         if (!song.url && !song.title && !song.reason) continue;
         if (!isLevelUp && !isAdd && !song.url) continue;
         if (isLevelUp) {
@@ -2267,7 +2225,7 @@
       if (!el) return;
       el.textContent = message;
       el.style.borderColor = isError ? 'var(--danger)' : 'var(--border)';
-      el.style.color = isError ? 'var(--danger)' : 'var(--text)';
+      el.style.color = isError ? 'var(--danger)' : 'var(--accent)';
       el.classList.add('show');
       clearTimeout(window.__saveToastTimer);
       window.__saveToastTimer = setTimeout(() => el.classList.remove('show'), 2200);
@@ -2290,8 +2248,7 @@
           const { isLevelUp, ...rest } = s;
           parent.levelUp = rest;
         } else {
-          if (flaggedAdd) s.isAdd = true;
-          else delete s.isAdd;
+          if (flaggedAdd) s.isAdd = true; else delete s.isAdd;
           nested.push(s);
         }
       }
@@ -2354,20 +2311,24 @@
         ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>`
         : `<span class="song-title-link">${titleText}</span>`;
       const addBadge = (!isChild && s.isAdd)
-        ? `<div class="add-badge"><span class="add-badge-icon">＋</span><span>Add</span></div>`
+        ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
+        : '';
+      const pendingNote = s.isPending
+        ? `<div class="pending-note">\u23F3 Nominated from <em>${escapeHtml(s.pendingFrom || 'another genre')}</em> \u2014 <button class="btn-inline" onclick="promotePendingSong('${escapeHtml(rawUrl)}')">Promote</button> \u00B7 <button class="btn-inline btn-inline-danger" onclick="removePendingSong('${escapeHtml(rawUrl)}')">Remove</button></div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
-        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">↳</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
+        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div>${titleHtml}${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div>${titleHtml}${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${pendingNote}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
       if (!currentGenre) return '';
       const includeSongs = document.getElementById('includeSongsToggle').checked;
-      const dateStr = dateValue(currentGenre) ? new Date(dateValue(currentGenre) + 'T00:00:00').toLocaleDateString('en-US', {month:'2-digit',day:'2-digit',year:'2-digit'}) : '';
+      const rawDate = dateValue(currentGenre) || new Date().toISOString().slice(0,10);
+      const dateStr = new Date(rawDate + 'T00:00:00').toLocaleDateString('en-US', {month:'2-digit',day:'2-digit',year:'2-digit'});
       let text = `Today's Genre (${dateStr}) is: **${currentGenre.genre || 'Unknown'}**\n\n`;
-      if (currentGenre.vibe) text += `${genreEmoji(currentGenre)} ${currentGenre.vibe}\n\n`;
+      if (currentGenre.vibe) text += `${genreEmoji(currentGenre)} *Vibe: ${currentGenre.vibe}*\n\n`;
       if (currentGenre.summary) text += `${currentGenre.summary}\n\n`;
       if (currentGenre.key_artists) text += `🎤 Key Artists: ${currentGenre.key_artists}`;
       if (includeSongs && currentGenre.suggested_songs) {
@@ -2402,6 +2363,30 @@
         'No rating selected';
     }
 
+    function startListeningNow() {
+      if (!currentGenre) return;
+      currentGenre.date_normalized = new Date().toISOString().slice(0,10);
+      prepareAndSaveCurrentGenre();
+    }
+
+    function promotePendingSong(url) {
+      if (!currentGenre) return;
+      currentGenre.songs_listened = normalizeSongsListened(currentGenre.songs_listened || []).map(s => {
+        if (normalizeSongUrl(s.url) === url && s.isPending) {
+          const { isPending, pendingFrom, ...rest } = s;
+          return rest;
+        }
+        return s;
+      });
+      prepareAndSaveCurrentGenre();
+    }
+
+    function removePendingSong(url) {
+      if (!currentGenre) return;
+      currentGenre.songs_listened = normalizeSongsListened(currentGenre.songs_listened || []).filter(s => !(normalizeSongUrl(s.url) === url && s.isPending));
+      prepareAndSaveCurrentGenre();
+    }
+
     function loadListenScreen(genre) {
       currentGenre = genre;
       selectedRating = genre.rating && genre.rating !== 'zanger' ? String(genre.rating) : '';
@@ -2410,12 +2395,14 @@
       document.getElementById('favoriteSongUrl').value = genre.favoritesongurl || '';
       document.getElementById('monthlyContender').checked = !!genre.monthlycontender;
       document.getElementById('notes').value = genre.notes || '';
-      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\\n');
+      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).filter(s => !s.isPending).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
       document.getElementById('includeSongsToggle').checked = false;
 
       const listenedDate = dateValue(genre);
       const songs = normalizeSongsListened(genre.songs_listened || []);
-      const songCount = countSongsForDisplay(songs);
+      const activeSongs = songs.filter(s => !s.isPending);
+      const pendingSongs = songs.filter(s => !!s.isPending);
+      const songCount = countSongsForDisplay(activeSongs);
       const art = getGenreArtwork(genre);
       const ratingLabel = genre.rating === 'zanger' ? 'Zanger' : (genre.rating ? `${escapeHtml(String(genre.rating))} ★` : 'Unrated');
       document.getElementById('listenDetails').innerHTML = `
@@ -2435,6 +2422,7 @@
               </div>
               <div class="detail-actions">
                 <button type="button" class="btn btn-secondary" onclick="switchScreen('history')">Back to Archive</button>
+                ${!listenedDate ? `<button type="button" class="btn btn-primary" onclick="startListeningNow()">\u25B6 Start Listening</button>` : ''}
               </div>
             </div>
           </div>
@@ -2453,7 +2441,8 @@
           </div>
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
-            ${songs.length ? `<div class="detail-song-list">${songs.map(song => renderSongEntry(song, false)).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
+            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false)).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
+            ${pendingSongs.length ? `<div class="pending-section"><div class="eyebrow" style="margin-top:18px;margin-bottom:8px;">Pending Nominations</div><div class="detail-song-list">${pendingSongs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
           </div>
         </div>
       `;
@@ -2545,6 +2534,32 @@
       currentGenre.notes = document.getElementById('notes').value.trim();
       currentGenre.songs_listened = parseSongLinks(document.getElementById('songsListenedBulk').value);
       currentGenre.songs_listened = await resolveSpotifyTitles(currentGenre.songs_listened);
+
+      // Pending nominations: find levelUp songs tagged @genre and push to target
+      for (const song of currentGenre.songs_listened) {
+        if (song._pendingGenreTag && song.levelUp) {
+          const tag = song._pendingGenreTag.toLowerCase();
+          delete song._pendingGenreTag;
+          const target = genres.find(g =>
+            g.genre && (
+              levenshtein(g.genre.toLowerCase(), tag) <= 2 ||
+              g.genre.toLowerCase().includes(tag) ||
+              tag.includes(g.genre.toLowerCase())
+            )
+          );
+          if (target && target.id !== currentGenre.id) {
+            if (!Array.isArray(target.songs_listened)) target.songs_listened = [];
+            target.songs_listened = normalizeSongsListened(target.songs_listened);
+            const alreadyThere = target.songs_listened.some(s => normalizeSongUrl(s.url) === normalizeSongUrl(song.levelUp.url));
+            if (!alreadyThere) {
+              const { isLevelUp, ...pendingSong } = song.levelUp;
+              pendingSong.isPending = true;
+              pendingSong.pendingFrom = currentGenre.genre;
+              target.songs_listened.push(pendingSong);
+            }
+          }
+        }
+      }
 
       if (!dateValue(currentGenre)) {
         currentGenre.date_normalized = new Date().toISOString().slice(0,10);
@@ -2675,6 +2690,10 @@
   const count = list.querySelectorAll('a[target="_blank"]').length || list.querySelectorAll(':scope > div').length;
   btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
 }
+    function hasPending(genre) {
+      return normalizeSongsListened(genre.songs_listened || []).some(s => !!s.isPending);
+    }
+
     function hasAltTake(genre) {
       return normalizeSongsListened(genre.songs_listened || []).some(song => !!song.levelUp);
     }
@@ -2802,6 +2821,9 @@
       } else if (archiveView === 'alttakes') {
         label = 'Genres with Alt Takes';
         items = items.filter(hasAltTake);
+      } else if (archiveView === 'pending') {
+        label = 'Genres with Pending Nominations';
+        items = items.filter(hasPending);
       }
 
       if (effectiveMonth && archiveView !== 'monthly') items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
@@ -2809,6 +2831,7 @@
 
       if (flag === 'contender') items = items.filter(g => !!g.monthlycontender);
       if (flag === 'alt') items = items.filter(hasAltTake);
+      if (flag === 'pending') items = items.filter(hasPending);
       if (flag === 'songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0);
       if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
       if (flag === 'missing-songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) === 0);
