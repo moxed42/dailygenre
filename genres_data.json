@@ -6626,7 +6626,18 @@
     "key_artists": "Headhunterz, Wildstylez, Brennan Heart, Noisecontrollers, Coone (originators/major figures)",
     "suggested_songs": "Headhunterz — Dragonborn, Brennan Heart — Imaginary, Wildstylez — Year of Summer, Noisecontrollers — Get to the Top",
     "vibe": "A kick drum that has become a lifestyle.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7sEpIUMp1aY8WWQdU1WgnM",
+        "score": 5,
+        "reason": "Quintessential rawstyle with ultra‑clipped kicks, gritty screeches, and relentless drive; sits squarely in the rough, aggressive side you’re aiming for",
+        "title": "Warface — Fuck The Drum Machine",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 22
   },
   {
@@ -6709,7 +6720,7 @@
     "date_raw": "5/5",
     "date_normalized": "2026-05-05",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -6718,8 +6729,53 @@
     "key_artists": "Radical Redemption, Angerfist, N-Vitral, D-Sturb, Warface (originators/major figures)",
     "suggested_songs": "Radical Redemption — Rewind, Angerfist — Deathmaker, N-Vitral — Bombastic, D-Sturb — We Are the Future",
     "vibe": "Hardstyle after it decided euphoria was too comfortable.",
-    "songs_listened": [],
-    "rank_order": 14
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0t9ofbK0n9oXlcikIzKXUs",
+        "score": 3,
+        "reason": "Has some rawstyle traits in the distorted kick and aggressive sound design, but the structure and melodic breaks feel more like mainstream euphoric hardstyle than full rawstyle",
+        "title": "Warface — I Need You",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f3103193aa7567349b5abd68",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7sEpIUMp1aY8WWQdU1WgnM",
+        "score": 5,
+        "reason": "Quintessential rawstyle with ultra‑clipped kicks, gritty screeches, and relentless drive; sits squarely in the rough, aggressive side you’re aiming for",
+        "title": "Warface — Fuck The Drum Machine",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3tTM0If2uFfZ8uhmJM4BhA",
+        "score": 5,
+        "reason": "Textbook rawstyle: harsh, overdriven kicks, dissonant screech leads, and minimal euphoric melody; pure Roughstate‑school raw banger",
+        "title": "Rejecta, Rebelion — Realness",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02252041c68c2bce589cea522f",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5u3uEhzNRNdNpZYYBnBi2k",
+        "score": 4,
+        "reason": "Very raw‑leaning with savage kicks and hardcore crossover energy, though it edges slightly toward uptempo hardcore more than classic rawstyle structure",
+        "title": "Bloodlust, Unresolved — One With The Streets",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cef188624aa7af65eae6b258",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
+    "rank_order": 14,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 290,
@@ -8509,9 +8565,11 @@
       }
     ],
     "rank_order": 82,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Knife Party — 404",
+    "favoritesongurl": "https://open.spotify.com/track/63TS3ig8lXWVUDvHSlc0TN",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf"
   },
   {
     "id": 368,
