@@ -1289,6 +1289,8 @@
     .detail-hero {
       display:grid;
       gap:18px;
+      min-width:0;
+      overflow:hidden;
     }
     .detail-record-card {
       position:relative;
@@ -1352,6 +1354,8 @@
       border:1px solid rgba(127,82,28,.22);
       box-shadow:0 8px 18px rgba(64,38,13,.08);
       padding:12px;
+      min-width:0;
+      overflow:hidden;
     }
     .song-card-row {
       display:grid;
@@ -1377,6 +1381,9 @@
       font-weight:950;
       text-decoration:none;
       letter-spacing:-.035em;
+      overflow-wrap:break-word;
+      word-break:break-word;
+      display:block;
     }
     .song-artist {
       margin-top:2px;
@@ -1512,8 +1519,9 @@
 
     /* UX polish patch: prevent detail header overlap, simplify Archive action, compact Zanger button */
     .screen-detail .listen-grid {
-      grid-template-columns:minmax(0, 1fr) minmax(360px, 1fr);
+      grid-template-columns:minmax(0, 1fr) minmax(360px, 420px);
       align-items:start;
+      overflow:hidden;
     }
     .detail-record-card {
       width:100%;
@@ -1625,6 +1633,25 @@
       text-decoration: underline;
     }
     .btn-inline-danger { color: var(--danger); }
+  
+    .song-fav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 2px 4px;
+      color: var(--muted);
+      opacity: .5;
+      transition: opacity .15s, color .15s;
+      flex-shrink: 0;
+    }
+    .song-fav-btn:hover { opacity: 1; color: var(--gold, #c8860a); }
+    .song-fav-btn.active { opacity: 1; color: var(--gold, #c8860a); }
+    .song-card-favorite {
+      box-shadow: 0 0 0 2px rgba(200,134,10,.45), 0 8px 18px rgba(64,38,13,.10) !important;
+      border-color: rgba(200,134,10,.55) !important;
+    }
   </style>
 </head>
 <body>
@@ -1675,7 +1702,7 @@
 
     <section class="screen screen-detail" id="screen-listen">
       <div class="listen-grid">
-        <div class="panel">
+        <div class="panel" style="min-width:0;overflow:hidden;">
           <div id="listenDetails">
             <div class="empty-log-state">
               <div class="eyebrow">Genre Detail</div>
@@ -2319,7 +2346,10 @@
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div>${titleHtml}${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${pendingNote}${levelUpHtml}</div>`;
+      const favBtn = (!isChild && !s.isPending && hasHref)
+        ? `<button class="song-fav-btn ${currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl ? 'active' : ''}" title="Set as favorite song" onclick="setFavoriteSong(${JSON.stringify(rawUrl)}, ${JSON.stringify(s.title||'')}, ${JSON.stringify(s.artist||'')}, ${JSON.stringify(s.artwork||'')}, this)">\u2605</button>`
+        : '';
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
@@ -2361,6 +2391,27 @@
         currentGenre?.rating === 'zanger' ? 'Marked as Zanger' :
         selectedRating ? `${selectedRating} star${selectedRating === '1' ? '' : 's'} selected` :
         'No rating selected';
+    }
+
+    function setFavoriteSong(url, title, artist, artwork, btn) {
+      if (!currentGenre) return;
+      const isSame = normalizeSongUrl(currentGenre.favoritesongurl || '') === url;
+      if (isSame) {
+        // deselect
+        currentGenre.favoritesongurl = '';
+        currentGenre.favoritesong = '';
+        currentGenre.favoriteartist = '';
+        currentGenre.favoritesongartwork = '';
+      } else {
+        currentGenre.favoritesongurl = url;
+        currentGenre.favoritesong = title || '';
+        currentGenre.favoriteartist = artist || '';
+        currentGenre.favoritesongartwork = artwork || '';
+      }
+      document.getElementById('favoriteSongUrl').value = currentGenre.favoritesongurl || '';
+      document.getElementById('favoriteSong').value = currentGenre.favoritesong || '';
+      // Re-render to update highlights
+      loadListenScreen(currentGenre);
     }
 
     function startListeningNow() {
