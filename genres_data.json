@@ -16919,6 +16919,16 @@
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0267bc29c251c777361b17a190",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0XKOb34eCwukVh4K7FqJkM",
+        "score": 4,
+        "reason": "Punchy, riff‑driven RHCP track where the funk rhythm section and rock guitars stay tightly focused",
+        "title": "Red Hot Chili Peppers — Stone Cold Bush",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 17
@@ -20726,7 +20736,7 @@
     "date_raw": "5/19",
     "date_normalized": "2026-05-19",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -20735,8 +20745,104 @@
     "key_artists": "Red Hot Chili Peppers, Living Colour, Fishbone, Primus, Faith No More (major figures)",
     "suggested_songs": "Red Hot Chili Peppers — Higher Ground, Living Colour — Cult of Personality, Fishbone — Everyday Sunshine, Primus — Those Damned Blue-Collar Tweekers, Faith No More — We Care a Lot",
     "vibe": "Metal that can't stop moving its hips even when it's trying to be heavy.",
-    "songs_listened": [],
-    "rank_order": 84
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5c6gkexa2eWCCBmEb0zXCZ",
+        "score": 5,
+        "reason": "Archetypal 90s funk metal: slapped, rubbery bass, syncopated groove, and absurdist vocals put funk rhythm and metal crunch right at the center",
+        "title": "Primus — My Name Is Mud",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f8da2bc76b7deb7f8ae352cf",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/19C0LKY3DCcQtuviPJNy5d",
+        "score": 4,
+        "reason": "Tight, funky bass work and jagged riffs with Les Claypool’s cartoon vocal style; more alt‑metal than pure funk, but the groove is strong enough to keep it clearly in the funk‑metal lane",
+        "title": "Primus — Jerry Was A Race Car Driver",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025058bc348ce35fb97ab2be98",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0kquzTsZG4m9qmLJaPSY9U",
+        "score": 4,
+        "reason": "Hyperactive bass and start‑stop riffs make this a showcase for virtuosic funk‑inflected playing, even if the song’s structure leans toward prog‑y alt‑metal",
+        "title": "Primus — Tommy The Cat",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025058bc348ce35fb97ab2be98",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3mg0GZG9gidoamj76Rp5Dr",
+        "score": 3,
+        "reason": "Goofy country‑metal twang and heavy guitar distortion foreground the joke‑rock angle; the bass is funky but overall it feels more like alt‑metal novelty than a core funk metal statement",
+        "title": "Primus — Wynona’s Big Brown Beaver",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029c9c2dd5b26d2729ec441bfe",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3rT6NVbEo2q0GmjrU0ZunO",
+        "score": 5,
+        "reason": "Classic RHCP cut where slap bass, syncopated drums, and crunchy guitar lock into a tight funk‑metal groove",
+        "title": "Red Hot Chili Peppers — Suck My Kiss",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4ddA4oHvhrGx196qF5ZyQe",
+        "score": 4,
+        "reason": "Jammy and expansive but still driven by a dirty funk bassline and rock guitars; more funk rock than metal, yet it clearly belongs in the same extended funk‑heavy universe",
+        "title": "Red Hot Chili Peppers — Blood Sugar Sex Magik",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d5a83e0f7d3be6ca952bba7f",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/45wViUjhlClQRK1cqM2ptP",
+        "score": 3,
+        "reason": "Quirky solo Claypool with lots of groove, but the looser jam‑band structure and proggy detours make it feel more like experimental funk rock than tight funk metal",
+        "title": "Les Claypool — One Better",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f2d821fbbc9c78ebbe324f2d",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0XKOb34eCwukVh4K7FqJkM",
+        "score": 4,
+        "reason": "Punchy, riff‑driven RHCP track where the funk rhythm section and rock guitars stay tightly focused",
+        "title": "Red Hot Chili Peppers — Stone Cold Bush",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2hORUQTIep1NeFWCtzMhN7",
+        "score": 4,
+        "reason": "Brass‑spiked, hyper‑syncopated groove that leans more toward funk rock and ska, but the bass/guitar attack makes it a strong adjacent pillar for a funk metal night",
+        "title": "Fishbone — Bonin In the Boneyard",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0230dd94b48b93a83fb99c6c06",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
+    "rank_order": 84,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 946,
