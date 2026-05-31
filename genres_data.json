@@ -7834,7 +7834,7 @@
     "date_raw": "1/21",
     "date_normalized": "2026-01-21",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -7843,8 +7843,42 @@
     "key_artists": "Lil Jon (transition figure), DJ Unk, Soulja Boy, D4L, Dem Franchize Boyz (originators/major figures)",
     "suggested_songs": "D4L — Laffy Taffy, Dem Franchize Boyz — Lean Wit It Rock Wit It, DJ Unk — Walk It Out, Soulja Boy — Crank That",
     "vibe": "Less is more, snapped.",
-    "songs_listened": [],
-    "rank_order": 26
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/66TRwr5uJwPt15mfFkzhbi",
+        "score": 5,
+        "reason": "Minimal, rubbery 808s, clap‑driven groove and call‑and‑response hook make this the archetypal snap track that defined the style for a mainstream audience.",
+        "title": "Soulja Boy — Crank That (Soulja Boy)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029e8a9f316d3e485e2c62fe87",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/6o3s08kk2fQI37vxGZDrJ1",
+        "score": 4,
+        "reason": "Snapping, spacious beat, chanty hook and club‑ready bounce put this firmly in the snap continuum, even as it leans more crunk in its energy and ad‑libs.",
+        "title": "Lil Jon, E‑40, Sean Paul — Snap Yo Fingers",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa119fab1d342e3a7e4ddb2c",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1tkMs9wDPknQ3ZHcKDw1ES",
+        "score": 4,
+        "reason": "Slow‑rolling, Auto‑Tuned R&B/rap hybrid with a snap‑friendly, minimal drum pattern; more of a snap‑adjacent club R&B cut, but still clearly built on snap’s rhythmic DNA.",
+        "title": "T‑Pain, Yung Joc — Buy U a Drank (Shawty Snappin')",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02baf2f329d4feeb19761eddf4",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
+    "rank_order": 26,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 330,
