@@ -3098,7 +3098,28 @@
     "key_artists": "Soudiere, Bones, Xavier Wulf, Yung Lean (adjacent originators) • Bladee, Ecco2k, Drain Gang (modern)",
     "suggested_songs": "Bones — WhereTheTreesMeetTheFreeway, Bladee — Miami Ultras, Yung Lean — Ginseng Strip 2002, Ecco2k — Peroxide",
     "vibe": "Staring at your phone at 4am with the brightness all the way down.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1aB1U3Kr7zG0QGMN9nE82r",
+        "score": 5,
+        "reason": "Short, punchy synthpop single with a massive hook and concise arrangement that nails the radio-friendly side of the genre",
+        "title": "Yazoo — Situation",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0kpGgjr8rjXBEioZ5YJ3vP",
+        "score": 5,
+        "reason": "Up-tempo, hooky synthpop with clear verse/chorus structure and sparkling synth lines",
+        "title": "Erasure — A Little Respect",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 776
   },
   {
@@ -16280,7 +16301,18 @@
     "key_artists": "The Beatles, Fleetwood Mac, Cheap Trick, Kelly Clarkson, Maroon 5 (major figures across eras)",
     "suggested_songs": "The Beatles — Paperback Writer, Fleetwood Mac — Dreams, Cheap Trick — I Want You to Want Me, Kelly Clarkson — Since U Been Gone, Maroon 5 — This Love",
     "vibe": "Guitars with manners, choruses with ambition, and radio in clear view.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6y9VZNRczyKeQihebHSMJ8",
+        "score": 4,
+        "reason": "Playful, hook-laden synthpop track with clear 80s electronic identity",
+        "title": "Thomas Dolby — She Blinded Me With Science",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f85ef389219f107dfaa6f9b",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 572
   },
   {
@@ -16708,7 +16740,7 @@
     "date_raw": "517",
     "date_normalized": "2026-05-17",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -16717,8 +16749,412 @@
     "key_artists": "The Human League, Depeche Mode, Pet Shop Boys, Yazoo, A-ha (major figures)",
     "suggested_songs": "The Human League — Don’t You Want Me, Depeche Mode — Just Can’t Get Enough, Pet Shop Boys — West End Girls, Yazoo — Don’t Go, A-ha — Take On Me",
     "vibe": "Electronic surfaces, human longing, and hooks programmed for repeat impact.",
-    "songs_listened": [],
-    "rank_order": 1
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2WfaOiMkCvy7F5fcp2zZ8L",
+        "score": 5,
+        "reason": "Quintessential 80s synthpop: bright synth leads, drum machines, and a huge melodic chorus make this an archetypal explainer track for the genre",
+        "title": "a-ha — Take on Me",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e8dd4db47e7177c63b0b7d53",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0yp3TvJNlG50Q4tAHWNCRm",
+        "score": 5,
+        "reason": "Lush synth pads, programmed drums, and a brooding but hooky chorus capture synthpop’s moodier, gothic-tinged side while staying firmly in-genre",
+        "title": "Depeche Mode — Enjoy the Silence",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02972ac79d249efed1c7b2c8c1",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0T57cTUpYpvSvZ3GowBuTP",
+        "score": 4,
+        "reason": "Big, glossy production and driving synth bass; feels slightly more arena/new wave rock than pure pop, but the synth backbone and chorus land squarely in synthpop territory",
+        "title": "Depeche Mode — Never Let Me Down Again",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0213ccc3e363f27a4a3d06d1b1",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2wUlYDGGXlSvm2NkGj0Qio",
+        "score": 4,
+        "reason": "Bluesy guitar riff and rock feel pull toward alternative, but the sequenced synths and electronic drums keep it as a darker, rock-leaning synthpop crossover",
+        "title": "Depeche Mode — Personal Jesus",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02234bbbad4dce31cd2950af3e",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/6hHc7Pks7wtBIW8Z6A0iFq",
+        "score": 3,
+        "reason": "Iconic dancefloor cut with strong synth presence, but its length, club structure, and post-punk/Madchester feel make it more proto-house/new wave dance than focused synthpop",
+        "title": "New Order — Blue Monday",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023c182241fcd86aeca2c68a63",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1aB1U3Kr7zG0QGMN9nE82r",
+        "score": 5,
+        "reason": "Short, punchy synthpop single with a massive hook and concise arrangement that nails the radio-friendly side of the genre",
+        "title": "Yazoo — Situation",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2EEinN4Zk8MUv4OQuLsTBj",
+        "score": 4,
+        "reason": "Jangly bass and post-punk rhythm, but the insistent synth lines and dancebeat give it a strong synthpop/new wave hybrid identity",
+        "title": "New Order — Age of Consent",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a0bb93884823982d57cb2004",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0aF9m87P8Tja3NUMv4DfHt",
+        "score": 4,
+        "reason": "Big, emotional chorus with shimmering synths and gated drums; more widescreen pop-rock than minimal synthpop, but still a clear fit for a synthpop night",
+        "title": "Tears For Fears — Head Over Heels",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029565c4df27be4aee5edc8009",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3PGRdlUoWnj8NHmbA5xTYS",
+        "score": 3,
+        "reason": "Heavier, darker Depeche Mode cut with industrial/darkwave overtones; strong synth work but more edge-case for a bright synthpop focus",
+        "title": "Depeche Mode — Dangerous",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02234bbbad4dce31cd2950af3e",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0kpGgjr8rjXBEioZ5YJ3vP",
+        "score": 5,
+        "reason": "Up-tempo, hooky synthpop with clear verse/chorus structure and sparkling synth lines",
+        "title": "Erasure — A Little Respect",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4E7wtL5Jg55SNXc0sGD1Hs",
+        "score": 5,
+        "reason": "Archetypal early-80s synthpop: chiming synths, steady programmed beat, and a giant, anthemic chorus built for radio",
+        "title": "A Flock of Seagulls — I Ran (So Far Away)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2f236d0ad512e0bb63108e1",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/41MOCUNOgWtaYBFUsGnpZ5",
+        "score": 4,
+        "reason": "Minimal, bouncy synth riff and novelty lyrics; firmly synthpop, though the goofy vibe makes it a slightly more novelty side-pick than a core pillar",
+        "title": "Men Without Hats — The Safety Dance",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea60a14a425e4a2023a9c58c",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5ObgLyp4ytTtnFLDhrmcOi",
+        "score": 4,
+        "reason": "Warm, romantic synth textures and midtempo groove; more new wave-leaning but still fits cleanly as a sentimental synthpop staple",
+        "title": "Modern English — I Melt with You",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02277f9005d9c9475965086560",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Yxf2dtvl14huY5M12XWf2",
+        "score": 3,
+        "reason": "Guitars and post-punk mood are foregrounded, with synths more as color; reads primarily as post-punk/new wave rather than synthpop first",
+        "title": "The Psychedelic Furs — Heaven",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0225c0d8ea645dcfec05c3b425",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0VST8W5UDgO1fMLBLuFEtE",
+        "score": 4,
+        "reason": "Strong synth-led hook and clear pop structure bring the Furs closer to core synthpop aesthetics",
+        "title": "The Psychedelic Furs — Love My Way",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6JNJERZGJwDVgkmbohBw7u",
+        "score": 4,
+        "reason": "Dark, clubby synths and 80s drum programming; straddles synthpop and Italo/disco, but the song’s structure and hook justify it as a sleek, late-night synthpop entry",
+        "title": "Laura Branigan — Self Control",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021310670cbb82f06474372cfd",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3NYCaxkggl0Hh8vQptSUvV",
+        "score": 4,
+        "reason": "Tight, melodic synth lines and driving beat; classic synthpop single that also reads as new wave, but it’s central enough to keep",
+        "title": "Orchestral Manoeuvres In The Dark — Enola Gay",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a3bc94f95c99c3ad2f40740a",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2xq9cLlOPyLoi8kLlR4miz",
+        "score": 3,
+        "reason": "Goth/post-punk framework with synths as part of a darker rock palette; great adjacent track but primarily a gothic rock/post-punk anthem",
+        "title": "Siouxsie and the Banshees — Cities in Dust",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cf1fda72b66d57fdc6104c8d",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0uBZkKJ0V0cFqzW6G6n7zo",
+        "score": 4,
+        "reason": "Brings Siouxsie closer to synthpop with stronger emphasis on synth hooks and danceable programming",
+        "title": "Siouxsie and the Banshees — Kiss Them for Me",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/709ffFK4o4MtG1NKoLvOma",
+        "score": 3,
+        "reason": "NDW/synthpop hybrid with German vocal delivery and a more rock-leaning feel; adjacent to synthpop but primarily Neue Deutsche Welle",
+        "title": "Peter Schilling — Major Tom (Coming Home)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02da10e566a05c4c506a424f3a",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6e40mgJiCidLZ2q8I9d5f0",
+        "score": 4,
+        "reason": "Clean, melodic synthpop with English lyrics and a bright, radio-ready presentation",
+        "title": "Peter Schilling — The Different Story",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5uRsBdLhn91AYcsTCOGNOC",
+        "score": 4,
+        "reason": "Darker, moody synthpop cut; strong synth hook and drum programming keep it comfortably inside the genre despite its noir tone",
+        "title": "Corey Hart — Sunglasses at Night",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b261545058d4ec62dae2bfed",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/52s6Ea6aSZMvPUIH0dSpk4",
+        "score": 4,
+        "reason": "Tight, hooky synth line and upbeat groove; very straightforward 80s synthpop with a slight new wave edge",
+        "title": "The Human League — Mirror Man",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027c7b937a98ff68bcf7fc24a8",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0DfG1ltJnZyq4Tx3ZLL7ZU",
+        "score": 3,
+        "reason": "NDW classic with prominent synths but also lots of rock swagger and accented delivery; feels more like an NDW novelty hit than central synthpop",
+        "title": "Falco — Rock Me Amadeus",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02731d2eb04541bef9e4434d4e",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6WEBIVqiEsevfgJefTyuQQ",
+        "score": 4,
+        "reason": "Breezy, melodic synthpop song with a clear dancefloor pulse and shiny 80s production",
+        "title": "Kajagoogoo — Too Shy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02858f93b738db08c4e500bd30",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/49NDegc7RQyvq6mhAs06p6",
+        "score": 2,
+        "reason": "Big, melodic power-ballad structure and arena-rock sheen; synths are supportive rather than defining, so it lives primarily as AOR/arena rock",
+        "title": "Asia — Only Time Will Tell",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022323f86e757c3436b3cc38af",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1YGZyfvdgZxzipWoWYVKxi",
+        "score": 5,
+        "reason": "Classic upbeat synthpop anthem with a huge chorus and driving synth backbone",
+        "title": "Kim Wilde — Kids in America",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021233a7885e76b74d0b2a9473",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6I6Zjwlx4LSE1iojm94za1",
+        "score": 2,
+        "reason": "Slick 80s cover with guitar-fronted arrangement and only light synth frosting; primarily sits in synth-inflected pop rock",
+        "title": "Midge Ure — The Man Who Sold the World",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0235361f7a360ff7866b1239b5",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6y9VZNRczyKeQihebHSMJ8",
+        "score": 4,
+        "reason": "Playful, hook-laden synthpop track with clear 80s electronic identity",
+        "title": "Thomas Dolby — She Blinded Me With Science",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f85ef389219f107dfaa6f9b",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6y9VZNRczyKeQihebHSMJ8",
+        "score": 4,
+        "reason": "Bouncy rhythm, synthesized hooks, and novelty-science theme make this a fun, unmistakably synthpop single, even if it leans toward quirky",
+        "title": "Thomas Dolby — She Blinded Me With Science",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022f85ef389219f107dfaa6f9b",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1YGZyfvdgZxzipWoWYVKxi",
+        "score": 5,
+        "reason": "Fast, driving beat, big chorus, and bright synth arrangements make this one of the most archetypal radio synthpop tracks of the era",
+        "title": "Kim Wilde — Kids in America",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021233a7885e76b74d0b2a9473",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/6WEBIVqiEsevfgJefTyuQQ",
+        "score": 4,
+        "reason": "Shiny, hook-first 80s synthpop track with a strong vocal melody over simple but effective synth backing",
+        "title": "Kajagoogoo — Too Shy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02858f93b738db08c4e500bd30",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2JO3HwMRPeya8bXbtbyPcf",
+        "score": 3,
+        "reason": "Post-punk classic with synths in support; emotionally and structurally it lives in post-punk more than synthpop, though it’s historically adjacent",
+        "title": "Joy Division — Love Will Tear Us Apart",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0265792edb445d4a107dbe97fd",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4tKGFmENO69tZR9ahgZu48",
+        "score": 4,
+        "reason": "Dance-pop but built on strong synth lines and drum machines, slotting neatly into an 80s synthpop context",
+        "title": "Sophie Ellis-Bextor — Murder on the Dancefloor",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024914b28ba1485733dc8dd448",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5nLFBX0yHkyVM5cVvIkzOk",
+        "score": 2,
+        "reason": "Modern high-gloss track with big synths but more rooted in contemporary EDM-influenced pop than classic 80s synthpop",
+        "title": "Christopher Saint — Ulterior Motives",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f0988ab361c7bee0b10489d4",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6z3HAUZpAyJ0ctsbAwAiw3",
+        "score": 4,
+        "reason": "Late-70s/early-80s synth-driven pop hit with strong electronic hooks and dancefloor energy that complements the core synthpop era",
+        "title": "M — Pop Muzik",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0281baa715d926ff54df1620f4",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4uvjOKsp7mSjrDhWdkLPBY",
+        "score": 2,
+        "reason": "80s teen-pop cover with rock rhythm section and only light synth flavoring; sits more as mainstream pop than a synthpop exemplar",
+        "title": "Tiffany — I Think We’re Alone Now",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ec908cd672ac564d27f9ae51",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/48p5E25cFPanxuwCTmTpuL",
+        "score": 3,
+        "reason": "Romantic new wave ballad driven by synths but at a slower, softer tempo; a nice adjacent piece but less archetypal than your big uptempo hits",
+        "title": "When In Rome — The Promise",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d12fd00a64529cff635a75f2",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/7sPEGLqEhyHDLGrz4EeLm2",
+        "score": 2,
+        "reason": "Quirky power-pop/new wave tune with guitars and pub-rock energy; synths are present but not defining, so it’s more power pop than synthpop",
+        "title": "Squeeze — Cool for Cats",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02078b9e4f389abc8563605537",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
+    "rank_order": 1,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": true
   },
   {
     "id": 748,
@@ -18298,7 +18734,18 @@
     "key_artists": "Bon Jovi, Def Leppard, Heart, Foreigner, Bryan Adams (major figures)",
     "suggested_songs": "Bon Jovi — Livin' on a Prayer, Def Leppard — Pour Some Sugar on Me, Heart — Barracuda, Foreigner — I Want to Know What Love Is, Bryan Adams — Summer of '69",
     "vibe": "Rock music designed to fill 20,000 seats and still feel personal.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1YGZyfvdgZxzipWoWYVKxi",
+        "score": 5,
+        "reason": "Classic upbeat synthpop anthem with a huge chorus and driving synth backbone",
+        "title": "Kim Wilde — Kids in America",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021233a7885e76b74d0b2a9473",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 44
   },
   {
@@ -23622,7 +24069,28 @@
     "key_artists": "Joy Division, Gang of Four, Wire, The Fall, Public Image Ltd. (major figures)",
     "suggested_songs": "Joy Division -- Transmission, Gang of Four -- Damaged Goods, Wire -- Three Girl Rhumba, The Fall -- Totally Wired, Public Image Ltd. -- Public Image",
     "vibe": "Punk after it started asking questions and couldn't stop.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0VST8W5UDgO1fMLBLuFEtE",
+        "score": 4,
+        "reason": "Strong synth-led hook and clear pop structure bring the Furs closer to core synthpop aesthetics",
+        "title": "The Psychedelic Furs — Love My Way",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4tKGFmENO69tZR9ahgZu48",
+        "score": 4,
+        "reason": "Dance-pop but built on strong synth lines and drum machines, slotting neatly into an 80s synthpop context",
+        "title": "Sophie Ellis-Bextor — Murder on the Dancefloor",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024914b28ba1485733dc8dd448",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 21
   },
   {
