@@ -14983,33 +14983,33 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/5PefzF0hUblBWflkgaE4I6",
-        "score": 5,
-        "reason": "Elis Regina over a bouncy samba rhythm with jazz harmony and arranging — archetypal samba‑jazz",
-        "title": "Elis Regina — Madalena [file:3]",
+        "score": 4,
+        "reason": "Elis rides a samba groove with strong swing and jazz‑inflected phrasing; the arrangement leans more song‑form MPB than pure instrumental jazz, but the rhythmic feel is firmly samba‑jazz adjacent",
+        "title": "Elis Regina — Madalena",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dca9dbd666b3c4115b87345f",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5fBzQNeFIiWfAMS5x4hvg5",
-        "score": 4,
-        "reason": "João Donato’s electric, harmonically rich samba groove — modern but firmly in the samba‑jazz lineage",
-        "title": "João Donato — Espalhado [file:3]",
+        "score": 5,
+        "reason": "Archetypal samba jazz: Joo Donato’s electric keys lock into a syncopated samba pulse while the band stretches harmonically like a small jazz combo",
+        "title": "Joo Donato — Espalhado",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023e5311f773296e02e869d1b7",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0aOH62uqDzuvCvN2jdVtZs",
         "score": 4,
-        "reason": "Getz/Byrd bossa classic with strong Brazilian jazz phrasing — sits right on the samba‑jazz/bossa border",
-        "title": "Stan Getz & Charlie Byrd — Desafinado [file:3]",
+        "reason": "Classic bossa standard played by jazzers; the feel is more laid‑back bossa than driving samba, but the improvisation and interplay keep it squarely in the Brazilian jazz continuum",
+        "title": "Stan Getz, Charlie Byrd — Desafinado",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02edcbd173b4b497f405e1c49b",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 75,
