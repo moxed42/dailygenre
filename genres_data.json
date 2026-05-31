@@ -18798,7 +18798,28 @@
     "key_artists": "R.E.M., Pixies, Sonic Youth, The Cure, Nirvana (major figures)",
     "suggested_songs": "R.E.M. — Radio Free Europe, Pixies — Debaser, Sonic Youth — Kool Thing, The Cure — Just Like Heaven, Nirvana — Smells Like Teen Spirit",
     "vibe": "A broad guitar culture built on refusal, reinvention, and unexpected hooks.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2Lknhg1Jb7wQaVn4xLScfM",
+        "score": 5,
+        "reason": "Mid‑tempo lurch, heavy‑yet‑melodic riff, and weary vocals make this a textbook 90s grunge anthem that nails the mood you’re aiming for",
+        "title": "Soundgarden — Fell on Black Days",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1A2um0rf2WAFfhoLNjzIqW",
+        "score": 4,
+        "reason": "Keeps the melodic side but with a darker harmony and heavier, more dragging groove, making the grunge DNA much more obvious",
+        "title": "Smashing Pumpkins — Hummer",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 30
   },
   {
@@ -18962,83 +18983,85 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/5jSINPjqeHjmPOvOmxtITL",
-        "score": 2,
-        "reason": "Heavy and noisy but more alt‑rock/post‑grunge; lacks the murky, sludgy Pacific Northwest feel",
+        "score": 3,
+        "reason": "Fuzzy guitars and 90s‑alt energy nod toward grunge, but the tempos, production sheen, and skate‑punk momentum feel more alt‑rock than true Pacific Northwest murk",
         "title": "Violent Soho — Dope Calypso",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0229a1fe689fac4f3535541c84",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/5ghIJDpPoe3CfHMGu71E6T",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2Lknhg1Jb7wQaVn4xLScfM",
         "score": 5,
-        "reason": "Sludgy guitars, strained vocals and Seattle scene DNA — core early‑90s grunge",
-        "title": "Soundgarden — Outshined",
+        "reason": "Mid‑tempo lurch, heavy‑yet‑melodic riff, and weary vocals make this a textbook 90s grunge anthem that nails the mood you’re aiming for",
+        "title": "Soundgarden — Fell on Black Days",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2iWQrd8LABqESP9gC4jfYW",
-        "score": 2,
-        "reason": "Big, distorted rock song but closer to modern alt‑rock than scene‑defining grunge",
+        "score": 3,
+        "reason": "Has thick guitars and some slacker angst, but the bright, almost pop‑punk forward drive pulls it out of the sludgy, dirge‑y grunge zone",
         "title": "Violent Soho — Love Is A Heavy Word",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02553c763fa206f16732d1de26",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/5ghIJDpPoe3CfHMGu71E6T",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1A2um0rf2WAFfhoLNjzIqW",
         "score": 4,
-        "reason": "Same recommendation applies; you could also swap in Alice In Chains for an even doomier variant",
-        "title": "Soundgarden — Outshined",
+        "reason": "Keeps the melodic side but with a darker harmony and heavier, more dragging groove, making the grunge DNA much more obvious",
+        "title": "Smashing Pumpkins — Hummer",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0CkspLl535ZxdwCRs8AdZ4",
         "score": 5,
-        "reason": "Thick guitars, anguished vocals and a quintessential early‑90s radio‑grunge sound",
-        "title": "Stone Temple Pilots — Plush",
+        "reason": "Archetypal radio‑grunge: drop‑D churn, big dynamic shifts, and Scott Weiland’s drawl over a muddy‑but‑polished mix make this an instant explainer track for the genre",
+        "title": "Stone Temple Pilots — Plush (2017 Remaster)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b8bc0f023ff7a1c6663f28ec",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5b7XGW6Ss95mofffZdzXuy",
         "score": 4,
-        "reason": "Gritty, mid‑tempo heaviness with shout‑along chorus — very much in grunge’s alt‑radio wing",
+        "reason": "Crunchy guitars, sneering vocal, and loud‑quiet‑loud structure channel the grunge playbook, even if it edges slightly toward post‑grunge alt‑radio sheen",
         "title": "Toadies — Backslider",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0285fb885d41591752340eeccc",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5L3H63sBURBch3bUJ2acIJ",
         "score": 4,
-        "reason": "Bleary, noisy and hostile, sitting right at the riot grrrl / grunge intersection",
+        "reason": "Raw, blown‑out guitars, screamed vocals, and lurching tempo give this a nasty, underground take on grunge that bleeds into riot‑grrrl punk but still feels firmly of the scene",
         "title": "Hole — Teenage Whore",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0262b9b8c75c4faff64d42c523",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/3w5Ekq9O8g0gGFEsT77Ydi",
-        "score": 5,
-        "reason": "Classic Nirvana: abrasive guitar tone, dynamic quiet‑loud structure, and In Utero’s caustic production",
+        "score": 4,
+        "reason": "Classic Nirvana: scabrous riff, weary vocal, and mid‑tempo trudge carry unmistakable grunge DNA, even as the song plays more like an opening statement than a canonical single",
         "title": "Nirvana — Serve The Servants",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c4f52ef8782f0e8ede4c1aaf",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 18,
