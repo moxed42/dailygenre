@@ -3195,6 +3195,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3HfB5hBU0dmBt8T0iCmH42",
+        "score": 4,
+        "reason": "Still Talking Heads, but with a much clearer, synthy funk pulse and dance‑floor focus, so it illustrates the genre better than “Naive Melody”",
+        "title": "Talking Heads — Burning Down the House",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ec548c00d3ac2f10be73366d",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 776
@@ -18314,7 +18324,7 @@
         "reason": "Archetypal Minneapolis synth‑funk: drum‑machine groove, rubbery synth bass, and Prince’s tight vocal arrangements lock perfectly into the electro‑funk template",
         "title": "Prince — D.M.S.R. (2019 Remaster)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024117e531f63855d072059d6e",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024117e531f63855d072059d6e",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -18329,12 +18339,23 @@
         "added": "2026-05-31"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3HfB5hBU0dmBt8T0iCmH42",
+        "score": 4,
+        "reason": "Still Talking Heads, but with a much clearer, synthy funk pulse and dance‑floor focus, so it illustrates the genre better than “Naive Melody”",
+        "title": "Talking Heads — Burning Down the House",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ec548c00d3ac2f10be73366d",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/07OzC5JlcaDwEkzWmvqp6y",
         "score": 4,
         "reason": "Jam‑packed with drum‑machine snap, synth stabs, and tightly arranged hooks; it leans pop/R&B but still clearly rides a synthetic funk chassis",
         "title": "Janet Jackson — Nasty",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d43ed38753792fe6606568f2",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d43ed38753792fe6606568f2",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -18347,17 +18368,6 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b9b36b0e22870b9f542d937",
         "source": "spotify",
         "added": "2026-05-31"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1gQFVuPj5QSxF50vHutH8d",
-        "score": 5,
-        "reason": "Clipped drum‑machine beat, slinky synth bass, and tightly syncopated hooks make this a textbook modern synth‑funk update to sit alongside Prince",
-        "title": "D’Angelo — Sugah Daddy",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
       }
     ],
     "rank_order": 12,
