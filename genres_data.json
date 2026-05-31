@@ -24371,7 +24371,18 @@
     "key_artists": "Limp Wrist, Team Dresch, Pansy Division, G.B. Jones, Tribe 8 (major figures)",
     "suggested_songs": "Limp Wrist -- I Love Hardcore Boys I Love Boys Hardcore, Team Dresch -- Growing Up in Public, Pansy Division -- Fem in a Black Leather Jacket, Tribe 8 -- Manipulate",
     "vibe": "Punk made by and for people punk itself often failed to include.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/33p3JIQWkSDSQSylZsYw5i",
+        "score": 5,
+        "reason": "Spanish‑language hardcore punk with relentless tempo and classic shouted gang‑style vocals, much closer to the core Latino punk tradition",
+        "title": "Los Crudos — Tiempos De La Miseria",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 624
   },
   {
@@ -24477,7 +24488,7 @@
     "date_raw": "5/8",
     "date_normalized": "2026-05-08",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -24486,8 +24497,53 @@
     "key_artists": "The Zeros, The Bags, The Brat, Malverde, Generacion Suicida (major figures)",
     "suggested_songs": "The Zeros -- Don't Push Me Around, The Bags -- Survive, The Brat -- Bellied Over, Generacion Suicida -- Entierro, Malverde -- La Llorona",
     "vibe": "Punk carrying a hyphenated American identity and using it as fuel.",
-    "songs_listened": [],
-    "rank_order": 13
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3dTcwy3L3fOP0vm4Lz0zdD",
+        "score": 5,
+        "reason": "Canon proto‑Latino punk: raw garage aggression, shouted Spanish vocals, and snotty riffing that basically prefigures Latin American punk",
+        "title": "Los Saicos — Demolición",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d5716aede7e56fa4b6060468",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/6kjUqOrNy1dqiT6NWYvvvq",
+        "score": 4,
+        "reason": "Straight‑ahead, fast, Spanish‑language punk with classic driving drums and terse melodic lines; very much in the Latino street‑punk lane",
+        "title": "Generacion Suicida — Criminal",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d53a446026113a1202133b14",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4ThmysWjmNKIxehPAB4znj",
+        "score": 2,
+        "reason": "Politicized, bilingual punk with horns and sax skronk; feels more like US riot grrrl/queercore than specifically Latino punk in sound and scene",
+        "title": "Downtown Boys — Monstro",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02408678c0d122505bf07885c4",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/33p3JIQWkSDSQSylZsYw5i",
+        "score": 5,
+        "reason": "Spanish‑language hardcore punk with relentless tempo and classic shouted gang‑style vocals, much closer to the core Latino punk tradition",
+        "title": "Los Crudos — Tiempos De La Miseria",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      }
+    ],
+    "rank_order": 13,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1067,
