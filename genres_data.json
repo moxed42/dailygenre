@@ -19394,7 +19394,7 @@
       {
         "url": "https://open.spotify.com/track/6Zbv79YWB0iZSXwIwEsIOP",
         "score": 5,
-        "reason": "Archetypal dark cabaret: piano‑driven, waltz‑y pulse, Amanda Palmer’s theatrical vocal swings, and burlesque‑meets‑goth drama all over the arrangement",
+        "reason": "Core dark cabaret template: piano‑led, waltzing feel, and hyper‑theatrical vocals that basically define the modern genre",
         "title": "The Dresden Dolls — Girl Anachronism",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e40a366bd5e9b44e85e268f9",
@@ -19404,18 +19404,81 @@
       {
         "url": "https://open.spotify.com/track/3spyjXAz3kzUqbfvC42z88",
         "score": 3,
-        "reason": "Circus‑metal theatrics and cabaret‑ish twists in the riffs and vocal delivery, but the core identity is avant‑prog metal rather than piano‑cabaret noir",
+        "reason": "Circus‑show flair and cabaret-esque twists in the riffs, but its spine is avant‑metal rather than cabaret piano noir",
         "title": "Stolen Babies — Filistata",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0275c29ad3f78b4c10213351c0",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0275c29ad3f78b4c10213351c0",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/1oAeeBsiE4CkY8T6Tn2XMj",
         "score": 5,
-        "reason": "Piano‑led, theatrical and macabre with explicit cabaret rhythm and delivery; a textbook dark‑cabaret standard to sit beside Dresden Dolls",
+        "reason": "Fully piano‑driven, macabre torch‑song with explicit cabaret rhythm and delivery; nails the dark cabaret archetype better than a metal‑leaning track",
         "title": "Jill Tracy — Evil Night Together",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1BCYH7V3Z7dEGDgROqcY7s",
+        "score": 2,
+        "reason": "Gloomy and theatrical, but structurally straight deathrock/post‑punk; the drama is goth‑rock, not cabaret‑stage",
+        "title": "Cinema Strange — Greensward Grey",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02752d8af03cceb6f2648f2427",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7Dqgttw7D6ZllBtYAcGLyq",
+        "score": 4,
+        "reason": "Minor‑key, waltzing, and story‑driven with cabaret‑style piano and strings; a clearer dark cabaret vibe within a goth context",
+        "title": "Katzenjammer Kabarett — Gemini Girly Song",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5Y11CDokIFjNr0vXkiP99X",
+        "score": 2,
+        "reason": "Macabre whimsy but still rooted in deathrock/wave; the off‑kilter drama reads as goth‑theatre more than cabaret‑bar song",
+        "title": "Cinema Strange — Catacomb Kittens",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ccc8fb3daa737e902207e838",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0JgWINykdP0bZt2bGjT1b9",
+        "score": 4,
+        "reason": "Carnival‑goth swing with prominent accordion and theatrical vocals that sit much closer to dark cabaret’s baroque sideshow feel",
+        "title": "Vermillion Lies — Circus Apocalypse",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4NmrCruBmr9ZdIUx7WnO2K",
+        "score": 3,
+        "reason": "Big gothic drama and a hint of chanson, but the instrumentation and pacing land closer to darkwave/rock ballad than true cabaret staging",
+        "title": "Bella Morte — The Rain Within Her Hands",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027b97d69081170a678d9b5a79",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1vCH8KpXpJEmzJrC2zmbNm",
+        "score": 4,
+        "reason": "Waltz‑time gloom with narrative vocal delivery and cabaret‑ish piano, bridging goth rock and dark cabaret more cleanly",
+        "title": "The Tiger Lillies — Roll Up",
         "artist": "",
         "artwork": "",
         "source": "spotify",
@@ -19425,18 +19488,103 @@
       {
         "url": "https://open.spotify.com/track/5VNplEIyA2PCKP0Rkb22uw",
         "score": 4,
-        "reason": "Vaudeville‑goth storytelling with waltz‑ish swing, melodramatic baritone, and tongue‑in‑cheek occult lyrics; very much in the spooky cabaret tradition, if a bit more folk‑goth than rock",
+        "reason": "Vaudeville‑goth camp with swung rhythm, melodramatic croon, and tongue‑in‑cheek occult lyrics; very much in spooky cabaret territory",
         "title": "Aurelio Voltaire — When You’re Evil",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e7b353b641ce8cf73f9def98",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2X1o60DoD1PfPPveTFXrUq",
+        "score": 2,
+        "reason": "Theatrical and horror‑tinged, but musically a deathrock/post‑punk cut; its cabaret feel is more aesthetic than structural",
+        "title": "The Last Days Of Jesus — Zombie Haut‑Couture",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c8152b051198bf03f603c0da",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1t6zty0IRi1bur0MZQE3Eh",
+        "score": 4,
+        "reason": "Tango‑ish pulse, dramatic vocal, and sleazy barroom arrangement; closer to the dark cabaret blueprint than straight deathrock",
+        "title": "The Dresden Dolls — Backstabber",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2qgYUpDfAmEN0jqi7rY8bJ",
+        "score": 3,
+        "reason": "Brass‑heavy punk cabaret with radical‑theatre energy; cabaret DNA is there, but it leans folk‑punk collective more than gothic cabaret proper",
+        "title": "World/Inferno Friendship Society — Only Anarchists Are Pretty",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0288a9208210419166d932575f",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1uwDs3Uxqj1bqlck1yMDkL",
+        "score": 4,
+        "reason": "Dark, piano‑centric and overtly cabaret in rhythm and delivery while still political; closer to a genre explainer for dark cabaret",
+        "title": "Amanda Palmer — The Killing Type",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1MUds3HEHVBrrIAQYouV8S",
+        "score": 3,
+        "reason": "Concept‑album cabaret vibe and theatrical vox, but the band’s core is folk‑punk; it brushes dark cabaret without fully living there",
+        "title": "World/Inferno Friendship Society — Addicted To Bad Ideas",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d0dc2e429ab7487e30e5f0e6",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1BQiM3dG4pZ3fRxvoq9xDd",
+        "score": 4,
+        "reason": "Bar‑room piano, minor‑key melodrama, and a smoky vocal line that squarely hits the dark cabaret bar‑theatre zone",
+        "title": "Jill Tracy — Haunted By The Thought Of You",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2TLx4ahyvDKsJft1vgS2uW",
+        "score": 3,
+        "reason": "Big‑band punk cabaret energy with theatrical shout‑singing; thematically aligned but musically still more folk‑punk revue than pure dark cabaret",
+        "title": "World/Inferno Friendship Society — I Am Sick Of People Being Sick Of My Shit",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02df792906a380172026163135",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4VZdorHdVUn6fcEzomE0Yj",
+        "score": 3,
+        "reason": "Funeral‑parade horns and vaudeville cadence bring it close to cabaret, but the song’s base is still folk‑punk rather than cabaret‑goth torch",
+        "title": "World/Inferno Friendship Society — This Packed Funeral",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ba5a5702ad2ded3cb76d0390",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 8,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "The Dresden Dolls — Girl Anachronism",
+    "favoritesongurl": "https://open.spotify.com/track/6Zbv79YWB0iZSXwIwEsIOP",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e40a366bd5e9b44e85e268f9"
   },
   {
     "id": 839,
@@ -19458,7 +19606,38 @@
     "key_artists": "45 Grave, Christian Death, Shadow Project, Kommunity FK, Voodoo Church (major figures)",
     "suggested_songs": "45 Grave — Party Time, Christian Death — Romeo's Distress, Shadow Project — Siren, Kommunity FK — The Vision and the Voice, Voodoo Church — Burning Church",
     "vibe": "Horror imagery through a post-punk guitar and a graveyard sense of humor.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7Dqgttw7D6ZllBtYAcGLyq",
+        "score": 4,
+        "reason": "Minor‑key, waltzing, and story‑driven with cabaret‑style piano and strings; a clearer dark cabaret vibe within a goth context",
+        "title": "Katzenjammer Kabarett — Gemini Girly Song",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0JgWINykdP0bZt2bGjT1b9",
+        "score": 4,
+        "reason": "Carnival‑goth swing with prominent accordion and theatrical vocals that sit much closer to dark cabaret’s baroque sideshow feel",
+        "title": "Vermillion Lies — Circus Apocalypse",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1t6zty0IRi1bur0MZQE3Eh",
+        "score": 4,
+        "reason": "Tango‑ish pulse, dramatic vocal, and sleazy barroom arrangement; closer to the dark cabaret blueprint than straight deathrock",
+        "title": "The Dresden Dolls — Backstabber",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 197
   },
   {
@@ -23910,7 +24089,28 @@
     "key_artists": "Against Me!, Defiance, Ohio, Pat the Bunny, Days N' Daze, Ghost Mice (major figures)",
     "suggested_songs": "Against Me! -- Pints of Guinness Make You Strong, Defiance, Ohio -- Condition Red, Pat the Bunny -- You Were a Monsoon, Days N' Daze -- Misanthropic Drunken Loner, Ghost Mice -- Europe",
     "vibe": "Acoustic instruments played with the same urgency as a punk band at full volume.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1uwDs3Uxqj1bqlck1yMDkL",
+        "score": 4,
+        "reason": "Dark, piano‑centric and overtly cabaret in rhythm and delivery while still political; closer to a genre explainer for dark cabaret",
+        "title": "Amanda Palmer — The Killing Type",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1BQiM3dG4pZ3fRxvoq9xDd",
+        "score": 4,
+        "reason": "Bar‑room piano, minor‑key melodrama, and a smoky vocal line that squarely hits the dark cabaret bar‑theatre zone",
+        "title": "Jill Tracy — Haunted By The Thought Of You",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 285
   },
   {
