@@ -3600,7 +3600,18 @@
     "key_artists": "Donna Summer, Gloria Gaynor, Chic, Earth Wind & Fire, Bee Gees (originators/major figures)",
     "suggested_songs": "Donna Summer — I Feel Love, Chic — Le Freak, Gloria Gaynor — I Will Survive, Earth Wind & Fire — September",
     "vibe": "A dancefloor where everyone is equal and the music never stops.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5ZfcC2XbYaMBrP8WlIwoXt",
+        "score": 4,
+        "reason": "Funky, sample-heavy Chicago-style house with skippy percussion and chopped vocals — a solid modern jackin' anthem",
+        "title": "Angelo Ferreri — Izinque",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 210
   },
   {
@@ -8766,20 +8777,41 @@
     "vibe": "House music that never stopped being about the sweat.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/2pzpApfqE2LaXW5StD1FUA",
+        "url": "https://open.spotify.com/track/29tm8ZbebPFzcg2shW6hJi",
         "score": 5,
-        "reason": "The genesis document of the entire genre — every defining hallmark present: blues-derived structure, raw acoustic guitar, the travelling-man persona, and the genre-naming yodel breaks inserted with jarring, electrifying effect",
-        "title": "Jimmie Rodgers — Blue Yodel (T for Texas)",
+        "reason": "Old-school Chicago jackin blueprint: swinging drums, looping funk sample, and that relentless shuffling groove that defines the style — Patrick Topping co-sign confirms the lineage",
+        "title": "Derrick Carter — Where U At",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02510117f1d6a9f9394fe27870",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020a2d0592103cd6e7b2f18836",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/2nMHNLsTHGBiEgv1Qi2LjB",
-        "score": 5,
-        "reason": "Blue Yodel No. 9 is the apex of the canon — Rodgers' most celebrated yodel vehicle, recorded with Louis Armstrong on cornet; the blues framework is fully intact, the yodel breaks are perfectly timed, and the Armstrong improvisation makes it a one-of-a-kind historical artefact",
-        "title": "Jimmie Rodgers — Blue Yodel No. 9 (Standin' on the Corner)",
+        "url": "https://open.spotify.com/track/1ww5uLbLRXdZXF5gLJbawz",
+        "score": 2,
+        "reason": "Smooth and funky but this lives in nu disco and jazz house — polished chord stabs and a laid-back melodic feel that lacks the raw, percussive, stripped-back jack of the genre",
+        "title": "Knee Deep",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02709778229b48b6181091fdae",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ZfcC2XbYaMBrP8WlIwoXt",
+        "score": 4,
+        "reason": "Funky, sample-heavy Chicago-style house with skippy percussion and chopped vocals — a solid modern jackin' anthem",
+        "title": "Angelo Ferreri — Izinque",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0bHNtuQ2pqAq7Glx60sArF",
+        "score": 4,
+        "reason": "Classic jackin' feel with chunky bass, swinging hats and filtered disco samples — textbook genre DNA",
+        "title": "DJ Sneak — You Can't Hide from Your Bud",
         "artist": "",
         "artwork": "",
         "source": "spotify",
@@ -8787,10 +8819,10 @@
         "isAdd": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/5cFBCkk1kaqJkqCTfVeNB8",
-        "score": 4,
-        "reason": "Rodgers at his most athletically yodelling — dizzying falsetto leaps, brisk tempo, and hard-labour lyrical content quintessential to the blue yodel style",
-        "title": "Jimmie Rodgers — Blue Yodel No. 8 (Mule Skinner Blues)",
+        "url": "🔼 ADD: https://open.spotify.com/track/7EubKQFWWep9vqeqU6ZRgJ",
+        "score": 5,
+        "reason": "Raw drums, looping funk sample and relentless shuffle — pure old-school Chicago jackin' that anchors the session alongside Derrick Carter",
+        "title": "Derrick Carter — Where U At (alt)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
