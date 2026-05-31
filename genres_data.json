@@ -10927,6 +10927,16 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0215ebbedaacef61af244262a8",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3PahTE8MzQvMRG13T8tB4Q",
+        "score": 4,
+        "reason": "Over‑earnest, melodically basic motivational pop whose chorus and spoken‑word bridge feel like a school‑assembly skit — lands squarely in the so‑sincere‑it’s‑cringe pocket",
+        "title": "Natasha Bedingfield — Unwritten",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 336
@@ -15169,9 +15179,20 @@
         "reason": "Maximalist meme‑EDM rap designed for virality; intentionally goofy swagger and loud drops fit the spirit but the production is slick enough that it reads more as mainstream party pop than pure cringepop",
         "title": "LMFAO — Sexy And I Know It",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0273cbe62524627a0fdfc06a8a",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0273cbe62524627a0fdfc06a8a",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3w3y8KPTfNeOKPiqUTakBh",
+        "score": 4,
+        "reason": "Hyper‑repetitive, lyrically shallow and heavily memed earworm whose forced swagger and playground‑chant hook push it straight into mass‑cringe territory",
+        "title": "PSY — Gangnam Style",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0249055dce3554e72e82082980",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/6UBd3Ub3OCnXSM21wno2zV",
@@ -15189,17 +15210,17 @@
         "reason": "Meme rap built out of internet catchphrases; obvious comedy intent and goofy delivery fit the vibe, but grime/UK rap DNA and competent production keep it rooted in parody rap rather than core cringepop",
         "title": "Big Shaq — Man’s Not Hot",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3PahTE8MzQvMRG13T8tB4Q",
         "score": 4,
-        "reason": "Dead‑serious inspirational rap over a bombastic beat whose hyper‑earnest hook and meme‑ification push it into classic “so sincere it’s cringe” territory",
-        "title": "Eminem — Lose Yourself",
+        "reason": "Over‑earnest, melodically basic motivational pop whose chorus and spoken‑word bridge feel like a school‑assembly skit — lands squarely in the so‑sincere‑it’s‑cringe pocket",
+        "title": "Natasha Bedingfield — Unwritten",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0215ebbedaacef61af244262a8",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-05-31",
         "isLevelUp": true
@@ -15251,7 +15272,7 @@
         "reason": "Self‑aware TikTok‑rap flex with a knowingly ridiculous premise; it brushes up against cringepop through repetition and attitude, but the beat and flow are a bit too contemporary and effective to be pure genre exemplar",
         "title": "Ice Spice — Deli",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023a696fc544995ab8d0d6765f",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023a696fc544995ab8d0d6765f",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -15270,7 +15291,7 @@
     "rank_order": null,
     "favoritesong": "Rebecca Black — Friday",
     "favoritesongartwork": "",
-    "favoritesongurl": "https://open.spotify.com/track/7n3WZ0v8M67SLdTyzp9XfC",
+    "favoritesongurl": "https://open.spotify.com/track/0wsFQabPV4Z8aIG6tf9HGH",
     "monthlycontender": false,
     "favoriteartist": ""
   },
