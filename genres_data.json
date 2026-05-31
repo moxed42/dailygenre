@@ -19018,7 +19018,7 @@
         "reason": "The definitive heartland rock statement — cinematic guitar, pumping saxophone, working-class escape narrative, and Springsteen at his most mythologising; this IS the genre",
         "title": "Bruce Springsteen — Born to Run",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028c5b6f7dcdc5817dc5050b2a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028c5b6f7dcdc5817dc5050b2a",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -19028,7 +19028,7 @@
         "reason": "Epic double-album centrepiece about Rust Belt heartbreak; sparse, intimate, and emotionally devastating — heartland rock at its most literary and raw",
         "title": "Bruce Springsteen — The River",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ebb7aaf3e19a51782ba1d27",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029ebb7aaf3e19a51782ba1d27",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -19059,7 +19059,7 @@
         "reason": "Petty's toughest, most urgent rocker — a paranoid, propulsive escape anthem with muscular Heartbreakers guitar that nails the genre's driving, restless energy",
         "title": "Tom Petty and the Heartbreakers — Refugee",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ebca7d93f21ba366fe005966",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ebca7d93f21ba366fe005966",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -19079,7 +19079,7 @@
         "reason": "Small-town Midwest pride and claustrophobia in one song — Mellencamp's heartland rock thesis statement, direct and unvarnished",
         "title": "John Mellencamp — Small Town",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b46e7ea6a6b2fa45caa23393",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b46e7ea6a6b2fa45caa23393",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -19165,33 +19165,14 @@
         "source": "spotify",
         "added": "2026-05-31",
         "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/1Vp8U39YNsDfd6yVuaUq12",
-        "score": 3,
-        "reason": "Beautiful and heartfelt but sits closer to folk-rock than heartland — too acoustic and pastoral, missing the electric grit",
-        "title": "Tom Petty — Wildflowers",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e7af3a709aeac0c796ab542",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/5anSbCkYJMVqjX0FeaqMm0",
-        "score": 5,
-        "reason": "The heartland rock archetype — Mellencamp's furious, electric, small-town rage anthem with a snarling guitar riff that perfectly bookends the session's Springsteen/Petty energy",
-        "title": "John Mellencamp — Jack & Diane",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31",
-        "isAdd": true
       }
     ],
     "rank_order": 9,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Tom Petty — I Won't Back Down",
+    "favoritesongurl": "https://open.spotify.com/track/7gSQv1OHpkIoAdUiRLdmI6",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236572e6726714544f5bed456"
   },
   {
     "id": 876,
