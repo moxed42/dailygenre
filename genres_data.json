@@ -12711,7 +12711,7 @@
     "date_raw": "5/23",
     "date_normalized": "2026-05-23",
     "parse_notes": "alias: electro hip-hop",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -12720,8 +12720,112 @@
     "key_artists": "Afrika Bambaataa, Grandmaster Flash, Egyptian Lover, Cybotron, Mantronix (originators/major figures)",
     "suggested_songs": "Afrika Bambaataa — Planet Rock, Egyptian Lover — Egypt Egypt, Cybotron — Clear, Mantronix — Got to Have Your Love",
     "vibe": "The moment hip-hop met synthesizers and the whole future opened up.",
-    "songs_listened": [],
-    "rank_order": 85
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1PS1QMdUqOal0ai3Gt7sDQ",
+        "score": 2,
+        "reason": "2000s chipmunk‑soul rap with live‑sounding drums; great song but rooted in sample‑based hip hop, not electro — better fits: rap",
+        "title": "Kanye West; Jamie Foxx — Gold Digger",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d79ba8ad2be777bad0e9924b"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4a6Hc3D6r5G2k1eIEs1M3i",
+        "score": 5,
+        "reason": "Classic 808‑driven electro‑rap with robotic vocals and synth bass — a core electro hip hop blueprint",
+        "title": "Afrika Bambaataa; The Soul Sonic Force — Planet Rock",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2E1RGgFtr1X4H6glXOtABo",
+        "score": 2,
+        "reason": "Glossy pop‑rap/R&B with cinematic synths; more contemporary pop‑rap than vintage electro — better fits: pop rap",
+        "title": "Nicki Minaj; Rihanna — Fly",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c17570626959bfa6c2435925"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6Tz0QRoe083NaVKI5LU15j",
+        "score": 4,
+        "reason": "Drum‑machine groove, synth stabs and vocoder hooks — a strong modern electro‑hip‑hop hybrid",
+        "title": "Kanye West — Stronger",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7lkJFplC4I2jMRY3sCwhzd",
+        "score": 3,
+        "reason": "Crunk track with heavy synthetic bass and club‑rap energy; brushes electro territory but identity is Southern crunk — better fits: crunk",
+        "title": "Lil Jon; Pleasure P; Shawty Putt — Like A Stripper",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023520ff5ed33154f22e1c74e7"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/09L7RAYwQxZssjTixYQAlz",
+        "score": 4,
+        "reason": "80s electro‑funk production, talkbox/vocoder vocal and rap verses — very close to the classic electro‑hip‑hop template",
+        "title": "Zapp & Roger — More Bounce to the Ounce",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4JfcEkOP08hSwP7cSSz6AW",
+        "score": 2,
+        "reason": "Horrorcore with rock guitars and dense, live‑band production; far from the drum‑machine electro sound — better fits: horrorcore / rap rock",
+        "title": "Insane Clown Posse — Bang! Pow! Boom!",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b6e01aed96a03d8706c91931"
+      },
+      {
+        "url": "https://open.spotify.com/track/0I3q5fE6wg7LIfHGngUTnV",
+        "score": 2,
+        "reason": "Organic, swung Southern hip hop with rich instrumentation, not rigid drum‑machine electro — better fits: Southern hip hop",
+        "title": "Outkast — Ms. Jackson",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02153b3d6495031cb813a7451c"
+      },
+      {
+        "url": "https://open.spotify.com/track/6AI3ezQ4o3HUoP6Dhudph3",
+        "score": 2,
+        "reason": "Modern West‑Coast diss track with minimalist, trap‑leaning beat; no electro‑funk DNA — better fits: hip hop / West Coast hip hop",
+        "title": "Kendrick Lamar — Not Like Us",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021ea0c62b2339cbf493a999ad"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/3GfC7a4Tkk8ysLlq39OKul",
+        "score": 5,
+        "reason": "Early‑80s electro‑rap with booming 808s, synth‑bass riffs and vocoder interjections — archetypal electro hip hop",
+        "title": "Newcleus — Jam On It",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": 85,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 586,
