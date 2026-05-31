@@ -10689,7 +10689,7 @@
     "date_raw": "5/2",
     "date_normalized": "2026-05-02",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -10698,8 +10698,122 @@
     "key_artists": "Burial (foundational influence), Shortstuff, Synkro, Arovane, Indigo (originators/major figures)",
     "suggested_songs": "Burial — Archangel, Synkro — Lost, Shortstuff — Dusk, Indigo — Fade",
     "vibe": "UK garage remembered as a feeling rather than played as a style.",
-    "songs_listened": [],
-    "rank_order": 72
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4bZAsC7ftR11pHpRNk2Mhc",
+        "score": 4,
+        "reason": "Vocal‑led, melancholy post‑dubstep with swung drums and sub bass — a strong fit for the modern future‑garage lineage",
+        "title": "James Blake — I Want You To Know",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02921f7aa6349a070b6f26b3ff"
+      },
+      {
+        "url": "https://open.spotify.com/track/0fiTN2N5HEIefAHtm00vYG",
+        "score": 4,
+        "reason": "UK bass/post‑dubstep tune with shuffling percussion and spacious low‑end, right in the crossover between dubstep and future garage",
+        "title": "SBTRKT; Little Dragon — Wildfire",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fb152257b34a231aa9ee771f"
+      },
+      {
+        "url": "https://open.spotify.com/track/78Ct2qlEtSMw3CG6zWwAyz",
+        "score": 3,
+        "reason": "Detailed, broken‑beat IDM with some garage swing but more heady and modular than club‑focused — better fits: IDM / experimental bass",
+        "title": "Floating Points — Anasickmodular",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02216a393a7606aa7de52c4636"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6cURIYw7QKZ5lREUAIpImF",
+        "score": 5,
+        "reason": "Classic Burial‑school future garage with ghostly vocals and shuffled 2‑step drums — nails the genre’s core mood",
+        "title": "Burial — Archangel",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0FVuyC9RP5MACjp4lgU3qZ",
+        "score": 3,
+        "reason": "Cloud‑rap instrumental with hazy pads and loose drums; adjacent in atmosphere but not structurally garage — better fits: cloud rap / instrumental hip hop",
+        "title": "Clams Casino — I'm God",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d57e3b601a8171f7e122b2ea"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5mFvZQxXIZ4Yt6lC3E1Z8j",
+        "score": 5,
+        "reason": "Deep, shuffling 2‑step rhythm with vaporous vocal chops and sub‑heavy groove, a textbook future‑garage cut",
+        "title": "Koreless — 4D",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6FlIvNPC3qqjYs0CETp5YQ",
+        "score": 3,
+        "reason": "Long, cinematic bass track with broken rhythms; sits more in experimental electronic than straight future garage — better fits: electronic / bass music",
+        "title": "SBTRKT — CLASSIC THEME",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cae3b8d02327148cd9ed8c26"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2gpvQY4F3cGQpnK47lq9eL",
+        "score": 4,
+        "reason": "Warped R&B vocals over swung, skipping percussion — strong mid‑2010s future‑garage/post‑dubstep hybrid",
+        "title": "SBTRKT — Hold On",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0UgLrEaEcTnoGOLawTvPts",
+        "score": 2,
+        "reason": "Big, festival‑scale house with a four‑on‑the‑floor thump, closer to EDM than garage swing — better fits: house / festival EDM",
+        "title": "Fred again..; Skrillex; Four Tet — Baby again..",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024018b70099d433d9c8aabb12"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5fjeCR1C2hqc4dI7AfgQd0",
+        "score": 4,
+        "reason": "Skippy drums and chopped vocal work within a UK‑bass framework that still feels rooted in garage",
+        "title": "Disclosure — You & Me (Flume Remix)",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4Z4i631BesV0P6LTvfLAdL",
+        "score": 4,
+        "reason": "Dusty, swung kick‑and‑snare pattern with woozy pads and side‑chained chords — a very solid lo‑fi/future‑garage hybrid",
+        "title": "Ross From Friends — Talk to Me You'll Understand",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02088d99c85e6de4f30b39679c"
+      }
+    ],
+    "rank_order": 72,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 478,
