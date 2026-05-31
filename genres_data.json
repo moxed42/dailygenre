@@ -12770,35 +12770,43 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/5zzcStevEtH2sUZuBzqLGO",
-        "score": null,
+        "score": 4,
+        "reason": "Modern but deeply indebted to Memphis: lo‑fi horror atmospherics, double‑time triplet flows, and trunk‑rattle 808s echo the classic Three 6 sound even if it is 2020s polished",
+        "title": "Denzel Curry, Kenny Mason, Project Pat — SKED",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023fb9700186c245ff1f85b0fc",
         "source": "spotify",
-        "added": "2026-05-27"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4J2gqaHBsVeY0PAf4VraRL",
-        "score": null,
+        "score": 5,
+        "reason": "Canonical early Memphis: DJ Spanish Fly’s skeletal drum machine patterns, eerie synths, and laid‑back yet menacing flow basically blueprint the scene’s lo‑fi, tape‑deck aesthetic",
+        "title": "DJ Spanish Fly — Cement Shoes",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0281833e613df5e00e98703f87",
         "source": "spotify",
-        "added": "2026-05-27"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/2raq77uNmq3fGzVmB8myr5",
-        "score": null,
+        "score": 5,
+        "reason": "Absolute core Memphis horrorcore: murky, bass‑heavy mix, chant hooks, and sinister minor‑key pads define the classic Three 6 Mafia regional sound",
+        "title": "Three 6 Mafia — Da Summa",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024efceb6fbf4db94db0162b8c",
         "source": "spotify",
-        "added": "2026-05-27"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/190CNHp6TmBJWHeoTf9msD",
-        "score": null,
+        "score": 4,
+        "reason": "Mid‑90s Memphis underground vibe with gritty samples and dark mood; slightly more generic hardcore‑rap structure, but still clearly in the Memphis tape‑era lineage",
+        "title": "MEMPHIS RAP ARCHIVE — Another Drought",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028de60f1d403c22a689ad80b7",
         "source": "spotify",
-        "added": "2026-05-27"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 49,
