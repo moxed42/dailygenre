@@ -3476,9 +3476,11 @@
       }
     ],
     "rank_order": 50,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Blazer — Obsidian",
+    "favoritesongurl": "https://open.spotify.com/track/66Cz2npSRryWC53GceDfIJ",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0207b68be486d13c980f0833c6"
   },
   {
     "id": 150,
@@ -16873,7 +16875,18 @@
     "key_artists": "James Brown, Sly and the Family Stone, Parliament-Funkadelic, The Meters, Kool & the Gang (originators/major figures)",
     "suggested_songs": "James Brown — Get Up (I Feel Like Being a) Sex Machine, Sly and the Family Stone — Thank You (Falettinme Be Mice Elf Agin), Parliament — Flash Light, The Meters — Cissy Strut, Kool & the Gang — Jungle Boogie",
     "vibe": "Rhythm pulled so tight it becomes a complete worldview.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6cFZ4PLC19taNlpl9pbGMf",
+        "score": 5,
+        "reason": "Chugging stomp beat, stack‑of‑amps guitar tone, and larger‑than‑life vocals crystallize the 70s glam template in one song",
+        "title": "David Bowie — Suffragette City",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0267bc29c251c777361b17a190",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 17
   },
   {
@@ -19015,7 +19028,7 @@
     "date_raw": "5/21",
     "date_normalized": "2026-05-21",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -19024,8 +19037,64 @@
     "key_artists": "T. Rex, David Bowie, Slade, Sweet, Roxy Music (major figures)",
     "suggested_songs": "T. Rex — Get It On, David Bowie — Ziggy Stardust, Slade — Cum On Feel the Noize, Sweet — Ballroom Blitz, Roxy Music — Virginia Plain",
     "vibe": "Rock music that put on platform boots and expected the spotlight.",
-    "songs_listened": [],
-    "rank_order": 2
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5jNn9QeC5PCZl3t27eusXg",
+        "score": 5,
+        "reason": "Classic 80s stadium‑sized Queen: theatrical vocals, huge choral hooks, shreddy guitar, and over‑the‑top fantasy swagger make this an archetypal glam rock anthem",
+        "title": "Queen — Princes Of The Universe - Remastered 2011",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e98d08fbea1a2f03229abc20",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5z6xHjCZr7a7AIcy8sPBKy",
+        "score": 3,
+        "reason": "Maximalist nu‑metal cover that leans on crunchy riffing and turn‑of‑the‑millennium alt‑metal production; it borrows Michael Jackson’s pop showmanship but sonically reads more nü/alt‑metal than glittery glam",
+        "title": "Alien Ant Farm — Smooth Criminal",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023aa5698b9f13447a6ccc0dcc",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0ofHAoxe9vBkTCp2UQIavz",
+        "score": 5,
+        "reason": "Explosive riff, handclaps, and cocky lead vocal with big gang‑chant hook hit the essential 70s glam blend of hard‑rock crunch and glitter‑rock flash",
+        "title": "T. Rex — 20th Century Boy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0257df7ce0eac715cf70e519a7",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3mg0GZG9gidoamj76Rp5Dr",
+        "score": 2,
+        "reason": "Cartoonish funk‑metal with rubbery bass and surreal lyrics; theatrical in personality, but its groove‑metal/alt‑metal sonics land far from classic glam’s stomping 4/4 and glitter hooks",
+        "title": "Primus — Wynona’s Big Brown Beaver",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029c9c2dd5b26d2729ec441bfe",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6cFZ4PLC19taNlpl9pbGMf",
+        "score": 5,
+        "reason": "Chugging stomp beat, stack‑of‑amps guitar tone, and larger‑than‑life vocals crystallize the 70s glam template in one song",
+        "title": "David Bowie — Suffragette City",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0267bc29c251c777361b17a190",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      }
+    ],
+    "rank_order": 2,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 873,
@@ -20468,7 +20537,18 @@
     "key_artists": "Korn, Limp Bizkit, Linkin Park, Slipknot, System of a Down (major figures)",
     "suggested_songs": "Korn -- Freak on a Leash, Limp Bizkit -- Rollin', Linkin Park -- One Step Closer, Slipknot -- Wait and Bleed, System of a Down -- Chop Suey!",
     "vibe": "Teen anger in a genre that could rap, scream, and drop-tune simultaneously.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0ofHAoxe9vBkTCp2UQIavz",
+        "score": 5,
+        "reason": "Explosive riff, handclaps, and cocky lead vocal with big gang‑chant hook hit the essential 70s glam blend of hard‑rock crunch and glitter‑rock flash",
+        "title": "T. Rex — 20th Century Boy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0257df7ce0eac715cf70e519a7",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 545
   },
   {
