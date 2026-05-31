@@ -10917,7 +10917,18 @@
     "key_artists": "Wiley, Dizzee Rascal, Skepta, JME, Stormzy (originators/major figures)",
     "suggested_songs": "Dizzee Rascal — I Luv U, Wiley — Wot Do U Call It?, Skepta — Shutdown, Stormzy — Shut Up",
     "vibe": "East London in the early 2000s — cold, fast, and completely its own thing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC",
+        "score": 4,
+        "reason": "Dead‑serious inspirational rap over a bombastic beat whose hyper‑earnest hook and meme‑ification push it into classic “so sincere it’s cringe” territory",
+        "title": "Eminem — Lose Yourself",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0215ebbedaacef61af244262a8",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 336
   },
   {
@@ -15143,39 +15154,9 @@
     "vibe": "Painfully self-aware pop that turns secondhand embarrassment into emotional texture.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/1cwQI9EXXDhRV1yP70vHXc",
-        "score": 5,
-        "reason": "Intentionally abrasive hyperpop chaos with internet‑culture sensibility — perfect cringe‑pop energy",
-        "title": "100 gecs; Charli XCX; Rico Nasty; Kero Kero Bonito — ringtone (Remix)",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c0d0c1e926fb6b08870f7086",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/4bp2wYweUPvsBrQfntdYcr",
-        "score": 3,
-        "reason": "Polished, genre‑hopping art‑pop with earnest ambition; too sophisticated and sincere to land as cringe",
-        "title": "Caroline Polachek — Welcome To My Island",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02de17893c581b6f4fbeba51e1",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
-        "score": 4,
-        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — archetypal cringe‑pop",
-        "title": "Taher Shah — Angel",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
         "url": "https://open.spotify.com/track/4w9soAM7IrmYDhSXLp14p6",
         "score": 4,
-        "reason": "Deliberately hammy rock parody from a kids' movie; cartoonishly over‑the‑top vocals and meme‑ready absurdity",
+        "reason": "Earnest piano ballad from a blockbuster kids’ movie that went viral on sheer sincerity and meme power — melodically straightforward but extremely on‑the‑nose and theatrical, right in the cringepop wheelhouse",
         "title": "Jack Black — Peaches",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c21aa4015cb02b6b8eca09a4",
@@ -15183,69 +15164,50 @@
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/6kex4EBAj0WHXDKZMEJaaF",
+        "url": "https://open.spotify.com/track/0obBFrPYkSoBJbvHfUIhkv",
         "score": 3,
-        "reason": "Slick tropical‑pop/trap crossover with professional polish; sits more in mainstream pop‑rap than cringe territory",
-        "title": "Jason Derulo; Nicki Minaj; Ty Dolla $ign — Swalla",
+        "reason": "Maximalist meme‑EDM rap designed for virality; intentionally goofy swagger and loud drops fit the spirit but the production is slick enough that it reads more as mainstream party pop than pure cringepop",
+        "title": "LMFAO — Sexy And I Know It",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/7yq4Qd6QQTFE3S73UMfvIn",
-        "score": 4,
-        "reason": "Hilariously literal, low‑budget viral anthem built entirely around one absurd bragging premise — peak novelty cringe",
-        "title": "Iyaz — Replay",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/5JYPXqMwYc0zTODQdjMEZN",
-        "score": 2,
-        "reason": "Confident, minimalist drill‑rap with viral appeal but no awkward cringe factor",
-        "title": "Ice Spice — Deli",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023a696fc544995ab8d0d6765f",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
-        "score": 4,
-        "reason": "Comedy drill/novelty rap with meme catchphrases and deliberately absurd persona — strong cringe‑pop energy",
-        "title": "Big Shaq — Man's Not Hot",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0273cbe62524627a0fdfc06a8a",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/6UBd3Ub3OCnXSM21wno2zV",
-        "score": 4,
-        "reason": "Novelty rap with absurd premise and deliberately low production; clearly tongue‑in‑cheek internet‑culture humor",
-        "title": "Riskay — Smell Yo Dick",
+        "score": 5,
+        "reason": "Ultra‑literal hook, lo‑fi club rap beat and eyebrow‑raising lyrics that live and die on shock value — the exact mix of awkward oversharing and accidental comedy that defines cringepop",
+        "title": "Riskay, Aviance — Smell Yo D",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0217c495d80d19bb9d26a831ae",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/291IkUGlq5miJ0R1rEGSf5",
-        "score": 4,
-        "reason": "Surreal, lo‑fi novelty track with awkward spoken‑word vibe and meme energy",
-        "title": "Zander Hawley — Daddy Cop",
+        "url": "https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
+        "score": 3,
+        "reason": "Meme rap built out of internet catchphrases; obvious comedy intent and goofy delivery fit the vibe, but grime/UK rap DNA and competent production keep it rooted in parody rap rather than core cringepop",
+        "title": "Big Shaq — Man’s Not Hot",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0288e640a0090e2a9a57b5aed5",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC",
+        "score": 4,
+        "reason": "Dead‑serious inspirational rap over a bombastic beat whose hyper‑earnest hook and meme‑ification push it into classic “so sincere it’s cringe” territory",
+        "title": "Eminem — Lose Yourself",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0215ebbedaacef61af244262a8",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/4RTq3Gc7wS2CA8fHtqQhQ1",
         "score": 4,
-        "reason": "Earnest indie‑pop with deliberately juvenile lyrics; awkward sincerity lands squarely in cringe territory",
+        "reason": "Earnest, juvenile sex‑comedy songwriting over a bright, lightweight indie‑rock arrangement — the tonal clash between subject and sugary delivery lands squarely in the “so awkward it loops back to catchy” space",
         "title": "The Puddleducks — Milf Song",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0260b084b060781482c2eff660",
@@ -15253,39 +15215,9 @@
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/4Y55vJ0zfV7N8o0LP58c5I",
-        "score": 3,
-        "reason": "Spoken‑word hip‑hop intro with cringeworthy bravado; more standard rap posturing than viral cringe",
-        "title": "Ms Introvert; Alfred Coleman — Well Said, Alfred! (Intro)",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02af4531bbe2c16e88718acb9c",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/3HZOGQxRMuHCfInceQDQqT",
-        "score": 4,
-        "reason": "Deadpan novelty rap with absurdist self‑aware lyrics and intentionally cheap production — solid cringe‑pop",
-        "title": "Lil B — I'm Miley Cyrus",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/58l7GwvOaSBNwR7xVUDBH6",
-        "score": 4,
-        "reason": "Weird, unsettling indie track with awkward vocal delivery and surreal lyrics — cringe‑adjacent and very intentional",
-        "title": "Sweet Joey Vermouth; Ray Bull — Beefcake",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d32f4d5d12fdff0b3fb18b09",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/7n3WZ0v8M67SLdTyzp9XfC",
+        "url": "https://open.spotify.com/track/0wsFQabPV4Z8aIG6tf9HGH",
         "score": 5,
-        "reason": "Awkward, ultra‑literal pop song famous for being \"so bad it's good\" — a canonical cringe‑pop cornerstone",
+        "reason": "Shamelessly cheesy hook, stiff delivery and bedroom‑tier production that feel like a time‑capsule of YouTube‑era accidental cringe — an ur‑text for the genre",
         "title": "Rebecca Black — Friday",
         "artist": "",
         "artwork": "",
@@ -15294,13 +15226,45 @@
       },
       {
         "url": "https://open.spotify.com/track/1ea97AUSazu2QZw9BnHJqK",
-        "score": 5,
-        "reason": "Viral, goofy, swaggering rap with deliberately over‑the‑top persona and internet‑meme aesthetics — an ideal cringe‑pop cornerstone",
+        "score": 2,
+        "reason": "Early‑2010s blog‑rap with a deliberately flat, bratty delivery that spawned memes, but musically it leans more into cloud‑rap/alt‑rap than into the off‑key, oversincere terrain of core cringepop",
         "title": "Kreayshawn — Gucci Gucci",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02471d72855d447ada469dd99a",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/35RVJcA8y9uSFPmy1KfbOU",
+        "score": 4,
+        "reason": "Overproduced inspirational pop‑rap with wide‑eyed lyrics and a chorus engineered for school‑assembly singalongs — the platitudes and delivery make it peak “earnest cringe”",
+        "title": "Macklemore & Ryan Lewis — Thrift Shop (feat. Wanz)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5JYPXqMwYc0zTODQdjMEZN",
+        "score": 3,
+        "reason": "Self‑aware TikTok‑rap flex with a knowingly ridiculous premise; it brushes up against cringepop through repetition and attitude, but the beat and flow are a bit too contemporary and effective to be pure genre exemplar",
+        "title": "Ice Spice — Deli",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023a696fc544995ab8d0d6765f",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2ksOAxtIxY8yElEWw8RhgK",
+        "score": 4,
+        "reason": "Hyper‑catchy, lyrically shallow and borderline grating earworm whose ubiquity and simplistic hook pushed it into mass‑cringe territory",
+        "title": "Carly Rae Jepsen — Call Me Maybe",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025fa6dc9fc261344044c301a9",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
       }
     ],
     "rank_order": null,
