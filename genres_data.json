@@ -16776,7 +16776,7 @@
         "reason": "Big, glossy production and driving synth bass; feels slightly more arena/new wave rock than pure pop, but the synth backbone and chorus land squarely in synthpop territory",
         "title": "Depeche Mode — Never Let Me Down Again",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0213ccc3e363f27a4a3d06d1b1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0213ccc3e363f27a4a3d06d1b1",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -16888,7 +16888,7 @@
         "reason": "Guitars and post-punk mood are foregrounded, with synths more as color; reads primarily as post-punk/new wave rather than synthpop first",
         "title": "The Psychedelic Furs — Heaven",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0225c0d8ea645dcfec05c3b425",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0225c0d8ea645dcfec05c3b425",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -16929,7 +16929,7 @@
         "reason": "Goth/post-punk framework with synths as part of a darker rock palette; great adjacent track but primarily a gothic rock/post-punk anthem",
         "title": "Siouxsie and the Banshees — Cities in Dust",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cf1fda72b66d57fdc6104c8d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cf1fda72b66d57fdc6104c8d",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -16971,7 +16971,7 @@
         "reason": "Darker, moody synthpop cut; strong synth hook and drum programming keep it comfortably inside the genre despite its noir tone",
         "title": "Corey Hart — Sunglasses at Night",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b261545058d4ec62dae2bfed",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b261545058d4ec62dae2bfed",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -16981,7 +16981,7 @@
         "reason": "Tight, hooky synth line and upbeat groove; very straightforward 80s synthpop with a slight new wave edge",
         "title": "The Human League — Mirror Man",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027c7b937a98ff68bcf7fc24a8",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027c7b937a98ff68bcf7fc24a8",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -16991,7 +16991,7 @@
         "reason": "NDW classic with prominent synths but also lots of rock swagger and accented delivery; feels more like an NDW novelty hit than central synthpop",
         "title": "Falco — Rock Me Amadeus",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02731d2eb04541bef9e4434d4e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02731d2eb04541bef9e4434d4e",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -17054,7 +17054,7 @@
         "reason": "Bouncy rhythm, synthesized hooks, and novelty-science theme make this a fun, unmistakably synthpop single, even if it leans toward quirky",
         "title": "Thomas Dolby — She Blinded Me With Science",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022f85ef389219f107dfaa6f9b",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f85ef389219f107dfaa6f9b",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -17064,7 +17064,7 @@
         "reason": "Fast, driving beat, big chorus, and bright synth arrangements make this one of the most archetypal radio synthpop tracks of the era",
         "title": "Kim Wilde — Kids in America",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021233a7885e76b74d0b2a9473",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021233a7885e76b74d0b2a9473",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -17094,7 +17094,7 @@
         "reason": "Dance-pop but built on strong synth lines and drum machines, slotting neatly into an 80s synthpop context",
         "title": "Sophie Ellis-Bextor — Murder on the Dancefloor",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024914b28ba1485733dc8dd448",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024914b28ba1485733dc8dd448",
         "source": "spotify",
         "added": "2026-05-31",
         "isLevelUp": true
@@ -17152,9 +17152,11 @@
       }
     ],
     "rank_order": 1,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": true
+    "favoritesong": "a-ha — Take on Me",
+    "favoritesongurl": "https://open.spotify.com/track/2WfaOiMkCvy7F5fcp2zZ8L",
+    "monthlycontender": true,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e8dd4db47e7177c63b0b7d53"
   },
   {
     "id": 748,
