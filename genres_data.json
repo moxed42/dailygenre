@@ -1010,7 +1010,18 @@
     "key_artists": "Rank and File, The Blasters, Jason and the Scorchers, Wall of Voodoo, X (originators)",
     "suggested_songs": "Jason and the Scorchers — Absolutely Sweet Marie, Rank and File — Amanda Ruth, The Blasters — Marie Marie, X — Fourth of July",
     "vibe": "A honky-tonk that let a punk band set up in the corner.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0NgNSk1kej2x9ZyHvzqVd4",
+        "score": 4,
+        "reason": "Stripped‑down garage‑punk with a clear blues backbone and unhinged vocal that leans much closer to punk‑blues grime",
+        "title": "The Oblivians — Vietnam War Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 173
   },
   {
@@ -11373,6 +11384,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2bdtXaj7gsUOIt5SmkX8Hc",
+        "score": 4,
+        "reason": "Cave in a more propulsive, riff‑driven mode where the blues skeleton and snarled delivery give a much clearer punk‑blues charge",
+        "title": "Nick Cave & The Bad Seeds — Deanna",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 14
@@ -12928,7 +12949,18 @@
     "key_artists": "Playboi Carti, Ken Carson, Destroy Lonely, Pi'erre Bourne, Homixide Gang (major figures)",
     "suggested_songs": "Playboi Carti — Rockstar Made, Ken Carson — Fighting My Demons, Destroy Lonely — BNDWGN",
     "vibe": "Trap at maximum volume and maximum chaos.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0c9jxyVKMKpS44M2U5K3kK",
+        "score": 5,
+        "reason": "Lo‑fi, snarling rewrite of Delta blues through a punk lens, with distorted slide guitar and yelped vocals that epitomize punk‑blues minimalism",
+        "title": "The Gun Club — For the Love of Ivy",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 19
   },
   {
@@ -24129,7 +24161,7 @@
     "date_raw": "516",
     "date_normalized": "2026-05-16",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -24138,8 +24170,115 @@
     "key_artists": "The White Stripes, Jon Spencer Blues Explosion, The Black Keys, The Detroit Cobras, Dead Moon (major figures)",
     "suggested_songs": "The White Stripes -- Death Letter, Jon Spencer Blues Explosion -- Bellbottoms, The Black Keys -- I'll Be Your Man, The Detroit Cobras -- Shout Bama Lama, Dead Moon -- It's OK",
     "vibe": "Blues played by people who also love punk and can't fully separate the two.",
-    "songs_listened": [],
-    "rank_order": 33
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6dyku3NZZukkS8yhzWG9TU",
+        "score": 5,
+        "reason": "Archetypal punk blues: rockabilly-derived groove, reverb‑soaked guitar, and feral vocal swagger fuse garage, rockabilly, and punk into the Cramps’ definitive swampy punk‑blues sound",
+        "title": "The Cramps — The Way I Walk",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0227c337cfb2be8c395b04d61d",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3c8EuNopagO7tdeVLIJry9",
+        "score": 4,
+        "reason": "Slides between haunted country‑blues structures and post‑punk attack; the desert‑fried guitar tone and yowled vocals keep it clearly in the punk‑blues family even as it stretches out",
+        "title": "The Gun Club — Like Calling Up Thunder",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0207551f831733da4cc6d398ee",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3dPQuX8Gs42Y7b454ybpMR",
+        "score": 3,
+        "reason": "Monolithic blues‑rock riff and garage stomp, but the precision and stadium‑scale anthem quality make it more alt/garage rock than scuzzy punk‑blues",
+        "title": "The White Stripes — Seven Nation Army",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027028981d09d2e5833c9c78ad",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0c9jxyVKMKpS44M2U5K3kK",
+        "score": 5,
+        "reason": "Lo‑fi, snarling rewrite of Delta blues through a punk lens, with distorted slide guitar and yelped vocals that epitomize punk‑blues minimalism",
+        "title": "The Gun Club — For the Love of Ivy",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0pDMnocBxXOPjBiTfYr8bl",
+        "score": 4,
+        "reason": "Raw garage recording with lurching rhythm and blown‑out guitars; it lives between garage rock and punk‑blues, but the ragged vocal and swampy looseness keep it a strong fit",
+        "title": "The Gories — There But for the Grace of God Go I",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0250f2463fd7789b3d053b6eac",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4aM3FY3th2Qx9tuvurMN0X",
+        "score": 3,
+        "reason": "Classic political punk tune with some rock ’n’ roll swing, yet the attack, tempo, and emphasis are hardcore/punk first rather than blues‑drenched",
+        "title": "Dead Kennedys — Police Truck",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b409fb10b317c00acc66f14b",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0NgNSk1kej2x9ZyHvzqVd4",
+        "score": 4,
+        "reason": "Stripped‑down garage‑punk with a clear blues backbone and unhinged vocal that leans much closer to punk‑blues grime",
+        "title": "The Oblivians — Vietnam War Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0Vv2svfsXBbOeh0GMlqLGT",
+        "score": 4,
+        "reason": "Greasy, overdriven riff, yelped vocals, and a lurching groove nail the 90s punk‑blues aesthetic even if it files as garage/blues rock on paper",
+        "title": "The Jon Spencer Blues Explosion — Sweat",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026cda41c43601ec82ed81fd3a",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0oSCLH7cLuvCF4LXFRrWOs",
+        "score": 3,
+        "reason": "Murder ballad‑adjacent slow burner with country‑goth and folk‑blues DNA; it’s dark and rootsy but less about punk propulsion, so it sits at the fringes of punk‑blues",
+        "title": "Nick Cave & The Bad Seeds — Brother, My Cup Is Empty",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026f4ace82a0751a65f51e0834",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2bdtXaj7gsUOIt5SmkX8Hc",
+        "score": 4,
+        "reason": "Cave in a more propulsive, riff‑driven mode where the blues skeleton and snarled delivery give a much clearer punk‑blues charge",
+        "title": "Nick Cave & The Bad Seeds — Deanna",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      }
+    ],
+    "rank_order": 33,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1079,
