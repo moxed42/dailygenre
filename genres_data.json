@@ -7624,7 +7624,20 @@
     "key_artists": "Chief Keef, Lil Durk, G Herbo, Chance the Rapper (early), Polo G (originators) • Pop Smoke, Central Cee (international variants)",
     "suggested_songs": "Chief Keef — I Don't Like, Lil Durk — India, G Herbo — Wraith, Polo G — Pop Out",
     "vibe": "Music from a specific zip code, with no interest in explaining itself to outsiders.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
+        "score": 4,
+        "reason": "Comedy drill/novelty rap with meme catchphrases and deliberately absurd persona — strong cringe‑pop energy",
+        "title": "Big Shaq — Man's Not Hot",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
+        "isPending": true,
+        "pendingFrom": "Cringe pop"
+      }
+    ],
     "rank_order": 5
   },
   {
@@ -15018,12 +15031,12 @@
       {
         "url": "https://open.spotify.com/track/1cwQI9EXXDhRV1yP70vHXc",
         "score": 5,
-        "reason": "Intentionally abrasive hyperpop chaos with internet‑culture sensibility; perfect cringe‑pop energy",
-        "title": "100 gecs; Charli xcx; Rico Nasty; Kero Kero Bonito — ringtone (Remix) [feat. Charli XCX, Rico Nasty, Kero Kero Bonito]",
+        "reason": "Intentionally abrasive hyperpop chaos with internet‑culture sensibility — perfect cringe‑pop energy",
+        "title": "100 gecs; Charli XCX; Rico Nasty; Kero Kero Bonito — ringtone (Remix)",
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c0d0c1e926fb6b08870f7086"
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c0d0c1e926fb6b08870f7086"
       },
       {
         "url": "https://open.spotify.com/track/4bp2wYweUPvsBrQfntdYcr",
@@ -15038,7 +15051,7 @@
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/7n3WZ0v8M67SLdTyzp9XfC",
         "score": 5,
-        "reason": "Awkward, ultra‑literal pop song that became famous for being \"so bad it's good\" — a canonical cringe‑pop reference",
+        "reason": "Awkward, ultra‑literal pop song famous for being \"so bad it's good\" — a canonical cringe‑pop reference",
         "title": "Rebecca Black — Friday",
         "artist": "",
         "source": "spotify",
@@ -15059,16 +15072,16 @@
         "url": "https://open.spotify.com/track/6kex4EBAj0WHXDKZMEJaaF",
         "score": 3,
         "reason": "Slick tropical‑pop/trap crossover with professional polish; sits more in mainstream pop‑rap than cringe territory",
-        "title": "Jason Derulo; Nicki Minaj; Ty Dolla $ign — Swalla (feat. Nicki Minaj & Ty Dolla $ign)",
+        "title": "Jason Derulo; Nicki Minaj; Ty Dolla $ign — Swalla",
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206"
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206"
       },
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
         "score": 4,
-        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — another archetypal cringe‑pop staple",
+        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — archetypal cringe‑pop",
         "title": "Taher Shah — Angel",
         "artist": "",
         "source": "spotify",
@@ -15083,8 +15096,18 @@
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
-        "_pendingGenreTag": "drill",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023a696fc544995ab8d0d6765f"
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023a696fc544995ab8d0d6765f"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
+        "score": 4,
+        "reason": "Comedy drill/novelty rap with meme catchphrases and deliberately absurd persona — strong cringe‑pop energy",
+        "title": "Big Shaq — Man's Not Hot",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true,
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a"
       },
       {
         "url": "https://open.spotify.com/track/6UBd3Ub3OCnXSM21wno2zV",
@@ -15100,7 +15123,7 @@
         "url": "https://open.spotify.com/track/291IkUGlq5miJ0R1rEGSf5",
         "score": 4,
         "reason": "Surreal, lo‑fi novelty track with awkward spoken‑word vibe and meme energy",
-        "title": "Zander Hawley — Daddy Cop (From the TV Show \"The Rookie\")",
+        "title": "Zander Hawley — Daddy Cop",
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
@@ -15109,7 +15132,7 @@
       {
         "url": "https://open.spotify.com/track/4RTq3Gc7wS2CA8fHtqQhQ1",
         "score": 4,
-        "reason": "Earnest indie‑pop with deliberately juvenile lyrics; awkward sincerity lands in cringe‑adjacent territory",
+        "reason": "Earnest indie‑pop with deliberately juvenile lyrics; awkward sincerity lands squarely in cringe territory",
         "title": "The Puddleducks — Milf Song",
         "artist": "",
         "source": "spotify",
@@ -15124,13 +15147,22 @@
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
-        "_pendingGenreTag": "spoken_word_hip_hop",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02af4531bbe2c16e88718acb9c"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3HZOGQxRMuHCfInceQDQqT",
+        "score": 4,
+        "reason": "Deadpan novelty rap with absurdist self‑aware lyrics and intentionally cheap production — solid cringe‑pop",
+        "title": "Lil B — I'm Miley Cyrus",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/58l7GwvOaSBNwR7xVUDBH6",
         "score": 4,
-        "reason": "Weird, unsettling indie track with awkward vocal delivery and surreal lyrics; very cringe‑adjacent",
+        "reason": "Weird, unsettling indie track with awkward vocal delivery and surreal lyrics — cringe‑adjacent and very intentional",
         "title": "Sweet Joey Vermouth; Ray Bull — Beefcake",
         "artist": "",
         "source": "spotify",
