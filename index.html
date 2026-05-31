@@ -1567,6 +1567,82 @@
       .detail-record-card .genre-art { width:112px; height:112px; }
     }
 
+    /* Suggested songs renderer */
+.song-suggestion-list {
+  display:grid;
+  gap:8px;
+  margin:0;
+}
+
+.song-suggestion-item {
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:10px 12px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  font-size:.9rem;
+}
+
+.song-suggestion-item.is-added {
+  background:#eef7f0;
+  border-color:#b6dfc0;
+}
+
+.song-sugg-body {
+  flex:1;
+  min-width:0;
+}
+
+.song-sugg-link {
+  font-weight:700;
+  color:var(--text);
+  text-decoration:none;
+  display:block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.song-sugg-link:hover {
+  color:var(--accent);
+}
+
+.song-sugg-reason {
+  color:var(--muted);
+  font-style:italic;
+  font-size:.84rem;
+  margin-top:3px;
+  line-height:1.45;
+}
+
+.song-sugg-score {
+  flex-shrink:0;
+  font-size:.78rem;
+  font-weight:700;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:2px 9px;
+  white-space:nowrap;
+}
+
+.badge-added {
+  flex-shrink:0;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:#2a6b3a;
+  background:#d4f0db;
+  border:1px solid #b0debb;
+  border-radius:999px;
+  padding:3px 8px;
+  white-space:nowrap;
+}
+
   </style>
 </head>
 <body>
