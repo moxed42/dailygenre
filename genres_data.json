@@ -22804,43 +22804,44 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/6Z3MJFO7enonHWqPugkg5O",
-        "score": 5,
-        "reason": "Liturgy’s blast‑beat density, tremolo textures and experimental structure make this a textbook avant‑garde / “transcendental” black metal track",
+        "score": 4,
+        "reason": "Rhythmic blasts, tremolo textures, and shrieked vocals clearly mark this as black metal, while odd structures and bright, almost liturgical harmonies push it into avant territory",
         "title": "Liturgy — PASAQALIA",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0283272082dc7ff099f823d1a5",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/71oukCqwzyzk7qEebQO9Tr",
-        "score": 4,
-        "reason": "Ephel Duath blend dissonant riffing, jazz‑y turns and extreme vocals — avant‑garde metal that brushes against black metal without being strictly in it",
-        "title": "Ephel Duath — The Passage (Pearl Grey)",
+        "score": 3,
+        "reason": "Twisted riffs, jazzy rhythm changes, and dissonant chords feel more like experimental prog/mathcore with blackened elements than true black metal at its core",
+        "title": "Ephel Duath — The Passage Pearl Grey",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02122be018e170f32475b68e87",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/6ZMyyaRyAEQZ9va1rTEniR",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1xDTdiJ0G3bsSgGprEY3Ur",
         "score": 5,
-        "reason": "Liturgy in full soaring, dissonant mode — even more clearly in the avant‑black idiom",
-        "title": "Liturgy — High Gold",
+        "reason": "Keeps black‑metal tremolo and blast frameworks while folding in avant‑garde harmony and shifting rhythms, making the experimental streak feel fully integrated rather than adjacent",
+        "title": "Deathspell Omega — Apokatastasis Panton",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0TUliIWNB8o0KHRLmcmIFJ",
-        "score": 5,
-        "reason": "Imperial Triumphant’s dissonant riffing, chaotic drums and noir‑jazz undertones sit squarely in the avant‑garde black metal space",
+        "score": 4,
+        "reason": "Dense, dissonant chords, jazzy basslines, and theatrical arrangements sit on top of black‑metal‑derived tremolo and blast passages, landing as a strong avant‑garde black/experimental hybrid",
         "title": "Imperial Triumphant — Hotel Sphinx",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0203162b28505d34c9572db1f3",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 12,
@@ -23962,7 +23963,18 @@
     "key_artists": "Dream Theater, Tool, Opeth, Queensryche, Fates Warning (major figures)",
     "suggested_songs": "Dream Theater -- Pull Me Under, Tool -- Lateralus, Opeth -- Blackwater Park, Queensryche -- Operation: Mindcrime, Fates Warning -- Monument",
     "vibe": "Metal that rehearsed more than everyone else and wrote a concept album about it.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1xDTdiJ0G3bsSgGprEY3Ur",
+        "score": 5,
+        "reason": "Keeps black‑metal tremolo and blast frameworks while folding in avant‑garde harmony and shifting rhythms, making the experimental streak feel fully integrated rather than adjacent",
+        "title": "Deathspell Omega — Apokatastasis Panton",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 593
   },
   {
