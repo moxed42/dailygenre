@@ -6769,7 +6769,7 @@
     "date_raw": "1/22",
     "date_normalized": "2026-01-22",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -6780,17 +6780,72 @@
     "vibe": "A kick drum that has become a lifestyle.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/7sEpIUMp1aY8WWQdU1WgnM",
+        "url": "https://open.spotify.com/track/46PRAC9BDGinxWR2Jw6chN",
+        "score": 2,
+        "reason": "Fast, distorted kick and ravey synths fit the broader hard dance world, but the track leans more gabber/miami bass hybrid than the classic reverse‑bass or euphoric hardstyle template.",
+        "title": "MCR-T, horsegiirL — My Little White Pony",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02808c27ab45dced6e56244cbd",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7dZBV0I3U5F2Nf4SsvtLtt",
         "score": 5,
-        "reason": "Quintessential rawstyle with ultra‑clipped kicks, gritty screeches, and relentless drive; sits squarely in the rough, aggressive side you’re aiming for",
-        "title": "Warface — Fuck The Drum Machine",
+        "reason": "Straight‑up anthem with pitched leads, gated kicks and big melodic drops that spell out the euphoric hardstyle archetype in one track.",
+        "title": "Headhunterz — Dragonborn (Purple Haze Remix)",
         "artist": "",
         "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6PrPWf02VxGUd2jJLs9z1M",
+        "score": 2,
+        "reason": "Relentless, hypnotic four‑on‑the‑floor with overdriven kicks, but the sound design and arrangement land squarely in hard techno/industrial rather than structured melodic hardstyle.",
+        "title": "Sara Landry, Shlømo — Play With Me",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02922e2097d03876752a9b6a40",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0dFSnKgtXQbIGhzlG5J0q1",
+        "score": 5,
+        "reason": "Combines pounding kicks with clear reverse‑bass drive and a big, catchy lead line, making the hardstyle identity obvious even to non‑heads.",
+        "title": "Technoboy, Tuneboy — Next Dimensional World",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/51czegKF9UbmUZkp8etKj2",
+        "score": 3,
+        "reason": "Uptempo and kick‑driven with bright, supersaw melodies, but the manic tempo and hyperpop‑adjacent vocal chops push it toward happy hardcore more than canonical hardstyle.",
+        "title": "S3RL — Bass Slut - Original Mix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02503ef3c5cf79b69a68f5f1ef",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5GbdAyXWP26ChkDJi4DWKY",
+        "score": 5,
+        "reason": "Big, distorted kicks, mid‑tempo drive and a euphoric lead melody over the trademark hardstyle rhythm — an archetypal mid‑2000s hardstyle banger.",
+        "title": "The Nasty Boyz — Angel - Hardstyle Masterz Cut",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fc5f7ba080a1c4e3022d71b2",
         "source": "spotify",
         "added": "2026-05-31"
       }
     ],
-    "rank_order": 22
+    "rank_order": 22,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 286,
@@ -7190,7 +7245,18 @@
     "key_artists": "Rotterdam Terror Corps, Lenny Dee, DJ Paul, Paul Elstak, Angerfist (originators/major figures)",
     "suggested_songs": "Rotterdam Terror Corps — Poing, Paul Elstak — Rainbow in the Sky, Lenny Dee — Insanity, Angerfist — Deathmaker",
     "vibe": "Rotterdam saying hello at 160 BPM.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7dZBV0I3U5F2Nf4SsvtLtt",
+        "score": 5,
+        "reason": "Straight‑up anthem with pitched leads, gated kicks and big melodic drops that spell out the euphoric hardstyle archetype in one track.",
+        "title": "Headhunterz — Dragonborn (Purple Haze Remix)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 10
   },
   {
@@ -10497,7 +10563,18 @@
     "key_artists": "Juan Atkins, Derrick May, Kevin Saunderson, Jeff Mills, Underground Resistance (originators) • Aphex Twin, Plastikman (international expansion)",
     "suggested_songs": "Derrick May — Strings of Life, Juan Atkins — No UFOs, Jeff Mills — The Bells, Underground Resistance — Transition",
     "vibe": "Detroit's future imagined through machines, dancing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0dFSnKgtXQbIGhzlG5J0q1",
+        "score": 5,
+        "reason": "Combines pounding kicks with clear reverse‑bass drive and a big, catchy lead line, making the hardstyle identity obvious even to non‑heads.",
+        "title": "Technoboy, Tuneboy — Next Dimensional World",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 733
   },
   {
