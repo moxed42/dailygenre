@@ -14484,43 +14484,33 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/7dL3hsLENc5jlnJ1WTx6H8",
-        "score": 5,
-        "reason": "Ornette Coleman’s Prime Time literally defined electric free funk: harmolodic, loose, and funk-driven under his sax lines",
-        "title": "Ornette Coleman; Prime Time — Bourgeois Boogie",
+        "score": 4,
+        "reason": "Ornette’s Prime Time band fuses harmolodic chaos with a deep backbeat; the groove and electric textures make it clear free funk even if it leans heavily into free jazz phrasing",
+        "title": "Ornette Coleman, Prime Time — Bourgeois Boogie",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027b3c6032a51d84c6c649238d",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0MaHcPE1h1GtnxnRZp0AKv",
         "score": 4,
-        "reason": "Ronald Shannon Jackson’s Decoding Society fuses dense grooves with free jazz phrasing — an archetypal free funk ensemble sound",
-        "title": "Ronald Shannon Jackson; The Decoding Society — African Séance",
+        "reason": "Tumbling, polyrhythmic drums and electric group interplay sit between funk and free; it’s a strong free‑funk statement, though some passages drift closer to open‑ended fusion",
+        "title": "Ronald Shannon Jackson & The Decoding Society — African Sance",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0261c141641e9ec013b62810fa",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/1P9c1vgJwKCVqbxfXkZK1J",
-        "score": 3,
-        "reason": "James Blood Ulmer here leans more into free jazz/blues guitar with only a light funk underpinning",
+        "score": 5,
+        "reason": "Archetypal free funk: Ulmer’s harmolodic guitar lines, elastic groove, and free‑jazz abstraction over a gritty electric rhythm section nail the style’s punky, churchy funk‑meets‑free core",
         "title": "James Blood Ulmer — Crying (Live)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0288a24934f2b2455e305afca8",
         "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/6JES50CQkcFJaVJHHyHqbf",
-        "score": 5,
-        "reason": "Ulmer explicitly yokes loose funk rhythm to harmolodic jazz guitar — a clearer, more driving free funk statement",
-        "title": "James Blood Ulmer — JAZZ IS THE TEACHER (FUNK IS THE PREACHER)",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 76,
