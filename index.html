@@ -2346,8 +2346,14 @@
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
         : '';
+      const favIsActive = !!(currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl);
       const favBtn = (!isChild && !s.isPending && hasHref)
-        ? `<button class="song-fav-btn ${currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl ? 'active' : ''}" title="Set as favorite song" onclick="setFavoriteSong(${JSON.stringify(rawUrl)}, ${JSON.stringify(s.title||'')}, ${JSON.stringify(s.artist||'')}, ${JSON.stringify(s.artwork||'')}, this)">\u2605</button>`
+        ? `<button class="song-fav-btn ${favIsActive ? 'active' : ''}" title="Set as favorite song"
+            data-fav-url="${escapeHtml(rawUrl)}"
+            data-fav-title="${escapeHtml(s.title||'')}"
+            data-fav-artist="${escapeHtml(s.artist||'')}"
+            data-fav-artwork="${escapeHtml(s.artwork||'')}"
+            onclick="setFavoriteSong(this)">\u2605</button>`
         : '';
       return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${levelUpHtml}</div>`;
     }
@@ -2393,24 +2399,26 @@
         'No rating selected';
     }
 
-    function setFavoriteSong(url, title, artist, artwork, btn) {
+    function setFavoriteSong(btn) {
       if (!currentGenre) return;
+      const url = btn.dataset.favUrl || '';
+      const title = btn.dataset.favTitle || '';
+      const artist = btn.dataset.favArtist || '';
+      const artwork = btn.dataset.favArtwork || '';
       const isSame = normalizeSongUrl(currentGenre.favoritesongurl || '') === url;
       if (isSame) {
-        // deselect
         currentGenre.favoritesongurl = '';
         currentGenre.favoritesong = '';
         currentGenre.favoriteartist = '';
         currentGenre.favoritesongartwork = '';
       } else {
         currentGenre.favoritesongurl = url;
-        currentGenre.favoritesong = title || '';
-        currentGenre.favoriteartist = artist || '';
-        currentGenre.favoritesongartwork = artwork || '';
+        currentGenre.favoritesong = title;
+        currentGenre.favoriteartist = artist;
+        currentGenre.favoritesongartwork = artwork;
       }
       document.getElementById('favoriteSongUrl').value = currentGenre.favoritesongurl || '';
       document.getElementById('favoriteSong').value = currentGenre.favoritesong || '';
-      // Re-render to update highlights
       loadListenScreen(currentGenre);
     }
 
@@ -2554,7 +2562,11 @@
             applySpotifyMetadata(next, data);
           } catch(e) {}
         }
-        if (next.levelUp) next.levelUp = await resolveOne(next.levelUp);
+        if (next.levelUp) {
+          next.levelUp = { ...next.levelUp };
+          next.levelUp.url = normalizeSongUrl(next.levelUp.url);
+          next.levelUp = await resolveOne(next.levelUp);
+        }
         return next;
       }
       return Promise.all(songs.map(resolveOne));
@@ -2804,6 +2816,7 @@
       if (clean && !song.title) song.title = clean;
       if (data.author_name && !song.artist) song.artist = data.author_name;
       if (data.thumbnail_url && !song.artwork) song.artwork = data.thumbnail_url;
+      else if (data.thumbnail_url && song.artwork === '') song.artwork = data.thumbnail_url;
       return song;
     }
 
