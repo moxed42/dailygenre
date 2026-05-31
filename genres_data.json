@@ -16778,7 +16778,7 @@
     "date_raw": "1/19",
     "date_normalized": "2026-01-19",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -16787,8 +16787,83 @@
     "key_artists": "José José, Camilo Sesto, Rocío Dúrcal, Roberto Carlos, Juan Gabriel (major figures)",
     "suggested_songs": "José José — El Triste, Camilo Sesto — Vivir Así Es Morir de Amor, Rocío Dúrcal — Costumbres, Roberto Carlos — Detalles, Juan Gabriel — Querida",
     "vibe": "Pure romantic drama, delivered with enough melody to fill a theater.",
-    "songs_listened": [],
-    "rank_order": 7
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4y42VnzfGCV7gXr1qcL302",
+        "score": 4,
+        "reason": "Classic 80s Latin ballad in ranchera/bolero mode: slow tempo, dramatic vocal, and lush arrangement centered on heartbreak make it a strong fit for a latin ballad day even with ranchera roots.",
+        "title": "Rocío Dúrcal — Costumbres",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b8fec44980ac9ec471ec7d72",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2stxwFkmW2kZ6SuyJGO5q8",
+        "score": 5,
+        "reason": "Quintessential Tejano torch song with a soaring, emotive vocal and spacious, slow‑burn arrangement — exactly the kind of Spanish‑language pop ballad that defines the mood here.",
+        "title": "Selena — No Me Queda Más",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb6311e55c5e8bc8366ff89d",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/26N4opVvRLaaCq61NkZeD2",
+        "score": 4,
+        "reason": "Ranchera‑inflected ballad built on big melody and romantic lyric; the instrumentation is more regional, but the song functions squarely as a slow, dramatic latin love ballad.",
+        "title": "Ana Gabriel — Eres Todo en Mí (You’re My Everything)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020ff71d5eabb3b594ed34098e",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2TC4v9YiuQYk3Tk8RH7fV4",
+        "score": 5,
+        "reason": "Slow, string‑laden bolero/ranchera ballad with an almost hymn‑like intensity, frequently treated as a definitive Spanish‑language grief/love ballad — archetypal for this header.",
+        "title": "Rocío Dúrcal — Amor Eterno",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b8fec44980ac9ec471ec7d72",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0U1tYg60QpzEStW7DhwdHO",
+        "score": 3,
+        "reason": "More modern, folky and intimate; the tempo and delivery are ballad‑like, but the earthy, indie‑folk production pulls it away from the big sentimental latin pop ballad archetype.",
+        "title": "Natalia Lafourcade — Pasan los días",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020106e80c9055f8de4aa9322b",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0z9qguSb6b4ZeyP4K4ZzU2",
+        "score": 5,
+        "reason": "Nails the lush, string‑swept latin pop ballad template with a soaring chorus and polished arrangement while staying firmly in contemporary Spanish‑language mainstream.",
+        "title": "Luis Miguel — La Incondicional",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0incizGIFilFp6soKuyHvZ",
+        "score": 4,
+        "reason": "Big, melodramatic ballad with rich orchestration and a sweeping vocal; firmly in the latin ballad lane even as it leans on ranchera/bolero tradition.",
+        "title": "Rocío Dúrcal — La Gata Bajo la Lluvia",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02db50e9658eff5ba01a6e0720",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
+    "rank_order": 7,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 717,
@@ -24304,9 +24379,11 @@
       }
     ],
     "rank_order": 3,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Nightwish — The Phantom Of The Opera",
+    "favoritesongurl": "https://open.spotify.com/track/6VOxRb9IAJQDDyHBlyEdPF",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027dc7ccc9efe21a79a25b0bc9"
   },
   {
     "id": 1011,
