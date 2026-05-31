@@ -2162,8 +2162,8 @@
     function parseSongLinks(text) {
       const lines = String(text || '').replace(/\\n/g, '\n').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const songs = [];
-      const levelUpPrefix
-      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i; = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
+      const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
+      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
       const extractUrl = (value) => {
         const v = String(value || '').trim();
         const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
