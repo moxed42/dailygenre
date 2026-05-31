@@ -1056,7 +1056,18 @@
     "key_artists": "The Band, Creedence Clearwater Revival, John Fogerty, Bob Dylan (post-electric), Levon Helm (originators)",
     "suggested_songs": "The Band — The Weight, Creedence Clearwater Revival — Proud Mary, John Fogerty — Centerfield, The Band — The Night They Drove Old Dixie Down",
     "vibe": "Rock remembering where it came from.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0k0vFacOHNuArLWMiH60p7",
+        "score": 5,
+        "reason": "Working‑class narrative, chiming guitars, and a massive sing‑along chorus make this one of the most definitive heartland rock singles ever",
+        "title": "Bruce Springsteen — Born in the U.S.A.",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a48964b5d9a3d6968ae3e0de",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 661
   },
   {
@@ -18443,6 +18454,26 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0fAQhSRLQ7ikg9O5pY9P5k",
+        "score": 5,
+        "reason": "Driving beat, highway‑mythology lyrics, and a chorus built for the open road make this one of Petty’s most textbook heartland rock cuts",
+        "title": "Tom Petty — American Girl",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0nLiqZ6A27jJri2VCalIUs",
+        "score": 5,
+        "reason": "Mid‑tempo radio rock with a huge chorus about aging and resilience; it’s basically the template for heartland nostalgia anthems",
+        "title": "John Mellencamp — Jack & Diane",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c1a13209dfe146aef3296e34",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 153
@@ -19029,69 +19060,50 @@
     "vibe": "Rock that knows what kind of car costs too much to fix and writes about it.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/6hTcuIQa0sxrrByu9wTD7s",
-        "score": 5,
-        "reason": "The definitive heartland rock statement — cinematic guitar, pumping saxophone, working-class escape narrative, and Springsteen at his most mythologising; this IS the genre",
-        "title": "Bruce Springsteen — Born to Run",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028c5b6f7dcdc5817dc5050b2a",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
         "url": "https://open.spotify.com/track/7HrzErXq3TsKOY1gmdIShB",
         "score": 5,
-        "reason": "Epic double-album centrepiece about Rust Belt heartbreak; sparse, intimate, and emotionally devastating — heartland rock at its most literary and raw",
+        "reason": "Archetypal heartland: Springsteen’s blue‑collar storytelling, widescreen chorus, and steady bar‑band groove nail the small‑town, workaday melancholy at the center of the genre",
         "title": "Bruce Springsteen — The River",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029ebb7aaf3e19a51782ba1d27",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/1Vp8U39YNsDfd6yVuaUq12",
-        "score": 3,
-        "reason": "Beautiful and heartfelt but sits closer to folk-rock and adult contemporary than heartland rock proper — too acoustic and pastoral, missing the electric grit and working-class urgency",
-        "title": "Tom Petty — Wildflowers",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e7af3a709aeac0c796ab542",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/7lOYm2bJqA6B40H3N6iC3V",
-        "score": 5,
-        "reason": "Tom Petty at peak heartland mode — driving electric guitar, defiant lyrical energy, and every bit the blue-collar rocker spirit the genre demands",
-        "title": "Tom Petty — American Girl",
-        "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ebb7aaf3e19a51782ba1d27",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4mcZYzoGwPRDdhWVlygiHf",
-        "score": 5,
-        "reason": "Petty's toughest, most urgent rocker — a paranoid, propulsive escape anthem with muscular Heartbreakers guitar that nails the genre's driving, restless energy",
+        "score": 4,
+        "reason": "Petty brings chiming guitars, everyman defiance, and highway imagery; it leans slightly more classic‑rock radio than pure Midwestern grit but is still a strong heartland pillar",
         "title": "Tom Petty and the Heartbreakers — Refugee",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ebca7d93f21ba366fe005966",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ebca7d93f21ba366fe005966",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/1HfB7BLeW5XXIJ9sjCaL5U",
-        "score": 4,
-        "reason": "Lean, sparse debut-era Petty — understated and rootsy, the emotional vulnerability lands squarely in heartland territory even if the production is rougher than the genre's peak",
+        "score": 3,
+        "reason": "Laid‑back, almost soft‑rock shuffle with Petty’s drawl up front; thematically it’s in the same emotional lane, but the sleek production and restraint make it feel more FM classic rock than heartland anthem",
         "title": "Tom Petty and the Heartbreakers — Breakdown",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020c3a1b46b6b846dfdfbc6a7d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020c3a1b46b6b846dfdfbc6a7d",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0fAQhSRLQ7ikg9O5pY9P5k",
+        "score": 5,
+        "reason": "Driving beat, highway‑mythology lyrics, and a chorus built for the open road make this one of Petty’s most textbook heartland rock cuts",
+        "title": "Tom Petty — American Girl",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/2HsjJJL4DhPCzMlnaGv7ap",
         "score": 5,
-        "reason": "Small-town Midwest pride and claustrophobia in one song — Mellencamp's heartland rock thesis statement, direct and unvarnished",
+        "reason": "Mellencamp’s jangly guitars, small‑town imagery, and tension between pride and frustration are basically a heartland rock mission statement",
         "title": "John Mellencamp — Small Town",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b46e7ea6a6b2fa45caa23393",
@@ -19101,80 +19113,102 @@
       {
         "url": "https://open.spotify.com/track/7gSQv1OHpkIoAdUiRLdmI6",
         "score": 4,
-        "reason": "Anthemic and principled, Petty's defiant stomp is firmly in the heartland lineage — slightly more polished and radio-friendly than the genre's grittier core but undeniably belongs",
-        "title": "Tom Petty — I Won't Back Down",
+        "reason": "Mid‑tempo, stoic resolve and a stripped‑back band sound put this squarely in heartland territory, even if the production is a bit glossier and more adult‑contempo than the rougher Springsteen/Mellencamp edge",
+        "title": "Tom Petty — I Won’t Back Down",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236572e6726714544f5bed456",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/3noZh3GynRLHd9QxtbmAyX",
-        "score": 5,
-        "reason": "Pure Petty velocity — open highway imagery, ringing electric guitar, and an exhilarating forward momentum that is textbook heartland rock",
-        "title": "Tom Petty — Runnin' Down a Dream",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020c3a1b46b6b846dfdfbc6a7d",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
         "url": "https://open.spotify.com/track/2iRfjwzPsooCskZrrlsgcC",
-        "score": 3,
-        "reason": "Fogerty solo and closer to country rock than heartland — the jangly Americana feel and baseball nostalgia is charming but lacks the blue-collar urgency and electric grit that defines the genre",
+        "score": 4,
+        "reason": "Fogerty’s baseball metaphor, hand‑clap groove, and bar‑band energy translate rural American nostalgia into something that fits neatly alongside heartland playlists, though it tilts slightly toward rootsy country rock",
         "title": "John Fogerty — Centerfield",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f2aaa0b785e5a7644ba31e08",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f2aaa0b785e5a7644ba31e08",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/3oMM6UDRlJbFnFOrULFdGU",
-        "score": 5,
-        "reason": "Fogerty at full heartland throttle — raw, defiant, and rooted in working-class Southern rock energy that bridges CCR and the Springsteen lineage far more convincingly",
-        "title": "John Fogerty — Rockin' All Over the World",
+        "url": "https://open.spotify.com/track/3noZh3GynRLHd9QxtbmAyX",
+        "score": 4,
+        "reason": "Big‑engine guitar drive, road imagery, and Petty’s laconic storytelling give this an expansive highway feel that’s core to the genre, even as it pushes a bit more into rock‑hero territory",
+        "title": "Tom Petty — Runnin’ Down A Dream",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020c3a1b46b6b846dfdfbc6a7d",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/2cReSKmcyhe6lw8QSj5AYD",
         "score": 3,
-        "reason": "Charming supergroup folk-rock with big hearts but the jangly, easygoing texture reads more as Americana/pop-rock — too gentle and breezy to carry the genre's characteristic tension and grit",
-        "title": "Traveling Wilburys — End of the Line",
+        "reason": "Harmony‑rich, feel‑good supergroup tune with a country‑rock tilt; the vocal blend and bounce are great, but it feels more Traveling Wilburys roots‑rock than straight heartland sermon",
+        "title": "Traveling Wilburys — End Of The Line",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023689e500e90daf0c4e9cb37f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023689e500e90daf0c4e9cb37f",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/0VqJxMFGKnTFnibOqNjLiN",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0k0vFacOHNuArLWMiH60p7",
         "score": 5,
-        "reason": "Springsteen's hardest-hitting Nebraska-era electric rocker — raw urgency, blue-collar desperation, and that gritty Springsteen growl in full effect",
-        "title": "Bruce Springsteen — Glory Days",
+        "reason": "Working‑class narrative, chiming guitars, and a massive sing‑along chorus make this one of the most definitive heartland rock singles ever",
+        "title": "Bruce Springsteen — Born in the U.S.A.",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a48964b5d9a3d6968ae3e0de",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6hTcuIQa0sxrrByu9wTD7s",
+        "score": 5,
+        "reason": "Wall‑of‑sound production, romanticized escape, and desperate momentum turn this into the canonical big‑screen heartland epic",
+        "title": "Bruce Springsteen — Born to Run",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028c5b6f7dcdc5817dc5050b2a",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/3P2XAL8UpPBM3nfvuEjHHE",
         "score": 3,
-        "reason": "Iconic live reading of Seger's road-weary ballad — the working-class fatalism fits perfectly thematically, but the slow-burn arrangement and country-leaning production pull it toward classic rock and country rock rather than heartland proper",
-        "title": "Bob Seger — Turn the Page (Live)",
+        "reason": "Seger’s weary vocal and touring‑life narrative fit the heartland lyric tradition, but the sax‑drenched, slow‑burn ballad arrangement leans more toward classic‑rock road song than core heartland stomp",
+        "title": "Bob Seger — Turn The Page",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02afb6c3ee7af97d45370accd2",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/2bMJn0JxDmBwOFUFnnFGgD",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0nLiqZ6A27jJri2VCalIUs",
         "score": 5,
-        "reason": "Seger's most driving heartland anthem — relentless electric rock energy, blue-collar pride, and that quintessential Midwest working-class swagger",
-        "title": "Bob Seger — Old Time Rock and Roll",
+        "reason": "Mid‑tempo radio rock with a huge chorus about aging and resilience; it’s basically the template for heartland nostalgia anthems",
+        "title": "John Mellencamp — Jack & Diane",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c1a13209dfe146aef3296e34",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2Pr1nZpt8A8WP7QYpyq6L3",
+        "score": 4,
+        "reason": "Gentle, rootsy reflection with lived‑in lyrics and organic band feel; thematically it sits right in heartland’s introspective lane, even if the dynamic stays more folk‑rock than stadium‑scale",
+        "title": "Tom Petty — Wildflowers",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02069db1b57942c8f794c28780",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1Vp8U39YNsDfd6yVuaUq12",
+        "score": 4,
+        "reason": "Stark, narrative‑driven songwriting and acoustic minimalism showcase the darker, more documentary side of heartland storytelling, though its raw Nebraska production pushes it toward folk‑rock austerity",
+        "title": "Bruce Springsteen — Atlantic City",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e7af3a709aeac0c796ab542",
         "source": "spotify",
         "added": "2026-05-31"
       }
@@ -19184,7 +19218,7 @@
     "favoritesongurl": "https://open.spotify.com/track/7gSQv1OHpkIoAdUiRLdmI6",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236572e6726714544f5bed456"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0236572e6726714544f5bed456"
   },
   {
     "id": 876,
