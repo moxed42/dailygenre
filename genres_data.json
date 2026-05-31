@@ -16422,43 +16422,33 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/59JemC1a4KDC1WxNAt7Zpt",
+        "score": 5,
+        "reason": "Archetypal Hindi film / Indian pop ballad: lush orchestration, melodramatic melody, and classic Lata–Kumar duet style that basically defines mainstream Bollywood romantic pop.",
+        "title": "Lata Mangeshkar, Kumar Sanu — Tujhe Dekha To",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0284b2a1748261e77836d50568",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8T",
         "score": 4,
-        "reason": "Iconic Bollywood film song, lush strings and big romantic chorus — classic 90s Hindi filmi pop",
-        "title": "Lata Mangeshkar; Kumar Sanu — Tujhe Dekha To",
+        "reason": "Hyper‑catchy bhangra crossover that became a pan‑Indian pop hit; dhol‑driven groove and call‑and‑response hooks sit right in the Indian pop mainstream even if it’s more Punjabi dance than filmi ballad.",
+        "title": "Daler Mehndi — Tunak Tunak Tun",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/7tCmUu18EkTlGhGV2wmE7x",
         "score": 2,
-        "reason": "Indian-American alt‑R&B with some South Asian influence, but stylistically more neo‑soul/dream‑pop than Indian pop",
+        "reason": "Primarily US‑style indie R&B with light South Asian coloring; the vocal delivery and production feel more alt‑R&B than Indian pop, with only subtle melodic and textural nods.",
         "title": "Raveena — Mystery",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b60aaa76729296572b78979d",
         "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8",
-        "score": 5,
-        "reason": "High‑energy bhangra / Indi‑pop crossover smash, exactly the sort of pan‑Indian pop anthem the genre implies",
-        "title": "Daler Mehndi — Tunak Tunak Tun",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8",
-        "score": 5,
-        "reason": "Bhangra‑driven Indi‑pop juggernaut; massive hook and synthetic sheen nail the Indian pop brief",
-        "title": "Daler Mehndi — Tunak Tunak Tun",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 54,
