@@ -8642,7 +8642,7 @@
     "date_raw": "524",
     "date_normalized": "2026-05-24",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8651,8 +8651,62 @@
     "key_artists": "Steve Hurley, Farley Jackmaster Funk, Larry Heard (rawer works), Mr. G, Cajmere (originators/major figures)",
     "suggested_songs": "Steve Hurley — Jack Your Body, Farley Jackmaster Funk — Love Can't Turn Around, Cajmere — Coffee Pot, Mr. G — Jacked Piano",
     "vibe": "House music that never stopped being about the sweat.",
-    "songs_listened": [],
-    "rank_order": 3
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4oJlQHvcgGMcnPdEsDVqNq",
+        "score": 2,
+        "reason": "Bouncy big‑room “Melbourne bounce” with electro‑house drops rather than shuffly, sample‑driven jackin’ grooves — better fits: Melbourne bounce",
+        "title": "Will Sparks — Catch (Radio Edit)",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025c822177885f598ba68ba21d"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ZfcC2XbYaMBrP8WlIwoXt",
+        "score": 4,
+        "reason": "Funky, sample‑heavy Chicago‑style house with skippy percussion and chopped vocals — a solid modern jackin’ anthem",
+        "title": "Angelo Ferreri — Izinque",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2h3t3Foxd1VrOMEM7smWZM",
+        "score": 2,
+        "reason": "Aggressive bounce‑style electro‑house with pitched leads; energy is right but groove is straight 4/4 festival house, not jackin’ — better fits: Melbourne bounce",
+        "title": "SCNDL — Highest In The Room",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0280243261388b391919cf7a9f"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0bHNtuQ2pqAq7Glx60sArF",
+        "score": 4,
+        "reason": "Classic jackin’ feel with chunky bass, swinging hats and filtered disco samples",
+        "title": "DJ Sneak — You Can’t Hide from Your Bud",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/7EubKQFWWep9vqeqU6ZRgJ",
+        "score": 5,
+        "reason": "Old‑school Chicago jackin’ blueprint: raw drums, looping funk sample and relentless shuffle that defines the style",
+        "title": "Derrick Carter — Where U At?",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": 3,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 388,
