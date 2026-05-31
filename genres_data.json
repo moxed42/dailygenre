@@ -550,28 +550,7 @@
     "key_artists": "John Lee Hooker, Baby Boy Warren, Eddie Burns, Bobo Jenkins, Little Sonny (originators)",
     "suggested_songs": "John Lee Hooker — Boogie Chillen, John Lee Hooker — Boom Boom, Baby Boy Warren — Sanafee, Eddie Burns — Burning Blues",
     "vibe": "Blues in a city with machine rhythms already in the air.",
-    "songs_listened": [
-      {
-        "url": "https://open.spotify.com/track/0VKMOwKyRKbw0HrNAXj0UI",
-        "score": 2,
-        "reason": "Big, emotional Ozzy ballad with some classical flavour in the soloing, but overall sits firmly in traditional heavy metal",
-        "title": "Ozzy Osbourne — Revelation (Mother Earth)",
-        "artist": "",
-        "source": "spotify",
-        "added": "2026-05-31",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024936b5b7caeb7524e50fd8cb"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0v2G7ULGIYPf4wFpdoWz0g",
-        "score": 5,
-        "reason": "Instrumental neoclassical shred built entirely around baroque‑inspired motifs — the genre in its purest form",
-        "title": "Yngwie Malmsteen — Black Star",
-        "artist": "",
-        "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
-      }
-    ],
+    "songs_listened": [],
     "rank_order": 31,
     "favoritesong": "",
     "favoritesongurl": "",
