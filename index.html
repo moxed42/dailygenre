@@ -2365,7 +2365,8 @@
     function buildDiscordBlock() {
       if (!currentGenre) return '';
       const includeSongs = document.getElementById('includeSongsToggle').checked;
-      let text = `Today's Genre is: ${currentGenre.genre || 'Unknown'}\n\n`;
+      const dateStr = dateValue(currentGenre) ? new Date(dateValue(currentGenre) + 'T00:00:00').toLocaleDateString('en-US', {month:'2-digit',day:'2-digit',year:'2-digit'}) : '';
+      let text = `Today's Genre (${dateStr}) is: **${currentGenre.genre || 'Unknown'}**\n\n`;
       if (currentGenre.vibe) text += `${genreEmoji(currentGenre)} ${currentGenre.vibe}\n\n`;
       if (currentGenre.summary) text += `${currentGenre.summary}\n\n`;
       if (currentGenre.key_artists) text += `🎤 Key Artists: ${currentGenre.key_artists}`;
