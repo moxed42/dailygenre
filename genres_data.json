@@ -16423,7 +16423,7 @@
       {
         "url": "https://open.spotify.com/track/59JemC1a4KDC1WxNAt7Zpt",
         "score": 5,
-        "reason": "Archetypal Hindi film / Indian pop ballad: lush orchestration, melodramatic melody, and classic Lata–Kumar duet style that basically defines mainstream Bollywood romantic pop.",
+        "reason": "Archetypal Hindi film / Indian pop ballad: lush orchestration, melodramatic melody, and classic Lata–Kumar duet interplay that basically defines mainstream Bollywood romantic pop.",
         "title": "Lata Mangeshkar, Kumar Sanu — Tujhe Dekha To",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0284b2a1748261e77836d50568",
@@ -16433,7 +16433,7 @@
       {
         "url": "https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8T",
         "score": 4,
-        "reason": "Hyper‑catchy bhangra crossover that became a pan‑Indian pop hit; dhol‑driven groove and call‑and‑response hooks sit right in the Indian pop mainstream even if it’s more Punjabi dance than filmi ballad.",
+        "reason": "Hyper‑catchy bhangra crossover turned pan‑Indian pop hit; dhol‑driven groove and call‑and‑response hooks sit squarely in the Indian pop mainstream even if it leans Punjabi dance.",
         "title": "Daler Mehndi — Tunak Tunak Tun",
         "artist": "",
         "artwork": "",
@@ -16443,12 +16443,23 @@
       {
         "url": "https://open.spotify.com/track/7tCmUu18EkTlGhGV2wmE7x",
         "score": 2,
-        "reason": "Primarily US‑style indie R&B with light South Asian coloring; the vocal delivery and production feel more alt‑R&B than Indian pop, with only subtle melodic and textural nods.",
+        "reason": "Primarily US‑style indie R&B with light South Asian coloring; vocal delivery and production live in alt‑R&B, with only subtle melodic and textural nods toward Indian pop.",
         "title": "Raveena — Mystery",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b60aaa76729296572b78979d",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4zAaNEU2xxa6zTRgsEKNwO",
+        "score": 5,
+        "reason": "Much cleaner archetype for Hindi film pop: sweeping strings, big chorus, and unmistakably cinematic “Yash Raj / Dharma‑era” song structure that explains Indian pop to a stranger in one spin.",
+        "title": "Alka Yagnik, Udit Narayan — Kuch Kuch Hota Hai",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
       }
     ],
     "rank_order": 54,
