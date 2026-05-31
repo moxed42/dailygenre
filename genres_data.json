@@ -8604,7 +8604,7 @@
     "date_raw": "5/11",
     "date_normalized": "2026-05-11",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8613,8 +8613,54 @@
     "key_artists": "Will Sparks, Joel Fletcher, Timmy Trumpet, Tom Tyger, Havana Brown (originators/major figures)",
     "suggested_songs": "Will Sparks — Ah Yeah!, Joel Fletcher — Swing, Timmy Trumpet — Oracle, Tom Tyger — Don't Stop",
     "vibe": "Australia's contribution to the global arms race of bass sounds.",
-    "songs_listened": [],
-    "rank_order": 3
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4oJlQHvcgGMcnPdEsDVqNq",
+        "score": 5,
+        "reason": "Textbook melbourne bounce: rubbery off‑beat donk bass, big‑room supersaw lead, and simple chant‑hook drops; archetypal festival bounce cut",
+        "title": "Will Sparks — Catch - Radio Edit",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025c822177885f598ba68ba21d",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2h3t3Foxd1VrOMEM7smWZM",
+        "score": 4,
+        "reason": "Harder, more modern take on bounce, but still built on the bouncy off‑beat low end and stomp‑y festival drops that define the style",
+        "title": "SCNDL — Highest In The Room",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0280243261388b391919cf7a9f",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4C9U96rcM4ZZ9wQt0Kp8i3",
+        "score": 5,
+        "reason": "One of the genre’s signature anthems: classic donk bass pattern, snappy kicks, and simple rave lead make it an ideal core pillar",
+        "title": "Will Sparks, Joel Fletcher — Bring It Back",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2NEwuxF9XEv7vW0lxiJQh3",
+        "score": 4,
+        "reason": "Early‑scene bounce with very clear off‑beat low‑end bounce and party‑chant topline, reinforcing the pure Aus‑festival sound",
+        "title": "Deorro, J‑Trick — Rambo (Hardwell Edit)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": 3,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 374,
