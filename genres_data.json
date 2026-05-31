@@ -6124,7 +6124,7 @@
     "date_raw": "520",
     "date_normalized": "2026-05-20",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -6133,8 +6133,42 @@
     "key_artists": "Luigi Russolo (originator), Merzbow, Whitehouse, Einstürzende Neubauten, Wolf Eyes (major figures)",
     "suggested_songs": "Merzbow — Woodpecker No. 1, Wolf Eyes — Stabbed in the Face, Whitehouse — Dedicated to Peter Kurten",
     "vibe": "Sound as a philosophical statement about what music is allowed to be.",
-    "songs_listened": [],
-    "rank_order": 1
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4UO1pfxi5fDbxshrwwznJ2",
+        "score": 5,
+        "reason": "Pure harsh noise wall: high‑intensity feedback, no conventional rhythm, and full‑spectrum abrasion make this an archetypal modern noise music piece",
+        "title": "Merzbow — Woodpecker No. 1",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020203b5eef777c8a58322ef19",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0FhswRNnmRy8T7LsJkJDgi",
+        "score": 5,
+        "reason": "Relentless, drum‑machine‑driven noise with distorted textures and almost no melodic footholds; it’s aggressive, repetitive, and firmly situated in the noise music tradition rather than rock or metal",
+        "title": "Merzbow — Promotion Man",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02240f993bdf7f1b540d14adaf",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1ersLkohJrM736HjBCA6Fw",
+        "score": 4,
+        "reason": "Extended experimental piece with free‑form structure, heavy use of dissonance, and electroacoustic textures; clearly experimental/noise‑adjacent, though it occasionally drifts toward avant‑garde composition rather than pure harsh noise",
+        "title": "Merzbow — Village Oblivia",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f286cd4d4474be0ce9bbf7bf",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
+    "rank_order": 1,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 269,
