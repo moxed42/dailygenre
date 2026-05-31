@@ -10294,7 +10294,7 @@
     "date_raw": "5/10",
     "date_normalized": "2026-05-10",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -10303,8 +10303,43 @@
     "key_artists": "Various teknival and free party sound systems — Headfuck, Paranoia, Wicked System (underground collectives)",
     "suggested_songs": "Various jungletek compilations — free party recordings, teknival archives",
     "vibe": "Jungle and acid techno deciding to share a sound system.",
-    "songs_listened": [],
-    "rank_order": 4
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5BnxLTNpTBamBaUy7vne41",
+        "score": 5,
+        "reason": "Fast 4/4 tekno kicks, chopped amen breaks, and ragga vox; absolutely archetypal Amen4Tekno jungletek",
+        "title": "C3B — Untold Stories",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb9da8a3bc7693d004acedfa",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4aruEzDQyIzvpHxMpNdSQf",
+        "score": 4,
+        "reason": "Same tekno + amen + ragga recipe but phrased a bit closer to DnB; still clearly in the Amen4Tekno jungletek lane",
+        "title": "Mandidextrous, C3B — Bucka",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0246fc6588901ebcfae9de0eb2",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6qyJD56LrrPMW6UwyxS59d",
+        "score": 5,
+        "reason": "Prototype Amen4Tekno cut with relentless 4/4 kick, amen edits, and ragga energy; perfect third pillar for this style",
+        "title": "Mandidextrous — 45 Duppy",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": 4,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 444,
