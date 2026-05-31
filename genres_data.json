@@ -11349,7 +11349,18 @@
     "key_artists": "8-Bit Weapon, Anamanaguchi, Sabrepulse, Nullsleep, Chipzel (originators/major figures)",
     "suggested_songs": "Anamanaguchi — Prom Night, Chipzel — Spectre, Sabrepulse — Harbour, 8-Bit Weapon — Bits with Byte",
     "vibe": "Making music from the sounds of machines that weren't supposed to be instruments.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2wvPwR54t4ucclp5Q7s86r",
+        "score": 5,
+        "reason": "Classic example of metalcore songcraft fused with aggressive 8‑bit leads, more directly in the nintendocore lane than “Airbrushed”",
+        "title": "The Color Of Violence — God Gave Me Deeze Nutz",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 139
   },
   {
@@ -23083,7 +23094,7 @@
     "date_raw": "5/9",
     "date_normalized": "2026-05-09",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -23092,8 +23103,53 @@
     "key_artists": "Horse the Band, I Set My Friends on Fire, Before Their Eyes, Minuet, Death Bear (major figures)",
     "suggested_songs": "Horse the Band -- Cutsman, I Set My Friends on Fire -- Crank That (Soulja Boy), Before Their Eyes -- A Great Divide, Horse the Band -- The Chirping of a Thousand Modems",
     "vibe": "Metalcore that sounds like someone left a Game Boy plugged into the distortion pedal.",
-    "songs_listened": [],
-    "rank_order": 11
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7JKLQOYQBySEu5zWds2nr2",
+        "score": 5,
+        "reason": "Quintessential nintendocore: chaotic mathcore riffs, screamed vocals, and 8‑bit keyboard leads explicitly mimicking NES boss‑fight music",
+        "title": "Horse The Band — Cutsman",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d7b1ca141ede6550011db1a3",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3KNjvbxoVaKQNiXFXxN0pN",
+        "score": 4,
+        "reason": "Same metalcore/mid‑2000s scene energy with chiptune‑like synth stabs and gamey melodic motifs, but the 8‑bit voice is a bit less foregrounded than on “Cutsman”",
+        "title": "Horse The Band — Bunnies",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d7b1ca141ede6550011db1a3",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5aBO2Roq0p3GYcuFYFF8oX",
+        "score": 3,
+        "reason": "Pure chiptune rock with soaring NES‑style leads and pop‑punk drive; shares the game‑music DNA, but lives more in chip/pop than in metal‑based nintendocore",
+        "title": "Anamanaguchi — Airbrushed",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f9fc5849882afd0aa7facf93",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2wvPwR54t4ucclp5Q7s86r",
+        "score": 5,
+        "reason": "Classic example of metalcore songcraft fused with aggressive 8‑bit leads, more directly in the nintendocore lane than “Airbrushed”",
+        "title": "The Color Of Violence — God Gave Me Deeze Nutz",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      }
+    ],
+    "rank_order": 11,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1004,
