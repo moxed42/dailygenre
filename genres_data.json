@@ -14916,42 +14916,43 @@
       {
         "url": "https://open.spotify.com/track/07qoAjE0wObVAAfyIevTNV",
         "score": 3,
-        "reason": "Proto-punk rawness but no jazz elements — better fits: proto-punk/garage rock",
+        "reason": "Proto‑punk with wild, free‑blowing sax and chaotic jams, but it is fundamentally a rock record with jazz seasoning rather than a dedicated punk‑jazz hybrid",
         "title": "The Stooges — Fun House",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0213aa419336db598eb2674b1a",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/6OH2bzGZLjZ6aE9R7WsHtn",
-        "score": 4,
-        "reason": "The Stooges with prominent free-sax skronk, much closer to punk colliding with jazz",
-        "title": "The Stooges — L.A. Blues",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4Wo5W5EV4zvCqMBFq9fe2U",
+        "score": 5,
+        "reason": "Hardcore rhythm section under skronky, free‑jazz horns; a canonical punk‑jazz collision that makes the rock/jazz hybrid completely explicit",
+        "title": "The Ex & Brass Unbound — Every Sixth Is Cracked",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4mvTcdOP0nx50zpnnhfPdD",
-        "score": 5,
-        "reason": "Lounge Lizards are the definitive punk jazz band — free jazz chaos with punk attitude",
+        "score": 4,
+        "reason": "Downtown NYC no‑wave jazz: free‑jazz sax and angular harmony over a slightly punk‑dislocated groove; clearly in the punk‑jazz lineage even if it leans artsy and ironic",
         "title": "The Lounge Lizards — Bob the Bob",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020c22d87ff06a294123884e36",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/1INxOP4EeDRGzCcxQE7EXL",
-        "score": 4,
-        "reason": "Contortions noise-funk post-punk with jazz dissonance — classic No Wave punk jazz",
-        "title": "The Contortions — Design to Kill",
+        "score": 5,
+        "reason": "Archetypal punk‑funk/no‑wave jazz: stabbing horns, fractured rhythms, and punk urgency fused with harmolodic‑style chaos make this an ideal punk‑jazz manifesto",
+        "title": "James Chance & The Contortions — Design to Kill",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0269338a018f6e963e6f55767c",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 56,
@@ -20444,6 +20445,16 @@
         "score": 4,
         "reason": "Straight 70s glam stomp with sing‑along hook and chunky guitars that lands closer to the glam mainstream",
         "title": "Sweet — Fox on the Run",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Wo5W5EV4zvCqMBFq9fe2U",
+        "score": 5,
+        "reason": "Hardcore rhythm section under skronky, free‑jazz horns; a canonical punk‑jazz collision that makes the rock/jazz hybrid completely explicit",
+        "title": "The Ex & Brass Unbound — Every Sixth Is Cracked",
         "artist": "",
         "artwork": "",
         "source": "spotify",
