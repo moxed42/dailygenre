@@ -4649,12 +4649,95 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "https://open.spotify.com/track/39Pudjd7JS8NosYN24m7Hc | 5 | 100 gecs’ maximalist distortion, pitch-shifted vocals and overload aesthetics are quintessential hyperpop | 100 gecs — mememe [file:3][web:27][web:30]\n\nhttps://open.spotify.com/track/2SCyDaDxOEmqgEvak5Yt0N | 4 | SOPHIE’s glossy, synthetic production and exaggerated pop textures sit at the core of hyperpop’s sound | SOPHIE — JUST LIKE WE NEVER SAID GOODBYE [file:3]\n\nhttps://open.spotify.com/track/0N8aH4DmGUEZWJMo6WVPbY | 4 | Danny Brown x underscores bring experimental rap energy into a blown‑out, glitchy, hyperpop adjacent space | Danny Brown; underscores — Copycats [file:3]\n\nhttps://open.spotify.com/track/1XD4K4CGAKTIBmFpvuaFru | 5 | High‑gloss, emotionally intense, heavily processed pop — exactly the sort of digicore‑to‑hyperpop arc Jane Remover is associated with | Jane Remover — Dancing with your eyes closed [file:3][web:26][web:29]\n\nhttps://open.spotify.com/track/0HO7edOcs0Ls9pVJ4n4AQ2 | 5 | Dorian Electra’s maximalist, campy production and hyper‑processed vocals make this a textbook hyperpop track | Dorian Electra — F The World [file:3][web:25][web:31]\n\nhttps://open.spotify.com/track/5TwX6zzWeK15M0mm6StdLA | 4 | Femtanyl and Danny Brown mash breakcore, speedcore and hyperpop into a frantic, overdriven banger | femtanyl; Danny Brown — M3 N MIN3 [file:3]\n\nhttps://open.spotify.com/track/1aFP0G0GHQAAH9gfC95wT1 | 4 | Slush Puppy’s blown‑out, hooky, very online production is a solid hyperpop cut even if it leans more alt‑pop than extreme | Slush Puppy; Royal & the Serpent — EAT SPIT! [file:3]",
+    "notes": "",
     "summary": "Hyperpop is a maximalist, self-aware pop deconstruction — Auto-Tune pushed to distortion, bass drops mixed with candy-sweet melodies, genre collisions at speeds that don't allow genre to fully form, and a sensibility that is simultaneously ironic and genuinely emotional. A.G. Cook's PC Music label defined its aesthetic and artists like 100 gecs made it a genuine cultural moment.",
     "key_artists": "A.G. Cook, SOPHIE, Charli XCX (early PC Music era), 100 gecs, Dorian Electra (originators) • Bladee, Sewerslvt (adjacent)",
     "suggested_songs": "100 gecs — money machine, SOPHIE — PONYBOY, Charli XCX — Click, A.G. Cook — Beautiful",
     "vibe": "Pop music accelerated past the point of coherence into something new on the other side.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/39Pudjd7JS8NosYN24m7Hc",
+        "score": 5,
+        "reason": "Archetypal hyperpop: blown‑out synths, whiplash structure, chipmunked vocals, and loud‑quiet jolts that sum up the genre’s maximalist internet‑pop overload",
+        "title": "100 gecs — mememe",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02140bf64ac9cddf05beaff312",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2SCyDaDxOEmqgEvak5Yt0N",
+        "score": 4,
+        "reason": "Glossy but still structurally weird: rubbery bass, glassy sound design, and pitch‑shifted hooks put this firmly in the hyperpop / PRODUCT‑era SOPHIE lane, even if it is a bit more streamlined",
+        "title": "SOPHIE — JUST LIKE WE NEVER SAID GOODBYE",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e77ecae9169e22bbe544e479",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0N8aH4DmGUEZWJMo6WVPbY",
+        "score": 3,
+        "reason": "Hybrid cut where dense drums and distorted low end lean experimental hip hop, but glitchy vocal treatments and digital sheen tie it loosely back to hyperpop",
+        "title": "Danny Brown, underscores — Copycats",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0294055492bd9dd87055aae5f3",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0i5xvpssbEtSY19b09Zmb1",
+        "score": 5,
+        "reason": "Hyper‑compressed synths, pitched‑up vocals, and sugar‑rush hooks make this a clean, high‑impact hyperpop exemplar to sit next to gecs and SOPHIE",
+        "title": "osquinn — bad idea",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1XD4K4CGAKTIBmFpvuaFru",
+        "score": 4,
+        "reason": "Emotive songcraft wrapped in noisy synths, clipping drums, and processed vocals; feels like alt‑emo filtered through hyperpop aesthetics, still clearly part of the scene’s core wave",
+        "title": "Jane Remover — Dancing with your eyes closed",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ab0d83b752dcf9f2a7ddd51b",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0HO7edOcs0Ls9pVJ4n4AQ2",
+        "score": 4,
+        "reason": "Hyperpop meets queer club: dense sound design, theatrical vocals, and arrangement whiplash keep it within the hyperpop universe even as ballroom and electroclash influences poke through",
+        "title": "Dorian Electra, The Garden, Quay Dash, d0llywood1 — F The World",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0207adcf3680f1962bde42dc3b",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5TwX6zzWeK15M0mm6StdLA",
+        "score": 3,
+        "reason": "Breakneck tempo, distorted kicks, and screamed delivery push this toward breakcore / speedcore, with hyperpop vocal FX and synth stabs as a secondary flavor rather than the main identity",
+        "title": "femtanyl, Danny Brown — M3 N MIN3",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027c25969dca09e659da13dfdf",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0JP9xo3adEtGSdUEISiszL",
+        "score": 5,
+        "reason": "Bubblegum bass foundation, candy‑sharp synths, and heavily processed vocals make it a textbook “what is hyperpop?” track to bolster the block’s pure‑pop side",
+        "title": "GFOTY — Tongue",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219f38111bd020b2027232d3c",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 4,
     "favoritesong": "",
     "favoritesongurl": "",
@@ -7002,7 +7085,18 @@
     "key_artists": "Venetian Snares, Xanopticon, Bong-Ra, Igorrr, Hecate (originators) • Machine Girl, Sewerslvt (modern revival)",
     "suggested_songs": "Venetian Snares — Szamár Madár, Igorrr — Tout Petit Moineau, Machine Girl — BECAUSE UR WORTH IT",
     "vibe": "Drum and bass played by someone who has had too much of everything.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0JP9xo3adEtGSdUEISiszL",
+        "score": 5,
+        "reason": "Bubblegum bass foundation, candy‑sharp synths, and heavily processed vocals make it a textbook “what is hyperpop?” track to bolster the block’s pure‑pop side",
+        "title": "GFOTY — Tongue",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219f38111bd020b2027232d3c",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 100
   },
   {
@@ -12468,7 +12562,18 @@
     "key_artists": "MF DOOM, Madlib, Death Grips, Flying Lotus, Kendrick Lamar (experimental works) (major figures)",
     "suggested_songs": "MF DOOM — Accordion, Madlib — Curls, Death Grips — Guillotine, Flying Lotus — Never Catch Me",
     "vibe": "Hip-hop asking what else it can be and finding out.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0i5xvpssbEtSY19b09Zmb1",
+        "score": 5,
+        "reason": "Hyper‑compressed synths, pitched‑up vocals, and sugar‑rush hooks make this a clean, high‑impact hyperpop exemplar to sit next to gecs and SOPHIE",
+        "title": "osquinn — bad idea",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 271
   },
   {
