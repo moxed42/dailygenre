@@ -1332,6 +1332,7 @@
       font-size:clamp(2.2rem, 5vw, 4.2rem);
       line-height:.88;
       letter-spacing:-.08em;
+      color:#fff8e8;
     }
     .detail-actions {
       display:flex;
@@ -1542,6 +1543,7 @@
       word-break:normal;
       font-size:clamp(2rem, 3.4vw, 3.35rem);
       line-height:.92;
+      color:#fff8e8;
     }
     .detail-record-card .status-row {
       gap:7px;
@@ -2559,7 +2561,14 @@
         if (next.url && next.url.includes('spotify.com/track/')) {
           try {
             const data = await fetchSpotifyOembed(next.url);
-            applySpotifyMetadata(next, data);
+            if (data) {
+              // Always refresh title/artist if missing; always refresh artwork
+              const raw = data.title || '';
+              const clean = raw.split(/[·–—]/)[0].trim() || raw;
+              if (clean && !next.title) next.title = clean;
+              if (data.author_name && !next.artist) next.artist = data.author_name;
+              if (data.thumbnail_url) next.artwork = data.thumbnail_url;
+            }
           } catch(e) {}
         }
         if (next.levelUp) {
@@ -2816,7 +2825,6 @@
       if (clean && !song.title) song.title = clean;
       if (data.author_name && !song.artist) song.artist = data.author_name;
       if (data.thumbnail_url && !song.artwork) song.artwork = data.thumbnail_url;
-      else if (data.thumbnail_url && song.artwork === '') song.artwork = data.thumbnail_url;
       return song;
     }
 
