@@ -3445,55 +3445,34 @@
     "vibe": "A breakbeat that keeps changing shape.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/5BnxLTNpTBamBaUy7vne41",
-        "score": 2,
-        "reason": "Fast, pounding 4/4 jungletek with ragga vocals; very ravey and psychedelic but rhythmically more tekno/jungle than breakbeat — better fits: jungletek / raggatek",
-        "title": "C3B — Untold Stories",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb9da8a3bc7693d004acedfa",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/4nZma2HNbeC1R9kmGLwZpE",
+        "url": "https://open.spotify.com/track/6jF5t3rErIKwmEgRsJEi9j",
         "score": 4,
-        "reason": "Rolling broken‑beat groove with acid lines and trippy atmospheres — a strong, modern psybreaks cut",
-        "title": "Hedflux — Revolve",
+        "reason": "Psytrance‑trained producer doing chunky mid‑tempo breaks: rolling breakbeat, evolving dubby FX, and cosmic arps make this a clear psychedelic breakbeat pillar even if it leans a bit toward psy‑prog",
+        "title": "Hedflux — Nonstop",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02580edb699baa884227bf5a38",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/4aruEzDQyIzvpHxMpNdSQf",
-        "score": 2,
-        "reason": "High‑tempo tekno/jungle hybrid, very rave‑oriented but driven by straight kicks instead of broken beats — better fits: jungletek / drum & bass",
-        "title": "Mandidextrous; C3B — Bucka",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0246fc6588901ebcfae9de0eb2",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/3TvSPT4fcaqSlH6cSz4k75",
-        "score": 4,
-        "reason": "Psychedelic synths over chunky breakbeats and big bass, right in the psybreaks lane",
-        "title": "Far Too Loud — Play It Loud",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/2hSIx3QF3PPR3DGBXqJ5PL",
+        "url": "https://open.spotify.com/track/3ohn0e4Geg5GaCprWRs6we",
         "score": 5,
-        "reason": "Classic psybreaks with hypnotic acid lines, spacey FX and a driving broken beat — textbook psychedelic breakbeat",
-        "title": "Hybrid — Finished Symphony (Breakbeat mix)",
+        "reason": "Archetypal psychedelic breakbeat: tightly edited, driving break pattern, swirly acid‑style synths, and trancey builds that feel straight out of a 90s/00s Goa‑adjacent breaks floor",
+        "title": "Digitalis — 3Rd State (Freak Beats Mix)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a075859ea00f3bc18469fe81",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isAdd": true
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/66Cz2npSRryWC53GceDfIJ",
+        "score": 4,
+        "reason": "Strong hybrid of psy trance and breaks: syncopated drums and bass give it a breakbeat skeleton while the spiraling leads and atmosphere keep it firmly psychedelic",
+        "title": "Blazer — Obsidian",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0207b68be486d13c980f0833c6",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 50,
@@ -13052,9 +13031,11 @@
       }
     ],
     "rank_order": 85,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Kanye West — Gold Digger (feat. Jamie Foxx)",
+    "favoritesongurl": "https://open.spotify.com/track/1PS1QMdUqOal0ai3Gt7sDQ",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d79ba8ad2be777bad0e9924b"
   },
   {
     "id": 586,
