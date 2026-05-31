@@ -3610,6 +3610,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5LR6tBItEYd4574ly38mjo",
+        "score": 4,
+        "reason": "Funky, sample-heavy Chicago-style house with skippy percussion and chopped vocals — a solid modern jackin' anthem",
+        "title": "Angelo Ferreri — Izinque",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eac5b0f0e338f8f260280d4f",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 210
@@ -8779,7 +8789,7 @@
       {
         "url": "https://open.spotify.com/track/29tm8ZbebPFzcg2shW6hJi",
         "score": 5,
-        "reason": "Old-school Chicago jackin blueprint: swinging drums, looping funk sample, and that relentless shuffling groove that defines the style — Patrick Topping co-sign confirms the lineage",
+        "reason": "Old-school Chicago jackin' blueprint: swinging drums, looping funk sample, and relentless shuffling groove that defines the style",
         "title": "Derrick Carter — Where U At",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020a2d0592103cd6e7b2f18836",
@@ -8789,7 +8799,7 @@
       {
         "url": "https://open.spotify.com/track/1ww5uLbLRXdZXF5gLJbawz",
         "score": 2,
-        "reason": "Smooth and funky but this lives in nu disco and jazz house — polished chord stabs and a laid-back melodic feel that lacks the raw, percussive, stripped-back jack of the genre",
+        "reason": "Smooth and funky but lives in nu disco and jazz house — polished chord stabs and a laid-back melodic feel that lacks the raw, percussive, stripped-back jack of the genre",
         "title": "Knee Deep",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02709778229b48b6181091fdae",
@@ -8797,34 +8807,23 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ZfcC2XbYaMBrP8WlIwoXt",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5LR6tBItEYd4574ly38mjo",
         "score": 4,
         "reason": "Funky, sample-heavy Chicago-style house with skippy percussion and chopped vocals — a solid modern jackin' anthem",
         "title": "Angelo Ferreri — Izinque",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eac5b0f0e338f8f260280d4f",
         "source": "spotify",
         "added": "2026-05-31",
         "isLevelUp": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/0bHNtuQ2pqAq7Glx60sArF",
+        "url": "🔼 ADD: https://open.spotify.com/track/451Av6ktCUTBkLYRkkpVyK",
         "score": 4,
         "reason": "Classic jackin' feel with chunky bass, swinging hats and filtered disco samples — textbook genre DNA",
         "title": "DJ Sneak — You Can't Hide from Your Bud",
         "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/7EubKQFWWep9vqeqU6ZRgJ",
-        "score": 5,
-        "reason": "Raw drums, looping funk sample and relentless shuffle — pure old-school Chicago jackin' that anchors the session alongside Derrick Carter",
-        "title": "Derrick Carter — Where U At (alt)",
-        "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0201da79374b8001de0d5f8b80",
         "source": "spotify",
         "added": "2026-05-31",
         "isAdd": true
