@@ -1221,32 +1221,34 @@
       {
         "url": "https://open.spotify.com/track/2pzpApfqE2LaXW5StD1FUA",
         "score": 5,
-        "reason": "The genesis document of the entire genre — Blue Yodel No. 1 is where blue yodelling begins and ends. Every defining hallmark is here: the blues-derived 12-bar structure, the raw acoustic guitar, the travelling-man lyrical persona, and above all the genre-naming yodel breaks inserted with jarring, electrifying effect. Nothing scores higher.",
+        "reason": "Foundational document of the style — blues form, lone acoustic guitar and the travelling-man persona, with piercing yodel breaks that literally define “blue yodeling”",
         "title": "Jimmie Rodgers — Blue Yodel (T for Texas)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02510117f1d6a9f9394fe27870",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02510117f1d6a9f9394fe27870",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/2nMHNLsTHGBiEgv1Qi2LjB",
+        "url": "🔼 ADD: https://open.spotify.com/track/0b3F6oQg3XdIeWBFtoasf5",
         "score": 5,
-        "reason": "Blue Yodel No. 9 is the apex of the entire canon — Rodgers' most famous yodel vehicle, recorded with Louis Armstrong on cornet and Lil Hardin Armstrong on piano. The blues framework is fully intact, the yodel breaks are impeccably timed, and the Armstrong improvisation transforms it into a one-of-a-kind historical artefact. Absolute core genre material.",
-        "title": "Jimmie Rodgers — Blue Yodel No. 9 (Standin' on the Corner)",
+        "reason": "Canonical continuation of the series: relaxed swing, jazz-inflected backing and razor‑sharp yodel entries make this the most fully realised “Blue Yodel” performance",
+        "title": "Jimmie Rodgers — Blue Yodel No. 9 (Standin’ on the Corner)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-05-31",
+        "isAdd": true
       },
       {
-        "url": "https://open.spotify.com/track/5cFBCkk1kaqJkqCTfVeNB8",
+        "url": "🔼 ADD: https://open.spotify.com/track/6eMfsSoSGbBLhivZghz21g",
         "score": 4,
-        "reason": "Mule Skinner Blues is Rodgers at his most athletically yodelling — the falsetto leaps are dizzying, the tempo is brisk, and the lyrical content (hard labour, mule driving, the restless South) is quintessential blue yodel territory. Slightly more uptempo and showman-y than the pure blue yodels, but firmly within the genre's core DNA.",
+        "reason": "Faster, flashier entry in the sequence — hard‑driving rhythm and athletic yodel runs that showcase the technique side of the style as much as the blues storytelling",
         "title": "Jimmie Rodgers — Blue Yodel No. 8 (Mule Skinner Blues)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-05-31",
+        "isAdd": true
       }
     ],
     "favoritesong": "",
