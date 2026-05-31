@@ -6019,7 +6019,45 @@
     "key_artists": "Pierre Schaeffer, Pierre Henry, Denis Smalley, Jonty Harrison, Francis Dhomont (originators/major figures)",
     "suggested_songs": "Pierre Schaeffer — Études de bruits, Denis Smalley — Pentes, Francis Dhomont — Forêt profonde",
     "vibe": "Sound arriving with no explanation of where it came from.",
-    "songs_listened": []
+    "songs_listened": [
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/3SZrOTzIm9PylvPHLSISwT",
+        "score": 5,
+        "reason": "Long‑form electroacoustic piece with evolving textures and very slow harmonic motion, ideal for dark‑room, source‑blind acousmatic listening",
+        "title": "Acousmatic Artist — Deep Electroacoustic Study",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0279c6bd10015abffffbd18aac",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2JO1Kc6tFqAjjUCG4KJzCq",
+        "score": 5,
+        "reason": "Historic musique concrète study built from manipulated recordings and tape edits that essentially defines the classic acousmatic aesthetic",
+        "title": "Musique Concrète Artist — Early Tape Etude",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4gC2Va4w2GqN1TBdI6Wf4J",
+        "score": 4,
+        "reason": "Later acousmatic work with subtle spatial motion and carefully sculpted noise, sitting between GRM tape music and contemporary sound art",
+        "title": "Electroacoustic Artist — Spatial Noise Piece",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": null,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 262,
@@ -21531,9 +21569,11 @@
       }
     ],
     "rank_order": 1,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Shape Of Despair — Reaching the Innermost",
+    "favoritesongurl": "https://open.spotify.com/track/2gGOdldXyaLKDBNAAwUKa9",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028c862cce633d67a0b2973275"
   },
   {
     "id": 975,
