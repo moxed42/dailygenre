@@ -1527,7 +1527,18 @@
     "key_artists": "Gram Parsons, The Byrds, Flying Burrito Brothers, The Eagles, Linda Ronstadt (originators)",
     "suggested_songs": "Gram Parsons — Grievous Angel, The Byrds — Sweetheart of the Rodeo, The Eagles — Take It Easy, Flying Burrito Brothers — Sin City",
     "vibe": "Rock music that drove through Tennessee and liked what it heard.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3oMM6UDRlJbFnFOrULFdGU",
+        "score": 5,
+        "reason": "Fogerty at full heartland throttle — raw, defiant, and rooted in working-class Southern rock energy that bridges CCR and the Springsteen lineage far more convincingly",
+        "title": "John Fogerty — Rockin' All Over the World",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 170
   },
   {
@@ -11171,7 +11182,18 @@
     "key_artists": "Emmylou Harris, Gillian Welch, Wilco, Drive-By Truckers, Lucinda Williams (originators/major figures)",
     "suggested_songs": "Gillian Welch — Everything Is Free, Wilco — Jesus Etc., Lucinda Williams — Car Wheels on a Gravel Road, Emmylou Harris — Boulder to Birmingham",
     "vibe": "American music that knows where it came from.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0VqJxMFGKnTFnibOqNjLiN",
+        "score": 5,
+        "reason": "Springsteen's hardest-hitting Nebraska-era electric rocker — raw urgency, blue-collar desperation, and that gritty Springsteen growl in full effect",
+        "title": "Bruce Springsteen — Glory Days",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 14
   },
   {
@@ -15108,15 +15130,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
+        "url": "https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
         "score": 4,
         "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — archetypal cringe‑pop",
         "title": "Taher Shah — Angel",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4w9soAM7IrmYDhSXLp14p6",
@@ -15139,15 +15160,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7yq4Qd6QQTFE3S73UMfvIn",
+        "url": "https://open.spotify.com/track/7yq4Qd6QQTFE3S73UMfvIn",
         "score": 4,
         "reason": "Hilariously literal, low‑budget viral anthem built entirely around one absurd bragging premise — peak novelty cringe",
         "title": "Iyaz — Replay",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5JYPXqMwYc0zTODQdjMEZN",
@@ -15160,15 +15180,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
+        "url": "https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
         "score": 4,
         "reason": "Comedy drill/novelty rap with meme catchphrases and deliberately absurd persona — strong cringe‑pop energy",
         "title": "Big Shaq — Man's Not Hot",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/6UBd3Ub3OCnXSM21wno2zV",
@@ -15211,15 +15230,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3HZOGQxRMuHCfInceQDQqT",
+        "url": "https://open.spotify.com/track/3HZOGQxRMuHCfInceQDQqT",
         "score": 4,
         "reason": "Deadpan novelty rap with absurdist self‑aware lyrics and intentionally cheap production — solid cringe‑pop",
         "title": "Lil B — I'm Miley Cyrus",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/58l7GwvOaSBNwR7xVUDBH6",
@@ -18399,7 +18417,18 @@
     "key_artists": "Led Zeppelin, The Rolling Stones, Fleetwood Mac, Aerosmith, Eagles (format staples)",
     "suggested_songs": "Led Zeppelin — Stairway to Heaven, Eagles — Hotel California, Fleetwood Mac — The Chain, Aerosmith — Dream On, The Rolling Stones — Brown Sugar",
     "vibe": "The greatest hits of a decade you may not have lived through, still completely unavoidable.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2bMJn0JxDmBwOFUFnnFGgD",
+        "score": 5,
+        "reason": "Seger's most driving heartland anthem — relentless electric rock energy, blue-collar pride, and that quintessential Midwest working-class swagger",
+        "title": "Bob Seger — Old Time Rock and Roll",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 153
   },
   {
@@ -18984,62 +19013,179 @@
     "vibe": "Rock that knows what kind of car costs too much to fix and writes about it.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/6peCtspu8qjTpIWUOPprmH",
+        "url": "https://open.spotify.com/track/6hTcuIQa0sxrrByu9wTD7s",
         "score": 5,
-        "reason": "Alberta Adams singing classic Detroit blues — canonical example",
-        "title": "Long Gone",
+        "reason": "The definitive heartland rock statement — cinematic guitar, pumping saxophone, working-class escape narrative, and Springsteen at his most mythologising; this IS the genre",
+        "title": "Bruce Springsteen — Born to Run",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028c5b6f7dcdc5817dc5050b2a",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/1MwR07lZv0tu8kJePTLVAh",
-        "score": 2,
-        "reason": "Gentle acoustic blues-adjacent, lacks Detroit grit — better fits: folk blues",
-        "title": "For You and Me",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/search/Alberta%20Adams%20Detroit%20Blues",
+        "url": "https://open.spotify.com/track/7HrzErXq3TsKOY1gmdIShB",
         "score": 5,
-        "reason": "Same artist, raw urban electric blues, pure Detroit",
+        "reason": "Epic double-album centrepiece about Rust Belt heartbreak; sparse, intimate, and emotionally devastating — heartland rock at its most literary and raw",
+        "title": "Bruce Springsteen — The River",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ebb7aaf3e19a51782ba1d27",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
-        "score": 4,
-        "reason": "Named Detroit Blues Band, urban electric blues groove, solid fit",
-        "title": "Bum's Rush",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/5B5JM1VxUe1aZNmtt0M5Zy",
+        "url": "https://open.spotify.com/track/1Vp8U39YNsDfd6yVuaUq12",
         "score": 3,
-        "reason": "Great blues but more broadly Michigan/Chicago than specifically Detroit style",
-        "title": "One Bourbon, One Scotch, One Beer",
+        "reason": "Beautiful and heartfelt but sits closer to folk-rock and adult contemporary than heartland rock proper — too acoustic and pastoral, missing the electric grit and working-class urgency",
+        "title": "Tom Petty — Wildflowers",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e7af3a709aeac0c796ab542",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/3tBJNiMnAlUsKSJTnkGLYK",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7lOYm2bJqA6B40H3N6iC3V",
         "score": 5,
-        "reason": "Recorded in Detroit, raw one-chord stomp — the quintessential Detroit blues track",
+        "reason": "Tom Petty at peak heartland mode — driving electric guitar, defiant lyrical energy, and every bit the blue-collar rocker spirit the genre demands",
+        "title": "Tom Petty — American Girl",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4mcZYzoGwPRDdhWVlygiHf",
+        "score": 5,
+        "reason": "Petty's toughest, most urgent rocker — a paranoid, propulsive escape anthem with muscular Heartbreakers guitar that nails the genre's driving, restless energy",
+        "title": "Tom Petty and the Heartbreakers — Refugee",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ebca7d93f21ba366fe005966",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1HfB7BLeW5XXIJ9sjCaL5U",
+        "score": 4,
+        "reason": "Lean, sparse debut-era Petty — understated and rootsy, the emotional vulnerability lands squarely in heartland territory even if the production is rougher than the genre's peak",
+        "title": "Tom Petty and the Heartbreakers — Breakdown",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020c3a1b46b6b846dfdfbc6a7d",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2HsjJJL4DhPCzMlnaGv7ap",
+        "score": 5,
+        "reason": "Small-town Midwest pride and claustrophobia in one song — Mellencamp's heartland rock thesis statement, direct and unvarnished",
+        "title": "John Mellencamp — Small Town",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b46e7ea6a6b2fa45caa23393",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/7gSQv1OHpkIoAdUiRLdmI6",
+        "score": 4,
+        "reason": "Anthemic and principled, Petty's defiant stomp is firmly in the heartland lineage — slightly more polished and radio-friendly than the genre's grittier core but undeniably belongs",
+        "title": "Tom Petty — I Won't Back Down",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236572e6726714544f5bed456",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3noZh3GynRLHd9QxtbmAyX",
+        "score": 5,
+        "reason": "Pure Petty velocity — open highway imagery, ringing electric guitar, and an exhilarating forward momentum that is textbook heartland rock",
+        "title": "Tom Petty — Runnin' Down a Dream",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020c3a1b46b6b846dfdfbc6a7d",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2iRfjwzPsooCskZrrlsgcC",
+        "score": 3,
+        "reason": "Fogerty solo and closer to country rock than heartland — the jangly Americana feel and baseball nostalgia is charming but lacks the blue-collar urgency and electric grit that defines the genre",
+        "title": "John Fogerty — Centerfield",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f2aaa0b785e5a7644ba31e08",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3oMM6UDRlJbFnFOrULFdGU",
+        "score": 5,
+        "reason": "Fogerty at full heartland throttle — raw, defiant, and rooted in working-class Southern rock energy that bridges CCR and the Springsteen lineage far more convincingly",
+        "title": "John Fogerty — Rockin' All Over the World",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2cReSKmcyhe6lw8QSj5AYD",
+        "score": 3,
+        "reason": "Charming supergroup folk-rock with big hearts but the jangly, easygoing texture reads more as Americana/pop-rock — too gentle and breezy to carry the genre's characteristic tension and grit",
+        "title": "Traveling Wilburys — End of the Line",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023689e500e90daf0c4e9cb37f",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0VqJxMFGKnTFnibOqNjLiN",
+        "score": 5,
+        "reason": "Springsteen's hardest-hitting Nebraska-era electric rocker — raw urgency, blue-collar desperation, and that gritty Springsteen growl in full effect",
+        "title": "Bruce Springsteen — Glory Days",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3P2XAL8UpPBM3nfvuEjHHE",
+        "score": 3,
+        "reason": "Iconic live reading of Seger's road-weary ballad — the working-class fatalism fits perfectly thematically, but the slow-burn arrangement and country-leaning production pull it toward classic rock and country rock rather than heartland proper",
+        "title": "Bob Seger — Turn the Page (Live)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02afb6c3ee7af97d45370accd2",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2bMJn0JxDmBwOFUFnnFGgD",
+        "score": 5,
+        "reason": "Seger's most driving heartland anthem — relentless electric rock energy, blue-collar pride, and that quintessential Midwest working-class swagger",
+        "title": "Bob Seger — Old Time Rock and Roll",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1Vp8U39YNsDfd6yVuaUq12",
+        "score": 3,
+        "reason": "Beautiful and heartfelt but sits closer to folk-rock than heartland — too acoustic and pastoral, missing the electric grit",
+        "title": "Tom Petty — Wildflowers",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e7af3a709aeac0c796ab542",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/5anSbCkYJMVqjX0FeaqMm0",
+        "score": 5,
+        "reason": "The heartland rock archetype — Mellencamp's furious, electric, small-town rage anthem with a snarling guitar riff that perfectly bookends the session's Springsteen/Petty energy",
+        "title": "John Mellencamp — Jack & Diane",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
       }
     ],
     "rank_order": 9,
