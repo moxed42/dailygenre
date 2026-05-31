@@ -552,53 +552,23 @@
     "vibe": "Blues in a city with machine rhythms already in the air.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/6peCtspu8qjTpIWUOPprmH",
-        "score": 5,
-        "reason": "Alberta Adams singing classic Detroit blues — canonical example",
-        "title": "Alberta Adams — Long Gone",
-        "source": "spotify",
-        "added": "2026-05-28",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258ff716f8baaa7cda2d88fa1"
-      },
-      {
-        "url": "https://open.spotify.com/track/1MwR07lZv0tu8kJePTLVAh",
+        "url": "https://open.spotify.com/track/0VKMOwKyRKbw0HrNAXj0UI",
         "score": 2,
-        "reason": "Gentle acoustic blues-adjacent, lacks Detroit grit — better fits: folk blues",
-        "title": "Erik Naugle — For You and Me",
+        "reason": "Big, emotional Ozzy ballad with some classical flavour in the soloing, but overall sits firmly in traditional heavy metal",
+        "title": "Ozzy Osbourne — Revelation (Mother Earth)",
+        "artist": "",
         "source": "spotify",
-        "added": "2026-05-28",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e35fe012c759666513010ee9"
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024936b5b7caeb7524e50fd8cb"
       },
       {
-        "url": "🔼 LEVEL UP: Try \"Detroit Blues\" by Alberta Adams — same artist, raw urban electric blues, pure Detroit",
-        "score": null,
-        "source": "other",
-        "added": "2026-05-28",
-        "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
-        "score": 4,
-        "reason": "Named Detroit Blues Band, urban electric blues groove, solid fit",
-        "title": "Detroit Blues Band — Bum's Rush",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0v2G7ULGIYPf4wFpdoWz0g",
+        "score": 5,
+        "reason": "Instrumental neoclassical shred built entirely around baroque‑inspired motifs — the genre in its purest form",
+        "title": "Yngwie Malmsteen — Black Star",
+        "artist": "",
         "source": "spotify",
-        "added": "2026-05-28",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02163638a736ec917acc53f637"
-      },
-      {
-        "url": "https://open.spotify.com/track/5B5JM1VxUe1aZNmtt0M5Zy",
-        "score": 3,
-        "reason": "Great blues but more broadly Michigan/Chicago than specifically Detroit style",
-        "title": "John Lee Hooker — One Bourbon, One Scotch, One Beer",
-        "source": "spotify",
-        "added": "2026-05-28",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0210eb89d605247b9d3dee9e09"
-      },
-      {
-        "url": "🔼 LEVEL UP: Try \"Boogie Chillen\" by John Lee Hooker — recorded in Detroit, raw one-chord stomp, the quintessential Detroit blues track",
-        "score": null,
-        "source": "other",
-        "added": "2026-05-28",
+        "added": "2026-05-31",
         "isLevelUp": true
       }
     ],
