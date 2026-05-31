@@ -8466,7 +8466,7 @@
     "date_raw": "5/6",
     "date_normalized": "2026-05-06",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8475,8 +8475,43 @@
     "key_artists": "Daft Punk (later work), Justice, Deadmau5 (early), Knife Party, Feed Me (originators/major figures)",
     "suggested_songs": "Justice — D.A.N.C.E., Deadmau5 — Ghosts 'n' Stuff, Knife Party — Internet Friends, Feed Me — Chinchilla",
     "vibe": "House music that turned everything up.",
-    "songs_listened": [],
-    "rank_order": 82
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/63TS3ig8lXWVUDvHSlc0TN",
+        "score": 4,
+        "reason": "Maximal EDM with saw‑lead riffs, festival build‑and‑drop structure, and mid‑2010s Knife Party sound design; squarely electro‑house, though it leans toward brostep crossover",
+        "title": "Knife Party — 404",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4W6X7VhsfG3h5uQ0PQv5h3",
+        "score": 4,
+        "reason": "Similar big‑room electro template with snarling bass and metallic leads; again, hybrid with dubstep energy but fundamentally in the electro‑house banger lane",
+        "title": "Knife Party — Micropenis",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/7s6uQ1WzFF2VdZGio3dX0Z",
+        "score": 5,
+        "reason": "Classic peak‑time electro house with chugging bassline, sharp side‑chained leads, and no dubstep detours; a clean archetypal pillar beside the Knife Party hybrids",
+        "title": "TJR — Ode To Oi",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": 82,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 368,
@@ -9003,15 +9038,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0wQZt5qFif5Q66unTgS8yC",
+        "url": "https://open.spotify.com/track/0wQZt5qFif5Q66unTgS8yC",
         "score": 5,
         "reason": "Classic swing, chopped vocal hits, and a rough, looping drum track make this a textbook jackin’ house club tool",
         "title": "Johnny Fiasco — Jack Yo Body",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/5iEgY9ZbQEQJ8uM5qh1Jut",
@@ -13207,15 +13241,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1iypLkjW7KucMznYEqfuRw",
+        "url": "https://open.spotify.com/track/1iypLkjW7KucMznYEqfuRw",
         "score": 5,
         "reason": "Rigid 808 groove, staccato synth bass, and vocoder‑style stabs make this a textbook early electro hip hop cut",
         "title": "Hashim — Al‑Naafiysh (The Soul)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/7lkJFplC4I2jMRY3sCwhzd",
@@ -13228,15 +13261,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4FupIlegZgvXUuK79qcoKW",
+        "url": "https://open.spotify.com/track/4FupIlegZgvXUuK79qcoKW",
         "score": 5,
         "reason": "Combines TR‑808 beats, synth‑driven melody, and rap chants in a proto‑electro hip hop blueprint that defines the genre",
         "title": "Afrika Bambaataa & The Soulsonic Force — Planet Rock",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bb1a36b4eeee70faca9cde59",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4JfcEkOP08hSwP7cSSz6AW",
@@ -13249,15 +13281,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2fycu38G0FXDv0890YVS2M",
+        "url": "https://open.spotify.com/track/2fycu38G0FXDv0890YVS2M",
         "score": 4,
         "reason": "Miami‑bass‑meets‑electro jam with booming 808, robotic leads, and chanty vocals that keep one foot firmly in the electro hip hop club continuum",
         "title": "Freestyle — Don’t Stop The Rock",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021c211dcb533fddd4e9b80bd6",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0I3q5fE6wg7LIfHGngUTnV",
@@ -13280,15 +13311,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6YDwYBTHnA4RKoIyZ0Yt4n",
+        "url": "https://open.spotify.com/track/6YDwYBTHnA4RKoIyZ0Yt4n",
         "score": 5,
         "reason": "Classic 808‑driven electro hip hop with robot voices, breakdance‑ready patterns, and clear MC sections that lock in the genre’s core template",
         "title": "Newcleus — Jam On It",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 85,
@@ -15975,15 +16005,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3vN7y6CVpHGwJuXzSdmq6b",
+        "url": "https://open.spotify.com/track/3vN7y6CVpHGwJuXzSdmq6b",
         "score": 5,
         "reason": "Sweeping melody and rich orchestration make this one of Googoosh’s most definitive classic Iranian pop anthems, a much stronger genre exemplar than “Gentleman”",
         "title": "Googoosh — Man Amadeh‑Am",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/5b2QLXpRtCJiICM84K8hUU",
@@ -16501,15 +16530,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0pqnGHJpmpxLKifKRmU6WP",
+        "url": "https://open.spotify.com/track/0pqnGHJpmpxLKifKRmU6WP",
         "score": 4,
         "reason": "Big synth hook and ultra‑singable chorus make this a more globally legible club pop‑rap exemplar",
         "title": "Flo Rida — Low (feat. T‑Pain)",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025675e83f707f1d7271e5cf8a",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4JfcEkOP08hSwP7cSSz6AW",
@@ -16522,15 +16550,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1R2SZUOGJqqBiLuvwKOT2Y",
+        "url": "https://open.spotify.com/track/1R2SZUOGJqqBiLuvwKOT2Y",
         "score": 4,
         "reason": "Anthem hook and EDM‑leaning beat make this a clear festival‑sized pop‑rap cut",
         "title": "DJ Khaled — All I Do Is Win (feat. T‑Pain, Ludacris, Snoop Dogg & Rick Ross)",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026cfc57e5358c5e39e79bccbd",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0I3q5fE6wg7LIfHGngUTnV",
@@ -16553,15 +16580,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1hyeKWTDPI7DQn5S3C4iQO",
+        "url": "https://open.spotify.com/track/1hyeKWTDPI7DQn5S3C4iQO",
         "score": 4,
         "reason": "Candy‑coated melody and simple, sticky chorus make this a textbook late‑2000s pop‑rap single",
         "title": "Lil Wayne — Lollipop (feat. Static Major)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 23,
@@ -17091,15 +17117,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1aB1U3Kr7zG0QGMN9nE82r",
+        "url": "https://open.spotify.com/track/1aB1U3Kr7zG0QGMN9nE82r",
         "score": 5,
         "reason": "Short, punchy synthpop single with a massive hook and concise arrangement that nails the radio-friendly side of the genre",
         "title": "Yazoo — Situation",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/2EEinN4Zk8MUv4OQuLsTBj",
@@ -17132,15 +17157,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0kpGgjr8rjXBEioZ5YJ3vP",
+        "url": "https://open.spotify.com/track/0kpGgjr8rjXBEioZ5YJ3vP",
         "score": 5,
         "reason": "Up-tempo, hooky synthpop with clear verse/chorus structure and sparkling synth lines",
         "title": "Erasure — A Little Respect",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4E7wtL5Jg55SNXc0sGD1Hs",
@@ -17183,15 +17207,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0VST8W5UDgO1fMLBLuFEtE",
+        "url": "https://open.spotify.com/track/0VST8W5UDgO1fMLBLuFEtE",
         "score": 4,
         "reason": "Strong synth-led hook and clear pop structure bring the Furs closer to core synthpop aesthetics",
         "title": "The Psychedelic Furs — Love My Way",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/6JNJERZGJwDVgkmbohBw7u",
@@ -17224,15 +17247,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0uBZkKJ0V0cFqzW6G6n7zo",
+        "url": "https://open.spotify.com/track/0uBZkKJ0V0cFqzW6G6n7zo",
         "score": 4,
         "reason": "Brings Siouxsie closer to synthpop with stronger emphasis on synth hooks and danceable programming",
         "title": "Siouxsie and the Banshees — Kiss Them for Me",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/709ffFK4o4MtG1NKoLvOma",
@@ -17245,15 +17267,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6e40mgJiCidLZ2q8I9d5f0",
+        "url": "https://open.spotify.com/track/6e40mgJiCidLZ2q8I9d5f0",
         "score": 4,
         "reason": "Clean, melodic synthpop with English lyrics and a bright, radio-ready presentation",
         "title": "Peter Schilling — The Different Story",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5uRsBdLhn91AYcsTCOGNOC",
@@ -17286,15 +17307,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6WEBIVqiEsevfgJefTyuQQ",
+        "url": "https://open.spotify.com/track/6WEBIVqiEsevfgJefTyuQQ",
         "score": 4,
         "reason": "Breezy, melodic synthpop song with a clear dancefloor pulse and shiny 80s production",
         "title": "Kajagoogoo — Too Shy",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02858f93b738db08c4e500bd30",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/49NDegc7RQyvq6mhAs06p6",
@@ -17307,15 +17327,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1YGZyfvdgZxzipWoWYVKxi",
+        "url": "https://open.spotify.com/track/1YGZyfvdgZxzipWoWYVKxi",
         "score": 5,
         "reason": "Classic upbeat synthpop anthem with a huge chorus and driving synth backbone",
         "title": "Kim Wilde — Kids in America",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021233a7885e76b74d0b2a9473",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/6I6Zjwlx4LSE1iojm94za1",
@@ -17328,15 +17347,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6y9VZNRczyKeQihebHSMJ8",
+        "url": "https://open.spotify.com/track/6y9VZNRczyKeQihebHSMJ8",
         "score": 4,
         "reason": "Playful, hook-laden synthpop track with clear 80s electronic identity",
         "title": "Thomas Dolby — She Blinded Me With Science",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f85ef389219f107dfaa6f9b",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/6y9VZNRczyKeQihebHSMJ8",
@@ -17379,15 +17397,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4tKGFmENO69tZR9ahgZu48",
+        "url": "https://open.spotify.com/track/4tKGFmENO69tZR9ahgZu48",
         "score": 4,
         "reason": "Dance-pop but built on strong synth lines and drum machines, slotting neatly into an 80s synthpop context",
         "title": "Sophie Ellis-Bextor — Murder on the Dancefloor",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024914b28ba1485733dc8dd448",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5nLFBX0yHkyVM5cVvIkzOk",
@@ -17400,15 +17417,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6z3HAUZpAyJ0ctsbAwAiw3",
+        "url": "https://open.spotify.com/track/6z3HAUZpAyJ0ctsbAwAiw3",
         "score": 4,
         "reason": "Late-70s/early-80s synth-driven pop hit with strong electronic hooks and dancefloor energy that complements the core synthpop era",
         "title": "M — Pop Muzik",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0281baa715d926ff54df1620f4",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4uvjOKsp7mSjrDhWdkLPBY",
@@ -19412,15 +19428,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1oAeeBsiE4CkY8T6Tn2XMj",
+        "url": "https://open.spotify.com/track/1oAeeBsiE4CkY8T6Tn2XMj",
         "score": 5,
         "reason": "Fully piano‑driven, macabre torch‑song with explicit cabaret rhythm and delivery; nails the dark cabaret archetype better than a metal‑leaning track",
         "title": "Jill Tracy — Evil Night Together",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/1BCYH7V3Z7dEGDgROqcY7s",
@@ -19433,15 +19448,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7Dqgttw7D6ZllBtYAcGLyq",
+        "url": "https://open.spotify.com/track/7Dqgttw7D6ZllBtYAcGLyq",
         "score": 4,
         "reason": "Minor‑key, waltzing, and story‑driven with cabaret‑style piano and strings; a clearer dark cabaret vibe within a goth context",
         "title": "Katzenjammer Kabarett — Gemini Girly Song",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5Y11CDokIFjNr0vXkiP99X",
@@ -19454,15 +19468,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0JgWINykdP0bZt2bGjT1b9",
+        "url": "https://open.spotify.com/track/0JgWINykdP0bZt2bGjT1b9",
         "score": 4,
         "reason": "Carnival‑goth swing with prominent accordion and theatrical vocals that sit much closer to dark cabaret’s baroque sideshow feel",
         "title": "Vermillion Lies — Circus Apocalypse",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4NmrCruBmr9ZdIUx7WnO2K",
@@ -19475,15 +19488,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1vCH8KpXpJEmzJrC2zmbNm",
+        "url": "https://open.spotify.com/track/1vCH8KpXpJEmzJrC2zmbNm",
         "score": 4,
         "reason": "Waltz‑time gloom with narrative vocal delivery and cabaret‑ish piano, bridging goth rock and dark cabaret more cleanly",
         "title": "The Tiger Lillies — Roll Up",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5VNplEIyA2PCKP0Rkb22uw",
@@ -19506,15 +19518,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1t6zty0IRi1bur0MZQE3Eh",
+        "url": "https://open.spotify.com/track/1t6zty0IRi1bur0MZQE3Eh",
         "score": 4,
         "reason": "Tango‑ish pulse, dramatic vocal, and sleazy barroom arrangement; closer to the dark cabaret blueprint than straight deathrock",
         "title": "The Dresden Dolls — Backstabber",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/2qgYUpDfAmEN0jqi7rY8bJ",
@@ -19527,15 +19538,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1uwDs3Uxqj1bqlck1yMDkL",
+        "url": "https://open.spotify.com/track/1uwDs3Uxqj1bqlck1yMDkL",
         "score": 4,
         "reason": "Dark, piano‑centric and overtly cabaret in rhythm and delivery while still political; closer to a genre explainer for dark cabaret",
         "title": "Amanda Palmer — The Killing Type",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/1MUds3HEHVBrrIAQYouV8S",
@@ -19548,15 +19558,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1BQiM3dG4pZ3fRxvoq9xDd",
+        "url": "https://open.spotify.com/track/1BQiM3dG4pZ3fRxvoq9xDd",
         "score": 4,
         "reason": "Bar‑room piano, minor‑key melodrama, and a smoky vocal line that squarely hits the dark cabaret bar‑theatre zone",
         "title": "Jill Tracy — Haunted By The Thought Of You",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/2TLx4ahyvDKsJft1vgS2uW",
@@ -20186,15 +20195,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6cFZ4PLC19taNlpl9pbGMf",
+        "url": "https://open.spotify.com/track/6cFZ4PLC19taNlpl9pbGMf",
         "score": 5,
         "reason": "Loud, swaggering riff, pounding beat, and unhinged vocal put Bowie at the hard‑edged end of glam while staying fully in‑genre",
         "title": "David Bowie — Suffragette City",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0267bc29c251c777361b17a190",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/2moVYeVUZ6pz04l9QYYaqw",
@@ -20207,15 +20215,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3yWRqYsqao0ir5GzW7U3a9",
+        "url": "https://open.spotify.com/track/3yWRqYsqao0ir5GzW7U3a9",
         "score": 4,
         "reason": "Straight 70s glam stomp with sing‑along hook and chunky guitars that lands closer to the glam mainstream",
         "title": "Sweet — Fox on the Run",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5WyuRWUcOOhAic0tj9Pl28",
@@ -20258,15 +20265,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6SgjxAGnjKWZq8DWhEGgKX",
+        "url": "https://open.spotify.com/track/6SgjxAGnjKWZq8DWhEGgKX",
         "score": 4,
         "reason": "Slick 80s glam metal with huge chorus and hair‑metal sheen that still clearly lives in the glam lineage",
         "title": "Def Leppard — Photograph",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/1hlveB9M6ijHZRbzZ2teyh",
@@ -20289,15 +20295,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2qT4sCXcavx7twZqfL4yTN",
+        "url": "https://open.spotify.com/track/2qT4sCXcavx7twZqfL4yTN",
         "score": 5,
         "reason": "Bombastic Queen rocker with operatic sections and heavy guitars, capturing the maximalist glam spirit perfectly",
         "title": "Queen — Bohemian Rhapsody",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/79A7CDgqh8SMvTbgA53pIC",
@@ -21112,15 +21117,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0S7Eb7sl3eqRPR9kVUxCQl",
+        "url": "https://open.spotify.com/track/0S7Eb7sl3eqRPR9kVUxCQl",
         "score": 4,
         "reason": "Tighter, riff‑forward Porcupine Tree cut whose odd meters and arrangement read more cleanly as modern prog",
         "title": "Porcupine Tree — Open Car - 2023 Remaster",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d9c15b02d0da8be6b0a82645",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/5TnIBKE4G3OEqOnRG7gnNb",
@@ -21163,15 +21167,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5TnIBKE4G3OEqOnRG7gnNb",
+        "url": "https://open.spotify.com/track/5TnIBKE4G3OEqOnRG7gnNb",
         "score": 5,
         "reason": "Re‑emphasizes Fear of a Blank Planet as the sharper structural and conceptual exemplar in this lane",
         "title": "Porcupine Tree — Fear of a Blank Planet",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0255b72bf2e20270860cce6634",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0S7Eb7sl3eqRPR9kVUxCQl",
@@ -21194,15 +21197,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1OFjv0Cq2JeK3FPvPG98rJ",
+        "url": "https://open.spotify.com/track/1OFjv0Cq2JeK3FPvPG98rJ",
         "score": 4,
         "reason": "Classic Mellotron‑heavy suite that much better reflects the prog/art‑rock tradition you’re invoking",
         "title": "King Crimson — The Court of the Crimson King",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02da7b326bd7ffa7b6b95b0660",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4SrRrB27n7fiRkQcPoKfpk",
@@ -21215,15 +21217,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3H7e3KQiYdRQKqj5ZmCk2r",
+        "url": "https://open.spotify.com/track/3H7e3KQiYdRQKqj5ZmCk2r",
         "score": 4,
         "reason": "Later‑era Radiohead piece with more overt art‑prog development and rhythmic interest that fits the block’s intent better",
         "title": "Radiohead — 15 Step",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0bbyp87OSHhqLIqJlTcIJM",
@@ -21959,15 +21960,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3rT6NVbEo2q0GmjrU0ZunO",
+        "url": "https://open.spotify.com/track/3rT6NVbEo2q0GmjrU0ZunO",
         "score": 5,
         "reason": "Classic RHCP cut where slap bass, syncopated drums, and crunchy guitar lock into a tight funk‑metal groove",
         "title": "Red Hot Chili Peppers — Suck My Kiss",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/4ddA4oHvhrGx196qF5ZyQe",
@@ -21990,15 +21990,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0XKOb34eCwukVh4K7FqJkM",
+        "url": "https://open.spotify.com/track/0XKOb34eCwukVh4K7FqJkM",
         "score": 4,
         "reason": "Punchy, riff‑driven RHCP track where the funk rhythm section and rock guitars stay tightly focused",
         "title": "Red Hot Chili Peppers — Stone Cold Bush",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/2hORUQTIep1NeFWCtzMhN7",
@@ -23359,15 +23358,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2wvPwR54t4ucclp5Q7s86r",
+        "url": "https://open.spotify.com/track/2wvPwR54t4ucclp5Q7s86r",
         "score": 5,
         "reason": "Classic example of metalcore songcraft fused with aggressive 8‑bit leads, more directly in the nintendocore lane than “Airbrushed”",
         "title": "The Color Of Violence — God Gave Me Deeze Nutz",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 11,
@@ -24774,15 +24772,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/33p3JIQWkSDSQSylZsYw5i",
+        "url": "https://open.spotify.com/track/33p3JIQWkSDSQSylZsYw5i",
         "score": 5,
         "reason": "Spanish‑language hardcore punk with relentless tempo and classic shouted gang‑style vocals, much closer to the core Latino punk tradition",
         "title": "Los Crudos — Tiempos De La Miseria",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 13,
@@ -24977,15 +24974,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0c9jxyVKMKpS44M2U5K3kK",
+        "url": "https://open.spotify.com/track/0c9jxyVKMKpS44M2U5K3kK",
         "score": 5,
         "reason": "Lo‑fi, snarling rewrite of Delta blues through a punk lens, with distorted slide guitar and yelped vocals that epitomize punk‑blues minimalism",
         "title": "The Gun Club — For the Love of Ivy",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0pDMnocBxXOPjBiTfYr8bl",
@@ -25008,15 +25004,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0NgNSk1kej2x9ZyHvzqVd4",
+        "url": "https://open.spotify.com/track/0NgNSk1kej2x9ZyHvzqVd4",
         "score": 4,
         "reason": "Stripped‑down garage‑punk with a clear blues backbone and unhinged vocal that leans much closer to punk‑blues grime",
         "title": "The Oblivians — Vietnam War Blues",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/0Vv2svfsXBbOeh0GMlqLGT",
@@ -25039,15 +25034,14 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2bdtXaj7gsUOIt5SmkX8Hc",
+        "url": "https://open.spotify.com/track/2bdtXaj7gsUOIt5SmkX8Hc",
         "score": 4,
         "reason": "Cave in a more propulsive, riff‑driven mode where the blues skeleton and snarled delivery give a much clearer punk‑blues charge",
         "title": "Nick Cave & The Bad Seeds — Deanna",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 33,
