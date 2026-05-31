@@ -15132,7 +15132,7 @@
         "reason": "Slick tropical‑pop/trap crossover with professional polish; sits more in mainstream pop‑rap than cringe territory",
         "title": "Jason Derulo; Nicki Minaj; Ty Dolla $ign — Swalla",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -15225,7 +15225,7 @@
         "reason": "Weird, unsettling indie track with awkward vocal delivery and surreal lyrics — cringe‑adjacent and very intentional",
         "title": "Sweet Joey Vermouth; Ray Bull — Beefcake",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d32f4d5d12fdff0b3fb18b09",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d32f4d5d12fdff0b3fb18b09",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -15251,10 +15251,11 @@
       }
     ],
     "rank_order": null,
-    "favoritesong": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023589de3ede5dabf351227be9",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Rebecca Black — Friday",
+    "favoritesongartwork": "",
+    "favoritesongurl": "https://open.spotify.com/track/7n3WZ0v8M67SLdTyzp9XfC",
+    "monthlycontender": false,
+    "favoriteartist": ""
   },
   {
     "id": 685,
