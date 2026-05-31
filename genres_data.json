@@ -19381,7 +19381,7 @@
     "date_raw": "5/7",
     "date_normalized": "2026-05-07",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -19390,8 +19390,53 @@
     "key_artists": "The Tiger Lillies, Dresden Dolls, Rasputina, Sopor Aeternus, Aurelio Voltaire (major figures)",
     "suggested_songs": "Dresden Dolls — Coin-Operated Boy, The Tiger Lillies — Banging in the Nails, Rasputina — Transylvanian Concubine, Sopor Aeternus — Poetica, Aurelio Voltaire — Vampire Club",
     "vibe": "The curtain going up in a venue where something theatrical and slightly wrong is about to happen.",
-    "songs_listened": [],
-    "rank_order": 8
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6Zbv79YWB0iZSXwIwEsIOP",
+        "score": 5,
+        "reason": "Archetypal dark cabaret: piano‑driven, waltz‑y pulse, Amanda Palmer’s theatrical vocal swings, and burlesque‑meets‑goth drama all over the arrangement",
+        "title": "The Dresden Dolls — Girl Anachronism",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e40a366bd5e9b44e85e268f9",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3spyjXAz3kzUqbfvC42z88",
+        "score": 3,
+        "reason": "Circus‑metal theatrics and cabaret‑ish twists in the riffs and vocal delivery, but the core identity is avant‑prog metal rather than piano‑cabaret noir",
+        "title": "Stolen Babies — Filistata",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0275c29ad3f78b4c10213351c0",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1oAeeBsiE4CkY8T6Tn2XMj",
+        "score": 5,
+        "reason": "Piano‑led, theatrical and macabre with explicit cabaret rhythm and delivery; a textbook dark‑cabaret standard to sit beside Dresden Dolls",
+        "title": "Jill Tracy — Evil Night Together",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5VNplEIyA2PCKP0Rkb22uw",
+        "score": 4,
+        "reason": "Vaudeville‑goth storytelling with waltz‑ish swing, melodramatic baritone, and tongue‑in‑cheek occult lyrics; very much in the spooky cabaret tradition, if a bit more folk‑goth than rock",
+        "title": "Aurelio Voltaire — When You’re Evil",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e7b353b641ce8cf73f9def98",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
+    "rank_order": 8,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 839,
