@@ -18334,7 +18334,7 @@
         "reason": "Has a synthy, groovy pulse but is fundamentally art‑pop/new wave with a gently hypnotic feel rather than a true funk engine",
         "title": "Talking Heads — This Must Be the Place (Naive Melody)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e6080bcea9c1d05762084a1",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021e6080bcea9c1d05762084a1",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -18355,7 +18355,7 @@
         "reason": "Jam‑packed with drum‑machine snap, synth stabs, and tightly arranged hooks; it leans pop/R&B but still clearly rides a synthetic funk chassis",
         "title": "Janet Jackson — Nasty",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d43ed38753792fe6606568f2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d43ed38753792fe6606568f2",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -18371,9 +18371,11 @@
       }
     ],
     "rank_order": 12,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Daft Punk, Pharrell Williams, Nile Rodgers — Get Lucky",
+    "favoritesongurl": "https://open.spotify.com/track/69kOkLUCkxIZYexIgSG8rq",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b9b36b0e22870b9f542d937"
   },
   {
     "id": 770,
