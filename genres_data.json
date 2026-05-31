@@ -7556,6 +7556,16 @@
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bb1a36b4eeee70faca9cde59",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0pqnGHJpmpxLKifKRmU6WP",
+        "score": 4,
+        "reason": "Big synth hook and ultra‑singable chorus make this a more globally legible club pop‑rap exemplar",
+        "title": "Flo Rida — Low (feat. T‑Pain)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025675e83f707f1d7271e5cf8a",
+        "source": "spotify",
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 20
@@ -12474,7 +12484,18 @@
     "key_artists": "Three 6 Mafia, Gravediggaz, Brotha Lynch Hung, Necro, Flatbush Zombies (originators/major figures)",
     "suggested_songs": "Three 6 Mafia — Tear da Club Up, Gravediggaz — Diary of a Madman, Brotha Lynch Hung — Locc 2 da Brain",
     "vibe": "A horror movie that raps at you.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1R2SZUOGJqqBiLuvwKOT2Y",
+        "score": 4,
+        "reason": "Anthem hook and EDM‑leaning beat make this a clear festival‑sized pop‑rap cut",
+        "title": "DJ Khaled — All I Do Is Win (feat. T‑Pain, Ludacris, Snoop Dogg & Rick Ross)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026cfc57e5358c5e39e79bccbd",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 20
   },
   {
@@ -16337,7 +16358,7 @@
     "date_raw": "5/12",
     "date_normalized": "2026-05-12",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -16348,37 +16369,113 @@
     "vibe": "Verses for the charts, choruses for everybody, and no fear of being catchy.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
-        "score": 4,
-        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — another archetypal cringe‑pop staple",
-        "title": "Taher Shah — Angel",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/7yq4Qd6QQTFE3S73UMfvIn",
-        "score": 4,
-        "reason": "Hilariously literal, low‑budget viral anthem built entirely around one absurd bragging premise — peak novelty cringe",
-        "title": "Iyaz — Replay",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/1iypLkjW7KucMznYEqfuRw",
+        "url": "https://open.spotify.com/track/1PS1QMdUqOal0ai3Gt7sDQ",
         "score": 5,
-        "reason": "Rigid 808 groove, staccato synth bass, and vocoder‑style stabs make this a textbook early electro hip hop cut",
-        "title": "Hashim — Al‑Naafiysh (The Soul)",
+        "reason": "Huge crossover single with soul‑pop hook, clean radio‑first structure, and instantly memorable chorus; archetypal mainstream pop rap",
+        "title": "Kanye West — Gold Digger",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d79ba8ad2be777bad0e9924b",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2E1RGgFtr1X4H6glXOtABo",
+        "score": 4,
+        "reason": "Maximalist, hook‑driven cut with big sung chorus and star feature; glossy 2010s pop‑rap even with Minaj’s sharper verses",
+        "title": "Nicki Minaj, Rihanna — Fly",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c17570626959bfa6c2435925",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0iZjJ6Eox8YjSSsms8de0v",
+        "score": 4,
+        "reason": "Minimal snap‑music beat, repetitive command‑hook, and sing‑along energy make this a prime example of mid‑2000s club‑oriented pop rap",
+        "title": "Lil Jon, E‑40, Sean Paul of YoungBloodZ — Snap Yo Fingers",
         "artist": "",
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/7lkJFplC4I2jMRY3sCwhzd",
+        "score": 3,
+        "reason": "Crunk club track with shouted hooks that sits more in Southern club rap than broad‑appeal pop rap, even though it shares the same era and party focus",
+        "title": "Lil Jon, Pleasure P, Shawty Putt — Like A Stripper",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023520ff5ed33154f22e1c74e7",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0pqnGHJpmpxLKifKRmU6WP",
+        "score": 4,
+        "reason": "Big synth hook and ultra‑singable chorus make this a more globally legible club pop‑rap exemplar",
+        "title": "Flo Rida — Low (feat. T‑Pain)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025675e83f707f1d7271e5cf8a",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4JfcEkOP08hSwP7cSSz6AW",
+        "score": 2,
+        "reason": "Cartoonish horrorcore with rock guitars and skits; tonally and structurally sits far outside pop rap’s glossy, hook‑centric lane",
+        "title": "Insane Clown Posse — Bang! Pow! Boom!",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b6e01aed96a03d8706c91931",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1R2SZUOGJqqBiLuvwKOT2Y",
+        "score": 4,
+        "reason": "Anthem hook and EDM‑leaning beat make this a clear festival‑sized pop‑rap cut",
+        "title": "DJ Khaled — All I Do Is Win (feat. T‑Pain, Ludacris, Snoop Dogg & Rick Ross)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026cfc57e5358c5e39e79bccbd",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0I3q5fE6wg7LIfHGngUTnV",
+        "score": 4,
+        "reason": "Massive hook, funk‑pop groove, and conversational verses; lives at the center of radio‑friendly crossover rap while still reading Southern",
+        "title": "Outkast — Ms. Jackson",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02153b3d6495031cb813a7451c",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/6AI3ezQ4o3HUoP6Dhudph3",
+        "score": 3,
+        "reason": "Viral diss with a club‑ready bounce, but its focus on barbed verses over anthemic chorus leans more battle‑rap than classic pop rap",
+        "title": "Kendrick Lamar — Not Like Us",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021ea0c62b2339cbf493a999ad",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1hyeKWTDPI7DQn5S3C4iQO",
+        "score": 4,
+        "reason": "Candy‑coated melody and simple, sticky chorus make this a textbook late‑2000s pop‑rap single",
+        "title": "Lil Wayne — Lollipop (feat. Static Major)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
       }
     ],
-    "rank_order": 23
+    "rank_order": 23,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 727,
