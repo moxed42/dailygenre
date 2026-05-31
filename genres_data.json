@@ -20512,52 +20512,53 @@
       {
         "url": "https://open.spotify.com/track/7zPxIh1c3kJaNwmjdZ3GQX",
         "score": 4,
-        "reason": "Minimal, overdriven guitar, loose drums and raw vocals — modern blues‑garage that fits the garage rock ethos well",
+        "reason": "Minimal, overdriven guitar, loose drums, and raw vocals — modern blues‑garage that fits the garage‑rock ethos even as a later revival cut",
         "title": "The White Stripes — Hello Operator",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02185038e768091a37433ae209",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/09r1j5kfshLMalNcJmOZoh",
         "score": 5,
-        "reason": "Mid‑60s fuzz, sneering vocal and primitive stomp — a canonical 60s garage rock single",
+        "reason": "Mid‑60s fuzz, sneering vocal, and primitive stomp — a canonical 60s garage‑rock single that nails the teenage‑band feel",
         "title": "Count Five — Psychotic Reaction",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0216dd04ec4a099a709b6627b5",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
         "url": "https://open.spotify.com/track/6pW2lKORQaIC6JR4qBNG9e",
         "score": 3,
-        "reason": "Psychedelic blues‑rock; it has attitude, but the playing is more refined and jammy than typical knuckle‑dragging garage",
-        "title": "The Yardbirds — The Train Kept A‑Rollin'",
+        "reason": "Psychedelic blues‑rock; it has attitude and some rawness, but the playing is more refined and jammy than the knuckle‑dragging garage template",
+        "title": "The Yardbirds — The Train Kept A‑Rollin",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0295670c43925b9ce8a437c9b4",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/3yFl9G98QwxXbtP6VvLZq6",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5PKwV6vgSn8iXvcG5DUDFX",
         "score": 4,
-        "reason": "Raw, pounding, barely‑together performance — closer to the chaotic, teen‑band garage rock feel",
-        "title": "The Yardbirds — Mister, You’re a Better Man Than I",
+        "reason": "Raw, pounding performance with a barely‑together edge, closer to the chaotic teen‑band garage sound you’re tagging in your notes",
+        "title": "The Yardbirds — Mr. You’re a Better Man Than I",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e9abd896ca80c8bf40ca47ed",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/78JmElAFmrPNhLjovDR9Jm",
         "score": 4,
-        "reason": "Short, riff‑driven, brash and slightly unhinged; an early British record that became a major garage‑punk touchstone",
+        "reason": "Chugging two‑chord riff, ragged vocal, and proto‑distortion place this firmly in the 60s garage/proto‑punk lineage, even if it later reads as “classic rock”",
         "title": "The Kinks — All Day and All of the Night",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023b662e4bab01440eb4f31793",
         "source": "spotify",
-        "added": "2026-05-28"
+        "added": "2026-05-31"
       }
     ],
     "rank_order": 2,
@@ -21882,7 +21883,18 @@
     "key_artists": "Jimi Hendrix, Jefferson Airplane, The Grateful Dead, Pink Floyd, The 13th Floor Elevators (originators/major figures)",
     "suggested_songs": "Jimi Hendrix — Are You Experienced, Jefferson Airplane — White Rabbit, The Grateful Dead — Dark Star, Pink Floyd — Interstellar Overdrive, 13th Floor Elevators — You're Gonna Miss Me",
     "vibe": "The outside of your mind, rendered in sound.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5PKwV6vgSn8iXvcG5DUDFX",
+        "score": 4,
+        "reason": "Raw, pounding performance with a barely‑together edge, closer to the chaotic teen‑band garage sound you’re tagging in your notes",
+        "title": "The Yardbirds — Mr. You’re a Better Man Than I",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e9abd896ca80c8bf40ca47ed",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 612
   },
   {
