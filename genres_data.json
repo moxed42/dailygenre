@@ -4739,9 +4739,11 @@
       }
     ],
     "rank_order": 4,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": true
+    "favoritesong": "100 gecs — mememe",
+    "favoritesongurl": "https://open.spotify.com/track/39Pudjd7JS8NosYN24m7Hc",
+    "monthlycontender": true,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02140bf64ac9cddf05beaff312"
   },
   {
     "id": 198,
@@ -8062,7 +8064,7 @@
     "date_raw": "1/8",
     "date_normalized": "2026-01-08",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8073,17 +8075,40 @@
     "vibe": "Music from a specific zip code, with no interest in explaining itself to outsiders.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
-        "score": 4,
-        "reason": "Comedy drill/novelty rap with meme catchphrases and deliberately absurd persona — strong cringe‑pop energy",
-        "title": "Big Shaq — Man's Not Hot",
+        "url": "https://open.spotify.com/track/5G5pLNLzdKcefWRQNgkGqe",
+        "score": 5,
+        "reason": "Archetypal Chicago drill: menacing minor‑key loop, sub‑heavy 808s, and dead‑eyed delivery lock in the genre’s original sound and mood",
+        "title": "Chief Keef, Lil Reese — I Don't Like",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d12aac85fdc8f9eadeadd3fb",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/79s5XnCN4TJKTVMSmOx8Ep",
+        "score": 4,
+        "reason": "Brooklyn drill variant: UK‑influenced sliding 808s and icy synths update the Chicago template, clearly drill but in a later New York wave rather than the core Chicago sound",
+        "title": "Pop Smoke — Dior",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c1522381cb5d91ef16326867",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/01Lr5YepbgjXAWR9iOEyH1",
+        "score": 5,
+        "reason": "Canonical early drill: repetitive, ominous melody, sparse but punishing drums, and Keef’s laconic flow make this a perfect “explain drill to someone in one track” pick",
+        "title": "Chief Keef — Love Sosa",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a76616abf60ce17491e95891",
         "source": "spotify",
         "added": "2026-05-31"
       }
     ],
-    "rank_order": 6
+    "rank_order": 6,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 340,
