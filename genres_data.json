@@ -1208,7 +1208,7 @@
     "date_raw": "",
     "date_normalized": "2026-05-31",
     "parse_notes": "",
-    "rating": "2",
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -1219,11 +1219,32 @@
     "vibe": "Two very different traditions meeting in a singer's throat and coming out as something new.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/4ZivKJFQFp8UlKJgo0V3Lh?si=8fa6ee7ae8b94f94",
-        "score": null,
-        "title": "Blue Yodel No. 1",
+        "url": "https://open.spotify.com/track/2pzpApfqE2LaXW5StD1FUA",
+        "score": 5,
+        "reason": "The genesis document of the entire genre — Blue Yodel No. 1 is where blue yodelling begins and ends. Every defining hallmark is here: the blues-derived 12-bar structure, the raw acoustic guitar, the travelling-man lyrical persona, and above all the genre-naming yodel breaks inserted with jarring, electrifying effect. Nothing scores higher.",
+        "title": "Jimmie Rodgers — Blue Yodel (T for Texas)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0229d064ff6f5577979041ea9c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02510117f1d6a9f9394fe27870",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2nMHNLsTHGBiEgv1Qi2LjB",
+        "score": 5,
+        "reason": "Blue Yodel No. 9 is the apex of the entire canon — Rodgers' most famous yodel vehicle, recorded with Louis Armstrong on cornet and Lil Hardin Armstrong on piano. The blues framework is fully intact, the yodel breaks are impeccably timed, and the Armstrong improvisation transforms it into a one-of-a-kind historical artefact. Absolute core genre material.",
+        "title": "Jimmie Rodgers — Blue Yodel No. 9 (Standin' on the Corner)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5cFBCkk1kaqJkqCTfVeNB8",
+        "score": 4,
+        "reason": "Mule Skinner Blues is Rodgers at his most athletically yodelling — the falsetto leaps are dizzying, the tempo is brisk, and the lyrical content (hard labour, mule driving, the restless South) is quintessential blue yodel territory. Slightly more uptempo and showman-y than the pure blue yodels, but firmly within the genre's core DNA.",
+        "title": "Jimmie Rodgers — Blue Yodel No. 8 (Mule Skinner Blues)",
+        "artist": "",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
       }
@@ -1231,7 +1252,7 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "rank_order": 2
+    "rank_order": 3
   },
   {
     "id": 56,
@@ -2890,7 +2911,7 @@
         "added": "2026-05-28"
       }
     ],
-    "rank_order": 7,
+    "rank_order": 8,
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false
@@ -4006,7 +4027,7 @@
     "suggested_songs": "LTJ Bukem — Horizons, Photek — Modus Operandi, Peshay — Miles from Home, Source Direct — Approach and Identify",
     "vibe": "Drum and bass that wants you to sit down and really hear it.",
     "songs_listened": [],
-    "rank_order": 3
+    "rank_order": 4
   },
   {
     "id": 175,
@@ -6468,7 +6489,7 @@
     "suggested_songs": "Coone — Pump It Up, Noisecontrollers — Dubstyle, Atmozfears — Into the Storm",
     "vibe": "Two kinds of bass, zero compromise.",
     "songs_listened": [],
-    "rank_order": 4
+    "rank_order": 5
   },
   {
     "id": 287,
@@ -7020,7 +7041,7 @@
     "suggested_songs": "Various splittercore compilations — Splittercore Terror, various online extreme electronic productions",
     "vibe": "Speedcore that kept going.",
     "songs_listened": [],
-    "rank_order": 6
+    "rank_order": 7
   },
   {
     "id": 311,
@@ -7652,7 +7673,7 @@
         "added": "2026-05-31"
       }
     ],
-    "rank_order": 5
+    "rank_order": 6
   },
   {
     "id": 340,
@@ -20697,7 +20718,7 @@
     "suggested_songs": "Repulsion -- Eaten Alive, Terrorizer -- Dead Shall Rise, Brutal Truth -- Collapse, Cattle Decapitation -- Forced Gender Reassignment, Exhumed -- Open the Abscess",
     "vibe": "Death metal and grindcore competing to see who can be more extreme in less time.",
     "songs_listened": [],
-    "rank_order": 8
+    "rank_order": 9
   },
   {
     "id": 967,
@@ -20904,7 +20925,7 @@
     "suggested_songs": "Forgotten Tomb -- Springtime Depression, Shining -- Han Som Hatar Manniskan, Abruptum -- De Profundis Mors Vas Cousumet, Nortt -- Graven, De Profundis -- The Emptiness Within",
     "vibe": "Doom's weight and black metal's cold despair sharing the same song.",
     "songs_listened": [],
-    "rank_order": 9
+    "rank_order": 10
   },
   {
     "id": 976,
