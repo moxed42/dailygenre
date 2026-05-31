@@ -7440,7 +7440,18 @@
     "key_artists": "Lil Jon & the East Side Boyz, Ludacris, Ying Yang Twins, Three 6 Mafia, Crime Mob (originators)",
     "suggested_songs": "Lil Jon — Get Low, Crime Mob — Knuck If You Buck, Ying Yang Twins — Salt Shaker, Three 6 Mafia — Stay Fly",
     "vibe": "A room full of people deciding to go completely insane together.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4FupIlegZgvXUuK79qcoKW",
+        "score": 5,
+        "reason": "Combines TR‑808 beats, synth‑driven melody, and rap chants in a proto‑electro hip hop blueprint that defines the genre",
+        "title": "Afrika Bambaataa & The Soulsonic Force — Planet Rock",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bb1a36b4eeee70faca9cde59",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 20
   },
   {
@@ -12937,78 +12948,81 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/1PS1QMdUqOal0ai3Gt7sDQ",
-        "score": 2,
-        "reason": "2000s chipmunk‑soul rap with live‑sounding drums; great song but rooted in sample‑based hip hop, not electro — better fits: rap",
-        "title": "Kanye West; Jamie Foxx — Gold Digger",
+        "score": 4,
+        "reason": "Huge radio rap anthem with pitched‑up soul sample, synthetic low end, and punchy, quantized drums; very much mainstream hip hop but its crisp, programmed sheen and hooky vocal chops give it a strong electro‑rap edge",
+        "title": "Kanye West — Gold Digger (feat. Jamie Foxx)",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d79ba8ad2be777bad0e9924b",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/4a6Hc3D6r5G2k1eIEs1M3i",
-        "score": 5,
-        "reason": "Classic 808‑driven electro‑rap with robotic vocals and synth bass — a core electro hip hop blueprint",
-        "title": "Afrika Bambaataa; The Soul Sonic Force — Planet Rock",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
         "url": "https://open.spotify.com/track/2E1RGgFtr1X4H6glXOtABo",
-        "score": 2,
-        "reason": "Glossy pop‑rap/R&B with cinematic synths; more contemporary pop‑rap than vintage electro — better fits: pop rap",
-        "title": "Nicki Minaj; Rihanna — Fly",
+        "score": 3,
+        "reason": "Polished 2010 pop‑rap with big synth pads and a four‑quadrant Rihanna hook; the beat leans more toward glossy R&B/club pop than old‑school electro hip hop despite its electronic palette",
+        "title": "Nicki Minaj — Fly (feat. Rihanna)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c17570626959bfa6c2435925",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c17570626959bfa6c2435925",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/6Tz0QRoe083NaVKI5LU15j",
-        "score": 4,
-        "reason": "Drum‑machine groove, synth stabs and vocoder hooks — a strong modern electro‑hip‑hop hybrid",
-        "title": "Kanye West — Stronger",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1iypLkjW7KucMznYEqfuRw",
+        "score": 5,
+        "reason": "Rigid 808 groove, staccato synth bass, and vocoder‑style stabs make this a textbook early electro hip hop cut",
+        "title": "Hashim — Al‑Naafiysh (The Soul)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7lkJFplC4I2jMRY3sCwhzd",
         "score": 3,
-        "reason": "Crunk track with heavy synthetic bass and club‑rap energy; brushes electro territory but identity is Southern crunk — better fits: crunk",
-        "title": "Lil Jon; Pleasure P; Shawty Putt — Like A Stripper",
+        "reason": "Crunk banger with huge sub, synthetic leads, and chant hooks; its club‑rap call‑and‑response and southern bounce feel sit closer to mid‑2000s crunk than breakdance‑era electro",
+        "title": "Lil Jon — Like A Stripper",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023520ff5ed33154f22e1c74e7",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
-        "url": "https://open.spotify.com/track/09L7RAYwQxZssjTixYQAlz",
-        "score": 4,
-        "reason": "80s electro‑funk production, talkbox/vocoder vocal and rap verses — very close to the classic electro‑hip‑hop template",
-        "title": "Zapp & Roger — More Bounce to the Ounce",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4FupIlegZgvXUuK79qcoKW",
+        "score": 5,
+        "reason": "Combines TR‑808 beats, synth‑driven melody, and rap chants in a proto‑electro hip hop blueprint that defines the genre",
+        "title": "Afrika Bambaataa & The Soulsonic Force — Planet Rock",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bb1a36b4eeee70faca9cde59",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-05-31",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4JfcEkOP08hSwP7cSSz6AW",
         "score": 2,
-        "reason": "Horrorcore with rock guitars and dense, live‑band production; far from the drum‑machine electro sound — better fits: horrorcore / rap rock",
+        "reason": "Horrorcore/rap‑rock with live‑band heft and shouted choruses; the guitars and rock song structure make it more nü‑adjacent than machine‑funk electro",
         "title": "Insane Clown Posse — Bang! Pow! Boom!",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b6e01aed96a03d8706c91931",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b6e01aed96a03d8706c91931",
         "source": "spotify",
         "added": "2026-05-31"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2fycu38G0FXDv0890YVS2M",
+        "score": 4,
+        "reason": "Miami‑bass‑meets‑electro jam with booming 808, robotic leads, and chanty vocals that keep one foot firmly in the electro hip hop club continuum",
+        "title": "Freestyle — Don’t Stop The Rock",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021c211dcb533fddd4e9b80bd6",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/0I3q5fE6wg7LIfHGngUTnV",
-        "score": 2,
-        "reason": "Organic, swung Southern hip hop with rich instrumentation, not rigid drum‑machine electro — better fits: Southern hip hop",
+        "score": 4,
+        "reason": "Southern hip hop classic built on a synthetic, tightly looped groove and vocoder‑like hook; still primarily Dirty South rap but its crisp programmed feel and quirky electro‑flavored arrangement nudge it toward the electro hip hop umbrella",
         "title": "Outkast — Ms. Jackson",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02153b3d6495031cb813a7451c",
@@ -13017,8 +13031,8 @@
       },
       {
         "url": "https://open.spotify.com/track/6AI3ezQ4o3HUoP6Dhudph3",
-        "score": 2,
-        "reason": "Modern West‑Coast diss track with minimalist, trap‑leaning beat; no electro‑funk DNA — better fits: hip hop / West Coast hip hop",
+        "score": 3,
+        "reason": "Contemporary west coast diss track with sparse, bouncy drums and a rubbery bassline; uses modern trap/club hip hop language more than old‑school electro, with only glints of electro in its minimal, synthetic beat",
         "title": "Kendrick Lamar — Not Like Us",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021ea0c62b2339cbf493a999ad",
@@ -13026,15 +13040,15 @@
         "added": "2026-05-31"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/3GfC7a4Tkk8ysLlq39OKul",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6YDwYBTHnA4RKoIyZ0Yt4n",
         "score": 5,
-        "reason": "Early‑80s electro‑rap with booming 808s, synth‑bass riffs and vocoder interjections — archetypal electro hip hop",
+        "reason": "Classic 808‑driven electro hip hop with robot voices, breakdance‑ready patterns, and clear MC sections that lock in the genre’s core template",
         "title": "Newcleus — Jam On It",
         "artist": "",
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31",
-        "isAdd": true
+        "isLevelUp": true
       }
     ],
     "rank_order": 85,
@@ -13200,7 +13214,18 @@
     "key_artists": "Rage Against the Machine, Run-DMC, Beastie Boys, Limp Bizkit, Linkin Park (originators/major figures)",
     "suggested_songs": "Rage Against the Machine — Killing in the Name, Run-DMC — Walk This Way, Linkin Park — Numb, Limp Bizkit — Break Stuff",
     "vibe": "A guitar and a microphone deciding to work together.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2fycu38G0FXDv0890YVS2M",
+        "score": 4,
+        "reason": "Miami‑bass‑meets‑electro jam with booming 808, robotic leads, and chanty vocals that keep one foot firmly in the electro hip hop club continuum",
+        "title": "Freestyle — Don’t Stop The Rock",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021c211dcb533fddd4e9b80bd6",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 635
   },
   {
@@ -16162,6 +16187,16 @@
         "score": 4,
         "reason": "Hilariously literal, low‑budget viral anthem built entirely around one absurd bragging premise — peak novelty cringe",
         "title": "Iyaz — Replay",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1iypLkjW7KucMznYEqfuRw",
+        "score": 5,
+        "reason": "Rigid 808 groove, staccato synth bass, and vocoder‑style stabs make this a textbook early electro hip hop cut",
+        "title": "Hashim — Al‑Naafiysh (The Soul)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
