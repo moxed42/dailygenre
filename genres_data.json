@@ -3374,7 +3374,7 @@
     "date_raw": "5/22",
     "date_normalized": "2026-05-22",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -3383,8 +3383,62 @@
     "key_artists": "The Prodigy (early), Leftfield, Orbital, Chemical Brothers (early) (originators/adjacent)",
     "suggested_songs": "Orbital — Chime, Leftfield — Release the Pressure, Chemical Brothers — Song to the Siren, Prodigy — Out of Space",
     "vibe": "A breakbeat that keeps changing shape.",
-    "songs_listened": [],
-    "rank_order": 50
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5BnxLTNpTBamBaUy7vne41",
+        "score": 2,
+        "reason": "Fast, pounding 4/4 jungletek with ragga vocals; very ravey and psychedelic but rhythmically more tekno/jungle than breakbeat — better fits: jungletek / raggatek",
+        "title": "C3B — Untold Stories",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb9da8a3bc7693d004acedfa"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4nZma2HNbeC1R9kmGLwZpE",
+        "score": 4,
+        "reason": "Rolling broken‑beat groove with acid lines and trippy atmospheres — a strong, modern psybreaks cut",
+        "title": "Hedflux — Revolve",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4aruEzDQyIzvpHxMpNdSQf",
+        "score": 2,
+        "reason": "High‑tempo tekno/jungle hybrid, very rave‑oriented but driven by straight kicks instead of broken beats — better fits: jungletek / drum & bass",
+        "title": "Mandidextrous; C3B — Bucka",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0246fc6588901ebcfae9de0eb2"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3TvSPT4fcaqSlH6cSz4k75",
+        "score": 4,
+        "reason": "Psychedelic synths over chunky breakbeats and big bass, right in the psybreaks lane",
+        "title": "Far Too Loud — Play It Loud",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2hSIx3QF3PPR3DGBXqJ5PL",
+        "score": 5,
+        "reason": "Classic psybreaks with hypnotic acid lines, spacey FX and a driving broken beat — textbook psychedelic breakbeat",
+        "title": "Hybrid — Finished Symphony (Breakbeat mix)",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": 50,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 150,
