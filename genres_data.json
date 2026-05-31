@@ -15084,7 +15084,172 @@
     "key_artists": "Kreayshawn, Rebecca Black, 100 gecs, Caroline Polachek, PinkPantheress (artists often discussed around the label)",
     "suggested_songs": "Rebecca Black — Friday, Kreayshawn — Gucci Gucci, 100 gecs — money machine, Caroline Polachek — So Hot You’re Hurting My Feelings, PinkPantheress — Pain",
     "vibe": "Painfully self-aware pop that turns secondhand embarrassment into emotional texture.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1cwQI9EXXDhRV1yP70vHXc",
+        "score": 5,
+        "reason": "Intentionally abrasive hyperpop chaos with internet‑culture sensibility — perfect cringe‑pop energy",
+        "title": "100 gecs; Charli XCX; Rico Nasty; Kero Kero Bonito — ringtone (Remix)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c0d0c1e926fb6b08870f7086",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4bp2wYweUPvsBrQfntdYcr",
+        "score": 3,
+        "reason": "Polished, genre‑hopping art‑pop with earnest ambition; too sophisticated and sincere to land as cringe",
+        "title": "Caroline Polachek — Welcome To My Island",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02de17893c581b6f4fbeba51e1",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
+        "score": 4,
+        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — archetypal cringe‑pop",
+        "title": "Taher Shah — Angel",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4w9soAM7IrmYDhSXLp14p6",
+        "score": 4,
+        "reason": "Deliberately hammy rock parody from a kids' movie; cartoonishly over‑the‑top vocals and meme‑ready absurdity",
+        "title": "Jack Black — Peaches",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c21aa4015cb02b6b8eca09a4",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/6kex4EBAj0WHXDKZMEJaaF",
+        "score": 3,
+        "reason": "Slick tropical‑pop/trap crossover with professional polish; sits more in mainstream pop‑rap than cringe territory",
+        "title": "Jason Derulo; Nicki Minaj; Ty Dolla $ign — Swalla",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7yq4Qd6QQTFE3S73UMfvIn",
+        "score": 4,
+        "reason": "Hilariously literal, low‑budget viral anthem built entirely around one absurd bragging premise — peak novelty cringe",
+        "title": "Iyaz — Replay",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5JYPXqMwYc0zTODQdjMEZN",
+        "score": 2,
+        "reason": "Confident, minimalist drill‑rap with viral appeal but no awkward cringe factor",
+        "title": "Ice Spice — Deli",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023a696fc544995ab8d0d6765f",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6X5OFBbrsHRsyO1zP7udgr",
+        "score": 4,
+        "reason": "Comedy drill/novelty rap with meme catchphrases and deliberately absurd persona — strong cringe‑pop energy",
+        "title": "Big Shaq — Man's Not Hot",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ff9c34dc9dbfd3b9163934a",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6UBd3Ub3OCnXSM21wno2zV",
+        "score": 4,
+        "reason": "Novelty rap with absurd premise and deliberately low production; clearly tongue‑in‑cheek internet‑culture humor",
+        "title": "Riskay — Smell Yo Dick",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0217c495d80d19bb9d26a831ae",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/291IkUGlq5miJ0R1rEGSf5",
+        "score": 4,
+        "reason": "Surreal, lo‑fi novelty track with awkward spoken‑word vibe and meme energy",
+        "title": "Zander Hawley — Daddy Cop",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0288e640a0090e2a9a57b5aed5",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4RTq3Gc7wS2CA8fHtqQhQ1",
+        "score": 4,
+        "reason": "Earnest indie‑pop with deliberately juvenile lyrics; awkward sincerity lands squarely in cringe territory",
+        "title": "The Puddleducks — Milf Song",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0260b084b060781482c2eff660",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Y55vJ0zfV7N8o0LP58c5I",
+        "score": 3,
+        "reason": "Spoken‑word hip‑hop intro with cringeworthy bravado; more standard rap posturing than viral cringe",
+        "title": "Ms Introvert; Alfred Coleman — Well Said, Alfred! (Intro)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02af4531bbe2c16e88718acb9c",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3HZOGQxRMuHCfInceQDQqT",
+        "score": 4,
+        "reason": "Deadpan novelty rap with absurdist self‑aware lyrics and intentionally cheap production — solid cringe‑pop",
+        "title": "Lil B — I'm Miley Cyrus",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/58l7GwvOaSBNwR7xVUDBH6",
+        "score": 4,
+        "reason": "Weird, unsettling indie track with awkward vocal delivery and surreal lyrics — cringe‑adjacent and very intentional",
+        "title": "Sweet Joey Vermouth; Ray Bull — Beefcake",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d32f4d5d12fdff0b3fb18b09",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/7n3WZ0v8M67SLdTyzp9XfC",
+        "score": 5,
+        "reason": "Awkward, ultra‑literal pop song famous for being \"so bad it's good\" — a canonical cringe‑pop cornerstone",
+        "title": "Rebecca Black — Friday",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1ea97AUSazu2QZw9BnHJqK",
+        "score": 5,
+        "reason": "Viral, goofy, swaggering rap with deliberately over‑the‑top persona and internet‑meme aesthetics — an ideal cringe‑pop cornerstone",
+        "title": "Kreayshawn — Gucci Gucci",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02471d72855d447ada469dd99a",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": null,
     "favoritesong": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023589de3ede5dabf351227be9",
