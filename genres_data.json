@@ -20840,9 +20840,11 @@
       }
     ],
     "rank_order": 84,
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Primus — Tommy The Cat",
+    "favoritesongurl": "https://open.spotify.com/track/0kquzTsZG4m9qmLJaPSY9U",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025058bc348ce35fb97ab2be98"
   },
   {
     "id": 946,
@@ -21485,7 +21487,7 @@
     "date_raw": "5/18",
     "date_normalized": "2026-05-18",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -21494,8 +21496,44 @@
     "key_artists": "Thergothon, Skepticism, Mournful Congregation, Ahab, Esoteric (major figures)",
     "suggested_songs": "Thergothon -- Elemental, Skepticism -- The March and the Stream, Mournful Congregation -- The Monad of Creation, Ahab -- The Pacific, Esoteric -- Caucus of Mind",
     "vibe": "Metal moving at the speed of mourning, with nothing held back.",
-    "songs_listened": [],
-    "rank_order": 1
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2gGOdldXyaLKDBNAAwUKa9",
+        "score": 5,
+        "reason": "Textbook funeral doom: glacial tempo, immense low‑tuned guitars, cavernous growls, and a suffocatingly mournful atmosphere stretched over ten minutes",
+        "title": "Shape Of Despair — Reaching the Innermost",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028c862cce633d67a0b2973275",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/06eoVdsSmd6Dy2mn0DuMPC",
+        "score": 5,
+        "reason": "Monumental, slow‑moving riffs and desolate melodies make this one of the canonical 2000s funeral doom statements alongside Shape of Despair",
+        "title": "Mournful Congregation — The Monad of Creation",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e80f9564b454792ff5d489b0",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6jnC7LIRMTa8Ja5UCTL2aJ",
+        "score": 4,
+        "reason": "Extremely slow, organ‑laden dirge with deep growls that leans a bit toward atmospheric doom but still strongly reflects funeral doom’s core mood and pacing",
+        "title": "Skepticism — The March and the Stream",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dac862db8d170b98e2d6842b",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      }
+    ],
+    "rank_order": 1,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 975,
