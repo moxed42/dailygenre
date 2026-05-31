@@ -21188,7 +21188,18 @@
     "key_artists": "Black Sabbath, Led Zeppelin, Deep Purple, Judas Priest, Iron Maiden (originators/major figures)",
     "suggested_songs": "Black Sabbath — Iron Man, Judas Priest — Breaking the Law, Iron Maiden — The Trooper, Deep Purple — Highway Star, Led Zeppelin — Communication Breakdown",
     "vibe": "Riff as religion, volume as doctrine, and the guitar solo as sermon.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4PgvZJLwRGkQhsdk6b5H0I",
+        "score": 5,
+        "reason": "Instrumental built entirely around rapid‑fire arpeggios and classical motifs, making the neoclassical metal identity explicit from the first bar.",
+        "title": "Jason Becker — Altitudes",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 362
   },
   {
@@ -23924,7 +23935,7 @@
     "date_raw": "1/20",
     "date_normalized": "2026-01-20",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -23933,8 +23944,74 @@
     "key_artists": "Yngwie Malmsteen, Jason Becker, Vinnie Moore, Tony MacAlpine, Marty Friedman (major figures)",
     "suggested_songs": "Yngwie Malmsteen -- Black Star, Jason Becker -- Altitudes, Vinnie Moore -- Meltdown, Tony MacAlpine -- Hundreds of Thousands, Marty Friedman -- Dragon Mistress",
     "vibe": "Baroque counterpoint played on a guitar at speeds Bach never imagined.",
-    "songs_listened": [],
-    "rank_order": 10
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3ExNcJ7LkInTekJg13FQSq",
+        "score": 3,
+        "reason": "Virtuosic, melodic hard rock instrumental with bluesy phrasing; the speed and technique nod toward shred, but the harmonic language is more rock/fusion than baroque‑leaning neoclassical.",
+        "title": "Joe Satriani — Satch Boogie",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024066f7cfc8d66ffb6d44d5c0",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5cHSbJykpZ7V8vG9dHtZkq",
+        "score": 5,
+        "reason": "Fast, arpeggio‑driven lines over clearly classical‑influenced harmony make this an unambiguous neoclassical metal calling card.",
+        "title": "Yngwie Malmsteen — Black Star",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3SgshUlk02dwRHeLm0ztOi",
+        "score": 4,
+        "reason": "High‑gain shred with prominent harmonic minor runs and sweeping arpeggios; still grounded in 80s metal, but the compositional and solo language are strongly neoclassical‑coded.",
+        "title": "Yngwie Malmsteen — Rising Force",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028ce2b126e1b43ade6d9ec176",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/1YKtTVzXlOK0KeXbTH1Ahd",
+        "score": 4,
+        "reason": "Modern instrumental shred that blends rock and neoclassical gestures; Vai’s phrasing is quirky and fusion‑y, but the scalar runs and compositional drama tie it into the neoclassical lineage.",
+        "title": "Steve Vai — Speed",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c4098306753d29029a845a85",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/0VKMOwKyRKbw0HrNAXj0UI",
+        "score": 3,
+        "reason": "Classic Ozzy metal with a big melodic solo section that brushes neoclassical terrain, yet the song structure and riffing are straight heavy metal rather than dedicated neoclassical showcase.",
+        "title": "Ozzy Osbourne — Revelation (Mother Earth)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024936b5b7caeb7524e50fd8cb",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4PgvZJLwRGkQhsdk6b5H0I",
+        "score": 5,
+        "reason": "Instrumental built entirely around rapid‑fire arpeggios and classical motifs, making the neoclassical metal identity explicit from the first bar.",
+        "title": "Jason Becker — Altitudes",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      }
+    ],
+    "rank_order": 10,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1001,
