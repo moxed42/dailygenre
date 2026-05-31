@@ -1562,6 +1562,37 @@
     @media (max-width: 980px) {
       .screen-detail .listen-grid { grid-template-columns:1fr; }
     }
+
+    .song-card-add {
+      border-color: rgba(47, 107, 59, .40) !important;
+      box-shadow: 0 8px 18px rgba(20, 60, 20, .08);
+    }
+    .add-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #2f6b3b;
+      background: #e3f1e6;
+      border: 1px solid rgba(47,107,59,.30);
+      border-radius: 999px;
+      padding: 3px 9px 3px 6px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      font-size: .66rem;
+      font-weight: 1000;
+    }
+    .add-badge-icon {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #e3f1e6;
+      background: #2f6b3b;
+      font-weight: 1000;
+      font-size: .75rem;
+    }
     @media (max-width: 560px) {
       .detail-record-card { grid-template-columns:1fr; }
       .detail-record-card .genre-art { width:112px; height:112px; }
@@ -1745,7 +1776,7 @@
             <label for="songsListenedBulk">Songs listened — one per line</label>
 <div class="small" style="margin-bottom:8px;color:var(--muted);">Simple: paste a URL &bull; With detail: <code>URL | 1-5 | reason it fits or doesn't</code></div>
 <textarea id="songsListenedBulk" style="min-height:130px;font-size:.88rem;font-family:monospace;"
-  placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title"></textarea>
+  placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title&#10;🔼 ADD: https://open.spotify.com/track/abc | 4 | added after session | Late Add Title"></textarea>
             <div class="small" style="margin-top:8px;">These are stored on the genre as an array so you can later reverse-engineer what you actually listened to.</div>
           </div>
 
@@ -2179,6 +2210,7 @@
       const lines = String(text || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const songs = [];
       const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
+      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
       const extractUrl = (value) => {
         const v = String(value || '').trim();
         const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
@@ -2199,7 +2231,8 @@
       };
       for (const line of lines) {
         const isLevelUp = levelUpPrefix.test(line);
-        const clean = line.replace(levelUpPrefix, '').trim();
+        const isAdd = !isLevelUp && addPrefix.test(line);
+        const clean = line.replace(levelUpPrefix, '').replace(addPrefix, '').trim();
         const p = clean.split('|').map(x => x.trim());
         const url = extractUrl(p[0] || '');
         const raw = p[1] ? parseInt(p[1], 10) : null;
@@ -2216,12 +2249,13 @@
           added: new Date().toISOString().slice(0,10)
         };
         if (!song.url && !song.title && !song.reason) continue;
-        if (!isLevelUp && !song.url) continue;
+        if (!isLevelUp && !isAdd && !song.url) continue;
         if (isLevelUp) {
           song.isLevelUp = true;
           if (songs.length > 0) songs[songs.length - 1].levelUp = song;
           else songs.push(song);
         } else {
+          if (isAdd) song.isAdd = true;
           songs.push(song);
         }
       }
@@ -2240,7 +2274,7 @@
     }
 
     function normalizeSongUrl(url) {
-      return String(url || '').replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '').trim();
+      return String(url || '').replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '').replace(/^(?:🔼\s*)?ADD:\s*/i, '').trim();
     }
 
     function normalizeSongsListened(arr) {
@@ -2249,12 +2283,15 @@
       for (const raw of arr) {
         if (!raw) continue;
         const s = { ...raw, url: normalizeSongUrl(raw.url) };
-        const flagged = raw.isLevelUp === true || /^(?:🔼\s*)?LEVEL\s*UP:\s*/i.test(String(raw.url || ''));
-        if (flagged && nested.length > 0) {
+        const flaggedLevelUp = raw.isLevelUp === true || /^(?:🔼\s*)?LEVEL\s*UP:\s*/i.test(String(raw.url || ''));
+        const flaggedAdd = raw.isAdd === true || /^(?:🔼\s*)?ADD:\s*/i.test(String(raw.url || ''));
+        if (flaggedLevelUp && nested.length > 0) {
           const parent = nested[nested.length - 1];
           const { isLevelUp, ...rest } = s;
           parent.levelUp = rest;
         } else {
+          if (flaggedAdd) s.isAdd = true;
+          else delete s.isAdd;
           nested.push(s);
         }
       }
@@ -2273,8 +2310,13 @@
       if (isLevelUp) {
         out.url = `🔼 LEVEL UP: ${out.url}`;
         out.isLevelUp = true;
+        delete out.isAdd;
+      } else if (out.isAdd) {
+        out.url = `🔼 ADD: ${out.url}`;
+        delete out.isLevelUp;
       } else {
         delete out.isLevelUp;
+        delete out.isAdd;
       }
       if (out.title === '') delete out.title;
       if (out.reason === '') delete out.reason;
@@ -2311,10 +2353,13 @@
       const titleHtml = hasHref
         ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>`
         : `<span class="song-title-link">${titleText}</span>`;
+      const addBadge = (!isChild && s.isAdd)
+        ? `<div class="add-badge"><span class="add-badge-icon">＋</span><span>Add</span></div>`
+        : '';
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">↳</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}"><div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div>${titleHtml}${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div>${titleHtml}${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
@@ -2364,7 +2409,7 @@
       document.getElementById('favoriteSongUrl').value = genre.favoritesongurl || '';
       document.getElementById('monthlyContender').checked = !!genre.monthlycontender;
       document.getElementById('notes').value = genre.notes || '';
-      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).flatMap(s => { const out = [[normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\\n');
+      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\\n');
       document.getElementById('includeSongsToggle').checked = false;
 
       const listenedDate = dateValue(genre);
