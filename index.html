@@ -2016,6 +2016,8 @@
     let currentGenre = null;
     let selectedRating = '';
     let appPassword = '';
+    let archiveUiState = null;
+    let detailNavList = [];
     let pendingSaveAction = null;
     let unmatchedSeeds = [];
     let monthlySortAsc = true;
@@ -2444,6 +2446,113 @@
       prepareAndSaveCurrentGenre();
     }
 
+
+    function getPendingSongs(genre) {
+      if (!genre) return [];
+      return Array.isArray(genre.pending_songs) ? genre.pending_songs : [];
+    }
+
+    function saveArchiveUiState() {
+      archiveUiState = {
+        archiveView,
+        search: document.getElementById('archiveSearchInput')?.value || '',
+        month: document.getElementById('historyMonthFilter')?.value || '',
+        rating: document.getElementById('historyRatingFilter')?.value || '',
+        flag: document.getElementById('archiveFlagFilter')?.value || '',
+        sort: document.getElementById('archiveSortFilter')?.value || '',
+        scrollY: window.scrollY || 0
+      };
+    }
+
+    function restoreArchiveUiState() {
+      switchScreen('history');
+      if (!archiveUiState) {
+        renderHistory();
+        return;
+      }
+      archiveView = archiveUiState.archiveView || archiveView;
+      document.querySelectorAll('[data-archive-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.archiveView === archiveView));
+      if (document.getElementById('archiveSearchInput')) document.getElementById('archiveSearchInput').value = archiveUiState.search || '';
+      if (document.getElementById('historyMonthFilter')) document.getElementById('historyMonthFilter').value = archiveUiState.month || '';
+      if (document.getElementById('historyRatingFilter')) document.getElementById('historyRatingFilter').value = archiveUiState.rating || '';
+      if (document.getElementById('archiveFlagFilter')) document.getElementById('archiveFlagFilter').value = archiveUiState.flag || '';
+      if (document.getElementById('archiveSortFilter')) document.getElementById('archiveSortFilter').value = archiveUiState.sort || 'newest';
+      renderHistory();
+      setTimeout(() => window.scrollTo({ top: archiveUiState.scrollY || 0, behavior: 'auto' }), 0);
+    }
+
+    function buildDetailNavList() {
+      const items = (archiveCurrentItems && archiveCurrentItems.length) ? archiveCurrentItems.slice() : genres.slice();
+      detailNavList = items
+        .slice()
+        .sort((a,b) => String(dateValue(b)||'').localeCompare(String(dateValue(a)||'')) || String(a.genre||'').localeCompare(String(b.genre||'')));
+      return detailNavList;
+    }
+
+    function openAdjacentGenre(direction) {
+      if (!currentGenre) return;
+      const items = buildDetailNavList();
+      const idx = items.findIndex(g => String(g.id) === String(currentGenre.id));
+      if (idx === -1) return;
+      const next = items[idx + direction];
+      if (next) openGenreDetail(next, true);
+    }
+
+    function promotePendingSong(index) {
+      if (!currentGenre) return;
+      const pending = getPendingSongs(currentGenre);
+      const song = pending[index];
+      if (!song) return;
+      const official = Array.isArray(currentGenre.songs_listened) ? currentGenre.songs_listened.slice() : [];
+      official.push({ ...song, isPending: false });
+      pending.splice(index, 1);
+      currentGenre.songs_listened = official;
+      currentGenre.pending_songs = pending;
+      loadListenScreen(currentGenre);
+    }
+
+    function removePendingSong(index) {
+      if (!currentGenre) return;
+      const pending = getPendingSongs(currentGenre);
+      pending.splice(index, 1);
+      currentGenre.pending_songs = pending;
+      loadListenScreen(currentGenre);
+    }
+
+    function clearPendingSongs() {
+      if (!currentGenre) return;
+      currentGenre.pending_songs = [];
+      loadListenScreen(currentGenre);
+    }
+
+    function renderPendingSongs(genre) {
+      const panel = document.getElementById('pendingSongsPanel');
+      if (!panel) return;
+      const pending = getPendingSongs(genre);
+      if (!pending.length) {
+        panel.innerHTML = '<div class="pending-song-empty">No pending songs queued.</div>';
+        return;
+      }
+      panel.innerHTML = pending.map((song, idx) => {
+        const href = /^https?:\/\//i.test(String(song.url || '')) ? `href="${escapeHtml(song.url)}" target="_blank" rel="noopener noreferrer"` : '';
+        const tag = song.score != null ? `<span class="tag">${song.score}/5</span>` : '<span class="tag">Pending</span>';
+        return `<div class="pending-song-card">
+          <div class="pending-song-head">
+            <div class="pending-song-meta">
+              <div class="pending-song-title">${href ? `<a ${href} class="song-title-link">${escapeHtml(song.title || 'Pending song')}<span class="song-link-arrow">↗</span></a>` : escapeHtml(song.title || 'Pending song')}</div>
+              <div class="pending-song-sub">${escapeHtml(song.artist || song.source || 'Candidate')}</div>
+            </div>
+            ${tag}
+          </div>
+          ${song.reason ? `<div class="pending-song-reason">${escapeHtml(song.reason)}</div>` : ''}
+          <div class="pending-song-actions">
+            <button type="button" class="btn btn-primary btn-tiny" onclick="promotePendingSong(${idx})">Promote to logged</button>
+            <button type="button" class="btn btn-secondary btn-tiny" onclick="removePendingSong(${idx})">Remove</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
     function loadListenScreen(genre) {
       currentGenre = genre;
       selectedRating = genre.rating && genre.rating !== 'zanger' ? String(genre.rating) : '';
@@ -2504,6 +2613,7 @@
         </div>
       `;
 
+      renderPendingSongs(genre);
       renderStars();
       updateDiscordBlock();
     }
@@ -2600,8 +2710,11 @@
       }
       currentGenre.monthlycontender = document.getElementById('monthlyContender').checked;
       currentGenre.notes = document.getElementById('notes').value.trim();
-      currentGenre.songs_listened = parseSongLinks(document.getElementById('songsListenedBulk').value);
-      currentGenre.songs_listened = await resolveSpotifyTitles(currentGenre.songs_listened);
+      const existingOfficial = normalizeSongsListened(currentGenre.songs_listened || []).filter(s => !s.isPending);
+      const parsedOfficial = parseSongLinks(document.getElementById('songsListenedBulk').value);
+      const resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
+      currentGenre.songs_listened = resolvedOfficial;
+      currentGenre.pending_songs = getPendingSongs(currentGenre);
 
       // Pending nominations: find levelUp songs tagged @genre and push to target
       for (const song of currentGenre.songs_listened) {
@@ -3088,6 +3201,8 @@
       genres.forEach(g => {
         if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
         g.songs_listened = normalizeSongsListened(g.songs_listened);
+        if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
+        g.pending_songs = normalizeSongsListened(g.pending_songs);
       });
 
       applyRankSeed();
@@ -3155,6 +3270,7 @@
     });
 
     document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.textContent = 'Saving…'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.textContent = old; } });
+    document.getElementById('clearPendingBtn')?.addEventListener('click', clearPendingSongs);
 
     document.getElementById('zangerBtn').addEventListener('click', () => {
       selectedRating = '';
