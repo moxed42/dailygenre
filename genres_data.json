@@ -2971,62 +2971,34 @@
       {
         "url": "https://open.spotify.com/track/2JsQdDbuwFYNwykifahaYL",
         "score": 5,
-        "reason": "DJ Rashad is the definitive footwork artist — juke rhythms, Chicago underground, textbook",
-        "title": "DJ Rashad — In Da Club Before Eleven O' Clock",
+        "reason": "Archetypal Chicago footwork: rapid‑fire claps, chopped vocal stabs, and skittering 160‑ish groove that defines the late‑2000s juke→footwork transition",
+        "title": "DJ Rashad — In Da Club Before Eleven O Clock",
         "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/4zBRdLegVtJFYsxVZMHDUt",
-        "score": 2,
-        "reason": "Baltimore club energy with rap overlay, shares DNA but isn't footwork — better fits: Baltimore club",
-        "title": "Kid Sister ft. Kanye West — Pro Nails",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/5O5OJJEiLAFvBPTLsNgVbW",
-        "score": 4,
-        "reason": "DJ Rashad & Spinn classic footwork collab — frenetic 160BPM juke energy, pure Chicago footwork",
-        "title": "DJ Rashad & DJ Spinn — Rollin",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/1bTRxssA4CIfyZyKI5MFuO",
-        "score": 1,
-        "reason": "Straight Chicago rap, no footwork production elements whatsoever — better fits: rap",
-        "title": "Twista — Pimp Like Me",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/6dqDKIGFmS9R3L8xr7LqMN",
-        "score": 4,
-        "reason": "RP Boo — the originator of footwork, chopped vocal loops and machine-gun kicks",
-        "title": "RP Boo — Itz 'Bout 4's",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-28"
-      },
-      {
-        "url": "https://open.spotify.com/track/2UeSWezigtE1STFV4t6t61",
-        "score": 4,
-        "reason": "Bleak, slow‑grinding riffs and harsh vocals keep it firmly in the sludge pocket, adding a modern, more metallic edge to round out the three‑track sludge arc",
-        "title": "Eyehategod — New Orleans Is the New Vietnam",
-        "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028d3278424c23e8a7e53f10cb",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6j01T454A4rP2dUgd05DAJ",
+        "score": 5,
+        "reason": "Classic RP Boo minimalism with stuttered samples and spartan, looping drum programming; a foundational statement of Chicago footwork",
+        "title": "RP Boo — Bangin On King Dr",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4o8q2wyCam3IYPG7pRP4H7",
+        "score": 4,
+        "reason": "Teklife‑era footwork with bright synths and intricate drum programming; slightly sleeker and more melodic but still clearly rooted in the Chicago style",
+        "title": "DJ Rashad — Feelin",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
       }
     ],
     "rank_order": 8,
