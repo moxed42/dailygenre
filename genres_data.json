@@ -14568,6 +14568,17 @@
         "added": "2026-05-31",
         "isPending": true,
         "pendingFrom": "Cringe pop"
+      },
+      {
+        "url": "https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
+        "score": 4,
+        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — archetypal cringe‑pop",
+        "title": "Taher Shah — Angel",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isPending": true,
+        "pendingFrom": "Cringe pop"
       }
     ],
     "rank_order": 45
@@ -15046,13 +15057,13 @@
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02de17893c581b6f4fbeba51e1"
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02de17893c581b6f4fbeba51e1"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7n3WZ0v8M67SLdTyzp9XfC",
-        "score": 5,
-        "reason": "Awkward, ultra‑literal pop song famous for being \"so bad it's good\" — a canonical cringe‑pop reference",
-        "title": "Rebecca Black — Friday",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
+        "score": 4,
+        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — archetypal cringe‑pop",
+        "title": "Taher Shah — Angel",
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
@@ -15076,13 +15087,13 @@
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206"
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e61bf150469db99447be6206"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2u8sZQp8VZkM4uRsLz7hG5",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7yq4Qd6QQTFE3S73UMfvIn",
         "score": 4,
-        "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — archetypal cringe‑pop",
-        "title": "Taher Shah — Angel",
+        "reason": "Hilariously literal, low‑budget viral anthem built entirely around one absurd bragging premise — peak novelty cringe",
+        "title": "Iyaz — Replay",
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
@@ -15170,6 +15181,15 @@
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d32f4d5d12fdff0b3fb18b09"
       },
       {
+        "url": "https://open.spotify.com/track/7n3WZ0v8M67SLdTyzp9XfC",
+        "score": 5,
+        "reason": "Awkward, ultra‑literal pop song famous for being \"so bad it's good\" — a canonical cringe‑pop cornerstone",
+        "title": "Rebecca Black — Friday",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      },
+      {
         "url": "https://open.spotify.com/track/1ea97AUSazu2QZw9BnHJqK",
         "score": 5,
         "reason": "Viral, goofy, swaggering rap with deliberately over‑the‑top persona and internet‑meme aesthetics — an ideal cringe‑pop cornerstone",
@@ -15181,9 +15201,9 @@
       }
     ],
     "rank_order": null,
-    "favoritesong": "Friday",
+    "favoritesong": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023589de3ede5dabf351227be9",
-    "favoritesongurl": "https://open.spotify.com/track/1KEdF3FNF9bKRCxN3KUMbx?si=K4EACal3Q0Cxh8MR5uIk6g",
+    "favoritesongurl": "",
     "monthlycontender": false
   },
   {
@@ -16008,6 +16028,17 @@
         "score": 4,
         "reason": "Grandiose, awkwardly earnest pop ballad with famously meme‑ified visuals — another archetypal cringe‑pop staple",
         "title": "Taher Shah — Angel",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isPending": true,
+        "pendingFrom": "Cringe pop"
+      },
+      {
+        "url": "https://open.spotify.com/track/7yq4Qd6QQTFE3S73UMfvIn",
+        "score": 4,
+        "reason": "Hilariously literal, low‑budget viral anthem built entirely around one absurd bragging premise — peak novelty cringe",
+        "title": "Iyaz — Replay",
         "artist": "",
         "source": "spotify",
         "added": "2026-05-31",
