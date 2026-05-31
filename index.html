@@ -2222,24 +2222,18 @@
         return out;
       });
     }
-
+    
     function renderSongEntry(s, isChild) {
       const rawUrl = normalizeSongUrl(s.url || '');
       const hasHref = /^https?:\/\//i.test(rawUrl);
-      const titleText = escapeHtml(s.title || (hasHref && rawUrl.includes('spotify') ? 'Spotify track' : (hasHref ? 'Track' : 'Alt Take')));
+      // Fix: never fall back to 'Alt Take' as a title — use a generic label instead
+      const titleText = escapeHtml(s.title || (hasHref && rawUrl.includes('spotify') ? 'Spotify track' : (hasHref ? 'Track' : 'Linked track')));
       const href = escapeHtml(rawUrl);
       const scoreBadge = s.score != null ? `<span class="song-score ${Number(s.score) <= 2 ? 'low' : ''}" title="Genre match score">${s.score}/5</span>` : '';
       const reasonHtml = s.reason ? `<div class="song-reason">${escapeHtml(s.reason)}</div>` : '';
-      const showArtwork = !!s.artwork || !isChild;
-      const art = showArtwork ? artworkHtml(s.artwork || '', 'song-artwork', s.title || 'Album art') : '';
-      const titleHtml = hasHref
-        ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>`
-        : `<span class="song-title-link">${titleText}</span>`;
-      const levelUpHtml = (!isChild && s.levelUp)
-        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">↳</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
-        : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''}"><div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div>${titleHtml}${songArtistLine(s)}</div>${scoreBadge}</div>${reasonHtml}${levelUpHtml}</div>`;
-    }
+      // Fix: only show artwork slot when artwork actually exists (avoids ghost placeholder div in grid)
+      const showArtwork = !!s.artwork;
+      const art = showArtwork ? artworkHtml(s.artwork, 'song-artwork', s.title || 'Album art') : '';
 
     function buildDiscordBlock() {
       if (!currentGenre) return '';
