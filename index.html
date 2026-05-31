@@ -961,7 +961,7 @@
       font-weight:950 !important;
       text-decoration:none !important;
       font-size:.94rem !important;
-      letter-spacing:-.035em;
+      letter-spacing:-.018em;
       flex:1;
       min-width:160px;
       overflow:hidden;
@@ -1381,7 +1381,7 @@
       color:var(--text);
       font-weight:950;
       text-decoration:none;
-      letter-spacing:-.035em;
+      letter-spacing:-.018em;
       overflow-wrap:break-word;
       word-break:break-word;
       display:block;
@@ -2264,25 +2264,21 @@
       return String(url || '').replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '').replace(/^(?:🔼\s*)?ADD:\s*/i, '').trim();
     }
 
-    function normalizeSongsListened(arr) {
-      if (!Array.isArray(arr)) return [];
-      const nested = [];
-      for (const raw of arr) {
-        if (!raw) continue;
-        const s = { ...raw, url: normalizeSongUrl(raw.url) };
-        const flaggedLevelUp = raw.isLevelUp === true || /^(?:🔼\s*)?LEVEL\s*UP:\s*/i.test(String(raw.url || ''));
-        const flaggedAdd = raw.isAdd === true || /^(?:🔼\s*)?ADD:\s*/i.test(String(raw.url || ''));
-        if (flaggedLevelUp && nested.length > 0) {
-          const parent = nested[nested.length - 1];
-          const { isLevelUp, ...rest } = s;
-          parent.levelUp = rest;
-        } else {
-          if (flaggedAdd) s.isAdd = true; else delete s.isAdd;
-          nested.push(s);
-        }
-      }
-      return nested;
-    }
+  function normalizeSongsListened(arr) {
+    return (arr || []).map(s => ({
+    url: s.url || '',
+    score: s.score ?? null,
+    reason: s.reason || '',
+    title: s.title || '',
+    artist: s.artist || '',   // ← ADD
+    artwork: s.artwork || '', // ← ADD
+    source: s.source || '',
+    added: s.added || '',
+    isLevelUp: s.isLevelUp || false,
+    isAdd: s.isAdd || false,
+    levelUp: s.levelUp ? normalizeSongsListened([s.levelUp])[0] : null,
+  }));
+}
 
     function countSongsForDisplay(arr) {
       return normalizeSongsListened(arr || []).reduce((total, song) => total + 1 + (song.levelUp ? 1 : 0), 0);
