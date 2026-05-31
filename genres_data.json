@@ -13988,7 +13988,7 @@
       {
         "url": "https://open.spotify.com/track/1xicvSO4CJ2ymqYgpk7DFh",
         "score": 3,
-        "reason": "Features bop players and brisk horn lines, but the head‑solo format and smoother swing feel more hard bop / modal crossover than tight, frenetic bebop proper",
+        "reason": "Classic Miles lineup with bop players and brisk horn lines, but the smoother head‑solo format and modal lean make this feel more like hard bop crossover than tight, frenetic bebop proper",
         "title": "Miles Davis — Milestones",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025e10a5aca3763224e2050016",
@@ -13996,9 +13996,20 @@
         "added": "2026-05-31"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5CbfcZBGoQoBv8ZFEy21QK",
+        "score": 5,
+        "reason": "Rapid tempo, dense chord changes, and darting alto lines make this a textbook uptempo bebop tune and a perfect “pure” bebop counterpart to the Miles cut",
+        "title": "Charlie Parker — Confirmation",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/4XZSUds3wcqjbP6Lq7jFrm",
         "score": 5,
-        "reason": "Archetypal bebop ballad playing: Parker’s fluid alto lines, rich substitutions, and elastic phrasing over a slow blues form are textbook Bird‑era bebop vocabulary",
+        "reason": "Archetypal bebop ballad playing: Parker’s fluid alto phrasing, rich substitutions, and expressive blues vocabulary over a sparse rhythm section are core Bird‑era bebop",
         "title": "Charlie Parker — Parker’s Mood",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f6b953a738245bded2f9c98a",
@@ -14008,23 +14019,12 @@
       {
         "url": "https://open.spotify.com/track/2ul1uIgptw43J3BkpA2g69",
         "score": 4,
-        "reason": "Monk’s angular melody, off‑kilter phrasing, and walking‑swing rhythm sit right at the bebop/hard‑bop border, still carrying core bop harmony and feel even at a more relaxed tempo",
+        "reason": "Monk’s angular melody, hip reharmonizations, and swinging mid‑tempo feel sit right on the bebop/hard‑bop border, still clearly carrying core bebop harmony and rhythmic language",
         "title": "Thelonious Monk — Blue Monk",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d1053d4d169474b26f605ca3",
         "source": "spotify",
         "added": "2026-05-31"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1uD6hHgUt9dd3PIR8ZRKij",
-        "score": 5,
-        "reason": "Fast tempo, darting horn lines, and dense changes make this a classic uptempo bebop explainer; it sharpens the block’s pure‑bop side next to the ballads and mid‑tempo cuts",
-        "title": "Charlie Parker — Ornithology",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31",
-        "isLevelUp": true
       }
     ],
     "rank_order": 46,
@@ -14487,7 +14487,18 @@
     "key_artists": "Art Blakey, Horace Silver, Clifford Brown, Lee Morgan, Hank Mobley (originators/major figures)",
     "suggested_songs": "Art Blakey — Moanin', Horace Silver — Song for My Father, Clifford Brown — Joy Spring, Lee Morgan — The Sidewinder",
     "vibe": "Bebop that went back to church and came back grooving.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5CbfcZBGoQoBv8ZFEy21QK",
+        "score": 5,
+        "reason": "Rapid tempo, dense chord changes, and darting alto lines make this a textbook uptempo bebop tune and a perfect “pure” bebop counterpart to the Miles cut",
+        "title": "Charlie Parker — Confirmation",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-05-31"
+      }
+    ],
     "rank_order": 345
   },
   {
