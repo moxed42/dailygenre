@@ -21648,24 +21648,49 @@
       {
         "url": "https://open.spotify.com/track/6JG0FH1PTgz7M4HbGExsA6",
         "score": 4,
-        "reason": "Raw, lo-fi, aggressively amateur punk with absurdist edge — core punk pathétique territory",
+        "reason": "Snotty UK joke‑punk with chant‑along chorus and toilet‑humor lyrics — very much in the punk pathetique tradition",
+        "title": "Monkish — Please Don't Piss in My Microwave",
+        "artist": "",
         "source": "spotify",
-        "added": "2026-05-28",
-        "title": "Please Don't Piss in My Microwave"
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022fb668f7010bba13880cdea6"
       },
       {
         "url": "https://open.spotify.com/track/2OiVDraURYmk23JNFXqN4F",
-        "score": 5,
-        "reason": "Textbook example: cheap recording, deadpan humour, proto-punk sloppiness done perfectly",
+        "score": 4,
+        "reason": "Goofy, domestic‑complaint punk with simple chords and a naively catchy hook, exactly the kind of daftness the genre is about",
+        "title": "The Shapes — Wot's For Lunch Mum? (Not Beans Again!)",
+        "artist": "",
         "source": "spotify",
-        "added": "2026-05-28",
-        "title": "Wot's For Lunch Mum? (Not Beans Again!)"
+        "added": "2026-05-31",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0202c806e33979686e5907068c"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4e737yt3jHKwxu4ghXHO1e",
+        "score": 5,
+        "reason": "Hyper‑bouncy, cartoonish punk with silly lyrics and shout‑along refrain — one of the classic punk‑pathetique touchstones",
+        "title": "Toy Dolls — Nellie the Elephant",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6M65X8c7qThYikdJnq9ugq",
+        "score": 4,
+        "reason": "Cheerful, tongue‑in‑cheek Oi!/street‑punk with a big la‑la‑la chorus that leans into the genre’s daft, working‑class fun side",
+        "title": "Peter and the Test Tube Babies — Banned from the Pubs",
+        "artist": "",
+        "source": "spotify",
+        "added": "2026-05-31",
+        "isAdd": true
       }
     ],
     "rank_order": 71,
     "favoritesong": "Please Don't Piss in My Microwave",
     "favoritesongurl": "https://open.spotify.com/track/6JG0FH1PTgz7M4HbGExsA6",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022fb668f7010bba13880cdea6"
   },
   {
     "id": 1083,
