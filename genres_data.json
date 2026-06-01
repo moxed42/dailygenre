@@ -5067,7 +5067,7 @@
     "date_raw": "4/13",
     "date_normalized": "2026-04-13",
     "parse_notes": "alias: cosmic disco",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -5076,9 +5076,64 @@
     "key_artists": "Daniele Baldelli, Beppe Loda, Giorgio Moroder (adjacent), Fela Kuti (source material) (originators)",
     "suggested_songs": "Daniele Baldelli mixes, Fela Kuti — Zombie, Giorgio Moroder — From Here to Eternity, various Afro/cosmic compilations",
     "vibe": "A DJ in northern Italy playing African records in slow motion and accidentally inventing something.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/24G3gIRBrI94XfUyjc0pxI",
+        "score": 3,
+        "reason": "Kraftwerk absolutely feeds the cosmic side of the style, especially the hypnotic motorik futurism and machine-space mood, but this is source material rather than Afro/cosmic music itself. It fits as part of the Baldelli palette more than as a direct exemplar of the club style.",
+        "title": "Kraftwerk — Metropolis - 2009 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e4c3295cd6464ed5bc0f6c2c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0qzoaD4D3i4QxQW9R8Ssjr",
+        "score": 5,
+        "reason": "A better exemplar because it is one of the clearest bridges between cosmic disco, proto-electronic funk, and the exact Italian DJ aesthetic this genre names.",
+        "title": "Giorgio Moroder — From Here to Eternity",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0DWpgeKDZAfzRjkefFuUXe",
+        "score": 4,
+        "reason": "Strong fit through its slow-motion Italo pulse, trancey repetition, and DJ-tool feel; it sounds like a modern reconstruction of the Cosmic-club continuum. It leans more straight Italo/cosmic disco than Afro-percussive, but it still belongs clearly in the lane.",
+        "title": "Daniel Monaco — Tu Sei Pazza - Original Mix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258df02834a66190454cd370a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3fVBIebb2ienlQ9t6pw63I",
+        "score": 5,
+        "reason": "This is the block’s clearest archetype because it comes directly from Daniele Baldelli and foregrounds the dubbed-out, low-slung, curatorial cosmic aesthetic the genre entry describes. Even with modern production, it reads as a direct statement of the form.",
+        "title": "Daniele Baldelli — Isotropofunk",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028aae7e196cf73b3e368a6215",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7dhmZWVV0AAyxUX0FyFaKj",
+        "score": 3,
+        "reason": "The title and space-disco glide fit the cosmic side, but it lacks much of the Afro/percussive eclecticism and feels closer to generic later cosmic/Italo revival. Useful adjacent texture, not a central genre-defining cut.",
+        "title": "DJ Stefan Egger — The Cosmic Moon - Cosmic-Music Dance Version",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0289241d127e99d04ead7f74b6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 80,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 156,
@@ -16768,9 +16823,11 @@
     ],
     "rank_order": 48,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Aesop Rock — Long Legged Larry",
+    "favoritesongurl": "https://open.spotify.com/track/0OX9lzZxKlbtn3c2d97uqz",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0263c24ce03c7abc39809b5ccb"
   },
   {
     "id": 525,
