@@ -26567,7 +26567,7 @@
     "date_raw": "418",
     "date_normalized": "2026-04-18",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -26576,9 +26576,44 @@
     "key_artists": "Cui Jian, Tang Dynasty, Black Panther, Zi Yue, PK14 (major figures across eras)",
     "suggested_songs": "Cui Jian — Nothing to My Name, Tang Dynasty — Dream Back to the Tang Dynasty, Black Panther — Don't Break My Heart, Zi Yue — The Flying Birds, PK14 — Xiao You Yi Tian",
     "vibe": "Rock music carrying a generation's frustrated idealism in Mandarin.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2XXirTOms6IVJJQgi0lN8N",
+        "score": 4,
+        "reason": "Short, atmospheric, and clearly in the Chinese indie/art‑rock lane, this works as an intro vignette: it sets the moody, cinematic tone of contemporary Chinese rock even if it is more scene‑setting than a full song statement.",
+        "title": "万能青年旅店 — 早",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029a3446ba8c977f0efa3657f8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2ozGzwIXXLz92WHuFjt0OM",
+        "score": 5,
+        "reason": "This is an archetypal modern Chinese rock cut: longform structure, knotty guitar work, and art‑rock dynamics that still feel rooted in Chinese rock’s melodic and emotional language. It’s the “explain this wave of Chinese rock to a stranger” pick here.",
+        "title": "万能青年旅店 — 泥河",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029a3446ba8c977f0efa3657f8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0oB4B3cV8b9x0dd2XxyP4A",
+        "score": 4,
+        "reason": "Belongs here as another cornerstone of contemporary Chinese indie rock, with driving guitars and melancholic melody that match the art‑rock, slow-burn intensity of the 万能青年旅店 cuts.",
+        "title": "痛仰乐队 (Tong Yang) — 公路之歌",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 29,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 833,
