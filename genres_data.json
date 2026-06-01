@@ -45,29 +45,32 @@
     "vibe": "Music as a philosophical question about consent and limits.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/6t9B0YK5uGFaLqib2MEi8Q",
+        "url": "https://open.spotify.com/track/4UO1pfxi5fDbxshrwwznJ2",
         "score": null,
-        "reason": "Merzbow — Woodpecker No. 1",
+        "reason": "Merzbow — Amlux (or any similar Merzbow harsh-noise cut)",
+        "title": "Woodpecker No. 1",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020203b5eef777c8a58322ef19",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/1wQSkuwugtD6nql5BozY0i",
+        "url": "https://open.spotify.com/track/63U4cD65Frv95IB7paG8yN",
         "score": null,
-        "reason": "Hanatarash — My Dad Is Car",
+        "reason": "Nurse With Wound; The New Blockaders — Hallelujah T.N.B",
+        "title": "Hallelujah T.N.B",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b402cfa8e5da883b16b05526",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/3yH3v0nfoP3bXz8LojRxVQ",
+        "url": "https://open.spotify.com/track/79XZW9Hm8FuJ2RnudXzjlH",
         "score": null,
-        "reason": "The New Blockaders — Beta Blockade",
+        "reason": "The New Blockaders; GX Jupitter-Larsen — Rip",
+        "title": "Rip",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0281d2806d8a977cc1acf4e78c",
         "source": "spotify",
         "added": "2026-06-01"
       }
