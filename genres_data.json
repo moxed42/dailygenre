@@ -5136,7 +5136,18 @@
     "key_artists": "Fischerspooner, Peaches, Chicks on Speed, Adult., Miss Kittin & The Hacker (originators)",
     "suggested_songs": "Fischerspooner — Emerge, Peaches — Fuck the Pain Away, Miss Kittin & The Hacker — Frank Sinatra, Adult. — Hand to Phone",
     "vibe": "A fashion show inside a power plant, everyone dressed like a New Wave video from 1983.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0PIdLGK6F0c8v2m3A1w4gN",
+        "score": 5,
+        "reason": "Cold, propulsive EBM rhythm, sinister pads and processed vocals make this a textbook dark electro club track.",
+        "title": "Suicide Commando — Hellraiser",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 247,
     "pending_songs": []
   },
@@ -10801,7 +10812,7 @@
     "date_raw": "2/3",
     "date_normalized": "2026-02-03",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -10810,9 +10821,64 @@
     "key_artists": "Yelworc, Spetsnaz, Craft Spells (unrelated), [:SITD:], Suicide Commando (major figures)",
     "suggested_songs": "Suicide Commando — Love Breeds Suicide, [:SITD:] — Laughing Dead, Spetsnaz — I March",
     "vibe": "EBM after the lights went out.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4XfNanTizYYGlmHlbJTAHx",
+        "score": 4,
+        "reason": "Pounding four-on-the-floor kick, distorted leads and shouted German vocals put this squarely in aggrotech/EBM territory, a strong in-club dark electro fit.",
+        "title": "Nachtmahr — Tanzdiktator - Remastered",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0218efc817016dcf652099d468",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3lzwPqFExEt9xXEkFrIk5Y",
+        "score": 4,
+        "reason": "High-energy EBM groove with harsh synths and shouted vocals; very much in the industrial dance lineage that underpins dark electro.",
+        "title": "Grendel — Soilbleed (V.3)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020c48020fb9b26177d1d8f647",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6yqVNc17ymCLKskLjmsnlH",
+        "score": 4,
+        "reason": "Long, punishing industrial track with relentless kick, distorted textures and horror atmospherics; sits at the darker, harder edge of dark electro’s club zone.",
+        "title": "Suicide Commando, Nero Bellum — The Gates of Oblivion",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d89c61fb35ffb56ad821e09e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2i9eB71UxhOzy9tDjHoQ0f",
+        "score": 2,
+        "reason": "Minimal, eerie electroclash track; tonally dark but more art‑house synth music than club‑oriented dark electro or EBM.",
+        "title": "The Knife — Silent Shout",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02feeb53e21e6bff837e915b47",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0PIdLGK6F0c8v2m3A1w4gN",
+        "score": 5,
+        "reason": "Cold, propulsive EBM rhythm, sinister pads and processed vocals make this a textbook dark electro club track.",
+        "title": "Suicide Commando — Hellraiser",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 44,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 413,
@@ -13769,8 +13835,8 @@
     "subsubsubcategory": "",
     "category_path": "Hip-hop > British hip-hop",
     "status": "listened",
-    "date_raw": "2/4",
-    "date_normalized": "2026-02-04",
+    "date_raw": "2/3",
+    "date_normalized": "2026-02-03",
     "parse_notes": "",
     "rating": "3",
     "favorite_song": "",
@@ -15020,9 +15086,11 @@
     ],
     "rank_order": 21,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "2Pac — Dear Mama",
+    "favoritesongurl": "https://open.spotify.com/track/6tDxrq4FxEL2q15y37tXT9",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0204b9ab6bd4bf6a350ba902ea"
   },
   {
     "id": 584,
