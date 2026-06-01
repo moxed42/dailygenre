@@ -5181,7 +5181,18 @@
     "key_artists": "Nine Inch Nails, Depeche Mode, New Order, Garbage, LCD Soundsystem (originators/major figures)",
     "suggested_songs": "Nine Inch Nails — Head Like a Hole, New Order — Blue Monday, Garbage — Push It, LCD Soundsystem — Daft Punk Is Playing at My House",
     "vibe": "A guitar band with cables everywhere and no intention of apologizing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3E7ZwUMJFqpsDOJzEkBrQ7",
+        "score": 5,
+        "reason": "Minimal but insistent beat, hypnotic synth hook, and unforgettable chorus make this one of the quintessential 2000s dance‑pop singles.",
+        "title": "Kylie Minogue — Can’t Get You Out of My Head",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025d6121285c42ea4535e59048",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 250,
     "pending_songs": []
   },
@@ -5340,7 +5351,7 @@
     "date_raw": "3.6",
     "date_normalized": "2026-03-06",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -5349,9 +5360,114 @@
     "key_artists": "Madonna, Michael Jackson, Kylie Minogue, Janet Jackson, Britney Spears (originators/major figures) • Dua Lipa, Charli XCX (modern)",
     "suggested_songs": "Madonna — Into the Groove, Janet Jackson — Rhythm Nation, Kylie Minogue — Can't Get You Out of My Head, Dua Lipa — Levitating",
     "vibe": "Pop music that remembered it was supposed to be for dancing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2goLsvvODILDzeeiT4dAoR",
+        "score": 5,
+        "reason": "Auto‑tuned vocal hook, Euro‑club beat, and late‑90s euphoria make this an archetypal dance‑pop crossover that basically defines the genre’s mainstream peak.",
+        "title": "Cher — Believe",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0217514eabfbd713237eebd21f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2ENexcMEMsYk0rVJigVD3i",
+        "score": 5,
+        "reason": "Huge chorus, pounding four‑on‑the‑floor, and rave‑y synths: this is textbook big‑room dance pop with a clear pop‑song structure.",
+        "title": "Rihanna — Only Girl In The World",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0231548865f7c729290b96c794",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0QkWikH5Z3U0f79T9iuF6c",
+        "score": 4,
+        "reason": "Aggressive EDM production, religious‑iconography lyrics, and massive hook land squarely between electro‑pop and club banger; clearly fits a dance‑pop day.",
+        "title": "Lady Gaga — Judas",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026d2bc35812c2d7f67d110e48",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/043dDJ9u0PQ3ooAXMgcwOe",
+        "score": 4,
+        "reason": "Meme‑born track with a thick, side‑chained beat and pop‑rap vocal; structurally and sonically it sits in the playful, internet‑age dance‑pop lane.",
+        "title": "Doja Cat — MOOO!",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021742758fca8805f9110f8248",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4nTYxxF8iWBq54LO3dBUie",
+        "score": 4,
+        "reason": "New jack swing‑era production with strong rhythmic emphasis; more R&B/swing than modern EDM, but the groove and hook work well in a dance‑pop context.",
+        "title": "Janet Jackson — Rhythm Nation",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236e9e2e6de0b594414fb80c9",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4O45RxFmWr88UfFlNtsXUy",
+        "score": 5,
+        "reason": "Sleek, neon‑lit synths, propulsive beat, and huge chorus make this a modern dance‑pop ideal—highly melodic but fully club‑ready.",
+        "title": "Magdalena Bay — Image",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027339f7e95927d4b823189f62",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7iwPGVfoiedHFNHvpxTznL",
+        "score": 4,
+        "reason": "Eurodance‑style synths and pounding 4/4 kick, with a catchy topline squarely aimed at the club; classic high‑energy dance‑pop.",
+        "title": "Erika — I Don’t Know - Radio Mix",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0214586b47eb9ebec3cf898c98",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0Xm1uwAeW0ujb1AWRgZOdT",
+        "score": 3,
+        "reason": "EDM‑core production with rock vocals; it leans more toward electro‑post‑hardcore than clean dance‑pop, even if it works in a high‑energy playlist.",
+        "title": "Breathe Carolina — Blackout",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02003ae97cd3f3558edc8d6cc4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3E7ZwUMJFqpsDOJzEkBrQ7",
+        "score": 5,
+        "reason": "Minimal but insistent beat, hypnotic synth hook, and unforgettable chorus make this one of the quintessential 2000s dance‑pop singles.",
+        "title": "Kylie Minogue — Can’t Get You Out of My Head",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025d6121285c42ea4535e59048",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1nH2PkJL1XoUq8oE6tBZoU",
+        "score": 4,
+        "reason": "Darker, retro‑inflected synth‑funk production with a strong 4/4 pulse; more neo‑disco/R&B but still clearly club‑pop enough for a dance‑pop day.",
+        "title": "The Weeknd — Sacrifice",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024ab2520c2c77a1d66b9ee21d",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 3,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 193,
