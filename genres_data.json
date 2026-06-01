@@ -5625,7 +5625,18 @@
     "key_artists": "High Contrast, Calibre, London Elektricity, Netsky, Logistics (originators/major figures)",
     "suggested_songs": "High Contrast — Return of Forever, Calibre — Even If, London Elektricity — Just One Second, Netsky — Memory Lane",
     "vibe": "Drum and bass that wants you to feel something besides adrenaline.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4a4eOc9mx2cm4GLQpSqNcL",
+        "score": 5,
+        "reason": "Heavy but rolling breaks, live‑sounding percussion, and unmistakable samba harmonic movement make this a textbook sambass anthem.",
+        "title": "DJ Patife; Cleveland Watkiss — Na Estrada",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 446,
     "pending_songs": []
   },
@@ -5664,7 +5675,7 @@
     "date_raw": "3/23",
     "date_normalized": "2026-03-23",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -5673,9 +5684,54 @@
     "key_artists": "DJ Marky, XRS, Patife, Drumagick, Ed Motta (originators/major figures)",
     "suggested_songs": "DJ Marky & XRS — LK (feat. Stamina MC), Patife — Bons Tempos, Drumagick — Samba Do Brasil",
     "vibe": "Samba and drum and bass meeting in São Paulo and neither leaving.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4QmpVtxnJZ5ZV6sO72nrDu",
+        "score": 5,
+        "reason": "Classic sambass: rolling amen‑ish breaks, warm subs, and liquid pads wrapped around a Brazilian vocal sample, perfectly balancing jungle heft with samba sweetness.",
+        "title": "DJ Marky; XRS; Stamina MC — LK (Carol Carolina Bela)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb47b25edb4f1fbc31924018",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0IP9U6sTH3BBbmczskyxvm",
+        "score": 4,
+        "reason": "Smooth two‑step breaks, jazzy Rhodes, and Latin percussion clearly sit in the sambass / Brazilian liquid vein, even if it leans slightly more liquid funk than pure samba.",
+        "title": "DJ Patife — Sambassim - DJ Patife Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c9c31141ed6244ca84ad0555",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/458cuMjECL8LmJqOxfKLE1",
+        "score": 3,
+        "reason": "Brazilian-flavored drum patterns and bass weight fit the broader Brazilian DnB world, but the tune is closer to straight liquid/jungle than explicitly samba‑driven sambass.",
+        "title": "Drumagick — Easy Boom",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0286692ad0db3cb94b889fb4ff",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4a4eOc9mx2cm4GLQpSqNcL",
+        "score": 5,
+        "reason": "Heavy but rolling breaks, live‑sounding percussion, and unmistakable samba harmonic movement make this a textbook sambass anthem.",
+        "title": "DJ Patife; Cleveland Watkiss — Na Estrada",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 55,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 181,
