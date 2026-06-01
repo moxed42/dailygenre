@@ -29032,7 +29032,7 @@
         "reason": "Hendrix is basically core acid-rock language here: distorted guitar, psychedelic sprawl, and a sense of destabilized perception pushed through a heavy rock frame. This is a prime “explain the genre” cut.",
         "title": "Jimi Hendrix — All Along the Watchtower",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02522088789d49e216d9818292",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02522088789d49e216d9818292",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -29062,7 +29062,7 @@
         "reason": "This is gentler and more dreamlike than many acid-rock staples, but the liquid guitar textures and hallucinatory atmosphere still land it comfortably in the genre. It also carries Hendrix’s signature psychedelic phrasing strongly enough to stay in bounds.",
         "title": "Jimi Hendrix — Little Wing",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0219dcd95d28b63d10164327f2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219dcd95d28b63d10164327f2",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -29090,7 +29090,7 @@
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/0YHhpW4GZIHt6Gwa49nXhw",
         "score": 5,
         "reason": "A better exemplar because it delivers the long-form psychedelic sprawl, heavy riffing, and chemically fried improvisatory feel that sit much closer to acid rock’s core than Velvet Underground’s art-rock minimalism.",
-        "title": "Steppenwolf — The Pusherhttps://open.spotify.com/track/4vpeKl0vMGdAXpZiQB2Dtd | 5 | Pure archetype: raga-like tension, surreal lyric mood, and a compact but unmistakably lysergic arrangement. This is central acid-rock canon. | Jefferson Airplane — White Rabbit",
+        "title": "Steppenwolf — The Pusher",
         "artist": "",
         "artwork": "",
         "source": "spotify",
@@ -29098,12 +29098,22 @@
         "isLevelUp": true
       },
       {
+        "url": "https://open.spotify.com/track/4vpeKl0vMGdAXpZiQB2Dtd",
+        "score": 5,
+        "reason": "Pure archetype: raga-like tension, surreal lyric mood, and a compact but unmistakably lysergic arrangement. This is central acid-rock canon.",
+        "title": "Jefferson Airplane — White Rabbit",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026a74089537c2dbd548c4a95e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
         "url": "https://open.spotify.com/track/4uGIJG1jYFonGc4LGp5uQL",
         "score": 5,
         "reason": "Direct, explosive, and steeped in psychedelic delirium, this is another core example of acid rock at full pop-rock velocity. It is less eerie than “White Rabbit” but just as canonical.",
         "title": "Jefferson Airplane — Somebody to Love",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026a74089537c2dbd548c4a95e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026a74089537c2dbd548c4a95e",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -29156,7 +29166,7 @@
     "favoritesongurl": "https://open.spotify.com/track/5X76oXHcR5uCXali0gOyX5",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025c7731f5acdcb2d02d78b7ee"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025c7731f5acdcb2d02d78b7ee"
   },
   {
     "id": 914,
