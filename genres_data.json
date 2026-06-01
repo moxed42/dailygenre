@@ -9060,7 +9060,7 @@
     "date_raw": "2/13",
     "date_normalized": "2026-02-13",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -9069,9 +9069,46 @@
     "key_artists": "New Boyz, Kreayshawn, The Ranger$ (originators/major figures)",
     "suggested_songs": "New Boyz — You're a Jerk, New Boyz — Tie Me Down, The Ranger$ — College Boyz",
     "vibe": "Los Angeles inventing its own dance and soundtrack simultaneously.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/7Ec8egcIDiXb8dE2QVd3Ct",
+        "score": 5,
+        "reason": "Minimal, high‑energy snap beat, jittery synths, and chanty hook built around the jerkin’ dance—quintessential jerk‑rap single.",
+        "title": "New Boyz — You’re a Jerk",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0bzfPKdbXL5ezYW2z3UGQj",
+        "score": 4,
+        "reason": "West Coast party‑rap bounce with thin, trebly drums and instructional, dance‑centric hook that ties directly into the jerkin’ movement.",
+        "title": "Audio Push — Teach Me How to Jerk",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6jVqEsyLjddKfS4uDAUN6B",
+        "score": 4,
+        "reason": "Bright, bleepy synths and simple clap patterns carrying repetitive, dance‑ready vocals—locks into the jerk‑rap template even if it flirted with broader pop‑rap.",
+        "title": "YG — Toot It and Boot It",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 27,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 334,
