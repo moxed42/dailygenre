@@ -14508,19 +14508,9 @@
     "vibe": "Dubstep processed through American festival culture and turned up to 11.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/25cIHDEJuvSrza0eIWPd3E",
-        "score": 4,
-        "reason": "Korn's sludgy nu-metal riff paired with Skrillex's wobble bass and glitchy vocal chops creates a perfect genre-defining hybrid—heavy metal aggression channeled through brostep's signature LFO-modulated bass drops and stuttering buildups.",
-        "title": "Korn, Skrillex — Get Up! (feat. Skrillex)",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fed8beb575da1a8e4e487adf",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
         "url": "https://open.spotify.com/track/1DcwvDcBKeATLX85CKbHFM",
         "score": 5,
-        "reason": "Aggressive moombahton-inflected buildup into a massivesaw-wave bass drop with hard-edged midrange screech—archetypal festival brostep designed for maximum physical impact and fist-pumping release.",
+        "reason": "Aggressive moombahton-inflected buildup into a massive saw-wave bass drop with hard-edged midrange screech—archetypal festival brostep designed for maximum physical impact and fist-pumping release.",
         "title": "Knife Party — Fire Hive",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e82543e057c1a44934c519e4",
@@ -14528,10 +14518,12 @@
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/5i7fZq3chLyCHo3VeB6goDGet",
-        "score": null,
+        "url": "https://open.spotify.com/track/5i7fZq3chLyCHo3VeB6goD",
+        "score": 5,
+        "reason": "Cinematic horror-film vocal sample crashed into a grinding, metallic wobble bass drop at half-time—Skrillex defining the brostep blueprint with sheer aggression and production maximalism.",
+        "title": "Skrillex — First of the Year (Equinox)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d3004c7f9c57d391bbdb0850",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -14541,15 +14533,17 @@
         "reason": "Relentless syncopated wobble bass loop with breakbeat-influenced percussion and apocalyptic vocal samples—Knife Party at peak aggression, built for the center of a festival mainstage set.",
         "title": "Knife Party — Centipede",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02303ae66195b6feba7022698b",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02303ae66195b6feba7022698b",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/33iZr38YCrMCrbDUqO4JupHeavy",
-        "score": null,
+        "url": "https://open.spotify.com/track/33iZr38YCrMCrbDUqO4Jup",
+        "score": 4,
+        "reason": "Heavy electro-house foundation with tight dubstep bass wobble and glitchy production flourishes—Feed Me bringing a slightly more musical, melodic sensibility to the brostep framework without losing the drop-focused intensity.",
+        "title": "Feed Me — One Click Headshot",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ce582d071639f550b5c88b27",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -14570,6 +14564,16 @@
         "title": "Schoolboy — Zombies Ate My Neighbours",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0298f6d19b57a0a9de9911be7f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/25EgA1A1OZBRw25Mjyw08g",
+        "score": 4,
+        "reason": "Korn's sludgy nu-metal riff paired with Skrillex's wobble bass and glitchy vocal chops creates a perfect genre-defining hybrid—heavy metal aggression channeled through brostep's signature LFO-modulated bass drops and stuttering buildups.",
+        "title": "Korn, Skrillex — Get Up! (feat. Skrillex)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022b6943747b4dbf78d7998e5f",
         "source": "spotify",
         "added": "2026-06-01"
       }
