@@ -14618,7 +14618,18 @@
     "key_artists": "Iron & Wine, Fleet Foxes, Bon Iver, The Decemberists, Sufjan Stevens (originators/major figures)",
     "suggested_songs": "Iron & Wine — Naked as We Came, Fleet Foxes — White Winter Hymnal, Bon Iver — Skinny Love, The Decemberists — The Engine Driver",
     "vibe": "Folk music made by people who grew up on indie rock.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1XGmzt0PVuFgQSO8nq1McS",
+        "score": 5,
+        "reason": "Symphonic pop arrangement with cinematic strings and careful dynamics that exemplify lush, orchestrated chamber pop.",
+        "title": "Weyes Blood — Movies",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 379,
     "pending_songs": []
   },
@@ -19094,7 +19105,7 @@
     "date_raw": "3/9",
     "date_normalized": "2026-03-09",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -19103,9 +19114,126 @@
     "key_artists": "Belle and Sebastian, The Divine Comedy, Rufus Wainwright, Tindersticks, Beirut (major figures)",
     "suggested_songs": "Belle and Sebastian — The State I Am In, The Divine Comedy — National Express, Rufus Wainwright — Cigarettes and Chocolate Milk, Tindersticks — Travelling Light, Beirut — Postcards from Italy",
     "vibe": "Soft-focus songwriting arranged with library-card elegance and emotional precision.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/74UpwsEQCA36fE5hUmLGyT",
+        "score": 4,
+        "reason": "Baritone vocals over a steady rhythm section with prominent synth and guitar lines; more darkwave/post-punk than lushly orchestrated chamber pop but shares a moody, dramatic arrangement sense.",
+        "title": "Arcade Fire — We Used to Wait",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024fb2bd6896a902c5432a6de5",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3zyqphgXvgHe436IMKeey3",
+        "score": 4,
+        "reason": "Horn fanfares, layered arrangements, and a sense of theatrical build put this squarely in baroque/chamber pop territory even as the groove nods to indie rock.",
+        "title": "Japanese Breakfast — Paprika",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e58724521fe7e84276b4c373",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3xBz6IE2EyXMdjzYhm32hS",
+        "score": 3,
+        "reason": "Slowcore-adjacent indie with strings and careful dynamics; has chamber-pop touches but remains sparse and lo-fi rather than fully orchestrated and ornate.",
+        "title": "Carissa's Wierd — Silently Leaving the Room",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0254ea2842a7ce92403b9d18b5",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2S2od15U8uGZ3M6lohQjv5",
+        "score": 5,
+        "reason": "Maximal, fully orchestrated indie pop whose strings, horns, and choral vocals define a modern chamber pop ideal.",
+        "title": "Sufjan Stevens — Chicago",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4UMNkcouzvSn4Bm3YAxQEb",
+        "score": 5,
+        "reason": "Delicate vocal, harpsichord-like keys, and string-like textures over gentle rhythm make this a textbook example of baroque/chamber pop craft.",
+        "title": "Belle and Sebastian — If You're Feeling Sinister",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02153a4a570f85c3ae8de890c2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0WZZJ0mDKIkLfL0710ssZt",
+        "score": 5,
+        "reason": "Grand, slow-building arrangement with strings, piano, and dynamic shifts embodies the big, orchestral indie-rock side of chamber pop.",
+        "title": "Arcade Fire — Neighborhood #1 (Tunnels)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027870762a58313ad6f981d664",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4wDh1J7WJMZkd0Ce5L5Mmr",
+        "score": 3,
+        "reason": "Latin folk/indie hybrid with some textural subtlety; its acoustic instrumentation reads more folk than classically orchestrated pop.",
+        "title": "Y La Bamba — Juniper",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02956b135c81453b6085e31944",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1nJsbEGoU9t3C5Ff0s0bYp",
+        "score": 5,
+        "reason": "Rich string arrangements and meticulous vocal harmonies foreground the chamber instrumentation while staying clearly in the pop realm.",
+        "title": "The Divine Comedy — Our Mutual Friend",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5loVmc3MmtYGsTw12eDgcU",
+        "score": 3,
+        "reason": "Brass and folk instrumentation hint at chamber-pop ambitions, but the loose, almost busker-like feel keeps it more baroque-leaning indie folk than core chamber pop.",
+        "title": "Beirut — Elephant Gun",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d34ab0a2566efc1bcab2d090",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1XGmzt0PVuFgQSO8nq1McS",
+        "score": 5,
+        "reason": "Symphonic pop arrangement with cinematic strings and careful dynamics that exemplify lush, orchestrated chamber pop.",
+        "title": "Weyes Blood — Movies",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/403vzOZN0tETDpvFipkNIL",
+        "score": 4,
+        "reason": "Violin, whistling, and detailed arrangement techniques sit at the intersection",
+        "title": "Sisyphus",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0274ffdd29cc4898e8ed01d747",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 1,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 677,
@@ -23366,7 +23494,18 @@
     "key_artists": "Low, Codeine, Idaho, Bedhead, Red House Painters (major figures)",
     "suggested_songs": "Low — Lullaby, Codeine — Old Home, Idaho — Manzanita, Bedhead — The Rest of the Day, Red House Painters — Down Colorful Hill",
     "vibe": "Rock music moving at the speed of someone who has given up rushing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2S2od15U8uGZ3M6lohQjv5",
+        "score": 5,
+        "reason": "Maximal, fully orchestrated indie pop whose strings, horns, and choral vocals define a modern chamber pop ideal.",
+        "title": "Sufjan Stevens — Chicago",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 689,
     "pending_songs": []
   },
