@@ -14798,7 +14798,7 @@
     "date_raw": "2/2",
     "date_normalized": "2026-02-02",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -14807,9 +14807,124 @@
     "key_artists": "Dr. Dre, Snoop Dogg, Tupac, Ice Cube, Kendrick Lamar (originators/major figures)",
     "suggested_songs": "Dr. Dre — The Next Episode, Tupac — California Love, Ice Cube — Today Was a Good Day, Kendrick Lamar — Swimming Pools",
     "vibe": "Hip-hop from California — sunnier, slower, and just as serious.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3ia3dJETSOllPsv3LJkE35",
+        "score": 5,
+        "reason": "G‑funk synths, Dre’s production, and 2Pac’s verse over a rolling West Coast groove make this an archetypal west coast hip hop anthem.",
+        "title": "2Pac, Roger, Dr. Dre — California Love - Original Version",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d81a092eb373ded457d94eec",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5Tbpp3OLLClPJF8t1DmrFD",
+        "score": 5,
+        "reason": "Laid‑back funk sample, talkbox hook and conversational Dre/Snoop verses define the classic G‑funk sound at the heart of west coast hip hop.",
+        "title": "Dr. Dre, Snoop Dogg — Nuthin' But A \"G\" Thang",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029322ff440b23b5717ddd8c9b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7nYvUtkQMx1v80S2FH2s9J",
+        "score": 5,
+        "reason": "Slick Leon Haywood sample, Nate Dogg’s melodic hook, and Warren G’s smooth storytelling crystallize G‑funk’s mellow yet streetwise west coast vibe.",
+        "title": "Warren G, Nate Dogg — Regulate",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb009ec94ffc5a282a06f03b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0nj9Bq5sHDiTxSHunhgkFb",
+        "score": 4,
+        "reason": "Modern, tightly packed Kendrick verse over a minimal, bounce‑y beat; firmly west coast in voice and rhythm, but less “G‑funk” archetypal than the 90s cuts.",
+        "title": "Kendrick Lamar — squabble up",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2a0a166493a2bde5480a420",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4ZnKSrukEcPuMxGrcZEEh1",
+        "score": 2,
+        "reason": "Big pop‑rap hook and dance‑floor focus; spiritually a mainstream pop‑rap workout with only loose geographic ties to the West Coast scene.",
+        "title": "MC Hammer, Saja — 2 Legit 2 Quit",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024002ec85eab720399a4f35f4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs",
+        "score": 5,
+        "reason": "Laid‑back groove, whistled hook, and G‑funk synths make this a quintessentially relaxed west coast hip hop single.",
+        "title": "Snoop Dogg — Gin And Juice",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3xv229qX6gFRYgplFCTKBl",
+        "score": 4,
+        "reason": "Dark, cinematic beat and dense storytelling sit squarely in the grimy 90s West Coast lane, balancing hardcore edge with classic west coast swing.",
+        "title": "Xzibit — Paparazzi",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fab3bfcc801b1d28701da1df",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4rLpAOk5KVNcqEMK3m6Lje",
+        "score": 5,
+        "reason": "Slow‑rolling G‑funk bassline, Nate Dogg’s hook, and crew verses over a quintessential Doggystyle groove make this core west coast party‑anthem canon.",
+        "title": "Snoop Dogg, Kurupt, Nate Dogg, Warren G — Ain't No Fun (If the Homies Cant Have None)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02733af86f8dea9692a3f59d29",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2Ih217RCGAmyQR68Nn7Cqo",
+        "score": 5,
+        "reason": "Minimal, bass‑heavy groove and Ice Cube’s laconic delivery distill the ominous, cruising feel of 90s west coast gangsta rap.",
+        "title": "Ice Cube — You Know How We Do It",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0268820c2a3865d138ab7daba3",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6KIKRz9eSTXdNsGUnomdtW",
+        "score": 5,
+        "reason": "Aggressive Bomb Squad‑influenced beat and N.W.A.’s uncompromising verses birthed the national image of West Coast gangsta rap.",
+        "title": "N.W.A. — Straight Outta Compton",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02374a967dda0cd404061b0607",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6tDxrq4FxEL2q15y37tXT9",
+        "score": 4,
+        "reason": "Warm, soulful sample and autobiographical lyrics put 2Pac’s storytelling in a deeply West Coast context, even as the song leans more reflective than party‑oriented G‑funk.",
+        "title": "2Pac — Dear Mama",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0204b9ab6bd4bf6a350ba902ea",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 21,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 584,
@@ -18443,6 +18558,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs",
+        "score": 5,
+        "reason": "Laid‑back groove, whistled hook, and G‑funk synths make this a quintessentially relaxed west coast hip hop single.",
+        "title": "Snoop Dogg — Gin And Juice",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 23,
@@ -25768,15 +25893,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0ZVYT3K8vQ9oHx5RhcH6PI",
+        "url": "https://open.spotify.com/track/0ZVYT3K8vQ9oHx5RhcH6PI",
         "score": 5,
         "reason": "Huge melodic chorus, sleek modern production and accessible structure make this a clean modern pop‑metal benchmark.",
         "title": "Amaranthe — Drop Dead Cynical",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/2tAzcTFry1OhmNERFjUR93",
@@ -25809,15 +25933,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3f8CPKunn7lQAMm7vUTpZT",
+        "url": "https://open.spotify.com/track/3f8CPKunn7lQAMm7vUTpZT",
         "score": 5,
         "reason": "Arena‑sized chorus and streamlined arrangement give this a direct pop‑metal appeal while still hitting hard.",
         "title": "HammerFall — Hearts on Fire",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/0g9GhfqFotNeAt2TuggiEh",
@@ -25830,15 +25953,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5P7Zk5q4fgsg2HFnxXK0oQ",
+        "url": "https://open.spotify.com/track/5P7Zk5q4fgsg2HFnxXK0oQ",
         "score": 4,
         "reason": "Big radio‑rock chorus, shiny production and metal‑adjacent guitars give this a much clearer pop‑metal profile while staying contemporary.",
         "title": "Halestorm — Love Bites So Do I",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/0qdzdBNLU6BAxTCt8FLptu",
@@ -25851,15 +25973,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4s7QLoImIwmPi8i1Pp8w5v",
+        "url": "https://open.spotify.com/track/4s7QLoImIwmPi8i1Pp8w5v",
         "score": 4,
         "reason": "Massive melodic chorus and accessible structure place this closer to classic pop‑metal even as it keeps metalcore crunch.",
         "title": "Bullet For My Valentine — Tears Don’t Fall",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/6RBY5ToIdDyhM1JNxEYqhd",
@@ -25872,15 +25993,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6TuGdR7kLPIYgYb9GXcSqh",
+        "url": "https://open.spotify.com/track/6TuGdR7kLPIYgYb9GXcSqh",
         "score": 4,
         "reason": "Big, anthemic chorus and glossy production give this a more straightforward pop‑metal feel while staying in the same emo‑metal orbit.",
         "title": "Falling In Reverse — The Drug In Me Is You",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/5RQyyxszkh4D2mZi0v3Zjx",
@@ -25893,15 +26013,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4Swr7diLZpP7aNnHgzFKnL",
+        "url": "https://open.spotify.com/track/4Swr7diLZpP7aNnHgzFKnL",
         "score": 5,
         "reason": "Classic late‑80s pop‑metal power ballad with huge, radio‑ready chorus and guitar heroics.",
         "title": "Skid Row — I Remember You",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/43thLwzSasUUZEYjYPeJh3",
@@ -25954,15 +26073,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0d28khcov6AiegSCpG5TuT",
+        "url": "https://open.spotify.com/track/0d28khcov6AiegSCpG5TuT",
         "score": 5,
         "reason": "Huge sing‑along chorus, sugar‑coated melodies and hard‑rock guitars make this a pure pop‑metal earworm from outside the metalcore meme space.",
         "title": "Bon Jovi — You Give Love a Bad Name",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e64af6953d2f6c2843c87e09",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 5,
