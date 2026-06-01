@@ -11770,34 +11770,36 @@
     "vibe": "The Paradise Garage, 1982 — the feeling that music and community are the same thing.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/0y9tF9mYwlcqUWTuOHQ3kL",
+        "url": "🔼 ADD: https://open.spotify.com/track/0y9tF9mYwlcqUWTuOHQ3kL",
         "score": 5,
-        "reason": "Quintessential Garage house: a soulful, gospel-tinged vocal, rich keys, and that spiritual Paradise Garage uplift that defines the genre’s emotional core.",
+        "reason": "Quintessential Garage house: soulful, gospel-tinged vocal, rich keys, and spiritual Paradise Garage uplift that defines the genre’s emotional core.",
         "title": "Masters At Work — To Be In Love",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-01",
+        "isAdd": true
       },
       {
-        "url": "https://open.spotify.com/track/4XR1aF1FvwB1vCLkxqEZuV",
+        "url": "https://open.spotify.com/track/6ZfF8Yn9qgfAekLIXnLpav?si=3a4e3ad64d0647bc",
         "score": 4,
-        "reason": "Classic Kerri Chandler organ groove and shuffling drums that channel Garage house warmth even as it leans slightly more tracky and DJ-tool than vocal anthem.",
+        "reason": "Classic Kerri Chandler organ groove and shuffling drums that channel Garage house warmth, leaning slightly more tracky and DJ-tool than full-on vocal anthem.",
         "title": "Kerri Chandler — Bar A Thym",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020c0989b16fb930dc0db9a425",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/3X3c8mJd2zjA1Tn5uT8n9w",
+        "url": "🔼 ADD: https://open.spotify.com/track/3X3c8mJd2zjA1Tn5uT8n9w",
         "score": 4,
-        "reason": "Sample-heavy New York house with chunky drums and a raw club edge, tracing the Paradise Garage lineage while showing the more rugged side of Garage house history.",
+        "reason": "Sample-heavy New York house with chunky drums and a raw club edge, tracing the Paradise Garage lineage while showing the rugged side of Garage house history.",
         "title": "Todd Terry Project — Bango (To the Batmobile)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-01",
+        "isAdd": true
       }
     ],
     "rank_order": 70,
