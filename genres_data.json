@@ -28500,46 +28500,12 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "🔼 ADD: https://open.spotify.com/track/1GAPeFATDpOJ0CnyP5xGXK | 5 | Archetypal pre‑revolution Persian rock: Kourosh Yaghmaei’s “Gole Yakh” mixes psychedelic rock guitars and Western songcraft with Persian melodic and lyrical sensibility, making it a perfect “explain Iranian rock to a stranger” cut. | Kourosh Yaghmaei — Gole Yakh [web:19][web:22][web:25]\n🔼 ADD: https://open.spotify.com/track/0L8kL5zgrjVxq6iXSVtqR7 | 4 | “Niyayesh” sits in the same Persian‑psych rock vein: fuzzed‑out guitars and rock rhythm section under devotional, modal vocal lines, clearly bridging Western rock and Iranian musical language. | Kourosh Yaghmaei — Niyayesh [web:19][web:22][web:25]\n🔼 ADD: https://open.spotify.com/track/5O2Q3baTiq7xDE1lCsmeiB | 4 | O‑Hum’s “Darvish” is a cornerstone of modern Persian rock, explicitly fusing electric rock instrumentation with traditional Persian modes and motifs, which nails the contemporary Iranian rock brief. | O‑Hum — Darvish [web:20][web:23][web:26]",
     "summary": "Iranian rock developed in pre-revolutionary Tehran, where bands like The Sharks and The Ravens absorbed British and American rock, and has continued in exile and in underground domestic scenes since 1979. Diaspora communities in the United States and Europe sustained the tradition, while underground Iranian bands have navigated legal restrictions to play rock inside Iran.",
     "key_artists": "The Sharks, Kourosh Yaghmaei, 127, Hypernova, Turbans (major figures across eras)",
     "suggested_songs": "Kourosh Yaghmaei — Gol-e Yakh, 127 — Marde Tanha, Hypernova — Viva La Resistance, The Sharks — Boro Boro, Turbans — Radio",
     "vibe": "Rock music persisting through political rupture, carrying on regardless.",
-    "songs_listened": [
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/1GAPeFATDpOJ0CnyP5xGXK",
-        "score": 5,
-        "reason": "Archetypal pre‑revolution Persian rock: Kourosh Yaghmaei’s “Gole Yakh” mixes psychedelic rock guitars and Western songcraft with Persian melodic and lyrical sensibility, making it a perfect “explain Iranian rock to a stranger” cut.",
-        "title": "Kourosh Yaghmaei — Gole Yakh [web:19][web:22][web:25]",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/0L8kL5zgrjVxq6iXSVtqR7",
-        "score": 4,
-        "reason": "“Niyayesh” sits in the same Persian‑psych rock vein: fuzzed‑out guitars and rock rhythm section under devotional, modal vocal lines, clearly bridging Western rock and Iranian musical language.",
-        "title": "Kourosh Yaghmaei — Niyayesh [web:19][web:22][web:25]",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/5O2Q3baTiq7xDE1lCsmeiB",
-        "score": 4,
-        "reason": "O‑Hum’s “Darvish” is a cornerstone of modern Persian rock, explicitly fusing electric rock instrumentation with traditional Persian modes and motifs, which nails the contemporary Iranian rock brief.",
-        "title": "O‑Hum — Darvish [web:20][web:23][web:26]",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01",
-        "isAdd": true
-      }
-    ],
+    "songs_listened": [],
     "rank_order": 394,
     "pending_songs": [],
     "favoritesong": "",
