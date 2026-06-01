@@ -30797,7 +30797,7 @@
     "date_raw": "",
     "date_normalized": "2026-04-29",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -30806,9 +30806,55 @@
     "key_artists": "Wolves in the Throne Room, Agalloch, Weakling, Caladan Brood, Panopticon (major figures)",
     "suggested_songs": "Wolves in the Throne Room -- I Will Lay Down My Bones Among the Rocks and Roots, Agalloch -- In the Shadow of Our Pale Companion, Weakling -- Dead as Dreams, Caladan Brood -- Book of Sand, Panopticon -- A Sovereign Act of Self Liberation",
     "vibe": "Black metal as a landscape rather than an attack.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2ByhUMQMauMc1LJGclDIP5",
+        "score": 3,
+        "reason": "Totalselfhatred sits primarily in depressive black metal; the tempo and tremolo riffing are black metal first, with atmosphere coming more from production and repetition than from the widescreen, nature‑drone vibe of classic atmospheric black.",
+        "title": "Totalselfhatred — Total Self-Hatred",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026872312de9c23830eebba77f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0Cj6lL9tJ0sZPULQ9lgSLS",
+        "score": 5,
+        "reason": "A better exemplar because its expansive, reverb‑washed guitars, nature‑evoking melodies, and long, hypnotic build‑ups are exactly what “atmospheric black metal” means sonically.",
+        "title": "Wolves in the Throne Room — I Will Lay Down My Bones Among the Rocks and Roots",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1wJ5Z1Nkcqknyi2U2mjL0G",
+        "score": 5,
+        "reason": "“In The Shadow Of Our Pale Companion” is a towering atmospheric black/doom hybrid: extended song length, layered guitars, and folk‑inflected melancholy make it a perfect “explain atmospheric black/blackgaze to a stranger” piece.",
+        "title": "Agalloch — In The Shadow Of Our Pale Companion (2016 - Remaster)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/1ucpw6yAU7tQ2HPwhsNnQb",
+        "score": 5,
+        "reason": "Belongs here as another core atmospheric black cut: shimmering tremolo waves, distant harsh vocals, and long, immersive structure reinforce the genre’s misty, widescreen aesthetic alongside Agalloch and WITTR.",
+        "title": "Drudkh — Summoning the Rain",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 5,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 956,
