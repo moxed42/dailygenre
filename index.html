@@ -1734,6 +1734,225 @@
     }
 
 
+
+    .tab-btn.dirty::after {
+      content:"•";
+      margin-left:8px;
+      color:inherit;
+      opacity:.8;
+    }
+
+    .btn.is-saving {
+      opacity:.75;
+      cursor:progress;
+      transform:none;
+    }
+
+    .viz-panel {
+      padding:18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,0)),
+        var(--surface);
+    }
+
+    .viz-shell {
+      display:grid;
+      gap:18px;
+    }
+
+    .viz-hero {
+      display:grid;
+      grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .viz-hero-card,
+    .viz-side-stack {
+      min-height:100%;
+    }
+
+    .viz-hero-card {
+      padding:22px;
+      border-radius:var(--radius-lg);
+      background:linear-gradient(135deg, rgba(183,121,31,.13), rgba(255,255,255,.82));
+      border:1px solid rgba(183,121,31,.18);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .viz-hero-eyebrow {
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:.72rem;
+      font-weight:800;
+      color:var(--accent-dark);
+    }
+
+    .viz-hero-title {
+      margin:6px 0 0;
+      font-size:clamp(1.35rem, 2.2vw, 2rem);
+      line-height:1.05;
+      letter-spacing:-.04em;
+    }
+
+    .viz-hero-copy {
+      margin:0;
+      max-width:52ch;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .viz-hero-card .viz-kpi-row {
+      margin-top:4px;
+    }
+
+    .viz-side-stack {
+      display:grid;
+      gap:18px;
+      grid-template-rows:auto auto;
+    }
+
+    .viz-spotlight-card,
+    .viz-mode-bar {
+      border:1px solid var(--border);
+      border-radius:var(--radius-md);
+      background:var(--surface-2);
+      box-shadow:var(--shadow);
+    }
+
+    .viz-spotlight-card {
+      padding:18px;
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+
+    .viz-spotlight-label {
+      font-size:.76rem;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    .viz-spotlight-title {
+      margin:0;
+      font-size:1.08rem;
+      letter-spacing:-.03em;
+    }
+
+    .viz-spotlight-copy {
+      margin:0;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.5;
+    }
+
+    .viz-dashboard {
+      display:grid;
+      gap:18px;
+    }
+
+    .viz-section {
+      display:grid;
+      gap:14px;
+    }
+
+    .viz-section-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:12px;
+      padding:0 2px;
+    }
+
+    .viz-section-title {
+      margin:0;
+      font-size:1rem;
+      letter-spacing:-.03em;
+    }
+
+    .viz-section-copy {
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.88rem;
+    }
+
+    .viz-secondary-grid {
+      display:grid;
+      grid-template-columns:repeat(12, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .viz-secondary-grid > .viz-card,
+    .viz-deep-grid > .viz-card {
+      min-width:0;
+      padding:18px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.95));
+      border:1px solid rgba(125,91,40,.12);
+      box-shadow:0 10px 30px rgba(55,35,10,.06);
+    }
+
+    .viz-secondary-grid .viz-card-ratings,
+    .viz-secondary-grid .viz-card-donut,
+    .viz-secondary-grid .viz-card-decades,
+    .viz-secondary-grid .viz-card-highlights,
+    .viz-secondary-grid .viz-card-artists,
+    .viz-secondary-grid .viz-card-contenders,
+    .viz-deep-grid .viz-card-donut,
+    .viz-deep-grid .viz-card-wide,
+    .viz-deep-grid .viz-card-decades,
+    .viz-deep-grid .viz-card-contenders,
+    .viz-deep-grid .viz-card {
+      grid-column:span 12;
+    }
+
+    .viz-deep-grid {
+      display:grid;
+      grid-template-columns:repeat(12, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .viz-card-label {
+      margin-bottom:12px;
+      font-size:.8rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    @media (min-width: 780px) {
+      .viz-secondary-grid .viz-card-ratings { grid-column:span 7; }
+      .viz-secondary-grid .viz-card-donut { grid-column:span 5; }
+      .viz-secondary-grid .viz-card-decades { grid-column:span 5; }
+      .viz-secondary-grid .viz-card-highlights { grid-column:span 7; }
+      .viz-secondary-grid .viz-card-artists { grid-column:span 6; }
+      .viz-secondary-grid .viz-card-contenders { grid-column:span 6; }
+
+      .viz-deep-grid .viz-card-donut { grid-column:span 6; }
+      .viz-deep-grid .viz-card-wide { grid-column:span 12; }
+      .viz-deep-grid .viz-card-decades { grid-column:span 5; }
+      .viz-deep-grid .viz-card-contenders { grid-column:span 7; }
+      .viz-deep-grid .viz-card:not(.viz-card-donut):not(.viz-card-wide):not(.viz-card-decades):not(.viz-card-contenders) { grid-column:span 12; }
+    }
+
+    @media (max-width: 900px) {
+      .viz-hero { grid-template-columns:1fr; }
+      .viz-mode-bar { order:-1; }
+    }
+
+    @media (max-width: 640px) {
+      .viz-panel { padding:14px; }
+      .viz-hero-card, .viz-spotlight-card, .viz-secondary-grid > .viz-card, .viz-deep-grid > .viz-card { padding:16px; }
+      .viz-section-header { align-items:start; flex-direction:column; }
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -1938,80 +2157,121 @@
 
     <section class="screen" id="screen-viz">
       <div class="panel viz-panel">
-        <div class="viz-mode-bar">
-          <div class="viz-mode-btns">
-            <button class="viz-mode-btn active" data-viz-mode="monthly">Monthly</button>
-            <button class="viz-mode-btn" data-viz-mode="alltime">All Time</button>
-          </div>
-          <select id="vizMonthSelect" class="viz-month-sel"></select>
-          <button class="btn btn-ghost" id="vizRefreshBtn" onclick="renderVisuals()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh</button>
-        </div>
-
-        <div id="vizViewMonthly">
-          <div class="viz-kpi-row" id="vizKpiMonthly"></div>
-          <div class="viz-bento">
-            <div class="viz-card viz-card-ratings">
-              <div class="viz-card-label">Genre Ratings</div>
-              <div id="vizRatingsContent"></div>
-            </div>
-            <div class="viz-card viz-card-donut">
-              <div class="viz-card-label">Genre Categories</div>
-              <div class="viz-donut-wrap">
-                <canvas id="vizCatDonut" height="200"></canvas>
-                <div class="viz-donut-legend" id="vizCatLegend"></div>
+        <div class="viz-shell">
+          <div class="viz-hero">
+            <div class="viz-hero-card">
+              <div>
+                <div class="viz-hero-eyebrow">Listening dashboard</div>
+                <h2 class="viz-hero-title">Your genre tracking visuals, cleaned up into one clearer dashboard.</h2>
+                <p class="viz-hero-copy">Same metrics, same charts, better grouping and hierarchy so the monthly story is easier to scan at a glance.</p>
               </div>
+              <div class="viz-kpi-row" id="vizKpiMonthly"></div>
             </div>
-            <div class="viz-card viz-card-decades">
-              <div class="viz-card-label">Decades Explored</div>
-              <canvas id="vizDecadesBar" height="160"></canvas>
-            </div>
-            <div class="viz-card viz-card-highlights">
-              <div class="viz-card-label">Highlights</div>
-              <div class="viz-highlights-grid" id="vizHighlightsMonthly"></div>
-            </div>
-            <div class="viz-card viz-card-artists">
-              <div class="viz-card-label">Artist Discovery</div>
-              <div class="viz-artists-row" id="vizArtistsMonthly"></div>
-            </div>
-            <div class="viz-card viz-card-contenders">
-              <div class="viz-card-label">Top Song Contenders</div>
-              <div id="vizContendersMonthly"></div>
+            <div class="viz-side-stack">
+              <div class="viz-mode-bar">
+                <div class="viz-mode-btns">
+                  <button class="viz-mode-btn active" data-viz-mode="monthly">Monthly</button>
+                  <button class="viz-mode-btn" data-viz-mode="alltime">All Time</button>
+                </div>
+                <select id="vizMonthSelect" class="viz-month-sel"></select>
+                <button class="btn btn-ghost" id="vizRefreshBtn" onclick="renderVisuals()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh</button>
+              </div>
+              <div class="viz-spotlight-card">
+                <div class="viz-spotlight-label">Layout focus</div>
+                <h3 class="viz-spotlight-title">Summary first, deeper breakdowns below.</h3>
+                <p class="viz-spotlight-copy">Use the mode toggle to switch between this month and the all-time view. Charts and calculations stay the same; this screen just gives them more room and better rhythm.</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div id="vizViewAlltime" style="display:none;">
-          <div class="viz-kpi-row" id="vizKpiAlltime"></div>
-          <div class="viz-bento">
-            <div class="viz-card viz-card-donut">
-              <div class="viz-card-label">All-Time Rating Mix</div>
-              <div class="viz-donut-wrap">
-                <canvas id="vizRatingsDonut" height="200"></canvas>
-                <div class="viz-donut-legend" id="vizRatingsLegend"></div>
+          <div id="vizViewMonthly" class="viz-dashboard">
+            <div class="viz-section">
+              <div class="viz-section-header">
+                <div>
+                  <h3 class="viz-section-title">Monthly breakdown</h3>
+                  <p class="viz-section-copy">Ratings, category mix, highlights, artists, and contenders for the selected month.</p>
+                </div>
+              </div>
+              <div class="viz-secondary-grid">
+                <div class="viz-card viz-card-ratings">
+                  <div class="viz-card-label">Genre Ratings</div>
+                  <div id="vizRatingsContent"></div>
+                </div>
+                <div class="viz-card viz-card-donut">
+                  <div class="viz-card-label">Genre Categories</div>
+                  <div class="viz-donut-wrap">
+                    <canvas id="vizCatDonut" height="200"></canvas>
+                    <div class="viz-donut-legend" id="vizCatLegend"></div>
+                  </div>
+                </div>
+                <div class="viz-card viz-card-decades">
+                  <div class="viz-card-label">Decades Explored</div>
+                  <canvas id="vizDecadesBar" height="160"></canvas>
+                </div>
+                <div class="viz-card viz-card-highlights">
+                  <div class="viz-card-label">Highlights</div>
+                  <div class="viz-highlights-grid" id="vizHighlightsMonthly"></div>
+                </div>
+                <div class="viz-card viz-card-artists">
+                  <div class="viz-card-label">Artist Discovery</div>
+                  <div class="viz-artists-row" id="vizArtistsMonthly"></div>
+                </div>
+                <div class="viz-card viz-card-contenders">
+                  <div class="viz-card-label">Top Song Contenders</div>
+                  <div id="vizContendersMonthly"></div>
+                </div>
               </div>
             </div>
-            <div class="viz-card viz-card-donut">
-              <div class="viz-card-label">Genre Categories</div>
-              <div class="viz-donut-wrap">
-                <canvas id="vizCatDonutAll" height="200"></canvas>
-                <div class="viz-donut-legend" id="vizCatLegendAll"></div>
+          </div>
+
+          <div id="vizViewAlltime" class="viz-dashboard" style="display:none;">
+            <div class="viz-hero-card" style="padding:18px 20px; background:linear-gradient(135deg, rgba(183,121,31,.08), rgba(255,255,255,.94));">
+              <div>
+                <div class="viz-hero-eyebrow">All-time snapshot</div>
+                <h3 class="viz-hero-title" style="font-size:clamp(1.1rem,1.8vw,1.5rem);">Longer-term patterns across your archive.</h3>
+                <p class="viz-hero-copy">Rating mix, category spread, month-by-month volume, decades, contenders, and song-depth all stay intact here.</p>
               </div>
+              <div class="viz-kpi-row" id="vizKpiAlltime"></div>
             </div>
-            <div class="viz-card viz-card-wide">
-              <div class="viz-card-label">Genres Logged Per Month</div>
-              <canvas id="vizMonthlyBar" height="150"></canvas>
-            </div>
-            <div class="viz-card viz-card-decades">
-              <div class="viz-card-label">Decades Explored (All Time)</div>
-              <canvas id="vizDecadesBarAll" height="160"></canvas>
-            </div>
-            <div class="viz-card viz-card-contenders">
-              <div class="viz-card-label">Monthly Contenders</div>
-              <div id="vizContendersAll"></div>
-            </div>
-            <div class="viz-card">
-              <div class="viz-card-label">Most Songs Logged (Top 15)</div>
-              <canvas id="vizSongsDepth" height="220"></canvas>
+            <div class="viz-section">
+              <div class="viz-section-header">
+                <div>
+                  <h3 class="viz-section-title">All-time breakdown</h3>
+                  <p class="viz-section-copy">Broader trend cards and charts laid out in a more balanced grid.</p>
+                </div>
+              </div>
+              <div class="viz-deep-grid">
+                <div class="viz-card viz-card-donut">
+                  <div class="viz-card-label">All-Time Rating Mix</div>
+                  <div class="viz-donut-wrap">
+                    <canvas id="vizRatingsDonut" height="200"></canvas>
+                    <div class="viz-donut-legend" id="vizRatingsLegend"></div>
+                  </div>
+                </div>
+                <div class="viz-card viz-card-donut">
+                  <div class="viz-card-label">Genre Categories</div>
+                  <div class="viz-donut-wrap">
+                    <canvas id="vizCatDonutAll" height="200"></canvas>
+                    <div class="viz-donut-legend" id="vizCatLegendAll"></div>
+                  </div>
+                </div>
+                <div class="viz-card viz-card-wide">
+                  <div class="viz-card-label">Genres Logged Per Month</div>
+                  <canvas id="vizMonthlyBar" height="150"></canvas>
+                </div>
+                <div class="viz-card viz-card-decades">
+                  <div class="viz-card-label">Decades Explored (All Time)</div>
+                  <canvas id="vizDecadesBarAll" height="160"></canvas>
+                </div>
+                <div class="viz-card viz-card-contenders">
+                  <div class="viz-card-label">Monthly Contenders</div>
+                  <div id="vizContendersAll"></div>
+                </div>
+                <div class="viz-card">
+                  <div class="viz-card-label">Most Songs Logged (Top 15)</div>
+                  <canvas id="vizSongsDepth" height="220"></canvas>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2232,7 +2492,27 @@
         .trim();
     }
 
-    function switchScreen(name) {
+    let hasUnsavedChanges = false;
+
+    function setUnsavedState(isDirty) {
+      hasUnsavedChanges = !!isDirty;
+      const saveBtn = document.getElementById('saveBtn');
+      if (saveBtn) saveBtn.dataset.dirty = hasUnsavedChanges ? 'true' : 'false';
+      const listenTab = document.querySelector('.tab-btn[data-screen="listen"]');
+      if (listenTab) listenTab.classList.toggle('dirty', hasUnsavedChanges);
+    }
+
+    function markDirty() {
+      setUnsavedState(true);
+    }
+
+    function switchScreen(name, options = {}) {
+      const currentActive = document.querySelector('.screen.active');
+      const currentName = currentActive?.id?.replace('screen-', '') || '';
+      if (!options.force && hasUnsavedChanges && currentName === 'listen' && name !== 'listen') {
+        const shouldLeave = window.confirm('You have unsaved changes. Leave without saving?');
+        if (!shouldLeave) return;
+      }
       if (name === 'viz') { setTimeout(()=>{ if(typeof initVisuals==='function'){initVisuals();renderVisuals();} }, 50); }
       document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -2566,7 +2846,8 @@
           selectedRating = btn.dataset.rating;
           if (currentGenre) currentGenre.rating = selectedRating;
           document.getElementById('ratingStatus').textContent = `${selectedRating} star${selectedRating === '1' ? '' : 's'} selected`;
-          renderStars();
+          markDirty();
+      renderStars();
         };
       });
 
@@ -2596,12 +2877,14 @@
       }
       document.getElementById('favoriteSongUrl').value = currentGenre.favoritesongurl || '';
       document.getElementById('favoriteSong').value = currentGenre.favoritesong || '';
+      markDirty();
       loadListenScreen(currentGenre);
     }
 
     function startListeningNow() {
       if (!currentGenre) return;
       currentGenre.date_normalized = new Date().toISOString().slice(0,10);
+      markDirty();
       prepareAndSaveCurrentGenre();
     }
 
@@ -2613,6 +2896,7 @@
       delete target.isPending;
       delete target.pendingFrom;
       currentGenre.songs_listened = songs;
+      markDirty();
       loadListenScreen(currentGenre);
     }
 
@@ -2620,6 +2904,7 @@
       if (!currentGenre) return;
       currentGenre.songs_listened = normalizeSongsListened(currentGenre.songs_listened || [])
         .filter(s => !(normalizeSongUrl(s.url) === url && s.isPending));
+      markDirty();
       loadListenScreen(currentGenre);
     }
 
@@ -2699,6 +2984,7 @@
     function clearPendingSongs() {
       if (!currentGenre) return;
       currentGenre.pending_songs = [];
+      markDirty();
       loadListenScreen(currentGenre);
     }
 
@@ -2878,6 +3164,7 @@
       }
 
       currentGenre.rating = currentGenre.rating === 'zanger' ? 'zanger' : (selectedRating || currentGenre.rating || '');
+      markDirty();
       currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
       currentGenre.favoritesongurl = document.getElementById('favoriteSongUrl').value.trim();
       if (currentGenre.favoritesongurl && currentGenre.favoritesongurl.includes('spotify.com/track/')) {
@@ -3419,6 +3706,12 @@
       }
     }
 
+    window.addEventListener('beforeunload', (event) => {
+      if (!hasUnsavedChanges) return;
+      event.preventDefault();
+      event.returnValue = '';
+    });
+
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
     });
@@ -3469,8 +3762,17 @@
       await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
     });
 
-    document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.textContent = 'Saving…'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.textContent = old; } });
+    document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.classList.add('is-saving'); btn.textContent = 'Saving...'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.classList.remove('is-saving'); btn.textContent = old; } });
     document.getElementById('clearPendingBtn')?.addEventListener('click', clearPendingSongs);
+    ['favoriteSong','favoriteSongUrl','songsListenedBulk','notes'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', markDirty);
+    });
+    ['monthlyContender','monthFavorite','monthLeastFavorite'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', markDirty);
+    });
+
 
     document.getElementById('zangerBtn').addEventListener('click', () => {
       selectedRating = '';
