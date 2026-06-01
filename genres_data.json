@@ -114,7 +114,18 @@
     "key_artists": "Throbbing Gristle, Einstürzende Neubauten, SPK, Cabaret Voltaire, Monte Cazazza (originators) • Nine Inch Nails, Ministry (modern)",
     "suggested_songs": "Throbbing Gristle — Hamburger Lady, Einstürzende Neubauten — Kollaps, Cabaret Voltaire — Nag Nag Nag, Nine Inch Nails — Closer",
     "vibe": "Sound as an act of aggression against everything comfortable.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2nXHbQ5ihQqS1PBKoxxo5s",
+        "score": 5,
+        "reason": "Classic dubby ambient techno: echo‑laden chords, gentle but firm kick, and slow‑moving arrangement that sits right in the genre’s core.",
+        "title": "STL — Silent State",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 388,
     "pending_songs": []
   },
@@ -2811,6 +2822,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1w3W77X9qzC1t5nq2W1l5w",
+        "score": 5,
+        "reason": "Steady 4/4 kick and dub‑techno chords embedded in a hazy, spacious mix make this a textbook ambient techno cut.",
+        "title": "Deepchord — Electromagnetic",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 789,
@@ -3970,15 +3991,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2uMg6b8FMdC0U8MZCTeeyj",
+        "url": "https://open.spotify.com/track/2uMg6b8FMdC0U8MZCTeeyj",
         "score": 5,
         "reason": "Fully electronic production married to a strutting disco groove and robotic vocal textures makes this a clean, modern electro‑disco anthem.",
         "title": "Daft Punk — Digital Love",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/1vCBk33l9HaWp5FOnhSGxk",
@@ -4001,15 +4021,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3boU5P1pUi4HBHX0Uq6ItF",
+        "url": "https://open.spotify.com/track/3boU5P1pUi4HBHX0Uq6ItF",
         "score": 4,
         "reason": "Slow‑burn, electronic disco with pulsing synth bass and filtered textures that match the set’s nocturnal dance‑floor vibe far better than a pure ambient cut.",
         "title": "Metro Area — Miura",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/3MF9cjIlg3R9osw3SgRmEb",
@@ -4022,15 +4041,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0wSkvBzcbWjN6Qt0yM3Sdy",
+        "url": "https://open.spotify.com/track/0wSkvBzcbWjN6Qt0yM3Sdy",
         "score": 5,
         "reason": "Punchy synth bass, four‑on‑the‑floor kick and string hits give this track a straight‑up electro‑disco feel that keeps the whole session squarely on the dance floor.",
         "title": "Cerrone — Supernature",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/4TBVy5cFYGmK5BA3rdMGEQ",
@@ -4043,15 +4061,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2w3BbGJyKZcx3UyUFD4SmJ",
+        "url": "https://open.spotify.com/track/2w3BbGJyKZcx3UyUFD4SmJ",
         "score": 4,
         "reason": "Synth‑forward disco with a clear backbeat and electro‑leaning sound design that supports the session theme without sacrificing danceability.",
         "title": "Change — Glow of Love",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/5FE9EjOf2QaIEN74PxSJM7",
@@ -4064,15 +4081,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1EewpX7pG1ZBjgqS0bkkAm",
+        "url": "https://open.spotify.com/track/1EewpX7pG1ZBjgqS0bkkAm",
         "score": 5,
         "reason": "Tight, synthetic groove, vocoder hooks, and shimmering pads make this a pinnacle of sleek electro‑disco production.",
         "title": "Chromeo — Fancy Footwork",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 18,
@@ -6518,6 +6534,16 @@
         "score": 4,
         "reason": "Synth‑forward disco with a clear backbeat and electro‑leaning sound design that supports the session theme without sacrificing danceability.",
         "title": "Change — Glow of Love",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3LpdmYJHzogQZvz8k1JrA0",
+        "score": 4,
+        "reason": "Kick‑light but clearly sequenced, with submerged percussion and evolving synth textures that read as ambient techno rather than song‑form experimental.",
+        "title": "Biosphere — Substrata (track: Poa Alpina)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
@@ -11214,7 +11240,7 @@
     "date_raw": "1/26",
     "date_normalized": "2026-01-26",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -11223,9 +11249,97 @@
     "key_artists": "The Orb, The KLF, B12, Black Dog Productions, Aphex Twin (Selected Ambient Works Vol. II) (originators)",
     "suggested_songs": "The Orb — Little Fluffy Clouds, The KLF — 3 A.M. Eternal, B12 — Metropolis, Aphex Twin — Lichen",
     "vibe": "Techno slowed to a drift, the machines becoming atmosphere.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4Ons0TvsV2Sc6Fkt3zEvqH",
+        "score": 2,
+        "reason": "Glacial dark ambient/drone with no kick or dance pulse; the texture and atmosphere fit the “ambient” side but there is essentially no techno rhythmic framework.",
+        "title": "Uboa — Sleep Hygiene",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027956f1c16347c7c7b6e06c62",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1w3W77X9qzC1t5nq2W1l5w",
+        "score": 5,
+        "reason": "Steady 4/4 kick and dub‑techno chords embedded in a hazy, spacious mix make this a textbook ambient techno cut.",
+        "title": "Deepchord — Electromagnetic",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0YXPlVnrZwRKVRsdrYzgw5",
+        "score": 2,
+        "reason": "Slow, menacing beat and heavy vocal presence push this toward experimental hip hop; it’s atmospheric, but the focus is on voice and noise rather than ambient techno’s meditative groove.",
+        "title": "clipping., Sarah Bernat — Club Down",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024d1c35edb0aafeb16ef7c7df",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4Og7FI7K1ERu1R7jVqfN2v",
+        "score": 5,
+        "reason": "A soft but insistent kick underneath floating pads and subtle percussion keeps this firmly in ambient techno’s hypnotic, club‑adjacent zone.",
+        "title": "The Field — Over the Ice",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2TeMJxdraHOuzkK8AczQmK",
+        "score": 1,
+        "reason": "Harsh, vocal‑driven neofolk/experimental piece with little to no electronic rhythm; intensely atmospheric, but not techno or even beat‑based ambient.",
+        "title": "Lingua Ignota — MAY FAILURE BE YOUR NOOSE",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b4bcefe6e54045d9fad31c6c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3LpdmYJHzogQZvz8k1JrA0",
+        "score": 4,
+        "reason": "Kick‑light but clearly sequenced, with submerged percussion and evolving synth textures that read as ambient techno rather than song‑form experimental.",
+        "title": "Biosphere — Substrata (track: Poa Alpina)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/75f0mim2WHU6SdYi8LwJnt",
+        "score": 2,
+        "reason": "Noisy industrial/drone with a vague pulse; it shares the slow evolution and texture focus of ambient, but lacks the clear grid and dub‑techno lineage of ambient techno.",
+        "title": "Genocide Organ — Mind Control",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a034c00953264f0e2fecf3c0",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2nXHbQ5ihQqS1PBKoxxo5s",
+        "score": 5,
+        "reason": "Classic dubby ambient techno: echo‑laden chords, gentle but firm kick, and slow‑moving arrangement that sits right in the genre’s core.",
+        "title": "STL — Silent State",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 35,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 437,
@@ -13389,6 +13503,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Og7FI7K1ERu1R7jVqfN2v",
+        "score": 5,
+        "reason": "A soft but insistent kick underneath floating pads and subtle percussion keeps this firmly in ambient techno’s hypnotic, club‑adjacent zone.",
+        "title": "The Field — Over the Ice",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 271,
