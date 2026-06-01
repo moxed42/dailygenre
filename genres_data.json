@@ -19227,7 +19227,7 @@
     "date_raw": "3/1",
     "date_normalized": "2026-03-01",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -19236,9 +19236,143 @@
     "key_artists": "Tatsuro Yamashita, Mariya Takeuchi, Taeko Ohnuki, Anri, Toshiki Kadomatsu (major figures)",
     "suggested_songs": "Mariya Takeuchi — Plastic Love, Tatsuro Yamashita — Ride on Time, Anri — Last Summer Whisper, Taeko Ohnuki — 4:00 A.M., Toshiki Kadomatsu — Sea Line",
     "vibe": "Night-drive luxury for a skyline made of synth gloss and sea-breeze nostalgia.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1CCtmDKPsAa3CC0tlwUang",
+        "score": 4,
+        "reason": "Breezy mid‑tempo city pop with anime tie‑in polish; bright synths and city‑night optimism make it a clear fit even if it’s more theme‑song tailored.",
+        "title": "Unknown — 23 PART II",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cd9a22922dc3a4f1372f7953",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6tFe6vrMNJggYXMUHXEEdX",
+        "score": 4,
+        "reason": "Driving, hooky anime city pop: big chorus, glossy 80s‑style arrangement, and that energetic “aim for the top” momentum squarely in the genre.",
+        "title": "Rei Sakuma — Top wo nerae! -FLY HIGH-",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0239a55fef848abd1a25215c20",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3nByGKtrUugm8bfsNGazAV",
+        "score": 5,
+        "reason": "Smooth, minor‑key groove, electric piano, and Junko Ohashi’s poised vocal make this an archetypal city‑night number—perfect “this is city pop” explainer.",
+        "title": "Junko Ohashi — Telephone Number",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023ceb47b2ea5f9f3799def18b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1twTKqqV9gIQyWeLjbU6UJ",
+        "score": 4,
+        "reason": "Another anime‑coded cut with sleek chords and 80s studio sheen; clearly in the city‑pop lane even with its OST framing.",
+        "title": "Unknown — 23",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0263d9cfb68fbb4684558df033",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1QB30cN5wWQPhJk87InQhR",
+        "score": 4,
+        "reason": "Takanaka’s fusion guitar, rubbery bass, and sun‑drenched harmonies give yacht‑adjacent jazz fusion that’s become core city‑pop canon.",
+        "title": "Masayoshi Takanaka — RAINBOW",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02863f4540e18c97fd196d1116",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4J2oDU9oacz7lJ7H8A8P8v",
+        "score": 5,
+        "reason": "Iconic Japanese‑language city pop: bittersweet urban romance, crisp rhythm guitar, and instantly recognizable hook make it a top‑tier archetype.",
+        "title": "Miki Matsubara — Mayonaka no Door (stay with me)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d2d1c44c2767567810b051ef",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0zoGVO4bQXG8U6ChKwNgeg",
+        "score": 4,
+        "reason": "Taeko Ohnuki’s lush chords, sophisticated arrangement, and late‑night sway embody the refined, cosmopolitan side of city pop.",
+        "title": "Taeko Onuki — 400A.M.",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02af12a920f8a4256f4fe32d35",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/70aHCdlGCMaUmoFRyrA8gO",
+        "score": 4,
+        "reason": "Shiny, hook‑forward 80s cut with R&B coloring and Japanese lyrics; lives in the city‑pop/R&B overlap but still reads clearly as city pop.",
+        "title": "Momoko Kikuchi — Mystical Composer",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0280ee3afe40fb0997a8f11d36",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/12OhRXRZPgMSSBLNO5ibSC",
+        "score": 4,
+        "reason": "Mid‑tempo groove, soft‑focus production, and city‑romance mood make this a textbook but slightly less ubiquitous city‑pop example.",
+        "title": "Unknown — LOVE TRIP",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02201e417b261e3e65ecff9681",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0MaM0yE9EdQEJwDfs6EAZ9",
+        "score": 4,
+        "reason": "Jazz‑fusion chops and city‑pop melodies; Casiopea sit more on the fusion side, but this track’s slick groove is firmly part of the canon.",
+        "title": "CASIOPEA — CASIOPEA",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02648478cb25e3e302454e40e1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0LyR8MZT3A2tp58dgHeNhB",
+        "score": 4,
+        "reason": "Ohtaki’s lush production and melodic sense nail the nostalgic seaside‑city vibe; leans kayōkyoku but functions as core city pop.",
+        "title": "Eiichi Ohtaki — A LONG VACATION",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0202dbd34372e6f84b2ec7e562",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4oDX4hkUOgrlnxVDN9cHJ5",
+        "score": 3,
+        "reason": "Big anime power ballad with some shared 80s J‑pop DNA, but it’s primarily kayōkyoku/anison drama rather than city‑night AOR.",
+        "title": "TM NETWORK — BEYOND THE TIME (2025 Version)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02493909ebebe3801bad0bc3dd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6gI8gTacAsGPEy70QK4a3i",
+        "score": 5,
+        "reason": "Shimmering keys, buoyant groove, and Tatsuro’s soaring vocal: a quintessential city‑pop anthem and perfect capstone to the session.",
+        "title": "Tatsuro Yamashita — SPARKLE (1990 version)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b410256f0c9158425ee88463",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 7,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 709,
