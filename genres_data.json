@@ -18761,7 +18761,7 @@
         "reason": "Lush arrangement, sophisticated harmony and intimate, late‑night production make this feel like high‑end adult pop with strong sophistipop overlap, even if it also reads as modern soul.",
         "title": "Sade — No Ordinary Love",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ee65bbd54f993b5f01d5c511",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ee65bbd54f993b5f01d5c511",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -18771,7 +18771,7 @@
         "reason": "Slick groove, immaculate studio sheen and blue‑eyed soul vocals deliver one of the definitive radio‑pop statements of 80s sophistipop.",
         "title": "Daryl Hall & John Oates — I Can't Go for That (No Can Do)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -18788,9 +18788,11 @@
     ],
     "rank_order": 19,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Daryl Hall & John Oates — I Can't Go for That (No Can Do)",
+    "favoritesongurl": "https://open.spotify.com/track/41dDygR3r7e926oGUXfrLt",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752"
   },
   {
     "id": 744,
