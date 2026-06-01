@@ -9874,7 +9874,7 @@
         "reason": "HorsegiirL’s track runs at gabber-adjacent speed with pounding four‑on‑the‑floor and aggressively synthetic texture; it leans more pop‑internet than orthodox Rotterdam, but the kick and tempo keep it clearly in the gabber orbit.",
         "title": "horsegiirL — eat, sleep, slay, 🔁",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -9884,9 +9884,20 @@
         "reason": "Vyrval’s cut is phonk first—808 slides and trap hats—but the blown‑out low end and relentless drive brush up against gabber’s intensity without fully committing to the genre’s kick style or tempo.",
         "title": "vyrval — ✻H+3+ЯД✻7luCJIo0T6...",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cf51c0044e3008ce1edfcf70",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cf51c0044e3008ce1edfcf70",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4CKl6IkvzHfK8mPk0ZP8s4",
+        "score": 5,
+        "reason": "A better exemplar because it is straight, classic‑feeling hardcore/gabber: extremely fast four‑on‑the‑floor, relentlessly distorted kick, and minimal, shouted hooks that embody the genre’s core without phonk’s trap‑beat baggage.",
+        "title": "Rotterdam Terror Corps — Rotterdam Hooligan",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3IVrlcM5gDoj3lghHY9m7I",
@@ -9904,7 +9915,7 @@
         "reason": "“Buurman Uit Berlijn” blends gabber with miami bass and euro‑rap, but the distorted kick, frantic pace, and rave‑chant hook keep it a clear representative of the neo‑gabber resurgence.",
         "title": "MCR-T; Joost — Buurman Uit Berlijn",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b26068e7903fd1752e93f9d9",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b26068e7903fd1752e93f9d9",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -9921,9 +9932,11 @@
     ],
     "rank_order": 10,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "horsegiirL — eat, sleep, slay, 🔁",
+    "favoritesongurl": "https://open.spotify.com/track/0Rv7Ql0ImNHE4LqZFrMldi",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6"
   },
   {
     "id": 301,
@@ -11333,7 +11346,18 @@
     "key_artists": "MOONDEITY, Kordhell, GHOSTLUVME, Flametal (originators/major figures)",
     "suggested_songs": "MOONDEITY — HERO, Kordhell — Murder in My Mind, GHOSTLUVME — VOID, Flametal — Drift",
     "vibe": "A car going sideways, confident it will be fine.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4CKl6IkvzHfK8mPk0ZP8s4",
+        "score": 5,
+        "reason": "A better exemplar because it is straight, classic‑feeling hardcore/gabber: extremely fast four‑on‑the‑floor, relentlessly distorted kick, and minimal, shouted hooks that embody the genre’s core without phonk’s trap‑beat baggage.",
+        "title": "Rotterdam Terror Corps — Rotterdam Hooligan",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 221,
     "pending_songs": []
   },
