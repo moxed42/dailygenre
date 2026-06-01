@@ -13145,10 +13145,10 @@
     "subsubsubcategory": "",
     "category_path": "Folk",
     "status": "listened",
-    "date_raw": "2/5",
-    "date_normalized": "2026-02-05",
+    "date_raw": "2/4",
+    "date_normalized": "2026-02-04",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -13157,9 +13157,65 @@
     "key_artists": "The Chieftains, Planxty, Altan, Capercaillie, Loreena McKennitt (originators/major figures)",
     "suggested_songs": "The Chieftains — The Foggy Dew, Planxty — Raggle Taggle Gypsy, Altan — The Horse With a Heart, Loreena McKennitt — The Mummers' Dance",
     "vibe": "Music that remembers something very old about where it comes from.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/75sSAymXP6tGOeRvImwzOf",
+        "score": 5,
+        "reason": "Trad standard with rich, choral female vocals and orchestral backing; this arrangement leans classical crossover but is still an archetypal Celtic ballad choice.",
+        "title": "Celtic Woman — Danny Boy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0200df517164e035167137c4aa",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3nNXXPHGzCObHA50xCLzSf",
+        "score": 1,
+        "reason": "Contemporary folk‑pop song with no Celtic melodic or stylistic markers; it sits in modern singer‑songwriter territory rather than Celtic tradition.",
+        "title": "Amble — Schoolyard Days",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020fca023d5767760dcdce73bd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5lbf3FvAOz1v2h1d9WiHPT",
+        "score": 4,
+        "reason": "Lush, melancholic Celtic ballad feel with clear Gaelic roots, reinforcing the vocal‑centred Celtic vibe alongside Danny Boy.",
+        "title": "Julie Fowlis — Touch the Sky",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1esmJ8t2PRbYt2yMx2aSEW",
+        "score": 2,
+        "reason": "Film soundtrack take on an Irish song title; the performance feels more cinematic and American‑roots (“southern gothic”) than authentically Celtic in arrangement and phrasing.",
+        "title": "Jack O’Connell, Brian Dunphy, Darren Holden — Rocky Road to Dublin",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021b1d170bc3184f511f8e38b7",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1yFvSX3gXi79q7n53dUu1l",
+        "score": 5,
+        "reason": "Fast, fiddle‑driven trad performance with strong Irish dance‑tune energy, giving a textbook up‑tempo Celtic session tune.",
+        "title": "The Dubliners — Rocky Road to Dublin",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 77,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 498,
@@ -17883,7 +17939,18 @@
     "key_artists": "Simon & Garfunkel, The Seekers, Tracy Chapman, Ed Sheeran, Of Monsters and Men (major figures across eras)",
     "suggested_songs": "Simon & Garfunkel — The Sound of Silence, The Seekers — I’ll Never Find Another You, Tracy Chapman — Fast Car, Ed Sheeran — Lego House, Of Monsters and Men — Little Talks",
     "vibe": "Acoustic warmth with choruses built to travel far beyond the campfire.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5lbf3FvAOz1v2h1d9WiHPT",
+        "score": 4,
+        "reason": "Lush, melancholic Celtic ballad feel with clear Gaelic roots, reinforcing the vocal‑centred Celtic vibe alongside Danny Boy.",
+        "title": "Julie Fowlis — Touch the Sky",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 284,
     "pending_songs": []
   },
