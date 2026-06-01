@@ -25296,7 +25296,7 @@
     "date_raw": "",
     "date_normalized": "2026-02-09",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -25305,9 +25305,53 @@
     "key_artists": "Repulsion, Terrorizer, Brutal Truth, Cattle Decapitation, Exhumed (major figures)",
     "suggested_songs": "Repulsion -- Eaten Alive, Terrorizer -- Dead Shall Rise, Brutal Truth -- Collapse, Cattle Decapitation -- Forced Gender Reassignment, Exhumed -- Open the Abscess",
     "vibe": "Death metal and grindcore competing to see who can be more extreme in less time.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2U5maLAuS2ZoJzELaXzNqY",
+        "score": 4,
+        "reason": "Proto-MySpace deathcore classic: slammy, stop–start breakdown writing with frantic blasting and pig-squeal-adjacent vocals that sit right on the deathgrind border.",
+        "title": "Job For A Cowboy — Entombment of a Machine",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b5e44e7e5a04fed068999dc3",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5oD2Z1OOx1Tmcu2mc9sLY2",
+        "score": 5,
+        "reason": "Absolute grind micro-song archetype: one-second burst of blastbeat/fuzz that’s literally the “deathgrind as rude punctuation” meme.",
+        "title": "Napalm Death — You Suffer",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024c16b131533c69af1f8c7503",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/09t8Z4NQpa6fzj7LcAFx57",
+        "score": 4,
+        "reason": "Whiplash tempo shifts and chaotic riffing blur deathcore and technical grind; the chopped phrasing and constant blasts read strongly as modern deathgrind energy.",
+        "title": "The Red Chord — Clients",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0224ee51a3924c9315a689fca1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2JwCI7buFePo9kVh41tJYa",
+        "score": 4,
+        "reason": "Undeath lean more old-school death metal, but the sprinting blasts, hacking riff shapes, and compact runtime sell as contemporary deathgrind-adjacent filth.",
+        "title": "Undeath — Disputatious Malignancy",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024761e188b0c06dcdba314aa5",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 9,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 967,
