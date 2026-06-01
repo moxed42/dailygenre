@@ -8221,7 +8221,7 @@
     "date_raw": "2/11",
     "date_normalized": "2026-02-11",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8230,9 +8230,43 @@
     "key_artists": "DJ Stingray, Hellfish, Bryan Fury, Nasenbluten, Bong-Ra (originators/major figures)",
     "suggested_songs": "Nasenbluten — 100% No Soul Guaranteed, Hellfish & Bryan Fury — The Bloody Sounds of Hellfish, DJ Stingray — Speedcore Production",
     "vibe": "Hardcore, but someone kept pressing fast-forward.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/51HrgXU1e1zNVxtYjCbP55",
+        "score": 5,
+        "reason": "Textbook speedcore: absurdly fast 200+ BPM kicks, breakcore-adjacent edits, and shrill lead barrage that never really drops below hyperspeed.",
+        "title": "Kobaryo — Invisible Frenzy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02740424ae3f9cfa3e168a5964",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2Z2Vvriy81OX4fXFBEWksU",
+        "score": 4,
+        "reason": "Hybrid speedcore/happy hardcore: ultra-fast kick patterns and dense fills, but the euphoric, candy-rave melodies soften the extremity a bit.",
+        "title": "tpzolite — cheatreal",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b3c7656ada2567c3cf73629c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2sfLVWEUBn4Hl1b7SkmwyV",
+        "score": 4,
+        "reason": "M1DY’s trademark: relentless high-BPM drive and distorted kicks, clearly speedcore even if it keeps a bouncy, gabber-party sensibility.",
+        "title": "M1DY — Cold Pizza (Original Mix)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02052c4961a803321979c7dcdb",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 45,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 308,
