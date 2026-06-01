@@ -3497,6 +3497,16 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ec548c00d3ac2f10be73366d",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/5t4L5b2u6U8oUc0Q4KJX5A",
+        "score": 4,
+        "reason": "Drum‑machine drive, buzzy synth bass, and bratty vocals foreground the electronics much more clearly as the “punk instrument.”",
+        "title": "The Screamers — Vertigo",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 776,
@@ -5776,7 +5786,7 @@
       {
         "url": "https://open.spotify.com/track/0sTMWWSms4Mt6vy33rdqgv",
         "score": 4,
-        "reason": "Minimal drum machine pulse, wheezing synths, and Alan Vega’s incantatory vocal make this proto‑punk electronics that sits right at the root of synth punk.",
+        "reason": "Minimal drum‑machine pulse, wheezing synths, and Vega’s incantatory vocal make this proto‑punk electronics sitting right at the root of synth punk.",
         "title": "Suicide — Ghost Rider 2019 - Remaster",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029707d3e2f2406aab2282cf9e",
@@ -5786,7 +5796,7 @@
       {
         "url": "https://open.spotify.com/track/2ZA9Sw1hq8mOaFzOiPyN71",
         "score": 4,
-        "reason": "Same stark Suicide setup—cheap organ tones, rigid rhythm box, deadpan delivery—leaning more into cold, repetitive menace than full chaos but still core synth‑punk DNA.",
+        "reason": "Same stark Suicide setup—cheap organ tones, rigid rhythm box, deadpan delivery—core synth‑punk DNA even if it leans more hypnotic than explosive.",
         "title": "Suicide — Rocket USA 2019 - Remaster",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029707d3e2f2406aab2282cf9e",
@@ -5796,28 +5806,18 @@
       {
         "url": "https://open.spotify.com/track/3sOOE5gy9FI2KuGnjqAiGg",
         "score": 3,
-        "reason": "DEVO’s nervy guitars and rubbery bass share the jerky punk energy, but the relatively polished new‑wave sheen and hooky chorus push it toward art‑pop.",
+        "reason": "DEVO’s jerky rhythms and nervous energy fit the punk side, but guitar and glossy new‑wave hooks keep the synths as color rather than the whole attack.",
         "title": "DEVO — Puppet Boy",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0293bf74075d2710e9621a2f0d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0293bf74075d2710e9621a2f0d",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/1Pk1Bde8NZXROgnehsXnve",
-        "score": 3,
-        "reason": "Chrome’s noisy, reverb‑soaked guitars and clattering drums feel more like mutant post‑punk/industrial; the synths are textural rather than leading in that strict synth‑punk sense.",
-        "title": "Chrome — Static Gravity",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022095f56767d763d823b9e053",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0qE7nhvT9q4PGYrQXjHqJ1",
-        "score": 5,
-        "reason": "Drum‑machine stomp, buzzing synth leads, and snotty vocals all front and center; this is an ideal “what is synth punk?” explainer cut.",
-        "title": "The Spits — Tonight",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5t4L5b2u6U8oUc0Q4KJX5A",
+        "score": 4,
+        "reason": "Drum‑machine drive, buzzy synth bass, and bratty vocals foreground the electronics much more clearly as the “punk instrument.”",
+        "title": "The Screamers — Vertigo",
         "artist": "",
         "artwork": "",
         "source": "spotify",
@@ -5825,26 +5825,25 @@
         "isLevelUp": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/6uoyiRz6UuTs7qDpiRnbVd",
-        "score": 5,
-        "reason": "Ultra‑primitive synth riffing over caveman beats and snarling shouts; nails the trashy, minimal, aggressively stupid side of synth punk that pairs perfectly with Suicide.",
-        "title": "Digital Leather — Studs in Love",
+        "url": "https://open.spotify.com/track/1Pk1Bde8NZXROgnehsXnve",
+        "score": 3,
+        "reason": "Chrome’s noisy guitars and clangy drums feel more mutant post‑punk/industrial, with synths as weird texture rather than the primary punk weapon.",
+        "title": "Chrome — Static Gravity",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022095f56767d763d823b9e053",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isAdd": true
+        "added": "2026-06-01"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/4qd6o7jW3E1D2AyFW8z9HC",
-        "score": 4,
-        "reason": "Lo‑fi drum machines, cold synth bass, and dead‑eyed vocals bring a darker, more modern post‑punk spin that still reads clearly as synth‑driven punk energy.",
-        "title": "Iceage — Coalition (Demo)",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0qE7nhvT9q4PGYrQXjHqJ1",
+        "score": 5,
+        "reason": "Drum‑machine stomp, buzzing synth leads, and snotty vocals all front and center—perfect single‑track definition of synth punk for this session.",
+        "title": "The Spits — Tonight",
         "artist": "",
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01",
-        "isAdd": true
+        "isLevelUp": true
       }
     ],
     "rank_order": 32,
