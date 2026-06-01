@@ -5000,7 +5000,7 @@
     "date_raw": "4/21",
     "date_normalized": "2026-04-21",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -5009,9 +5009,63 @@
     "key_artists": "Massive Attack, Portishead, Tricky, Björk (adjacent), Morcheeba (originators/major figures)",
     "suggested_songs": "Massive Attack — Teardrop, Portishead — Sour Times, Tricky — Aftermath, Morcheeba — The Sea",
     "vibe": "3am in a city where it just stopped raining.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/67Hna13dNDkZvBpTXRIaOJ",
+        "score": 5,
+        "reason": "Canonical trip hop: half‑time hip‑hop pulse, shadowy atmosphere, and ethereal vocal make this an ideal “explain the genre” track.",
+        "title": "Massive Attack; Elizabeth Fraser — Teardrop",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2sW8fmnISifQTRgnRrQTYW",
+        "score": 5,
+        "reason": "Portishead at their core: vinyl‑crackled drums, noir strings, and haunted vocal define the moody, downtempo side of trip hop.",
+        "title": "Portishead — Roads",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dc20397b139223620af148f6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/10PQft8rchXDCw5UNu91Di",
+        "score": 4,
+        "reason": "UNKLE bring a slightly more rock‑cinematic edge, but the swung beats, murky textures, and spoken/sung vocal treatment keep it firmly in trip hop territory.",
+        "title": "UNKLE; Alice Temple — Bloodstain",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ef7a0e5fe792c4310fdeed3f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4RQc9qX2xu0mnR30aGcyjO",
+        "score": 4,
+        "reason": "Jazzy harmony over dusty beats and late‑night vocals put this in the smoother, R&B‑brushed corner of trip hop, still clearly sharing the genre’s downtempo, atmospheric DNA.",
+        "title": "Esthero — Heaven Sent",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02456b5c223b220f3bbbe9fa9f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7h14W1uQK7sjpVI1oVTobt",
+        "score": 5,
+        "reason": "Another Portishead archetype: minimal but heavy drum loop, eerie samples, and tense dynamics make this an essential statement of the genre’s darker side.",
+        "title": "Portishead — Wandering Star",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dc20397b139223620af148f6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 40,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 153,
