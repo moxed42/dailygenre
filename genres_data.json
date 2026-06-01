@@ -27105,7 +27105,7 @@
     "date_raw": "",
     "date_normalized": "2026-03-08",
     "parse_notes": "note: listed as symphonic death metal in ratings",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -27114,9 +27114,95 @@
     "key_artists": "Dimmu Borgir, Cradle of Filth, Emperor, Theatres des Vampires, Carach Angren (major figures)",
     "suggested_songs": "Dimmu Borgir -- Progenies of the Great Apocalypse, Cradle of Filth -- Nymphetamine, Emperor -- With Strength I Burn, Theatres des Vampires -- Suicide Vampire, Carach Angren -- Bitte Totet Mich",
     "vibe": "Black metal with a full orchestra, a soprano, and an extremely large budget for capes.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/63YsblCSJpTBRm55Hto85n",
+        "score": 4,
+        "reason": "Screamo/blackened post-rock that leans heavily on tremolo guitars and dramatic crescendos; adjacent to symphonic black metal in scope and mood but without the overt orchestral/choral palette.",
+        "title": "Respire — Bound",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0238b95ddc3b87ba8c4de39b5b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1JEbu4sbfwNnjetAaaYGmU",
+        "score": 4,
+        "reason": "Symphonic black metal template with big cinematic intro, blast beats, and orchestral keys framing the riffs; more straightforwardly symphonic than many genre hybrids.",
+        "title": "Dimmu Borgir — The Serpentine Offering",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02506db8d0c288b0533eb180a1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0IVdlBreRkZn0ftoUwB0T6",
+        "score": 5,
+        "reason": "Core symphonic black metal: gothic keyboards, grandiose choirs, blast-driven verses, and theatrical narrative vocals, making it an archetypal “explain the genre” pick.",
+        "title": "Cradle Of Filth — Her Ghost in the Fog",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02536d6a2b1455d3b98498aa58",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2Q73wKbwLLcGS404gkTfjH",
+        "score": 3,
+        "reason": "Brutal and riff-forward blackened death with some atmospheric keys; the symphonic elements are secondary to its death metal weight and chug.",
+        "title": "Behemoth — Ov Fire And The Void",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c11b5ccde368a55a5a446a7a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0hNLcpwAPsTqfuwxplTcjf",
+        "score": 5,
+        "reason": "Keeps the ferocity but puts choirs and orchestral arrangements fully in the foreground, hitting the epic, bombastic symphonic black metal ideal more cleanly.",
+        "title": "Behemoth — Daimonos",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track:2uQLkFOTwXJ1CKsVypBsF9",
+        "score": 5,
+        "reason": "Hyper-theatrical, orchestra-and-choir-heavy black metal where the symphonic arrangements drive the song as much as the riffs, making it a near-perfect flagship for the style.",
+        "title": "Carach Angren — Franckensteina Strataemontanus",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3LdXwhugXO7zjGkjn5McWQ",
+        "score": 3,
+        "reason": "Avant-garde, droning, and minimal with black metal DNA but little of the bombastic orchestral drama; it feels more like experimental/artsier extreme music than symphonic black.",
+        "title": "Liturgy — The Armistice",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026007a476a2d7260455f4d9b6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3ZejjELKZP6mdFCsb9LBbF",
+        "score": 5,
+        "reason": "Uses full orchestral scoring and choral layers over blast beats and shrieks, making the symphonic component unmistakable and central rather than abstract or minimalist.",
+        "title": "Emperor — Thus Spake the Nightspirit",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 12,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 959,
@@ -27302,7 +27388,18 @@
     "key_artists": "Death, Morbid Angel, Cannibal Corpse, Obituary, Entombed (originators/major figures)",
     "suggested_songs": "Death -- Pull the Plug, Morbid Angel -- Chapel of Ghouls, Cannibal Corpse -- Hammer Smashed Face, Obituary -- Slowly We Rot, Entombed -- Left Hand Path",
     "vibe": "Metal at maximum heaviness, with nothing left to soften.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0hNLcpwAPsTqfuwxplTcjf",
+        "score": 5,
+        "reason": "Keeps the ferocity but puts choirs and orchestral arrangements fully in the foreground, hitting the epic, bombastic symphonic black metal ideal more cleanly.",
+        "title": "Behemoth — Daimonos",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 194,
     "pending_songs": []
   },
