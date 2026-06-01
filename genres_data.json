@@ -3091,7 +3091,7 @@
     "date_raw": "4/11",
     "date_normalized": "2026-04-11",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -3100,9 +3100,74 @@
     "key_artists": "C.W. McCall, Red Sovine, Dave Dudley, Dick Curless, Jerry Reed (originators/major figures)",
     "suggested_songs": "C.W. McCall — Convoy, Red Sovine — Teddy Bear, Dave Dudley — Six Days on the Road, Jerry Reed — East Bound and Down",
     "vibe": "Freedom measured in miles, sung while driving them.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/51wQovDO0hf05pkZYvu1GI",
+        "score": 3,
+        "reason": "It captures highway motion and touring freedom, but it is fundamentally a general road-life anthem rather than a trucker narrative with CB chatter, diesel imagery, or hauling culture. Good adjacent opener, not a core truck-driving country exemplar.",
+        "title": "Willie Nelson — On the Road Again - Live",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d1c4c7921ae226655794e035",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0VtLA63LkMNZtC1KQxqJXu?si=7d8a4d2f1e3c4b55",
+        "score": 5,
+        "reason": "A better exemplar because it is explicitly about trucker life, loneliness, radio culture, and life lived by the mile, which is the genre’s whole center of gravity.",
+        "title": "Red Sovine — Teddy Bear",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0LpmpBulMgAwtdC3YYgkql",
+        "score": 5,
+        "reason": "Archetypal truck-driving country: the title, rhythm, and lyric perspective all lock into long-haul movement and working-driver identity. This is one of the genre’s foundational explain-it-to-a-stranger picks.",
+        "title": "Dave Dudley — Six Days On The Road",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e19c6ff062e29d8269149dad",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6dGWq08LXuIw6T2oUeHECh",
+        "score": 5,
+        "reason": "Another core text for the genre, built around CB-radio language, convoy mythology, and the 1970s trucker-pop boom. It is practically impossible to discuss truck-driving country without it.",
+        "title": "C.W. McCall — Convoy",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0250b485b35e46ee7da9324aad",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2IVpJWwVPGlfSeZ4uXgGb3",
+        "score": 4,
+        "reason": "Strong fit through its truck-stop storytelling and driver folklore, even though it leans more spoken sentimental ballad than rolling diesel anthem. Still clearly belongs inside the truck-driving country tradition.",
+        "title": "Red Sovine — Phantom 309",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0245903721fd992cb52e15cda0",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4NzlpYVrTYG1eo8BCu3MLB",
+        "score": 4,
+        "reason": "Strong fit as a trucking/chase song that brings in road culture, speed, and CB-era energy from the more outlaw-humorous side of the style. It is a bit more movie-linked and novelty-adjacent than the purest trucker standards, but still clearly in genre.",
+        "title": "Jerry Reed — East Bound and Down",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0244276ebd6b1ea91390ed76f6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 23,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 91,
