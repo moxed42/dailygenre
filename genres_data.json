@@ -1719,9 +1719,11 @@
     ],
     "rank_order": 16,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Lil Nas X — Old Town Road",
+    "favoritesongurl": "https://open.spotify.com/track/0F7FA14euOIX8KcbEturGH?si=5cf43718c8b342b6",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026239187793c9e492e687db01"
   },
   {
     "id": 68,
@@ -2170,10 +2172,10 @@
     "subsubsubcategory": "",
     "category_path": "Country > Rockabilly",
     "status": "listened",
-    "date_raw": "1/24",
-    "date_normalized": "2026-01-24",
+    "date_raw": "2/8",
+    "date_normalized": "2026-02-08",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -2182,9 +2184,63 @@
     "key_artists": "The Horrorpops, Zombie Ghost Train, Tiger Army, Koffin Kats (originators/major figures)",
     "suggested_songs": "The Horrorpops — Psychobitches Outta Hell, Tiger Army — Incorporeal, Zombie Ghost Train — Graveyard Rockabilly, Koffin Kats — Goddamn Machine",
     "vibe": "A jukebox in a haunted house, and everyone is dancing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3EEd6ldsPat620GVYMEhOP",
+        "score": 5,
+        "reason": "Absolute archetype: twangy rockabilly riffing, upright‑style bass feel, B‑movie horror lyrics and Lux’s campy snarl nail the gothabilly blueprint.",
+        "title": "The Cramps — Goo Goo Muck",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02133d663963bdaa99891a5cee",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7JlJCLbSHCKEqkHEnA7zjg",
+        "score": 4,
+        "reason": "Upright‑bass psychobilly drive with horror‑punk guitars and Karina’s croon gives a sleek, nightclub‑goth spin on the sound that’s clearly in the lane even if more polished.",
+        "title": "Horrorpops — Where They Wander",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f548050e1d0b49f05fa6662a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4n3hicmicRfpmjbAZVvyIu",
+        "score": 4,
+        "reason": "Tiger Army’s reverb‑drenched guitar and crooned vocals sit between classic rockabilly and melancholic punk, reading as dark, tattoo‑parlor gothabilly more than pure neo‑rockabilly.",
+        "title": "Tiger Army — Incorporeal",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02daf6297d2beb0edc6e1556d8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5zYQhzwJwiddIBj2pCqi1f",
+        "score": 4,
+        "reason": "Demented Are Go push the tempo and distortion toward hardcore, but the slap‑bass bounce and horror‑show vocals keep this firmly in psychobilly territory.",
+        "title": "Demented Are Go — Frenzied Beat",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020a325610a9ac620e890c0cdc",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/06ZVHXmJC2PYUBdxVuyhxR",
+        "score": 5,
+        "reason": "Coffinshakers’ baritone croon, spaghetti‑western twang and graveyard narrative nail the “Johnny Cash in a crypt” vibe, making this a perfect gothabilly mood‑piece alongside The Cramps.",
+        "title": "The Coffinshakers — Last Night Down by the Grave",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0228b074e96310e2791edf2a76",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 11,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 85,
