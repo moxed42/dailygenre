@@ -29866,7 +29866,7 @@
     "date_raw": "4/19",
     "date_normalized": "2026-04-19",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -29875,9 +29875,43 @@
     "key_artists": "Duman, Mor ve Ötesi, manga, Athena, Pentagram (major figures)",
     "suggested_songs": "Duman — Seni Kendime Sakladım, Mor ve Ötesi — Deli, manga — Beni Benimle Bırak, Athena — Dünyayı Durduran Şarkı, Pentagram — İblisname",
     "vibe": "Western rock playing in Turkey on its own terms.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5UV2oqgMXvlkOvvtK3aT7f",
+        "score": 5,
+        "reason": "Mor ve Ötesi fuse alt‑rock crunch with distinctly Turkish melodic phrasing, giving you a modern Anatolian rock anthem that’s perfect as a gateway into the genre.",
+        "title": "mor ve ötesi — Bir Derdim Var",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0261cd6f5ad7c69b76adbc5419",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3ylFxSpENJZiU0iTlpAA2k",
+        "score": 5,
+        "reason": "Cem Karaca with Edip Akbayram and Moğollar is straight from the classic Anatolian rock lineage: psychedelic-leaning arrangements, bağlama‑inflected lines, and politically charged gravitas make this an ideal core exemplar.",
+        "title": "Cem Karaca; Edip Akbayram; Moğollar — Ayrılık",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02317619e400debfda10bacd64",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7KmmSZc6v9U6txFdMtyxNd",
+        "score": 4,
+        "reason": "Barış Manço brings a poppier, more radio‑friendly spin on Anatolian rock, but the instrumentation, vocal style, and modal hooks still clearly mark it as Turkish rock rather than generic Turkish pop.",
+        "title": "Barış Manço — Fairground",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0232d464e0a07d5596bf4ac907",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 17,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 938,
