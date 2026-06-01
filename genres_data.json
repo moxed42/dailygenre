@@ -6728,9 +6728,11 @@
     ],
     "rank_order": 38,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Nena — 99 Luftballons",
+    "favoritesongurl": "https://open.spotify.com/track/2IJftBfq7pJ43tfnOR0RB3",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027e51ffd6a2e8f77ffd56bb8f"
   },
   {
     "id": 212,
@@ -17543,7 +17545,7 @@
     "date_raw": "3/25",
     "date_normalized": "2026-03-25",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -17552,9 +17554,64 @@
     "key_artists": "A Tribe Called Quest, Gang Starr, De La Soul, Digable Planets, Us3 (originators/major figures)",
     "suggested_songs": "A Tribe Called Quest — Electric Relaxation, Gang Starr — Jazz Thing, Digable Planets — Rebirth of Slick, De La Soul — The Magic Number",
     "vibe": "Hip-hop that went to the jazz crate and came back with something special.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/671sDyeE398eD0sdGuVbZU",
+        "score": 5,
+        "reason": "Stripped boom‑bap drums, upright‑bass‑feeling low end, and horn stabs under laid‑back flows make this an archetypal early‑90s jazz rap cut.",
+        "title": "A Tribe Called Quest — Steve Biko (Stir It Up)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f306af1dae08f81f9d6f1f9f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7hzm68uGbxcvQY9FAtpk2s",
+        "score": 4,
+        "reason": "Dusty jazz chords and brushed‑snare groove fused with introspective rapping land this squarely in the nujabes‑school jazz rap lane.",
+        "title": "Nujabes; Shing02 — battlecry",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0283a1baffae989501a80fffd0",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6OkDb9fyi22Pr6QJIrUNdJ",
+        "score": 4,
+        "reason": "Looped Rhodes‑style keys and woozy bass give a clear jazz feel, even though the arrangement leans a bit more lo‑fi and abstract than classic live‑band jazz rap.",
+        "title": "MF DOOM; DJ Cucumber Slice — Rhymes Like Dimes",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026ce90ec627a0198a8efd127f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6O4zEx1kzm32mXlUIOthSw",
+        "score": 2,
+        "reason": "Funky, syncopated bass and loose drums nod to jazz‑funk, but the feel and flow sit more in West Coast underground than in explicitly jazz‑sampled jazz rap.",
+        "title": "Del The Funky Homosapien — Corner Story",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aafc8647846661b4d4f14749",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7CyPwkp0oE8Ro9Dd5CUDjW",
+        "score": 5,
+        "reason": "Live‑band jazz groove with walking bass under conversational verses perfectly captures the canonical fusion of rap and straight‑ahead jazz.",
+        "title": "Gang Starr — Jazz Thing (Movie Mix)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b0dd6a5cd1dec96c4119c262",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 22,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 593,
