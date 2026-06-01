@@ -8855,6 +8855,16 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a76616abf60ce17491e95891",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P",
+        "score": 5,
+        "reason": "Lean, road‑rap beat and razor‑sharp London delivery make this a canonical UK rap text and stronger pure British‑hip‑hop exemplar.",
+        "title": "Kano — P's and Q's",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 6,
@@ -13750,9 +13760,9 @@
     "category_path": "Hip-hop > British hip-hop",
     "status": "listened",
     "date_raw": "2/3",
-    "date_normalized": "2026-02-04",
+    "date_normalized": "2026-02-03",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -13761,9 +13771,107 @@
     "key_artists": "Roots Manuva, Skinnyman, Plan B, Dave, Little Simz (major figures across eras)",
     "suggested_songs": "Roots Manuva — Witness (1 Hope), Plan B — Ill Manors, Dave — Black, Little Simz — Introvert",
     "vibe": "Hip-hop speaking in a British accent and meaning it.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/xxxxxxxxxxxxxxxxxxxxxxx1",
+        "score": 4,
+        "reason": "Irish‑language drill/rap with clear UK‑scene production aesthetics and politically charged bars; adjacent to British hip hop but close enough in sound and context to sit solidly in the session.",
+        "title": "KNEECAP — HOOD",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P",
+        "score": 5,
+        "reason": "Lean, road‑rap beat and razor‑sharp London delivery make this a canonical UK rap text and stronger pure British‑hip‑hop exemplar.",
+        "title": "Kano — P's and Q's",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/xxxxxxxxxxxxxxxxxxxxxxx2",
+        "score": 3,
+        "reason": "Rowdy, chant‑heavy KNEECAP cut where punk energy and regional identity are foregrounded; it brushes British hip hop via production and cadence but sits slightly outside as a hybrid.",
+        "title": "KNEECAP — GET YOUR BRITS OUT",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7fPfiNab1K3DQ2gx8kxlX7",
+        "score": 4,
+        "reason": "Grime‑era minimal beat and unmistakably London flow offer a cleaner, more central British‑rap statement while keeping similar aggression.",
+        "title": "Dizzee Rascal — Fix Up, Look Sharp",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/xxxxxxxxxxxxxxxxxxxxxxx3",
+        "score": 4,
+        "reason": "Noisy, punk‑laced beat and snarled delivery, but very clearly a UK rapper over UK club sonics, keeping it in‑bounds as a more experimental corner of British hip hop.",
+        "title": "slowthai — Doorman",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/xxxxxxxxxxxxxxxxxxxxxxx4",
+        "score": 5,
+        "reason": "Dark, cinematic production and technically dense, venomous verses make this a modern benchmark for British lyricism and UK rap intensity.",
+        "title": "Little Simz — Venom",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/xxxxxxxxxxxxxxxxxxxxxxx5",
+        "score": 5,
+        "reason": "Soulful yet hard‑hitting, with introspective verses and a distinctly London sensibility; a perfect “explain modern British hip hop” track.",
+        "title": "Little Simz — Free",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0ml4V0C3tq7Y6QD6uH4eBk",
+        "score": 4,
+        "reason": "Early‑2000s crew cut tying UKG and MC culture together, rounding the day back toward the garage‑rap roots of British hip hop.",
+        "title": "So Solid Crew — 21 Seconds",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/1X8ZAuSn4nZLZzI0k24rRx",
+        "score": 5,
+        "reason": "Sharp political bars over a grimy, minimal beat, giving another bullet‑proof modern British rap centrepiece alongside Simz.",
+        "title": "Dave — Question Time",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 6,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 528,
@@ -14798,7 +14906,7 @@
     "date_raw": "2/2",
     "date_normalized": "2026-02-02",
     "parse_notes": "",
-    "rating": "3",
+    "rating": 3,
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -14807,124 +14915,9 @@
     "key_artists": "Dr. Dre, Snoop Dogg, Tupac, Ice Cube, Kendrick Lamar (originators/major figures)",
     "suggested_songs": "Dr. Dre — The Next Episode, Tupac — California Love, Ice Cube — Today Was a Good Day, Kendrick Lamar — Swimming Pools",
     "vibe": "Hip-hop from California — sunnier, slower, and just as serious.",
-    "songs_listened": [
-      {
-        "url": "https://open.spotify.com/track/3ia3dJETSOllPsv3LJkE35",
-        "score": 5,
-        "reason": "G‑funk synths, Dre’s production, and 2Pac’s verse over a rolling West Coast groove make this an archetypal west coast hip hop anthem.",
-        "title": "2Pac, Roger, Dr. Dre — California Love - Original Version",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d81a092eb373ded457d94eec",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/5Tbpp3OLLClPJF8t1DmrFD",
-        "score": 5,
-        "reason": "Laid‑back funk sample, talkbox hook and conversational Dre/Snoop verses define the classic G‑funk sound at the heart of west coast hip hop.",
-        "title": "Dr. Dre, Snoop Dogg — Nuthin' But A \"G\" Thang",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029322ff440b23b5717ddd8c9b",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/7nYvUtkQMx1v80S2FH2s9J",
-        "score": 5,
-        "reason": "Slick Leon Haywood sample, Nate Dogg’s melodic hook, and Warren G’s smooth storytelling crystallize G‑funk’s mellow yet streetwise west coast vibe.",
-        "title": "Warren G, Nate Dogg — Regulate",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb009ec94ffc5a282a06f03b",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/0nj9Bq5sHDiTxSHunhgkFb",
-        "score": 4,
-        "reason": "Modern, tightly packed Kendrick verse over a minimal, bounce‑y beat; firmly west coast in voice and rhythm, but less “G‑funk” archetypal than the 90s cuts.",
-        "title": "Kendrick Lamar — squabble up",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2a0a166493a2bde5480a420",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/4ZnKSrukEcPuMxGrcZEEh1",
-        "score": 2,
-        "reason": "Big pop‑rap hook and dance‑floor focus; spiritually a mainstream pop‑rap workout with only loose geographic ties to the West Coast scene.",
-        "title": "MC Hammer, Saja — 2 Legit 2 Quit",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024002ec85eab720399a4f35f4",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs",
-        "score": 5,
-        "reason": "Laid‑back groove, whistled hook, and G‑funk synths make this a quintessentially relaxed west coast hip hop single.",
-        "title": "Snoop Dogg — Gin And Juice",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/3xv229qX6gFRYgplFCTKBl",
-        "score": 4,
-        "reason": "Dark, cinematic beat and dense storytelling sit squarely in the grimy 90s West Coast lane, balancing hardcore edge with classic west coast swing.",
-        "title": "Xzibit — Paparazzi",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fab3bfcc801b1d28701da1df",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/4rLpAOk5KVNcqEMK3m6Lje",
-        "score": 5,
-        "reason": "Slow‑rolling G‑funk bassline, Nate Dogg’s hook, and crew verses over a quintessential Doggystyle groove make this core west coast party‑anthem canon.",
-        "title": "Snoop Dogg, Kurupt, Nate Dogg, Warren G — Ain't No Fun (If the Homies Cant Have None)",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02733af86f8dea9692a3f59d29",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/2Ih217RCGAmyQR68Nn7Cqo",
-        "score": 5,
-        "reason": "Minimal, bass‑heavy groove and Ice Cube’s laconic delivery distill the ominous, cruising feel of 90s west coast gangsta rap.",
-        "title": "Ice Cube — You Know How We Do It",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0268820c2a3865d138ab7daba3",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/6KIKRz9eSTXdNsGUnomdtW",
-        "score": 5,
-        "reason": "Aggressive Bomb Squad‑influenced beat and N.W.A.’s uncompromising verses birthed the national image of West Coast gangsta rap.",
-        "title": "N.W.A. — Straight Outta Compton",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02374a967dda0cd404061b0607",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/6tDxrq4FxEL2q15y37tXT9",
-        "score": 4,
-        "reason": "Warm, soulful sample and autobiographical lyrics put 2Pac’s storytelling in a deeply West Coast context, even as the song leans more reflective than party‑oriented G‑funk.",
-        "title": "2Pac — Dear Mama",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0204b9ab6bd4bf6a350ba902ea",
-        "source": "spotify",
-        "added": "2026-06-01"
-      }
-    ],
+    "songs_listened": [],
     "rank_order": 21,
-    "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "pending_songs": []
   },
   {
     "id": 584,
@@ -18558,16 +18551,6 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs",
-        "score": 5,
-        "reason": "Laid‑back groove, whistled hook, and G‑funk synths make this a quintessentially relaxed west coast hip hop single.",
-        "title": "Snoop Dogg — Gin And Juice",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01"
       }
     ],
     "rank_order": 23,
