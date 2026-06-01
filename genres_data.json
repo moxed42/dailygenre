@@ -2088,6 +2088,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3AhXZBEqbXxNfD8SCLJjSP",
+        "score": 5,
+        "reason": "Dylan goes electric-folk on Highway 61: organ swirl, snare crack, and surreal lyrics merge folk storytelling with rock energy, establishing the template for roots music that refuses to stay acoustic.",
+        "title": "Bob Dylan — Like a Rolling Stone",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 15,
@@ -15230,7 +15240,7 @@
     "date_raw": "3/31",
     "date_normalized": "2026-03-31",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -15241,38 +15251,206 @@
     "vibe": "American music that knows where it came from.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/0VqJxMFGKnTFnibOqNjLiN",
-        "score": 5,
-        "reason": "Springsteen's hardest-hitting Nebraska-era electric rocker — raw urgency, blue-collar desperation, and that gritty Springsteen growl in full effect",
-        "title": "Bruce Springsteen — Glory Days",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31"
-      },
-      {
-        "url": "https://open.spotify.com/track/2bdtXaj7gsUOIt5SmkX8Hc",
+        "url": "https://open.spotify.com/track/3TWffuE2fuzzl1qC2W2V6j",
         "score": 4,
-        "reason": "Cave in a more propulsive, riff‑driven mode where the blues skeleton and snarled delivery give a much clearer punk‑blues charge",
-        "title": "Nick Cave & The Bad Seeds — Deanna",
+        "reason": "Jason Isbell's literate alt-country: fingerpicked acoustic detail and lived-in baritone over measured backbeat, anchoring americana in plainspoken storytelling and roots-rock restraint.",
+        "title": "Jason Isbell — 24 Frames",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020d636a92ca157d0fdf2352c2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/28cnXtME493VX9NOw9cIUh",
+        "score": 3,
+        "reason": "Johnny Cash's late-career cover pulls Nine Inch Nails into stripped gospel territory—sparse production and wounded delivery fit americana's acoustic confessional mode, but the song's industrial DNA remains visible beneath the redemption narrative.",
+        "title": "Johnny Cash — Hurt",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026f4f62da3d811b6501a69ffa",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3WCRCPSqXwa8N6QNUOJnan",
+        "score": 5,
+        "reason": "Cash's Sun Records classic captures country-folk rebellion with minimal acoustic instrumentation and freight-train rhythm, defining the outlaw archetype that runs through americana's lineage.",
+        "title": "Johnny Cash — Folsom Prison Blues",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/3Q3rJqyGp4N5Ywcxp8A9c9",
+        "url": "https://open.spotify.com/track/5QFYLEw2XgZE0cqpvwXHPB",
         "score": 5,
-        "reason": "Fast, fiddle-and-banjo-driven standard with stacked harmonies that perfectly captures the drive and ensemble balance of classic bluegrass.",
-        "title": "Bill Monroe — Blue Moon of Kentucky",
+        "reason": "The Milk Carton Kids distill americana to its essence: two voices in close harmony over interlocking acoustic guitars, no drums, no distraction—just the folk-duo lineage from Louvin Brothers to Gillian Welch.",
+        "title": "The Milk Carton Kids — A Friend Like You",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b23102aeea3aa79ee91cd1e5",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/17Zzi8qsn8mdm0t0JTGeQo",
+        "score": 4,
+        "reason": "Waxahatchee and MJ Lenderman deliver jangly alt-country with dual vocals and electric-acoustic interplay, blending indie-rock economy with twangy melodic sensibility in the contemporary americana grain.",
+        "title": "Waxahatchee, MJ Lenderman — Right Back to It",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020bc584e8e6aefded5b054117",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/52vA3CYKZqZVdQnzRrdZt6",
+        "score": 3,
+        "reason": "Dylan's protest-era acoustic anthem is foundational folk, but the stark finger-pointing and lack of instrumental color feel more traditional-folk than the genre-blending rootsiness that defines modern americana.",
+        "title": "Bob Dylan — The Times They Are A-Changin'",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b75cedd9435250e77b60bfbe",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3AhXZBEqbXxNfD8SCLJjSP",
+        "score": 5,
+        "reason": "Dylan goes electric-folk on Highway 61: organ swirl, snare crack, and surreal lyrics merge folk storytelling with rock energy, establishing the template for roots music that refuses to stay acoustic.",
+        "title": "Bob Dylan — Like a Rolling Stone",
         "artist": "",
         "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3O81hRvdSg32Vq7H3ne9OM",
+        "score": 5,
+        "reason": "John Prine's aching character study over fingerpicked waltz defines americana's heart: empathetic lyricism, lived-in voice, and acoustic-based arrangement that honors country, folk, and honky-tonk equally.",
+        "title": "John Prine — Angel from Montgomery",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0203c6a79f0920e63681421cd8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7wfCiX59FY09gsKKFhYfxp",
+        "score": 2,
+        "reason": "Lana Del Rey's cinematic orchestral pop nods to nostalgic Americana *imagery*, but the synth pads, lush strings, and studio sheen place it squarely in baroque dream-pop rather than roots instrumentation or genre tradition.",
+        "title": "Lana Del Rey — American",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ebc8cfac8b586bc475b04918",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ygDXis42ncn6kYG14lEVG",
+        "score": 5,
+        "reason": "Emmylou Harris delivers crystalline country-folk over spare acoustic backing, her purity of tone and reverence for tradition epitomizing americana's bridge between classic country and literate folk.",
+        "title": "Emmylou Harris — Boulder to Birmingham",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0211723f2867f29b2134ae47e4",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4TWn4YeBaTqDURrYLd6k0a",
+        "score": 4,
+        "reason": "Brandi Carlile's foot-stomping gospel-rock energy and roots instrumentation channel americana's revivalist spirit, blending raspy vocals with driving acoustic-electric groove.",
+        "title": "Brandi Carlile — Raise Hell",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5aac98410fb9e64e29827d4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5w6i8twsqy0DnXxGzPLHDp",
+        "score": 3,
+        "reason": "Gregory Alan Isakov's orchestral folk ballad is gorgeous but pulls toward chamber-pop delicacy—the symphonic arrangement and hushed atmosphere edge away from americana's earthier, band-driven core.",
+        "title": "Gregory Alan Isakov — Silver Bell",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028352ba18a72a0ebd8cab2e5f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1KxwZYyzWNyZSRyErj2ojT",
+        "score": 4,
+        "reason": "Isakov balances intimate fingerpicking with subtle band textures—pedal steel hints, brushed drums—keeping one foot in folk minimalism and the other in full-band americana warmth.",
+        "title": "Gregory Alan Isakov — Amsterdam",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022753d9786604e09ebdbf0244",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2c78oUybrylUrT96i65PuH",
+        "score": 4,
+        "reason": "Isakov with the Colorado Symphony delivers widescreen indie-folk: fingerpicked foundation meets subtle orchestration, balancing rootsy intimacy with cinematic sweep in the americana-adjacent lane.",
+        "title": "Gregory Alan Isakov — The Stable Song",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02de5f0133f5840a0289a76e2f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1EuvOdyyzhFUP2z3gfr6xz",
+        "score": 4,
+        "reason": "Alabama Shakes' blues-rock stomp with Brittany Howard's raw, gospel-inflected vocal and overdriven guitar fits americana's Southern soul-rock lineage, channeling roots grit through modern indie energy.",
+        "title": "Alabama Shakes — Hold On",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02272ee11b380eed8b82a1c9a4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4JGyoZ6sHC6sHeAsFPeTMR",
+        "score": 3,
+        "reason": "City and Colour's slow-burn singer-songwriter ballad is tender and acoustic, but the minimalist production and lack of roots instrumentation pull it toward adult-alternative rather than americana's fuller band sound.",
+        "title": "City and Colour — Peaceful Road",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02203369ee2591469d6ac1e4ba",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0jHwAMCVPdUXq4RDw5cuyB",
+        "score": 5,
+        "reason": "Townes Van Zandt's stark, aching ballad exemplifies americana's poetic soul: economy of language, world-weary voice, and fingerpicked guitar distilling heartbreak to its purest form.",
+        "title": "Townes Van Zandt — Pancho and Lefty",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6YfEvtwpQwGAWZBWzNmoIw",
+        "score": 4,
+        "reason": "Nathaniel Rateliff channels vintage soul-blues swagger through americana's lens: horn-driven groove, gritty vocals, and live-band energy evoke Stax but land in the rootsy present.",
+        "title": "Nathaniel Rateliff & The Night Sweats — I Need Never Get Old",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e564c5e6be9e9cace137b989",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5DnT9a5IM3eMjKgXTWVJvi",
+        "score": 4,
+        "reason": "Creedence nails swamp-rock clarity: clean backbeat, chiming guitar, and Fogerty's plainspoken delivery capture the Southern roots-rock that americana builds on, even if it predates the genre label.",
+        "title": "Creedence Clearwater Revival — Have You Ever Seen The Rain",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029b7a4a59ac03447db7491f37",
         "source": "spotify",
         "added": "2026-06-01"
       }
     ],
     "rank_order": 14,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 494,
@@ -24290,6 +24468,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3WCRCPSqXwa8N6QNUOJnan",
+        "score": 5,
+        "reason": "Cash's Sun Records classic captures country-folk rebellion with minimal acoustic instrumentation and freight-train rhythm, defining the outlaw archetype that runs through americana's lineage.",
+        "title": "Johnny Cash — Folsom Prison Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 30,
@@ -24381,6 +24569,16 @@
         "title": "Cocteau Twins — Sugar Hiccup",
         "artist": "",
         "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5ygDXis42ncn6kYG14lEVG",
+        "score": 5,
+        "reason": "Emmylou Harris delivers crystalline country-folk over spare acoustic backing, her purity of tone and reverence for tradition epitomizing americana's bridge between classic country and literate folk.",
+        "title": "Emmylou Harris — Boulder to Birmingham",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0211723f2867f29b2134ae47e4",
         "source": "spotify",
         "added": "2026-06-01"
       }
