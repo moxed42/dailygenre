@@ -9858,7 +9858,7 @@
     "date_raw": "4/24",
     "date_normalized": "2026-04-24",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -9869,18 +9869,61 @@
     "vibe": "Rotterdam saying hello at 160 BPM.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/7dZBV0I3U5F2Nf4SsvtLtt",
-        "score": 5,
-        "reason": "Straight‑up anthem with pitched leads, gated kicks and big melodic drops that spell out the euphoric hardstyle archetype in one track.",
-        "title": "Headhunterz — Dragonborn (Purple Haze Remix)",
+        "url": "https://open.spotify.com/track/0Rv7Ql0ImNHE4LqZFrMldi",
+        "score": 4,
+        "reason": "HorsegiirL’s track runs at gabber-adjacent speed with pounding four‑on‑the‑floor and aggressively synthetic texture; it leans more pop‑internet than orthodox Rotterdam, but the kick and tempo keep it clearly in the gabber orbit.",
+        "title": "horsegiirL — eat, sleep, slay, 🔁",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4hjRjhLvBIMUUhRjb7DACd",
+        "score": 3,
+        "reason": "Vyrval’s cut is phonk first—808 slides and trap hats—but the blown‑out low end and relentless drive brush up against gabber’s intensity without fully committing to the genre’s kick style or tempo.",
+        "title": "vyrval — ✻H+3+ЯД✻7luCJIo0T6...",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cf51c0044e3008ce1edfcf70",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3IVrlcM5gDoj3lghHY9m7I",
+        "score": 5,
+        "reason": "Brutalismus 3000 sit right in the modern gabber/acid‑techno crossover: hardcore tempo, clipped industrial kicks, and screamed vocals make this an archetypal example of contemporary gabber extremity.",
+        "title": "Brutalismus 3000 — Satan Was A Babyboomer",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0247447a00ad298af19cc0ca41",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5lE64uyiHhhSwS01VI4pV6",
+        "score": 4,
+        "reason": "“Buurman Uit Berlijn” blends gabber with miami bass and euro‑rap, but the distorted kick, frantic pace, and rave‑chant hook keep it a clear representative of the neo‑gabber resurgence.",
+        "title": "MCR-T; Joost — Buurman Uit Berlijn",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b26068e7903fd1752e93f9d9",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3CXYFdMkJraqKaCBzhPeOv",
+        "score": 4,
+        "reason": "Joost’s track is pure party‑gabber: clipped hardcore drums, shouted hooks, and cartoon aggression that read as gabber even while it plays with europop gloss.",
+        "title": "Joost — BOOM BOOM!!!!!",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb6d09c4700996b57095a41c",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 10,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 301,
