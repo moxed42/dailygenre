@@ -5063,9 +5063,11 @@
     ],
     "rank_order": 40,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Massive Attack; Elizabeth Fraser — Teardrop",
+    "favoritesongurl": "https://open.spotify.com/track/67Hna13dNDkZvBpTXRIaOJ",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3"
   },
   {
     "id": 153,
@@ -31682,7 +31684,7 @@
     "date_raw": "",
     "date_normalized": "2026-04-22",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -31691,9 +31693,103 @@
     "key_artists": "Motley Crue, Poison, Warrant, Whitesnake, Cinderella (major figures)",
     "suggested_songs": "Motley Crue -- Girls, Girls, Girls, Poison -- Every Rose Has Its Thorn, Warrant -- Cherry Pie, Whitesnake -- Here I Go Again, Cinderella -- Nobody's Fool",
     "vibe": "Hard rock in a dressing room mirror, with maximum hairspray applied.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5wUlY8lVPRq2mL1oUMwqfA",
+        "score": 5,
+        "reason": "Skid Row deliver big choruses, squealing guitars, and bratty attitude, making this a textbook late‑80s glam metal anthem.",
+        "title": "Skid Row — Youth Gone Wild",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bb639863b7b716acf67bfa64",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3vV3cr2TpPqFk07zxYUbla",
+        "score": 5,
+        "reason": "Quiet Riot’s cover is pure scene‑defining glam metal: chant‑along hooks, stomping rhythm, and glossy production that crystallized the genre’s stadium appeal.",
+        "title": "Quiet Riot — Cum on Feel the Noize",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0221fbdd09672c5f8bcfd66165",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2IJzqbcbQZjcca53yGkX7t",
+        "score": 4,
+        "reason": "Archetypal glam metal power ballad, with clean‑to‑crunch dynamics and big hair‑era melodrama, even if it leans more toward sentimental radio rock than the rowdier cuts.",
+        "title": "Poison — Every Rose Has Its Thorn - 2003 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f17cadb12ac0fe09aec76722",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5XcZRgJv3zMhTqCyESjQrF",
+        "score": 4,
+        "reason": "Alice Cooper here is firmly in the late‑80s glam metal resurgence: slick chorus, chugging riff, and over‑the‑top sex‑and‑danger aesthetic fit the genre’s mainstream peak.",
+        "title": "Alice Cooper — Poison",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0234b292a289c635532da02671",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5B6Z7NwVqA7W3UFiqBdEJC",
+        "score": 4,
+        "reason": "“Round and Round” balances hard rock riffing with big pop hooks and polished sheen, sitting squarely in the classic mid‑80s glam metal template.",
+        "title": "Ratt — Round and Round",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023e6f0c0b02ca72a70f6b9b50",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5xLyTbCFONUGUuG0LtUxjn",
+        "score": 4,
+        "reason": "Sleazy, strutting, and hook‑driven, this Mötley Crüe cut is archetypal Sunset Strip glam metal, even if it flirts with straight hard rock.",
+        "title": "Mötley Crüe — Girls, Girls, Girls",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c1b41df3ca1fc7f6a69feb4f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1hlveB9M6ijHZRbzZ2teyh",
+        "score": 4,
+        "reason": "Twisted Sister channel the cartoon‑rebellious, shout‑along side of glam metal; it is slightly more straight‑ahead hard rock but culturally and sonically central to the genre.",
+        "title": "Twisted Sister — We're Not Gonna Take It",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e4ff6efb66c0c9e8bbb5eb71",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/18URo35acNKRTHfEdjTcGn",
+        "score": 4,
+        "reason": "Def Leppard’s ultra‑polished production and anthemic hooks put this at the AOR border, but the big hair visual era and glam‑metal‑adjacent sound keep it a solid fit.",
+        "title": "Def Leppard — Photograph",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e45161990e83649071399525",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1YRiaGNPyP6YuH2FCutj3d",
+        "score": 4,
+        "reason": "Bon Jovi’s power ballad gloss is radio‑friendly AOR, yet the towering chorus, guitar tone, and era place it comfortably in the glam metal continuum.",
+        "title": "Bon Jovi — Never Say Goodbye",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021336b31b6a1799f0de5807ac",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 16,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 987,
