@@ -17494,7 +17494,7 @@
     "date_raw": "2/25",
     "date_normalized": "2026-02-25",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -17503,9 +17503,64 @@
     "key_artists": "Pizzicato Five, Cornelius, Kahimi Karie, Fantastic Plastic Machine, Flipper's Guitar (originators/major figures)",
     "suggested_songs": "Pizzicato Five — Twiggy Twiggy, Cornelius — If You're Here, Fantastic Plastic Machine — Bachelor Pad",
     "vibe": "Japanese pop made from an impossibly tasteful record collection.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4QOeo7TtiJntEz9oehagTV",
+        "score": 5,
+        "reason": "Hyper‑stylish lounge‑pop with city‑pop chords, retro kitsch, and sampling sensibility—textbook Shibuya‑kei as filtered through 90s Tokyo cool.",
+        "title": "Pizzicato Five — TV",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02976f99ee07d81200e8268774",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0M3gmV8wqB84IWG2BtFIso",
+        "score": 4,
+        "reason": "Jangle guitars and indie‑pop bounce, but the sophisticated chord changes and cosmopolitan production keep it firmly in the Shibuya‑kei family.",
+        "title": "Flipper’s Guitar — Young, Alive, in Love",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02daea353cadb9b8e09f767d15",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3HnGa9GUdqWn4DOM1dlZmT",
+        "score": 3,
+        "reason": "Buffalo Daughter lean into experimental rock and noise textures; Shibuya‑kei‑adjacent in scene and aesthetic more than in pure lounge‑pop form.",
+        "title": "Buffalo Daughter — Jellyfish Blues (2022 Remastered)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5cb32e1c047300572c13571",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6mF1TR0hPXXeG67emNp5x3",
+        "score": 5,
+        "reason": "Breezy bossa‑touch pop with sampled feel and chic, cosmopolitan sheen—hits the genre’s Stereolab‑via‑Tokyo sweet spot.",
+        "title": "Cornelius — If You’re Here",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3thO0vpZuI6W7VaKj6YfNV",
+        "score": 4,
+        "reason": "Glossy down‑tempo groove with cut‑and‑paste lounge, house, and pop elements; very much in the Shibuya‑kei DJ‑producer wing.",
+        "title": "Towa Tei — TECHNOVA",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f7e2dc293bed7503de291791",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 28,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 646,
@@ -23015,7 +23070,18 @@
     "key_artists": "Captain Beefheart, The Velvet Underground, Sonic Youth, Swans, This Heat (major figures)",
     "suggested_songs": "Captain Beefheart — Ella Guru, The Velvet Underground — Sister Ray, Sonic Youth — Death Valley '69, Swans — Screen Shot, This Heat — Makeshift Swahili",
     "vibe": "Rock music that doesn't know where it's going and considers that the point.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6mF1TR0hPXXeG67emNp5x3",
+        "score": 5,
+        "reason": "Breezy bossa‑touch pop with sampled feel and chic, cosmopolitan sheen—hits the genre’s Stereolab‑via‑Tokyo sweet spot.",
+        "title": "Cornelius — If You’re Here",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 272,
     "pending_songs": []
   },
