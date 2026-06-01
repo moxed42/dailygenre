@@ -2585,11 +2585,13 @@
                 ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
                 ${genre.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
+              </div>              <div class="detail-actions">
+                <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(-1)">← Previous</button>
+                <button type="button" class="btn btn-secondary" onclick="restoreArchiveUiState()">Back to Archive</button>
+                <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(1)">Next →</button>
+                ${!listenedDate ? `<button type="button" class="btn btn-primary" onclick="startListeningNow()">▶ Start Listening</button>` : ''}
               </div>
-              <div class="detail-actions">
-                <button type="button" class="btn btn-secondary" onclick="switchScreen('history')">Back to Archive</button>
-                ${!listenedDate ? `<button type="button" class="btn btn-primary" onclick="startListeningNow()">\u25B6 Start Listening</button>` : ''}
-              </div>
+
             </div>
           </div>
 
