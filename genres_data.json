@@ -9691,7 +9691,7 @@
     "date_raw": "2/18",
     "date_normalized": "2026-02-18",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -9700,9 +9700,64 @@
     "key_artists": "Black Coffee, Themba, Enoo Napa, Dj Merlon, Black Motion (originators/major figures)",
     "suggested_songs": "Black Coffee — We Dance Again, Black Motion — We Come From, Themba — Revelation, Enoo Napa — Umlilo",
     "vibe": "Deep house with a drum circle underneath it.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6NIJqFHB5cHAn064JCP7Li",
+        "score": 4,
+        "reason": "Rolling 4/4, syncopated percussion, and subtle afro‑influenced grooves make this a solid, slightly techy afro house cut.",
+        "title": "Adam Port / Stryv / Keinemusik / Orso / Malachiii — Move",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024c5b11b3f4b0d1b80112dc04",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/752l1xT5G1OHzg71ZBnTyZ",
+        "score": 5,
+        "reason": "Deep, hypnotic groove, African rhythmic feel, and warm pads—this is archetypal South African‑rooted afro house.",
+        "title": "Black Coffee — Superman",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020fb378be47dc1d645eee1c3b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/70ofkwt6aIb4bPQ51OQMQO",
+        "score": 3,
+        "reason": "Keinemusik remix folds afro house percussion into a more atmospheric electronica/IDM framework; afro flavor is strong but not the primary identity.",
+        "title": "Moderat / Keinemusik / Rampa / ME — More Love - Rampa ME Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e0cc562977affaa7477aab6b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0pSsb9KfFKHn5Wk5Yxc9fK",
+        "score": 5,
+        "reason": "Tight, polyrhythmic percussion and unmistakable afro‑house swing, with a DJ‑tool structure that foregrounds the groove.",
+        "title": "Culoe De Song — Webaba",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2R5YtxGWAhclm2sxUSPbm6",
+        "score": 4,
+        "reason": "Organic percussion, afro‑influenced groove, and melodic house sensibility all line up cleanly with modern afro/organic house.",
+        "title": "Antdot / Mozambo — Stay",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0260a4c132264c221b98b21c40",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 8,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 351,
@@ -11760,6 +11815,16 @@
         "score": 5,
         "reason": "Dub‑techno chords, steady kick and deep space in the mix line up perfectly with ambient techno’s hypnotic, club‑adjacent vibe.",
         "title": "Deepchord — Electromagnetic",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0pSsb9KfFKHn5Wk5Yxc9fK",
+        "score": 5,
+        "reason": "Tight, polyrhythmic percussion and unmistakable afro‑house swing, with a DJ‑tool structure that foregrounds the groove.",
+        "title": "Culoe De Song — Webaba",
         "artist": "",
         "artwork": "",
         "source": "spotify",
