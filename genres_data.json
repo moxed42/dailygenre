@@ -14497,7 +14497,7 @@
     "date_raw": "3/26",
     "date_normalized": "2026-03-26",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -14506,9 +14506,64 @@
     "key_artists": "Skrillex, Knife Party, Flux Pavilion, Excision, 12th Planet (originators/major figures)",
     "suggested_songs": "Skrillex — Scary Monsters and Nice Sprites, Flux Pavilion — I Can't Stop, Knife Party — Internet Friends, Excision — Throwin' Elbows",
     "vibe": "Dubstep processed through American festival culture and turned up to 11.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1DcwvDcBKeATLX85CKbHFM",
+        "score": 3,
+        "reason": "Live band plus brostep drops hybrid; the midrange is aggressive but the nu‑metal structure and guitars pull it away from pure brostep focus.",
+        "title": "Korn; Skrillex — Get Up! (feat. Skrillex)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e82543e057c1a44934c519e4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2cYqizR4lgvp4Qu6IQ3qGN",
+        "score": 5,
+        "reason": "Classic half‑time stomp, talking‑synth leads, and huge build‑and‑drop structure make this a textbook brostep anthem.",
+        "title": "Skrillex — Scary Monsters and Nice Sprites",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02daec894c14c0ca42d76eeb32",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1s4DkHKGNsqXL3Ij5TPtRw",
+        "score": 4,
+        "reason": "Bright, metallic midrange bass, big cinematic builds, and lurching drops place this firmly in early‑2010s brostep territory even if it keeps a touch more groove.",
+        "title": "Schoolboy — Zombies Ate My Neighbours",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0298f6d19b57a0a9de9911be7f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1s4DkHKGNsqXL3Ij5TPtRw",
+        "score": 4,
+        "reason": "Bright, metallic midrange bass, big cinematic builds, and lurching drops place this firmly in early‑2010s brostep territory even if it keeps a touch more groove.",
+        "title": "Schoolboy — Zombies Ate My Neighbours",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0298f6d19b57a0a9de9911be7f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1s4DkHKGNsqXL3Ij5TPtRw",
+        "score": 4,
+        "reason": "Bright, metallic midrange bass, big cinematic builds, and lurching drops place this firmly in early‑2010s brostep territory even if it keeps a touch more groove.",
+        "title": "Schoolboy — Zombies Ate My Neighbours",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0298f6d19b57a0a9de9911be7f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 19,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 474,
@@ -17772,6 +17827,16 @@
         "title": "Tech N9ne — Einstein",
         "artist": "",
         "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2cYqizR4lgvp4Qu6IQ3qGN",
+        "score": 5,
+        "reason": "Classic half‑time stomp, talking‑synth leads, and huge build‑and‑drop structure make this a textbook brostep anthem.",
+        "title": "Skrillex — Scary Monsters and Nice Sprites",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02daec894c14c0ca42d76eeb32",
         "source": "spotify",
         "added": "2026-06-01"
       }
