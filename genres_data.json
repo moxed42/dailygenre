@@ -1654,7 +1654,7 @@
     "date_raw": "2/??",
     "date_normalized": "2026-02-08",
     "parse_notes": "uncertain_day",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -1663,9 +1663,55 @@
     "key_artists": "Cowboy Troy, Big Smo, Colt Ford, Lil Nas X, Nelly (early fusion) (major figures)",
     "suggested_songs": "Lil Nas X — Old Town Road, Colt Ford — Dirt Road Anthem, Cowboy Troy — I Play Chicken with the Train, Nelly — Over and Over",
     "vibe": "Two Southern American traditions discovering they were always neighbors.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6ngGiVX91DRmGDH4G5EgeO",
+        "score": 4,
+        "reason": "Southern country ballad with clear hip hop influence in the drum programming and phrasing; a solid modern country‑rap crossover even though it leans more country than rap.",
+        "title": "Jelly Roll — Son Of A Sinner",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0225e6fd4d010d30711c12761d",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5ZVGvay4xwgXMnQWffNYeU",
+        "score": 3,
+        "reason": "Country rocker with a rap‑style half‑spoken flow in the verses; it nods to country rap but still feels primarily like mainstream radio country.",
+        "title": "Jason Aldean — Dirt Road Anthem",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02eb28649b53d81d41e285ad45",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
+        "score": 5,
+        "reason": "Banjo, 808‑leaning drums and Bubba’s double‑time flow make this an archetypal early‑2000s country‑rap crossover, stronger genre‑wise than Aldean’s rock‑leaning take.",
+        "title": "Bubba Sparxxx — Deliverance",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e82286b51cca2e5643b14352",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4FxkQzIhsLAkuiqX5puvU6",
+        "score": 4,
+        "reason": "Dark, moody guitar over trap‑leaning drums and a fully rapped vocal give a modern, clearly identifiable country‑rap angle that complements the Jelly Roll / Bubba axis.",
+        "title": "Yelawolf — Till It's Gone",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0285b51e47b16a87b82c252dc5",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 16,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 68,
@@ -1697,6 +1743,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
+        "score": 5,
+        "reason": "Banjo, 808‑leaning drums and Bubba’s double‑time flow make this an archetypal early‑2000s country‑rap crossover, stronger genre‑wise than Aldean’s rock‑leaning take.",
+        "title": "Bubba Sparxxx — Deliverance",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e82286b51cca2e5643b14352",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 170,
