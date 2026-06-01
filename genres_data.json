@@ -18323,7 +18323,7 @@
     "date_raw": "3.4",
     "date_normalized": "2026-03-04",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -18332,9 +18332,206 @@
     "key_artists": "Oasis, Blur, Pulp, Suede, Elastica (major figures)",
     "suggested_songs": "Oasis — Live Forever, Blur — Girls & Boys, Pulp — Common People, Suede — Animal Nitrate, Elastica — Connection",
     "vibe": "Big choruses, local detail, and swagger aimed straight at the cheap seats.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7falOwHJ9MjskdcNehIh79",
+        "score": 4,
+        "reason": "Piano‑driven, emotionally surging mid‑2000s UK alt‑rock with big choruses; it sits just outside the 90s core but still feels very Britpop‑adjacent in tone and harmony.",
+        "title": "Keane — Nothing In My Way",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022ebd3c8519497dc562f8f9aa",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6uNP8aOZphmhsYlOwRhNh1",
+        "score": 4,
+        "reason": "Lush keys, anthemic chorus, and earnest vocal give this a proto‑Coldplay UK indie feel; not 90s Britpop proper, but close enough in songwriting sensibility to support the day.",
+        "title": "Keane — Somewhere Only We Know",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027d6cd95a046a3c0dacbc7d33",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4jJfa4mO5JjV9Tz2aAxE2M",
+        "score": 5,
+        "reason": "Loud, swaggering guitars, drawled vocal, and hook‑heavy structure make this a quintessential Britpop anthem and perfect reference point for the genre.",
+        "title": "Oasis — Supersonic - Remastered",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027c46409e5671b5b433761623",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1FTSo4v6BOZH9QxKc3MbVM",
+        "score": 4,
+        "reason": "Compressed, riff‑forward blast of attitude with football‑chant “woo‑hoo”s; more alt‑rock than classic Britpop, but Blur’s DNA and UK lad‑energy keep it in the tent.",
+        "title": "Blur — Song 2 - 2012 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02de114203356c1f7b136960b6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7hdg03t9Qfm1nPn6OhrIVX",
+        "score": 4,
+        "reason": "String‑laden, looping groove built around an orchestral sample; the widescreen melancholy and UK indie sensibility fit Britpop’s later, more grandiose wave.",
+        "title": "The Verve — Bitter Sweet Symphony - Remastered 2016",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02707d13d3f87652e737e94d45",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5CQvKyzkWI7TnUu2oB9QZ0",
+        "score": 4,
+        "reason": "Fast, punchy, hook‑stuffed tune with laddish chorus and crunchy guitars; classic 90s Britpop energy even if it leans a bit punky.",
+        "title": "Supergrass — Alright",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020014cc5c92e8fca9ee566e2a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4OHVCeQYPncEwZOtNAJZZx",
+        "score": 4,
+        "reason": "Slower, woozy track with big dynamic swells and melancholy melody; firmly 90s UK guitar music, sitting comfortably in Britpop’s moodier corner.",
+        "title": "Blur — Beetlebum - 2012 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02de114203356c1f7b136960b6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7x6FZTgWolJs8e2cHfeUbR",
+        "score": 3,
+        "reason": "Lo‑fi, intimate acoustic track with more indie/lo‑fi singer‑songwriter energy than stadium Britpop, even though it’s Blur and era‑correct.",
+        "title": "Blur — You’re So Great - 2012 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02de114203356c1f7b136960b6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/53LZqMzQEnjBkFXPqOq0cD",
+        "score": 5,
+        "reason": "Tight, spiky guitars and chant‑ready chorus make this an archetypal mid‑90s Britpop single that captures the scene’s energy far more directly.",
+        "title": "Elastica — Connection",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0271db31770df31f435f67d785",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5CeL9C3bsoe4yzYS1Qz8cw",
+        "score": 4,
+        "reason": "Dance‑floor‑primed Britpop with disco‑ish groove, shout‑along chorus, and very 90s UK irony; a core example of the genre’s club‑friendly side.",
+        "title": "Blur — Girls & Boys",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027d3aadd7758a404d22c24229",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0SaRvx9eYudSCQYNjuCQKX",
+        "score": 4,
+        "reason": "Slow, emotionally heavy ballad with string swells and close‑miked vocal; structurally Britpop, but leaning into late‑era, post‑hangover introspection.",
+        "title": "Blur — No Distance Left To Run",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0294983882a5effd77742a9f52",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/05FgZdqxXg40X0WG8MmWMA",
+        "score": 4,
+        "reason": "Earnest, melodically rich tune with jangling guitars and storytelling lyrics; sits nicely in the more songwriter‑oriented side of Britpop.",
+        "title": "Pulp — Something Changed",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0232b1955183a7fbe0058735fc",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0SMkzFGJOBFDI9KfYD55L0",
+        "score": 4,
+        "reason": "Bright jangle guitars and bittersweet vocal melody straddle Britpop and late‑80s jangle pop, but the song slots well into a Britpop canon day.",
+        "title": "The La’s — There She Goes",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028a9c1b058c215b14983e0725",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3SyPTIK2xO4UhlpmKPsnK6",
+        "score": 4,
+        "reason": "Tight, hooky UK guitar pop with slightly psychedelic touches; firmly 90s Britpop in tone and structure.",
+        "title": "The Bluetones — Slight Return",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026717bf1b1cb99dabf540d1ae",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7mMtLgGAqsXB84sf57UMUw",
+        "score": 1,
+        "reason": "Spoken‑word novelty cover with theatrical delivery; more comedy/spoken word than Britpop despite the Pulp connection.",
+        "title": "William Shatner — Common People",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f46cc9629bc96ffd5556bed3",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7i6gFSP0ifhgRZJ7s7Q7gY",
+        "score": 5,
+        "reason": "Jarvis Cocker’s deadpan vocal, disco‑ish groove, and narrative lyrics make this one of the definitive Britpop singles and a far better genre exemplar.",
+        "title": "Pulp — Common People",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5UU9j2neitf1fZXJCKOfe7",
+        "score": 3,
+        "reason": "Dreamy, reverb‑drenched guitars and hushed vocals place this more in dream pop/jangle than Britpop proper, even though it shares some period DNA.",
+        "title": "The Sundays — Homeward",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0250b615c47f70e69b6cab7113",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/49W2tCOXfHreqzcCc5Xf2d",
+        "score": 4,
+        "reason": "Clean jangle guitars and melodic vocal keep this in a similar mood, but The Ocean Blue’s tune still leans jangle/dream pop more than Britpop; good foil but not a perfect Britpop upgrade.",
+        "title": "The Ocean Blue — A Separate Reality",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb23687e71b30b5b20c8526f",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/53LZqMzQEnjBkFXPqOq0cD",
+        "score": 5,
+        "reason": "(Appears here as a playlist track on 3/5, but in this 3/4 Britpop context we’re treating it as the canonical LEVEL UP target rather than a playlist spin.)",
+        "title": "Elastica — Connection",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0271db31770df31f435f67d785",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 6,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 668,
@@ -22153,7 +22350,18 @@
     "key_artists": "Cocteau Twins, This Mortal Coil, Galaxie 500, Slowdive, Beach House (major figures)",
     "suggested_songs": "Cocteau Twins — Heaven or Las Vegas, This Mortal Coil — Song to the Siren, Galaxie 500 — Blue Thunder, Slowdive — Alison, Beach House — Myth",
     "vibe": "Songs that seem to arrive through mist rather than straight lines.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/49W2tCOXfHreqzcCc5Xf2d",
+        "score": 4,
+        "reason": "Clean jangle guitars and melodic vocal keep this in a similar mood, but The Ocean Blue’s tune still leans jangle/dream pop more than Britpop; good foil but not a perfect Britpop upgrade.",
+        "title": "The Ocean Blue — A Separate Reality",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb23687e71b30b5b20c8526f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 219,
     "pending_songs": []
   },
@@ -22429,7 +22637,18 @@
     "key_artists": "Pavement, Sonic Youth, Modest Mouse, Arcade Fire, Built to Spill (major figures)",
     "suggested_songs": "Pavement — Cut Your Hair, Sonic Youth — Incinerate, Modest Mouse — Trailer Trash, Arcade Fire — Rebellion (Lies), Built to Spill — Carry the Zero",
     "vibe": "Independent guitar music as an ecosystem, not a single formula.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/53LZqMzQEnjBkFXPqOq0cD",
+        "score": 5,
+        "reason": "Tight, spiky guitars and chant‑ready chorus make this an archetypal mid‑90s Britpop single that captures the scene’s energy far more directly.",
+        "title": "Elastica — Connection",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0271db31770df31f435f67d785",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 381,
     "pending_songs": []
   },
