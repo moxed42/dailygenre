@@ -46,9 +46,9 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/4UO1pfxi5fDbxshrwwznJ2",
-        "score": null,
-        "reason": "Merzbow — Amlux (or any similar Merzbow harsh-noise cut)",
-        "title": "Woodpecker No. 1",
+        "score": 5,
+        "reason": "Harsh, high‑intensity noise with no conventional rhythm or melody, foregrounding volume and texture in a way that’s basically archetypal for danger‑adjacent harsh noise. [web:17]",
+        "title": "Merzbow — Amlux",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020203b5eef777c8a58322ef19",
         "source": "spotify",
@@ -56,9 +56,9 @@
       },
       {
         "url": "https://open.spotify.com/track/63U4cD65Frv95IB7paG8yN",
-        "score": null,
-        "reason": "Nurse With Wound; The New Blockaders — Hallelujah T.N.B",
-        "title": "Hallelujah T.N.B",
+        "score": 4,
+        "reason": "Long-form, punishing collaboration built from feedback, scrap‑metal textures, and overload; it’s clearly in the danger/noise zone, even if it’s more “art‑noise” than literal performance-danger. [web:10][web:13]",
+        "title": "Nurse With Wound; The New Blockaders — Hallelujah T.N.B",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b402cfa8e5da883b16b05526",
         "source": "spotify",
@@ -66,9 +66,9 @@
       },
       {
         "url": "https://open.spotify.com/track/79XZW9Hm8FuJ2RnudXzjlH",
-        "score": null,
-        "reason": "The New Blockaders; GX Jupitter-Larsen — Rip",
-        "title": "Rip",
+        "score": 4,
+        "reason": "Dense, arrhythmic noise collage where impact and obstruction matter more than any song form, making it a strong but slightly more abstract fit for “danger music” aesthetics. [web:16][web:13]",
+        "title": "The New Blockaders; GX Jupitter-Larsen — Rip",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0281d2806d8a977cc1acf4e78c",
         "source": "spotify",
