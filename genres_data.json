@@ -1872,7 +1872,7 @@
     "date_raw": "2/21",
     "date_normalized": "2026-02-21",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -1881,9 +1881,54 @@
     "key_artists": "Jimmy Buffett, Kenny Chesney (beach phase), Zac Brown Band (early), Todd Snider (adjacent) (major figures)",
     "suggested_songs": "Jimmy Buffett — Margaritaville, Jimmy Buffett — Cheeseburger in Paradise, Jimmy Buffett — Changes in Latitudes, Kenny Chesney — No Shoes, No Shirt, No Problems",
     "vibe": "Music for people who have decided the beach is a personality.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4EEjMyQub6tgFVshlM9j1M",
+        "score": 5,
+        "reason": "Archetypal tropical rock: laid‑back groove, steel‑drum‑ish keys, island imagery, and boozy escapism—all the Margaritaville DNA in one track.",
+        "title": "Jimmy Buffett — Margaritaville",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024fdb0337978c7464cdfb1783",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5qHYXcVvc9xsFB2uH7GpMN",
+        "score": 3,
+        "reason": "Beachy harmonies and tourist‑tropical lyrics, but the glossy early‑’80s Beach Boys production reads more as nostalgic pop than true trop‑rock bar‑band energy.",
+        "title": "The Beach Boys — Kokomo",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c5634c0532097e175199f07e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0DKlC2U7kqLyB8S41vD3Q0",
+        "score": 4,
+        "reason": "Mid‑tempo island groove with relaxed vocal and sun‑drenched imagery; feels much closer to modern bar‑band tropical rock.",
+        "title": "Zac Brown Band — Toes",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5IMtdHjJ1OtkxbGe4zfUxQ",
+        "score": 4,
+        "reason": "Story‑song soft rock with prominent Latin‑Caribbean percussion and breezy, vacation‑fantasy narrative, which fits the “trop rock” escapist lane well.",
+        "title": "Rupert Holmes — Escape (The Piña Colada Song)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02080cc92336eb13a0ec662146",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 78,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 72,
@@ -17898,7 +17943,18 @@
     "key_artists": "The Left Banke, The Beach Boys, The Zombies, Love, Scott Walker (originators/major figures)",
     "suggested_songs": "The Left Banke — Walk Away Renée, The Beach Boys — God Only Knows, The Zombies — Care of Cell 44, Love — Alone Again Or, Scott Walker — Montague Terrace (in Blue)",
     "vibe": "Teenage longing arranged like a small orchestra in a velvet room.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0DKlC2U7kqLyB8S41vD3Q0",
+        "score": 4,
+        "reason": "Mid‑tempo island groove with relaxed vocal and sun‑drenched imagery; feels much closer to modern bar‑band tropical rock.",
+        "title": "Zac Brown Band — Toes",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 67,
     "pending_songs": []
   },
