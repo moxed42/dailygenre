@@ -2211,7 +2211,7 @@
         "reason": "Tiger Army’s reverb‑drenched guitar and crooned vocals sit between classic rockabilly and melancholic punk, reading as dark, tattoo‑parlor gothabilly more than pure neo‑rockabilly.",
         "title": "Tiger Army — Incorporeal",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02daf6297d2beb0edc6e1556d8",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02daf6297d2beb0edc6e1556d8",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -2221,7 +2221,7 @@
         "reason": "Demented Are Go push the tempo and distortion toward hardcore, but the slap‑bass bounce and horror‑show vocals keep this firmly in psychobilly territory.",
         "title": "Demented Are Go — Frenzied Beat",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020a325610a9ac620e890c0cdc",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020a325610a9ac620e890c0cdc",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -2238,9 +2238,11 @@
     ],
     "rank_order": 11,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "The Cramps — Goo Goo Muck",
+    "favoritesongurl": "https://open.spotify.com/track/3EEd6ldsPat620GVYMEhOP",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02133d663963bdaa99891a5cee"
   },
   {
     "id": 85,
