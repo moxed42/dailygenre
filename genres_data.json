@@ -18735,7 +18735,7 @@
     "date_raw": "1/30",
     "date_normalized": "2026-01-30",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -18744,9 +18744,53 @@
     "key_artists": "Sade, The Blue Nile, Prefab Sprout, Swing Out Sister, Everything but the Girl (major figures)",
     "suggested_songs": "Sade — Smooth Operator, The Blue Nile — Tinseltown in the Rain, Prefab Sprout — Appetite, Swing Out Sister — Breakout, Everything but the Girl — Each and Every One",
     "vibe": "Late-night elegance where every chord sounds ironed, tailored, and quietly complicated.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/79dD64QT2l64W12VkPGjvZ",
+        "score": 4,
+        "reason": "Polished, mid‑tempo electronic pop with tasteful production, restrained vocals and adult‑contemporary melancholy — squarely in the smooth, upscale sophistipop lane.",
+        "title": "Everything But The Girl — Missing - 2013 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027b95909afe7b03cc64c28add",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1oaaSrDJimABpOdCEbw2DJ",
+        "score": 4,
+        "reason": "Lush arrangement, sophisticated harmony and intimate, late‑night production make this feel like high‑end adult pop with strong sophistipop overlap, even if it also reads as modern soul.",
+        "title": "Sade — No Ordinary Love",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ee65bbd54f993b5f01d5c511",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/41dDygR3r7e926oGUXfrLt",
+        "score": 5,
+        "reason": "Slick groove, immaculate studio sheen and blue‑eyed soul vocals deliver one of the definitive radio‑pop statements of 80s sophistipop.",
+        "title": "Daryl Hall & John Oates — I Can't Go for That (No Can Do)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5H2c3QhLQEeBbutVC77gpl",
+        "score": 5,
+        "reason": "Cinematic synths, spacious drum programming and hushed, introspective vocals epitomize the moody, refined, studio‑craft side of sophistipop.",
+        "title": "The Blue Nile — Headlights on the Parade",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02328d49d4e1f728797f371aaf",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 19,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 744,
