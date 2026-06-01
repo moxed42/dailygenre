@@ -442,12 +442,17 @@
       border-radius:18px;
       padding:16px;
       box-shadow:var(--shadow);
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
     }
 
     .list-item button {
       font:inherit;
     }
 
+    .tag-warn { background:rgba(180,60,10,.14); color:#7a2e00; border:1px solid rgba(180,60,10,.25); }
+    .tag-pending { background:rgba(100,60,180,.12); color:#4a2e80; border:1px solid rgba(100,60,180,.22); }
     .tag {
       display:inline-flex;
       align-items:center;
@@ -1136,9 +1141,23 @@
     .archive-list .list-item { padding:17px; }
     .archive-card-main {
       display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
+      flex:1;
+      min-width:0;
       gap:14px;
+      align-items:flex-start;
+    }
+    .archive-card-body { flex:1; min-width:0; }
+    .archive-card-right {
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:6px;
+      flex-shrink:0;
+      min-width:110px;
+    }
+    .archive-card-date {
+      white-space:nowrap;
+      opacity:.7;
     }
     .archive-card-title {
       margin:0;
@@ -1469,12 +1488,7 @@
       align-items:center;
       justify-content:flex-end;
     }
-    .archive-open-row {
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
+    .archive-open-row { display:none; }
     .ranking-row {
       grid-template-columns:auto auto 1fr auto;
     }
@@ -1656,45 +1670,69 @@
     }
 
     /* ── Visualizations screen ────────────────────────────── */
-    .viz-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin-top: 12px;
+    .viz-panel { padding: 0 0 32px; }
+    .viz-mode-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:14px 16px 12px; border-bottom:1px solid var(--border, rgba(127,82,28,.18)); margin-bottom:16px; }
+    .viz-mode-btns { display:flex; gap:4px; }
+    .viz-mode-btn { padding:7px 18px; border-radius:999px; border:1px solid var(--border, rgba(127,82,28,.3)); background:transparent; font-weight:800; font-size:.85rem; cursor:pointer; color:var(--muted, #7a5c38); transition:background .15s, color .15s; }
+    .viz-mode-btn.active { background:var(--accent, #b8600c); color:#fff; border-color:transparent; }
+    .viz-month-sel { flex:1; min-width:140px; max-width:220px; font-size:.85rem; padding:6px 10px; border-radius:8px; border:1px solid var(--border, rgba(127,82,28,.3)); background:var(--surface); color:var(--text); }
+    .viz-kpi-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin:0 0 16px; padding:0 2px; }
+    .viz-kpi { background:var(--surface); border:1px solid var(--border, rgba(127,82,28,.18)); border-radius:14px; padding:14px 14px 12px; text-align:center; }
+    .viz-kpi-val { font-size:1.9rem; font-weight:900; letter-spacing:-.03em; color:var(--accent, #b8600c); line-height:1; }
+    .viz-kpi-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted, #7a5c38); margin-top:4px; }
+    .viz-bento { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .viz-card { background:var(--surface); border:1px solid var(--border, rgba(127,82,28,.18)); border-radius:18px; padding:16px 18px 14px; box-shadow:0 4px 16px rgba(0,0,0,.06); overflow:hidden; }
+    .viz-card-wide, .viz-card-ratings, .viz-card-highlights, .viz-card-artists { grid-column:1 / -1; }
+    .viz-card-label { font-size:.78rem; font-weight:900; text-transform:uppercase; letter-spacing:.06em; color:var(--accent, #b8600c); margin-bottom:12px; }
+    .viz-card canvas { width:100% !important; display:block; }
+    .viz-rating-group { margin-bottom:14px; }
+    .viz-rating-heading { display:flex; align-items:center; gap:8px; font-weight:900; font-size:.95rem; margin-bottom:6px; }
+    .viz-star { color:var(--accent, #b8600c); font-size:1rem; }
+    .viz-rating-chips { display:flex; flex-wrap:wrap; gap:5px; }
+    .viz-chip { background:rgba(127,82,28,.1); border:1px solid rgba(127,82,28,.18); border-radius:999px; padding:3px 11px; font-size:.8rem; font-weight:600; color:var(--text); cursor:pointer; }
+    .viz-chip:hover { background:rgba(127,82,28,.2); }
+    .viz-chip-none { font-style:italic; color:var(--muted); font-size:.82rem; padding:3px 6px; }
+    .viz-donut-wrap { display:flex; align-items:center; gap:14px; }
+    .viz-donut-wrap canvas { max-width:160px; flex-shrink:0; }
+    .viz-donut-legend { flex:1; min-width:0; display:flex; flex-direction:column; gap:4px; }
+    .viz-legend-item { display:flex; align-items:center; gap:7px; font-size:.78rem; font-weight:600; color:var(--text); }
+    .viz-legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+    .viz-highlights-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px; }
+    .viz-hl-card { background:var(--surface-2, rgba(255,252,241,.7)); border:1px solid var(--border, rgba(127,82,28,.15)); border-radius:12px; padding:12px 14px; }
+    .viz-hl-label { font-size:.68rem; font-weight:900; text-transform:uppercase; letter-spacing:.06em; color:var(--muted, #7a5c38); margin-bottom:4px; }
+    .viz-hl-val { font-size:1rem; font-weight:800; color:var(--text); line-height:1.2; }
+    .viz-hl-sub { font-size:.75rem; color:var(--muted); margin-top:2px; }
+    .viz-artists-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(100px, 1fr)); gap:8px; }
+    .viz-artist-stat { text-align:center; padding:10px 6px; }
+    .viz-artist-num { font-size:1.6rem; font-weight:900; letter-spacing:-.03em; color:var(--accent, #b8600c); line-height:1; }
+    .viz-artist-lbl { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin-top:3px; }
+    .viz-contender-item { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--border, rgba(127,82,28,.1)); }
+    .viz-contender-item:last-child { border-bottom:none; }
+    .viz-contender-num { font-size:.72rem; font-weight:900; color:var(--muted); min-width:18px; }
+    .viz-contender-art { width:36px; height:36px; border-radius:8px; object-fit:cover; background:rgba(127,82,28,.1); flex-shrink:0; }
+    .viz-contender-info { flex:1; min-width:0; }
+    .viz-contender-title { font-size:.84rem; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text); }
+    .viz-contender-genre { font-size:.73rem; color:var(--muted); }
+    .viz-contender-score { font-size:.8rem; font-weight:800; color:var(--accent, #b8600c); flex-shrink:0; }
+    .viz-empty { color:var(--muted); font-size:.84rem; font-style:italic; padding:8px 0; }
+    .archive-card-main { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:14px; align-items:start; flex:1; min-width:0; }
+    .archive-card-body { min-width:0; }
+    .archive-card-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:132px; flex-shrink:0; }
+    .archive-card-date { white-space:nowrap; opacity:.72; }
+    .archive-primary-action { min-width:112px; text-align:center; }
+    .song-log-toggle { white-space:nowrap; }
+    @media (max-width: 760px) {
+      .viz-bento { grid-template-columns:1fr; }
+      .viz-kpi-val { font-size:1.5rem; }
+      .viz-donut-wrap { flex-direction:column; align-items:flex-start; }
+      .viz-donut-wrap canvas { max-width:100%; width:100% !important; }
+      .list-item.archive-card, .list-item { flex-direction:column; align-items:stretch; }
+      .archive-card-main { grid-template-columns:1fr; gap:10px; }
+      .archive-card-right { align-items:flex-start; min-width:0; width:100%; }
+      .archive-primary-action { min-width:0; }
+      .archive-card-date { order:-1; }
     }
-    .viz-card {
-      background: var(--surface);
-      border: 1px solid var(--border, rgba(127,82,28,.22));
-      border-radius: 16px;
-      padding: 16px 18px 14px;
-      box-shadow: 0 6px 18px rgba(0,0,0,.08);
-    }
-    .viz-card-wide { grid-column: 1 / -1; }
-    .viz-card h3 {
-      margin: 0 0 10px;
-      font-size: .9rem;
-      font-weight: 800;
-      letter-spacing: -.01em;
-      color: var(--text-muted, #6b5a3e);
-      text-transform: uppercase;
-    }
-    .viz-card canvas { width: 100% !important; display: block; }
-    .viz-summary-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 10px 0 4px;
-    }
-    .viz-stat-pill {
-      background: var(--surface-2);
-      border: 1px solid var(--border, rgba(127,82,28,.18));
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: .82rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .viz-stat-pill span { color: var(--accent, #b8600c); }
+
 
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
@@ -1811,6 +1849,17 @@
             </label>
           </div>
 
+          <div class="row" style="gap:14px; align-items:flex-start;">
+            <label style="display:flex; gap:10px; align-items:center; flex:1; min-width:200px;">
+              <input type="checkbox" id="monthFavorite" style="width:auto;" />
+              Mark as month favorite
+            </label>
+            <label style="display:flex; gap:10px; align-items:center; flex:1; min-width:200px;">
+              <input type="checkbox" id="monthLeastFavorite" style="width:auto;" />
+              Mark as month least favorite
+            </label>
+          </div>
+
           <div>
             <label for="notes">Notes</label>
             <textarea id="notes" placeholder="Quick reactions, standout artists, context..."></textarea>
@@ -1869,6 +1918,7 @@
             <option value="missing-songs">Missing song log</option>
             <option value="missing-favorite">Missing favorite song</option>
             <option value="notes">Has notes</option>
+            <option value="unranked">Songs logged, no rank yet</option>
             <option value="zanger">Zanger</option>
           </select>
           <select id="archiveSortFilter">
@@ -1887,72 +1937,88 @@
     </section>
 
     <section class="screen" id="screen-viz">
-      <div class="panel">
-        <div class="archive-topline">
-          <div>
-            <div class="eyebrow">Visual summary</div>
-            <h2 class="archive-title">Listening visuals</h2>
-            <p class="small archive-subtitle">Explore graphs over your listening history — genres per day, ratings mix, song log depth, and more.</p>
+      <div class="panel viz-panel">
+        <div class="viz-mode-bar">
+          <div class="viz-mode-btns">
+            <button class="viz-mode-btn active" data-viz-mode="monthly">Monthly</button>
+            <button class="viz-mode-btn" data-viz-mode="alltime">All Time</button>
           </div>
-          <div class="archive-actions">
-            <button type="button" class="btn btn-secondary" id="vizRefreshBtn" onclick="renderVisuals()">↺ Refresh</button>
+          <select id="vizMonthSelect" class="viz-month-sel"></select>
+          <button class="btn btn-ghost" id="vizRefreshBtn" onclick="renderVisuals()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh</button>
+        </div>
+
+        <div id="vizViewMonthly">
+          <div class="viz-kpi-row" id="vizKpiMonthly"></div>
+          <div class="viz-bento">
+            <div class="viz-card viz-card-ratings">
+              <div class="viz-card-label">Genre Ratings</div>
+              <div id="vizRatingsContent"></div>
+            </div>
+            <div class="viz-card viz-card-donut">
+              <div class="viz-card-label">Genre Categories</div>
+              <div class="viz-donut-wrap">
+                <canvas id="vizCatDonut" height="200"></canvas>
+                <div class="viz-donut-legend" id="vizCatLegend"></div>
+              </div>
+            </div>
+            <div class="viz-card viz-card-decades">
+              <div class="viz-card-label">Decades Explored</div>
+              <canvas id="vizDecadesBar" height="160"></canvas>
+            </div>
+            <div class="viz-card viz-card-highlights">
+              <div class="viz-card-label">Highlights</div>
+              <div class="viz-highlights-grid" id="vizHighlightsMonthly"></div>
+            </div>
+            <div class="viz-card viz-card-artists">
+              <div class="viz-card-label">Artist Discovery</div>
+              <div class="viz-artists-row" id="vizArtistsMonthly"></div>
+            </div>
+            <div class="viz-card viz-card-contenders">
+              <div class="viz-card-label">Top Song Contenders</div>
+              <div id="vizContendersMonthly"></div>
+            </div>
           </div>
         </div>
 
-        <div class="archive-filters">
-          <input id="vizSearchInput" type="search" placeholder="Filter by genre name…" />
-          <select id="vizMonthFilter"><option value="all">All months</option></select>
-          <select id="vizRatingFilter">
-            <option value="all">All ratings</option>
-            <option value="5">★ 5</option>
-            <option value="4">★ 4</option>
-            <option value="3">★ 3</option>
-            <option value="2">★ 2</option>
-            <option value="1">★ 1</option>
-            <option value="zanger">Zanger</option>
-          </select>
-          <select id="vizFlagFilter">
-            <option value="any">Any flag</option>
-            <option value="contender">Monthly contender</option>
-            <option value="alt">Has Alt Take</option>
-            <option value="songs">Has song log</option>
-            <option value="favorite">Has favorite song</option>
-            <option value="unrated">Unrated</option>
-          </select>
-        </div>
-
-        <div class="viz-summary-row" id="vizSummaryRow"></div>
-
-        <div class="viz-grid" id="vizGrid">
-          <div class="viz-card viz-card-wide">
-            <h3>Genres per day</h3>
-            <canvas id="vizGenresPerDay" height="140"></canvas>
-          </div>
-          <div class="viz-card">
-            <h3>Ratings distribution</h3>
-            <canvas id="vizRatingsMix" height="200"></canvas>
-          </div>
-          <div class="viz-card">
-            <h3>Songs per genre</h3>
-            <canvas id="vizSongsPerGenre" height="200"></canvas>
-          </div>
-          <div class="viz-card viz-card-wide">
-            <h3>Alt Takes over time</h3>
-            <canvas id="vizAltsOverTime" height="140"></canvas>
-          </div>
-          <div class="viz-card">
-            <h3>Coverage by month</h3>
-            <canvas id="vizCoverageByMonth" height="200"></canvas>
-          </div>
-          <div class="viz-card">
-            <h3>Contenders vs listened</h3>
-            <canvas id="vizContendersVsListened" height="200"></canvas>
+        <div id="vizViewAlltime" style="display:none;">
+          <div class="viz-kpi-row" id="vizKpiAlltime"></div>
+          <div class="viz-bento">
+            <div class="viz-card viz-card-donut">
+              <div class="viz-card-label">All-Time Rating Mix</div>
+              <div class="viz-donut-wrap">
+                <canvas id="vizRatingsDonut" height="200"></canvas>
+                <div class="viz-donut-legend" id="vizRatingsLegend"></div>
+              </div>
+            </div>
+            <div class="viz-card viz-card-donut">
+              <div class="viz-card-label">Genre Categories</div>
+              <div class="viz-donut-wrap">
+                <canvas id="vizCatDonutAll" height="200"></canvas>
+                <div class="viz-donut-legend" id="vizCatLegendAll"></div>
+              </div>
+            </div>
+            <div class="viz-card viz-card-wide">
+              <div class="viz-card-label">Genres Logged Per Month</div>
+              <canvas id="vizMonthlyBar" height="150"></canvas>
+            </div>
+            <div class="viz-card viz-card-decades">
+              <div class="viz-card-label">Decades Explored (All Time)</div>
+              <canvas id="vizDecadesBarAll" height="160"></canvas>
+            </div>
+            <div class="viz-card viz-card-contenders">
+              <div class="viz-card-label">Monthly Contenders</div>
+              <div id="vizContendersAll"></div>
+            </div>
+            <div class="viz-card">
+              <div class="viz-card-label">Most Songs Logged (Top 15)</div>
+              <canvas id="vizSongsDepth" height="220"></canvas>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="screen" id="screen-ranking">
+<section class="screen" id="screen-ranking">
       <div class="panel">
         <div class="eyebrow">Relative ranking</div>
         <h2 style="margin:0 0 8px; letter-spacing:-.04em;">Within each star tier</h2>
@@ -2671,6 +2737,8 @@
       document.getElementById('favoriteSong').value = genre.favoritesong || '';
       document.getElementById('favoriteSongUrl').value = genre.favoritesongurl || '';
       document.getElementById('monthlyContender').checked = !!genre.monthlycontender;
+      document.getElementById('monthFavorite').checked = !!genre.monthfavorite;
+      document.getElementById('monthLeastFavorite').checked = !!genre.monthleastfavorite;
       document.getElementById('notes').value = genre.notes || '';
       document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).filter(s => !s.isPending).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
       document.getElementById('includeSongsToggle').checked = false;
@@ -2695,7 +2763,10 @@
                 ${listenedDate ? `<span class="tag">Listened on ${escapeHtml(listenedDate)}</span>` : ''}
                 ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
+                ${hasPending(genre) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
                 ${genre.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
+                ${genre.monthfavorite ? '<span class="tag">★ Month favorite</span>' : ''}
+                ${genre.monthleastfavorite ? '<span class="tag tag-warn">Month least favorite</span>' : ''}
               </div>              <div class="detail-actions">
                 <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(-1)">← Previous</button>
                 <button type="button" class="btn btn-secondary" onclick="restoreArchiveUiState()">Back to Archive</button>
@@ -2822,6 +2893,8 @@
         } catch(e) {}
       }
       currentGenre.monthlycontender = document.getElementById('monthlyContender').checked;
+      currentGenre.monthfavorite = document.getElementById('monthFavorite').checked;
+      currentGenre.monthleastfavorite = document.getElementById('monthLeastFavorite').checked;
       currentGenre.notes = document.getElementById('notes').value.trim();
       const existingOfficial = normalizeSongsListened(currentGenre.songs_listened || []).filter(s => !s.isPending);
       const parsedOfficial = parseSongLinks(document.getElementById('songsListenedBulk').value);
@@ -2857,6 +2930,16 @@
 
       if (!dateValue(currentGenre)) {
         currentGenre.date_normalized = new Date().toISOString().slice(0,10);
+      }
+
+      const currentMonthKey = (dateValue(currentGenre) || '').slice(0,7);
+      if (currentMonthKey && (currentGenre.monthfavorite || currentGenre.monthleastfavorite)) {
+        genres.forEach(g => {
+          if (!g || g.id === currentGenre.id) return;
+          if ((dateValue(g) || '').slice(0,7) !== currentMonthKey) return;
+          if (currentGenre.monthfavorite) g.monthfavorite = false;
+          if (currentGenre.monthleastfavorite) g.monthleastfavorite = false;
+        });
       }
 
       if (currentGenre.rating === 'zanger') {
@@ -2985,7 +3068,7 @@
   btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
 }
     function hasPending(genre) {
-      return normalizeSongsListened(genre.songs_listened || []).some(s => !!s.isPending);
+      return normalizeSongsListened(genre.songs_listened || []).some(s => !!s.isPending) || !!((genre.pending_songs || []).length);
     }
 
     function hasAltTake(genre) {
@@ -3133,6 +3216,7 @@
       if (flag === 'missing-favorite') items = items.filter(g => !(g.favoritesong || g.favoritesongurl));
       if (flag === 'notes') items = items.filter(g => !!g.notes);
       if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
+      if (flag === 'unranked') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0 && !g.rank_order && g.rating !== 'zanger');
 
       if (query) {
         items = items.filter(g => [
@@ -3172,28 +3256,30 @@
         <div class="list-item archive-card">
           ${artworkHtml(art, 'archive-artwork', g.genre || 'Genre artwork')}
           <div class="archive-card-main">
-            <div>
+            <div class="archive-card-body">
               <h3 class="archive-card-title">${escapeHtml(g.genre || 'Unknown')}</h3>
               <div class="small archive-card-meta">${escapeHtml(categoryLine(g))}</div>
+              <div class="status-row">
+                <span class="tag">${ratingLabel}</span>
+                ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
+                ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : (countSongsForDisplay(songs) > 0 && !g.rank_order && g.rating !== 'zanger' ? '<span class="tag tag-warn">No rank yet</span>' : '')}
+                ${hasAltTake(g) ? '<span class="tag">Alt Take</span>' : ''}
+                ${hasPending(g) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
+                ${songCount ? `<span class="tag">${songCount} song${songCount===1?'':'s'}</span>` : '<span class="tag">Needs songs</span>'}
+              </div>
+              ${g.favoritesong ? `<div class="small" style="margin-top:8px;">Favorite song: ${
+                g.favoritesongurl
+                  ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
+                  : escapeHtml(g.favoritesong)
+              }</div>` : ''}
             </div>
-            <div class="status-row">
-              <span class="tag">${ratingLabel}</span>
-              ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
-              ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : ''}
-              ${hasAltTake(g) ? '<span class="tag">Alt Take</span>' : ''}
-              ${songCount ? `<span class="tag">${songCount} song${songCount===1?'':'s'}</span>` : '<span class="tag">Needs songs</span>'}
-            </div>
-            ${g.favoritesong ? `<div class="small" style="margin-top:10px;">Favorite song: ${
-              g.favoritesongurl
-                ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
-                : escapeHtml(g.favoritesong)
-            }</div>` : ''}
-            <div class="archive-open-row">
+            <div class="archive-card-right">
+              <span class="small archive-card-date">${escapeHtml(dateValue(g) || 'No date')}</span>
               <button class="btn btn-primary archive-primary-action" data-open-id="${g.id}">Open / Edit</button>
-              <span class="small">${escapeHtml(dateValue(g) || 'No date')}</span>
+              ${songCount ? `<button type="button" class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.8rem;font-weight:900;white-space:nowrap;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${songCount} song${songCount===1?'':'s'} logged</button>` : ''}
             </div>
-            ${songCount ? `<div class="song-log-wrap" id="sl-h-${g.id}"><button type="button" class="btn btn-ghost song-log-toggle" style="padding:6px 11px;font-size:.82rem;font-weight:900;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${songCount} song${songCount===1?'':'s'} logged</button><div class="song-log-list">${songs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
           </div>
+          ${songCount ? `<div class="song-log-wrap" id="sl-h-${g.id}"><div class="song-log-list">${songs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
         </div>`;
       }).join('');
 
@@ -3464,127 +3550,235 @@
 
         // ── Visualization helpers ─────────────────────────────────────────
     let _vizCharts = {};
-
-    function vizFilteredGenres() {
-      const month  = document.getElementById('vizMonthFilter')?.value  || 'all';
-      const rating = document.getElementById('vizRatingFilter')?.value || 'all';
-      const flag   = document.getElementById('vizFlagFilter')?.value   || 'any';
-      const q      = (document.getElementById('vizSearchInput')?.value || '').toLowerCase().trim();
-      return (genres || []).filter(g => {
-        if (!dateValue(g)) return false;
-        const d = dateValue(g);
-        if (month !== 'all' && (!d || !d.startsWith(month))) return false;
-        if (rating !== 'all') {
-          if (rating === 'zanger' && g.rating !== 'zanger') return false;
-          if (rating !== 'zanger' && String(g.rating || '') !== rating) return false;
-        }
-        if (flag === 'contender' && !g.monthlycontender) return false;
-        if (flag === 'alt' && !normalizeSongsListened(g.songs_listened || []).some(s => !!s.levelUp)) return false;
-        if (flag === 'songs' && !(g.songs_listened && g.songs_listened.length)) return false;
-        if (flag === 'favorite' && !(g.favoritesong || g.favoritesongurl)) return false;
-        if (q && !(g.genre || '').toLowerCase().includes(q)) return false;
-        return true;
-      });
-    }
+    let _vizMode = 'monthly';
 
     function vizDestroyAll() {
       Object.values(_vizCharts).forEach(c => { try { c.destroy(); } catch(e) {} });
       _vizCharts = {};
     }
-
-    const VIZ_PALETTE = { amber:'#d88a22', brown:'#8c5b23', green:'#4e8a35', red:'#b83230', slate:'#5b6b82', gold:'#c9960e', muted:'#bba88a' };
-    const RATING_COLORS = { '5':'#3d7a1a','4':'#6fa832','3':'#d88a22','2':'#c9540e','1':'#b83230','zanger':'#5b6b82' };
-
-    function renderVisuals() {
-      if (typeof Chart === 'undefined') { console.warn('Chart.js not loaded'); return; }
-      vizDestroyAll();
-      const items = vizFilteredGenres();
-
-      const summaryEl = document.getElementById('vizSummaryRow');
-      if (summaryEl) {
-        const songTotal = items.reduce((n,g) => n + normalizeSongsListened(g.songs_listened||[]).length, 0);
-        const altTotal  = items.reduce((n,g) => n + normalizeSongsListened(g.songs_listened||[]).filter(s=>!!s.levelUp).length, 0);
-        const contTotal = items.filter(g => g.monthlycontender).length;
-        summaryEl.innerHTML = [['Genres',items.length],['Songs logged',songTotal],['Alt Takes',altTotal],['Contenders',contTotal]]
-          .map(([label,val]) => `<div class="viz-stat-pill">${label}: <span>${val}</span></div>`).join('');
-      }
-
-      // Genres per day
-      const dayMap = {};
-      items.forEach(g => { const d = dateValue(g); dayMap[d] = (dayMap[d]||0)+1; });
-      const dayLabels = Object.keys(dayMap).sort();
-      const c1 = document.getElementById('vizGenresPerDay');
-      if (c1) _vizCharts.day = new Chart(c1.getContext('2d'), { type:'bar',
-        data:{ labels:dayLabels.map(d=>d.slice(5)), datasets:[{ label:'Genres', data:dayLabels.map(d=>dayMap[d]), backgroundColor:VIZ_PALETTE.amber, borderRadius:4, borderSkipped:false }] },
-        options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ticks:{maxRotation:60,font:{size:10}}}, y:{beginAtZero:true,precision:0} } }
-      });
-
-      // Ratings doughnut
-      const ratingKeys = ['5','4','3','2','1','zanger'];
-      const ratingMap = {}; ratingKeys.forEach(k=>ratingMap[k]=0);
-      items.forEach(g => { const k = g.rating==='zanger'?'zanger':String(g.rating||''); if(ratingMap[k]!=null) ratingMap[k]++; });
-      const c2 = document.getElementById('vizRatingsMix');
-      if (c2) _vizCharts.rating = new Chart(c2.getContext('2d'), { type:'doughnut',
-        data:{ labels:['★5','★4','★3','★2','★1','Zanger'], datasets:[{ data:ratingKeys.map(k=>ratingMap[k]), backgroundColor:ratingKeys.map(k=>RATING_COLORS[k]), borderWidth:2, borderColor:'#fffdf8' }] },
-        options:{ responsive:true, plugins:{legend:{position:'right',labels:{font:{size:11}}}} }
-      });
-
-      // Songs per genre (top 20, horizontal bar)
-      const songItems = items.map(g=>({ label:(g.genre||'?').slice(0,22), count:normalizeSongsListened(g.songs_listened||[]).length }))
-        .filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,20);
-      const c3 = document.getElementById('vizSongsPerGenre');
-      if (c3) _vizCharts.songs = new Chart(c3.getContext('2d'), { type:'bar',
-        data:{ labels:songItems.map(x=>x.label), datasets:[{ label:'Songs', data:songItems.map(x=>x.count), backgroundColor:VIZ_PALETTE.brown, borderRadius:3, borderSkipped:false }] },
-        options:{ indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{ x:{beginAtZero:true,precision:0}, y:{ticks:{font:{size:10}}} } }
-      });
-
-      // Alt Takes over time
-      const altMap = {};
-      items.forEach(g => { const d=dateValue(g); if(normalizeSongsListened(g.songs_listened||[]).some(s=>!!s.levelUp)) altMap[d]=(altMap[d]||0)+1; });
-      const altLabels = Object.keys(altMap).sort();
-      const c4 = document.getElementById('vizAltsOverTime');
-      if (c4) _vizCharts.alts = new Chart(c4.getContext('2d'), { type:'line',
-        data:{ labels:altLabels.map(d=>d.slice(5)), datasets:[{ label:'Alt Takes', data:altLabels.map(d=>altMap[d]), borderColor:VIZ_PALETTE.amber, backgroundColor:'rgba(216,138,34,.15)', fill:true, tension:0.3, pointRadius:3 }] },
-        options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ticks:{maxRotation:60,font:{size:10}}}, y:{beginAtZero:true,precision:0} } }
-      });
-
-      // Coverage by month
-      const monthMap = {};
-      items.forEach(g => { const d=dateValue(g); if(!d) return; const m=d.slice(0,7); monthMap[m]=(monthMap[m]||0)+1; });
-      const monthLabels = Object.keys(monthMap).sort();
-      const c5 = document.getElementById('vizCoverageByMonth');
-      if (c5) _vizCharts.monthly = new Chart(c5.getContext('2d'), { type:'bar',
-        data:{ labels:monthLabels, datasets:[{ label:'Genres', data:monthLabels.map(m=>monthMap[m]), backgroundColor:VIZ_PALETTE.green, borderRadius:4, borderSkipped:false }] },
-        options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ticks:{font:{size:10}}}, y:{beginAtZero:true,precision:0} } }
-      });
-
-      // Contenders vs listened per month
-      const contMonth={}, totalMonth={};
-      items.forEach(g => { const d=dateValue(g); if(!d) return; const m=d.slice(0,7); totalMonth[m]=(totalMonth[m]||0)+1; if(g.monthlycontender) contMonth[m]=(contMonth[m]||0)+1; });
-      const cMonths = Object.keys(totalMonth).sort();
-      const c6 = document.getElementById('vizContendersVsListened');
-      if (c6) _vizCharts.contenders = new Chart(c6.getContext('2d'), { type:'bar',
-        data:{ labels:cMonths, datasets:[
-          { label:'Listened', data:cMonths.map(m=>totalMonth[m]), backgroundColor:VIZ_PALETTE.muted, borderRadius:3, borderSkipped:false },
-          { label:'Contenders', data:cMonths.map(m=>contMonth[m]||0), backgroundColor:VIZ_PALETTE.gold, borderRadius:3, borderSkipped:false }
-        ]},
-        options:{ responsive:true, plugins:{legend:{position:'top',labels:{font:{size:11}}}}, scales:{ x:{ticks:{font:{size:10}}}, y:{beginAtZero:true,precision:0} } }
-      });
+    function vizMonths() {
+      return [...new Set((genres || []).map(g => dateValue(g)).filter(Boolean).map(d => d.slice(0,7)))].sort();
     }
-
-    function initVisuals() {
-      const monthSel = document.getElementById('vizMonthFilter');
-      if (monthSel && monthSel.options.length === 1) {
-        const months = [...new Set((genres||[]).map(g=>dateValue(g)).filter(Boolean).map(d=>d.slice(0,7)))].sort();
-        months.forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent=m; monthSel.appendChild(o); });
-      }
-      ['vizSearchInput','vizMonthFilter','vizRatingFilter','vizFlagFilter'].forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.addEventListener(el.tagName==='INPUT'?'input':'change', ()=>renderVisuals());
+    function vizMode() { return _vizMode || 'monthly'; }
+    function vizSelectedMonth() {
+      const sel = document.getElementById('vizMonthSelect');
+      const months = vizMonths();
+      if (!months.length) return '';
+      if (sel && sel.value) return sel.value;
+      return months[months.length - 1];
+    }
+    function vizBaseGenres() {
+      const all = (genres || []).filter(g => ['listened','veto'].includes((g.status || '').toLowerCase()) && dateValue(g));
+      if (vizMode() === 'alltime') return all;
+      const month = vizSelectedMonth();
+      return all.filter(g => (dateValue(g) || '').startsWith(month));
+    }
+    function vizOfficialSongs(genre) { return normalizeSongsListened(genre?.songs_listened || []).filter(s => !s.isPending); }
+    function vizAllOfficialSongs(items) { return items.flatMap(vizOfficialSongs); }
+    function vizMonthTitle(month) {
+      if (!month) return 'No month selected';
+      const [y, m] = month.split('-').map(Number);
+      try { return new Date(y, m - 1, 1).toLocaleString(undefined, { month:'long', year:'numeric' }); }
+      catch(e) { return month; }
+    }
+    function vizNumericRating(g) {
+      if (!g) return 0;
+      if (String(g.rating || '') === 'zanger') return 0;
+      return Number(g.rating || 0);
+    }
+    function vizCategoryRoot(g) {
+      const raw = categoryLine(g) || 'Uncategorized';
+      return raw.split(/[/>|]/).map(x => String(x || '').trim()).filter(Boolean)[0] || raw || 'Uncategorized';
+    }
+    function vizInferDecade(genre) {
+      const text = [genre?.genre, categoryLine(genre), genre?.notes].filter(Boolean).join(' ').toLowerCase();
+      const checks = [
+        ['1950s', /(1950s|50s|rockabilly|doo[- ]?wop)/],
+        ['1960s', /(1960s|60s|psychedelia|garage rock|beat music)/],
+        ['1970s', /(1970s|70s|disco|krautrock|glam rock|classic punk)/],
+        ['1980s', /(1980s|80s|new wave|synthpop|hair metal|post[- ]?punk)/],
+        ['1990s', /(1990s|90s|grunge|britpop|trip hop|boom bap|shoegaze)/],
+        ['2000s', /(2000s|00s|bloghouse|crunk|nu metal|electroclash|emo rap)/],
+        ['2010s', /(2010s|2010|cloud rap|hyperpop|vaporwave|bedroom pop|drill|uk garage)/],
+        ['2020s', /(2020s|2020|digicore|rage|phonk|drift phonk|pluggnb)/],
+      ];
+      const found = checks.filter(([label, re]) => re.test(text)).map(([label]) => label);
+      return found[0] || null;
+    }
+    function vizArtists(items) {
+      const names = new Set();
+      let songsWithArtists = 0;
+      items.forEach(g => {
+        vizOfficialSongs(g).forEach(s => {
+          const a = String(s.artist || '').trim();
+          if (a) {
+            songsWithArtists += 1;
+            a.split(/,|&| feat\.? | featuring /i).map(x => x.trim()).filter(Boolean).forEach(n => names.add(n));
+          }
+        });
+        const fa = String(g.favoriteartist || '').trim();
+        if (fa) names.add(fa);
       });
+      return { uniqueArtists: names.size, songsWithArtists };
+    }
+    function vizEstimatedMinutes(songCount) { return Math.round(songCount * 3.5); }
+    function vizFormatMinutes(mins) {
+      const h = Math.floor(mins / 60), m = mins % 60;
+      if (!h) return `${m}m`;
+      return `${h}h ${m}m`;
+    }
+    function vizTopContenders(items, limit=8) {
+      return items.flatMap(g => vizOfficialSongs(g).map(s => ({ genre: g, song: s, score: Number(s.score || 0) })))
+        .filter(x => x.song && x.song.url)
+        .sort((a,b) => (b.score - a.score) || String(a.genre?.genre || '').localeCompare(String(b.genre?.genre || '')))
+        .slice(0, limit);
+    }
+    function vizOpenGenreChip(name) {
+      const g = (genres || []).find(x => String(x.genre || '') === String(name || ''));
+      if (g) openGenreDetail(g, true);
+    }
+    function vizPalette() { return ['#d88a22','#8c5b23','#4e8a35','#b83230','#5b6b82','#c9960e','#8c4fb8','#2c7fb8','#00a8a8','#f05a7e','#8b9b0f','#ff7f0e']; }
+    function vizLegend(el, labels, values, colors) {
+      if (!el) return;
+      el.innerHTML = labels.map((label, i) => `<div class="viz-legend-item"><span class="viz-legend-dot" style="background:${colors[i]}"></span><span>${escapeHtml(String(label))} (${values[i]})</span></div>`).join('');
+    }
+    function vizRenderKPIs(el, stats) {
+      if (!el) return;
+      el.innerHTML = stats.map(s => `<div class="viz-kpi"><div class="viz-kpi-val">${escapeHtml(String(s.value))}</div><div class="viz-kpi-label">${escapeHtml(String(s.label))}</div></div>`).join('');
+    }
+    function vizRenderRatingsContent(items) {
+      const map = { '5': [], '4': [], '3': [], '2': [], '1': [], 'zanger': [] };
+      items.forEach(g => { const k = String(g.rating || ''); if (k === 'zanger') map.zanger.push(g); else if (map[k]) map[k].push(g); });
+      const groups = [['5','★★★★★ On repeat'],['4','★★★★ Happy to hear'],['3','★★★ Okay'],['2','★★ Ehhhh'],['1','★ Never again'],['zanger','Zanger']];
+      const root = document.getElementById('vizRatingsContent');
+      if (!root) return;
+      root.innerHTML = groups.map(([k, label]) => {
+        const list = map[k].sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || String(a.genre || '').localeCompare(String(b.genre || '')));
+        return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? '✕' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button class="viz-chip" onclick="vizOpenGenreChip(${JSON.stringify(String(g.genre || ''))})">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
+      }).join('');
+    }
+    function vizRenderHighlights(items) {
+      const mount = document.getElementById('vizHighlightsMonthly');
+      if (!mount) return;
+      if (!items.length) { mount.innerHTML = '<div class="viz-empty">No genres logged for this month yet.</div>'; return; }
+      const sorted = items.slice().sort((a,b) => String(dateValue(a)||'').localeCompare(String(dateValue(b)||'')) || String(a.genre||'').localeCompare(String(b.genre||'')));
+      const first = sorted[0], last = sorted[sorted.length - 1];
+      const explicitFav = items.find(g => !!g.monthfavorite);
+      const explicitLeast = items.find(g => !!g.monthleastfavorite);
+      const rated = items.filter(g => String(g.rating || '') !== 'zanger' && g.rating !== '' && g.rating != null);
+      const favorite = explicitFav || rated.slice().sort((a,b) => vizNumericRating(b) - vizNumericRating(a) || ((a.rank_order ?? 9999) - (b.rank_order ?? 9999)) || String(a.genre||'').localeCompare(String(b.genre||'')))[0] || first;
+      const least = explicitLeast || rated.slice().sort((a,b) => vizNumericRating(a) - vizNumericRating(b) || String(a.genre||'').localeCompare(String(b.genre||'')))[0] || last;
+      const favoriteSongGenre = items.find(g => g.favoritesong && (g.monthfavorite || g.monthlycontender)) || items.find(g => g.favoritesong) || null;
+      mount.innerHTML = [
+        ['Favorite genre', favorite?.genre || '—', categoryLine(favorite || {})],
+        ['Least favorite', least?.genre || '—', categoryLine(least || {})],
+        ['Favorite song', favoriteSongGenre?.favoritesong || '—', favoriteSongGenre?.favoriteartist || favoriteSongGenre?.genre || ''],
+        ['First → Last', `${first?.genre || '—'} → ${last?.genre || '—'}`, `${dateValue(first) || ''} to ${dateValue(last) || ''}`],
+      ].map(([label, val, sub]) => `<div class="viz-hl-card"><div class="viz-hl-label">${escapeHtml(String(label))}</div><div class="viz-hl-val">${escapeHtml(String(val))}</div><div class="viz-hl-sub">${escapeHtml(String(sub || ''))}</div></div>`).join('');
+    }
+    function vizRenderArtistStats(items) {
+      const mount = document.getElementById('vizArtistsMonthly');
+      if (!mount) return;
+      const songs = vizAllOfficialSongs(items), artists = vizArtists(items), avg = items.length ? (artists.uniqueArtists / items.length).toFixed(1) : '0';
+      mount.innerHTML = [['Unique Artists', artists.uniqueArtists],['Songs Logged', songs.length],['With Artist Data', artists.songsWithArtists],['Artists / Genre', avg]].map(([label, value]) => `<div class="viz-artist-stat"><div class="viz-artist-num">${escapeHtml(String(value))}</div><div class="viz-artist-lbl">${escapeHtml(String(label))}</div></div>`).join('');
+    }
+    function vizRenderContenders(mountId, items, limit=8) {
+      const mount = document.getElementById(mountId);
+      if (!mount) return;
+      const top = vizTopContenders(items, limit);
+      if (!top.length) { mount.innerHTML = '<div class="viz-empty">No scored songs yet.</div>'; return; }
+      mount.innerHTML = top.map((row, i) => `<div class="viz-contender-item"><div class="viz-contender-num">${i + 1}</div>${row.song.artwork ? `<img class="viz-contender-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy" width="36" height="36">` : `<div class="viz-contender-art"></div>`}<div class="viz-contender-info"><div class="viz-contender-title">${escapeHtml(row.song.title || 'Untitled track')}</div><div class="viz-contender-genre">${escapeHtml((row.song.artist ? `${row.song.artist} — ` : '') + (row.genre?.genre || ''))}</div></div><div class="viz-contender-score">${row.score || 0}/5</div></div>`).join('');
+    }
+    function vizMonthlyCharts(items) {
+      const palette = vizPalette();
+      const catCounts = {};
+      items.forEach(g => { const k = vizCategoryRoot(g); catCounts[k] = (catCounts[k] || 0) + 1; });
+      const catLabels = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a]).slice(0, 10);
+      const catVals = catLabels.map(k => catCounts[k]);
+      const catColors = catLabels.map((_, i) => palette[i % palette.length]);
+      const catCanvas = document.getElementById('vizCatDonut');
+      if (catCanvas) _vizCharts.catMonthly = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, plugins:{legend:{display:false}}, cutout:'58%' } });
+      vizLegend(document.getElementById('vizCatLegend'), catLabels, catVals, catColors);
+      const decadeCounts = { '1950s':0,'1960s':0,'1970s':0,'1980s':0,'1990s':0,'2000s':0,'2010s':0,'2020s':0 };
+      items.forEach(g => { const d = vizInferDecade(g); if (d) decadeCounts[d] += 1; });
+      const dLabels = Object.keys(decadeCounts), dVals = dLabels.map(k => decadeCounts[k]);
+      const decadeCanvas = document.getElementById('vizDecadesBar');
+      if (decadeCanvas) _vizCharts.decadesMonthly = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
+    }
+    function vizAllTimeCharts(items) {
+      const palette = vizPalette();
+      const ratingKeys = ['5','4','3','2','1','zanger'], ratingLabels = ['★5','★4','★3','★2','★1','Zanger'], ratingColors = ['#3d7a1a','#6fa832','#d88a22','#c9540e','#b83230','#5b6b82'];
+      const ratingMap = { '5':0,'4':0,'3':0,'2':0,'1':0,'zanger':0 };
+      items.forEach(g => { const k = String(g.rating || ''); if (k === 'zanger') ratingMap.zanger += 1; else if (ratingMap[k] != null) ratingMap[k] += 1; });
+      const rd = ratingKeys.map(k => ratingMap[k]);
+      const ratingCanvas = document.getElementById('vizRatingsDonut');
+      if (ratingCanvas) _vizCharts.ratingAll = new Chart(ratingCanvas.getContext('2d'), { type:'doughnut', data:{ labels:ratingLabels, datasets:[{ data:rd, backgroundColor:ratingColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, plugins:{legend:{display:false}}, cutout:'58%' } });
+      vizLegend(document.getElementById('vizRatingsLegend'), ratingLabels, rd, ratingColors);
+      const catCounts = {};
+      items.forEach(g => { const k = vizCategoryRoot(g); catCounts[k] = (catCounts[k] || 0) + 1; });
+      const catLabels = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a]).slice(0, 10), catVals = catLabels.map(k => catCounts[k]), catColors = catLabels.map((_, i) => palette[i % palette.length]);
+      const catCanvas = document.getElementById('vizCatDonutAll');
+      if (catCanvas) _vizCharts.catAll = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, plugins:{legend:{display:false}}, cutout:'58%' } });
+      vizLegend(document.getElementById('vizCatLegendAll'), catLabels, catVals, catColors);
+      const monthCounts = {};
+      items.forEach(g => { const m = (dateValue(g) || '').slice(0,7); monthCounts[m] = (monthCounts[m] || 0) + 1; });
+      const mLabels = Object.keys(monthCounts).sort(), mVals = mLabels.map(m => monthCounts[m]);
+      const monthCanvas = document.getElementById('vizMonthlyBar');
+      if (monthCanvas) _vizCharts.monthlyBar = new Chart(monthCanvas.getContext('2d'), { type:'bar', data:{ labels:mLabels, datasets:[{ data:mVals, backgroundColor:'#d88a22', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
+      const decadeCounts = { '1950s':0,'1960s':0,'1970s':0,'1980s':0,'1990s':0,'2000s':0,'2010s':0,'2020s':0 };
+      items.forEach(g => { const d = vizInferDecade(g); if (d) decadeCounts[d] += 1; });
+      const dLabels = Object.keys(decadeCounts), dVals = dLabels.map(k => decadeCounts[k]);
+      const decadeCanvas = document.getElementById('vizDecadesBarAll');
+      if (decadeCanvas) _vizCharts.decadesAll = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
+      const topDepth = items.map(g => ({ genre: g.genre || 'Unknown', count: vizOfficialSongs(g).length })).filter(x => x.count > 0).sort((a,b) => b.count - a.count || a.genre.localeCompare(b.genre)).slice(0,15);
+      const depthCanvas = document.getElementById('vizSongsDepth');
+      if (depthCanvas) _vizCharts.depth = new Chart(depthCanvas.getContext('2d'), { type:'bar', data:{ labels:topDepth.map(x => x.genre), datasets:[{ data:topDepth.map(x => x.count), backgroundColor:'#5b6b82', borderRadius:4, borderSkipped:false }] }, options:{ indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, precision:0 }, y:{ ticks:{ font:{ size:10 } } } } } });
+    }
+    function renderVisuals() {
+      if (typeof Chart === 'undefined') return;
+      vizDestroyAll();
+      const items = vizBaseGenres(), songs = vizAllOfficialSongs(items), artists = vizArtists(items), month = vizSelectedMonth();
+      const monthlyView = document.getElementById('vizViewMonthly'), alltimeView = document.getElementById('vizViewAlltime');
+      if (monthlyView) monthlyView.style.display = vizMode() === 'monthly' ? '' : 'none';
+      if (alltimeView) alltimeView.style.display = vizMode() === 'alltime' ? '' : 'none';
+      if (vizMode() === 'monthly') {
+        vizRenderKPIs(document.getElementById('vizKpiMonthly'), [{ label:'Month', value: vizMonthTitle(month) },{ label:'Genres', value: items.length },{ label:'Songs', value: songs.length },{ label:'Est. Time', value: vizFormatMinutes(vizEstimatedMinutes(songs.length)) },{ label:'Artists', value: artists.uniqueArtists }]);
+        vizRenderRatingsContent(items);
+        vizRenderHighlights(items);
+        vizRenderArtistStats(items);
+        vizRenderContenders('vizContendersMonthly', items, 10);
+        vizMonthlyCharts(items);
+      } else {
+        const contenderCount = items.filter(g => !!g.monthlycontender).length;
+        vizRenderKPIs(document.getElementById('vizKpiAlltime'), [{ label:'Months', value: vizMonths().length },{ label:'Genres', value: items.length },{ label:'Songs', value: songs.length },{ label:'Est. Time', value: vizFormatMinutes(vizEstimatedMinutes(songs.length)) },{ label:'Artists', value: artists.uniqueArtists },{ label:'Contenders', value: contenderCount }]);
+        vizRenderContenders('vizContendersAll', items.filter(g => !!g.monthlycontender), 10);
+        vizAllTimeCharts(items);
+      }
+    }
+    function initVisuals() {
+      const sel = document.getElementById('vizMonthSelect');
+      if (sel) {
+        const months = vizMonths();
+        const existing = [...sel.options].map(o => o.value);
+        if (!existing.length || existing.join('|') !== months.join('|')) {
+          sel.innerHTML = months.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(vizMonthTitle(m))}</option>`).join('');
+          if (months.length) sel.value = months[months.length - 1];
+        }
+      }
+      document.querySelectorAll('[data-viz-mode]').forEach(btn => {
+        btn.onclick = () => {
+          _vizMode = btn.dataset.vizMode || 'monthly';
+          document.querySelectorAll('[data-viz-mode]').forEach(b => b.classList.toggle('active', b === btn));
+          const monthSel = document.getElementById('vizMonthSelect');
+          if (monthSel) monthSel.style.display = _vizMode === 'monthly' ? '' : 'none';
+          renderVisuals();
+        };
+      });
+      document.getElementById('vizMonthSelect')?.addEventListener('change', renderVisuals);
+      if (document.getElementById('vizMonthSelect')) document.getElementById('vizMonthSelect').style.display = vizMode() === 'monthly' ? '' : 'none';
       renderVisuals();
     }
+
   </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
