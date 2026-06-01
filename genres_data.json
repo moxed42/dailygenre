@@ -3303,9 +3303,11 @@
     ],
     "rank_order": 67,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Los Cavaliers — Pepe Le Pu",
+    "favoritesongurl": "https://open.spotify.com/track/23veAdckaPNwndKQkkp1ov",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ba5965456345a2eb457bbcdd"
   },
   {
     "id": 94,
@@ -5509,7 +5511,7 @@
     "date_raw": "4/17",
     "date_normalized": "2026-04-17",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -5518,9 +5520,43 @@
     "key_artists": "Koto, Laserdance, Proxyon, Hipnosis, Star Inc. (originators/major figures)",
     "suggested_songs": "Koto — Visitors, Laserdance — Power Run, Proxyon — Alien Attack, Hipnosis — Pulsar",
     "vibe": "A synthesizer that believes it is in outer space and has no reason to think otherwise.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1zRtkD720tvaFlSDQ1NaUN",
+        "score": 5,
+        "reason": "Rygar hits classic spacesynth: galloping arpeggiated bass, big cosmic leads, and dramatic chord changes that feel built for 80s arcade space epics. This is a textbook “explain the genre” track.",
+        "title": "Rygar — Captain Of The Universe",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ee5a1db6a6877b35b3e45908",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1oomxfwmfghZzPhtJ4XDQE",
+        "score": 5,
+        "reason": "Laserdance are core spacesynth canon, and this track’s propulsive synth bass, laserlike lead timbres, and astral melodic hooks make it an ideal archetypal pick.",
+        "title": "Laserdance — Cosmo Tron",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027916b8e19fb980802630e58f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0dBflDNyaH2pwaioaMmQwx",
+        "score": 4,
+        "reason": "Proxyon lands firmly in the same retro-futurist synth-space lane, though the arrangement leans a bit more toward straight Italo/Hi‑NRG than fully epic spacesynth. Still clearly in-genre, just slightly less definitive.",
+        "title": "Proxyon — Beyond the Future",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026f9e4e812b9c3aaa64afb9fd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 81,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 163,
