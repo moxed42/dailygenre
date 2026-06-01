@@ -43,8 +43,40 @@
     "key_artists": "Dick Higgins, Nam June Paik, Yoko Ono (early works), La Monte Young (originators)",
     "suggested_songs": "La Monte Young — Piano Piece for David Tudor #1 (instructions to feed the piano), Nam June Paik — Danger Music for Dick Higgins",
     "vibe": "Music as a philosophical question about consent and limits.",
-    "songs_listened": [],
-    "pending_songs": []
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6t9B0YK5uGFaLqib2MEi8Q",
+        "score": null,
+        "reason": "Merzbow — Woodpecker No. 1",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1wQSkuwugtD6nql5BozY0i",
+        "score": null,
+        "reason": "Hanatarash — My Dad Is Car",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3yH3v0nfoP3bXz8LojRxVQ",
+        "score": null,
+        "reason": "The New Blockaders — Beta Blockade",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false,
+    "rank_order": null
   },
   {
     "id": 2,
