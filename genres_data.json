@@ -3978,7 +3978,18 @@
     "key_artists": "Tangerine Dream, Klaus Schulze, Deuter, Steve Roach, Constance Demby (originators) • Marconi Union, Carbon Based Lifeforms (modern)",
     "suggested_songs": "Tangerine Dream — Phaedra, Steve Roach — Structures from Silence, Deuter — Celebration, Marconi Union — Weightless",
     "vibe": "Floating three inches above your own body, which is fine.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0eT8FZxvYlLZZH2cNcu6Uo",
+        "score": 4,
+        "reason": "Straight-ahead rock band pulse under unmistakably Celtic fiddle lines, giving a clearer rock-driven frame to the same melodic world.",
+        "title": "Runrig — Loch Lomond",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 531,
     "pending_songs": []
   },
@@ -15982,7 +15993,7 @@
     "date_raw": "4/7",
     "date_normalized": "2026-04-07",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -15991,9 +16002,95 @@
     "key_artists": "Horslips, Thin Lizzy (Celtic elements), Runrig, The Waterboys, Wolfstone (originators/major figures)",
     "suggested_songs": "Horslips — Dearg Doom, Runrig — Loch Lomond, The Waterboys — Fisherman's Blues, Thin Lizzy — Whiskey in the Jar",
     "vibe": "Ancient Celtic tunes played loud enough to shake the hall.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4CkIURmNRubxc12llcAiuh",
+        "score": 4,
+        "reason": "Pub-ready take on a traditional shanty with distorted guitars and driving backbeat; the fiddle and melody keep it rooted in Celtic while the arrangement leans rock.",
+        "title": "Blaggards — Drunken Sailor",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0248aa22984b9dc4d38a8ede95",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2FBmddNjVLziN4AxfUmdQe",
+        "score": 4,
+        "reason": "Power-metal bombast fused with folk melodies and pirate-shanty swagger; feels more like folk/power metal with Celtic seasoning than straight Celtic rock.",
+        "title": "Alestorm — Keelhauled",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d188e7dcd58eb10cf49a9f57",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2uLx3Gka9TGCz9Zgu7Uwav",
+        "score": 3,
+        "reason": "Classic rock take on a traditional tune; the twin-guitar leads and bluesy phrasing foreground 70s hard rock more than Celtic dance energy.",
+        "title": "Thin Lizzy — Whiskey In The Jar",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d4d20445241a8e71b03e7faa",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3KxDRG5VHtXpr1tQGehGz1",
+        "score": 5,
+        "reason": "Electric-guitar-driven arrangement of traditional material with clear Celtic melodic language and rock rhythm section—about as textbook Celtic rock as it gets.",
+        "title": "Horslips — Dearg Doom",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/1R00EC48t1yyB0ncCW0QaO",
+        "score": 5,
+        "reason": "Fuses jigs and reels with full rock band dynamics; fiddles, whistles, and distorted guitars move together in a way that perfectly defines Celtic rock’s hybrid.",
+        "title": "Horslips — Trouble (With a Capital T)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025d4e53050a36174855670ea4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5KZ4DC772dYcRBAizx0yYk",
+        "score": 3,
+        "reason": "New-age ambience and Enya’s layered vocals connect to Celtic tradition, but the absence of rock rhythm section makes it Celtic/new age rather than Celtic rock proper.",
+        "title": "Enya — Caribbean Blue - 2009 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023184c671068d02838d47b277",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0eT8FZxvYlLZZH2cNcu6Uo",
+        "score": 4,
+        "reason": "Straight-ahead rock band pulse under unmistakably Celtic fiddle lines, giving a clearer rock-driven frame to the same melodic world.",
+        "title": "Runrig — Loch Lomond",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2779hybiMKwid1gcrFVMzH",
+        "score": 4,
+        "reason": "Pogues-style mix of folk instrumentation, punk-ish drive, and Irish storytelling; firmly in Celtic rock territory with a rough-edged, pub-anthem feel.",
+        "title": "The Pogues — Sally MacLennane",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028dcbee93733dd5393e629653",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 4,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 506,
@@ -25992,6 +26089,16 @@
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c1a13209dfe146aef3296e34",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3KxDRG5VHtXpr1tQGehGz1",
+        "score": 5,
+        "reason": "Electric-guitar-driven arrangement of traditional material with clear Celtic melodic language and rock rhythm section—about as textbook Celtic rock as it gets.",
+        "title": "Horslips — Dearg Doom",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 153,
