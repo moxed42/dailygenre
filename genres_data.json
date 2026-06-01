@@ -2957,9 +2957,11 @@
     ],
     "rank_order": 5,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Sherman Myers / Harold Collins And His Orchestra — Fairy On The Clock",
+    "favoritesongurl": "https://open.spotify.com/track/2nUcSa4uJuNeMwUDt7OtNF",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a572ce735b91e2d34a30423"
   },
   {
     "id": 110,
@@ -8977,7 +8979,7 @@
     "date_raw": "2/16",
     "date_normalized": "2026-02-16",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8988,28 +8990,62 @@
     "vibe": "A room full of people deciding to go completely insane together.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/4FupIlegZgvXUuK79qcoKW",
+        "url": "https://open.spotify.com/track/0r2Bul2NuCViraT2zX1l5j",
         "score": 5,
-        "reason": "Combines TR‑808 beats, synth‑driven melody, and rap chants in a proto‑electro hip hop blueprint that defines the genre",
-        "title": "Afrika Bambaataa & The Soulsonic Force — Planet Rock",
+        "reason": "Minimal, trunk‑rattling beat, shouted call‑and‑response hook, and repetitive chant structure make this a textbook early‑2000s crunk club track.",
+        "title": "Lil Jon & The East Side Boyz / Ying Yang Twins — Get Low",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bb1a36b4eeee70faca9cde59",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023ba0e7112f965bfda72b1c5b",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/0pqnGHJpmpxLKifKRmU6WP",
-        "score": 4,
-        "reason": "Big synth hook and ultra‑singable chorus make this a more globally legible club pop‑rap exemplar",
-        "title": "Flo Rida — Low (feat. T‑Pain)",
+        "url": "https://open.spotify.com/track/7vIsPrKWqUMk4F7Bu7aIY0",
+        "score": 5,
+        "reason": "Dark, menacing synths over booming 808s, plus aggressive chant vocals and “tear da club up” ethos—this nails the rowdy, riot‑adjacent side of crunk.",
+        "title": "Three 6 Mafia — Tear da Club Up 97",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025675e83f707f1d7271e5cf8a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026efefc9deaa50f6f539551ca",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1Q9b6CeMcDuO0uq5OJCrqu",
+        "score": 4,
+        "reason": "High‑energy southern party‑rap with a big, repetitive hook and synth‑driven beat; undeniably crunk, though a bit sleeker and more pop‑ready than the rawest cuts.",
+        "title": "Ludacris / Mystikal / I-20 — Move Bitch",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020fd81346621b73edba231d85",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2rOiZGbR0wwI0ip0wSAK26",
+        "score": 3,
+        "reason": "Southern gangsta‑rap cut with horrorcore edges; the beat thumps but the emphasis is more on gritty street narrative than pure chant‑driven crunk energy.",
+        "title": "Project Pat / Three 6 Mafia / La Chat — Chickenhead",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0231a9a92a652223ca76817a90",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5BZ40Ghhuy8BkbYkbZ3Qf5",
+        "score": 4,
+        "reason": "Stomping synth line, shouted hook, and simple, hypnotic structure push fully into hands‑up crunk territory, making the party function clearer than on “Chickenhead.”",
+        "title": "Lil Scrappy — Head Bussa",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 20,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 327,
