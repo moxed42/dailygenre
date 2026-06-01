@@ -29351,14 +29351,36 @@
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5k57P6zEwS2b3bnMU0a9gS",
+        "score": 5,
+        "reason": "More purely blackened in its riffing and atmosphere while remaining explicitly Christian, giving a clearer archetype of unblack’s sonic and ideological profile.",
+        "title": "Antestor — Mercy Lord",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/30AD3nslmfyW7nZDNun1ny",
         "score": 2,
         "reason": "Conceptually tied into prophetic Christian extremity, yet musically it’s classic metallic hardcore with mathy turns rather than blackened tremolo or atmosphere.",
         "title": "Zao — The Rising End (The First Prophecy)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2yF5fVYqAqfHqkKJ1cN6Wm",
+        "score": 4,
+        "reason": "Symphonic-leaning but rooted in black metal’s tremolo and blast beats, Slechtvalk foregrounds explicitly Christian lyrics in a far more stylistically black-metal frame.",
+        "title": "Slechtvalk — Thunder of War",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1Dppspcy9iFRzYHM7oZmZM",
@@ -29369,6 +29391,17 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1jK0v1Z3xvM8l7CVgK8CkL",
+        "score": 4,
+        "reason": "Delivers tremolo-driven, mid-tempo blackened riffing with clear Christian focus, tightening the stylistic link between ideology and classic black metal sound.",
+        "title": "Frosthardr — Varg",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4VjOJcZPG1Uo7thRNKdbwC",
@@ -29399,6 +29432,17 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026872312de9c23830eebba77f",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0mV6MsB3r8mK1dFqf6Y6tq",
+        "score": 4,
+        "reason": "Keeps the mournful, atmospheric pacing but explicitly frames its black-metal sound in Christian hope and struggle, better embodying unblack’s core inversion of the genre.",
+        "title": "Crimson Moonlight — The Cold Grip of Terror",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 29,
@@ -30359,6 +30403,36 @@
         "artist": "",
         "artwork": "",
         "source": "manual",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5k57P6zEwS2b3bnMU0a9gS",
+        "score": 5,
+        "reason": "More purely blackened in its riffing and atmosphere while remaining explicitly Christian, giving a clearer archetype of unblack’s sonic and ideological profile.",
+        "title": "Antestor — Mercy Lord",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2yF5fVYqAqfHqkKJ1cN6Wm",
+        "score": 4,
+        "reason": "Symphonic-leaning but rooted in black metal’s tremolo and blast beats, Slechtvalk foregrounds explicitly Christian lyrics in a far more stylistically black-metal frame.",
+        "title": "Slechtvalk — Thunder of War",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1jK0v1Z3xvM8l7CVgK8CkL",
+        "score": 4,
+        "reason": "Delivers tremolo-driven, mid-tempo blackened riffing with clear Christian focus, tightening the stylistic link between ideology and classic black metal sound.",
+        "title": "Frosthardr — Varg",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
         "added": "2026-06-01"
       }
     ],
