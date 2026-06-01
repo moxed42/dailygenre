@@ -7682,6 +7682,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6TuGdR7kLPIYgYb9GXcSqh",
+        "score": 4,
+        "reason": "Big, anthemic chorus and glossy production give this a more straightforward pop‑metal feel while staying in the same emo‑metal orbit.",
+        "title": "Falling In Reverse — The Drug In Me Is You",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 352,
@@ -25366,6 +25376,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0d28khcov6AiegSCpG5TuT",
+        "score": 5,
+        "reason": "Huge sing‑along chorus, sugar‑coated melodies and hard‑rock guitars make this a pure pop‑metal earworm from outside the metalcore meme space.",
+        "title": "Bon Jovi — You Give Love a Bad Name",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e64af6953d2f6c2843c87e09",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 478,
@@ -25764,7 +25784,7 @@
         "reason": "Verses lean into pop‑friendly dynamics and a chantable hook while the guitars and drums stay firmly metal, landing it solidly in metal with a strong pop spine.",
         "title": "In This Moment — Whore",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e8166a30a40963beed23cc47",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e8166a30a40963beed23cc47",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25784,7 +25804,7 @@
         "reason": "Melodic death metal with some memorable lines, yet the songwriting prioritizes riffs and aggression over earworm choruses, making it only a weak pop‑metal fit.",
         "title": "In Flames — Cloud Connected",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02787593a5d345063b8071efbb",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02787593a5d345063b8071efbb",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25810,12 +25830,23 @@
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track:0qdzdBNLU6BAxTCt8FLptu",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5P7Zk5q4fgsg2HFnxXK0oQ",
+        "score": 4,
+        "reason": "Big radio‑rock chorus, shiny production and metal‑adjacent guitars give this a much clearer pop‑metal profile while staying contemporary.",
+        "title": "Halestorm — Love Bites So Do I",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0qdzdBNLU6BAxTCt8FLptu",
         "score": 3,
         "reason": "EDM‑metalcore hybrid with big sing‑along sections; its breakdown‑heavy structure and meme energy make it more metalcore‑with‑hooks than straight pop metal.",
         "title": "Electric Callboy — Mindreader",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027bd2dd6afff86e07b4fef398",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25841,6 +25872,17 @@
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6TuGdR7kLPIYgYb9GXcSqh",
+        "score": 4,
+        "reason": "Big, anthemic chorus and glossy production give this a more straightforward pop‑metal feel while staying in the same emo‑metal orbit.",
+        "title": "Falling In Reverse — The Drug In Me Is You",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/5RQyyxszkh4D2mZi0v3Zjx",
         "score": 1,
         "reason": "Slow, brooding modern metal piece with limited hook focus and a more atmospheric, prog‑leaning construction; it barely engages with pop‑metal’s hook‑first sensibility.",
@@ -25853,7 +25895,7 @@
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/4Swr7diLZpP7aNnHgzFKnL",
         "score": 5,
-        "reason": "Classic late‑80s pop metal power ballad with huge, radio‑ready chorus and guitar heroics.",
+        "reason": "Classic late‑80s pop‑metal power ballad with huge, radio‑ready chorus and guitar heroics.",
         "title": "Skid Row — I Remember You",
         "artist": "",
         "artwork": "",
@@ -25867,7 +25909,7 @@
         "reason": "Duet power ballad with soaring vocal lines and melodic guitar work; a quintessential pop‑metal moment from the glam era.",
         "title": "Lita Ford, Ozzy Osbourne — Close My Eyes Forever",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0286a80fa1b62584496a1402b2",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0286a80fa1b62584496a1402b2",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25907,16 +25949,29 @@
         "reason": "Tongue‑in‑cheek Euro‑dance/metalcore mashup whose hooks are undeniable but whose identity is more meme‑core party metal than classic pop metal.",
         "title": "Electric Callboy — Pump It",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027bd2dd6afff86e07b4fef398",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027bd2dd6afff86e07b4fef398",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0d28khcov6AiegSCpG5TuT",
+        "score": 5,
+        "reason": "Huge sing‑along chorus, sugar‑coated melodies and hard‑rock guitars make this a pure pop‑metal earworm from outside the metalcore meme space.",
+        "title": "Bon Jovi — You Give Love a Bad Name",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e64af6953d2f6c2843c87e09",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 5,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Amaranthe — Army Of The Night",
+    "favoritesongurl": "https://open.spotify.com/track/6So02Y7y4KbP87mSxUOMuk",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029c5a45fa93e88e8a7fddefef"
   },
   {
     "id": 1005,
