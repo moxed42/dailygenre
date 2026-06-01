@@ -10228,7 +10228,28 @@
     "key_artists": "De La Soul, A Tribe Called Quest, Mos Def, Talib Kweli, MF DOOM (originators) • Kendrick Lamar, Tyler the Creator (modern)",
     "suggested_songs": "De La Soul — Me Myself and I, MF DOOM — All Caps, Mos Def — Mathematics, Kendrick Lamar — m.A.A.d city",
     "vibe": "Hip-hop that chose the interesting option.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3w2YFj4oP1Q4gWcSwoWb63",
+        "score": 4,
+        "reason": "A better fit because it keeps the alternative weirdness but sits more naturally in the indie-rap/blog-rap ecosystem that “hipster hop” usually points to.",
+        "title": "The Cool Kids — Black Mags",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1jJci4qxiYcOHhQR247rEU",
+        "score": 4,
+        "reason": "A better exemplar because it captures the blog-rap/indie-rap crossover lane directly, with stylish minimalism and unmistakable hipster-hop-era framing.",
+        "title": "Kid Sister — Pro Nails",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028b32b139981e79f2ebe005eb",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 26,
     "pending_songs": []
   },
@@ -16641,7 +16662,7 @@
     "date_raw": "4/12",
     "date_normalized": "2026-04-12",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -16650,9 +16671,106 @@
     "key_artists": "Kid Cudi, Childish Gambino, Kanye West (early), Lupe Fiasco, Charles Hamilton (major figures)",
     "suggested_songs": "Kid Cudi — Pursuit of Happiness, Childish Gambino — Camp, Kanye West — All Falls Down, Lupe Fiasco — Kick Push",
     "vibe": "Hip-hop that showed up at the indie festival and felt at home.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5cjsgbZ8tZYD4f0LNpApnf",
+        "score": 3,
+        "reason": "The hazy introspection and melodic drift fit indie-rap sensibilities, but this is more atmospheric alt-rap than a defining hipster-hop track. It shares the mood without really carrying the backpacker/quirky-underground center of the tag.",
+        "title": "Kid Cudi — Swim In The Light",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025c8d9ad991d2a23eb039d8dd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4kk6LwQbQffGfKs0r9cYwS",
+        "score": 5,
+        "reason": "A better exemplar because it locks into literate underground rap, indie credibility, and left-field production without drifting away from hip-hop’s core form.",
+        "title": "Aesop Rock — None Shall Pass",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5iSEsR6NKjlC9SrIJkyL3k",
+        "score": 4,
+        "reason": "Strong fit: indie crossover production, alienated stoner-rap perspective, and blog-era appeal all line up with hipster hop’s crossover lane. It is more polished and anthemic than the genre’s purest underground examples, but still clearly belongs.",
+        "title": "Kid Cudi — Pursuit Of Happiness (Nightmare)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02713f297a7bdc1d48971062b2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0OX9lzZxKlbtn3c2d97uqz",
+        "score": 5,
+        "reason": "Archetypal fit for the genre’s smart, offbeat, underground-rap side: dense writing, eccentric concept, and indie-rap credibility all sit right at the center of hipster hop. This is one of the clearest explain-it-to-a-stranger picks in the block.",
+        "title": "Aesop Rock — Long Legged Larry",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0263c24ce03c7abc39809b5ccb",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5p8WbMGPsP2TmcsInVn44u",
+        "score": 5,
+        "reason": "Another core fit: introspective backpack rap with indie-label identity, human-scale writing, and an alternative audience crossover that is central to the style. Atmosphere are basically foundational for this lane.",
+        "title": "Atmosphere — Sunshine",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024beb66f56871bbde37f6892d",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1nwkSqzTyXBk6XF796EOav",
+        "score": 2,
+        "reason": "This is primarily abrasive alternative rap with shock-horror minimalism and internet-era provocation rather than hipster hop’s indie-backpacker sensibility. There is overlap in outsider appeal, but its main identity is elsewhere.",
+        "title": "Yonkers",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025ea9799a88c0760ec03ac6b8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3w2YFj4oP1Q4gWcSwoWb63",
+        "score": 4,
+        "reason": "A better fit because it keeps the alternative weirdness but sits more naturally in the indie-rap/blog-rap ecosystem that “hipster hop” usually points to.",
+        "title": "The Cool Kids — Black Mags",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0fgosF2PWrYbyy9e7BclKz",
+        "score": 2,
+        "reason": "Slick, genre-blurring, and art-conscious, but this lands more as eclectic mainstream alternative R&B/rap than hipster hop proper. The indie framing is there, yet the song’s primary identity is broader crossover alt-pop rap.",
+        "title": "III. Telegraph Ave. (\"Oakland\" by Lloyd)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0221b2b485aef32bcc96c1875c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1jJci4qxiYcOHhQR247rEU",
+        "score": 4,
+        "reason": "A better exemplar because it captures the blog-rap/indie-rap crossover lane directly, with stylish minimalism and unmistakable hipster-hop-era framing.",
+        "title": "Kid Sister — Pro Nails",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028b32b139981e79f2ebe005eb",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 48,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 525,
