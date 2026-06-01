@@ -25258,36 +25258,54 @@
     "vibe": "Rock filtered through a country too musical to leave it unchanged.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/0lGEWOZvMexZFXckBJxlVOA",
-        "score": 4,
-        "reason": "Whimsical psychedelic arrangement with playful vocal harmonies and prominent guitar work—Os Mutantes blending Brazilian tropicália sensibility with late-60s psych-rock experimentation, a foundational track for Brazilian rock's embrace of countercultural sounds.",
-        "title": "Os Mutantes — A Minha Menina",
+        "url": "https://open.spotify.com/track/3MYhRTonhQATwN9gO7RsJL",
+        "score": 5,
+        "reason": "Sepultura's thrash blueprint: percussive tribal riffing anchored by groove-metal precision, Igor Cavalera's polyrhythmic drumming propelling the Chaos A.D. sound.",
+        "title": "Sepultura — Nomad",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029c0b2d74cfb910735ca55317",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/2yRJrEQYK5OkUZPE8RlHzV",
+        "url": "https://open.spotify.com/track/6ursmCnbc9oDRGa2yHKkoZ",
         "score": 5,
-        "reason": "Driving garage-rock riff with urgent Portuguese vocals and raw production—Os Mutantes at their most straightforward rock, channeling British Invasion energy through a Brazilian lens.",
-        "title": "Os Mutantes — Bat Macumba",
+        "reason": "Sepultura's defining statement: nu-metal-adjacent groove welded to indigenous Brazilian percussion, Max Cavalera's roar driving the anthem that exported BR metal worldwide.",
+        "title": "Sepultura — Roots Bloody Roots",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0286fc9cf77c65881ec03ee13b",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isAdd": true
+        "added": "2026-06-01"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/7eWBo0zo0YBw9Z8qP1LWAO",
+        "url": "https://open.spotify.com/track/6aOZrQetoTW7XnFBjsnyXF",
         "score": 4,
-        "reason": "Hard-edged arena-rock anthem with Brazilian Portuguese lyrics and anthemic chorus—Sepultura before the thrash metal era, showing Brazilian rock's capacity for stadium-ready power.",
-        "title": "Sepultura — Beneath the Remains",
+        "reason": "Os Mutantes' Tropicália cornerstone: whimsical psychedelic pop with Beatles-esque harmonies twisted through Brazilian absurdism, defining the '60s São Paulo avant-garde.",
+        "title": "Os Mutantes — A Minha Menina",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bffddc23db7d81103ba25b45",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isAdd": true
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/619ndPjpEBrx82WRSa6iGK",
+        "score": 4,
+        "reason": "ANGRA's power-metal grandeur filtered through Brazilian melodic sensibility—soaring vocals, neoclassical shred, and progressive structures that established South American metal as virtuosic.",
+        "title": "ANGRA — Carry On",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c74fd07bc3ef5417eb1bcf57",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Nk10X45JIH1xrIWOCbA3I",
+        "score": 4,
+        "reason": "Nervosa's thrash ferocity: raw, breakneck riffing and guttural aggression cementing the all-female trio as torchbearers of Brazilian extreme metal's uncompromising edge.",
+        "title": "Nervosa — Death!",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ddc0841f5c0714201e742233",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 52,
