@@ -13080,7 +13080,7 @@
     "date_raw": "4/20",
     "date_normalized": "2026-04-20",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -13089,9 +13089,43 @@
     "key_artists": "Kygo, Thomas Jack, Matoma, Sam Feldt, Felix Jaehn (originators/major figures)",
     "suggested_songs": "Kygo — Firestone, Thomas Jack — Rivers, Matoma — Old Thing Back, Sam Feldt — Show Me Love",
     "vibe": "A beach as a software preset.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7s1upm7yr7ZjrzXMwHawtG",
+        "score": 4,
+        "reason": "The Kygo remix wraps classic soul in the archetypal tropical house palette: mellow four‑on‑the‑floor, gentle synths, and laid‑back, beachy groove, even if the vocal and song core are pure Motown.",
+        "title": "Marvin Gaye; Kygo — Sexual Healing - Kygo Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0204d46bfad0a0640b625b8ca7",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/115ndcAyWMabNy7WgUzP7t",
+        "score": 4,
+        "reason": "“Wave Goodbye” hits modern, festival‑ready tropical house: plucky upbeat groove, bright synth hooks, and sun‑washed mood, with an Italo‑dance tint that still keeps it solidly in the tropical lane.",
+        "title": "Robin Schulz; Henri PFR; Jeffrey Jey — Wave Goodbye (feat. Jeffrey Jey)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0270dd2ebd8a41b3cab44f0c7b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0GSU6yLOJqO10ziQuBLWOE",
+        "score": 5,
+        "reason": "Bakermat is a core reference point: sax‑driven hook, relaxed Balearic pulse, and feel‑good uplift make this an archetypal “explain tropical house to a stranger” tune.",
+        "title": "Bakermat — One Day (Vandaag) - Radio Edit",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0244b7277d2d6247722b26e2a3",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 61,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 405,
