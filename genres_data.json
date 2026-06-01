@@ -5561,7 +5561,18 @@
     "key_artists": "Pendulum, Noisia, KOAN Sound, The Qemists, Modestep (originators/major figures)",
     "suggested_songs": "KOAN Sound — Funk Blaster, Pendulum — Watercolour (drumstep edits), Noisia — Alpha Centauri, Modestep — Show Me a Sign",
     "vibe": "Drum and bass wearing heavy boots and moving in slow motion.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5n0PqSxEiZhfJMfX6uB2fn",
+        "score": 5,
+        "reason": "Textbook dubstyle: hardstyle kicks and 150 BPM drive interlock with classic wobble and half-time switchups, perfectly embodying the hybrid between hardstyle and dubstep.",
+        "title": "Wildstylez — Huh? (Dubstyle Remix)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 228,
     "pending_songs": []
   },
@@ -8903,6 +8914,16 @@
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fc5f7ba080a1c4e3022d71b2",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/6LYmMJkbwmQR1CwXq5t6Qq",
+        "score": 4,
+        "reason": "Alternates half-time wobble sections with hardstyle kicks, making the genre’s hybrid DNA—dubstep sound design over hardstyle structure—much clearer.",
+        "title": "Headhunterz — Scrap Attack (Dubstyle Remix)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 22,
@@ -8922,7 +8943,7 @@
     "date_raw": "4/6",
     "date_normalized": "2026-04-06",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8931,9 +8952,65 @@
     "key_artists": "Coone, Noisecontrollers, Atmozfears, Headhunterz (dubstyle works) (major figures)",
     "suggested_songs": "Coone — Pump It Up, Noisecontrollers — Dubstyle, Atmozfears — Into the Storm",
     "vibe": "Two kinds of bass, zero compromise.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/337WYjP1mkx9Ox6eGNg9x0",
+        "score": 4,
+        "reason": "Classic hardstyle foundation—galloping kick, 150 BPM drive, and ravey leads—but the sparse midrange wobble and half-time feel passages nudge it toward early dubstyle crossover.",
+        "title": "Headhunterz; Brennan Heart — The MF Point Of Perfection - Original Dubstyle Mix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cc45d2d52835e90997469c53",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2JHhMy6BkHhbVMhpFBYCws",
+        "score": 3,
+        "reason": "Full-on hardstyle with screech leads and straight 4/4 drive; structurally it’s more pure hardstyle than kick-and-bass dubstep hybrid, only brushing dubstyle via sound design.",
+        "title": "Noisecontrollers; Pavelow — Quatre Mains",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e719fa3de29344cc24fd744f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6LYmMJkbwmQR1CwXq5t6Qq",
+        "score": 4,
+        "reason": "Alternates half-time wobble sections with hardstyle kicks, making the genre’s hybrid DNA—dubstep sound design over hardstyle structure—much clearer.",
+        "title": "Headhunterz — Scrap Attack (Dubstyle Remix)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4EFHa8WyL0jFOJ7ni965ok",
+        "score": 2,
+        "reason": "Heavy on melodic dubstep and cinematic drops, with a straight 4/4 but lacking the signature pitched hardstyle kick; it reads more as full-on dubstep than genuine dubstyle fusion.",
+        "title": "Obsidia — Elevation",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026659e11cc91a5d93dd5e1036",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5n0PqSxEiZhfJMfX6uB2fn",
+        "score": 5,
+        "reason": "Textbook dubstyle: hardstyle kicks and 150 BPM drive interlock with classic wobble and half-time switchups, perfectly embodying the hybrid between hardstyle and dubstep.",
+        "title": "Wildstylez — Huh? (Dubstyle Remix)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 5,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 287,
@@ -27882,11 +27959,11 @@
     ],
     "rank_order": 7,
     "pending_songs": [],
-    "favoritesong": "Cheap Trick — I Want You to Want Me - Live at Nippon Budokan, Tokyo, JPN - April 1978",
-    "favoritesongurl": "https://open.spotify.com/track/6TBJCwgdhwkzjpSjdqJUHC",
+    "favoritesong": "The Cars — Just What I Needed",
+    "favoritesongurl": "https://open.spotify.com/track/4alHo6RGd0D3OUbTPExTHN",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028672a409c23eb823a6c71358"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7"
   },
   {
     "id": 898,
