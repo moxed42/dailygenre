@@ -30679,7 +30679,18 @@
     "key_artists": "Mayhem, Burzum, Darkthrone, Emperor, Bathory (originators/major figures)",
     "suggested_songs": "Mayhem -- Freezing Moon, Darkthrone -- Transilvanian Hunger, Emperor -- I Am the Black Wizards, Burzum -- Dunkelheit, Bathory -- A Fine Day to Die",
     "vibe": "Metal that wanted to sound like winter and darkness and mostly succeeded.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6CtElFwIkm5v6a_FW8NqaC",
+        "score": 5,
+        "reason": "A better exemplar because its massive, dirge‑like riffing, anguished black‑metal vocals, and suffocating atmosphere sit right at the core of blackened funeral doom, nailing the hybrid more cleanly than the Forgotten Tomb track.",
+        "title": "Evoken — A Caress of the Void",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 81,
     "pending_songs": []
   },
@@ -31662,7 +31673,7 @@
     "date_raw": "",
     "date_normalized": "2026-04-26",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -31671,9 +31682,55 @@
     "key_artists": "Forgotten Tomb, Shining, Abruptum, De Profundis, Nortt (major figures)",
     "suggested_songs": "Forgotten Tomb -- Springtime Depression, Shining -- Han Som Hatar Manniskan, Abruptum -- De Profundis Mors Vas Cousumet, Nortt -- Graven, De Profundis -- The Emptiness Within",
     "vibe": "Doom's weight and black metal's cold despair sharing the same song.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0RmnjzRT7NHFHh7Ia1vKSF",
+        "score": 4,
+        "reason": "Mizmor’s piece is long, glacially paced, and drenched in atmosphere, blending funeral‑doom weight with black‑metal shrieks and tremolo textures—essentially a textbook blackened doom epic.",
+        "title": "Mizmor — Cairn to God",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3huIoXOJoffyEX2FJcG24b",
+        "score": 3,
+        "reason": "“Entombed By Winter” feels closer to depressive/atmospheric black metal with a doom crawl than to full blackened doom; it shares mood and tempo but is pulled strongly toward pure black metal.",
+        "title": "Forgotten Tomb — Entombed By Winter",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022eac30e15ea620cfa21c0fee",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6CtElFwIkm5v6a_FW8NqaC",
+        "score": 5,
+        "reason": "A better exemplar because its massive, dirge‑like riffing, anguished black‑metal vocals, and suffocating atmosphere sit right at the core of blackened funeral doom, nailing the hybrid more cleanly than the Forgotten Tomb track.",
+        "title": "Evoken — A Caress of the Void",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6IWq4ZQeQZr5HFlK2fNVki",
+        "score": 5,
+        "reason": "Belongs here as another towering pillar of blackened funeral doom, with cavernous production, drawn‑out, crushing riffs, and tortured black‑metal vocals that reinforce the day’s slow, suffocating aesthetic.",
+        "title": "Thou; The Body — Her Strongholds Unvanquishable",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 10,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 976,
