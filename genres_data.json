@@ -19891,7 +19891,38 @@
     "key_artists": "Miles Davis, Dave Brubeck, Chet Baker, Paul Desmond, Gerry Mulligan (originators/major figures)",
     "suggested_songs": "Miles Davis — Boplicity, Dave Brubeck — Take Five, Chet Baker — Almost Blue, Gerry Mulligan — Line for Lyons",
     "vibe": "Jazz that turned the temperature down and found more emotion underneath.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0TYiTQkE1AeIpf8ivuvnq4",
+        "score": 4,
+        "reason": "Light, relaxed swing with West Coast players and a drier studio sound that hits the geographic and stylistic brief more cleanly.",
+        "title": "Chet Baker — Look For The Silver Lining",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0yVHP0p0nhgYvC3xVH6t2t",
+        "score": 4,
+        "reason": "Stripped‑down quartet texture and brushed‑drum swing that sound closer to West Coast club‑band cool than orchestrated studio experiments.",
+        "title": "Paul Desmond — Take Ten",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0gN9yVZrjMShq0yvfG8Tnk",
+        "score": 4,
+        "reason": "Relaxed, spacious trumpet over a light rhythm section by West Coast players that reads much more directly as regional cool jazz.",
+        "title": "Chet Baker — My Funny Valentine",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 164,
     "pending_songs": []
   },
@@ -20167,6 +20198,16 @@
         "score": 5,
         "reason": "Pointillistic sax phrasing, fragmented rhythm, and open form epitomize small-group avant-garde jazz.",
         "title": "Eric Dolphy — Hat and Beard",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0rMCRqn0aBomdpZ74BEe47",
+        "score": 4,
+        "reason": "Classic West Coast small‑group cool with airy sax phrasing and light swing that better foregrounds the regional sound.",
+        "title": "Stan Getz — The Girl From Ipanema",
         "artist": "",
         "artwork": "",
         "source": "spotify",
@@ -21145,27 +21186,38 @@
       {
         "url": "https://open.spotify.com/track/0F845nujLVqCb0XMZCh5Pc",
         "score": 4,
-        "reason": "Intimate, breathy vocal ballad with sparse, airy trumpet phrasing that absolutely nails the cool jazz mood, even if it’s more vocal-focused than the archetypal small-group West Coast sound.",
+        "reason": "Intimate, breathy vocal ballad with sparse, airy trumpet phrasing that nails the cool jazz mood, even if it’s more vocal-focused than a textbook West Coast combo.",
         "title": "Chet Baker — I Fall In Love Too Easily",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02309ae95ef92cb8b068e7ce52",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02309ae95ef92cb8b068e7ce52",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/0E8q2Fx2XuzXCO2NSAppkR",
         "score": 3,
-        "reason": "Lush, lyrical ballad playing and relaxed tempo fit the cool-jazz vibe, but Ellington/Coltrane here feel more East Coast/modal mainstream than specifically West Coast.",
+        "reason": "Lush, lyrical ballad and relaxed tempo fit the cool-jazz vibe, but Ellington/Coltrane feel more East Coast/modal mainstream than specifically West Coast.",
         "title": "Duke Ellington, John Coltrane — In A Sentimental Mood",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022def9ef3f6a82c8d6fd8c143",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022def9ef3f6a82c8d6fd8c143",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0rMCRqn0aBomdpZ74BEe47",
+        "score": 4,
+        "reason": "Classic West Coast small‑group cool with airy sax phrasing and light swing that better foregrounds the regional sound.",
+        "title": "Stan Getz — The Girl From Ipanema",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/7yHSPODI3gBcCNl6YOLu2L",
         "score": 4,
-        "reason": "Mulligan’s baritone-led, airy quartet swing and the light, unhurried rhythm section land squarely in the classic cool-school aesthetic that fed into West Coast jazz.",
+        "reason": "Mulligan’s baritone‑led, airy quartet swing and the light, unhurried rhythm section land squarely in the classic cool‑school aesthetic that fed into West Coast jazz.",
         "title": "Gerry Mulligan Quartet — Soft Shoe",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020f5c22890a01c84d1e457121",
@@ -21175,7 +21227,7 @@
       {
         "url": "https://open.spotify.com/track/0Wz6DLq8NBoi1viEqrdH9B",
         "score": 3,
-        "reason": "Nonet “Birth of the Cool” arrangement is foundational to cool jazz overall but historically New York–centric; harmonies and textures are right, the regional tag is just a bit off.",
+        "reason": "“Birth of the Cool” nonet writing is central to cool jazz but historically New York–centric; harmonies and textures are right, the regional West Coast tag is just a bit off.",
         "title": "Miles Davis — Boplicity",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021f390eeb6944bb0c26eb5a85",
@@ -21183,29 +21235,51 @@
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0TYiTQkE1AeIpf8ivuvnq4",
+        "score": 4,
+        "reason": "Light, relaxed swing with West Coast players and a drier studio sound that hits the geographic and stylistic brief more cleanly.",
+        "title": "Chet Baker — Look For The Silver Lining",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/3GRRmV65lSUxQ82GHyVAZO",
         "score": 3,
-        "reason": "Chamber-like writing and hushed dynamics clearly embody cool jazz, yet the experimental orchestration leans more toward arranged studio cool than the looser West Coast combo feel.",
+        "reason": "Chamber‑like orchestration and hushed dynamics embody cool jazz, but the dense nonet writing steers it toward arranged studio cool rather than loose West Coast small‑group feel.",
         "title": "Miles Davis — Moon Dreams",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021f390eeb6944bb0c26eb5a85",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021f390eeb6944bb0c26eb5a85",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0yVHP0p0nhgYvC3xVH6t2t",
+        "score": 4,
+        "reason": "Stripped‑down quartet texture and brushed‑drum swing that sound closer to West Coast club‑band cool than orchestrated studio experiments.",
+        "title": "Paul Desmond — Take Ten",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/1YQWosTIljIvxAgHWTp7KP",
         "score": 4,
-        "reason": "Brubeck’s dry, mid-century small-group sound and slightly cerebral swing in an odd meter make this a great “explain cool jazz / West Coast vibe” pick despite his broader mainstream status.",
+        "reason": "Brubeck’s dry, mid‑century quartet sound and slightly cerebral swing in odd meter make this a great “explain cool jazz / West Coast vibe” pick despite his broader mainstream status.",
         "title": "The Dave Brubeck Quartet — Take Five",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b6bd44cf06bf8f4d5ce1e080",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b6bd44cf06bf8f4d5ce1e080",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/7CrNF9zL7tIQ2269DVxzST",
         "score": 4,
-        "reason": "Piano-driven, rhythmically playful tune with a bright but controlled attack that captures the smart, urbane, West Coast-adjacent cool jazz mood.",
+        "reason": "Piano‑driven, rhythmically playful tune with a bright but controlled attack that captures the smart, urbane, West Coast‑adjacent cool jazz mood.",
         "title": "The Dave Brubeck Quartet — Blue Rondo à la Turk",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b6bd44cf06bf8f4d5ce1e080",
@@ -21215,12 +21289,23 @@
       {
         "url": "https://open.spotify.com/track/3I1LsXYKMeWbdgJgADH8yY",
         "score": 2,
-        "reason": "Moody, filmic modal ballad that fits a “late-night jazz” atmosphere, but the French soundtrack context and Davis’s broader cool/hard-bop hybrid push it away from a clear West Coast ID.",
+        "reason": "Moody, filmic modal ballad that fits a “late‑night jazz” atmosphere, but the French soundtrack context and Davis’s broader cool/hard‑bop hybrid pull it away from a clear West Coast identity.",
         "title": "Miles Davis — Générique - Bande originale du film “Ascenseur pour l’échafaud”",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026a73b25b08203cfa3406a9e6",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026a73b25b08203cfa3406a9e6",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0gN9yVZrjMShq0yvfG8Tnk",
+        "score": 4,
+        "reason": "Relaxed, spacious trumpet over a light rhythm section by West Coast players that reads much more directly as regional cool jazz.",
+        "title": "Chet Baker — My Funny Valentine",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 16,
