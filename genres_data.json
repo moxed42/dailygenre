@@ -7578,7 +7578,18 @@
     "key_artists": "Rotterdamse Terminator, DJ Paul, 2 Unlimited (early hardcore), Lenny Dee, Paul Elstak (originators) • Angerfist, Radical Redemption (modern)",
     "suggested_songs": "Rotterdamse Terminator — Poing, Paul Elstak — Rainbow in the Sky, Lenny Dee — Insanity, Angerfist — Deathmaker",
     "vibe": "The part of electronic music that decided other electronic music was too polite.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7tSUx2A9piRnbV0wweAV2d",
+        "score": 5,
+        "reason": "Classic Oi!/street‑punk stomp with massive gang vocals and terrace‑chant chorus, embodying the style’s core more cleanly than a metal‑tinged rager.",
+        "title": "Cock Sparrer — Riot Squad",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 352,
     "pending_songs": []
   },
@@ -19509,9 +19520,11 @@
     ],
     "rank_order": 17,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Wild Cherry — Play That Funky Music",
+    "favoritesongurl": "https://open.spotify.com/track/5uuJruktM9fMdN9Va0DUMl",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d419ed4f1e89669ce14bd369"
   },
   {
     "id": 766,
@@ -26006,7 +26019,18 @@
     "key_artists": "Amebix, Discharge, Doom, Nausea, Hellbastard (originators/major figures)",
     "suggested_songs": "Amebix -- Winter, Discharge -- Why, Doom -- Relief, Nausea -- Fallout, Hellbastard -- Heading for Internal Darkness",
     "vibe": "Punk after it borrowed a distortion pedal from a metal band and never gave it back.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3JRiqkjOQFvBL7p18EWdJh",
+        "score": 5,
+        "reason": "Straight, pounding street‑punk rhythm with call‑and‑response chorus and pub‑chant energy, making the genre identity obvious immediately.",
+        "title": "The Business — Suburban Rebels",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 178,
     "pending_songs": []
   },
@@ -27446,7 +27470,7 @@
     "date_raw": "1/30",
     "date_normalized": "2026-01-30",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -27455,9 +27479,95 @@
     "key_artists": "The Casualties, The Unseen, Lower Class Brats, Charged GBH, Cock Sparrer (major figures)",
     "suggested_songs": "The Casualties -- Underground, Cock Sparrer -- Running Riot, Charged GBH -- City Baby Attacked by Rats, The Unseen -- State of America, Lower Class Brats -- Oi Revolution",
     "vibe": "Punk made on the street, for the street, about the street.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1EWE1uYIOC0IMSs3wVk6sm",
+        "score": 5,
+        "reason": "Mid‑tempo, chant‑ready punk with gang vocals, simple power‑chord riffs and working‑class anger — exactly the kind of anthemic, street‑level sound street punk is built on.",
+        "title": "Oxymoron — Crisis Identity",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0242689f2a1d739e08cdcb77a2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1w4qlRY7zlny8vziTepInX",
+        "score": 4,
+        "reason": "Fast, raw D‑beat‑inflected punk with shouted vocals and a rough, street‑demo feel; it leans into hardcore speed but still fits solidly under the street‑punk umbrella.",
+        "title": "The Virus — My Life, My World",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a4d074870d089e5b5412f96",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5RYENXYALFOqfHmv9cWTN3",
+        "score": 4,
+        "reason": "Aggressive, politically charged punk with shouted choruses and a gritty, boots‑on‑the‑ground sound that lines up well with street‑punk’s confrontational vibe.",
+        "title": "Defiance — No Future, No Hope",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024b51eab13a72cc635063d561",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5W3HabqRHHqK4eC35oZQ30",
+        "score": 3,
+        "reason": "Hyper‑fast, metallic hardcore‑leaning riffing and harsher vocals push this toward crossover/thrash territory, with street‑punk attitude but a more metal‑driven sound.",
+        "title": "Moose Knuckle — Death Comes Ripping",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029729095ffbd94ce14ad0623e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7tSUx2A9piRnbV0wweAV2d",
+        "score": 5,
+        "reason": "Classic Oi!/street‑punk stomp with massive gang vocals and terrace‑chant chorus, embodying the style’s core more cleanly than a metal‑tinged rager.",
+        "title": "Cock Sparrer — Riot Squad",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7fYEGlFkYPEe3iRV30FBsu",
+        "score": 3,
+        "reason": "Relentlessly noisy, crust‑tinged hardcore with blown‑out production; the political fury fits street‑punk thematically, but the sound is closer to modern crust/hardcore.",
+        "title": "BALM Squad — No Pride in Genocide - Redux",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02606a560ae6783d3bbf8346cb",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3JRiqkjOQFvBL7p18EWdJh",
+        "score": 5,
+        "reason": "Straight, pounding street‑punk rhythm with call‑and‑response chorus and pub‑chant energy, making the genre identity obvious immediately.",
+        "title": "The Business — Suburban Rebels",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0PekkGyhlVSPSjwrk5hRVI",
+        "score": 4,
+        "reason": "Classic early‑80s UK punk: simple, shout‑along chorus, raw guitars and a snotty, working‑class stance that overlaps heavily with what became codified as street punk.",
+        "title": "The Exploited — Punk's Not Dead",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f746c48fead8a57d1d808404",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 20,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1088,
