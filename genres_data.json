@@ -10934,7 +10934,7 @@
     "date_raw": "4/25",
     "date_normalized": "2026-04-25",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -10943,9 +10943,83 @@
     "key_artists": "XXXTentacion, Lil Peep, Juice WRLD, Post Malone (early), Trippie Redd (originators)",
     "suggested_songs": "Lil Peep — Star Shopping, XXXTentacion — Sad!, Juice WRLD — Lucid Dreams, Trippie Redd — Love Scars",
     "vibe": "Rap that decided to cry about it and made that the whole point.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0kEZlJh4mK1QRfb3CT5LPk",
+        "score": 4,
+        "reason": "Classic $uicideboy$ emo rap: lo‑fi trap drums, gloomy atmosphere, and morbid, introspective lyrics put this squarely in the core emo‑rap aesthetic.",
+        "title": "$uicideboy$ — Kill Yourself (Part III)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dcff3103179d992594a227db",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2UQ6rUcmGiGv9IJFBUXRfl",
+        "score": 4,
+        "reason": "Melancholic, melodic hook over hazy, filtered production; the blend of rap cadences and emo‑inflected vocal lines makes this a clear emo‑rap touchstone.",
+        "title": "Wicca Phase Springs Eternal — Just One Thing",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02015315390efc5926f5801fbc",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7vkVxKDaxi1SkepvHdE4hw",
+        "score": 4,
+        "reason": "“Contact” sits at the emo‑rap / cloud‑rap border: moody guitars and half‑sung vocals, but the trap‑derived drums and confessional tone keep it aligned with emo‑rap.",
+        "title": "Wicca Phase Springs Eternal — Contact",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02015315390efc5926f5801fbc",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5yhDBpiZpnGDT7DdaYws0e",
+        "score": 4,
+        "reason": "Corbin’s track is archetypal cloud‑rap‑adjacent emo: reverb‑heavy, minimal beat and mournful melodies foreground the emotional vulnerability central to the genre.",
+        "title": "Corbin — Mourn",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f66c08419feea260f88d8b9c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1w5dZMSwIM242ymwTv0PAi",
+        "score": 4,
+        "reason": "Emo‑rap fused with pop‑punk DNA: distorted guitars and Dashboard Confessional feature pull it toward emo rock, but the production and vocal delivery still feel rooted in emo rap.",
+        "title": "nothing,nowhere.; Dashboard Confessional — Hopes Up (feat. Dashboard Confessional)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023f26f51e52c3fd057890d757",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1iV5yIJimMf9pWfaDdf0UR",
+        "score": 4,
+        "reason": "“Dead Eyes” is straight, melodic emo rap: clean trap drums, spacious atmosphere, and a tuneful, sad‑boy vocal that could anchor a genre playlist.",
+        "title": "Powfu; Ouse; Promoting Sounds — Dead Eyes",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cd1b709326be6313e2c3e0a8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7GJeYfG5fPkzkRbrYpOTYo",
+        "score": 4,
+        "reason": "Cairn rides a mid‑tempo trap beat with emotive, lightly Auto‑Tuned vocals; the heartbreak‑y content and cloudy production mark it as a solid emo‑rap entry.",
+        "title": "Cairn — Ghost",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ec30cbe825df83ca39b11ede",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 9,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 331,
@@ -12978,9 +13052,11 @@
     ],
     "rank_order": 14,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Artist — Because I Got High",
+    "favoritesongurl": "https://open.spotify.com/track/0rRboI6IRuGx56Dq3UdYY4",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02734b1164a9e0faa980ce1b92"
   },
   {
     "id": 392,
