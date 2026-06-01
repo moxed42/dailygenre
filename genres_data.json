@@ -1910,7 +1910,7 @@
     "date_raw": "3/10",
     "date_normalized": "2026-03-10",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -1919,9 +1919,44 @@
     "key_artists": "Sven-Ingvars, Wizex, Vikingarna, Lasse Stefanz, Thorleifs (major figures)",
     "suggested_songs": "Vikingarna — Lyckliga Gatan, Sven-Ingvars — Lyckliga gatan, Lasse Stefanz — Flickan i en Sommarrock, Wizex — Lyckliga Gatan",
     "vibe": "A Swedish village dance that has been happening every Saturday for fifty years.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4QZ6hp2CKRaZG5RI9zXQqg",
+        "score": 4,
+        "reason": "Schlager-style pop with clear four-on-the-floor pulse and bright, melodic hooks; feels like polished radio schlager that sits right next to dansband even if it is more indie-leaning.",
+        "title": "Arvingarna — Eloise",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219067e826714e50725a0a880",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6JIwvW8ioos5KFp0Q0mS3Y",
+        "score": 5,
+        "reason": "Archetypal modern dansband/schlager: straight-ahead dance groove, big key-change chorus, and glossy production tailored for dance floors and Swedish parties.",
+        "title": "Charlotte Perrelli — Tusen och en natt",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bff0488fa1726b023856513e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/3p36frx8pePryc3PDIL4lx",
+        "score": 5,
+        "reason": "Classic party-ready dansband cut with a chugging dance groove and ultra-singable chorus that underlines the session’s core sound.",
+        "title": "Vikingarna — Kan du hålla dom orden",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 15,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 71,
@@ -19241,9 +19276,11 @@
     ],
     "rank_order": 1,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "The Decemberists — Here I Dreamt I Was an Architect",
+    "favoritesongurl": "https://open.spotify.com/track/1UyYuaCxOF4ilkRDZ74nJW",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b8ab48c35bf93c0ddb44fa53"
   },
   {
     "id": 677,
