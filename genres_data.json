@@ -21299,7 +21299,7 @@
     "date_raw": "3/13",
     "date_normalized": "2026-03-13",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -21308,9 +21308,133 @@
     "key_artists": "Steely Dan, Michael McDonald, Toto, Christopher Cross, Kenny Loggins (major figures)",
     "suggested_songs": "Christopher Cross — Sailing, Toto — Rosanna, Michael McDonald — I Keep Forgettin’, Steely Dan — Peg, Kenny Loggins — This Is It",
     "vibe": "Silky studio perfection with expensive chords and no visible hurry.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/5GvWrvLIqoHroq7YvO260M",
+        "score": 5,
+        "reason": "Quintessential yacht rock: silky Rhodes, midtempo groove, and blue-eyed soul vocal over ultra-slick production, basically the blueprint for the genre.",
+        "title": "Michael McDonald — I Keep Forgettin' (Every Time You're Near)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026c17415a134732f752b36922",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3hoNcBH9TL37iFftk4fe9U",
+        "score": 4,
+        "reason": "Soft-rock ballad with glossy keys and smooth vocal performance; very yacht-adjacent even if it’s a bit more straight MOR radio soft rock.",
+        "title": "Christopher Cross — Sailing",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023414ea69249376598e7d1700",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0QFuDFKsl7OzbvHfik15Oa",
+        "score": 4,
+        "reason": "Big studio sheen, horn stabs, and syncopated rhythm section give this a sophisticated AOR/yacht feel even as it leans more rock.",
+        "title": "TOTO — Rosanna",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02356ab25b493d82fc503dfd0c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5jQcJ2st6yHWhUBjoDoZPH",
+        "score": 4,
+        "reason": "Laid-back shuffle, electric piano, and jazzy chords sit squarely in smooth late-70s yacht territory.",
+        "title": "TOTO — Georgy Porgy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02105ef588df1ef91bfa811f94",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4XoiAHO6eG5Q4oUZauMzLJ",
+        "score": 4,
+        "reason": "Breezy soft-rock with gentle groove and polished harmonies; fits the relaxed, sunlit side of yacht rock.",
+        "title": "Seals and Crofts — Summer Breeze",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e13b56ae3e9e99abf2c2026c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/78xF1Vot5aZgiQc1hnBCtO",
+        "score": 4,
+        "reason": "AM-gold softness with immaculate band interplay and a hint of jazz smoothness make this a clear yacht/soft-rock staple.",
+        "title": "Steely Dan — Dirty Work",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020ddd7e736f870994f4707947",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/45HINuBKVqkhcqbLnlNtMX",
+        "score": 4,
+        "reason": "Power-ballad leaning AOR, but the silky production and melodic focus keep it comfortably within yacht-adjacent territory.",
+        "title": "Steve Perry — Foolish Heart",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025c84bb5782c20e7ce5f7571a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2Xb6wJYGi0QXwURw5WWvI5",
+        "score": 4,
+        "reason": "Mid-tempo, groove-forward soft rock whose warm keys and relaxed vocal feel align strongly with yacht aesthetics.",
+        "title": "Gerry Rafferty — Right Down the Line",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0231b610609f2623823d3bdbf1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6Dk5fHTvH897XrVzCO64Mx",
+        "score": 5,
+        "reason": "Smooth, jazzy chords, laid-back tempo, and immaculate 70s studio sound make this one of the genre’s purest exemplars.",
+        "title": "Bobby Caldwell — What You Won't Do for Love",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0226e348a7c0e1b2aff3a357a6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7vJnM5FUcOV3xAKJHSSUWj",
+        "score": 4,
+        "reason": "Sunny, tightly arranged pop-rock with big chorus and slick band sound; fits perfectly in a yacht rock set even if it edges toward pop-rock.",
+        "title": "Kenny Loggins — I'm Alright - Theme from \"Caddyshack\"",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0219db9ac54c80a898a179f0f1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0qRR9d89hIS0MHRkQ0ejxX",
+        "score": 5,
+        "reason": "Blue-eyed soul groove, punchy rhythm section, and pristine 70s production make this a canon-tier yacht rock cut.",
+        "title": "Daryl Hall & John Oates — Rich Girl",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023dd7d442806684ef3fc84b3f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6YIeSw2cTNQRWbuxWvRPsW",
+        "score": 4,
+        "reason": "Essentially a twin to “Sailing” in feel: ultra-smooth soft-rock balladry with hi-fi gloss; ideal for the mellow end of yacht.",
+        "title": "Christopher Cross — Sailing (2019 Remaster)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023414ea69249376598e7d1700",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 34,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 735,
