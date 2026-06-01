@@ -1651,7 +1651,7 @@
     "subsubsubcategory": "",
     "category_path": "Country",
     "status": "listened",
-    "date_raw": "2/8",
+    "date_raw": "2/??",
     "date_normalized": "2026-02-08",
     "parse_notes": "uncertain_day",
     "rating": "2",
@@ -6534,12 +6534,56 @@
       {
         "url": "https://open.spotify.com/track/2csnhAXqvIouyRlFZ1FjEh",
         "score": 3,
-        "reason": "Bouncy, lo‑fi Russelter party track more about goofy local energy than any particular genre spine; fun color for a Russ day but not an archetype of anything else.",
-        "title": "DJ Borgny — Richie Rich",
+        "reason": "Canonical goofy Russelter banger: chanty hook, cheap-sounding synths, and stompy four-on-the-floor that sells the bus-party vibe more than any deeper genre aesthetics.",
+        "title": "DJ Borgny — Richie Rich 2012",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b96e41840f688ef974fca92b",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/1AUsJcph9rxIthzYSr8Qq7",
+        "score": 4,
+        "reason": "Tightens the same Richie Rich formula into a cleaner, more straightforward Russ anthem feel; feels like the “official” Russ single version you’d play to explain the vibe.",
+        "title": "DJ Borgny — Richie Rich 2012",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b96e41840f688ef974fca92b",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/5mC8CnBY7w2sSiC1SrIsaw",
+        "score": 4,
+        "reason": "Huge chant potential and maximalist drop; “Muppets 2013” is basically textbook Russ bus energy, with cartoonish synth leads and pushy drums built for drunk shouting.",
+        "title": "DJ Borgny — Muppets 2013",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/7m9V0QZ4aEwBv8XRg0dXMX",
+        "score": 4,
+        "reason": "Slicker, slightly more EDM-polished Russ single that still revolves around crew-bragging and drop-release; a good “later-era” Borgny angle on the same party-zanger archetype.",
+        "title": "DJ Borgny — Entourage 2013",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/5ljoCqY7IS0sS7pR4HnQ7n",
+        "score": 4,
+        "reason": "“Bra Boys” leans harder into aggressive festival-EDM tropes but keeps the Russ DNA in its simple build/drop structure and shout-ready hooks, making it a strong modern Russelter anchor.",
+        "title": "DJ Borgny — Bra Boys",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
       }
     ],
     "pending_songs": [],
