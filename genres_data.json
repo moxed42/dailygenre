@@ -19456,7 +19456,7 @@
     "date_raw": "1/28",
     "date_normalized": "2026-01-28",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -19467,28 +19467,51 @@
     "vibe": "Rhythm pulled so tight it becomes a complete worldview.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/6cFZ4PLC19taNlpl9pbGMf",
+        "url": "https://open.spotify.com/track/687YZan9Gol1UVvbpUSO6Y",
         "score": 5,
-        "reason": "Chugging stomp beat, stack‑of‑amps guitar tone, and larger‑than‑life vocals crystallize the 70s glam template in one song",
-        "title": "David Bowie — Suffragette City",
+        "reason": "Tight, syncopated bass line, clavinet stabs and horn‑friendly groove make this a foundational funk track that also crosses into classic soul — perfect “explain funk” material.",
+        "title": "Stevie Wonder — I Wish",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0267bc29c251c777361b17a190",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022fee61bfec596bb6f5447c50",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/0XKOb34eCwukVh4K7FqJkM",
+        "url": "https://open.spotify.com/track/6ztstiyZL6FXzh4aG46ZPD",
         "score": 4,
-        "reason": "Punchy, riff‑driven RHCP track where the funk rhythm section and rock guitars stay tightly focused",
-        "title": "Red Hot Chili Peppers — Stone Cold Bush",
+        "reason": "Four‑on‑the‑floor disco pulse, but the choppy rhythm guitar, elastic bass and call‑and‑response vocals carry plenty of funk DNA within its disco context.",
+        "title": "Earth, Wind & Fire, The Emotions — Boogie Wonderland",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028b2238ebc2b233ba73b8c4ca",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5FPnt6XnXBRIzzz6nWks6W",
+        "score": 4,
+        "reason": "Motown polish and pop structure, yet the springy bass, drum groove and tight horn punches bring a strong funk feel to an otherwise pure soul single.",
+        "title": "The Jackson 5 — I Want You Back",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0216aaf05fe82237576a7d0e38",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5uuJruktM9fMdN9Va0DUMl",
+        "score": 5,
+        "reason": "Straight‑up white‑funk anthem: bawdy lyrics, super‑syncopated bass and sharp rhythm‑guitar work make this one of the most instantly recognizable funk grooves ever.",
+        "title": "Wild Cherry — Play That Funky Music",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d419ed4f1e89669ce14bd369",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 17,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 766,
