@@ -5494,7 +5494,7 @@
     "date_raw": "4/2",
     "date_normalized": "2026-04-02",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -5503,9 +5503,46 @@
     "key_artists": "Amit, Paradox, Klute, Calibre (cerebral works), dBridge (originators/major figures)",
     "suggested_songs": "Amit — Prana, Paradox — Patina, dBridge — Bring Light, Klute — Champion Sound",
     "vibe": "Drum and bass where someone removed everything except the part they were most interested in.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/1s79kNFHXmFxzWdke33Yq3",
+        "score": 5,
+        "reason": "Textbook drumfunk: Paradox strips everything back to hyper-detailed break edits and ghost snares, making the drums the whole narrative while keeping bass minimal and functional.",
+        "title": "Paradox — Patina",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4HwAVFyumRbXW8U9t7peBw",
+        "score": 4,
+        "reason": "Amit leans into staggered, half-step-feeling breaks and subby low end; it is still rhythm-obsessed and skeletal enough to showcase drumfunk’s emphasis on percussive architecture.",
+        "title": "Amit — Prana",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0PsfWWlKfw9bH2MdzpsuZP",
+        "score": 4,
+        "reason": "dBridge pares back melody and spotlights intricate, shuffling drums and negative space, sitting at the cerebral, rhythm-first edge of drum and bass that drumfunk represents.",
+        "title": "dBridge — Bring Light",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 34,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 172,
