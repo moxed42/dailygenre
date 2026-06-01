@@ -25247,7 +25247,7 @@
     "date_raw": "329",
     "date_normalized": "2026-03-29",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -25256,9 +25256,45 @@
     "key_artists": "Legião Urbana, Barão Vermelho, Sepultura, Titãs, Os Mutantes (major figures across eras)",
     "suggested_songs": "Legião Urbana — Tempo Perdido, Barão Vermelho — Por Você, Titãs — Comida, Os Mutantes — A Minha Menina, Sepultura — Roots Bloody Roots",
     "vibe": "Rock filtered through a country too musical to leave it unchanged.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0lGEWOZvMexZFXckBJxlVOA",
+        "score": 4,
+        "reason": "Whimsical psychedelic arrangement with playful vocal harmonies and prominent guitar work—Os Mutantes blending Brazilian tropicália sensibility with late-60s psych-rock experimentation, a foundational track for Brazilian rock's embrace of countercultural sounds.",
+        "title": "Os Mutantes — A Minha Menina",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2yRJrEQYK5OkUZPE8RlHzV",
+        "score": 5,
+        "reason": "Driving garage-rock riff with urgent Portuguese vocals and raw production—Os Mutantes at their most straightforward rock, channeling British Invasion energy through a Brazilian lens.",
+        "title": "Os Mutantes — Bat Macumba",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/7eWBo0zo0YBw9Z8qP1LWAO",
+        "score": 4,
+        "reason": "Hard-edged arena-rock anthem with Brazilian Portuguese lyrics and anthemic chorus—Sepultura before the thrash metal era, showing Brazilian rock's capacity for stadium-ready power.",
+        "title": "Sepultura — Beneath the Remains",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 52,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 830,
