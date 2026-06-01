@@ -27061,7 +27061,7 @@
     "date_raw": "2/10",
     "date_normalized": "2026-02-10",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -27070,9 +27070,55 @@
     "key_artists": "D.R.I., Suicidal Tendencies, Municipal Waste, Agnostic Front, Cro-Mags (major figures)",
     "suggested_songs": "D.R.I. -- Thrashard, Suicidal Tendencies -- Institutionalized, Municipal Waste -- Thrash and Burn, Agnostic Front -- Victim in Pain, Cro-Mags -- We Gotta Know",
     "vibe": "Thrash metal and hardcore punk arguing over who gets to be faster.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7G83ZwD2msTtFaBQExc8QB",
+        "score": 5,
+        "reason": "Textbook crossover thrash: hardcore-rooted verses, spoken-word neurosis, and skate-punk bounce over chuggy thrash riffs and double-time drums make this an archetypal crossover anthem.",
+        "title": "Suicidal Tendencies — Institutionalized",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ff66248fdc73fb872acf7087",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4fjWStUaP7aXdT0d3YxvPo",
+        "score": 4,
+        "reason": "Classic thrash that flirts with crossover via its shout-along chorus and moshy stomp sections, even if the riffing and arrangements stay firmly in big-four territory.",
+        "title": "Anthrax — Caught In A Mosh",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029547c3343626604ea638967f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6Csaa8z7vVYZLNzG7WZ8e0",
+        "score": 5,
+        "reason": "Nails the hardcore-meets-thrash formula with d-beat drive, gang-vocal hooks, and sprinting Slayer-adjacent riffing—ideal to sit between Suicidal and Anthrax in a crossover primer.",
+        "title": "D.R.I. — Thrashard",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4wl9qqpwYBFvToSktzJMcU",
+        "score": 4,
+        "reason": "Short, explosive blast of punk-tempo riffing and thrash muting that underlines how hardcore bands pushed into crossover intensity.",
+        "title": "Municipal Waste — Unleash the Bastards",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 43,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1013,
