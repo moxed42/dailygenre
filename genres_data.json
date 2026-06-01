@@ -625,7 +625,18 @@
     "key_artists": "Tinariwen, Ali Farka Touré, Bombino, Mdou Moctar, Tartit (originators/major figures)",
     "suggested_songs": "Tinariwen — Cler Achel, Bombino — Imuhar, Ali Farka Touré — Ai Du, Mdou Moctar — Afrique Victime",
     "vibe": "Blues played where the horizon is very far away.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1bJZJx8b3Yh6U2EMi2pqgk",
+        "score": 5,
+        "reason": "Fuzz‑edged guitar riffs, pounding Afro‑funk rhythm, and fiery vocals sit squarely in the Afro‑rock pocket, giving a more direct template for the genre tag.",
+        "title": "BLO — Chant to Mother Earth",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 204,
     "pending_songs": []
   },
@@ -21872,7 +21883,7 @@
     "date_raw": "3.3",
     "date_normalized": "2026-03-03",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -21881,9 +21892,95 @@
     "key_artists": "Osibisa, Blo, Amanaz, Assagai, Hedzoleh Soundz (major figures)",
     "suggested_songs": "Osibisa — Sunshine Day, Blo — Preacherman, Amanaz — Khala My Friend, Assagai — I've Been Waiting, Hedzoleh Soundz — Kum Hon San",
     "vibe": "Electric rock opened up by African rhythm and serious groove intelligence.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6HiHHP4wUKzTSBEjYZRnCm",
+        "score": 4,
+        "reason": "Loose, hypnotic groove with interlocking guitars and Afro‑psych keys; feels like a lighter, highlife‑leaning take on Afro‑rock.",
+        "title": "The Lijadu Sisters — Orere‑Elejigbo",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02949aad45781849228a420a4b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2oWex6rYoQ7Bl2D9zG8d3F",
+        "score": 5,
+        "reason": "Deep, mid‑tempo Afrobeat pocket with horn stabs, call‑and‑response vocals, and political bite—an archetypal Fela groove for this lane.",
+        "title": "Fela Kuti — Water No Get Enemy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa11d0ad6e00ce0f055e7360",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7vx87LB2W1D7QlwjF96kh1",
+        "score": 4,
+        "reason": "Tight, percussive jam that blurs Afro‑funk and Afrobeat, with choppy guitars and insistent rhythm section giving it a strong Afro‑rock club energy.",
+        "title": "The Funkees — Breakthrough",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cb3f2411d8f22cf3f7417dfd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5xevas4P14kVmD4St0X3yy",
+        "score": 3,
+        "reason": "Distorted psych‑guitar and looser rock feel push this toward Zamrock/acid rock, with the Afro groove more in the background than foreground.",
+        "title": "Amanaz — Khala My Friend",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021a3e9f74688b6c8f7fe97751",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7qUiZlwGOzK5GkJHc6nJ2u",
+        "score": 5,
+        "reason": "Heavy fuzz guitar, locked Afro rhythm section, and chant‑like vocals make this a quintessential Afro‑rock/Zamrock burner that centers the style better than the more diffuse psych cut.",
+        "title": "Witch — Lazy Bones",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7qSdrXzUd5WvIai13i0HDm",
+        "score": 4,
+        "reason": "Polyrhythmic percussion, jangling guitar, and chant‑style vocals live at the crossroads of Afro‑funk and Afro‑rock, giving the session a modern, driving edge.",
+        "title": "Baba Commandant & The Mandingo Band — Wasso",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258a8cbdebbb1df901c29fdf6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/11uAWA4bnmxzVBqtwZEuZl",
+        "score": 3,
+        "reason": "Sahelian guitar lines and desert‑blues vocal delivery skew this closer to Tuareg/Desert rock than classic Afro‑rock or Afrobeat, despite the shared hypnotic drive.",
+        "title": "Mdou Moctar — Imouhar",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a090506a260f0d216f83104a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1bJZJx8b3Yh6U2EMi2pqgk",
+        "score": 5,
+        "reason": "Fuzz‑edged guitar riffs, pounding Afro‑funk rhythm, and fiery vocals sit squarely in the Afro‑rock pocket, giving a more direct template for the genre tag.",
+        "title": "BLO — Chant to Mother Earth",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 8,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 790,
@@ -25158,7 +25255,18 @@
     "key_artists": "Cream, Blue Cheer, Jefferson Airplane, Iron Butterfly, Vanilla Fudge (major figures)",
     "suggested_songs": "Cream — White Room, Blue Cheer — Summertime Blues, Jefferson Airplane — Somebody to Love, Iron Butterfly — In-A-Gadda-Da-Vida, Vanilla Fudge — You Keep Me Hangin' On",
     "vibe": "Psychedelia with the volume knob broken off.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7qUiZlwGOzK5GkJHc6nJ2u",
+        "score": 5,
+        "reason": "Heavy fuzz guitar, locked Afro rhythm section, and chant‑like vocals make this a quintessential Afro‑rock/Zamrock burner that centers the style better than the more diffuse psych cut.",
+        "title": "Witch — Lazy Bones",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 41,
     "pending_songs": []
   },
