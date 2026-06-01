@@ -2485,7 +2485,7 @@
       const items = (archiveCurrentItems && archiveCurrentItems.length) ? archiveCurrentItems.slice() : genres.slice();
       detailNavList = items
         .slice()
-        .sort((a,b) => String(dateValue(b)||'').localeCompare(String(dateValue(a)||'')) || String(a.genre||'').localeCompare(String(b.genre||'')));
+        .sort((a,b) => String(dateValue(a)||'').localeCompare(String(dateValue(b)||'')) || String(a.genre||'').localeCompare(String(b.genre||'')));
       return detailNavList;
     }
 
