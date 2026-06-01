@@ -8385,7 +8385,7 @@
     "date_raw": "4/30",
     "date_normalized": "2026-04-30",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8394,9 +8394,43 @@
     "key_artists": "Freddie Aguilar, Hotdog, Ryan Cayabyab, Heber Bartolome, VST & Company (originators/major figures)",
     "suggested_songs": "Freddie Aguilar — Anak, Hotdog — Annie Batungbakal, VST & Company — Awitin Mo at Isasayaw Ko",
     "vibe": "Filipino pop romance, 1970s edition.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/63MRgdqrhUnmhWNNpsCgjk",
+        "score": 4,
+        "reason": "Hagibis bring macho‑disco funk with Tagalog lyrics, brass stabs, and call‑and‑response vocals—squarely in the OPM/Manila sound lane of localizing 70s disco and funk.",
+        "title": "Hagibis — Katawan [file:4]",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02de4a00896c51d18b690f0e58",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0cJhOwOBnpyupfqnjz86Vh",
+        "score": 4,
+        "reason": "“Awitin Mo, Isasayaw Ko” is classic Manila sound: syrupy string‑laden disco groove, Filipino romanticism in the lyrics, and a polished, show‑band feel that defines 70s OPM pop.",
+        "title": "VST & Company — Awitin Mo, Isasayaw Ko [file:4]",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020f1941c6420a941846899a67",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7ADX1hXl4eB9Qqkjp5bkQy",
+        "score": 4,
+        "reason": "Hotdog’s “Annie Batungbakal” blends funk basslines, horn riffs, and Tagalog storytelling; it’s one of the canonical Manila sound hits that anchor the genre’s identity.",
+        "title": "Hotdog — Annie Batungbakal [file:4]",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0237a7c1983d643ef88aa54fee",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 18,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 256,
