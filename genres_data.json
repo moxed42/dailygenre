@@ -473,12 +473,12 @@
     "vibe": "The Delta, electrified and moved to a city that had work.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/4bUUAuwF4TRvhUuUAgg8EX",
+        "url": "https://open.spotify.com/track/4bUUAuwF4TRvhUuUAgg8EX?si=8656c89b58f64a60",
         "score": 5,
         "reason": "Electric band, sharp lead guitar, and soul‑blues vocal over a shuffle groove—modern but absolutely in the Chicago electric‑blues lineage.",
         "title": "Buddy Guy — Damn Right, I’ve Got the Blues",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c09b5a132c7790328655c77f",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -498,7 +498,7 @@
         "reason": "Classic Chess‑studio cut with Wolf’s rasp, harmonica, and churning groove; slightly earlier, more rural‑tinged but still a core Chicago‑blues standard.",
         "title": "Howlin’ Wolf — Smokestack Lightnin’",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026181b1ed45a906d5b2c89af3",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026181b1ed45a906d5b2c89af3",
         "source": "spotify",
         "added": "2026-06-01"
       }
