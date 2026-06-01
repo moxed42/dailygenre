@@ -255,7 +255,28 @@
     "key_artists": "Luigi Russolo (originator), Merzbow, Whitehouse, Einstürzende Neubauten, Wolf Eyes (major figures)",
     "suggested_songs": "Merzbow — Woodpecker No. 1, Wolf Eyes — Stabbed in the Face, Whitehouse — Dedicated to Peter Kurten",
     "vibe": "Sound asking whether it needs to be music at all.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2ENexcMEMsYk0rVJigVD3i",
+        "score": 5,
+        "reason": "Massive vocal hook, side‑chained synths, and trance‑adjacent build make this a textbook commercial trouse anthem.",
+        "title": "Rihanna — Only Girl (In The World)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0231548865f7c729290b96c794",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0QkWikH5Z3U0f79T9iuF6c",
+        "score": 5,
+        "reason": "Aggressive sidechain, saw‑lead riffs, and huge stadium chorus nail the maximalist, big‑room trouse peak better than the more groove‑oriented house cut.",
+        "title": "Lady Gaga — Judas",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026d2bc35812c2d7f67d110e48",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 535,
     "pending_songs": []
   },
@@ -11309,7 +11330,18 @@
     "key_artists": "Terry Francis, Mr. C, Jamie Jones, Green Velvet, Fisher (originators/major figures)",
     "suggested_songs": "Green Velvet — La La Land, Jamie Jones — Summertime, Fisher — Losing It, Terry Francis — Hello Moto",
     "vibe": "House with cleaner lines and less small talk.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3E7ZwUMJFqpsDOJzEkBrQ7",
+        "score": 5,
+        "reason": "Sleek, hook‑driven dance‑pop with a driving four‑on‑the‑floor and trance‑inflected synths; a near‑perfect example of the pop‑trouse crossover sound.",
+        "title": "Kylie Minogue — Can’t Get You Out of My Head",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025d6121285c42ea4535e59048",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 730,
     "pending_songs": []
   },
@@ -11372,7 +11404,7 @@
     "date_raw": "3.5",
     "date_normalized": "2026-03-05",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -11381,9 +11413,127 @@
     "key_artists": "Axwell, Afrojack, AN21 & Max Vangeli, Kaskade, Thomas Gold (major figures)",
     "suggested_songs": "Axwell — Feel the Vibe, AN21 & Max Vangeli — Sun Goes Down, Kaskade — Move for Me, Thomas Gold — Believe",
     "vibe": "Trance and house sharing a breakdown.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1Bdd70AWZg3KmivtN5oG3O",
+        "score": 4,
+        "reason": "Big supersaw lead, festival‑scale build, and four‑on‑the‑floor drop; classic melodic EDM that fits the euphoric, vocal‑house‑meets‑trance side of trouse.",
+        "title": "Avicii — Levels - Original Version",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ffb343926530168be4724dd4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2I0Q1wxFRdnDYtG6Q8W47S",
+        "score": 4,
+        "reason": "Deep‑house‑accented remix but still built on trancey chords and a hands‑in‑the‑air drop; comfortably in the trouse zone between progressive house and trance.",
+        "title": "MUNA, Tiësto — Winterbreak - Tiësto’s Deep House Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0209a9f84ffb6ac32351860317",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4e4DujMLh9227SuYdFsHK2",
+        "score": 4,
+        "reason": "Big room drums, huge lead hook, and emotional topline are straight from the peak‑EDM playbook; slightly pop‑EDM but very on‑brand for festival trouse.",
+        "title": "Swedish House Mafia, John Martin — Don’t You Worry Child - Radio Edit",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02544023aa98872d4deb347465",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0w4jWlVP0tWVYw6NIJRTLI",
+        "score": 3,
+        "reason": "Long, rolling tech‑/acid‑house jam with a hypnotic bassline; sits more in underground house than festival trouse, even if the energy level matches.",
+        "title": "Oden & Fatzo — The Shapeshifter",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020790b638af67070070e62cd1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2ENexcMEMsYk0rVJigVD3i",
+        "score": 5,
+        "reason": "Massive vocal hook, side‑chained synths, and trance‑adjacent build make this a textbook commercial trouse anthem.",
+        "title": "Rihanna — Only Girl (In The World)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0231548865f7c729290b96c794",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4wARBbwZLNAPDVG6nCMhR6",
+        "score": 3,
+        "reason": "Pumping groove and diva vocal feel more like funky/tech house; the mood works in a trouse set but the sound design is less overtly trance‑y.",
+        "title": "J. Worra, David Penn — some ppl fall - David Penn Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024e878eba89ff46a8cb8d2964",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0QkWikH5Z3U0f79T9iuF6c",
+        "score": 5,
+        "reason": "Aggressive sidechain, saw‑lead riffs, and huge stadium chorus nail the maximalist, big‑room trouse peak better than the more groove‑oriented house cut.",
+        "title": "Lady Gaga — Judas",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026d2bc35812c2d7f67d110e48",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5fp6m6Zo4LetiWaMMrPjy5",
+        "score": 2,
+        "reason": "Trance‑influenced, but its long, ambient‑leaning intro and more psy‑ish textures push it away from vocal/festival trouse toward early‑2010s internet trance.",
+        "title": "009 Sound System — Dreamscape",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026298dc3c772f72e70e73d4e8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/043dDJ9u0PQ3ooAXMgcwOe",
+        "score": 4,
+        "reason": "Pop‑EDM hybrid with a big side‑chained hook and festival‑ready drop, fitting the trouse/pop crossover lane more cleanly than the drifting 009 Sound System cut.",
+        "title": "Doja Cat — MOOO!",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021742758fca8805f9110f8248",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4735w6I97inkg6y3JFTYyw",
+        "score": 3,
+        "reason": "Tech‑house/tech‑house‑adjacent roller whose groove fits a clubby side room more than a trouse festival stage, even though its energy is compatible.",
+        "title": "J. Worra, Leo Stannard — Check Out",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f30fff3f4a5f5723726f02f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3E7ZwUMJFqpsDOJzEkBrQ7",
+        "score": 5,
+        "reason": "Sleek, hook‑driven dance‑pop with a driving four‑on‑the‑floor and trance‑inflected synths; a near‑perfect example of the pop‑trouse crossover sound.",
+        "title": "Kylie Minogue — Can’t Get You Out of My Head",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025d6121285c42ea4535e59048",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 23,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 406,
@@ -12684,7 +12834,18 @@
     "key_artists": "Paul van Dyk, Tiësto, Armin van Buuren, Ferry Corsten, ATB (originators/major figures)",
     "suggested_songs": "Paul van Dyk — For an Angel, ATB — 9 PM (Till I Come), Tiësto — Adagio for Strings, Armin van Buuren — Communication",
     "vibe": "Electronic music designed to take you somewhere else.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/043dDJ9u0PQ3ooAXMgcwOe",
+        "score": 4,
+        "reason": "Pop‑EDM hybrid with a big side‑chained hook and festival‑ready drop, fitting the trouse/pop crossover lane more cleanly than the drifting 009 Sound System cut.",
+        "title": "Doja Cat — MOOO!",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021742758fca8805f9110f8248",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 746,
     "pending_songs": []
   },
