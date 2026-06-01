@@ -1898,7 +1898,7 @@
         "reason": "Beachy harmonies and tourist‑tropical lyrics, but the glossy early‑’80s Beach Boys production reads more as nostalgic pop than true trop‑rock bar‑band energy.",
         "title": "The Beach Boys — Kokomo",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c5634c0532097e175199f07e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c5634c0532097e175199f07e",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -1926,9 +1926,11 @@
     ],
     "rank_order": 78,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Jimmy Buffett — Margaritaville",
+    "favoritesongurl": "https://open.spotify.com/track/4EEjMyQub6tgFVshlM9j1M",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024fdb0337978c7464cdfb1783"
   },
   {
     "id": 72,
