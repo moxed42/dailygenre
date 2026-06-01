@@ -6684,7 +6684,7 @@
     "date_raw": "3/24",
     "date_normalized": "2026-03-24",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -6693,9 +6693,44 @@
     "key_artists": "Kraftwerk (predecessor), Nena, Falco, Nina Hagen, DAF, Der Plan (originators/major figures)",
     "suggested_songs": "Nena — 99 Luftballons, Falco — Rock Me Amadeus, Nina Hagen — Naturträne, DAF — Der Mussolini",
     "vibe": "New wave doing everything in German, which turns out to make it more interesting.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2IJftBfq7pJ43tfnOR0RB3",
+        "score": 5,
+        "reason": "Archetypal NDW: German lyrics, marching beat, bright synth hooks, and a slightly quirky, anti‑rock delivery that nails the genre’s pop/new‑wave hybrid.",
+        "title": "Nena — 99 Luftballons",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027e51ffd6a2e8f77ffd56bb8f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0DfG1ltJnZyq4Tx3ZLL7ZU",
+        "score": 4,
+        "reason": "German vocal, stiff groove, and synth‑driven arrangement put it solidly in NDW territory, though it skews a bit more toward slick 80s pop than the punky early core.",
+        "title": "Falco — Rock Me Amadeus",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02731d2eb04541bef9e4434d4e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6u9FafVyqDqD0R2KO6cZB9",
+        "score": 5,
+        "reason": "Jaunty rhythm, spiky guitars, and deadpan German vocals over synth accents make this a textbook, slightly weirder side of NDW.",
+        "title": "Trio — Da Da Da",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 38,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 212,
