@@ -24337,6 +24337,16 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb23687e71b30b5b20c8526f",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3kiOZm7zQRzLsjWYSUECJx",
+        "score": 4,
+        "reason": "Tense bassline and stark guitar interplay with Robin Guthrie's early production grit—Cocteau Twins before they dissolved into pure dream pop, still anchored in post-punk's skeletal architecture.",
+        "title": "Cocteau Twins — Sugar Hiccup",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 219,
@@ -32043,7 +32053,18 @@
     "key_artists": "The Misfits, Samhain, Wednesday 13, Calabrese, Argyle Goolsby (major figures)",
     "suggested_songs": "The Misfits -- Last Caress, Samhain -- November's Fire, Wednesday 13 -- I Walked with a Zombie, Calabrese -- Sleep, Argyle Goolsby -- House of Widow Maker",
     "vibe": "Punk dressed as a monster and meaning it just enough to be unsettling.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0e5C0LEBfkRrbVCQ7fKOHV",
+        "score": 4,
+        "reason": "Churning bassline and dissonant guitar stabs under Havok's desperate vocal—AFI in early post-hardcore/post-punk mode before the melodic goth-rock turn, still rooted in rhythmic tension.",
+        "title": "AFI — The Leaving Song Pt. II",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 373,
     "pending_songs": []
   },
@@ -32197,7 +32218,7 @@
     "date_raw": "3/28",
     "date_normalized": "2026-03-28",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -32208,28 +32229,123 @@
     "vibe": "Punk after it started asking questions and couldn't stop.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/0VST8W5UDgO1fMLBLuFEtE",
+        "url": "https://open.spotify.com/track/34iOH7LY3vme5rQxsVILZ4",
+        "score": 5,
+        "reason": "Propulsive motorik bassline driving Ian Curtis's detached baritone over jagged guitar and synthetic textures—Joy Division defining post-punk's essential tension between danceable rhythms and emotional alienation.",
+        "title": "Joy Division — Love Will Tear Us Apart - 2020 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e0fdc2906851e29d09320c3",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/18Rbm3tXY2aCqLwRQL9gHu",
+        "score": 3,
+        "reason": "Layered dream-pop guitars and effects-heavy production with Liz Fraser's abstracted vocal—Cocteau Twins' ethereal approach is borderline, pulled strongly toward dream pop/shoegaze rather than post-punk's rhythmic angularity and urban tension.",
+        "title": "Five Ten Fiftyfold",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dd69a64d46d35725c47df19c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3kiOZm7zQRzLsjWYSUECJx",
         "score": 4,
-        "reason": "Strong synth-led hook and clear pop structure bring the Furs closer to core synthpop aesthetics",
-        "title": "The Psychedelic Furs — Love My Way",
+        "reason": "Tense bassline and stark guitar interplay with Robin Guthrie's early production grit—Cocteau Twins before they dissolved into pure dream pop, still anchored in post-punk's skeletal architecture.",
+        "title": "Cocteau Twins — Sugar Hiccup",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/4tKGFmENO69tZR9ahgZu48",
+        "url": "https://open.spotify.com/track/6hQ5sHqT3AIyCeQPXUwq6o",
         "score": 4,
-        "reason": "Dance-pop but built on strong synth lines and drum machines, slotting neatly into an 80s synthpop context",
-        "title": "Sophie Ellis-Bextor — Murder on the Dancefloor",
+        "reason": "Driving cold-wave bassline and reverb-drenched guitars cycling hypnotically—Soviet Soviet channeling post-punk's mechanized repetition and icy European minimalism with clear nods to Joy Division's blueprint.",
+        "title": "Soviet Soviet — Ecstasy",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024914b28ba1485733dc8dd448",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02970937e9ad4762a6681d7c71",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4nNSgSfqhtAQ9upuIp1QgM",
+        "score": 4,
+        "reason": "Tense synth-bass pulse anchoring Sam Herring's theatrical vocal delivery over stark production—Future Islands applying post-punk's rhythmic economy and emotional intensity to synth-driven frameworks.",
+        "title": "Future Islands — Long Flight",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02df6f084c90ca31b6f7ba74e1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5rgDxInkX1WQJNUA7RASwi",
+        "score": 4,
+        "reason": "Relentless bass-driven groove with gothic guitar wash and echoed vocals—Pink Turns Blue fusing post-punk's motorik foundation with darkwave atmosphere while maintaining propulsive energy.",
+        "title": "Pink Turns Blue — Walking on both Sides",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cea539958930ad3b163bb334",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/74V2un7u1W61o0sORILXOJ",
+        "score": 4,
+        "reason": "Steady drum-machine pulse under minimal synth-bass and reverb-soaked guitar—Twin Tribes working the cold-wave/darkwave corner of post-punk with stripped-down production and brooding intensity.",
+        "title": "Twin Tribes — Portal to the Void",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0201359faff130402aac62369c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/782VcXkRqyevFaJlcoIIEz",
+        "score": 4,
+        "reason": "Locked-in drum machine and synth bass driving monotone Russian vocals through cold-wave minimalism—Molchat Doma exemplifying post-punk's global reach with Eastern Bloc aesthetics grafted onto the genre's skeletal frame.",
+        "title": "Molchat Doma — Танцевать",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d4549c0e601fbe7e8622a2f5",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2ORPaFO67SDgFrRwZ3lkkU",
+        "score": 3,
+        "reason": "Aggressive punk energy and horror-tinged melodic hooks with Havok's gothic baritone—AFI leaning more toward melodic hardcore/horror-punk than post-punk's rhythmic restraint and angular guitar work.",
+        "title": "Ash Speck in a Green Eye",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029107575fdd0213a2f2b03649",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0e5C0LEBfkRrbVCQ7fKOHV",
+        "score": 4,
+        "reason": "Churning bassline and dissonant guitar stabs under Havok's desperate vocal—AFI in early post-hardcore/post-punk mode before the melodic goth-rock turn, still rooted in rhythmic tension.",
+        "title": "AFI — The Leaving Song Pt. II",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7p0Pk7IJw1c494Qz5lXopE",
+        "score": 4,
+        "reason": "Extended dual-guitar interplay over sparse rhythm section with Tom Verlaine's literate vocal—Television's art-rock approach to post-punk emphasizing instrumental conversation and compositional sophistication over raw urgency.",
+        "title": "Television — Torn Curtain",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0218b36d985b0ae01163ca9cf6",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 21,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 1077,
