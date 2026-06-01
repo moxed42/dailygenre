@@ -1122,7 +1122,7 @@
     "date_raw": "4/23",
     "date_normalized": "2026-04-23",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -1131,9 +1131,43 @@
     "key_artists": "Jay McShann, Big Joe Turner, Jimmy Rushing, Pete Johnson, Joe Turner (originators)",
     "suggested_songs": "Big Joe Turner — Roll 'Em Pete, Jay McShann — Confessin' the Blues, Jimmy Rushing — Goin' to Chicago Blues, Pete Johnson — Vine Street Boogie",
     "vibe": "Blues that learned to swing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/17iwooRyJd2tmO1ImtSy10",
+        "score": 4,
+        "reason": "Big Joe Turner’s boogie‑driven shouter style is central to Kansas City blues and jump blues, with rolling piano, backbeat swing, and exuberant vocals that define the city’s sound.",
+        "title": "Big Joe Turner — My Little Honeydripper - Single Version",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025685d9e88ef5e474853e939a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3eZJwSjwARTL4GmIXvdWLa",
+        "score": 3,
+        "reason": "Jim Jackson is closer to country blues and early vaudeville than to the fully electrified Kansas City style, but his relaxed groove and narrative delivery foreshadow later KC blues phrasing.",
+        "title": "Jim Jackson — Jim Jackson's Kansas City Blues - Pt. 1",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026778586faa33e02fde6acc47",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track:7eTuwtQajSutojz1IReuw3",
+        "score": 4,
+        "reason": "Count Basie’s big‑band swing take on blues captures the Kansas City feel through its shuffle rhythm, horn riffs, and loose, riff‑based structure, even if it sits more in the swing/big‑band world.",
+        "title": "Count Basie — Good Morning Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 11,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 31,
