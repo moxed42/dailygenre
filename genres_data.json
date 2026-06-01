@@ -4898,6 +4898,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1OxZuFs0WSb3zJIQzThZ1Y",
+        "score": 5,
+        "reason": "Jacked-up 150+ BPM, filthy vocal chops, and relentless 808 kicks distill the classic late-90s Detroit ghettotech sound.",
+        "title": "DJ Assault — Ass-N-Titties",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 210,
@@ -11647,7 +11657,7 @@
     "date_raw": "321",
     "date_normalized": "2026-03-21",
     "parse_notes": "alias: booty music",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -11658,28 +11668,62 @@
     "vibe": "Detroit moving too fast to explain itself.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/2RvWVW0j0pQXvvCjE2v8tM",
+        "url": "https://open.spotify.com/track/3sSuaRTWZHF3xTvuYukZJ7",
         "score": 5,
-        "reason": "Pumping 4/4, rubbery bass, diva hooks, and a cheeky commercial edge make this a textbook mid‑90s UK hardbag anthem.",
-        "title": "Strike — U Sure Do",
+        "reason": "Ultra-fast 150 BPM 808s, call-and-response chant vocals, and stripped-down raunchy hooks make this a textbook Detroit ghettotech track.",
+        "title": "DJ Assault — Bitchstrumental",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b8b3acdd0665b52e958721b7",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/6hQZzLM9L6aE8p4UeJ2HnG",
+        "url": "https://open.spotify.com/track/28fE3dH5fG9hP5QD4LqX9d",
         "score": 4,
-        "reason": "Stomping 4/4, big synth riff, and pitched‑up diva ad‑libs bring it much closer to the maximal, cheesy peak‑time feel of hardbag.",
-        "title": "JX — Son of a Gun (JX & Red Jerry Flog the Horse Remix)",
+        "reason": "Aggressive electro-bass groove and explicit chopped rap vocal put it clearly in the ghettotech/booty continuum, even if it leans a bit more into modern Miami bass aesthetics.",
+        "title": "DJ Godfather; Ricky Burns — Block the Hoe",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ac9c8ed017db218958d98474",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/08MwGIiLtz0uDiTzs2NvsZ",
+        "score": 2,
+        "reason": "Four-on-the-floor house thump and classic boogie chords sit closer to electro-disco and g-house; only the bass and drum programming faintly echo ghettotech.",
+        "title": "Emerson; Detroit In Effect — Sending All My Love Out - Detroit In Effect Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fca8b3ed0ac585163e3f6760",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1OxZuFs0WSb3zJIQzThZ1Y",
+        "score": 5,
+        "reason": "Jacked-up 150+ BPM, filthy vocal chops, and relentless 808 kicks distill the classic late-90s Detroit ghettotech sound.",
+        "title": "DJ Assault — Ass-N-Titties",
         "artist": "",
         "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4erJBoqNtQtSgwTmnSGY7A",
+        "score": 5,
+        "reason": "Sparse, pounding Detroit bass, fast tempo, and explicit party-hook vocals hit the core traits of ghettotech even if the label metadata says miami bass/footwork.",
+        "title": "DJ Assault — Sex On The Beach",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028347273eb2e5f34d1e287fd6",
         "source": "spotify",
         "added": "2026-06-01"
       }
     ],
     "rank_order": 33,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 382,
