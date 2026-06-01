@@ -817,6 +817,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3t9eu3FjmFu5i7qv3BVbLE",
+        "score": 5,
+        "reason": "A better exemplar because Big Joe Turner’s “Shake, Rattle and Roll” captures the fully realized Kansas City jump‑blues sound—driving shuffle, horn riffs, and powerhouse shouting—more directly than Jim Jackson’s older, country‑blues‑leaning side.",
+        "title": "Big Joe Turner — Shake, Rattle and Roll",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 168,
@@ -1148,17 +1158,28 @@
         "reason": "Jim Jackson is closer to country blues and early vaudeville than to the fully electrified Kansas City style, but his relaxed groove and narrative delivery foreshadow later KC blues phrasing.",
         "title": "Jim Jackson — Jim Jackson's Kansas City Blues - Pt. 1",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026778586faa33e02fde6acc47",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026778586faa33e02fde6acc47",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track:7eTuwtQajSutojz1IReuw3",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3t9eu3FjmFu5i7qv3BVbLE",
+        "score": 5,
+        "reason": "A better exemplar because Big Joe Turner’s “Shake, Rattle and Roll” captures the fully realized Kansas City jump‑blues sound—driving shuffle, horn riffs, and powerhouse shouting—more directly than Jim Jackson’s older, country‑blues‑leaning side.",
+        "title": "Big Joe Turner — Shake, Rattle and Roll",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7eTuwtQajSutojz1IReuw3",
         "score": 4,
         "reason": "Count Basie’s big‑band swing take on blues captures the Kansas City feel through its shuffle rhythm, horn riffs, and loose, riff‑based structure, even if it sits more in the swing/big‑band world.",
         "title": "Count Basie — Good Morning Blues",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025a7864231a834edbd0f36394",
         "source": "spotify",
         "added": "2026-06-01"
       }
