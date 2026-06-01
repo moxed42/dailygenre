@@ -1695,15 +1695,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
+        "url": "https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
         "score": 5,
         "reason": "Banjo, 808‑leaning drums and Bubba’s double‑time flow make this an archetypal early‑2000s country‑rap crossover, stronger genre‑wise than Aldean’s rock‑leaning take.",
         "title": "Bubba Sparxxx — Deliverance",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e82286b51cca2e5643b14352",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/4FxkQzIhsLAkuiqX5puvU6",
@@ -1839,7 +1838,7 @@
     "date_raw": "2/21",
     "date_normalized": "2026-02-21",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -1848,9 +1847,54 @@
     "key_artists": "Jimmy Buffett, Kenny Chesney (beach phase), Zac Brown Band (early), Todd Snider (adjacent) (major figures)",
     "suggested_songs": "Jimmy Buffett — Margaritaville, Jimmy Buffett — Cheeseburger in Paradise, Jimmy Buffett — Changes in Latitudes, Kenny Chesney — No Shoes, No Shirt, No Problems",
     "vibe": "Music for people who have decided the beach is a personality.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4EEjMyQub6tgFVshlM9j1M",
+        "score": 5,
+        "reason": "Archetypal tropical rock: laid‑back groove, steel‑drum‑ish keys, island imagery, and boozy escapism—all the Margaritaville DNA in one track.",
+        "title": "Jimmy Buffett — Margaritaville",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024fdb0337978c7464cdfb1783",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5qHYXcVvc9xsFB2uH7GpMN",
+        "score": 3,
+        "reason": "Beachy harmonies and tourist‑tropical lyrics, but the glossy early‑’80s Beach Boys production reads more as nostalgic pop than true trop‑rock bar‑band energy.",
+        "title": "The Beach Boys — Kokomo",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c5634c0532097e175199f07e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0DKlC2U7kqLyB8S41vD3Q0",
+        "score": 4,
+        "reason": "Mid‑tempo island groove with relaxed vocal and sun‑drenched imagery; feels much closer to modern bar‑band tropical rock.",
+        "title": "Zac Brown Band — Toes",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5IMtdHjJ1OtkxbGe4zfUxQ",
+        "score": 4,
+        "reason": "Story‑song soft rock with prominent Latin‑Caribbean percussion and breezy, vacation‑fantasy narrative, which fits the “trop rock” escapist lane well.",
+        "title": "Rupert Holmes — Escape (The Piña Colada Song)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02080cc92336eb13a0ec662146",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 78,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 72,
@@ -2873,15 +2917,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
+        "url": "https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
         "score": 4,
         "reason": "Snappy march from the London Suite with a singable tune and compact form, written squarely for light‑music broadcast use.",
         "title": "Eric Coates — Knightsbridge: March (London Suite)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kXS",
@@ -2894,15 +2937,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4sHP8GWaDgBu5tJp6Ff9xQ",
+        "url": "https://open.spotify.com/track/4sHP8GWaDgBu5tJp6Ff9xQ",
         "score": 5,
         "reason": "Classic mid‑century British light‑music cue, gently swinging and directly written as BBC‑style utility music.",
         "title": "Sidney Torch — London Transport Suite: Piccadilly Line",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/5gRromS070zI6XKPxL5ByM",
@@ -2935,15 +2977,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1Q4oIHX6qd7q6igkfeE7bM",
+        "url": "https://open.spotify.com/track/1Q4oIHX6qd7q6igkfeE7bM",
         "score": 4,
         "reason": "Breezy, episodic tune designed for concert‑light programming, with colorful but unfussy orchestration.",
         "title": "Haydn Wood — Joyousness",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/3bi36AY2NhDYI2qyzXUBkF",
@@ -5945,15 +5986,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5t4L5b2u6U8oUc0Q4KJX5A",
+        "url": "https://open.spotify.com/track/5t4L5b2u6U8oUc0Q4KJX5A",
         "score": 4,
         "reason": "Drum‑machine drive, buzzy synth bass, and bratty vocals foreground the electronics much more clearly as the “punk instrument.”",
         "title": "The Screamers — Vertigo",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/1Pk1Bde8NZXROgnehsXnve",
@@ -5966,15 +6006,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0qE7nhvT9q4PGYrQXjHqJ1",
+        "url": "https://open.spotify.com/track/0qE7nhvT9q4PGYrQXjHqJ1",
         "score": 5,
         "reason": "Drum‑machine stomp, buzzing synth leads, and snotty vocals all front and center—perfect single‑track definition of synth punk for this session.",
         "title": "The Spits — Tonight",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 32,
@@ -6759,15 +6798,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/13CfbA6agJSwyfSHNcaXZY",
+        "url": "https://open.spotify.com/track/13CfbA6agJSwyfSHNcaXZY",
         "score": 4,
         "reason": "Still pure Russ bus chaos, but the hook and drop feel bigger and more instantly legible as a Russ anthem than “Richie Rich,” so it’s a cleaner way to explain the sound.",
         "title": "DJ Borgny — Muppets 2013",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023d16c6603c56947edfe9a992",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/7m9V0QZ4aEwBv8XRg0dXMX",
@@ -8605,15 +8643,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2Z2Vvriy81OX4fXFBEWksU",
+        "url": "https://open.spotify.com/track/2Z2Vvriy81OX4fXFBEWksU",
         "score": 4,
         "reason": "Hyper‑fast kicks and chaotic synth stabs push further into pure speedcore excess, making it a clearer splittercore exemplar than the more standard hardcore feel of From The Blackness.",
         "title": "t+pazolite — cheatreal",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b3c7656ada2567c3cf73629c",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 7,
@@ -9041,15 +9078,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5BZ40Ghhuy8BkbYkbZ3Qf5",
+        "url": "https://open.spotify.com/track/5BZ40Ghhuy8BkbYkbZ3Qf5",
         "score": 4,
         "reason": "Stomping synth line, shouted hook, and simple, hypnotic structure push fully into hands‑up crunk territory, making the party function clearer than on “Chickenhead.”",
         "title": "Lil Scrappy — Head Bussa",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 20,
@@ -9732,15 +9768,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0pSsb9KfFKHn5Wk5Yxc9fK",
+        "url": "https://open.spotify.com/track/0pSsb9KfFKHn5Wk5Yxc9fK",
         "score": 5,
         "reason": "Tight, polyrhythmic percussion and unmistakable afro‑house swing, with a DJ‑tool structure that foregrounds the groove.",
         "title": "Culoe De Song — Webaba",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/2R5YtxGWAhclm2sxUSPbm6",
@@ -11488,15 +11523,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0PIdLGK6F0c8v2m3A1w4gN",
+        "url": "https://open.spotify.com/track/0PIdLGK6F0c8v2m3A1w4gN",
         "score": 5,
         "reason": "Cold, propulsive EBM rhythm, sinister pads and processed vocals make this a textbook dark electro club track.",
         "title": "Suicide Commando — Hellraiser",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 44,
@@ -13850,15 +13884,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5lbf3FvAOz1v2h1d9WiHPT",
+        "url": "https://open.spotify.com/track/5lbf3FvAOz1v2h1d9WiHPT",
         "score": 4,
         "reason": "Lush, melancholic Celtic ballad feel with clear Gaelic roots, reinforcing the vocal‑centred Celtic vibe alongside Danny Boy.",
         "title": "Julie Fowlis — Touch the Sky",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/1esmJ8t2PRbYt2yMx2aSEW",
@@ -13871,15 +13904,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1yFvSX3gXi79q7n53dUu1l",
+        "url": "https://open.spotify.com/track/1yFvSX3gXi79q7n53dUu1l",
         "score": 5,
         "reason": "Fast, fiddle‑driven trad performance with strong Irish dance‑tune energy, giving a textbook up‑tempo Celtic session tune.",
         "title": "The Dubliners — Rocky Road to Dublin",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 77,
@@ -14588,15 +14620,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P",
+        "url": "https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P",
         "score": 5,
         "reason": "Road-rap beat and razor-sharp London delivery make this a canonical UK rap text and a clearer British hip hop archetype.",
         "title": "Kano — P's and Q's",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/1Tva251P6CYwQWpJOedwQ8",
@@ -14609,15 +14640,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/35zEswqAFI1D41cmoBXOFK",
+        "url": "https://open.spotify.com/track/35zEswqAFI1D41cmoBXOFK",
         "score": 4,
         "reason": "Streets-level narrative over a UKG-derived beat, tying MC culture to garage and functioning as a stronger standalone British hip hop statement.",
         "title": "The Streets — Has It Come to This?",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b35c6da432ec9a1a2f2df1af",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/5rgG5yCMVO6XWde7IQiK9M",
@@ -15775,15 +15805,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs",
+        "url": "https://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs",
         "score": 5,
         "reason": "Laid‑back groove, whistled hook and G‑funk synths make this a quintessentially relaxed west coast hip hop single.",
         "title": "Snoop Dogg — Gin And Juice",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/3xv229qX6gFRYgplFCTKBl",
@@ -17880,7 +17909,18 @@
     "key_artists": "The Left Banke, The Beach Boys, The Zombies, Love, Scott Walker (originators/major figures)",
     "suggested_songs": "The Left Banke — Walk Away Renée, The Beach Boys — God Only Knows, The Zombies — Care of Cell 44, Love — Alone Again Or, Scott Walker — Montague Terrace (in Blue)",
     "vibe": "Teenage longing arranged like a small orchestra in a velvet room.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0DKlC2U7kqLyB8S41vD3Q0",
+        "score": 4,
+        "reason": "Mid‑tempo island groove with relaxed vocal and sun‑drenched imagery; feels much closer to modern bar‑band tropical rock.",
+        "title": "Zac Brown Band — Toes",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 67,
     "pending_songs": []
   },
@@ -19282,15 +19322,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0y7sNGuLZKXj4fL0xvFvgG",
+        "url": "https://open.spotify.com/track/0y7sNGuLZKXj4fL0xvFvgG",
         "score": 5,
         "reason": "Big, polished Mexican pop ballad with soaring hook and radio‑ready production—ideal single‑track explainer for “Mexican pop” in this era.",
         "title": "Gloria Trevi — Vestida De Azúcar",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 63,
@@ -26962,15 +27001,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "",
         "score": null,
         "reason": "Amaranthe — Drop Dead Cynical",
         "title": "5 | Huge melodic chorus, sleek modern production and accessible structure make this a clean modern pop‑metal benchmark. | Amaranthe",
         "artist": "",
         "artwork": "",
         "source": "manual",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/2tAzcTFry1OhmNERFjUR93",
@@ -27003,15 +27041,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "",
         "score": null,
         "reason": "HammerFall — Hearts on Fire",
         "title": "5 | Arena‑sized chorus and streamlined arrangement give this a direct pop‑metal appeal while still hitting hard. | HammerFall",
         "artist": "",
         "artwork": "",
         "source": "manual",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/0g9GhfqFotNeAt2TuggiEh",
@@ -27024,15 +27061,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "",
         "score": null,
         "reason": "Halestorm — Love Bites (So Do I)",
         "title": "4 | Big radio‑rock chorus, shiny production and metal‑adjacent guitars give this a much clearer pop‑metal profile while staying contemporary. | Halestorm",
         "artist": "",
         "artwork": "",
         "source": "manual",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/0qdzdBNLU6BAxTCt8FLptu",
@@ -27045,15 +27081,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "",
         "score": null,
         "reason": "Bullet For My Valentine — Tears Don’t Fall",
         "title": "4 | Massive melodic chorus and accessible structure place this closer to classic pop‑metal even as it keeps metalcore crunch. | Bullet For My Valentine",
         "artist": "",
         "artwork": "",
         "source": "manual",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/6RBY5ToIdDyhM1JNxEYqhd",
@@ -27066,15 +27101,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "",
         "score": null,
         "reason": "Falling In Reverse — The Drug In Me Is You",
         "title": "4 | Big, anthemic chorus and glossy production give this a more straightforward pop‑metal feel while staying in the same emo‑metal orbit. | Falling In Reverse",
         "artist": "",
         "artwork": "",
         "source": "manual",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/5RQyyxszkh4D2mZi0v3Zjx",
@@ -27087,15 +27121,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "",
         "score": null,
         "reason": "Skid Row — I Remember You",
         "title": "5 | Classic late‑80s pop‑metal power ballad with huge, radio‑ready chorus and guitar heroics. | Skid Row",
         "artist": "",
         "artwork": "",
         "source": "manual",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/43thLwzSasUUZEYjYPeJh3",
@@ -27148,15 +27181,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "",
         "score": null,
         "reason": "Bon Jovi — You Give Love a Bad Name",
         "title": "5 | Huge sing‑along chorus, sugar‑coated melodies and hard‑rock guitars make this a pure pop‑metal earworm from outside the metalcore meme space. | Bon Jovi",
         "artist": "",
         "artwork": "",
         "source": "manual",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 5,
