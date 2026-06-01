@@ -25834,7 +25834,7 @@
     "date_raw": "2/22",
     "date_normalized": "2026-02-22",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -25843,9 +25843,85 @@
     "key_artists": "Entombed, Gorefest, Unleashed, Six Feet Under, Bloodbath (major figures)",
     "suggested_songs": "Entombed -- Wolverine Blues, Gorefest -- God Is Dead, Unleashed -- In the Name of God, Six Feet Under -- Impulse to Disembowel, Bloodbath -- So You Die",
     "vibe": "Death metal that learned to swing its hips without losing the tuning.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6WBdwdLLif4kuG3s6ot8uB",
+        "score": 5,
+        "reason": "Classic death ’n’ roll: HM‑2‑style death‑metal tone and barked vocals riding a swaggering, rock‑groove riff that feels closer to Motörhead than Morbid Angel.",
+        "title": "Entombed — Wolverine Blues",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028caf88d5a1f7574c17614803",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1aiUFksN4Gm9zLsCotDhHC",
+        "score": 4,
+        "reason": "Phazm mixes blackened death vocals with swinging rock riffs and mid‑tempo chug, landing firmly in the dirty, blues‑inflected death ’n’ roll pocket.",
+        "title": "Phazm — Love Me Rotten, Love Me True",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0263e39c85311e01cabac69a9a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0g315v45WCeOp30wNPEz3c",
+        "score": 4,
+        "reason": "The Cumshots lean hard into sleazy hard rock, but the extreme‑metal vocal edge and guitar tone keep one foot in death ’n’ roll territory.",
+        "title": "The Cumshots — I Drink Alone",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024abaca0ddc30c4c414acab73",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7JtJEULwKDcLeYc8qJcSsf",
+        "score": 3,
+        "reason": "Goblin King have speed‑metal tempo and theatrical vocals; the stomp is there but the primary identity is more speed/thrash than groove‑oriented death ’n’ roll.",
+        "title": "GOBLIN KING — Blood, Drugs, and Death N Roll",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e3ad1b4e1c75783417887520",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0s7WNd2iSyCz4Z1GxczdlT",
+        "score": 5,
+        "reason": "Mid‑tempo rock swagger, death‑metal vocals, and a huge, swinging riff—nails the Carcass‑school death ’n’ roll template.",
+        "title": "Carcass — Keep on Rotting in the Free World",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5Nodfi0wQT9QANl0KlAo7B",
+        "score": 3,
+        "reason": "Carcass here are groovy and melodic, but the song leans toward melo‑death with hard‑rock touches rather than outright death ’n’ roll banger.",
+        "title": "Carcass — Black Star",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b45da87a79b455b1600dc77e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0wxw2saQVHxL7IExJmex5a",
+        "score": 4,
+        "reason": "Chunky, rock‑centric riffing and mid‑paced stomp, with harsh vocals sitting over a very “rock song” chassis; a stronger single‑track death ’n’ roll encapsulation.",
+        "title": "Entombed — Out of Hand",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 21,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 966,
@@ -25964,6 +26040,16 @@
         "artist": "",
         "artwork": "",
         "source": "manual",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0wxw2saQVHxL7IExJmex5a",
+        "score": 4,
+        "reason": "Chunky, rock‑centric riffing and mid‑paced stomp, with harsh vocals sitting over a very “rock song” chassis; a stronger single‑track death ’n’ roll encapsulation.",
+        "title": "Entombed — Out of Hand",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
         "added": "2026-06-01"
       }
     ],
@@ -27427,7 +27513,18 @@
     "key_artists": "Motorhead, Judas Priest, Helloween, Blind Guardian, Exciter (major figures)",
     "suggested_songs": "Motorhead -- Overkill, Judas Priest -- Painkiller, Helloween -- Eagle Fly Free, Blind Guardian -- Somewhere Far Beyond, Exciter -- Violence and Force",
     "vibe": "Heavy metal played as fast as the guitarist's hands will allow.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0s7WNd2iSyCz4Z1GxczdlT",
+        "score": 5,
+        "reason": "Mid‑tempo rock swagger, death‑metal vocals, and a huge, swinging riff—nails the Carcass‑school death ’n’ roll template.",
+        "title": "Carcass — Keep on Rotting in the Free World",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 708,
     "pending_songs": []
   },
