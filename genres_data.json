@@ -1637,8 +1637,8 @@
     "subsubsubcategory": "",
     "category_path": "Country",
     "status": "unlistened",
-    "date_raw": "2/19",
-    "date_normalized": "2026-02-19",
+    "date_raw": "",
+    "date_normalized": "",
     "parse_notes": "",
     "rating": "",
     "favorite_song": "",
@@ -15609,7 +15609,7 @@
     "date_raw": "2/20",
     "date_normalized": "2026-02-20",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -15620,18 +15620,41 @@
     "vibe": "Trap at maximum volume and maximum chaos.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/0c9jxyVKMKpS44M2U5K3kK",
+        "url": "https://open.spotify.com/track/5n4FTCMefvyKUjeWumdaWv",
         "score": 5,
-        "reason": "Lo‑fi, snarling rewrite of Delta blues through a punk lens, with distorted slide guitar and yelped vocals that epitomize punk‑blues minimalism",
-        "title": "The Gun Club — For the Love of Ivy",
+        "reason": "Distorted 808s, blown‑out synth loop, and shouted, repetitive flows—this is archetypal rage rap in the Playboi Carti/Trippie lane.",
+        "title": "Trippie Redd / Playboi Carti — Miss The Rage",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021c0aacb7cb42f20914d319f4",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5fqaeJMmqwhDzdYD7b4J51",
+        "score": 4,
+        "reason": "Hyperactive drums, clipped synths, and aggressive delivery feel very rage‑coded, even if it sits slightly more underground/scene‑specific.",
+        "title": "Glorb — The Bottom 2",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02112603a0ff949a3b24ed4fd5",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3brXaWuPsVScvYQKUh3Ijc",
+        "score": 4,
+        "reason": "Yelled hooks over blown‑out, bass‑heavy production; structurally simple, built around cathartic repetition in classic rage‑rap fashion.",
+        "title": "Mario Judah — Die Very Rough",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0273772aeeacf5c3ec21793bbf",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 19,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 580,
