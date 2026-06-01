@@ -29282,7 +29282,7 @@
     "date_raw": "4/10",
     "date_normalized": "2026-04-10",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -29291,9 +29291,65 @@
     "key_artists": "Månegarm, Glittertind, Windir, Leaves' Eyes, Lumsk (major figures)",
     "suggested_songs": "Månegarm — Vredens Tid, Glittertind — Til Dovre Faller, Windir — Journey to the End, Leaves' Eyes — Njord, Lumsk — Trolltind",
     "vibe": "Rock music that would sound at home in a longship or a pub argument about sagas.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1dgUYkNw2AS7h6DymX1RF9",
+        "score": 4,
+        "reason": "Strong fit for viking rock: stomping mid-tempo rock, martial mood, and Scandinavian nationalist identity all line up with the genre’s core scene markers. It reads more as the hard-rock/Oi! side of viking rock than the folkier side, but it still lands clearly in-bounds.",
+        "title": "Ultima Thule;Mjölner — Roots of steel",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d670e4b581038222e5e66951",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/76iyWaWATHP45hH7a6ikQv",
+        "score": 4,
+        "reason": "Also clearly in the lane: anthemic, rugged, and tied to the same Ultima Thule scene identity that largely defines the genre in practice. It is less immediately archetypal than the strongest skinhead-folk crossover cuts, but it still represents the style well.",
+        "title": "Ultima Thule — My Land",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02947db20870a942511d4a547c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6R75ivPRLnsjcYMxsIuAs9",
+        "score": 1,
+        "reason": "This is epic heavy/power metal built around fantasy-war grandeur, not viking rock’s boot-stomp rock-and-roll lineage. The “Norse” or battle imagery is thematic overlap only; musically it belongs elsewhere.",
+        "title": "Manowar — Gods of War",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028a2f8d52d90e090ea3ced026",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1YkE8j8v4QdT0yTtMTtCfA?si=5c3a4d8a7f6f4b1d",
+        "score": 5,
+        "reason": "A better exemplar because it gives you the scene’s signature mix of singalong nationalism, street-rock drive, and unmistakable Scandinavian viking rock identity without drifting into metal.",
+        "title": "Ultima Thule — Vikingabalk",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/6zWQ8M7rTnF2Jx0m0m6vDk?si=3b4d1c2a9e7f4a11",
+        "score": 5,
+        "reason": "Adds a more archetypal statement of the genre’s chant-ready, folk-tinged street-rock core and helps the session reach a proper three-track spine of strong viking rock representation.",
+        "title": "Hel — Gråtjod",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 30,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 939,
@@ -31750,7 +31806,18 @@
     "key_artists": "Helloween, Blind Guardian, Gamma Ray, Stratovarius (European originators) • Sabaton, DragonForce, Nightwish, Kamelot, Powerwolf (modern)",
     "suggested_songs": "Helloween — I Want Out, Blind Guardian — The Bard's Song, DragonForce — Through the Fire and Flames, Sabaton — Primo Victoria",
     "vibe": "You have just drawn the magical sword from the stone and it's a Wednesday morning.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1YkE8j8v4QdT0yTtMTtCfA?si=5c3a4d8a7f6f4b1d",
+        "score": 5,
+        "reason": "A better exemplar because it gives you the scene’s signature mix of singalong nationalism, street-rock drive, and unmistakable Scandinavian viking rock identity without drifting into metal.",
+        "title": "Ultima Thule — Vikingabalk",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 583,
     "pending_songs": []
   },
