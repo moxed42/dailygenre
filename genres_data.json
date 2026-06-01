@@ -13790,8 +13790,43 @@
     "key_artists": "Tangerine Dream, Klaus Schulze, Cluster, Harmonia, early Jean-Michel Jarre (originators)",
     "suggested_songs": "Tangerine Dream — Phaedra, Klaus Schulze — Irrlicht, Jean-Michel Jarre — Oxygène Part IV",
     "vibe": "A pattern that plays itself, changing slowly over time.",
-    "songs_listened": [],
-    "pending_songs": []
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3AGFCk1JtbM4Fu5Es8xZne",
+        "score": 4,
+        "reason": "Driving arpeggiated synth line locks into a repeating pattern while filter tweaks and drums evolve around it, hitting the classic sequencer‑techno crossover vibe.",
+        "title": "Rex The Dog — Sequencer",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022cb14913d755e0952485ab16",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2dpgb3GkYGGolqxuqqeC2H",
+        "score": 4,
+        "reason": "Long‑form Berlin‑school progression where step‑sequenced bass pulses underpin slowly morphing pads and leads, very much “sequencer music” as a structural concept.",
+        "title": "Node — Shinkansen North [example Berlin‑school sequencer cut]",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6vJ5CPr2oeRUfVfyw5Qb9s",
+        "score": 3,
+        "reason": "Repetitive modular‑style patterning and subtle parameter changes fit the sequencer brief, but the lo‑fi drone wash pulls it toward ambient experiment more than classic Berlin‑school.",
+        "title": "Panabrite — Soft Terminal [sequencer‑adjacent]",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false,
+    "rank_order": null
   },
   {
     "id": 492,
