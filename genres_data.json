@@ -9471,7 +9471,18 @@
     "key_artists": "xi, DJ Sharpnel, S3RL, Camellia, t+pazolite (originators/major figures)",
     "suggested_songs": "xi — Blue Zenith, Camellia — Crystallized, t+pazolite — Cheatreal, S3RL — MTC",
     "vibe": "Happy hardcore went to Japan and found its people.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6f807x0ima9a1j3VPbc7VN",
+        "score": 4,
+        "reason": "Hong Kong–rooted Cantonese pop with Eason Chan's emotional delivery over lush piano ballad—solidly C-pop (Cantopop branch) with clear regional identity and production aesthetic.",
+        "title": "Eason Chan — 富士山下",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0246d2ca3385aef60f92429cb1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 400,
     "pending_songs": []
   },
@@ -20185,7 +20196,7 @@
     "date_raw": "3/27",
     "date_normalized": "2026-03-27",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -20194,9 +20205,94 @@
     "key_artists": "Teresa Teng, Faye Wong, Jay Chou, Jolin Tsai, Anita Mui (major figures across eras)",
     "suggested_songs": "Teresa Teng — The Moon Represents My Heart, Faye Wong — Red Bean, Jay Chou — Qing Tian, Jolin Tsai — Dancing Diva, Anita Mui — 似水流年",
     "vibe": "A vast pop universe where regional scenes share stars, sentiment, and spectacular polish.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/10VuSw48iPN2UK2xX9Y6P0",
+        "score": 4,
+        "reason": "Elegant guzheng intro blending into modern pop production—Jay Chou's signature East-meets-West style with traditional Chinese instrumentation woven through contemporary R&B-influenced arrangement, archetypal Mandopop.",
+        "title": "Jay Chou — 青花瓷",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0222fe29cadcb2a28c2d3b9bb7",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3VvMqZYJD4pWjlYvjRnuhy",
+        "score": 4,
+        "reason": "Gentle traditional ballad delivered with Teresa Teng's crystalline vocal warmth over swaying orchestral arrangement—classic pre-modern Mandopop that established the template for Chinese romantic pop before the genre fully modernized.",
+        "title": "Teresa Teng — 甜蜜蜜",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ff546109805519d6f6f487fa",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2tqF9MPNdYdJU70U0ULO23",
+        "score": 4,
+        "reason": "Whimsical ukulele-driven pop ballad with Jay Chou's talk-sing delivery and layered harmonies—lighter, more Western-leaning C-pop that still centers Mandarin lyricism and Chinese melodic sensibility.",
+        "title": "Jay Chou — 告白氣球",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02db1172ca038c6818b6ae8bf2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0FfdtQrD9kT42o6Anv4uDn",
+        "score": 5,
+        "reason": "Sweeping orchestral-electronic hybrid driven by Zhou Shen's operatic vocal—epic gufeng production blending traditional Chinese aesthetic with cinematic grandeur, exemplifying modern C-pop's ability to scale up traditional elements.",
+        "title": "Zhou Shen — 大魚",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bf24352caf35d83d05519573",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3cG6423elE49gy76onK3VK",
+        "score": 3,
+        "reason": "Eason Chan's theatrical vocal over dramatic orchestral score—primarily a Western film-score composition with Cantonese/Mandarin lyrics grafted on, genre identity tilted more toward soundtrack than C-pop proper.",
+        "title": "Eason Chan — 这样很好 (Isha's Song)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e0c1a96a201de147125d1c3b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6f807x0ima9a1j3VPbc7VN",
+        "score": 4,
+        "reason": "Hong Kong–rooted Cantonese pop with Eason Chan's emotional delivery over lush piano ballad—solidly C-pop (Cantopop branch) with clear regional identity and production aesthetic.",
+        "title": "Eason Chan — 富士山下",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0246d2ca3385aef60f92429cb1",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6WOwRdX67b4VKujGIal4tK",
+        "score": 4,
+        "reason": "Duet ballad pairing two of C-pop's most iconic voices over simple acoustic guitar—intimate, vocal-forward Mandopop emphasizing lyrical storytelling and restrained production.",
+        "title": "Eason Chan, Faye Wong — 因為愛情",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023326073c82569d68cee6bd60",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6ihRJyk8a5ghzcUvUGAjrb",
+        "score": 4,
+        "reason": "Delicate torch-song ballad with Teresa Teng's tender phrasing and minimal orchestral backing—archetypal old-school Mandopop simplicity, emotionally direct and timeless.",
+        "title": "Teresa Teng — 月亮代表我的心",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f4894b6bf183c08a425cf21b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 47,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 670,
