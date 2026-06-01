@@ -8330,6 +8330,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3o6LFYMZro9mMZ7Mnf1wYk",
+        "score": 5,
+        "reason": "Classic cowbell‑driven, chopped‑vocal phonk with crushing bass that foregrounds the genre’s car‑culture and Memphis‑tape aesthetics more cleanly than a rap‑forward cut.",
+        "title": "DVRST — CLOSE EYES",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 155,
@@ -14491,7 +14501,7 @@
     "date_raw": "1/27",
     "date_normalized": "2026-01-27",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -14500,9 +14510,55 @@
     "key_artists": "DJ Smokey, Soudiere, Kordhell, Ghostemane (early), Night Lovell (major figures)",
     "suggested_songs": "Kordhell — Murder in My Mind, Night Lovell — Dark Light, DJ Smokey — Ice Cream Truck",
     "vibe": "Memphis rap's ghost haunting a TikTok drift video.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6v9tjIDuN0anXNoPMytvbQ",
+        "score": 5,
+        "reason": "Ultra‑distorted 808s, looping horror‑movie melody and trunk‑rattle mix put this squarely in the drift phonk lane — a contemporary archetype of the style.",
+        "title": "Kordhell — MURDER IN MY MIND",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02490cc9e1da51740ebb549b4b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6uk6SKiLON9CknkfRNnEic",
+        "score": 3,
+        "reason": "Murky Memphis‑worshipping cloud rap with slowed, eerie sample work and heavy low end; phonk DNA is strong, but the focus on rapping and lo‑fi haze leans it toward cloud rap first.",
+        "title": "SpaceGhostPurrp — For the Love of Money (Wavy)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0212ed53986539cd945baec799",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3o6LFYMZro9mMZ7Mnf1wYk",
+        "score": 5,
+        "reason": "Classic cowbell‑driven, chopped‑vocal phonk with crushing bass that foregrounds the genre’s car‑culture and Memphis‑tape aesthetics more cleanly than a rap‑forward cut.",
+        "title": "DVRST — CLOSE EYES",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4l0Rmmyf7I3f0n1Yxcj8pR",
+        "score": 5,
+        "reason": "Textbook TikTok‑era drift phonk: screechy leads, sliding 808s and a relentless, looping hook that complements Kordhell as another core instrumental exemplar.",
+        "title": "KSLV Noh — MONTAGEM",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 24,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 578,
