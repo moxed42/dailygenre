@@ -7713,6 +7713,16 @@
         "artwork": "",
         "source": "manual",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2Z2Vvriy81OX4fXFBEWksU",
+        "score": 4,
+        "reason": "Hyper‑fast kicks and chaotic synth stabs push further into pure speedcore excess, making it a clearer splittercore exemplar than the more standard hardcore feel of From The Blackness.",
+        "title": "t+pazolite — cheatreal",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b3c7656ada2567c3cf73629c",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 352,
@@ -8111,7 +8121,7 @@
     "date_raw": "2/7",
     "date_normalized": "2026-02-07",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8120,9 +8130,74 @@
     "key_artists": "Various extreme electronic underground producers — DJ Balli, the extratone/splittercore internet community",
     "suggested_songs": "Various splittercore compilations — Splittercore Terror, various online extreme electronic productions",
     "vibe": "Speedcore that kept going.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/31Rwwh2kKCxExVeYRlGOWu",
+        "score": 5,
+        "reason": "Frenchcore/speedcore assault at extreme BPM with clipped kicks and maximalist chaos, a perfect exemplar of the splittercore end of the hardcore spectrum.",
+        "title": "GPF, Riot Shift — Broccoli Fuck",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02403627672dcdd8622021edd9",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3IsGCHcpvt2dO4JgdqYgGu",
+        "score": 4,
+        "reason": "Breakcore/speedcore hybrid with hyper‑fragmented breaks and harsh sound design; very much in the splittercore orbit, though more breakcore‑focused than pure kick‑driven speedcore.",
+        "title": "monoqlom — Bones In The Swamp",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020520bd0960a11ffc69959572",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3mfQWzWA74oZLj2NRb64Ig",
+        "score": 4,
+        "reason": "Relentless speedcore with distorted kicks and noisy textures; firmly in the extreme hardcore lane and a strong splittercore fit.",
+        "title": "Coakira — Front Line",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b45c291c1d743e27ce64af41",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5VC9HnWXBy2eigaiEKy374",
+        "score": 4,
+        "reason": "Extremely fast kicks and gabber‑derived distortion; sits squarely in speedcore, with a slightly more structured riff focus than pure wall‑of‑noise splittercore.",
+        "title": "M1DY — Megashit",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c5b87f5d244ecd263e2eca6b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/079siwwSMTE3N5jFGYsX9f",
+        "score": 3,
+        "reason": "Furious hardcore with very high BPM and Frenchcore/gabber flavor; aggressive enough for the set but leans more toward mainstream hardcore than fully disintegrated splittercore.",
+        "title": "Angerfist — From The Blackness",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dccdd42ffb50071b474c0939",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2Z2Vvriy81OX4fXFBEWksU",
+        "score": 4,
+        "reason": "Hyper‑fast kicks and chaotic synth stabs push further into pure speedcore excess, making it a clearer splittercore exemplar than the more standard hardcore feel of From The Blackness.",
+        "title": "t+pazolite — cheatreal",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b3c7656ada2567c3cf73629c",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 7,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 311,
