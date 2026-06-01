@@ -27005,6 +27005,16 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02471e287a6c0dd5e063059c55",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4uGIJG1jYFonGc4LGp5uQL",
+        "score": 5,
+        "reason": "A better exemplar because it is fully canonical acid rock, with psychedelic intensity, surrealism, and unmistakable late-60s hallucinatory rock energy.",
+        "title": "Jefferson Airplane — Somebody to Love",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026a74089537c2dbd548c4a95e",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 47,
@@ -28980,6 +28990,16 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e9abd896ca80c8bf40ca47ed",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/3Xls4cNOwy01dtrNXb1inG",
+        "score": 5,
+        "reason": "A better exemplar because it is a long-form acid-rock trip built around guitar freakout, ritual repetition, and fully immersive psychedelic escalation.",
+        "title": "Iron Butterfly — In-A-Gadda-Da-Vida",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e663fe615699bc294d02167e",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 612,
@@ -28996,7 +29016,7 @@
     "date_raw": "4/15",
     "date_normalized": "2026-04-15",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -29007,18 +29027,144 @@
     "vibe": "Psychedelia with the volume knob broken off.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/7qUiZlwGOzK5GkJHc6nJ2u",
+        "url": "https://open.spotify.com/track/2aoo2jlRnM3A0NyLQqMN2f",
         "score": 5,
-        "reason": "Heavy fuzz guitar, locked Afro rhythm section, and chant‑like vocals make this a quintessential Afro‑rock/Zamrock burner that centers the style better than the more diffuse psych cut.",
-        "title": "Witch — Lazy Bones",
+        "reason": "Hendrix is basically core acid-rock language here: distorted guitar, psychedelic sprawl, and a sense of destabilized perception pushed through a heavy rock frame. This is a prime “explain the genre” cut.",
+        "title": "Jimi Hendrix — All Along the Watchtower",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02522088789d49e216d9818292",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2nlSeJ6CgvWeVOkrLmadf6",
+        "score": 4,
+        "reason": "Strong fit through its blown-out guitars, psychedelic charge, and big pop song turned mind-warped rock spectacle. It leans mod/psych as much as acid rock, but the attack and sensory overload keep it well inside the style.",
+        "title": "The Who — I Can See For Miles",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0234894946601823e27fc08538",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6ToM0uwxtPKo9CMpbPGYvM",
+        "score": 4,
+        "reason": "A clear fit because it channels the trancey, transgressive pulse of early psychedelic hard rock, even in concise form. It is less chemically expansive than the genre’s most sprawling cuts, but the mood and attack are right.",
+        "title": "The Doors — Break on Through (To the Other Side)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025b96a8c5d61be8878452f8f1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1Eolhana7nKHYpcYpdVcT5",
+        "score": 4,
+        "reason": "This is gentler and more dreamlike than many acid-rock staples, but the liquid guitar textures and hallucinatory atmosphere still land it comfortably in the genre. It also carries Hendrix’s signature psychedelic phrasing strongly enough to stay in bounds.",
+        "title": "Jimi Hendrix — Little Wing",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219dcd95d28b63d10164327f2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5X76oXHcR5uCXali0gOyX5",
+        "score": 5,
+        "reason": "Heavy, psychedelic, theatrical, and slow-burning, this is one of the clearest acid-rock archetypes in the set. The riff weight and altered-state grandeur are exactly the point.",
+        "title": "Cream — White Room",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025c7731f5acdcb2d02d78b7ee",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/29engDqjmMr3VLqMm0c0WE",
+        "score": 2,
+        "reason": "The droning repetition and transgressive atmosphere absolutely influenced acid rock, but this track’s primary identity is art rock / proto-punk rather than acid rock proper. It works more as adjacent ancestry than as a representative example.",
+        "title": "The Velvet Underground;Nico — Venus In Furs",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0298260c528e6eec9dd431c1d7",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4uGIJG1jYFonGc4LGp5uQL",
+        "score": 5,
+        "reason": "A better exemplar because it is fully canonical acid rock, with psychedelic intensity, surrealism, and unmistakable late-60s hallucinatory rock energy.",
+        "title": "Jefferson Airplane — Somebody to Love",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026a74089537c2dbd548c4a95e",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4vpeKl0vMGdAXpZiQB2Dtd",
+        "score": 5,
+        "reason": "Pure archetype: raga-like tension, surreal lyric mood, and a compact but unmistakably lysergic arrangement. This is central acid-rock canon.",
+        "title": "Jefferson Airplane — White Rabbit",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026a74089537c2dbd548c4a95e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4uGIJG1jYFonGc4LGp5uQL",
+        "score": 5,
+        "reason": "Direct, explosive, and steeped in psychedelic delirium, this is another core example of acid rock at full pop-rock velocity. It is less eerie than “White Rabbit” but just as canonical.",
+        "title": "Jefferson Airplane — Somebody to Love",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026a74089537c2dbd548c4a95e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/71LsKf3xISiOlY1mj7FFPP",
+        "score": 3,
+        "reason": "The sectional weirdness, studio surrealism, and disorienting structure fit the psychedelic umbrella, but it reads more as experimental pop/psych than acid rock proper. Important adjacent material, not a clean center-lane example.",
+        "title": "The Beatles — Happiness Is A Warm Gun - Remastered 2009",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024ce8b4e42588bf18182a1ad2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3Xls4cNOwy01dtrNXb1inG",
+        "score": 5,
+        "reason": "A better exemplar because it is a long-form acid-rock trip built around guitar freakout, ritual repetition, and fully immersive psychedelic escalation.",
+        "title": "Iron Butterfly — In-A-Gadda-Da-Vida",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e663fe615699bc294d02167e",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/059LGQd42y87hQMHQyJGSU",
+        "score": 3,
+        "reason": "The slowed-down heaviness and dramatic arrangement point toward acid rock, but this is still basically a psychedelicized soul cover rather than a definitive genre statement. It fits as a period piece more than a top-tier exemplar.",
+        "title": "Vanilla Fudge — You Keep Me Hangin' On",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026e073d2cc711e41b63836fd1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5WbJwAfQg2bEY5eLNgQ8vX",
+        "score": 5,
+        "reason": "A better exemplar because it captures the genre’s loose, ecstatic, chemically fried band interplay more directly than the stately Vanilla Fudge cover does.",
+        "title": "The 13th Floor Elevators — Slip Inside This House",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 41,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 914,
