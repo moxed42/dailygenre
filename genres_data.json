@@ -21873,8 +21873,45 @@
     "key_artists": "Joan Manuel Serrat, Rocío Dúrcal, José José, Violeta Parra, Mercedes Sosa (major figures across traditions)",
     "suggested_songs": "Joan Manuel Serrat — Mediterráneo, Rocío Dúrcal — Amor Eterno, José José — El Triste, Violeta Parra — Gracias a la Vida, Mercedes Sosa — Alfonsina y el Mar",
     "vibe": "Words first, melody close behind, and emotion delivered with direct human presence.",
-    "songs_listened": [],
-    "pending_songs": []
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1p80LdxRV74UKvL8gnD7ky",
+        "score": 5,
+        "reason": "Classic Mexican bolero‑canción standard with a lush, slow romantic melody and lyric‑forward delivery; it’s exactly the kind of song that defines canción as an artful, sentimental song form.",
+        "title": "Luis Miguel — Historia de un Amor [web:10]",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0252b2a3824413eefe9e33817a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4FdSj7M1GuhneUcBjP6wIM",
+        "score": 5,
+        "reason": "A definitive bolero/canción ballad, frequently cited among the most popular boleros; the stately tempo, rich harmonic movement, and soaring vocal make it a perfect “explain canción” piece.",
+        "title": "Luis Miguel — Solamente Una Vez [web:10]",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/5K5UwBqjH8YClN8QawK8b2",
+        "score": 4,
+        "reason": "Another canon romantic canción rooted in bolero tradition: gently swaying rhythm, guitar‑led accompaniment, and intensely sentimental lyricism that sits squarely in the canción lineage.",
+        "title": "Luis Miguel — Perfidia [web:10]",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false,
+    "rank_order": null
   },
   {
     "id": 674,
@@ -30852,9 +30889,11 @@
     ],
     "rank_order": 5,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Agalloch — In The Shadow Of Our Pale Companion (2016 - Remaster)",
+    "favoritesongurl": "https://open.spotify.com/track/1wJ5Z1Nkcqknyi2U2mjL0G",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65"
   },
   {
     "id": 956,
