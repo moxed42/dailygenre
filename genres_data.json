@@ -8759,7 +8759,7 @@
     "date_raw": "3/14",
     "date_normalized": "2026-03-14",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -8768,9 +8768,43 @@
     "key_artists": "Radium, Loxy, Cryogenic, The Speed Freak, Sickmode (originators/major figures)",
     "suggested_songs": "Radium — Braindead, The Speed Freak — Acid Attack, Sickmode — Frenchcore Anthem",
     "vibe": "Hardcore that went to France and got faster and more aggressive.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0LmK5XmOaPMu9SHQhfLL86",
+        "score": 4,
+        "reason": "Relentless 200‑plus BPM kickdrum, distorted leads, and dense industrial textures make this a strong fit for the pounding, over-the-top energy of frenchcore even if it brushes up against general hardcore/tekno.",
+        "title": "Micropoint — Noise Theater",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dda3c403b7c36a79f33fa3ed",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5ZkRYmKXy03QinCIlmPQtD",
+        "score": 4,
+        "reason": "Hyper-compressed kicks and screaming leads at extreme tempos nail the speedcore/frenchcore crossover vibe that defines the harder edge of the style.",
+        "title": "Dustvoxx;Zekk — Trigger - Zekk Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f70f6a63d1db7a83a4286195",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1KYEKgRcX78JgZOboLcDQ0",
+        "score": 5,
+        "reason": "Absolutely archetypal: distorted donk kicks, relentless drive, and ravey samples at brutal speed make this a textbook frenchcore banger.",
+        "title": "Noisekick;Paranoizer — NEDERLANDSE TERREUR",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026bc4d75411ef0a114d37cf4e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 28,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 300,
