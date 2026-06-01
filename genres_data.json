@@ -6548,6 +6548,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2nXHbQ5ihQqS1PBKoxxo5s",
+        "score": 5,
+        "reason": "Classic dubby ambient techno: echo‑laden chords, subtle but insistent kick and a slow‑motion arrangement that nails the genre’s core.",
+        "title": "STL — Silent State",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 270,
@@ -10963,6 +10973,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1w3W77X9qzC1t5nq2W1l5w",
+        "score": 5,
+        "reason": "Dub‑techno chords, steady kick and deep space in the mix line up perfectly with ambient techno’s hypnotic, club‑adjacent vibe.",
+        "title": "Deepchord — Electromagnetic",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 394,
@@ -11200,6 +11220,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Og7FI7K1ERu1R7jVqfN2v",
+        "score": 5,
+        "reason": "Soft kick, looping micro‑samples and smeared chords create a clear, hypnotic ambient‑techno groove that functions perfectly as a genre archetype.",
+        "title": "The Field — Over the Ice",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 733,
@@ -11251,19 +11281,29 @@
     "vibe": "Techno slowed to a drift, the machines becoming atmosphere.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/4Ons0TvsV2Sc6Fkt3zEvqH",
-        "score": 2,
-        "reason": "Glacial dark ambient/drone with no kick or dance pulse; the texture and atmosphere fit the “ambient” side but there is essentially no techno rhythmic framework.",
-        "title": "Uboa — Sleep Hygiene",
+        "url": "https://open.spotify.com/track/7o2AeQZzfCERsRmOM86EcB",
+        "score": 4,
+        "reason": "Gentle breakbeat pulse under hazy pads and melodic fragments gives this a clear rhythmic grid while still feeling dreamy and atmospheric — a strong ambient‑techno bridge between ambient and early IDM.",
+        "title": "Aphex Twin — Xtal",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027956f1c16347c7c7b6e06c62",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0238906032688bb13b135ce19a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3MF9cjIlg3R9osw3SgRmEb",
+        "score": 3,
+        "reason": "Slow, loping groove and warm, detuned synths make it feel like head‑nod IDM; there’s a beat, but the emphasis is more on woozy texture than on a classic ambient‑techno pulse.",
+        "title": "Boards of Canada — Music Is Math",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f497660a1c41cb83c94a9066",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/1w3W77X9qzC1t5nq2W1l5w",
         "score": 5,
-        "reason": "Steady 4/4 kick and dub‑techno chords embedded in a hazy, spacious mix make this a textbook ambient techno cut.",
+        "reason": "Dub‑techno chords, steady kick and deep space in the mix line up perfectly with ambient techno’s hypnotic, club‑adjacent vibe.",
         "title": "Deepchord — Electromagnetic",
         "artist": "",
         "artwork": "",
@@ -11272,62 +11312,41 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/0YXPlVnrZwRKVRsdrYzgw5",
+        "url": "https://open.spotify.com/track/4TBVy5cFYGmK5BA3rdMGEQ",
         "score": 2,
-        "reason": "Slow, menacing beat and heavy vocal presence push this toward experimental hip hop; it’s atmospheric, but the focus is on voice and noise rather than ambient techno’s meditative groove.",
-        "title": "clipping., Sarah Bernat — Club Down",
+        "reason": "Beatless, slowly evolving soundscape with a focus on harmonic and timbral drift; firmly in experimental ambient territory, with no real techno framework.",
+        "title": "Oneohtrix Point Never — Chrome Country",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024d1c35edb0aafeb16ef7c7df",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4Og7FI7K1ERu1R7jVqfN2v",
-        "score": 5,
-        "reason": "A soft but insistent kick underneath floating pads and subtle percussion keeps this firmly in ambient techno’s hypnotic, club‑adjacent zone.",
-        "title": "The Field — Over the Ice",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/2TeMJxdraHOuzkK8AczQmK",
-        "score": 1,
-        "reason": "Harsh, vocal‑driven neofolk/experimental piece with little to no electronic rhythm; intensely atmospheric, but not techno or even beat‑based ambient.",
-        "title": "Lingua Ignota — MAY FAILURE BE YOUR NOOSE",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b4bcefe6e54045d9fad31c6c",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3LpdmYJHzogQZvz8k1JrA0",
-        "score": 4,
-        "reason": "Kick‑light but clearly sequenced, with submerged percussion and evolving synth textures that read as ambient techno rather than song‑form experimental.",
-        "title": "Biosphere — Substrata (track: Poa Alpina)",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/75f0mim2WHU6SdYi8LwJnt",
-        "score": 2,
-        "reason": "Noisy industrial/drone with a vague pulse; it shares the slow evolution and texture focus of ambient, but lacks the clear grid and dub‑techno lineage of ambient techno.",
-        "title": "Genocide Organ — Mind Control",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a034c00953264f0e2fecf3c0",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c81557c04a17a6efaca23470",
         "source": "spotify",
         "added": "2026-06-01"
       },
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/2nXHbQ5ihQqS1PBKoxxo5s",
         "score": 5,
-        "reason": "Classic dubby ambient techno: echo‑laden chords, gentle but firm kick, and slow‑moving arrangement that sits right in the genre’s core.",
+        "reason": "Classic dubby ambient techno: echo‑laden chords, subtle but insistent kick and a slow‑motion arrangement that nails the genre’s core.",
         "title": "STL — Silent State",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/5FE9EjOf2QaIEN74PxSJM7",
+        "score": 3,
+        "reason": "Minimal, dubby pulse with a feather‑light beat; it’s closer to minimal techno with ambient edges than to the more overt dub‑techno/ambient techno canon.",
+        "title": "Trentemøller — Miss You",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0212467d7cca4ad137bbf16b43",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4Og7FI7K1ERu1R7jVqfN2v",
+        "score": 5,
+        "reason": "Soft kick, looping micro‑samples and smeared chords create a clear, hypnotic ambient‑techno groove that functions perfectly as a genre archetype.",
+        "title": "The Field — Over the Ice",
         "artist": "",
         "artwork": "",
         "source": "spotify",
