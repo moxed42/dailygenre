@@ -21008,7 +21008,7 @@
     "date_raw": "4/28",
     "date_normalized": "2026-04-28",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -21017,9 +21017,53 @@
     "key_artists": "Gunther Schuller, Modern Jazz Quartet, George Russell, Jacques Loussier, John Lewis (originators/major figures)",
     "suggested_songs": "Modern Jazz Quartet — Vendôme, Gunther Schuller — Transformation, Jacques Loussier — Play Bach",
     "vibe": "Jazz and classical meeting on equal terms, with mixed but fascinating results.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3XvcgEkQfjasB5NnY8P4QA",
+        "score": 4,
+        "reason": "Mingus blends big‑band jazz feel with quasi‑suite structure and orchestrated, almost classical voicings; it is archetypal “third stream in spirit,” even if usually filed under hard bop/post‑bop.",
+        "title": "Charles Mingus — Track A – Solo Dancer",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb5b1b39c6c992b79b27651e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1HyfKIkVkKr7E1aprb2uum",
+        "score": 5,
+        "reason": "This is prototypical third stream: chamber‑ensemble textures, written‑out counterpoint, and modern‑classical harmony interwoven with improvisation make it an ideal “explain third stream” piece.",
+        "title": "Gunther Schuller — Transformation",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020dd1ee92de308661bde846e0",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/16nJl8NnriCJxraco5Zssm",
+        "score": 4,
+        "reason": "Braxton’s work leans heavily avant‑garde, but the long‑form composition, notated structures, and use of modernist classical ideas alongside jazz improvisation fit squarely in the third stream lineage.",
+        "title": "Anthony Braxton — Composition 6e",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0246ae4364de12380a77ebfd20",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3lpRlIEa9gnUXFHjDgI97p",
+        "score": 4,
+        "reason": "The piece feels like a contemporary continuation of third stream: extended techniques, chamber‑like ensemble writing, and a blurred line between score and improv embody the jazz/classical hybrid ethos.",
+        "title": "Nicole Mitchell — Egoes War",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027d0a82fcd9e20047b669c93f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 17,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 654,
