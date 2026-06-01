@@ -11759,7 +11759,7 @@
     "date_raw": "4/1",
     "date_normalized": "2026-04-01",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -11768,9 +11768,43 @@
     "key_artists": "Larry Levan, Frankie Knuckles, Todd Terry, Masters at Work, Kerri Chandler (originators)",
     "suggested_songs": "Larry Levan — The Garage (mix), Todd Terry — Bango, Masters at Work — To Be in Love, Kerri Chandler — Bar a Thym",
     "vibe": "The Paradise Garage, 1982 — the feeling that music and community are the same thing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0y9tF9mYwlcqUWTuOHQ3kL",
+        "score": 5,
+        "reason": "Quintessential Garage house: a soulful, gospel-tinged vocal, rich keys, and that spiritual Paradise Garage uplift that defines the genre’s emotional core.",
+        "title": "Masters At Work — To Be In Love",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4XR1aF1FvwB1vCLkxqEZuV",
+        "score": 4,
+        "reason": "Classic Kerri Chandler organ groove and shuffling drums that channel Garage house warmth even as it leans slightly more tracky and DJ-tool than vocal anthem.",
+        "title": "Kerri Chandler — Bar A Thym",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3X3c8mJd2zjA1Tn5uT8n9w",
+        "score": 4,
+        "reason": "Sample-heavy New York house with chunky drums and a raw club edge, tracing the Paradise Garage lineage while showing the more rugged side of Garage house history.",
+        "title": "Todd Terry Project — Bango (To the Batmobile)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 70,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 380,
