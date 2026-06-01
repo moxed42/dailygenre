@@ -2341,7 +2341,7 @@
         ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
         : '';
       const pendingNote = s.isPending
-        ? `<div class="pending-note">\u23F3 Nominated from <em>${escapeHtml(s.pendingFrom || 'another genre')}</em> \u2014 <button class="btn-inline" onclick="promotePendingSong('${escapeHtml(rawUrl)}')">Promote</button> \u00B7 <button class="btn-inline btn-inline-danger" onclick="removePendingSong('${escapeHtml(rawUrl)}')">Remove</button></div>`
+        ? `<div class="pending-note">\u23F3 Nominated from <em>${escapeHtml(s.pendingFrom || 'another genre')}</em> \u2014 <button class="btn-inline" onclick="promotePendingSongLegacy('${escapeHtml(rawUrl)}')">Promote</button> \u00B7 <button class="btn-inline btn-inline-danger" onclick="removePendingSongLegacy('${escapeHtml(rawUrl)}')">Remove</button></div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
@@ -2428,7 +2428,7 @@
       prepareAndSaveCurrentGenre();
     }
 
-    function promotePendingSong(url) {
+    function promotePendingSongLegacy(url) {
       if (!currentGenre) return;
       currentGenre.songs_listened = normalizeSongsListened(currentGenre.songs_listened || []).map(s => {
         if (normalizeSongUrl(s.url) === url && s.isPending) {
@@ -2440,7 +2440,7 @@
       prepareAndSaveCurrentGenre();
     }
 
-    function removePendingSong(url) {
+    function removePendingSongLegacy(url) {
       if (!currentGenre) return;
       currentGenre.songs_listened = normalizeSongsListened(currentGenre.songs_listened || []).filter(s => !(normalizeSongUrl(s.url) === url && s.isPending));
       prepareAndSaveCurrentGenre();
