@@ -3230,7 +3230,7 @@
     "date_raw": "4/16",
     "date_normalized": "2026-04-16",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -3239,9 +3239,73 @@
     "key_artists": "Al Hurricane, Tiny Morrie, Bob Larson, Lorenzo Antonio (major figures in New Mexican music)",
     "suggested_songs": "Al Hurricane — La Paloma, Lorenzo Antonio — Amor Eterno, Bob Larson — New Mexico, various New Mexican folk recordings",
     "vibe": "Music from a place where three cultures share a desert and all brought songs.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2MUtZJMSa1GCPX5fvzZZUH",
+        "score": 5,
+        "reason": "Al Hurricane is foundational New Mexico music, and this track nails the hybrid of ranchera, country, and rock’n’roll that defines the style while still reading as tejano/New Mexico Spanish at its core.",
+        "title": "Al Hurricane — Mi Saxophone",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0221d4bb1a74c83921816efaf1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/789OWv86fsvCmyhqJZvcE6",
+        "score": 4,
+        "reason": "Tiny Morrie’s upbeat, accordion-driven groove and Spanish vocals sit firmly inside New Mexico Spanish / tejano territory, even if it leans slightly more generic border-radio tejano than strictly NM regional.",
+        "title": "Tiny Morrie — La del Mono Colorado",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023f20c806a24cdde265aa3862",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4W76JDAJf9YQ7tof4VpPnp",
+        "score": 4,
+        "reason": "This slots cleanly into contemporary New Mexico/tejano via its romantic vocal, midtempo cumbia-influenced rhythm, and polished band arrangement that still carries regional flavor.",
+        "title": "Darren Cordova Y Calor — Un Trocito Del Cielo",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0263f40b4c9641d910be1604a2",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3ceG4WXZiaWQ7tRrBQMs6U",
+        "score": 4,
+        "reason": "Texas Tornados bring a more broadly Tex-Mex tejano sound, but the bilingual swagger, accordion, and conjunto feel are close cousins to New Mexico music and fit the session’s regional border sound.",
+        "title": "Texas Tornados — (Hey Baby) Que Paso",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb573fb522d88395b0109f41",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2LsPqjpeidkmH4m7Ugsuss",
+        "score": 5,
+        "reason": "A direct New Mexico continuation of Al Hurricane’s lineage: brisk dance tempo, accordion and guitar interplay, and Spanish-language storytelling that feels quintessentially NM Spanish music.",
+        "title": "Al Hurricane, Jr. — Los Ojos de Pancha",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02898e0ed6a235f21948ace45e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/23veAdckaPNwndKQkkp1ov",
+        "score": 4,
+        "reason": "Los Cavaliers sit comfortably in the New Mexico Spanish ensemble tradition, with party-forward groove and Spanish vocals that make this a clear fit even if it is a slightly more modern compilation cut.",
+        "title": "Los Cavaliers — Pepe Le Pu",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ba5965456345a2eb457bbcdd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 67,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 94,
