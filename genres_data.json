@@ -3875,7 +3875,7 @@
     "date_raw": "3/12",
     "date_normalized": "2026-03-12",
     "parse_notes": "alias: uk garage (in notes)",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -3886,18 +3886,53 @@
     "vibe": "British club music that makes the bass the architecture.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/7lxxFXt2qKJQpBEv0E3lCw",
-        "score": 4,
-        "reason": "Shuffly broken‑beat drums, vocal chops, and dusk‑city atmosphere put it much closer to the future‑garage template",
-        "title": "Koreless — MTI",
+        "url": "https://open.spotify.com/track/3U6CPINSKmZJ09FtO9PgUa",
+        "score": 3,
+        "reason": "Artsy, skeletal club track with sub-heavy low end and clipped vocal chops; feels more like art-pop/alt‑R&B flirting with UK bass aesthetics than a core scene cut.",
+        "title": "FKA twigs — Glass & Patron",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c3b888be56c44954fd90fb7c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/72TFWvU3wUYdUuxejTTIzt",
+        "score": 5,
+        "reason": "Contemporary UK bass anthem built on huge low-end pressure, chopped vocals, and a properly warehouse-ready groove, making the bass-first aesthetic unmistakable.",
+        "title": "Fred again.. — Jungle",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026be9bac15995f089579074de",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/606wX4SIVeYvA8t28gytnt",
+        "score": 5,
+        "reason": "Aggressive, swung drums and rubbery bassline sit right at the intersection of bassline and hard house, making this an archetypal high-energy UK bass banger.",
+        "title": "Silva Bumpa — BWU",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b006501c40113e827b12b79e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2uN1dC2z58bG4OFQnYq3gc",
+        "score": 5,
+        "reason": "Classic UK bassline/garage hybrid with wobbling low end and skippy drums that firmly grounds the session in the genre’s mid‑late 2000s club roots.",
+        "title": "T2 — Heartbroken (feat. Jodie Aysha)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-01",
+        "isAdd": true
       }
     ],
     "rank_order": 68,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 132,
@@ -18751,6 +18786,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/72TFWvU3wUYdUuxejTTIzt",
+        "score": 5,
+        "reason": "Contemporary UK bass anthem built on huge low-end pressure, chopped vocals, and a properly warehouse-ready groove, making the bass-first aesthetic unmistakable.",
+        "title": "Fred again.. — Jungle",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026be9bac15995f089579074de",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 45,
