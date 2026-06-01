@@ -3908,7 +3908,18 @@
     "key_artists": "Suburban Base Records artists, Moving Shadow, 4 Hero, Shut Up and Dance, The Prodigy (early) (originators)",
     "suggested_songs": "4 Hero — Mr. Kirk's Nightmare, Shut Up and Dance — £10 to Get In, The Prodigy — Charly, Noise Factory — Rock to the Rhythm",
     "vibe": "The evolutionary missing link between house music and everything that came after.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4dVpf9jZjcORqGTLUaeYj9",
+        "score": 5,
+        "reason": "Rapped verses over metallic riffs with a huge, shouted hook—near‑perfect single‑track definition of 90s rap‑metal.",
+        "title": "Rage Against The Machine — Killing In The Name",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027ff3f96423c97dba141c096e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 99,
     "pending_songs": []
   },
@@ -19723,7 +19734,18 @@
     "key_artists": "Buzzcocks, Descendents, Green Day, Blink-182, Fall Out Boy (major figures across eras)",
     "suggested_songs": "Buzzcocks — Ever Fallen in Love (With Someone You Shouldn’t’ve), Green Day — Basket Case, Blink-182 — What’s My Age Again?, Sum 41 — Fat Lip, Fall Out Boy — Sugar, We’re Goin Down",
     "vibe": "Fast guitars, huge hooks, and feelings too urgent to sit still with.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0bgZ2ZSHwZQrQ6Wr5qwoiC",
+        "score": 4,
+        "reason": "Funk‑metal riffing and clearly rapped verses over a heavy groove, giving a much more unambiguous rap‑metal identity.",
+        "title": "Rage Against The Machine — Bulls On Parade",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 571,
     "pending_songs": []
   },
@@ -24880,7 +24902,7 @@
     "date_raw": "2/23",
     "date_normalized": "2026-02-23",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -24889,9 +24911,105 @@
     "key_artists": "Rage Against the Machine, Body Count, Biohazard, 311, Clawfinger (major figures)",
     "suggested_songs": "Rage Against the Machine — Killing in the Name, Body Count — Cop Killer, Biohazard — Punishment, 311 — Down, Clawfinger — Warfair",
     "vibe": "Hip-hop delivery on top of a wall of distortion, angry about specific things.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7uXnjxM1fgYEjziTLXzhWD",
+        "score": 4,
+        "reason": "Hardcore‑leaning but built on bounce‑riff chugs and rhymed, cadenced verses; feels like classic East‑Coast rapcore with real mosh‑pit energy.",
+        "title": "E-Town Concrete — Mandibles",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0297c4f0583b93ce2d26b6fdd0",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4LYdJNvZ3bKKYcZZqaTXDZ",
+        "score": 4,
+        "reason": "Gang‑chant hooks, groove‑metal riffing, and shouted rap flows; firmly rapcore even as it edges closer to modern hardcore production.",
+        "title": "Bayway NJ / E-Town Concrete — Stretchin Tha Truth",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b66684b2c144c1ea7c758a1f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5N9MJpKfIICGvQoR75XEn9",
+        "score": 3,
+        "reason": "Political hardcore with shouted vocals and some rhythmic vocal phrasing, but the emphasis is more on metalcore/hardcore than explicit rap delivery.",
+        "title": "Stray From The Path — Badge A Bullet Pt. II",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023dbb839ed00e0224681d7867",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4dVpf9jZjcORqGTLUaeYj9",
+        "score": 5,
+        "reason": "Rapped verses over metallic riffs with a huge, shouted hook—near‑perfect single‑track definition of 90s rap‑metal.",
+        "title": "Rage Against The Machine — Killing In The Name",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027ff3f96423c97dba141c096e",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4NSUbXiBkdd08J3xCq7FT7",
+        "score": 4,
+        "reason": "Nu‑metal bounce, turntable cuts, and Fred Durst’s rapped verses make this a core late‑90s mainstream rap‑metal anthem.",
+        "title": "Limp Bizkit — Break Stuff",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023783782de74f61e36795bf9c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6qv74iVTLsioYzZGn4fCVW",
+        "score": 4,
+        "reason": "Trap‑metal sound design but structured around metal riffs and heavily rhythmic, almost screamed rap flows—very modern rapcore energy.",
+        "title": "UnityTX — CROSS ME",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0209742dc12abe1e8b7d7beecd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1SMMq7Zupw6IHw7Hvy4xb0",
+        "score": 3,
+        "reason": "Pop‑punk at heart with fast, sung vocals; only light rap cadences sneak in, so it sits more as skate/pop‑punk than true rapcore.",
+        "title": "Zebrahead — Falling Apart",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029f646d5446f50a9f349b4c2f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0bgZ2ZSHwZQrQ6Wr5qwoiC",
+        "score": 4,
+        "reason": "Funk‑metal riffing and clearly rapped verses over a heavy groove, giving a much more unambiguous rap‑metal identity.",
+        "title": "Rage Against The Machine — Bulls On Parade",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2rBHnIxbhkMGLpqmsNX91M",
+        "score": 5,
+        "reason": "Rapped verses over locked‑in metal groove, DJ‑ish stabs, and shouted hook—this is foundational rap‑metal/rapcore.",
+        "title": "Rage Against The Machine — Bombtrack",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ee4644e12bef70636167c6bd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 69,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 923,
