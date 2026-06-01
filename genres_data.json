@@ -12922,10 +12922,10 @@
     "subsubsubcategory": "",
     "category_path": "Electronic > House music",
     "status": "listened",
-    "date_raw": "3/19",
-    "date_normalized": "2026-03-19",
+    "date_raw": "4/24",
+    "date_normalized": "2026-04-24",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -12934,9 +12934,43 @@
     "key_artists": "Lane 8, Ben Böhmer, Tinlicker, Nora En Pure, Yotto (major figures)",
     "suggested_songs": "Lane 8 — Atlas, Ben Böhmer — Beyond Beliefs, Tinlicker — Because You Move Me, Nora En Pure — Come With Me",
     "vibe": "House music that wants to feel something on purpose.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4k79L5uOOevtAndnokglU5",
+        "score": 4,
+        "reason": "Shygirl’s track brings a warm, rolling four‑on‑the‑floor with melodic synth leads and a pop‑leaning vocal, sitting comfortably in melodic house territory even as it flirts with pop club.",
+        "title": "Shygirl — Serotonin Moonbeams",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/533lo1tnDzHT5KszUHewp3",
+        "score": 4,
+        "reason": "Jengi’s cut pairs bright, hooky top‑lines with a smooth, emotive house groove; the focus on earworm melody and lush chords is exactly what you want from melodic house.",
+        "title": "Jengi — Bel Mercy",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4jRwZ0RZSmrC5XjRg2pe2B",
+        "score": 5,
+        "reason": "This is archetypal melodic house: soaring vocal, big emotive chord progression, and polished, festival‑ready production that makes it a perfect “explain the genre to a stranger” tune.",
+        "title": "John Summit; Silver Panda; Clementine Douglas — Gravity (feat. Clementine Douglas)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 14,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 392,
