@@ -18870,7 +18870,7 @@
         "reason": "Rolling left-hand bass and riffing right hand make this a textbook solo boogie-woogie piano showcase, ideal as an archetypal example of the style.",
         "title": "Meade “Lux” Lewis — Honky Tonk Train Blues",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b431545ded22c02473398001",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b431545ded22c02473398001",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -18885,12 +18885,23 @@
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4ycveKWQZlN7kpMBC08aKX",
+        "score": 5,
+        "reason": "Solo piano burner with relentless left-hand boogie pattern and cascading right-hand licks, a purer and more focused illustration of boogie-woogie than a horn-led swing chart.",
+        "title": "Albert Ammons — Boogie Woogie Stomp",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/4fiD2HdUWxJFhZ6uViHDze",
         "score": 4,
         "reason": "Fats’s rolling piano patterns and backbeat clearly channel boogie-woogie while edging into New Orleans R&B and early rock songcraft.",
         "title": "Fats Domino — Boogie Woogie Baby",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0256f75aa41e778c475b2d1ba7",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0256f75aa41e778c475b2d1ba7",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -18900,7 +18911,7 @@
         "reason": "Piano-led blues with a walking left hand and bluesy right-hand figures, sitting right at the intersection of boogie-woogie and classic blues piano.",
         "title": "Meade “Lux” Lewis — Suitcase Blues",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024e6871f79e9cc3acaf3f430c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024e6871f79e9cc3acaf3f430c",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -18913,6 +18924,17 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d7ba528be09db75f310a1c0a",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3R46JqB1fysgqhfqDPnA2G",
+        "score": 4,
+        "reason": "Keeps the wartime jump energy but foregrounds boogie-woogie piano figures in the rhythm section, tightening the connection to the core piano style.",
+        "title": "Freddie Slack — Beat Me Daddy, Eight to the Bar",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4DysBIfiAHWMrdevS70LIJ",
@@ -18938,11 +18960,22 @@
         "url": "https://open.spotify.com/track/3axPhcbhVDOA9MnhkUrFcE",
         "score": 3,
         "reason": "Swinging piano theme with a loping groove that borrows from boogie-woogie, but its role as a jazz/soundtrack motif makes boogie more of a flavor than the main identity.",
-        "title": "Fats Domino — Blue Monday (boogie-tinged swing)",
+        "title": "(Boogie-tinged swing piano theme)",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0255e73f203a199dcad9c42d69",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0zZZM3ZRbRJrhC5Gq0w2Iz",
+        "score": 5,
+        "reason": "Barrelhouse boogie classic with unwavering left-hand ostinato and exuberant right-hand improvisation, delivering an undiluted picture of boogie-woogie.",
+        "title": "Pete Johnson — Roll ’Em Pete",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 64,
@@ -20211,6 +20244,16 @@
         "score": 5,
         "reason": "Classic barrelhouse boogie with unwavering left-hand patterns and exuberant right-hand improvisation, a more distilled picture of the style than a jazz-theme crossover.",
         "title": "Pete Johnson — Roll ‘Em Pete",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4ycveKWQZlN7kpMBC08aKX",
+        "score": 5,
+        "reason": "Solo piano burner with relentless left-hand boogie pattern and cascading right-hand licks, a purer and more focused illustration of boogie-woogie than a horn-led swing chart.",
+        "title": "Albert Ammons — Boogie Woogie Stomp",
         "artist": "",
         "artwork": "",
         "source": "spotify",
