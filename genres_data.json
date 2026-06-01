@@ -19372,7 +19372,7 @@
       {
         "url": "https://open.spotify.com/track/0Ph6L4l8dYUuXFmb71Ajnd",
         "score": 5,
-        "reason": "Over‑the‑top, horn‑driven production, huge chorus, and crossover English/Spanish energy make this a textbook late‑90s Latin‑pop explosion.",
+        "reason": "Crossover‑era Latin pop at its peak: bombastic horns, hooky bilingual chorus, and high‑gloss production built for global radio.",
         "title": "Ricky Martin — Livin’ la Vida Loca",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e7e9b85cc1f021ec12130d80",
@@ -19382,7 +19382,7 @@
       {
         "url": "https://open.spotify.com/track/2lnzGkdtDj5mtlcOW2yRtG",
         "score": 4,
-        "reason": "Shakira’s mix of rock guitars with Latin rhythms still reads clearly as mainstream Latin pop, built around a massive, radio‑ready chorus.",
+        "reason": "Rock‑tinged guitars and Andean‑flavored motifs, but structurally a huge, melodic Latin‑pop single with a stadium‑scale chorus.",
         "title": "Shakira — Whenever, Wherever",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021f400a1f4d821b00824cf58f",
@@ -19390,41 +19390,24 @@
         "added": "2026-06-01"
       },
       {
-        "url": "https://open.spotify.com/track/2lnzGkdtDj5mtlcOW2yRtG",
+        "url": "🔼 ADD: https://open.spotify.com/track/1lZ4j5WBURBwZ0M5TT46wP",
         "score": 4,
-        "reason": "Shakira’s mix of rock guitars with Latin rhythms still reads clearly as mainstream Latin pop, built around a massive, radio‑ready chorus.",
-        "title": "Shakira — Whenever, Wherever",
+        "reason": "Turn‑of‑the‑millennium Enrique ballad with glossy production and big sing‑along hook; nails the classic Latin‑pop radio sound and rounds out the session to three.",
+        "title": "Enrique Iglesias — Be With You",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021f400a1f4d821b00824cf58f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f3dc548292cbf807527b9309",
         "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/2lnzGkdtDj5mtlcOW2yRtG",
-        "score": 4,
-        "reason": "Shakira’s mix of rock guitars with Latin rhythms still reads clearly as mainstream Latin pop, built around a massive, radio‑ready chorus.",
-        "title": "Shakira — Whenever, Wherever",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021f400a1f4d821b00824cf58f",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/2lnzGkdtDj5mtlcOW2yRtG",
-        "score": 4,
-        "reason": "Shakira’s mix of rock guitars with Latin rhythms still reads clearly as mainstream Latin pop, built around a massive, radio‑ready chorus.",
-        "title": "Shakira — Whenever, Wherever",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021f400a1f4d821b00824cf58f",
-        "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-01",
+        "isAdd": true
       }
     ],
     "rank_order": 24,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Ricky Martin — Livin’ la Vida Loca",
+    "favoritesongurl": "https://open.spotify.com/track/0Ph6L4l8dYUuXFmb71Ajnd",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e7e9b85cc1f021ec12130d80"
   },
   {
     "id": 718,
