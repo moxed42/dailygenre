@@ -11258,7 +11258,7 @@
     "date_raw": "2/6",
     "date_normalized": "2026-02-06",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -11267,9 +11267,45 @@
     "key_artists": "Goldie, LTJ Bukem, DJ Hype, Shy FX, Congo Natty (originators)",
     "suggested_songs": "Shy FX — Original Nuttah, Congo Natty — Junglist, LTJ Bukem — Music, Goldie — Terminator",
     "vibe": "The UK rave scene finding its own voice, fast.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6fzwardfFs6sVfNA5R1ypt",
+        "score": 5,
+        "reason": "Classic early jungle roller with iconic sub‑bass, amen‑style breaks and dark, heads‑down atmosphere; a textbook “explain jungle to a stranger” tune.",
+        "title": "Origin Unknown — Valley of the Shadows",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023682ab3a1f6ee66814393098",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/5fVyLRsGhf7vHn6W4yQKQE",
+        "score": 5,
+        "reason": "Minimal, two‑step drums and warm sub‑bass make this a defining early Metalheadz roller, showing the deeper, techy side of jungle/d’n’b.",
+        "title": "Alex Reece — Pulp Fiction",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/3NU6sajZ9HWf7UW5qNDd4v",
+        "score": 4,
+        "reason": "Ragga‑flavoured vocals over chopped breaks and heavy bass give a more raucous, MC‑driven angle on classic jungle energy.",
+        "title": "Shy FX, UK Apachi — Original Nuttah",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isAdd": true
+      }
+    ],
     "rank_order": 51,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 428,
@@ -13213,9 +13249,11 @@
     ],
     "rank_order": 77,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Celtic Woman — Danny Boy",
+    "favoritesongurl": "https://open.spotify.com/track/75sSAymXP6tGOeRvImwzOf",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0200df517164e035167137c4aa"
   },
   {
     "id": 498,
