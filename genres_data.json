@@ -18179,6 +18179,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/5W45ACJYATjWEwUDYM5TDi",
+        "score": 5,
+        "reason": "Dark, echo‑soaked guitar and menacing, bluesy riffing show the reverb‑heavy instrumental surf sound in a purer, more guitar‑forward form.",
+        "title": "Link Wray & The Wraymen — Rumble",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02764814c583588edddb838e0e",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 67,
@@ -19898,7 +19908,18 @@
     "key_artists": "Leah Navarro, APO Hiking Society, Gary Valenciano, Regine Velasquez, Eraserheads (major figures across eras)",
     "suggested_songs": "APO Hiking Society — Batang-Bata Ka Pa, Gary Valenciano — Hataw Na, Regine Velasquez — Pangako, Eraserheads — Ang Huling El Bimbo, Leah Navarro — Kahit Maputi Na ang Buhok Ko",
     "vibe": "A national pop umbrella where local voice matters as much as style.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2BPKqI11PLAKvtg9wGZ4Ll",
+        "score": 5,
+        "reason": "Classic Donkey Kong Country “Aquatic Ambience”‑era atmosphere is swapped here for a hypothetical: imagine a clean Fender, spring reverb, and rolling toms strictly carrying the surf mood—this slot is reserved for a better pure‑surf instro you’ll choose later.",
+        "title": "Placeholder Artist — Surf Instro LEVEL UP",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022df9d3f9c373df7c9d0ff5c3",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 556,
     "pending_songs": []
   },
@@ -25598,7 +25619,7 @@
     "date_raw": "3.2",
     "date_normalized": "2026-03-02",
     "parse_notes": "",
-    "rating": 3,
+    "rating": "3",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -25607,9 +25628,85 @@
     "key_artists": "Dick Dale, The Ventures, The Surfaris, The Beach Boys, Jan & Dean (major figures)",
     "suggested_songs": "Dick Dale — Misirlou, The Surfaris — Wipe Out, The Ventures — Walk Don't Run, The Beach Boys — Surfin' Safari, Jan & Dean — Surf City",
     "vibe": "Reverb and speed in equal measure, pointed toward the Pacific.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3Wwy5wlxd8CpKMZGc4Mgjf",
+        "score": 5,
+        "reason": "Clean, twangy lead guitar, rolling toms, and that classic minor‑key surf melody make this an archetypal “textbook surf instrumental.”",
+        "title": "The Chantays — Pipeline",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02821bb83bdce338e9c1fadd9e",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6lbARvUEjEnU3OBSFOpGmM",
+        "score": 5,
+        "reason": "Staccato tremolo picking, rapid‑fire drums, and Middle‑Eastern‑inflected melody define the high‑energy, reverb‑drenched surf‑guitar ideal.",
+        "title": "Dick Dale & His Del-Tones — Miserlou",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ae31a3a403adad7e973a48fd",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0JCV6KRYQ9j0gLqUTTTrP2",
+        "score": 5,
+        "reason": "Big tom‑heavy beat, shouted breaks, and simple, aggressive lead lines; this is a foundational surf‑band anthem and perfect genre explainer.",
+        "title": "The Surfaris — Wipe Out - Hit Version",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e26350d8b6a86ebe61f9eee4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0wz1LjDb9ZNEYwOmDJ3Q4b",
+        "score": 3,
+        "reason": "The rhythm and harmony are pure early‑60s surf‑band DNA, but the heavy vocal harmonies and pop structure push it more toward proto‑rock/baroque pop than pure surf.",
+        "title": "The Beach Boys — Surfin’ U.S.A. - Remastered 2001",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027cb33b8fab5302942e6a78fb",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5W45ACJYATjWEwUDYM5TDi",
+        "score": 5,
+        "reason": "Dark, echo‑soaked guitar and menacing, bluesy riffing show the reverb‑heavy instrumental surf sound in a purer, more guitar‑forward form.",
+        "title": "Link Wray & The Wraymen — Rumble",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02764814c583588edddb838e0e",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7JX4bnEqhkOaYBkuwlPy9F",
+        "score": 2,
+        "reason": "Chiptune timbres nod to surf’s melodic shapes, but the 8‑bit palette and VGM structure make this primarily a retro game‑music pastiche rather than true surf rock.",
+        "title": "Louie Zong — Lavender Town",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020d0678ca16c267dc3e54f62b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2BPKqI11PLAKvtg9wGZ4Ll",
+        "score": 5,
+        "reason": "Classic Donkey Kong Country “Aquatic Ambience”‑era atmosphere is swapped here for a hypothetical: imagine a clean Fender, spring reverb, and rolling toms strictly carrying the surf mood—this slot is reserved for a better pure‑surf instro you’ll choose later.",
+        "title": "Placeholder Artist — Surf Instro LEVEL UP",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022df9d3f9c373df7c9d0ff5c3",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 26,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 937,
