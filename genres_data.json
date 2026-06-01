@@ -5754,7 +5754,7 @@
     "date_raw": "4/14",
     "date_normalized": "2026-04-14",
     "parse_notes": "",
-    "rating": 1,
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -5763,9 +5763,43 @@
     "key_artists": "LTJ Bukem, Photek, Metalheadz (atmospheric releases), Peshay, Source Direct (originators)",
     "suggested_songs": "LTJ Bukem — Horizons, Photek — Modus Operandi, Peshay — Miles from Home, Source Direct — Approach and Identify",
     "vibe": "Drum and bass that wants you to sit down and really hear it.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/4vKdTlhimjgv4yGqFhRfE5",
+        "score": 5,
+        "reason": "This is archetypal intelligent dnb: airy pads, fluid breaks, and a sense of jazz-inflected lift that puts listening texture alongside propulsion. Bukem is one of the clearest genre-defining names for this lane.",
+        "title": "LTJ Bukem — Logical Progression",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024a25685f3ca5e3ff48200a0c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3pXn28rNe3bsO6WnbLZ6mH",
+        "score": 4,
+        "reason": "Strong fit through its atmospheric detail and refined long-form movement, though it still leans closer to lush atmospheric jungle than the most classically “intelligent” dnb cuts. It clearly belongs, just not quite as cleanly archetypal as Bukem.",
+        "title": "Peshay — Psychosis",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0206d77d217d909ccbbd369d08",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6UGAuLqCF3dcsRiOfjI8Yh",
+        "score": 4,
+        "reason": "This fits the darker, more cerebral end of the tag: sparse futurist design, deep space, and drum programming that rewards close listening over pure rave impact. It pulls toward techstep-adjacent abstraction, but the intelligence and mood-first construction still keep it in bounds.",
+        "title": "Photek — The Rain",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0259f3acd9104caca8dbb97c99",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 4,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 175,
