@@ -4533,7 +4533,7 @@
     "date_raw": "",
     "date_normalized": "2026-06-01",
     "parse_notes": "",
-    "rating": "2",
+    "rating": "1",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -4574,12 +4574,12 @@
         "added": "2026-06-01"
       }
     ],
-    "rank_order": 36,
+    "rank_order": 11,
     "pending_songs": [],
-    "favoritesongurl": "https://open.spotify.com/track/7nH4UnffKuEHlbjCnSRYRG",
-    "favoritesong": "BONES — WhereTheTreesMeetTheFreeway",
+    "favoritesongurl": "https://open.spotify.com/track/3HfB5hBU0dmBt8T0iCmH42",
+    "favoritesong": "Talking Heads — Burning Down the House",
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02728911900d9b0213ae28c81c",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ec548c00d3ac2f10be73366d",
     "monthlycontender": false,
     "monthfavorite": false,
     "monthleastfavorite": false
