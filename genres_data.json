@@ -1221,6 +1221,16 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/2Cw8aZ5rH0U5LzqFZ4ZCqT",
+        "score": 5,
+        "reason": "Nails the NWOC blend of massive retro riffing and sleek modern production more cleanly, tilting fully toward hard/classic rock spectacle rather than punk protest.",
+        "title": "The Struts — Could Have Been Me",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 173,
@@ -25346,7 +25356,7 @@
     "date_raw": "3/7",
     "date_normalized": "2026-03-07",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -25355,9 +25365,114 @@
     "key_artists": "Greta Van Fleet, Dirty Honey, Mammoth WVH, Inglorious, Kingdom Come (major figures)",
     "suggested_songs": "Greta Van Fleet — Highway Tune, Dirty Honey — When I'm Gone, Mammoth WVH — Distance, Inglorious — Until I Die, Kingdom Come — Get It On",
     "vibe": "Classic rock played by people who grew up on the classic-rock station.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2xixXiLYi3FsNF0m9vEV2G",
+        "score": 4,
+        "reason": "Modern hard-rock anthem with big gang vocals and a crunching, radio-ready riff that fits NWOC’s arena-rock revival energy even if it leans a bit toward alt-metal sheen.",
+        "title": "Måneskin — Morirò da Re",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026bc799c6c712870ffe1d1546",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0k6CljwEGjj0agrDDagnQr",
+        "score": 5,
+        "reason": "Absolutely textbook new wave of classic rock: swaggering riff, shout-along chorus, and very direct lineage to 80s/90s arena and hard rock while still feeling like current festival rock.",
+        "title": "Måneskin — ZITTI E BUONI",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026b27167f20028528397e7a9f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0ImHLPj7ilfn4dHBFLDone",
+        "score": 4,
+        "reason": "Retro-leaning power-pop/rock tune whose harmonies, chord changes, and guitar tones echo 70s classic rock songcraft in a very present-day package.",
+        "title": "The Lemon Twigs — Any Time Of Day",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ab764b74918b0adf45fce723",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0BikNVR79txZhmczhZE68l",
+        "score": 4,
+        "reason": "Another strong example of younger band channeling 70s rock and power-pop melodicism with big hooks and hi-fi production that sits comfortably in the NWOC lane.",
+        "title": "The Lemon Twigs — My Golden Years",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0293d436362cc64723d3a04b66",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3CkjLJYnnyOtGk4Jx4iYS4",
+        "score": 5,
+        "reason": "Riffs, organ, and vocal delivery all hit that Zeppelin/Sabbath-adjacent classic rock feel, making it a quintessential “explain NWOC” cut despite its heavier stoner tint.",
+        "title": "Wolfmother — Woman",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02335534788cbc39cfd23ee993",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7aOor99o8NNLZYElOXlBG1",
+        "score": 5,
+        "reason": "Defines the movement’s “new band, old DNA” ethos with its Zeppelin-indebted riff, classic-rock vocal phrasing, and tight, modern-rock punch.",
+        "title": "Greta Van Fleet — Highway Tune",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0257b7f789d328c205b4d15893",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/0zlaa4AmbFE7MVDijsyD9Q",
+        "score": 4,
+        "reason": "More expansive and atmospheric but still steeped in epic classic-rock arrangement and guitar heroics; feels like the proggy, grandiose side of NWOC.",
+        "title": "Greta Van Fleet — Heat Above",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02339cc033bcc476d11dffba4c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3CkjLJYnnyOtGk4Jx4iYS4",
+        "score": 4,
+        "reason": "(If logged twice this day) Still plays as a very 70s-informed hard-rock banger with chorus-first immediacy and crunchy guitars that embody the movement’s reverence for classic rock forms.",
+        "title": "Wolfmother — Woman",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02335534788cbc39cfd23ee993",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7t6a7n23SZQ5A5OuXYu3uO",
+        "score": 3,
+        "reason": "Contemporary melodic punk with anthemic hooks; shares high-energy rock DNA but its primary identity is modern punk rather than retro/classic rock revival.",
+        "title": "Against Me! — I Was a Teenage Anarchist",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a1191cc556c99c62ffb0829b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2Cw8aZ5rH0U5LzqFZ4ZCqT",
+        "score": 5,
+        "reason": "Nails the NWOC blend of massive retro riffing and sleek modern production more cleanly, tilting fully toward hard/classic rock spectacle rather than punk protest.",
+        "title": "The Struts — Could Have Been Me",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      }
+    ],
     "rank_order": 6,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 892,
