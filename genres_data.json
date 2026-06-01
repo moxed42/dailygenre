@@ -26859,6 +26859,16 @@
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02831a4d0013bdfdbe34c23604",
         "source": "spotify",
         "added": "2026-05-31"
+      },
+      {
+        "url": "https://open.spotify.com/track/4alHo6RGd0D3OUbTPExTHN",
+        "score": 5,
+        "reason": "Archetypal power pop: razor-sharp guitar lines, propulsive backbeat, and an ultra-efficient chorus that nails the genre’s punchy, radio-perfect ideal.",
+        "title": "The Cars — Just What I Needed",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7",
+        "source": "spotify",
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 2,
@@ -27582,7 +27592,7 @@
     "date_raw": "4/5",
     "date_normalized": "2026-04-05",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -27591,9 +27601,175 @@
     "key_artists": "Badfinger, Big Star, Raspberries, Cheap Trick, Teenage Fanclub (major figures)",
     "suggested_songs": "Big Star — September Gurls, Badfinger — No Matter What, Raspberries — Go All the Way, Cheap Trick — Surrender, Teenage Fanclub — The Concept",
     "vibe": "The perfect pop song with the amp turned up and the chorus doubled.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7fRvtXvJMpGfTLdF0M09a1",
+        "score": 4,
+        "reason": "Big chorus, chiming guitars, and hooky new-wave sheen make this a clear fit for glossy, radio-ready end of power pop.",
+        "title": "The Romantics — Talking In Your Sleep (2023 Remaster)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0201d93acc198ee0f9154b5b1c",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/78zYiMv9yNTHgmm6kaUPCm",
+        "score": 2,
+        "reason": "Sugar-rush youth chant with glam stomp and handclaps, but it leans more bubblegum/glam rock than tightly crafted power pop songcraft.",
+        "title": "Bay City Rollers — Saturday Night",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e905e7ee3aeea15e85fa069b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4alHo6RGd0D3OUbTPExTHN",
+        "score": 5,
+        "reason": "Archetypal power pop: razor-sharp guitar lines, propulsive backbeat, and an ultra-efficient chorus that nails the genre’s punchy, radio-perfect ideal.",
+        "title": "The Cars — Just What I Needed",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2ccUQnjjNWT0rsNnsBpsCA",
+        "score": 5,
+        "reason": "Crunchy guitars, massive chorus, and teen-romantic melodrama distilled into three minutes; this is textbook anthemic 70s power pop.",
+        "title": "Cheap Trick — Surrender",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02661e6ba2981201a3e36a46f6",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4oDZ5L8izBals6jKBJDBcX",
+        "score": 3,
+        "reason": "Immortal hook and bright guitars, but its slick 80s AOR/arena-pop production pushes it away from classic jangle-forward power pop.",
+        "title": "The Outfield — Your Love",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ffaeb2f6c1acc0ed7180929a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2g9EvzLR2sYscJQubwKGqu",
+        "score": 5,
+        "reason": "Jangly guitars, shout-along chorus, and Replacements snarl wrapped around pure pop craft; a pinnacle of rough-edged power pop.",
+        "title": "The Replacements — Alex Chilton - 2008 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024e2ba23297d6b95d998ea9bc",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2g9EvzLR2sYscJQubwKGqu",
+        "score": 5,
+        "reason": "Marr-ish jangle, driving rhythm, and an instantly memorable chorus make this a near-perfect, slightly punked-up power pop anthem.",
+        "title": "The Replacements — Alex Chilton - 2008 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024e2ba23297d6b95d998ea9bc",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3k0xITtgCxdbwyGTxpbpH1",
+        "score": 4,
+        "reason": "Tight song structure and ringing guitars place it firmly in early 70s power pop, even as it leans a hair more rootsy than some later, shinier examples.",
+        "title": "Big Star — When My Baby's Beside Me",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02df6db6e75b87f002ab397d33",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/6TBJCwgdhwkzjpSjdqJUHC",
+        "score": 4,
+        "reason": "Live-show bombast and crowd noise push it toward hard rock spectacle, but the core is pure hook-driven power pop with chiming guitar leads.",
+        "title": "Cheap Trick — I Want You to Want Me - Live at Nippon Budokan, Tokyo, JPN - April 1978",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028672a409c23eb823a6c71358",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2XKW8CH8nRZH9cF2DNjBHN",
+        "score": 4,
+        "reason": "Melancholy melody, close harmonies, and chiming chords perfectly capture the bittersweet, Beatles-descended side of 70s power pop.",
+        "title": "Badfinger — Day After Day - Remastered 2010",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2dd29cdaa3fadbdc26d59c4",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4alHo6RGd0D3OUbTPExTHN",
+        "score": 5,
+        "reason": "Laser-focused guitar hooks and economy of arrangement make this an archetypal, instantly graspable power pop single.",
+        "title": "The Cars — Just What I Needed",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/3mwvKOyMmG77zZRunnxp9E",
+        "score": 3,
+        "reason": "Huge pop chorus and crunchy guitars fit the vibe, but its 90s alt-rock weight and production mark it more as mainstream alternative with power-pop tendencies.",
+        "title": "Weezer — Buddy Holly",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02345536847e60f622ee0eae96",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track:6yznRV5BpPX4PhPzniKiBj",
+        "score": 3,
+        "reason": "Bouncy, sugary emo-pop with bright keys and hooks that flirt with power pop, yet its scene-era synth gloss keeps it slightly outside the classic template.",
+        "title": "Zolof the Rock & Roll Destroyer — argh...i'm a Pirate",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/7KXa0APJAlpsC2cNMiQjrD",
+        "score": 4,
+        "reason": "Smart, melodic guitar rock with a propulsive groove and bittersweet chorus that slots neatly into the mature, indie-leaning side of power pop.",
+        "title": "Nada Surf — Happy Kid",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0226e144cef7fac2c777a1a4ca",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4hIY051enSBBJ5fzZUzTSU",
+        "score": 2,
+        "reason": "High-energy pop-punk with emo vocal styling; it brushes against power pop via big chorus hooks but is primarily Warped Tour-era pop punk.",
+        "title": "Hey Monday — How You Love Me Now",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dd1d9e19cfe34dac93983739",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/59NMauPKEj7TAKY9RlCYa3",
+        "score": 3,
+        "reason": "Fuzzed-out, blown-speaker production and shouty vocals give it a punk/garage edge; the tuneful core hints at power pop but the aesthetic is more lo-fi indie rock.",
+        "title": "Liquid Mike — Rav4",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa420c318f92cf2795d5e35a",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 7,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 898,
