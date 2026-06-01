@@ -2862,9 +2862,20 @@
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
+        "score": 4,
+        "reason": "Snappy march from the London Suite with a singable tune and compact form, written squarely for light‑music broadcast use.",
+        "title": "Eric Coates — Knightsbridge: March (London Suite)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kXS",
         "score": 3,
-        "reason": "Iconic BBC “Sailing By” vibe with lilting melody and soft orchestration, but it functions more as late‑night continuity music than archetypal light‑music programming.",
+        "reason": "Iconic “Sailing By” atmosphere with lilting melody and soft orchestration, but functions more as late‑night continuity music than core light‑music repertoire.",
         "title": "Ronald Binge / Vernon Handley / BBC Concert Orchestra — Sailing By",
         "artist": "",
         "artwork": "",
@@ -2874,7 +2885,7 @@
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/4sHP8GWaDgBu5tJp6Ff9xQ",
         "score": 5,
-        "reason": "Classic mid‑century British light music written explicitly for broadcast use, with a gently swinging tune and unfussy scoring.",
+        "reason": "Classic mid‑century British light‑music cue, gently swinging and directly written as BBC‑style utility music.",
         "title": "Sidney Torch — London Transport Suite: Piccadilly Line",
         "artist": "",
         "artwork": "",
@@ -2888,7 +2899,7 @@
         "reason": "Tuneful, unhurried melody, clear sectional form, and plush but not heavy orchestration—textbook “light concert piece” rather than symphonic statement.",
         "title": "Ronald Binge / Slovak Radio Symphony Orchestra / Ernest Tomlinson — Elizabethan Serenade",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a80bb0581974a08a58b9aae3",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a80bb0581974a08a58b9aae3",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -2913,10 +2924,10 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1Q4oIHX6qd7q6igkfeE7bM",
         "score": 4,
-        "reason": "Breezy melody and compact form geared toward radio play; keeps the light‑music focus on tunefulness over spectacle.",
-        "title": "Eric Coates — Knightsbridge: March (London Suite)",
+        "reason": "Breezy, episodic tune designed for concert‑light programming, with colorful but unfussy orchestration.",
+        "title": "Haydn Wood — Joyousness",
         "artist": "",
         "artwork": "",
         "source": "spotify",
@@ -2929,7 +2940,7 @@
         "reason": "Jaunty, work‑song‑style tune with clean orchestration and modest dynamic arc, exactly in the “music while you work” lineage.",
         "title": "Sidney Torch / Sidney Torch Orchestra — On a Spring Note",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dde6137df327bbd3de37e459",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dde6137df327bbd3de37e459",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -3265,7 +3276,18 @@
     "key_artists": "Ludovico Einaudi, Max Richter, Nils Frahm, Ólafur Arnalds, Johann Johannsson (originators) • Joep Beving, Hania Rani (modern)",
     "suggested_songs": "Ludovico Einaudi — Experience, Max Richter — On the Nature of Daylight, Nils Frahm — Says, Ólafur Arnalds — Near Light",
     "vibe": "A single piano note in a large empty room that knows exactly what it's doing.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
+        "score": 4,
+        "reason": "Snappy march from the London Suite with a singable tune and compact form, written squarely for light‑music broadcast use.",
+        "title": "Eric Coates — Knightsbridge: March (London Suite)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 509,
     "pending_songs": []
   },
@@ -17055,6 +17077,16 @@
         "score": 4,
         "reason": "Breezy melody and compact form geared toward radio play; keeps the light‑music focus on tunefulness over spectacle.",
         "title": "Eric Coates — Knightsbridge: March (London Suite)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1Q4oIHX6qd7q6igkfeE7bM",
+        "score": 4,
+        "reason": "Breezy, episodic tune designed for concert‑light programming, with colorful but unfussy orchestration.",
+        "title": "Haydn Wood — Joyousness",
         "artist": "",
         "artwork": "",
         "source": "spotify",
