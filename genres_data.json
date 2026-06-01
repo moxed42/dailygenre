@@ -5114,7 +5114,7 @@
         "reason": "This is the block’s clearest archetype because it comes directly from Daniele Baldelli and foregrounds the dubbed-out, low-slung, curatorial cosmic aesthetic the genre entry describes. Even with modern production, it reads as a direct statement of the form.",
         "title": "Daniele Baldelli — Isotropofunk",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028aae7e196cf73b3e368a6215",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028aae7e196cf73b3e368a6215",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -5127,6 +5127,17 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0289241d127e99d04ead7f74b6",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3XokdVgIh8wC0x6lO8n9Hk",
+        "score": 5,
+        "reason": "A better exemplar because it brings in the African rhythmic source material explicitly, which is one of the defining ingredients in the Afro/cosmic blend described for the genre.",
+        "title": "Fela Kuti — Zombie",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 80,
