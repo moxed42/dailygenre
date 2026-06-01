@@ -765,7 +765,18 @@
     "key_artists": "Robert Johnson, Son House, Blind Lemon Jefferson, Charley Patton, Lightnin' Hopkins (originators)",
     "suggested_songs": "Robert Johnson — Cross Road Blues, Son House — Death Letter, Blind Lemon Jefferson — See That My Grave Is Kept Clean, Lightnin' Hopkins — Mojo Hand",
     "vibe": "One person, one guitar, every feeling.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/1kChXgQ5JH4Z1WcV9i8K3u",
+        "score": 5,
+        "reason": "Lead Belly in pure talking-blues mode, with mostly spoken lyrics over a steady guitar figure and a wry, narrative tone.",
+        "title": "Lead Belly — Bourgeois Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 168,
     "pending_songs": []
   },
@@ -789,7 +800,18 @@
     "key_artists": "Robert Johnson, Son House, Charley Patton, Skip James, Mississippi Fred McDowell (originators)",
     "suggested_songs": "Robert Johnson — Hellhound on My Trail, Son House — Grinnin' in Your Face, Skip James — Hard Time Killing Floor Blues, Charley Patton — Pony Blues",
     "vibe": "Music from a place that had very little, making something that had everything.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/7BdZbez1RXsmYweQylaS2C",
+        "score": 4,
+        "reason": "Spoken-sung verses over simple guitar that explicitly play with the talking blues format, bringing the concept into a more modern folk context.",
+        "title": "Bob Dylan — Talkin' World War III Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 201,
     "pending_songs": []
   },
@@ -1868,7 +1890,18 @@
     "key_artists": "John Denver, Emmylou Harris, Townes Van Zandt, Gillian Welch, Iris DeMent (originators/major figures)",
     "suggested_songs": "John Denver — Take Me Home, Country Roads, Townes Van Zandt — Pancho and Lefty, Emmylou Harris — Boulder to Birmingham, Gillian Welch — Everything Is Free",
     "vibe": "Country and folk discovering they were siblings all along.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/6NBtG3l2b7bWMMEZe2VG3T",
+        "score": 5,
+        "reason": "Archetypal topical talking blues: fully spoken-sung delivery, dry humor, and a strict blues vamp that perfectly captures the form.",
+        "title": "Woody Guthrie — Talking Columbia Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 15,
     "pending_songs": []
   },
@@ -2374,7 +2407,18 @@
     "key_artists": "Roscoe Holcomb, Hobart Smith, Dock Boggs, Tommy Jarrell, Hazel Dickens (originators) • Foghorn Stringband, Crooked Still (modern)",
     "suggested_songs": "Roscoe Holcomb — Across the Rocky Mountain, Dock Boggs — Country Blues, Tommy Jarrell — Old Bunch of Keys, Hazel Dickens — Black Lung",
     "vibe": "Music from before there was a word for it, still being played.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/3ri5U9xY5x7a3Zq2KWg1ae",
+        "score": 5,
+        "reason": "A fully realized talking-blues monologue where the vocal is almost entirely spoken over a simple groove, hitting the style’s core traits head-on.",
+        "title": "Chris Bouchillon — Talking Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 552,
     "pending_songs": []
   },
@@ -2711,7 +2755,7 @@
         "reason": "Narrative, half-spoken delivery over I‑IV‑V changes with topical labor lyrics makes this a textbook talking blues performance.",
         "title": "Pete Seeger — Talking Union",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -2726,14 +2770,36 @@
         "added": "2026-06-01"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6NBtG3l2b7bWMMEZe2VG3T",
+        "score": 5,
+        "reason": "Archetypal topical talking blues: fully spoken-sung delivery, dry humor, and a strict blues vamp that perfectly captures the form.",
+        "title": "Woody Guthrie — Talking Columbia Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/5rerimz0RW2Royhow3g0sR",
         "score": 3,
         "reason": "Story-song blues with more sung than spoken delivery; it shares narrative DNA but feels like classic country blues rather than strict talking blues.",
         "title": "Lead Belly — In the Pines",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa6e7a17f9fbe905749fbc22",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02aa6e7a17f9fbe905749fbc22",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1kChXgQ5JH4Z1WcV9i8K3u",
+        "score": 5,
+        "reason": "Lead Belly in pure talking-blues mode, with mostly spoken lyrics over a steady guitar figure and a wry, narrative tone.",
+        "title": "Lead Belly — Bourgeois Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0HrPgD96MXnp0OtM6yhyq7",
@@ -2751,9 +2817,20 @@
         "reason": "Early country tune with prominent spoken sections and comic storytelling, but structurally closer to old-time country than canonical talking blues.",
         "title": "Chris Bouchillon — Waltz Me Around Again Willie (Recorded 1927)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a4cfae3ee845dd7f6827fe48",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a4cfae3ee845dd7f6827fe48",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3ri5U9xY5x7a3Zq2KWg1ae",
+        "score": 5,
+        "reason": "A fully realized talking-blues monologue where the vocal is almost entirely spoken over a simple groove, hitting the style’s core traits head-on.",
+        "title": "Chris Bouchillon — Talking Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1X6dRpq3Wi6Jxthi8ZBBBz",
@@ -2771,16 +2848,29 @@
         "reason": "Classic Delta blues with fully sung lines; thematically related but musically more straight 12‑bar blues than talking blues.",
         "title": "Robert Johnson — Walkin' Blues",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f017e3180aca26809813d2c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022f017e3180aca26809813d2c",
         "source": "spotify",
         "added": "2026-06-01"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7BdZbez1RXsmYweQylaS2C",
+        "score": 4,
+        "reason": "Spoken-sung verses over simple guitar that explicitly play with the talking blues format, bringing the concept into a more modern folk context.",
+        "title": "Bob Dylan — Talkin' World War III Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-01",
+        "isLevelUp": true
       }
     ],
     "rank_order": 36,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
-    "monthlycontender": false
+    "favoritesong": "Pete Seeger — Bourgeois Blues",
+    "favoritesongurl": "https://open.spotify.com/track/3wqy4xXKkTQWyN8Gus4Nyc",
+    "monthlycontender": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3"
   },
   {
     "id": 90,
