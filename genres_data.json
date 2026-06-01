@@ -29330,7 +29330,7 @@
     "date_raw": "",
     "date_normalized": "2026-04-03",
     "parse_notes": "",
-    "rating": 2,
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -29339,9 +29339,73 @@
     "key_artists": "Horde, Antestor, Crimson Moonlight, Eternal Ryte, Elgibbor (major figures)",
     "suggested_songs": "Horde -- Invert the Inverted Cross, Antestor -- Martyrium, Crimson Moonlight -- Eternal Sacrifice, Elgibbor -- The Pilgrim, Eternal Ryte -- Omega",
     "vibe": "Black metal's sound pointed at the opposite spiritual pole from where it started.",
-    "songs_listened": [],
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/0rZafkLnrcAFbVTrMo2NIl",
+        "score": 3,
+        "reason": "The tremolo-inflected riffing and apocalyptic Christian themes brush against unblack territory, but the chug-heavy rhythms and breakdown logic read primarily as 90s metalcore.",
+        "title": "Zao — Lies Of Serpents, A River Of Tears",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02782f4f39f819d9a4f9ca21d8",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/30AD3nslmfyW7nZDNun1ny",
+        "score": 2,
+        "reason": "Conceptually tied into prophetic Christian extremity, yet musically it’s classic metallic hardcore with mathy turns rather than blackened tremolo or atmosphere.",
+        "title": "Zao — The Rising End (The First Prophecy)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/1Dppspcy9iFRzYHM7oZmZM",
+        "score": 2,
+        "reason": "Harsh vocals and spiritual-judgment narrative fit the unblack umbrella thematically, but the riffing, groove, and production land squarely in metalcore, not black metal.",
+        "title": "Zao — The Last Revelation (The Last Prophecy)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4VjOJcZPG1Uo7thRNKdbwC",
+        "score": 5,
+        "reason": "Prototype unblack: lo-fi second-wave sonics, tremolo-picked minor-key riffs, and blasting drums, with explicitly Christian framing that inverts black metal’s usual ideology while keeping the sound intact.",
+        "title": "Horde — A Church Bell Tolls Amidst The Frozen Nordic Winds",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d5adfb7e7400a753ccb9da4f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/4ZF3XcyGuvC8FZburo25GL",
+        "score": 4,
+        "reason": "A blistering, concise assault whose raw guitar tone, shrieked vocals, and relentless blasting are pure black metal, functioning as a compact unblack statement alongside the longer centerpiece.",
+        "title": "Horde — Blasphemous Abomination Of The Satanic Pentagram",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d5adfb7e7400a753ccb9da4f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      },
+      {
+        "url": "https://open.spotify.com/track/2ByhUMQMauMc1LJGclDIP5",
+        "score": 3,
+        "reason": "Depressive, atmospheric black metal textures align sonically with unblack, but the existential misery and lack of Christian inversion make it more of a tonal neighbor than a true ideological fit.",
+        "title": "Totalselfhatred — Total Self-Hatred",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026872312de9c23830eebba77f",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
     "rank_order": 29,
-    "pending_songs": []
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 964,
