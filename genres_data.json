@@ -6530,8 +6530,23 @@
     "key_artists": "Various anonymous Norwegian producer/MC groups each year — not traditional artists",
     "suggested_songs": "Various annual russ compilations — Russ 2023, Russ 2024 etc.",
     "vibe": "Graduation party music for an entire country, simultaneously.",
-    "songs_listened": [],
-    "pending_songs": []
+    "songs_listened": [
+      {
+        "url": "https://open.spotify.com/track/2csnhAXqvIouyRlFZ1FjEh",
+        "score": 3,
+        "reason": "Bouncy, lo‑fi Russelter party track more about goofy local energy than any particular genre spine; fun color for a Russ day but not an archetype of anything else.",
+        "title": "DJ Borgny — Richie Rich",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b96e41840f688ef974fca92b",
+        "source": "spotify",
+        "added": "2026-06-01"
+      }
+    ],
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false,
+    "rank_order": null
   },
   {
     "id": 251,
