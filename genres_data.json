@@ -4461,7 +4461,20 @@
       }
     ],
     "rank_order": 529,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6aBUnkXuCEQQHAlTokv9or",
+        "score": 3,
+        "reason": "Synthy and groove‑oriented but fundamentally art‑pop/new wave with a hypnotic minimalism rather than a true funk engine",
+        "title": "Talking Heads — This Must Be the Place (Naive Melody)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e6080bcea9c1d05762084a1",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Synth-funk"
+      }
+    ]
   },
   {
     "id": 122,
@@ -12876,7 +12889,20 @@
     "vibe": "Disco filtered through a Parisian studio, emerging somehow cooler than it went in.",
     "songs_listened": [],
     "rank_order": 297,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/69kOkLUCkxIZYexIgSG8rq",
+        "score": 3,
+        "reason": "Sleek French house track driven by four‑on‑the‑floor and disco revivalism; strong funk DNA via Nile Rodgers but structurally house rather than synth‑funk",
+        "title": "Daft Punk, Pharrell Williams, Nile Rodgers — Get Lucky",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b9b36b0e22870b9f542d937",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Synth-funk"
+      }
+    ]
   },
   {
     "id": 377,
@@ -20430,7 +20456,7 @@
         "reason": "Ornette’s Prime Time band fuses harmolodic chaos with a deep backbeat; the groove and electric textures make it clear free funk even if it leans heavily into free jazz phrasing",
         "title": "Ornette Coleman, Prime Time — Bourgeois Boogie",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027b3c6032a51d84c6c649238d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027b3c6032a51d84c6c649238d",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -20440,7 +20466,7 @@
         "reason": "Tumbling, polyrhythmic drums and electric group interplay sit between funk and free; it’s a strong free‑funk statement, though some passages drift closer to open‑ended fusion",
         "title": "Ronald Shannon Jackson & The Decoding Society — African Sance",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0261c141641e9ec013b62810fa",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0261c141641e9ec013b62810fa",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -25858,19 +25884,31 @@
         "reason": "Archetypal Minneapolis synth‑funk: drum‑machine groove, rubbery synth bass, and Prince’s tight vocal arrangements lock perfectly into the electro‑funk template",
         "title": "Prince — D.M.S.R. (2019 Remaster)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024117e531f63855d072059d6e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024117e531f63855d072059d6e",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6aBUnkXuCEQQHAlTokv9or",
         "score": 3,
-        "reason": "Has a synthy, groovy pulse but is fundamentally art‑pop/new wave with a gently hypnotic feel rather than a true funk engine",
+        "reason": "Synthy and groove‑oriented but fundamentally art‑pop/new wave with a hypnotic minimalism rather than a true funk engine",
         "title": "Talking Heads — This Must Be the Place (Naive Melody)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021e6080bcea9c1d05762084a1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e6080bcea9c1d05762084a1",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "new_wave"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5dNfHmqgr128gMY2tc5CeJ",
+        "score": 5,
+        "reason": "Canonical synth‑funk crossover: elastic bassline, crisp drum machines, and bright synth leads define the electro‑funk sound",
+        "title": "Zapp — More Bounce to the Ounce",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024cb949e9f103f12d96797121",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3HfB5hBU0dmBt8T0iCmH42",
@@ -25880,7 +25918,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ec548c00d3ac2f10be73366d",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/07OzC5JlcaDwEkzWmvqp6y",
@@ -25890,17 +25928,29 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d43ed38753792fe6606568f2",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/69kOkLUCkxIZYexIgSG8rq",
-        "score": 4,
-        "reason": "Sleek French house cut whose Nile Rodgers guitar and bassline bring strong synthetic‑funk DNA; more club‑house than pure funk, but the groove is undeniably funk‑coded",
+        "score": 3,
+        "reason": "Sleek French house track driven by four‑on‑the‑floor and disco revivalism; strong funk DNA via Nile Rodgers but structurally house rather than synth‑funk",
         "title": "Daft Punk, Pharrell Williams, Nile Rodgers — Get Lucky",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b9b36b0e22870b9f542d937",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "french_house"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2tUBqZG2AbRi7Q0BIrVrEj",
+        "score": 5,
+        "reason": "Definitive electro‑funk: punchy drum machines, synth bass, and robotic groove exemplify the genre’s core sound",
+        "title": "Afrika Bambaataa & The Soulsonic Force — Planet Rock",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a520a167a62d5548cdb53101",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 12,
