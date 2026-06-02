@@ -9646,36 +9646,14 @@
     "vibe": "Sound arriving with no explanation of where it came from.",
     "songs_listened": [
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/3SZrOTzIm9PylvPHLSISwT",
+        "url": "🔼 ADD: https://open.spotify.com/track/3A0g7j8vLJm5i0G6tJ0H3u",
         "score": 5,
-        "reason": "Long‑form electroacoustic piece with evolving textures and very slow harmonic motion, ideal for dark‑room, source‑blind acousmatic listening",
-        "title": "Acousmatic Artist — Deep Electroacoustic Study",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0279c6bd10015abffffbd18aac",
-        "source": "spotify",
-        "added": "2026-05-31",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/2JO1Kc6tFqAjjUCG4KJzCq",
-        "score": 5,
-        "reason": "Historic musique concrète study built from manipulated recordings and tape edits that essentially defines the classic acousmatic aesthetic",
-        "title": "Musique Concrète Artist — Early Tape Etude",
+        "reason": "One of the foundational works of electroacoustic music: transformed environmental sounds, tape manipulation, and source-obscured listening that helped define the acousmatic tradition.",
+        "title": "Pierre Henry — Variations pour une porte et un soupir",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/4gC2Va4w2GqN1TBdI6Wf4J",
-        "score": 4,
-        "reason": "Later acousmatic work with subtle spatial motion and carefully sculpted noise, sitting between GRM tape music and contemporary sound art",
-        "title": "Electroacoustic Artist — Spatial Noise Piece",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -9684,7 +9662,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 262,
