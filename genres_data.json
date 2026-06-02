@@ -19839,7 +19839,18 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025e10a5aca3763224e2050016",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5CSsMg0440KscKOZc9i2UR",
+        "score": 5,
+        "reason": "Faster, more harmonically packed Miles bebop head with tighter changes and a more agitated small‑group attack, which reads as much more “straight” bebop than the later modal‑leaning Milestones",
+        "title": "Miles Davis — Milestones",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0264b2c6cb2e5e111a1abe01fe",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5CbfcZBGoQoBv8ZFEy21QK",
@@ -19849,7 +19860,7 @@
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4XZSUds3wcqjbP6Lq7jFrm",
@@ -19859,7 +19870,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f6b953a738245bded2f9c98a",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2ul1uIgptw43J3BkpA2g69",
@@ -19869,14 +19880,16 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d1053d4d169474b26f605ca3",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 46,
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 607,
