@@ -3051,7 +3051,7 @@
       document.getElementById('monthFavorite').checked = !!genre.monthfavorite;
       document.getElementById('monthLeastFavorite').checked = !!genre.monthleastfavorite;
       document.getElementById('notes').value = genre.notes || '';
-      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).filter(s => !s.isPending).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, s.reason||null, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
+      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).filter(s => !s.isPending).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const reason = s._pendingGenreTag ? `${s.reason || ''} @${s._pendingGenreTag}`.trim() : (s.reason || null); const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, reason, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
       document.getElementById('includeSongsToggle').checked = false;
 
       const listenedDate = dateValue(genre);
@@ -3322,7 +3322,7 @@
         populateMonthFilter();
         renderHistory();
         renderRankings();
-        loadListenScreen(currentGenre, { preserveDirty: true });
+        loadListenScreen(currentGenre, { preserveDirty: false });
         showSaveToast(`Saved. ${currentGenre.genre || 'Genre'} updated.`, false);
       } catch (e) {
         appPassword = '';
