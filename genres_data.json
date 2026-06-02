@@ -9429,7 +9429,7 @@
         "reason": "Hagibis bring macho‑disco funk with Tagalog lyrics, brass stabs, and call‑and‑response vocals—squarely in the OPM/Manila sound lane of localizing 70s disco and funk.",
         "title": "Hagibis — Katawan",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02de4a00896c51d18b690f0e58",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02de4a00896c51d18b690f0e58",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -9449,7 +9449,7 @@
         "reason": "Hotdog’s “Annie Batungbakal” blends funk basslines, horn riffs, and Tagalog storytelling; it’s one of the canonical Manila sound hits that anchor the genre’s identity.",
         "title": "Hotdog — Annie Batungbakal",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0237a7c1983d643ef88aa54fee",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0237a7c1983d643ef88aa54fee",
         "source": "spotify",
         "added": "2026-06-01"
       }
@@ -38233,9 +38233,9 @@
         "reason": "Snotty UK joke‑punk with chant‑along chorus and toilet‑humor lyrics — very much in the punk pathetique tradition",
         "title": "Monkish — Please Don't Piss in My Microwave",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022fb668f7010bba13880cdea6",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022fb668f7010bba13880cdea6",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2OiVDraURYmk23JNFXqN4F",
@@ -38245,28 +38245,28 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0202c806e33979686e5907068c",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/4e737yt3jHKwxu4ghXHO1e",
+        "url": "🔼 ADD: https://open.spotify.com/track/38XNqOJLqiJXcummwwJx4u",
         "score": 5,
         "reason": "Hyper‑bouncy, cartoonish punk with silly lyrics and shout‑along refrain — one of the classic punk‑pathetique touchstones",
         "title": "Toy Dolls — Nellie the Elephant",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bc21a7e85afcdc73afc04971",
         "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/6M65X8c7qThYikdJnq9ugq",
+        "url": "🔼 ADD: https://open.spotify.com/track/0YxO1wOkeTr1p9umdL9Cyt",
         "score": 4,
         "reason": "Cheerful, tongue‑in‑cheek Oi!/street‑punk with a big la‑la‑la chorus that leans into the genre’s daft, working‑class fun side",
         "title": "Peter and the Test Tube Babies — Banned from the Pubs",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d70e54912fd5f92717f05964",
         "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -38275,7 +38275,9 @@
     "favoritesongurl": "https://open.spotify.com/track/6JG0FH1PTgz7M4HbGExsA6",
     "monthlycontender": false,
     "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022fb668f7010bba13880cdea6",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1083,
