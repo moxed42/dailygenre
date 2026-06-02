@@ -2512,7 +2512,10 @@
         favoriteSong: document.getElementById('favoriteSong')?.value?.trim() || '',
         favoriteSongUrl: document.getElementById('favoriteSongUrl')?.value?.trim() || '',
         notes: document.getElementById('notes')?.value || '',
-        songsListenedBulk: document.getElementById('songsListenedBulk')?.value || ''
+        songsListenedBulk: document.getElementById('songsListenedBulk')?.value || '',
+        contender: !!document.getElementById('monthlyContender')?.checked,
+        favorite: !!document.getElementById('monthFavorite')?.checked,
+        least: !!document.getElementById('monthLeastFavorite')?.checked
       });
     }
 
@@ -2757,6 +2760,7 @@
     added: s.added || '',
     isLevelUp: s.isLevelUp || false,
     isAdd: s.isAdd || false,
+    _pendingGenreTag: s._pendingGenreTag || '',
     levelUp: s.levelUp ? normalizeSongsListened([s.levelUp])[0] : null,
   }));
 }
@@ -3232,9 +3236,7 @@
           added: song.added || new Date().toISOString().slice(0,10)
         };
         if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
-      }
-      if (consumeTags) {
-        sourceGenre._pendingScanCompletedAt = new Date().toISOString();
+        if (consumeTags) delete song._pendingGenreTag;
       }
       return added;
     }
@@ -3323,6 +3325,8 @@
         renderHistory();
         renderRankings();
         loadListenScreen(currentGenre, { preserveDirty: false });
+        lastSavedListenSnapshot = buildListenSnapshot();
+        setUnsavedState(false);
         showSaveToast(`Saved. ${currentGenre.genre || 'Genre'} updated.`, false);
       } catch (e) {
         appPassword = '';
@@ -3471,12 +3475,8 @@
     function songArtistLine(song) {
       return song.artist ? `<div class="song-artist">${escapeHtml(song.artist)}</div>` : '';
     }
-
     async function fetchSpotifyOembed(url) {
-      if (!url || !String(url).includes('spotify.com/track/')) return null;
-      const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(url));
-      if (!res.ok) return null;
-      return await res.json();
+      return null;
     }
 
     function applySpotifyMetadata(song, data) {
@@ -3795,37 +3795,17 @@
 
     document.getElementById('includeSongsToggle').addEventListener('change', updateDiscordBlock);
     document.getElementById('shareToggle')?.addEventListener('click', () => document.getElementById('shareSection')?.classList.toggle('collapsed'));
-
-    // Auto-fetch Spotify track title from oEmbed when URL is pasted
-    document.getElementById('favoriteSongUrl').addEventListener('change', async function() {
+    document.getElementById('favoriteSongUrl').addEventListener('change', function() {
       const url = this.value.trim();
       const statusEl = document.getElementById('favoriteSongFetchStatus');
-      const titleEl = document.getElementById('favoriteSong');
-      if (!url) { statusEl.textContent = ''; return; }
+      if (!url) { statusEl.textContent = ''; refreshDirtyFromSnapshot(); return; }
       if (!url.includes('spotify.com/track/')) {
-        statusEl.textContent = 'Paste a Spotify track URL to auto-fill the title.';
+        statusEl.textContent = 'Paste a Spotify track URL.';
+        refreshDirtyFromSnapshot();
         return;
       }
-      statusEl.textContent = 'Fetching title…';
-      try {
-        const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(url));
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        const raw = data.title || '';
-        // Spotify oEmbed titles are "Track · Artist", split on middle dot or em dash
-        const clean = raw.split(/[·\u2013\u2014]/)[0].trim() || raw;
-        titleEl.value = clean;
-        if (currentGenre) {
-          currentGenre.favoritesong = clean;
-          if (data.author_name) currentGenre.favoriteartist = data.author_name;
-          if (data.thumbnail_url) currentGenre.favoritesongartwork = data.thumbnail_url;
-        }
-        refreshDirtyFromSnapshot();
-        statusEl.textContent = '✓ Title and artwork fetched';
-        setTimeout(() => { statusEl.textContent = ''; }, 3000);
-      } catch(e) {
-        statusEl.textContent = 'Could not auto-fetch — type the title manually.';
-      }
+      statusEl.textContent = 'Spotify auto-fill disabled here; URL will still save.';
+      refreshDirtyFromSnapshot();
     });
 
     document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
@@ -3985,26 +3965,16 @@
     function vizArtists(items) {
       const names = new Set();
       let songsWithArtists = 0;
-      const addArtistNames = (value) => {
-        String(value || '').split(/,|&| feat\.? | featuring /i).map(x => x.trim()).filter(Boolean).forEach(n => names.add(n));
-      };
-      const inferArtist = (song) => {
-        const direct = String(song?.artist || '').trim();
-        if (direct) return direct;
-        const title = String(song?.title || '').trim();
-        const parts = title.split(/\s+[—–-]\s+/);
-        return parts.length > 1 ? parts.slice(1).join(' - ').trim() : '';
-      };
       items.forEach(g => {
         vizOfficialSongs(g).forEach(s => {
-          const a = inferArtist(s);
+          const a = String(s.artist || '').trim();
           if (a) {
             songsWithArtists += 1;
-            addArtistNames(a);
+            a.split(/,|&| feat\.? | featuring /i).map(x => x.trim()).filter(Boolean).forEach(n => names.add(n));
           }
         });
         const fa = String(g.favoriteartist || '').trim();
-        if (fa) addArtistNames(fa);
+        if (fa) names.add(fa);
       });
       return { uniqueArtists: names.size, songsWithArtists };
     }
