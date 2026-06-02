@@ -2930,23 +2930,23 @@
         "_pendingGenreTag": "country"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2fDHuS1PTkHBbCWWZF1ph9",
-        "score": 4,
-        "reason": "Prison-show live recording with rough edges, audience roar, and Cash’s defiant delivery that foreground the anti-authoritarian outlaw persona.",
-        "title": "Johnny Cash — Folsom Prison Blues - Live at Folsom State Prison, Folsom, CA - January 1968",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b7e5f0fd9df7a811984a96d6",
-        "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/7wYcTNEh8ArAVpHe0TxW9t",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7wYcTNEh8ArAVpHe0TxW9t",
         "score": 5,
         "reason": "Stark, first-person prison narrative with minimal adornment that perfectly captures outlaw’s rough, morally ambiguous storytelling.",
         "title": "Merle Haggard — Mama’s Hungry Eyes",
         "artist": "",
         "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2fDHuS1PTkHBbCWWZF1ph9",
+        "score": 4,
+        "reason": "Prison-show live recording with rough edges, audience roar, and Cash’s defiant delivery that foreground the anti-authoritarian outlaw persona.",
+        "title": "Johnny Cash — Folsom Prison Blues - Live at Folsom State Prison, Folsom, CA - January 1968",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b7e5f0fd9df7a811984a96d6",
         "source": "spotify",
         "added": "2026-06-02"
       },
