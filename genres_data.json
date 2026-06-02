@@ -891,6 +891,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Outlaw country"
+      },
+      {
+        "url": "https://open.spotify.com/track/5rerimz0RW2Royhow3g0sR",
+        "score": 3,
+        "reason": "Story-song blues with more sung than spoken delivery; it shares narrative DNA but feels like classic country blues rather than strict talking blues.",
+        "title": "Lead Belly — In the Pines",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa6e7a17f9fbe905749fbc22",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Talking blues"
       }
     ]
   },
@@ -937,7 +949,20 @@
       }
     ],
     "rank_order": 200,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6AHIPO6ycQ1ofLYI0X7zBe",
+        "score": 3,
+        "reason": "Classic Delta blues with fully sung lines; thematically related but musically more straight 12-bar blues than talking blues.",
+        "title": "Robert Johnson — Walkin' Blues",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f017e3180aca26809813d2c",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Talking blues"
+      }
+    ]
   },
   {
     "id": 23,
@@ -2271,6 +2296,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Celtic music"
+      },
+      {
+        "url": "https://open.spotify.com/track/0eZoEIFWMNTt3BVejJdUH7",
+        "score": 3,
+        "reason": "Guthrie’s narration is more straight folk ballad than patter-blues, but the conversational vocal and minimal accompaniment put it near talking blues territory.",
+        "title": "Woody Guthrie — Talking Dust Bowl",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024061eed83357b2d16e14c1ee",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Talking blues"
       }
     ],
     "monthfavorite": false,
@@ -2918,7 +2955,20 @@
       }
     ],
     "rank_order": 550,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6y7Lx242dvEFaUHmDwLYLC",
+        "score": 3,
+        "reason": "Early country tune with prominent spoken sections and comic storytelling, but structurally closer to old-time country than canonical talking blues.",
+        "title": "Chris Bouchillon — Waltz Me Around Again Willie (Recorded 1927)",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a4cfae3ee845dd7f6827fe48",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Talking blues"
+      }
+    ]
   },
   {
     "id": 79,
@@ -3432,19 +3482,19 @@
         "reason": "Classic union-song talking blues: semi-spoken vocal over a simple folk-blues progression, mixing humor and agitation in a way that’s archetypal for the style.",
         "title": "Pete Seeger — Bourgeois Blues",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5wvYWFwkuql9wtltMifRtS",
         "score": 4,
-        "reason": "Narrative, half-spoken delivery over I‑IV‑V changes with topical labor lyrics makes this a textbook talking blues performance.",
+        "reason": "Narrative, half-spoken delivery over I-IV-V changes with topical labor lyrics makes this a textbook talking blues performance.",
         "title": "Pete Seeger — Talking Union",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0eZoEIFWMNTt3BVejJdUH7",
@@ -3454,17 +3504,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024061eed83357b2d16e14c1ee",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "folk"
       },
       {
-        "url": "https://open.spotify.com/track/2QgaEhClMPZdQDW9dXjO71",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2QgaEhClMPZdQDW9dXjO71",
         "score": 5,
         "reason": "Sharp, fully spoken-sung monologue over a simple blues vamp that exemplifies topical talking blues at its most direct and witty.",
         "title": "Woody Guthrie — Talking Hard Work",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5rerimz0RW2Royhow3g0sR",
@@ -3474,17 +3526,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa6e7a17f9fbe905749fbc22",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "country_blues"
       },
       {
-        "url": "https://open.spotify.com/track/4qAGqZuSWIlofHU09nFvQq",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4qAGqZuSWIlofHU09nFvQq",
         "score": 5,
         "reason": "Mostly spoken vocal over driving acoustic guitar, turning social commentary into a true talking-blues sermon.",
         "title": "Lead Belly — Jim Crow Blues",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0HrPgD96MXnp0OtM6yhyq7",
@@ -3494,7 +3548,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b191e13afab400f613d59ea3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6y7Lx242dvEFaUHmDwLYLC",
@@ -3504,17 +3558,19 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a4cfae3ee845dd7f6827fe48",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "old_time_music"
       },
       {
-        "url": "https://open.spotify.com/track/6hO8ePpDX6nU9gjo6891VL",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6hO8ePpDX6nU9gjo6891VL",
         "score": 5,
         "reason": "Archetypal talking blues built almost entirely on deadpan spoken delivery and a bare-bones guitar pattern, laying out the form in its purest shape.",
         "title": "Chris Bouchillon — Born in Hard Luck",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1X6dRpq3Wi6Jxthi8ZBBBz",
@@ -3522,29 +3578,31 @@
         "reason": "Bob’s laconic spoken verses over simple guitar changes modernize the talking blues template into 60s New York folk vernacular.",
         "title": "Bob Dylan — Talkin' New York",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b17dfbb2c6960a4b2f708767",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b17dfbb2c6960a4b2f708767",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6AHIPO6ycQ1ofLYI0X7zBe",
         "score": 3,
-        "reason": "Classic Delta blues with fully sung lines; thematically related but musically more straight 12‑bar blues than talking blues.",
+        "reason": "Classic Delta blues with fully sung lines; thematically related but musically more straight 12-bar blues than talking blues.",
         "title": "Robert Johnson — Walkin' Blues",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f017e3180aca26809813d2c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "delta_blues"
       },
       {
-        "url": "https://open.spotify.com/track/5ymu7aC6kF5ST0KwJx6ORy",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ymu7aC6kF5ST0KwJx6ORy",
         "score": 4,
         "reason": "Contemporary folk piece that explicitly uses the talking-blues cadence and sparse accompaniment to frame its narrative.",
         "title": "Loudon Wainwright III — Talking New Bob Dylan",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 36,
@@ -3553,7 +3611,9 @@
     "favoritesongurl": "https://open.spotify.com/track/3wqy4xXKkTQWyN8Gus4Nyc",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026528dcc259ef64aea8630ae3",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 90,
@@ -10677,7 +10737,7 @@
         "reason": "Relentless 200‑plus BPM kickdrum, distorted leads, and dense industrial textures make this a strong fit for the pounding, over-the-top energy of frenchcore even if it brushes up against general hardcore/tekno.",
         "title": "Micropoint — Noise Theater",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dda3c403b7c36a79f33fa3ed",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dda3c403b7c36a79f33fa3ed",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -10687,7 +10747,7 @@
         "reason": "Hyper-compressed kicks and screaming leads at extreme tempos nail the speedcore/frenchcore crossover vibe that defines the harder edge of the style.",
         "title": "Dustvoxx;Zekk — Trigger - Zekk Remix",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f70f6a63d1db7a83a4286195",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f70f6a63d1db7a83a4286195",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25531,7 +25591,7 @@
         "reason": "Big studio sheen, horn stabs, and syncopated rhythm section give this a sophisticated AOR/yacht feel even as it leans more rock.",
         "title": "TOTO — Rosanna",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02356ab25b493d82fc503dfd0c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02356ab25b493d82fc503dfd0c",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25541,7 +25601,7 @@
         "reason": "Laid-back shuffle, electric piano, and jazzy chords sit squarely in smooth late-70s yacht territory.",
         "title": "TOTO — Georgy Porgy",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02105ef588df1ef91bfa811f94",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02105ef588df1ef91bfa811f94",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25561,7 +25621,7 @@
         "reason": "AM-gold softness with immaculate band interplay and a hint of jazz smoothness make this a clear yacht/soft-rock staple.",
         "title": "Steely Dan — Dirty Work",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020ddd7e736f870994f4707947",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020ddd7e736f870994f4707947",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25571,7 +25631,7 @@
         "reason": "Power-ballad leaning AOR, but the silky production and melodic focus keep it comfortably within yacht-adjacent territory.",
         "title": "Steve Perry — Foolish Heart",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025c84bb5782c20e7ce5f7571a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025c84bb5782c20e7ce5f7571a",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25581,7 +25641,7 @@
         "reason": "Mid-tempo, groove-forward soft rock whose warm keys and relaxed vocal feel align strongly with yacht aesthetics.",
         "title": "Gerry Rafferty — Right Down the Line",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0231b610609f2623823d3bdbf1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0231b610609f2623823d3bdbf1",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25601,7 +25661,7 @@
         "reason": "Sunny, tightly arranged pop-rock with big chorus and slick band sound; fits perfectly in a yacht rock set even if it edges toward pop-rock.",
         "title": "Kenny Loggins — I'm Alright - Theme from \"Caddyshack\"",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0219db9ac54c80a898a179f0f1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219db9ac54c80a898a179f0f1",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25611,7 +25671,7 @@
         "reason": "Blue-eyed soul groove, punchy rhythm section, and pristine 70s production make this a canon-tier yacht rock cut.",
         "title": "Daryl Hall & John Oates — Rich Girl",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023dd7d442806684ef3fc84b3f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023dd7d442806684ef3fc84b3f",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25621,7 +25681,7 @@
         "reason": "Essentially a twin to “Sailing” in feel: ultra-smooth soft-rock balladry with hi-fi gloss; ideal for the mellow end of yacht.",
         "title": "Christopher Cross — Sailing (2019 Remaster)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023414ea69249376598e7d1700",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023414ea69249376598e7d1700",
         "source": "spotify",
         "added": "2026-06-01"
       }
