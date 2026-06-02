@@ -17187,6 +17187,28 @@
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2FCyT7i9G5zVDXGtJhHtvs",
+        "score": 5,
+        "reason": "A definitive Irish traditional performance that immediately centers the session in living Celtic folk tradition.",
+        "title": "The Chieftains — The Foggy Dew",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0203f1f5cbe1f447ece40e257d",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/5OFXqc0YydDLSJTxEp0AjS",
+        "score": 5,
+        "reason": "A polished but unmistakably Celtic modern standard with strong diaspora-folk visibility.",
+        "title": "Loreena McKennitt — The Mummers' Dance",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029e73a48c8b4317b5750f8ca7",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
       }
     ],
     "rank_order": 77,
