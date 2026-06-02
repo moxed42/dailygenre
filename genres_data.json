@@ -939,7 +939,7 @@
         "reason": "Archetypal Detroit blues: Alberta’s gritty vocal, electric combo feel, and city‑club groove nail the urban, working‑band side of the style",
         "title": "Alberta Adams — Long Gone",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0258ff716f8baaa7cda2d88fa1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258ff716f8baaa7cda2d88fa1",
         "source": "spotify",
         "added": "2026-06-02"
       },
@@ -949,7 +949,7 @@
         "reason": "Has a bluesy progression and guitar, but the polished adult‑contemporary production and non‑Detroit singer‑songwriter vibe make it only weakly tied to Detroit blues proper",
         "title": "Erik Naugle — For You and Me",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e35fe012c759666513010ee9",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e35fe012c759666513010ee9",
         "source": "spotify",
         "added": "2026-06-02"
       },
@@ -980,7 +980,7 @@
         "reason": "Tight bar‑band shuffle with electric guitar leads and club‑ready groove; stylistically right in Detroit’s plugged‑in blues‑rock lane even if a bit cleaner and more modern",
         "title": "Detroit Blues Band — Bums Rush",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02163638a736ec917acc53f637",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02163638a736ec917acc53f637",
         "source": "spotify",
         "added": "2026-06-02"
       },
@@ -990,7 +990,7 @@
         "reason": "John Lee’s electric storytelling and boogie rhythm are foundational to Detroit’s scene; feels a bit more general electric blues than strictly “Detroit‑only,” but still a clear pillar for the day’s concept",
         "title": "John Lee Hooker — One Bourbon, One Scotch, One Beer",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0210eb89d605247b9d3dee9e09",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0210eb89d605247b9d3dee9e09",
         "source": "spotify",
         "added": "2026-06-02"
       }
@@ -1001,7 +1001,8 @@
     "monthlycontender": false,
     "pending_songs": [],
     "monthfavorite": false,
-    "monthleastfavorite": false
+    "monthleastfavorite": false,
+    "_pendingScanCompletedAt": "2026-06-02T01:10:33.366Z"
   },
   {
     "id": 25,
