@@ -1872,22 +1872,24 @@
       {
         "url": "https://open.spotify.com/track/1GxtByBH9WcPOzOrr0wnbA",
         "score": 3,
-        "reason": "High-energy acoustic ensemble with fiddle and banjo, but the big drums and modern Americana production push it toward alt‑country rather than strictly traditional bluegrass.",
+        "reason": "High-energy acoustic ensemble with fiddle and banjo, but the big drums and modern Americana production push it toward alt-country rather than strictly traditional bluegrass.",
         "title": "Trampled by Turtles — Kelly's Bar",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027d4ead6f076c66b12ab7607e",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027d4ead6f076c66b12ab7607e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "americana"
       },
       {
-        "url": "https://open.spotify.com/track/3Q3rJqyGp4N5Ywcxp8A9c9",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3Q3rJqyGp4N5Ywcxp8A9c9",
         "score": 5,
         "reason": "Fast, fiddle-and-banjo-driven standard with stacked harmonies that perfectly captures the drive and ensemble balance of classic bluegrass.",
         "title": "Bill Monroe — Blue Moon of Kentucky",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1nAuIDw9JgVKw0Y6pXYWaX",
@@ -1897,27 +1899,29 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f8bd7e663c80f2db12f8c856",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5DhLG0evl2vohmJhmjPRYk",
         "score": 3,
-        "reason": "Old-timey acoustic instrumentation and a hint of yodel give it a rootsy feel, but the phrasing and reverb lean more toward alt‑country/americana than straight bluegrass.",
+        "reason": "Old-timey acoustic instrumentation and a hint of yodel give it a rootsy feel, but the phrasing and reverb lean more toward alt-country/americana than straight bluegrass.",
         "title": "Sierra Ferrell — In Dreams",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02407ceaa5d7fdb779e73c48f3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "americana"
       },
       {
-        "url": "https://open.spotify.com/track/1oI7QY6JfUiwE6rtqvYXvy",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1oI7QY6JfUiwE6rtqvYXvy",
         "score": 5,
         "reason": "Classic, breakneck bluegrass with crisp banjo rolls, fiddle breaks, and high lonesome vocals that nails the traditional sound.",
         "title": "Flatt & Scruggs — Foggy Mountain Breakdown",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2lHrKWZ4HsY7iT3ruJ5Y74",
@@ -1927,24 +1931,28 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026ee82f50e187e2fc1002b4ec",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "folk"
       },
       {
-        "url": "https://open.spotify.com/track/5R0M7jvYpc8yzIYZxkFAxG",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5R0M7jvYpc8yzIYZxkFAxG",
         "score": 5,
         "reason": "High lonesome lead, tight trio harmonies, and propulsive rhythm section make this a quintessential traditional bluegrass cut.",
         "title": "The Stanley Brothers — Rank Stranger",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 10,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 55,
@@ -2308,6 +2316,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Talking blues"
+      },
+      {
+        "url": "https://open.spotify.com/track/2lHrKWZ4HsY7iT3ruJ5Y74",
+        "score": 3,
+        "reason": "Story-driven, mid-tempo acoustic folk with some bluegrass instrumentation, but the march-like groove and big group vocals feel more folk revival than core bluegrass.",
+        "title": "The Ghost of Paul Revere — Ballad of the 20th Maine",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026ee82f50e187e2fc1002b4ec",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Traditional bluegrass"
       }
     ],
     "monthfavorite": false,
@@ -17490,7 +17510,32 @@
       }
     ],
     "rank_order": 14,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/1GxtByBH9WcPOzOrr0wnbA",
+        "score": 3,
+        "reason": "High-energy acoustic ensemble with fiddle and banjo, but the big drums and modern Americana production push it toward alt-country rather than strictly traditional bluegrass.",
+        "title": "Trampled by Turtles — Kelly's Bar",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027d4ead6f076c66b12ab7607e",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Traditional bluegrass"
+      },
+      {
+        "url": "https://open.spotify.com/track/5DhLG0evl2vohmJhmjPRYk",
+        "score": 3,
+        "reason": "Old-timey acoustic instrumentation and a hint of yodel give it a rootsy feel, but the phrasing and reverb lean more toward alt-country/americana than straight bluegrass.",
+        "title": "Sierra Ferrell — In Dreams",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02407ceaa5d7fdb779e73c48f3",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Traditional bluegrass"
+      }
+    ],
     "favoritesong": "Creedence Clearwater Revival — Have You Ever Seen The Rain",
     "favoritesongurl": "https://open.spotify.com/track/5DnT9a5IM3eMjKgXTWVJvi",
     "monthlycontender": false,
