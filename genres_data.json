@@ -12253,7 +12253,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dcff3103179d992594a227db",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2UQ6rUcmGiGv9IJFBUXRfl",
@@ -12263,7 +12263,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02015315390efc5926f5801fbc",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7vkVxKDaxi1SkepvHdE4hw",
@@ -12273,7 +12273,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02015315390efc5926f5801fbc",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5yhDBpiZpnGDT7DdaYws0e",
@@ -12281,9 +12281,9 @@
         "reason": "Corbin’s track is archetypal cloud‑rap‑adjacent emo: reverb‑heavy, minimal beat and mournful melodies foreground the emotional vulnerability central to the genre.",
         "title": "Corbin — Mourn",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f66c08419feea260f88d8b9c",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f66c08419feea260f88d8b9c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1w5dZMSwIM242ymwTv0PAi",
@@ -12293,7 +12293,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023f26f51e52c3fd057890d757",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1iV5yIJimMf9pWfaDdf0UR",
@@ -12303,7 +12303,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cd1b709326be6313e2c3e0a8",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7GJeYfG5fPkzkRbrYpOTYo",
@@ -12311,9 +12311,20 @@
         "reason": "Cairn rides a mid‑tempo trap beat with emotive, lightly Auto‑Tuned vocals; the heartbreak‑y content and cloudy production mark it as a solid emo‑rap entry.",
         "title": "Cairn — Ghost",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ec30cbe825df83ca39b11ede",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ec30cbe825df83ca39b11ede",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2xQw6wXw6g9wL4M9jX9g7A",
+        "score": 5,
+        "reason": "One of the defining emo-rap records: melancholy guitar loop, trap drums, and Lil Peep's vulnerable, melodic vocal style helped establish the genre's fusion of emo songwriting and hip-hop production.",
+        "title": "Lil Peep — Star Shopping",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
       }
     ],
     "rank_order": 9,
@@ -12333,8 +12344,9 @@
     ],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false,
-    "monthfavorite": false
+    "monthlycontender": true,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 331,
