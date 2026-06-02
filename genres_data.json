@@ -10931,7 +10931,7 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "monthfavorite": false,
-    "monthleastfavorite": true
+    "monthleastfavorite": false
   },
   {
     "id": 311,
@@ -11792,7 +11792,7 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "monthfavorite": false,
-    "monthleastfavorite": false
+    "monthleastfavorite": true
   },
   {
     "id": 334,
