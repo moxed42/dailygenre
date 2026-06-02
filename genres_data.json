@@ -19407,7 +19407,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/3ia3dJETSOllPsv3LJkE35 | 5 | G‑funk synths, Dre’s production and 2Pac’s verse over a rolling West Coast groove make this an archetypal west coast hip hop anthem. | 2Pac, Roger, Dr. Dre — California Love - Original Version\nhttps://open.spotify.com/track/5Tbpp3OLLClPJF8t1DmrFD | 5 | Laid‑back funk sample, talkbox‑style hook and conversational Dre/Snoop verses define the classic G‑funk sound at the core of west coast hip hop. | Dr. Dre, Snoop Dogg — Nuthin' But A \"G\" Thang\nhttps://open.spotify.com/track/7nYvUtkQMx1v80S2FH2s9J | 5 | Slick Leon Haywood sample, Nate Dogg’s melodic hook and Warren G’s smooth storytelling crystallize G‑funk’s mellow yet streetwise West Coast vibe. | Warren G, Nate Dogg — Regulate\nhttps://open.spotify.com/track/0nj9Bq5sHDiTxSHunhgkFb | 4 | Modern, tightly packed Kendrick verse over a minimal, bounce‑y beat; firmly West Coast in voice and rhythm, if less G‑funk archetypal than the 90s cuts. | Kendrick Lamar — squabble up\nhttps://open.spotify.com/track/4ZnKSrukEcPuMxGrcZEEh1 | 2 | Party‑rap workout with big chant hook and dance focus; spiritually mainstream pop‑rap more than rooted in West Coast street or G‑funk aesthetics. | MC Hammer, Saja — 2 Legit 2 Quit\nhttps://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs | 5 | Laid‑back groove, whistled hook and G‑funk synths make this a quintessentially relaxed west coast hip hop single. | Snoop Dogg — Gin And Juice\nhttps://open.spotify.com/track/3xv229qX6gFRYgplFCTKBl | 4 | Dark, cinematic beat and dense storytelling sit squarely in the grimy 90s West Coast lane, balancing hardcore edge with classic West Coast swing. | Xzibit — Paparazzi\nhttps://open.spotify.com/track/4rLpAOk5KVNcqEMK3m6Lje | 5 | Slow‑rolling G‑funk bassline, Nate Dogg’s hook and crew verses over a quintessential Doggystyle groove make this core West Coast party‑anthem canon. | Snoop Dogg, Kurupt, Nate Dogg, Warren G — Ain't No Fun (If the Homies Cant Have None)\nhttps://open.spotify.com/track/2Ih217RCGAmyQR68Nn7Cqo | 5 | Minimal, bass‑heavy groove and Ice Cube’s laconic delivery distill the ominous, cruising feel of 90s West Coast gangsta rap. | Ice Cube — You Know How We Do It\nhttps://open.spotify.com/track/6KIKRz9eSTXdNsGUnomdtW | 5 | Aggressive, stripped‑down beat and N.W.A.’s uncompromising verses helped cement the national image of West Coast gangsta rap. | N.W.A. — Straight Outta Compton\nhttps://open.spotify.com/track/6tDxrq4FxEL2q15y37tXT9 | 4 | Warm, soulful sample and autobiographical lyrics put 2Pac’s storytelling in a distinctly West Coast context, even as the song leans more reflective than party‑oriented G‑funk. | 2Pac — Dear Mama",
     "summary": "West Coast hip-hop — centered on Los Angeles and the Bay Area — developed its own distinct identity from N.W.A's gangsta rap through Dr. Dre's G-funk production to Kendrick Lamar's Compton poetry. Its melodic, sample-heavy production, laid-back tempos, and specific geographic mythology make it one of hip-hop's two foundational traditions alongside East Coast.",
     "key_artists": "Dr. Dre, Snoop Dogg, Tupac, Ice Cube, Kendrick Lamar (originators/major figures)",
     "suggested_songs": "Dr. Dre — The Next Episode, Tupac — California Love, Ice Cube — Today Was a Good Day, Kendrick Lamar — Swimming Pools",
@@ -19416,62 +19416,64 @@
       {
         "url": "https://open.spotify.com/track/3ia3dJETSOllPsv3LJkE35",
         "score": 5,
-        "reason": "G‑funk synths, Dre’s production and 2Pac’s verse over a rolling West Coast groove make this an archetypal west coast hip hop anthem.",
+        "reason": "G-funk synths, Dre’s production and 2Pac’s verse over a rolling West Coast groove make this an archetypal west coast hip hop anthem.",
         "title": "2Pac, Roger, Dr. Dre — California Love - Original Version",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d81a092eb373ded457d94eec",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d81a092eb373ded457d94eec",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5Tbpp3OLLClPJF8t1DmrFD",
         "score": 5,
-        "reason": "Laid‑back funk sample, talkbox‑style hook and conversational Dre/Snoop verses define the classic G‑funk sound at the core of west coast hip hop.",
+        "reason": "Laid-back funk sample, talkbox-style hook and conversational Dre/Snoop verses define the classic G-funk sound at the core of west coast hip hop.",
         "title": "Dr. Dre, Snoop Dogg — Nuthin' But A \"G\" Thang",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029322ff440b23b5717ddd8c9b",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029322ff440b23b5717ddd8c9b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7nYvUtkQMx1v80S2FH2s9J",
         "score": 5,
-        "reason": "Slick Leon Haywood sample, Nate Dogg’s melodic hook and Warren G’s smooth storytelling crystallize G‑funk’s mellow yet streetwise West Coast vibe.",
+        "reason": "Slick Leon Haywood sample, Nate Dogg’s melodic hook and Warren G’s smooth storytelling crystallize G-funk’s mellow yet streetwise West Coast vibe.",
         "title": "Warren G, Nate Dogg — Regulate",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb009ec94ffc5a282a06f03b",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fb009ec94ffc5a282a06f03b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0nj9Bq5sHDiTxSHunhgkFb",
         "score": 4,
-        "reason": "Modern, tightly packed Kendrick verse over a minimal, bounce‑y beat; firmly West Coast in voice and rhythm, if less G‑funk archetypal than the 90s cuts.",
+        "reason": "Modern, tightly packed Kendrick verse over a minimal, bounce-y beat; firmly West Coast in voice and rhythm, if less G-funk-archetypal than the 90s cuts.",
         "title": "Kendrick Lamar — squabble up",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e2a0a166493a2bde5480a420",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2a0a166493a2bde5480a420",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4ZnKSrukEcPuMxGrcZEEh1",
         "score": 2,
-        "reason": "Party‑rap workout with big chant hook and dance focus; spiritually mainstream pop‑rap more than rooted in West Coast street or G‑funk aesthetics.",
+        "reason": "Party-rap workout with a huge chant hook and dance-floor focus; it lands closer to crossover pop-rap than core West Coast street or G-funk aesthetics.",
         "title": "MC Hammer, Saja — 2 Legit 2 Quit",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024002ec85eab720399a4f35f4",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024002ec85eab720399a4f35f4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "pop_rap"
       },
       {
-        "url": "https://open.spotify.com/track/5wTgY6rQxqVR8c9e22jdGs",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/39l1U9BZ0yDwdtPyHMDAJN",
         "score": 5,
-        "reason": "Laid‑back groove, whistled hook and G‑funk synths make this a quintessentially relaxed west coast hip hop single.",
+        "reason": "Rubbery bassline, whistle hook and laid-back Snoop charisma make this one of the clearest G-funk and West Coast rap archetypes.",
         "title": "Snoop Dogg — Gin And Juice",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3xv229qX6gFRYgplFCTKBl",
@@ -19479,49 +19481,49 @@
         "reason": "Dark, cinematic beat and dense storytelling sit squarely in the grimy 90s West Coast lane, balancing hardcore edge with classic West Coast swing.",
         "title": "Xzibit — Paparazzi",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fab3bfcc801b1d28701da1df",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fab3bfcc801b1d28701da1df",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4rLpAOk5KVNcqEMK3m6Lje",
         "score": 5,
-        "reason": "Slow‑rolling G‑funk bassline, Nate Dogg’s hook and crew verses over a quintessential Doggystyle groove make this core West Coast party‑anthem canon.",
-        "title": "Snoop Dogg, Kurupt, Nate Dogg, Warren G — Ain't No Fun (If the Homies Cant Have None)",
+        "reason": "Slow-rolling G-funk bassline, Nate Dogg’s hook and crew verses over a quintessential Doggystyle groove make this core West Coast party-anthem canon.",
+        "title": "Snoop Dogg, Kurupt, Nate Dogg, Warren G — Ain't No Fun (If the Homies Can't Have None)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02733af86f8dea9692a3f59d29",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02733af86f8dea9692a3f59d29",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2Ih217RCGAmyQR68Nn7Cqo",
         "score": 5,
-        "reason": "Minimal, bass‑heavy groove and Ice Cube’s laconic delivery distill the ominous, cruising feel of 90s West Coast gangsta rap.",
+        "reason": "Minimal, bass-heavy groove and Ice Cube’s laconic delivery distill the ominous, cruising feel of 90s West Coast gangsta rap.",
         "title": "Ice Cube — You Know How We Do It",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0268820c2a3865d138ab7daba3",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0268820c2a3865d138ab7daba3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6KIKRz9eSTXdNsGUnomdtW",
         "score": 5,
-        "reason": "Aggressive, stripped‑down beat and N.W.A.’s uncompromising verses helped cement the national image of West Coast gangsta rap.",
+        "reason": "Aggressive, stripped-down beat and N.W.A.’s uncompromising verses helped cement the national image of West Coast gangsta rap.",
         "title": "N.W.A. — Straight Outta Compton",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02374a967dda0cd404061b0607",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02374a967dda0cd404061b0607",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6tDxrq4FxEL2q15y37tXT9",
         "score": 4,
-        "reason": "Warm, soulful sample and autobiographical lyrics put 2Pac’s storytelling in a distinctly West Coast context, even as the song leans more reflective than party‑oriented G‑funk.",
+        "reason": "Warm, soulful sample and autobiographical lyrics put 2Pac’s storytelling in a distinctly West Coast context, even as the song leans more reflective than party-oriented G-funk.",
         "title": "2Pac — Dear Mama",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0204b9ab6bd4bf6a350ba902ea",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0204b9ab6bd4bf6a350ba902ea",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 21,
@@ -19530,8 +19532,9 @@
     "favoritesongurl": "https://open.spotify.com/track/6tDxrq4FxEL2q15y37tXT9",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0204b9ab6bd4bf6a350ba902ea",
-    "monthfavorite": false
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0204b9ab6bd4bf6a350ba902ea",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 584,
@@ -24684,7 +24687,20 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02153b3d6495031cb813a7451c",
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4ZnKSrukEcPuMxGrcZEEh1",
+        "score": 2,
+        "reason": "Party-rap workout with a huge chant hook and dance-floor focus; it lands closer to crossover pop-rap than core West Coast street or G-funk aesthetics.",
+        "title": "MC Hammer, Saja — 2 Legit 2 Quit",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024002ec85eab720399a4f35f4",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "West Coast hip-hop"
+      }
+    ]
   },
   {
     "id": 727,
