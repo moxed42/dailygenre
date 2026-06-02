@@ -30771,12 +30771,12 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/6SgjxAGnjKWZq8DWhEGgKX",
+        "url": "https://open.spotify.com/track/18URo35acNKRTHfEdjTcGn",
         "score": 4,
         "reason": "Slick 80s glam metal with huge chorus and hair-metal sheen that still clearly lives in the glam lineage.",
         "title": "Def Leppard — Photograph",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e45161990e83649071399525",
         "source": "spotify",
         "added": "2026-06-02"
       },
@@ -30833,9 +30833,9 @@
       },
       {
         "url": "🔼 LEVEL UP: ",
-        "score": 5,
-        "reason": "One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam",
-        "title": "T. Rex | 5 | One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam",
+        "score": null,
+        "reason": "T. Rex",
+        "title": "5 | One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam",
         "artist": "",
         "artwork": "",
         "source": "manual",
@@ -30854,9 +30854,9 @@
       },
       {
         "url": "🔼 LEVEL UP: ",
-        "score": 5,
-        "reason": "Art",
-        "title": "Roxy Music | 5 | Art",
+        "score": null,
+        "reason": "Roxy Music",
+        "title": "5 | Art",
         "artist": "",
         "artwork": "",
         "source": "manual",
