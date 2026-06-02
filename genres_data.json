@@ -17876,6 +17876,30 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Britpop"
+      },
+      {
+        "url": "https://open.spotify.com/track/4wDh1J7WJMZkd0Ce5L5Mmr",
+        "score": 3,
+        "reason": "Latin folk/indie hybrid with some textural subtlety; its acoustic instrumentation reads more folk than classically orchestrated pop.",
+        "title": "Y La Bamba — Juniper",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02956b135c81453b6085e31944",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Chamber pop"
+      },
+      {
+        "url": "https://open.spotify.com/track/5loVmc3MmtYGsTw12eDgcU",
+        "score": 3,
+        "reason": "Brass and folk instrumentation hint at chamber-pop ambitions, but the loose, almost busker-like feel keeps it more baroque-leaning indie folk than core chamber pop.",
+        "title": "Beirut — Elephant Gun",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d34ab0a2566efc1bcab2d090",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Chamber pop"
       }
     ]
   },
@@ -23352,9 +23376,9 @@
         "reason": "Baritone vocals over a steady rhythm section with prominent synth and guitar lines; more darkwave/post-punk than lushly orchestrated chamber pop but shares a moody, dramatic arrangement sense.",
         "title": "Arcade Fire — We Used to Wait",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024fb2bd6896a902c5432a6de5",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024fb2bd6896a902c5432a6de5",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3zyqphgXvgHe436IMKeey3",
@@ -23362,9 +23386,9 @@
         "reason": "Horn fanfares, layered arrangements, and a sense of theatrical build put this squarely in baroque/chamber pop territory even as the groove nods to indie rock.",
         "title": "Japanese Breakfast — Paprika",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e58724521fe7e84276b4c373",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e58724521fe7e84276b4c373",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3xBz6IE2EyXMdjzYhm32hS",
@@ -23374,17 +23398,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0254ea2842a7ce92403b9d18b5",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "slowcore"
       },
       {
-        "url": "https://open.spotify.com/track/2S2od15U8uGZ3M6lohQjv5",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2S2od15U8uGZ3M6lohQjv5",
         "score": 5,
         "reason": "Maximal, fully orchestrated indie pop whose strings, horns, and choral vocals define a modern chamber pop ideal.",
         "title": "Sufjan Stevens — Chicago",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4UMNkcouzvSn4Bm3YAxQEb",
@@ -23394,7 +23420,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02153a4a570f85c3ae8de890c2",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0WZZJ0mDKIkLfL0710ssZt",
@@ -23404,7 +23430,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027870762a58313ad6f981d664",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4wDh1J7WJMZkd0Ce5L5Mmr",
@@ -23412,19 +23438,21 @@
         "reason": "Latin folk/indie hybrid with some textural subtlety; its acoustic instrumentation reads more folk than classically orchestrated pop.",
         "title": "Y La Bamba — Juniper",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02956b135c81453b6085e31944",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02956b135c81453b6085e31944",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "indie_folk"
       },
       {
-        "url": "https://open.spotify.com/track/1nJsbEGoU9t3C5Ff0s0bYp",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1nJsbEGoU9t3C5Ff0s0bYp",
         "score": 5,
         "reason": "Rich string arrangements and meticulous vocal harmonies foreground the chamber instrumentation while staying clearly in the pop realm.",
         "title": "The Divine Comedy — Our Mutual Friend",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5loVmc3MmtYGsTw12eDgcU",
@@ -23434,17 +23462,19 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d34ab0a2566efc1bcab2d090",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "indie_folk"
       },
       {
-        "url": "https://open.spotify.com/track/1XGmzt0PVuFgQSO8nq1McS",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1XGmzt0PVuFgQSO8nq1McS",
         "score": 5,
         "reason": "Symphonic pop arrangement with cinematic strings and careful dynamics that exemplify lush, orchestrated chamber pop.",
         "title": "Weyes Blood — Movies",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/403vzOZN0tETDpvFipkNIL",
@@ -23454,7 +23484,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0274ffdd29cc4898e8ed01d747",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1UyYuaCxOF4ilkRDZ74nJW",
@@ -23462,9 +23492,9 @@
         "reason": "Narrative indie track with accordion and organ textures; feels like bookish baroque pop more than fully symphonic chamber, but still a clear aesthetic neighbor.",
         "title": "The Decemberists — Here I Dreamt I Was an Architect",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b8ab48c35bf93c0ddb44fa53",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b8ab48c35bf93c0ddb44fa53",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 1,
@@ -23473,7 +23503,9 @@
     "favoritesongurl": "https://open.spotify.com/track/1UyYuaCxOF4ilkRDZ74nJW",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b8ab48c35bf93c0ddb44fa53"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b8ab48c35bf93c0ddb44fa53",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 677,
@@ -28170,7 +28202,20 @@
       }
     ],
     "rank_order": 686,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/3xBz6IE2EyXMdjzYhm32hS",
+        "score": 3,
+        "reason": "Slowcore-adjacent indie with strings and careful dynamics; has chamber-pop touches but remains sparse and lo-fi rather than fully orchestrated and ornate.",
+        "title": "Carissa's Wierd — Silently Leaving the Room",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0254ea2842a7ce92403b9d18b5",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Chamber pop"
+      }
+    ]
   },
   {
     "id": 818,
