@@ -915,6 +915,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Americana"
+      },
+      {
+        "url": "https://open.spotify.com/track/3eZJwSjwARTL4GmIXvdWLa",
+        "score": 3,
+        "reason": "Jim Jackson is closer to country blues and early vaudeville than to the fully electrified Kansas City style, but his relaxed groove and narrative delivery foreshadow later KC blues phrasing.",
+        "title": "Jim Jackson — Jim Jackson's Kansas City Blues - Pt. 1",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026778586faa33e02fde6acc47",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Kansas City blues"
       }
     ]
   },
@@ -1271,12 +1283,12 @@
       {
         "url": "https://open.spotify.com/track/17iwooRyJd2tmO1ImtSy10",
         "score": 4,
-        "reason": "Big Joe Turner’s boogie‑driven shouter style is central to Kansas City blues and jump blues, with rolling piano, backbeat swing, and exuberant vocals that define the city’s sound.",
+        "reason": "Big Joe Turner’s boogie-driven shouter style is central to Kansas City blues and jump blues, with rolling piano, backbeat swing, and exuberant vocals that define the city’s sound.",
         "title": "Big Joe Turner — My Little Honeydripper - Single Version",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025685d9e88ef5e474853e939a",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025685d9e88ef5e474853e939a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3eZJwSjwARTL4GmIXvdWLa",
@@ -1284,29 +1296,31 @@
         "reason": "Jim Jackson is closer to country blues and early vaudeville than to the fully electrified Kansas City style, but his relaxed groove and narrative delivery foreshadow later KC blues phrasing.",
         "title": "Jim Jackson — Jim Jackson's Kansas City Blues - Pt. 1",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026778586faa33e02fde6acc47",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026778586faa33e02fde6acc47",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "country_blues"
       },
       {
-        "url": "https://open.spotify.com/track/3t9eu3FjmFu5i7qv3BVbLE",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3t9eu3FjmFu5i7qv3BVbLE",
         "score": 5,
-        "reason": "A better exemplar because Big Joe Turner’s “Shake, Rattle and Roll” captures the fully realized Kansas City jump‑blues sound—driving shuffle, horn riffs, and powerhouse shouting—more directly than Jim Jackson’s older, country‑blues‑leaning side.",
+        "reason": "A better exemplar because Big Joe Turner’s “Shake, Rattle and Roll” captures the fully realized Kansas City jump-blues sound—driving shuffle, horn riffs, and powerhouse shouting—more directly than Jim Jackson’s older, country-blues-leaning side.",
         "title": "Big Joe Turner — Shake, Rattle and Roll",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7eTuwtQajSutojz1IReuw3",
         "score": 4,
-        "reason": "Count Basie’s big‑band swing take on blues captures the Kansas City feel through its shuffle rhythm, horn riffs, and loose, riff‑based structure, even if it sits more in the swing/big‑band world.",
+        "reason": "Count Basie’s big-band swing take on blues captures the Kansas City feel through its shuffle rhythm, horn riffs, and loose, riff-based structure, even if it sits more in the swing/big-band world.",
         "title": "Count Basie — Good Morning Blues",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025a7864231a834edbd0f36394",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a7864231a834edbd0f36394",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 11,
@@ -1314,7 +1328,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 31,
@@ -5827,7 +5842,7 @@
         "reason": "Canonical trip hop: half‑time hip‑hop pulse, shadowy atmosphere, and ethereal vocal make this an ideal “explain the genre” track.",
         "title": "Massive Attack; Elizabeth Fraser — Teardrop",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -5837,7 +5852,7 @@
         "reason": "Portishead at their core: vinyl‑crackled drums, noir strings, and haunted vocal define the moody, downtempo side of trip hop.",
         "title": "Portishead — Roads",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dc20397b139223620af148f6",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dc20397b139223620af148f6",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -5857,7 +5872,7 @@
         "reason": "Jazzy harmony over dusty beats and late‑night vocals put this in the smoother, R&B‑brushed corner of trip hop, still clearly sharing the genre’s downtempo, atmospheric DNA.",
         "title": "Esthero — Heaven Sent",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02456b5c223b220f3bbbe9fa9f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02456b5c223b220f3bbbe9fa9f",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -5867,7 +5882,7 @@
         "reason": "Another Portishead archetype: minimal but heavy drum loop, eerie samples, and tense dynamics make this an essential statement of the genre’s darker side.",
         "title": "Portishead — Wandering Star",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dc20397b139223620af148f6",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dc20397b139223620af148f6",
         "source": "spotify",
         "added": "2026-06-01"
       }
@@ -5891,7 +5906,7 @@
     "favoritesongurl": "https://open.spotify.com/track/67Hna13dNDkZvBpTXRIaOJ",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3",
     "monthfavorite": false
   },
   {
@@ -14727,7 +14742,7 @@
         "reason": "The Kygo remix wraps classic soul in the archetypal tropical house palette: mellow four‑on‑the‑floor, gentle synths, and laid‑back, beachy groove, even if the vocal and song core are pure Motown.",
         "title": "Marvin Gaye; Kygo — Sexual Healing - Kygo Remix",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0204d46bfad0a0640b625b8ca7",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0204d46bfad0a0640b625b8ca7",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -14737,7 +14752,7 @@
         "reason": "“Wave Goodbye” hits modern, festival‑ready tropical house: plucky upbeat groove, bright synth hooks, and sun‑washed mood, with an Italo‑dance tint that still keeps it solidly in the tropical lane.",
         "title": "Robin Schulz; Henri PFR; Jeffrey Jey — Wave Goodbye (feat. Jeffrey Jey)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0270dd2ebd8a41b3cab44f0c7b",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0270dd2ebd8a41b3cab44f0c7b",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -32746,7 +32761,7 @@
         "reason": "Mor ve Ötesi fuse alt‑rock crunch with distinctly Turkish melodic phrasing, giving you a modern Anatolian rock anthem that’s perfect as a gateway into the genre.",
         "title": "mor ve ötesi — Bir Derdim Var",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0261cd6f5ad7c69b76adbc5419",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0261cd6f5ad7c69b76adbc5419",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -32756,7 +32771,7 @@
         "reason": "Cem Karaca with Edip Akbayram and Moğollar is straight from the classic Anatolian rock lineage: psychedelic-leaning arrangements, bağlama‑inflected lines, and politically charged gravitas make this an ideal core exemplar.",
         "title": "Cem Karaca; Edip Akbayram; Moğollar — Ayrılık",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02317619e400debfda10bacd64",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02317619e400debfda10bacd64",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -34741,7 +34756,7 @@
         "reason": "Quiet Riot’s cover is pure scene‑defining glam metal: chant‑along hooks, stomping rhythm, and glossy production that crystallized the genre’s stadium appeal.",
         "title": "Quiet Riot — Cum on Feel the Noize",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0221fbdd09672c5f8bcfd66165",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0221fbdd09672c5f8bcfd66165",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -34761,7 +34776,7 @@
         "reason": "Alice Cooper here is firmly in the late‑80s glam metal resurgence: slick chorus, chugging riff, and over‑the‑top sex‑and‑danger aesthetic fit the genre’s mainstream peak.",
         "title": "Alice Cooper — Poison",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0234b292a289c635532da02671",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0234b292a289c635532da02671",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -34781,7 +34796,7 @@
         "reason": "Sleazy, strutting, and hook‑driven, this Mötley Crüe cut is archetypal Sunset Strip glam metal, even if it flirts with straight hard rock.",
         "title": "Mötley Crüe — Girls, Girls, Girls",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c1b41df3ca1fc7f6a69feb4f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c1b41df3ca1fc7f6a69feb4f",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -34801,7 +34816,7 @@
         "reason": "Def Leppard’s ultra‑polished production and anthemic hooks put this at the AOR border, but the big hair visual era and glam‑metal‑adjacent sound keep it a solid fit.",
         "title": "Def Leppard — Photograph",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e45161990e83649071399525",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e45161990e83649071399525",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -34822,7 +34837,7 @@
     "favoritesongurl": "https://open.spotify.com/track/1hlveB9M6ijHZRbzZ2teyh",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e4ff6efb66c0c9e8bbb5eb71",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e4ff6efb66c0c9e8bbb5eb71",
     "monthfavorite": false
   },
   {
