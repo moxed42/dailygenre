@@ -32418,7 +32418,20 @@
     "vibe": "Metal that threw out the rulebook and wrote a stranger one.",
     "songs_listened": [],
     "rank_order": 52,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/3LdXwhugXO7zjGkjn5McWQ",
+        "score": 3,
+        "reason": "Avant-garde, droning, and minimal with black metal DNA but little of the bombastic orchestral drama; it feels more like experimental/artsier extreme music than symphonic black.",
+        "title": "Liturgy — The Armistice",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026007a476a2d7260455f4d9b6",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Symphonic black metal"
+      }
+    ]
   },
   {
     "id": 949,
@@ -32525,7 +32538,20 @@
     "vibe": "Two of metal's most extreme forms working together to be heavier than either alone.",
     "songs_listened": [],
     "rank_order": 2,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2Q73wKbwLLcGS404gkTfjH",
+        "score": 3,
+        "reason": "Brutal and riff-forward blackened death with some atmospheric keys; the symphonic elements are secondary to its death metal weight and chug.",
+        "title": "Behemoth — Ov Fire And The Void",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c11b5ccde368a55a5a446a7a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Symphonic black metal"
+      }
+    ]
   },
   {
     "id": 954,
@@ -32673,9 +32699,9 @@
         "reason": "Screamo/blackened post-rock that leans heavily on tremolo guitars and dramatic crescendos; adjacent to symphonic black metal in scope and mood but without the overt orchestral/choral palette.",
         "title": "Respire — Bound",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0238b95ddc3b87ba8c4de39b5b",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0238b95ddc3b87ba8c4de39b5b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1JEbu4sbfwNnjetAaaYGmU",
@@ -32685,7 +32711,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02506db8d0c288b0533eb180a1",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0IVdlBreRkZn0ftoUwB0T6",
@@ -32695,7 +32721,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02536d6a2b1455d3b98498aa58",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2Q73wKbwLLcGS404gkTfjH",
@@ -32703,29 +32729,31 @@
         "reason": "Brutal and riff-forward blackened death with some atmospheric keys; the symphonic elements are secondary to its death metal weight and chug.",
         "title": "Behemoth — Ov Fire And The Void",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c11b5ccde368a55a5a446a7a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c11b5ccde368a55a5a446a7a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "blackened_death_metal"
       },
       {
-        "url": "https://open.spotify.com/track/0hNLcpwAPsTqfuwxplTcjf",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0hNLcpwAPsTqfuwxplTcjf",
         "score": 5,
         "reason": "Keeps the ferocity but puts choirs and orchestral arrangements fully in the foreground, hitting the epic, bombastic symphonic black metal ideal more cleanly.",
         "title": "Behemoth — Daimonos",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track:2uQLkFOTwXJ1CKsVypBsF9",
+        "url": "https://open.spotify.com/track/2uQLkFOTwXJ1CKsVypBsF9",
         "score": 5,
         "reason": "Hyper-theatrical, orchestra-and-choir-heavy black metal where the symphonic arrangements drive the song as much as the riffs, making it a near-perfect flagship for the style.",
         "title": "Carach Angren — Franckensteina Strataemontanus",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0260c94ef7cdb9d4e5802a0f1e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3LdXwhugXO7zjGkjn5McWQ",
@@ -32735,24 +32763,28 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026007a476a2d7260455f4d9b6",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "avant_garde_metal"
       },
       {
-        "url": "https://open.spotify.com/track/3ZejjELKZP6mdFCsb9LBbF",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3ZejjELKZP6mdFCsb9LBbF",
         "score": 5,
         "reason": "Uses full orchestral scoring and choral layers over blast beats and shrieks, making the symphonic component unmistakable and central rather than abstract or minimalist.",
         "title": "Emperor — Thus Spake the Nightspirit",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 12,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 959,
