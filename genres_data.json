@@ -10611,49 +10611,52 @@
       {
         "url": "https://open.spotify.com/track/0t9ofbK0n9oXlcikIzKXUs",
         "score": 3,
-        "reason": "Has some rawstyle traits in the distorted kick and aggressive sound design, but the structure and melodic breaks feel more like mainstream euphoric hardstyle than full rawstyle",
+        "reason": "Has some rawstyle traits in the distorted kick and aggressive sound design, but the structure and melodic breaks feel more like mainstream euphoric hardstyle than full rawstyle.",
         "title": "Warface — I Need You",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f3103193aa7567349b5abd68",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/7sEpIUMp1aY8WWQdU1WgnM",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7sEpIUMp1aY8WWQdU1WgnM",
         "score": 5,
-        "reason": "Quintessential rawstyle with ultra‑clipped kicks, gritty screeches, and relentless drive; sits squarely in the rough, aggressive side you’re aiming for",
+        "reason": "Quintessential rawstyle with ultra-clipped kicks, gritty screeches, and relentless drive; sits squarely in the rough, aggressive side you’re aiming for.",
         "title": "Warface — Fuck The Drum Machine",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3tTM0If2uFfZ8uhmJM4BhA",
         "score": 5,
-        "reason": "Textbook rawstyle: harsh, overdriven kicks, dissonant screech leads, and minimal euphoric melody; pure Roughstate‑school raw banger",
+        "reason": "Textbook rawstyle: harsh, overdriven kicks, dissonant screech leads, and minimal euphoric melody; pure Roughstate-school raw banger.",
         "title": "Rejecta, Rebelion — Realness",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02252041c68c2bce589cea522f",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5u3uEhzNRNdNpZYYBnBi2k",
         "score": 4,
-        "reason": "Very raw‑leaning with savage kicks and hardcore crossover energy, though it edges slightly toward uptempo hardcore more than classic rawstyle structure",
+        "reason": "Very raw-leaning with savage kicks and hardcore crossover energy, though it edges slightly toward uptempo hardcore more than classic rawstyle structure.",
         "title": "Bloodlust, Unresolved — One With The Streets",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cef188624aa7af65eae6b258",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 14,
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 290,
