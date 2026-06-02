@@ -2066,7 +2066,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "rank_order": 3,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 56,
@@ -5776,7 +5777,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0207b68be486d13c980f0833c6",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 150,
@@ -9681,7 +9683,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 262,
@@ -9835,7 +9838,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 269,
@@ -13825,7 +13829,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 374,
@@ -14384,7 +14389,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 388,
@@ -14622,7 +14628,8 @@
     "vibe": "Moombahton in a dimmer light with better speakers.",
     "songs_listened": [],
     "rank_order": 491,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 396,
@@ -16325,7 +16332,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 444,
@@ -17429,7 +17437,8 @@
       }
     ],
     "rank_order": 335,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 479,
@@ -19881,7 +19890,8 @@
     "favoritesong": "Please Don't Piss in My Microwave",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 552,
@@ -20800,7 +20810,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d79ba8ad2be777bad0e9924b",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 586,
@@ -22908,7 +22919,8 @@
     "vibe": "Jazz that stays close to the core language and speaks it clearly.",
     "songs_listened": [],
     "rank_order": 710,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 650,
@@ -24543,7 +24555,8 @@
     "favoritesongurl": "https://open.spotify.com/track/1KEdF3FNF9bKRCxN3KUMbx",
     "monthlycontender": false,
     "favoriteartist": "",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 685,
@@ -25019,7 +25032,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 705,
@@ -25977,7 +25991,8 @@
         "isPending": true,
         "pendingFrom": "West Coast hip-hop"
       }
-    ]
+    ],
+    "monthfavorite": false
   },
   {
     "id": 727,
@@ -27166,7 +27181,8 @@
     "monthlycontender": true,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e8dd4db47e7177c63b0b7d53",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 748,
@@ -28972,7 +28988,8 @@
     "vibe": "Pop hooks buried in a wall of fuzz just deep enough to make you dig.",
     "songs_listened": [],
     "rank_order": 534,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 816,
@@ -29658,191 +29675,222 @@
       {
         "url": "https://open.spotify.com/track/6Zbv79YWB0iZSXwIwEsIOP",
         "score": 5,
-        "reason": "Core dark cabaret template: piano‑led, waltzing feel, and hyper‑theatrical vocals that basically define the modern genre",
+        "reason": "Core dark cabaret template: piano-led, waltzing feel, and hyper-theatrical vocals that basically define the modern genre.",
         "title": "The Dresden Dolls — Girl Anachronism",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e40a366bd5e9b44e85e268f9",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e40a366bd5e9b44e85e268f9",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3spyjXAz3kzUqbfvC42z88",
         "score": 3,
-        "reason": "Circus‑show flair and cabaret-esque twists in the riffs, but its spine is avant‑metal rather than cabaret piano noir",
+        "reason": "Circus-show flair and cabaret-esque twists in the riffs, but its spine is avant-metal rather than cabaret piano noir.",
         "title": "Stolen Babies — Filistata",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0275c29ad3f78b4c10213351c0",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0275c29ad3f78b4c10213351c0",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/1oAeeBsiE4CkY8T6Tn2XMj",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1oAeeBsiE4CkY8T6Tn2XMj",
         "score": 5,
-        "reason": "Fully piano‑driven, macabre torch‑song with explicit cabaret rhythm and delivery; nails the dark cabaret archetype better than a metal‑leaning track",
+        "reason": "Fully piano-driven, macabre torch-song with explicit cabaret rhythm and delivery; nails the dark cabaret archetype better than a metal-leaning track.",
         "title": "Jill Tracy — Evil Night Together",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1BCYH7V3Z7dEGDgROqcY7s",
         "score": 2,
-        "reason": "Gloomy and theatrical, but structurally straight deathrock/post‑punk; the drama is goth‑rock, not cabaret‑stage",
+        "reason": "Gloomy and theatrical, but structurally straight deathrock/post-punk; the drama is goth-rock, not cabaret-stage.",
         "title": "Cinema Strange — Greensward Grey",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02752d8af03cceb6f2648f2427",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02752d8af03cceb6f2648f2427",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/7Dqgttw7D6ZllBtYAcGLyq",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7Dqgttw7D6ZllBtYAcGLyq",
         "score": 4,
-        "reason": "Minor‑key, waltzing, and story‑driven with cabaret‑style piano and strings; a clearer dark cabaret vibe within a goth context",
+        "reason": "Minor-key, waltzing, and story-driven with cabaret-style piano and strings; a clearer dark cabaret vibe within a goth context.",
         "title": "Katzenjammer Kabarett — Gemini Girly Song",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5Y11CDokIFjNr0vXkiP99X",
         "score": 2,
-        "reason": "Macabre whimsy but still rooted in deathrock/wave; the off‑kilter drama reads as goth‑theatre more than cabaret‑bar song",
+        "reason": "Macabre whimsy but still rooted in deathrock/wave; the off-kilter drama reads as goth-theatre more than cabaret-bar song.",
         "title": "Cinema Strange — Catacomb Kittens",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ccc8fb3daa737e902207e838",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/0JgWINykdP0bZt2bGjT1b9",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0JgWINykdP0bZt2bGjT1b9",
         "score": 4,
-        "reason": "Carnival‑goth swing with prominent accordion and theatrical vocals that sit much closer to dark cabaret’s baroque sideshow feel",
+        "reason": "Carnival-goth swing with prominent accordion and theatrical vocals that sit much closer to dark cabaret's baroque sideshow feel.",
         "title": "Vermillion Lies — Circus Apocalypse",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4NmrCruBmr9ZdIUx7WnO2K",
         "score": 3,
-        "reason": "Big gothic drama and a hint of chanson, but the instrumentation and pacing land closer to darkwave/rock ballad than true cabaret staging",
+        "reason": "Big gothic drama and a hint of chanson, but the instrumentation and pacing land closer to darkwave/rock ballad than true cabaret staging.",
         "title": "Bella Morte — The Rain Within Her Hands",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027b97d69081170a678d9b5a79",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/1vCH8KpXpJEmzJrC2zmbNm",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1vCH8KpXpJEmzJrC2zmbNm",
         "score": 4,
-        "reason": "Waltz‑time gloom with narrative vocal delivery and cabaret‑ish piano, bridging goth rock and dark cabaret more cleanly",
+        "reason": "Waltz-time gloom with narrative vocal delivery and cabaret-ish piano, bridging goth rock and dark cabaret more cleanly.",
         "title": "The Tiger Lillies — Roll Up",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5VNplEIyA2PCKP0Rkb22uw",
         "score": 4,
-        "reason": "Vaudeville‑goth camp with swung rhythm, melodramatic croon, and tongue‑in‑cheek occult lyrics; very much in spooky cabaret territory",
-        "title": "Aurelio Voltaire — When You’re Evil",
+        "reason": "Vaudeville-goth camp with swung rhythm, melodramatic croon, and tongue-in-cheek occult lyrics; very much in spooky cabaret territory.",
+        "title": "Aurelio Voltaire — When You're Evil",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e7b353b641ce8cf73f9def98",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2X1o60DoD1PfPPveTFXrUq",
         "score": 2,
-        "reason": "Theatrical and horror‑tinged, but musically a deathrock/post‑punk cut; its cabaret feel is more aesthetic than structural",
-        "title": "The Last Days Of Jesus — Zombie Haut‑Couture",
+        "reason": "Theatrical and horror-tinged, but musically a deathrock/post-punk cut; its cabaret feel is more aesthetic than structural.",
+        "title": "The Last Days Of Jesus — Zombie Haut-Couture",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c8152b051198bf03f603c0da",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/1t6zty0IRi1bur0MZQE3Eh",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1t6zty0IRi1bur0MZQE3Eh",
         "score": 4,
-        "reason": "Tango‑ish pulse, dramatic vocal, and sleazy barroom arrangement; closer to the dark cabaret blueprint than straight deathrock",
+        "reason": "Tango-ish pulse, dramatic vocal, and sleazy barroom arrangement; closer to the dark cabaret blueprint than straight deathrock.",
         "title": "The Dresden Dolls — Backstabber",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2qgYUpDfAmEN0jqi7rY8bJ",
         "score": 3,
-        "reason": "Brass‑heavy punk cabaret with radical‑theatre energy; cabaret DNA is there, but it leans folk‑punk collective more than gothic cabaret proper",
+        "reason": "Brass-heavy punk cabaret with radical-theatre energy; cabaret DNA is there, but it leans folk-punk collective more than gothic cabaret proper.",
         "title": "World/Inferno Friendship Society — Only Anarchists Are Pretty",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0288a9208210419166d932575f",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0288a9208210419166d932575f",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/1uwDs3Uxqj1bqlck1yMDkL",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1uwDs3Uxqj1bqlck1yMDkL",
         "score": 4,
-        "reason": "Dark, piano‑centric and overtly cabaret in rhythm and delivery while still political; closer to a genre explainer for dark cabaret",
+        "reason": "Dark, piano-centric and overtly cabaret in rhythm and delivery while still political; closer to a genre explainer for dark cabaret.",
         "title": "Amanda Palmer — The Killing Type",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1MUds3HEHVBrrIAQYouV8S",
         "score": 3,
-        "reason": "Concept‑album cabaret vibe and theatrical vox, but the band’s core is folk‑punk; it brushes dark cabaret without fully living there",
+        "reason": "Concept-album cabaret vibe and theatrical vox, but the band's core is folk-punk; it brushes dark cabaret without fully living there.",
         "title": "World/Inferno Friendship Society — Addicted To Bad Ideas",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d0dc2e429ab7487e30e5f0e6",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/1BQiM3dG4pZ3fRxvoq9xDd",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1BQiM3dG4pZ3fRxvoq9xDd",
         "score": 4,
-        "reason": "Bar‑room piano, minor‑key melodrama, and a smoky vocal line that squarely hits the dark cabaret bar‑theatre zone",
+        "reason": "Bar-room piano, minor-key melodrama, and a smoky vocal line that squarely hits the dark cabaret bar-theatre zone.",
         "title": "Jill Tracy — Haunted By The Thought Of You",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2TLx4ahyvDKsJft1vgS2uW",
         "score": 3,
-        "reason": "Big‑band punk cabaret energy with theatrical shout‑singing; thematically aligned but musically still more folk‑punk revue than pure dark cabaret",
+        "reason": "Big-band punk cabaret energy with theatrical shout-singing; thematically aligned but musically still more folk-punk revue than pure dark cabaret.",
         "title": "World/Inferno Friendship Society — I Am Sick Of People Being Sick Of My Shit",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02df792906a380172026163135",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6Zbv79YWB0iZSXwIwEsIOP",
+        "score": 5,
+        "reason": "Core dark cabaret template: piano-led, waltzing feel, and hyper-theatrical vocals that basically define the modern genre.",
+        "title": "The Dresden Dolls — Girl Anachronism",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e40a366bd5e9b44e85e268f9",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4VZdorHdVUn6fcEzomE0Yj",
         "score": 3,
-        "reason": "Funeral‑parade horns and vaudeville cadence bring it close to cabaret, but the song’s base is still folk‑punk rather than cabaret‑goth torch",
+        "reason": "Funeral-parade horns and vaudeville cadence bring it close to cabaret, but the song's base is still folk-punk rather than cabaret-goth torch.",
         "title": "World/Inferno Friendship Society — This Packed Funeral",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ba5a5702ad2ded3cb76d0390",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5VNplEIyA2PCKP0Rkb22uw",
+        "score": 4,
+        "reason": "Vaudeville-goth camp with swung rhythm, melodramatic croon, and tongue-in-cheek occult lyrics; very much in spooky cabaret territory.",
+        "title": "Aurelio Voltaire — When You're Evil",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e7b353b641ce8cf73f9def98",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 8,
     "favoritesong": "The Dresden Dolls — Girl Anachronism",
     "favoritesongurl": "https://open.spotify.com/track/6Zbv79YWB0iZSXwIwEsIOP",
-    "monthlycontender": false,
+    "monthlycontender": true,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e40a366bd5e9b44e85e268f9",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": true,
+    "monthleastfavorite": false
   },
   {
     "id": 839,
@@ -30110,7 +30158,8 @@
         "isPending": true,
         "pendingFrom": "Grunge"
       }
-    ]
+    ],
+    "monthfavorite": false
   },
   {
     "id": 856,
@@ -30752,7 +30801,8 @@
         "isPending": true,
         "pendingFrom": "Power pop"
       }
-    ]
+    ],
+    "monthfavorite": false
   },
   {
     "id": 873,
@@ -30991,7 +31041,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236572e6726714544f5bed456",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 876,
@@ -32055,7 +32106,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c8b444df094279e70d0ed856",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 908,
@@ -33309,7 +33361,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025058bc348ce35fb97ab2be98",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 946,
@@ -34592,7 +34645,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028c862cce633d67a0b2973275",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 975,
@@ -35795,7 +35849,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 1004,
@@ -37877,7 +37932,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 1067,
@@ -38274,7 +38330,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0227c337cfb2be8c395b04d61d",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 1079,
