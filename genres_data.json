@@ -7737,7 +7737,20 @@
       }
     ],
     "rank_order": 252,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5jzX4dWVQeBTtfBaXnMRt5",
+        "score": 3,
+        "reason": "Scene-kid electro-pop swagger over crunk-influenced beats and shouted hooks, but structurally it sits closer to electropop than full-on scream/rap crunkcore.",
+        "title": "3OH!3 — DONTTRUSTME",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bc12db3758aeb3b198fb362d",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Crunkcore"
+      }
+    ]
   },
   {
     "id": 200,
@@ -11901,17 +11914,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0205a9b880c974a1f3a78d8b72",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "christian_rock"
       },
       {
-        "url": "https://open.spotify.com/track/25C5cW7ZNems15l2zcqfL3",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/25C5cW7ZNems15l2zcqfL3",
         "score": 4,
         "reason": "Maximal Auto-Tune hooks, lurching synth-bass, and shouted MySpace-era sleaze make this a much more archetypal crunkcore document.",
         "title": "Brokencyde — Get Crunk",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c68da345b073a891ac40267e",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c68da345b073a891ac40267e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5jzX4dWVQeBTtfBaXnMRt5",
@@ -11919,29 +11934,21 @@
         "reason": "Scene-kid electro-pop swagger over crunk-influenced beats and shouted hooks, but structurally it sits closer to electropop than full-on scream/rap crunkcore.",
         "title": "3OH!3 — DONTTRUSTME",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bc12db3758aeb3b198fb362d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bc12db3758aeb3b198fb362d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "electropop"
       },
       {
-        "url": "https://open.spotify.com/track/0O1JM7CfWK4jqdAfqBUaIY",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0O1JM7CfWK4jqdAfqBUaIY",
         "score": 4,
         "reason": "The screamed breakdowns, MySpace-era production, and rap-into-scream structure embody the screamo-meets-crunk collision that defines classic crunkcore.",
         "title": "I Set My Friends On Fire — Crank That",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dad81a7e6d89223580ffe775",
         "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/25C5cW7ZNems15l2zcqfL3",
-        "score": 4,
-        "reason": "Loud, trashy synth leads, chant-rap verses, and club-rap low end all wrapped in warped scene aesthetics; this is right in the genre’s obnoxious sweet spot.",
-        "title": "Brokencyde — Get Crunk",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c68da345b073a891ac40267e",
-        "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1y8lFR39LJlYEdmxyUsXbA",
@@ -11949,26 +11956,30 @@
         "reason": "Combines post-hardcore gloss with electronic elements and party lyrics, but leans more toward neon metalcore/electro-pop than genuine crunk-rap hybrid.",
         "title": "Breathe Carolina — Hello Fascination",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02614351c6bac68e37b3696094",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02614351c6bac68e37b3696094",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "metalcore"
       },
       {
-        "url": "https://open.spotify.com/track/2IIiBPARanRVcLDqIAbJkW",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2IIiBPARanRVcLDqIAbJkW",
         "score": 4,
         "reason": "Rap-rock party track with big, chantable hooks and club-rap low end that better captures the crunk-in-the-club energy crunkcore is exaggerating, while still playing nicely with the scene-adjacent playlist.",
         "title": "Hollywood Undead — Pimpin'",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e3a40a64f0473c111cf42b06",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 62,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 328,
@@ -29088,7 +29099,20 @@
     "vibe": "Rock music with its conviction aimed firmly at the sky.",
     "songs_listened": [],
     "rank_order": 146,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4Ki2zXoAdjI74zPeJvUTHS",
+        "score": 3,
+        "reason": "Christian party-core with crunk synth stabs and big gang vocals, but the pop-rock and CCM sheen keep it adjacent rather than truly down-in-the-gutter crunkcore.",
+        "title": "Family Force 5 — Love Addict",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0205a9b880c974a1f3a78d8b72",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Crunkcore"
+      }
+    ]
   },
   {
     "id": 834,
@@ -34876,6 +34900,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Unblack metal"
+      },
+      {
+        "url": "https://open.spotify.com/track/1y8lFR39LJlYEdmxyUsXbA",
+        "score": 2,
+        "reason": "Combines post-hardcore gloss with electronic elements and party lyrics, but leans more toward neon metalcore/electro-pop than genuine crunk-rap hybrid.",
+        "title": "Breathe Carolina — Hello Fascination",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02614351c6bac68e37b3696094",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Crunkcore"
       }
     ]
   },
