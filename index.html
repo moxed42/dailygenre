@@ -2878,7 +2878,7 @@
       document.getElementById('favoriteSongUrl').value = currentGenre.favoritesongurl || '';
       document.getElementById('favoriteSong').value = currentGenre.favoritesong || '';
       markDirty();
-      loadListenScreen(currentGenre);
+      loadListenScreen(currentGenre, { preserveDirty: true });
     }
 
     function startListeningNow() {
@@ -2897,7 +2897,7 @@
       delete target.pendingFrom;
       currentGenre.songs_listened = songs;
       markDirty();
-      loadListenScreen(currentGenre);
+      loadListenScreen(currentGenre, { preserveDirty: true });
     }
 
     function removePendingSongLegacy(url) {
@@ -2905,7 +2905,7 @@
       currentGenre.songs_listened = normalizeSongsListened(currentGenre.songs_listened || [])
         .filter(s => !(normalizeSongUrl(s.url) === url && s.isPending));
       markDirty();
-      loadListenScreen(currentGenre);
+      loadListenScreen(currentGenre, { preserveDirty: true });
     }
 
 
@@ -2971,7 +2971,7 @@
       currentGenre.songs_listened = official;
       currentGenre.pending_songs = pending;
       markDirty();
-      loadListenScreen(currentGenre);
+      loadListenScreen(currentGenre, { preserveDirty: true });
     }
 
     function removePendingSong(index) {
@@ -2980,14 +2980,14 @@
       pending.splice(index, 1);
       currentGenre.pending_songs = pending;
       markDirty();
-      loadListenScreen(currentGenre);
+      loadListenScreen(currentGenre, { preserveDirty: true });
     }
 
     function clearPendingSongs() {
       if (!currentGenre) return;
       currentGenre.pending_songs = [];
       markDirty();
-      loadListenScreen(currentGenre);
+      loadListenScreen(currentGenre, { preserveDirty: true });
     }
 
     function renderPendingSongs(genre) {
@@ -3018,8 +3018,9 @@
       }).join('');
     }
 
-    function loadListenScreen(genre) {
+    function loadListenScreen(genre, options = {}) {
       currentGenre = genre;
+      const preserveDirty = !!options.preserveDirty;
       selectedRating = genre.rating && genre.rating !== 'zanger' ? String(genre.rating) : '';
 
       document.getElementById('favoriteSong').value = genre.favoritesong || '';
@@ -3219,7 +3220,7 @@
       genres.forEach(g => { added += processPendingNominationsForGenre(g, false); });
       if (added > 0) {
         markDirty();
-        if (currentGenre) loadListenScreen(currentGenre);
+        if (currentGenre) loadListenScreen(currentGenre, { preserveDirty: true });
         showSaveToast(`Queued ${added} pending song${added === 1 ? '' : 's'} for review.`);
       } else {
         showSaveToast('No new pending songs found.');
@@ -3297,7 +3298,7 @@
         populateMonthFilter();
         renderHistory();
         renderRankings();
-        loadListenScreen(currentGenre);
+        loadListenScreen(currentGenre, { preserveDirty: true });
         showSaveToast(`Saved. ${currentGenre.genre || 'Genre'} updated.`, false);
       } catch (e) {
         appPassword = '';
@@ -3880,7 +3881,7 @@
         populateMonthFilter();
         renderHistory();
         renderRankings();
-        loadListenScreen(currentGenre);
+        loadListenScreen(currentGenre, { preserveDirty: true });
         showSaveToast(`Saved. ${currentGenre.genre || 'Genre'} updated.`, false);
       } catch (e) {
         passwordNotice.textContent = 'That password did not work.';
