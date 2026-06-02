@@ -16304,7 +16304,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb9da8a3bc7693d004acedfa",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4aruEzDQyIzvpHxMpNdSQf",
@@ -16314,17 +16314,17 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0246fc6588901ebcfae9de0eb2",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/6qyJD56LrrPMW6UwyxS59d",
+        "url": "🔼 ADD: https://open.spotify.com/track/36LVIa0PVkSFiBFQ5rVrnE",
         "score": 5,
         "reason": "Prototype Amen4Tekno cut with relentless 4/4 kick, amen edits, and ragga energy; perfect third pillar for this style",
         "title": "Mandidextrous — 45 Duppy",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e226f9f86714a3a0758963a4",
         "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -16333,7 +16333,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 444,
