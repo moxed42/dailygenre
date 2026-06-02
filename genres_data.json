@@ -7262,7 +7262,20 @@
       }
     ],
     "rank_order": 246,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2i9eB71UxhOzy9tDjHoQ0f",
+        "score": 2,
+        "reason": "Minimal, eerie electroclash track; tonally dark but more art-house synth music than club-oriented dark electro or EBM.",
+        "title": "The Knife — Silent Shout",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02feeb53e21e6bff837e915b47",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dark electro"
+      }
+    ]
   },
   {
     "id": 199,
@@ -14343,7 +14356,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/4XfNanTizYYGlmHlbJTAHx | 4 | Pounding four-on-the-floor kick, distorted leads and shouted German vocals put this squarely in aggrotech/EBM territory, a strong in-club dark electro fit. | Nachtmahr — Tanzdiktator - Remastered\nhttps://open.spotify.com/track/3lzwPqFExEt9xXEkFrIk5Y | 4 | High-energy EBM groove with harsh synths and shouted vocals; very much in the industrial dance lineage that underpins dark electro. | Grendel — Soilbleed (V.3)\nhttps://open.spotify.com/track/6yqVNc17ymCLKskLjmsnlH | 4 | Long, punishing industrial track with relentless kick, distorted textures and horror atmospherics; sits at the darker, harder edge of dark electro’s club zone. | Suicide Commando, Nero Bellum — The Gates of Oblivion\nhttps://open.spotify.com/track/2i9eB71UxhOzy9tDjHoQ0f | 2 | Minimal, eerie electroclash track; tonally dark but more art‑house synth music than club‑oriented dark electro or EBM. | The Knife — Silent Shout\nhttps://open.spotify.com/track/0PIdLGK6F0c8v2m3A1w4gN | 5 | Cold, propulsive EBM rhythm, sinister pads and processed vocals make this a textbook dark electro club track. | Suicide Commando — Hellraiser",
     "summary": "Dark electro blends EBM's pulsing synthesizer bass and mechanical rhythms with darker, more sinister production — minor keys, distorted vocals, oppressive atmospheres, and themes of dystopia and decay. It sits between EBM, industrial, and goth electronics.",
     "key_artists": "Yelworc, Spetsnaz, Craft Spells (unrelated), [:SITD:], Suicide Commando (major figures)",
     "suggested_songs": "Suicide Commando — Love Breeds Suicide, [:SITD:] — Laughing Dead, Spetsnaz — I March",
@@ -14357,7 +14370,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0218efc817016dcf652099d468",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3lzwPqFExEt9xXEkFrIk5Y",
@@ -14367,7 +14380,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020c48020fb9b26177d1d8f647",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6yqVNc17ymCLKskLjmsnlH",
@@ -14375,29 +14388,31 @@
         "reason": "Long, punishing industrial track with relentless kick, distorted textures and horror atmospherics; sits at the darker, harder edge of dark electro’s club zone.",
         "title": "Suicide Commando, Nero Bellum — The Gates of Oblivion",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d89c61fb35ffb56ad821e09e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d89c61fb35ffb56ad821e09e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2i9eB71UxhOzy9tDjHoQ0f",
         "score": 2,
-        "reason": "Minimal, eerie electroclash track; tonally dark but more art‑house synth music than club‑oriented dark electro or EBM.",
+        "reason": "Minimal, eerie electroclash track; tonally dark but more art-house synth music than club-oriented dark electro or EBM.",
         "title": "The Knife — Silent Shout",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02feeb53e21e6bff837e915b47",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02feeb53e21e6bff837e915b47",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "electroclash"
       },
       {
-        "url": "https://open.spotify.com/track/0PIdLGK6F0c8v2m3A1w4gN",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0PIdLGK6F0c8v2m3A1w4gN",
         "score": 5,
         "reason": "Cold, propulsive EBM rhythm, sinister pads and processed vocals make this a textbook dark electro club track.",
         "title": "Suicide Commando — Hellraiser",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 44,
@@ -14405,7 +14420,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 413,
