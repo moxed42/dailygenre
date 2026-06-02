@@ -754,7 +754,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 19,
@@ -2278,7 +2279,8 @@
     ],
     "rank_order": 168,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 67,
@@ -2360,7 +2362,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026239187793c9e492e687db01",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 68,
@@ -2559,7 +2562,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024fdb0337978c7464cdfb1783",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 72,
@@ -4184,7 +4188,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a572ce735b91e2d34a30423",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 110,
@@ -4359,7 +4364,8 @@
         "pendingFrom": "Power electronics"
       }
     ],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 114,
@@ -5161,7 +5167,20 @@
       }
     ],
     "rank_order": 98,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/079siwwSMTE3N5jFGYsX9f",
+        "score": 3,
+        "reason": "Furious hardcore with very high BPM and Frenchcore/gabber flavor; aggressive enough for the set but leans more toward mainstream hardcore than fully disintegrated splittercore.",
+        "title": "From The Blackness",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dccdd42ffb50071b474c0939",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Splittercore"
+      }
+    ]
   },
   {
     "id": 141,
@@ -7916,7 +7935,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 219,
@@ -8731,7 +8751,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "rank_order": null,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 251,
@@ -10751,7 +10772,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 308,
@@ -10816,7 +10838,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/31Rwwh2kKCxExVeYRlGOWu | 5 | Frenchcore/speedcore assault at extreme BPM with clipped kicks and maximalist chaos, a perfect exemplar of the splittercore end of the hardcore spectrum. | GPF, Riot Shift — Broccoli Fuck\nhttps://open.spotify.com/track/3IsGCHcpvt2dO4JgdqYgGu | 4 | Breakcore/speedcore hybrid with hyper‑fragmented breaks and harsh sound design; very much in the splittercore orbit, though more breakcore‑focused than pure kick‑driven speedcore. | monoqlom — Bones In The Swamp\nhttps://open.spotify.com/track/3mfQWzWA74oZLj2NRb64Ig | 4 | Relentless speedcore with distorted kicks and noisy textures; firmly in the extreme hardcore lane and a strong splittercore fit. | Coakira — Front Line\nhttps://open.spotify.com/track/5VC9HnWXBy2eigaiEKy374 | 4 | Extremely fast kicks and gabber‑derived distortion; sits squarely in speedcore, with a slightly more structured riff focus than pure wall‑of‑noise splittercore. | M1DY — Megashit\nhttps://open.spotify.com/track/079siwwSMTE3N5jFGYsX9f | 3 | Furious hardcore with very high BPM and Frenchcore/gabber flavor; aggressive enough for the set but leans more toward mainstream hardcore than fully disintegrated splittercore. | Angerfist — From The Blackness\nhttps://open.spotify.com/track/2Z2Vvriy81OX4fXFBEWksU | 4 | Hyper‑fast kicks and chaotic synth stabs push further into pure speedcore excess, making it a clearer splittercore exemplar than the more standard hardcore feel of From The Blackness. | t+pazolite — cheatreal",
     "summary": "Splittercore is an extreme electronic subgenre combining speedcore's ultra-fast tempos with noise and industrial elements — essentially hardcore music taken to the point where it begins to fragment and disintegrate. Tempos are typically 500+ BPM and the sonic palette is deliberately chaotic and overwhelming.",
     "key_artists": "Various extreme electronic underground producers — DJ Balli, the extratone/splittercore internet community",
     "suggested_songs": "Various splittercore compilations — Splittercore Terror, various online extreme electronic productions",
@@ -10830,17 +10852,17 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02403627672dcdd8622021edd9",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3IsGCHcpvt2dO4JgdqYgGu",
         "score": 4,
-        "reason": "Breakcore/speedcore hybrid with hyper‑fragmented breaks and harsh sound design; very much in the splittercore orbit, though more breakcore‑focused than pure kick‑driven speedcore.",
+        "reason": "Breakcore/speedcore hybrid with hyper-fragmented breaks and harsh sound design; very much in the splittercore orbit, though more breakcore-focused than pure kick-driven speedcore.",
         "title": "monoqlom — Bones In The Swamp",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020520bd0960a11ffc69959572",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3mfQWzWA74oZLj2NRb64Ig",
@@ -10848,39 +10870,41 @@
         "reason": "Relentless speedcore with distorted kicks and noisy textures; firmly in the extreme hardcore lane and a strong splittercore fit.",
         "title": "Coakira — Front Line",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b45c291c1d743e27ce64af41",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b45c291c1d743e27ce64af41",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5VC9HnWXBy2eigaiEKy374",
         "score": 4,
-        "reason": "Extremely fast kicks and gabber‑derived distortion; sits squarely in speedcore, with a slightly more structured riff focus than pure wall‑of‑noise splittercore.",
+        "reason": "Extremely fast kicks and gabber-derived distortion; sits squarely in speedcore, with a slightly more structured riff focus than pure wall-of-noise splittercore.",
         "title": "M1DY — Megashit",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c5b87f5d244ecd263e2eca6b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/079siwwSMTE3N5jFGYsX9f",
         "score": 3,
         "reason": "Furious hardcore with very high BPM and Frenchcore/gabber flavor; aggressive enough for the set but leans more toward mainstream hardcore than fully disintegrated splittercore.",
-        "title": "Angerfist — From The Blackness",
+        "title": "From The Blackness",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dccdd42ffb50071b474c0939",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hardcore"
       },
       {
-        "url": "https://open.spotify.com/track/2Z2Vvriy81OX4fXFBEWksU",
-        "score": 4,
-        "reason": "Hyper‑fast kicks and chaotic synth stabs push further into pure speedcore excess, making it a clearer splittercore exemplar than the more standard hardcore feel of From The Blackness.",
-        "title": "t+pazolite — cheatreal",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/51HrgXU1e1zNVxtYjCbP55",
+        "score": 5,
+        "reason": "Pure speedcore/splittercore overdrive with near-constant high-BPM kicks and chaotic arrangement, making the extremity you’re chasing completely unambiguous.",
+        "title": "Kobaryo — Invisible Frenzy",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b3c7656ada2567c3cf73629c",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02740424ae3f9cfa3e168a5964",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 7,
@@ -10888,7 +10912,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": true
   },
   {
     "id": 311,
@@ -11380,7 +11405,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020fd81346621b73edba231d85",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 327,
@@ -11747,7 +11773,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 334,
@@ -12266,7 +12293,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 351,
@@ -16062,7 +16090,8 @@
     "songs_listened": [],
     "rank_order": 74,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 469,
@@ -18765,7 +18794,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 551,
@@ -19404,7 +19434,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 580,
@@ -21677,7 +21708,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 646,
@@ -24374,7 +24406,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e7e9b85cc1f021ec12130d80",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 718,
@@ -24443,7 +24476,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 719,
@@ -31222,7 +31256,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 923,
@@ -32723,7 +32758,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 966,
@@ -32792,7 +32828,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 967,
@@ -34928,7 +34965,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1013,
