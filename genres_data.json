@@ -5786,16 +5786,6 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/0wSkvBzcbWjN6Qt0yM3Sdy",
-        "score": 5,
-        "reason": "Punchy synth bass, four‑on‑the‑floor kick and string hits give this track a straight‑up electro‑disco feel that keeps the whole session squarely on the dance floor",
-        "title": "Cerrone — Supernature",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
         "url": "https://open.spotify.com/track/4TBVy5cFYGmK5BA3rdMGEQ",
         "score": 1,
         "reason": "Beatless, drifting experimental piece whose focus is texture over groove; it doesn’t function as disco or dance music despite its electronic palette",
@@ -5840,12 +5830,12 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/1EewpX7pG1ZBjgqS0bkkAm",
+        "url": "https://open.spotify.com/track/2kBt8AO9HZn8VvtyPhWX1o",
         "score": 5,
         "reason": "Tight, synthetic groove, vocoder hooks, and shimmering pads make this a pinnacle of sleek electro‑disco production",
         "title": "Chromeo — Fancy Footwork",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0202f76cf3911070c600608402",
         "source": "spotify",
         "added": "2026-06-02"
       }
