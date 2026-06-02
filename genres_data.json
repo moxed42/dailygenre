@@ -33514,12 +33514,12 @@
         "_pendingGenreTag": "instrumental_rock"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5cHSbJykpZ7V8vG9dHtZkq",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7dxZacYc50KtL4REJI3bxH",
         "score": 5,
         "reason": "Fast, arpeggio‑driven lines over clearly classical‑influenced harmony make this an unambiguous neoclassical metal calling card",
         "title": "Yngwie Malmsteen — Black Star",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bacbe43192f35e9a941557c6",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -33565,16 +33565,6 @@
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/4PgvZJLwRGkQhsdk6b5H0I",
-        "score": 5,
-        "reason": "Instrumental built entirely around rapid‑fire arpeggios and classical motifs, making the neoclassical metal identity explicit from the first bar",
-        "title": "Jason Becker — Altitudes",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02"
       }
     ],
     "rank_order": 10,
