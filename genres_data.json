@@ -4314,6 +4314,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Electro-disco"
+      },
+      {
+        "url": "https://open.spotify.com/track/4Ons0TvsV2Sc6Fkt3zEvqH",
+        "score": 3,
+        "reason": "Harsh, glacial dark ambient with heavy static and anxiety‑inducing swells; structurally closer to dark ambient/drone but shares enough suffocating noise and dread to brush against power‑electronics territory",
+        "title": "Uboa — Sleep Hygiene",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027956f1c16347c7c7b6e06c62",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power electronics"
       }
     ]
   },
@@ -9300,72 +9312,75 @@
       {
         "url": "https://open.spotify.com/track/4Ons0TvsV2Sc6Fkt3zEvqH",
         "score": 3,
-        "reason": "Harsh, glacial dark ambient with heavy static and anxiety‑inducing swells; structurally closer to dark ambient/drone but shares enough suffocating noise and dread to brush against power‑electronics territory.",
+        "reason": "Harsh, glacial dark ambient with heavy static and anxiety‑inducing swells; structurally closer to dark ambient/drone but shares enough suffocating noise and dread to brush against power‑electronics territory",
         "title": "Uboa — Sleep Hygiene",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027956f1c16347c7c7b6e06c62",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "dark_ambient"
       },
       {
         "url": "https://open.spotify.com/track/6KxsC659J1USuIuT0ijR0C",
         "score": 5,
-        "reason": "Screaming vocals over walls of high‑gain noise and feedback embody classic power electronics’ confrontational noise‑plus‑voice formula.",
+        "reason": "Screaming vocals over walls of high‑gain noise and feedback embody classic power electronics’ confrontational noise‑plus‑voice formula",
         "title": "Whitehouse — Wriggle Like a Fucking Eel",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0YXPlVnrZwRKVRsdrYzgw5",
         "score": 2,
-        "reason": "Beat‑driven experimental hip hop with horror‑noise elements; the atmosphere is brutal, but the presence of a clear rap structure keeps it outside pure power electronics.",
+        "reason": "Beat‑driven experimental hip hop with horror‑noise elements; the atmosphere is brutal, but the presence of a clear rap structure keeps it outside pure power electronics",
         "title": "clipping., Sarah Bernat — Club Down",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024d1c35edb0aafeb16ef7c7df",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "experimental_hip_hop"
       },
       {
         "url": "https://open.spotify.com/track/0m1qUTThGNdFk6ucZZQzVz",
         "score": 5,
-        "reason": "Vocal abuse over punishing, arrhythmic noise and oscillating feedback fits the power‑electronics template far more directly than a beat‑centric track.",
+        "reason": "Vocal abuse over punishing, arrhythmic noise and oscillating feedback fits the power‑electronics template far more directly than a beat‑centric track",
         "title": "Consumer Electronics — Estuary English",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2TeMJxdraHOuzkK8AczQmK",
         "score": 2,
-        "reason": "Tortured vocals, piano and scraping textures read as neofolk/experimental songcraft instead of sustained noise assault; thematically aligned but structurally not power electronics.",
+        "reason": "Tortured vocals, piano and scraping textures read as neofolk/experimental songcraft instead of sustained noise assault; thematically aligned but structurally not power electronics",
         "title": "Lingua Ignota — MAY FAILURE BE YOUR NOOSE",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b4bcefe6e54045d9fad31c6c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "neofolk"
       },
       {
         "url": "https://open.spotify.com/track/4K3dCty2z0l30P5A45d3jr",
         "score": 4,
-        "reason": "Long‑form, voice‑plus‑noise piece with minimal conventional “song” structure that pushes closer to power‑electronics practice.",
+        "reason": "Long‑form, voice‑plus‑noise piece with minimal conventional “song” structure that pushes closer to power‑electronics practice",
         "title": "Sutcliffe Jügend — Birthright",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/75f0mim2WHU6SdYi8LwJnt",
         "score": 4,
-        "reason": "Harsh noise, sinister samples and grinding drones align strongly with power electronics, even as it leans a bit more industrial/PE hybrid than pure PE.",
+        "reason": "Harsh noise, sinister samples and grinding drones align strongly with power electronics, even as it leans a bit more industrial/PE hybrid than pure PE",
         "title": "Genocide Organ — Mind Control",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a034c00953264f0e2fecf3c0",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 9,
@@ -17452,7 +17467,20 @@
     "vibe": "Folk music that came out of industrial and never quite forgot it.",
     "songs_listened": [],
     "rank_order": 508,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2TeMJxdraHOuzkK8AczQmK",
+        "score": 2,
+        "reason": "Tortured vocals, piano and scraping textures read as neofolk/experimental songcraft instead of sustained noise assault; thematically aligned but structurally not power electronics",
+        "title": "Lingua Ignota — MAY FAILURE BE YOUR NOOSE",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b4bcefe6e54045d9fad31c6c",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power electronics"
+      }
+    ]
   },
   {
     "id": 512,
@@ -17796,6 +17824,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Hyperpop"
+      },
+      {
+        "url": "https://open.spotify.com/track/0YXPlVnrZwRKVRsdrYzgw5",
+        "score": 2,
+        "reason": "Beat‑driven experimental hip hop with horror‑noise elements; the atmosphere is brutal, but the presence of a clear rap structure keeps it outside pure power electronics",
+        "title": "clipping., Sarah Bernat — Club Down",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024d1c35edb0aafeb16ef7c7df",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power electronics"
       }
     ]
   },
