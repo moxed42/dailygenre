@@ -27897,6 +27897,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Britpop"
+      },
+      {
+        "url": "https://open.spotify.com/track/18Rbm3tXY2aCqLwRQL9gHu",
+        "score": 3,
+        "reason": "Layered dream-pop guitars and effects-heavy production with Liz Fraser's abstracted vocal—Cocteau Twins' ethereal approach is borderline, pulled strongly toward dream pop/shoegaze rather than post-punk's rhythmic angularity and urban tension.",
+        "title": "Cocteau Twins — Five Ten Fiftyfold",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dd69a64d46d35725c47df19c",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Post-punk"
       }
     ]
   },
@@ -37101,7 +37113,20 @@
       }
     ],
     "rank_order": 372,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2ORPaFO67SDgFrRwZ3lkkU",
+        "score": 3,
+        "reason": "Aggressive punk energy and horror-tinged melodic hooks with Havok's gothic baritone—AFI leaning more toward melodic hardcore/horror-punk than post-punk's rhythmic restraint and angular guitar work.",
+        "title": "AFI — Ash Speck in a Green Eye",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029107575fdd0213a2f2b03649",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Post-punk"
+      }
+    ]
   },
   {
     "id": 1066,
@@ -37271,27 +37296,29 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e0fdc2906851e29d09320c3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/18Rbm3tXY2aCqLwRQL9gHu",
         "score": 3,
         "reason": "Layered dream-pop guitars and effects-heavy production with Liz Fraser's abstracted vocal—Cocteau Twins' ethereal approach is borderline, pulled strongly toward dream pop/shoegaze rather than post-punk's rhythmic angularity and urban tension.",
-        "title": "Five Ten Fiftyfold",
+        "title": "Cocteau Twins — Five Ten Fiftyfold",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dd69a64d46d35725c47df19c",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dd69a64d46d35725c47df19c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "dream_pop"
       },
       {
-        "url": "https://open.spotify.com/track/3kiOZm7zQRzLsjWYSUECJx",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3kiOZm7zQRzLsjWYSUECJx",
         "score": 4,
         "reason": "Tense bassline and stark guitar interplay with Robin Guthrie's early production grit—Cocteau Twins before they dissolved into pure dream pop, still anchored in post-punk's skeletal architecture.",
         "title": "Cocteau Twins — Sugar Hiccup",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/6hQ5sHqT3AIyCeQPXUwq6o",
@@ -37301,7 +37328,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02970937e9ad4762a6681d7c71",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4nNSgSfqhtAQ9upuIp1QgM",
@@ -37309,9 +37336,9 @@
         "reason": "Tense synth-bass pulse anchoring Sam Herring's theatrical vocal delivery over stark production—Future Islands applying post-punk's rhythmic economy and emotional intensity to synth-driven frameworks.",
         "title": "Future Islands — Long Flight",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02df6f084c90ca31b6f7ba74e1",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02df6f084c90ca31b6f7ba74e1",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5rgDxInkX1WQJNUA7RASwi",
@@ -37319,9 +37346,9 @@
         "reason": "Relentless bass-driven groove with gothic guitar wash and echoed vocals—Pink Turns Blue fusing post-punk's motorik foundation with darkwave atmosphere while maintaining propulsive energy.",
         "title": "Pink Turns Blue — Walking on both Sides",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cea539958930ad3b163bb334",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cea539958930ad3b163bb334",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/74V2un7u1W61o0sORILXOJ",
@@ -37331,37 +37358,39 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0201359faff130402aac62369c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/782VcXkRqyevFaJlcoIIEz",
         "score": 4,
         "reason": "Locked-in drum machine and synth bass driving monotone Russian vocals through cold-wave minimalism—Molchat Doma exemplifying post-punk's global reach with Eastern Bloc aesthetics grafted onto the genre's skeletal frame.",
-        "title": "Molchat Doma — Танцевать",
+        "title": "Molchat Doma — Танцевать (Dance)",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d4549c0e601fbe7e8622a2f5",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2ORPaFO67SDgFrRwZ3lkkU",
         "score": 3,
         "reason": "Aggressive punk energy and horror-tinged melodic hooks with Havok's gothic baritone—AFI leaning more toward melodic hardcore/horror-punk than post-punk's rhythmic restraint and angular guitar work.",
-        "title": "Ash Speck in a Green Eye",
+        "title": "AFI — Ash Speck in a Green Eye",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029107575fdd0213a2f2b03649",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "horror_punk"
       },
       {
-        "url": "https://open.spotify.com/track/0e5C0LEBfkRrbVCQ7fKOHV",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0e5C0LEBfkRrbVCQ7fKOHV",
         "score": 4,
         "reason": "Churning bassline and dissonant guitar stabs under Havok's desperate vocal—AFI in early post-hardcore/post-punk mode before the melodic goth-rock turn, still rooted in rhythmic tension.",
         "title": "AFI — The Leaving Song Pt. II",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7p0Pk7IJw1c494Qz5lXopE",
@@ -37369,9 +37398,9 @@
         "reason": "Extended dual-guitar interplay over sparse rhythm section with Tom Verlaine's literate vocal—Television's art-rock approach to post-punk emphasizing instrumental conversation and compositional sophistication over raw urgency.",
         "title": "Television — Torn Curtain",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0218b36d985b0ae01163ca9cf6",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0218b36d985b0ae01163ca9cf6",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 21,
@@ -37393,7 +37422,9 @@
     "favoritesongurl": "https://open.spotify.com/track/34iOH7LY3vme5rQxsVILZ4",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e0fdc2906851e29d09320c3"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021e0fdc2906851e29d09320c3",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1077,
