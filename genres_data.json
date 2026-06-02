@@ -32051,21 +32051,22 @@
         "url": "https://open.spotify.com/track/29engDqjmMr3VLqMm0c0WE",
         "score": 2,
         "reason": "The droning repetition and transgressive atmosphere absolutely influenced acid rock, but this track’s primary identity is art rock / proto-punk rather than acid rock proper. It works more as adjacent ancestry than as a representative example.",
-        "title": "The Velvet Underground;Nico — Venus In Furs",
+        "title": "The Velvet Underground; Nico — Venus In Furs",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0298260c528e6eec9dd431c1d7",
         "source": "spotify",
         "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/0YHhpW4GZIHt6Gwa49nXhw",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0YHhpW4GZIHt6Gwa49nXhw",
         "score": 5,
         "reason": "A better exemplar because it delivers the long-form psychedelic sprawl, heavy riffing, and chemically fried improvisatory feel that sit much closer to acid rock’s core than Velvet Underground’s art-rock minimalism.",
         "title": "Steppenwolf — The Pusher",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4vpeKl0vMGdAXpZiQB2Dtd",
@@ -32098,14 +32099,15 @@
         "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/3Xls4cNOwy01dtrNXb1inG",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3Xls4cNOwy01dtrNXb1inG",
         "score": 5,
         "reason": "A better exemplar because it is a long-form acid-rock trip built around guitar freakout, ritual repetition, and fully immersive psychedelic escalation.",
         "title": "Iron Butterfly — In-A-Gadda-Da-Vida",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e663fe615699bc294d02167e",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/059LGQd42y87hQMHQyJGSU",
@@ -32118,14 +32120,15 @@
         "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/5WbJwAfQg2bEY5eLNgQ8vX",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5WbJwAfQg2bEY5eLNgQ8vX",
         "score": 5,
         "reason": "A better exemplar because it captures the genre’s loose, ecstatic, chemically fried band interplay more directly than the stately Vanilla Fudge cover does.",
         "title": "The 13th Floor Elevators — Slip Inside This House",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 41,
