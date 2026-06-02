@@ -21006,17 +21006,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0213aa419336db598eb2674b1a",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "proto_punk"
       },
       {
-        "url": "https://open.spotify.com/track/4Wo5W5EV4zvCqMBFq9fe2U",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1f5F8DGAIt02WobJPMYSiE",
         "score": 5,
         "reason": "Hardcore rhythm section under skronky, free‑jazz horns; a canonical punk‑jazz collision that makes the rock/jazz hybrid completely explicit",
         "title": "The Ex & Brass Unbound — Every Sixth Is Cracked",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02162ae9f50bfeb069e29b11ed",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4mvTcdOP0nx50zpnnhfPdD",
@@ -21024,9 +21026,9 @@
         "reason": "Downtown NYC no‑wave jazz: free‑jazz sax and angular harmony over a slightly punk‑dislocated groove; clearly in the punk‑jazz lineage even if it leans artsy and ironic",
         "title": "The Lounge Lizards — Bob the Bob",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020c22d87ff06a294123884e36",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020c22d87ff06a294123884e36",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1INxOP4EeDRGzCcxQE7EXL",
@@ -21036,14 +21038,16 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0269338a018f6e963e6f55767c",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 56,
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 644,
@@ -28430,7 +28434,20 @@
       }
     ],
     "rank_order": 604,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/07qoAjE0wObVAAfyIevTNV",
+        "score": 3,
+        "reason": "Proto‑punk with wild, free‑blowing sax and chaotic jams, but it is fundamentally a rock record with jazz seasoning rather than a dedicated punk‑jazz hybrid",
+        "title": "The Stooges — Fun House",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0213aa419336db598eb2674b1a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Punk jazz"
+      }
+    ]
   },
   {
     "id": 870,
