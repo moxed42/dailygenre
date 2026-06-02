@@ -30801,12 +30801,12 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2qT4sCXcavx7twZqfL4yTN",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6l8GvAyoUZwWDgF1e4822w",
         "score": 5,
         "reason": "Bombastic Queen rocker with operatic sections and heavy guitars, capturing the maximalist glam spirit perfectly.",
         "title": "Queen — Bohemian Rhapsody",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e319baafd16e84f0408af2a0",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -30833,9 +30833,9 @@
       },
       {
         "url": "🔼 LEVEL UP: ",
-        "score": null,
-        "reason": "T. Rex",
-        "title": "5 | One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam",
+        "score": 5,
+        "reason": "One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam",
+        "title": "T. Rex | 5 | One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam",
         "artist": "",
         "artwork": "",
         "source": "manual",
@@ -30854,9 +30854,9 @@
       },
       {
         "url": "🔼 LEVEL UP: ",
-        "score": null,
-        "reason": "Roxy Music",
-        "title": "5 | Art",
+        "score": 5,
+        "reason": "Art",
+        "title": "Roxy Music | 5 | Art",
         "artist": "",
         "artwork": "",
         "source": "manual",
