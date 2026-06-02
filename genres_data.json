@@ -4105,22 +4105,22 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
+        "url": "https://open.spotify.com/track/3NtJfljLK66RFZzhXNOw1y",
         "score": 4,
         "reason": "Snappy march from the London Suite with a singable tune and compact form, written squarely for light-music broadcast use.",
         "title": "Eric Coates — Knightsbridge: March (London Suite)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02830b8651480687d00956350c",
         "source": "spotify",
         "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kXS",
+        "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kX",
         "score": 3,
         "reason": "Iconic “Sailing By” atmosphere with lilting melody and soft orchestration, but functions more as late-night continuity music than core light-music repertoire.",
         "title": "Ronald Binge / Vernon Handley / BBC Concert Orchestra — Sailing By",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c6952fbb30eb2fb3be127e7c",
         "source": "spotify",
         "added": "2026-06-02",
         "_pendingGenreTag": "classical"
@@ -4644,6 +4644,18 @@
         "title": "Albert Ketèlbey / Royal Philharmonic Orchestra / Royal Philharmonic Chorus / Eric Rogers — In A Persian Market",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e76b43a18eb58a7ac273a210",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Light music"
+      },
+      {
+        "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kX",
+        "score": 3,
+        "reason": "Iconic “Sailing By” atmosphere with lilting melody and soft orchestration, but functions more as late-night continuity music than core light-music repertoire.",
+        "title": "Ronald Binge / Vernon Handley / BBC Concert Orchestra — Sailing By",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c6952fbb30eb2fb3be127e7c",
         "source": "spotify",
         "added": "2026-06-02",
         "isPending": true,
