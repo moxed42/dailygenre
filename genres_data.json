@@ -3867,7 +3867,7 @@
         "reason": "Tiny Morrie’s upbeat, accordion-driven groove and Spanish vocals sit firmly inside New Mexico Spanish / tejano territory, even if it leans slightly more generic border-radio tejano than strictly NM regional.",
         "title": "Tiny Morrie — La del Mono Colorado",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023f20c806a24cdde265aa3862",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023f20c806a24cdde265aa3862",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -3877,7 +3877,7 @@
         "reason": "This slots cleanly into contemporary New Mexico/tejano via its romantic vocal, midtempo cumbia-influenced rhythm, and polished band arrangement that still carries regional flavor.",
         "title": "Darren Cordova Y Calor — Un Trocito Del Cielo",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0263f40b4c9641d910be1604a2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0263f40b4c9641d910be1604a2",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -6453,7 +6453,7 @@
         "reason": "Rygar hits classic spacesynth: galloping arpeggiated bass, big cosmic leads, and dramatic chord changes that feel built for 80s arcade space epics. This is a textbook “explain the genre” track.",
         "title": "Rygar — Captain Of The Universe",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ee5a1db6a6877b35b3e45908",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ee5a1db6a6877b35b3e45908",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -29261,32 +29261,32 @@
       {
         "url": "https://open.spotify.com/track/2XXirTOms6IVJJQgi0lN8N",
         "score": 4,
-        "reason": "Short, atmospheric, and clearly in the Chinese indie/art‑rock lane, this works as an intro vignette: it sets the moody, cinematic tone of contemporary Chinese rock even if it is more scene‑setting than a full song statement.",
-        "title": "万能青年旅店 — 早",
+        "reason": "Short, atmospheric, and clearly in the Chinese indie/art-rock lane, this works as an intro vignette: it sets the moody, cinematic tone of contemporary Chinese rock even if it is more scene-setting than a full song statement.",
+        "title": "万能青年旅店 (Omnipotent Youth Society) — 早 (Morning)",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029a3446ba8c977f0efa3657f8",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2ozGzwIXXLz92WHuFjt0OM",
         "score": 5,
-        "reason": "This is an archetypal modern Chinese rock cut: longform structure, knotty guitar work, and art‑rock dynamics that still feel rooted in Chinese rock’s melodic and emotional language. It’s the “explain this wave of Chinese rock to a stranger” pick here.",
-        "title": "万能青年旅店 — 泥河",
+        "reason": "This is an archetypal modern Chinese rock cut: longform structure, knotty guitar work, and art-rock dynamics that still feel rooted in Chinese rock’s melodic and emotional language. It’s the “explain this wave of Chinese rock to a stranger” pick here.",
+        "title": "万能青年旅店 (Omnipotent Youth Society) — 泥河 (Mud River)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029a3446ba8c977f0efa3657f8",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029a3446ba8c977f0efa3657f8",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/0oB4B3cV8b9x0dd2XxyP4A",
         "score": 4,
-        "reason": "Belongs here as another cornerstone of contemporary Chinese indie rock, with driving guitars and melancholic melody that match the art‑rock, slow-burn intensity of the 万能青年旅店 cuts.",
-        "title": "痛仰乐队 (Tong Yang) — 公路之歌",
+        "reason": "Belongs here as another cornerstone of contemporary Chinese indie rock, with driving guitars and melancholic melody that match the art-rock, slow-burn intensity of the 万能青年旅店 cuts.",
+        "title": "痛仰乐队 (Tongyang / Miserable Faith) — 公路之歌 (Song of the Road)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -29295,7 +29295,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 833,
