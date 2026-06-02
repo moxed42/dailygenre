@@ -17316,7 +17316,7 @@
         "reason": "Has a bluesy progression and guitar, but the polished adult‑contemporary production and non‑Detroit singer‑songwriter vibe make it only weakly tied to Detroit blues proper",
         "title": "Erik Naugle — For You and Me",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e35fe012c759666513010ee9",
         "source": "spotify",
         "added": "2026-06-02",
         "isPending": true,
@@ -33742,7 +33742,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0232d44bb6e15b2bd6d9f88ee6",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5ScZu89HBd1n8fyUncpipA",
@@ -33752,17 +33752,17 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a55d904d9e89207974dfbf46",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/7gPNgZh9l1HUMxLxGX2YpB",
+        "url": "🔼 ADD: https://open.spotify.com/track/6spvJE7PDwPUguWMvlCFT0",
         "score": 5,
         "reason": "Crawling tempo, abrasive riffing, and grim, blown‑out vocals; sits directly in the classic sludge canon and neatly completes a three‑pillar sludge session",
         "title": "Eyehategod — Take as Needed for Pain",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c164d9d52212cbc0fe7d1f5c",
         "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -33770,7 +33770,9 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1009,
