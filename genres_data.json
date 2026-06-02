@@ -30730,16 +30730,6 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/3yWRqYsqao0ir5GzW7U3a9",
-        "score": 4,
-        "reason": "Straight 70s glam stomp with sing-along hook and chunky guitars that lands closer to the glam mainstream.",
-        "title": "Sweet — Fox on the Run",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
         "url": "https://open.spotify.com/track/5WyuRWUcOOhAic0tj9Pl28",
         "score": 4,
         "reason": "Lou Reed's croon over lush arrangements with a big, romantic chorus; it straddles glam and singer-songwriter art rock but sits comfortably in the Bowie-era glam universe.",
@@ -30756,16 +30746,6 @@
         "title": "David Bowie — Fame - 2016 Remaster",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b3bd6493ad6e29dcd2ad5a37",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
-        "url": "https://open.spotify.com/track/0WNGPpmWqzPnk0psUhJ3SX",
-        "score": 5,
-        "reason": "Written by Bowie and delivered with huge, sing-along chorus over chunky guitars, this might as well be the archetypal non-Bowie glam anthem.",
-        "title": "Mott The Hoople — All the Young Dudes",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d46e5889ace3c1457be450de",
         "source": "spotify",
         "added": "2026-06-02"
       },
@@ -30832,16 +30812,6 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/2qT4sCXcavx7twZqfL4yTN",
-        "score": 5,
-        "reason": "Bombastic Queen rocker with operatic sections and heavy guitars, capturing the maximalist glam spirit perfectly.",
-        "title": "Queen — Bohemian Rhapsody",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
         "url": "https://open.spotify.com/track/79A7CDgqh8SMvTbgA53pIC",
         "score": 4,
         "reason": "Late-period glam metal with glossy production and huge hook; feels more hair metal than 70s glam but still clearly trades in big riffs and glamorous excess.",
@@ -30862,13 +30832,13 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0WNGPpmWqzPnk0psUhJ3SX",
+        "url": "🔼 LEVEL UP: ",
         "score": 5,
-        "reason": "Massive singalong chorus, glam swagger, and Bowie-penned songwriting make this one of the defining glam-rock anthems.",
-        "title": "Mott The Hoople — All the Young Dudes",
+        "reason": "One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam-rock anthem.",
+        "title": "T. Rex",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d46e5889ace3c1457be450de",
-        "source": "spotify",
+        "artwork": "",
+        "source": "manual",
         "added": "2026-06-02",
         "isLevelUp": true
       },
@@ -30883,13 +30853,13 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1zwMYTA5nlNjZxYrvBB2pV",
+        "url": "🔼 LEVEL UP: ",
         "score": 5,
-        "reason": "Stomping beat, huge chorus, glitter-rock attitude, and pure 70s glam excess make this an archetypal glam-rock statement.",
-        "title": "Sweet — Ballroom Blitz",
+        "reason": "Art-school glamour, flashy presentation, and driving rock energy make it a cornerstone of early glam rock's more sophisticated wing.",
+        "title": "Roxy Music",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02827945d7638c464bca9fc647",
-        "source": "spotify",
+        "artwork": "",
+        "source": "manual",
         "added": "2026-06-02",
         "isLevelUp": true
       }
