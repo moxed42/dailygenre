@@ -9562,7 +9562,20 @@
     "vibe": "The part of the night where subtlety has been officially retired.",
     "songs_listened": [],
     "rank_order": 345,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/46PRAC9BDGinxWR2Jw6chN",
+        "score": 2,
+        "reason": "Fast, distorted kick and ravey synths fit the broader hard dance world, but the track leans more gabber/miami bass hybrid than the classic reverse‑bass or euphoric hardstyle template",
+        "title": "MCR-T, horsegiirL — My Little White Pony",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02808c27ab45dced6e56244cbd",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Hardstyle"
+      }
+    ]
   },
   {
     "id": 284,
@@ -9612,72 +9625,88 @@
       {
         "url": "https://open.spotify.com/track/46PRAC9BDGinxWR2Jw6chN",
         "score": 2,
-        "reason": "Fast, distorted kick and ravey synths fit the broader hard dance world, but the track leans more gabber/miami bass hybrid than the classic reverse‑bass or euphoric hardstyle template.",
+        "reason": "Fast, distorted kick and ravey synths fit the broader hard dance world, but the track leans more gabber/miami bass hybrid than the classic reverse‑bass or euphoric hardstyle template",
         "title": "MCR-T, horsegiirL — My Little White Pony",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02808c27ab45dced6e56244cbd",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02808c27ab45dced6e56244cbd",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hard_dance"
       },
       {
-        "url": "https://open.spotify.com/track/7dZBV0I3U5F2Nf4SsvtLtt",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1VdzMJhy7ZraB54Am2B8Es",
         "score": 5,
-        "reason": "Straight‑up anthem with pitched leads, gated kicks and big melodic drops that spell out the euphoric hardstyle archetype in one track.",
-        "title": "Headhunterz — Dragonborn (Purple Haze Remix)",
+        "reason": "Straight‑up anthem with pitched leads, gated kicks and big melodic drops that spell out the euphoric hardstyle archetype in one track",
+        "title": "Headhunterz — Dragonborn",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0228385e7af1fdf2127a07f1a4",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/6PrPWf02VxGUd2jJLs9z1M",
         "score": 2,
-        "reason": "Relentless, hypnotic four‑on‑the‑floor with overdriven kicks, but the sound design and arrangement land squarely in hard techno/industrial rather than structured melodic hardstyle.",
+        "reason": "Relentless, hypnotic four‑on‑the‑floor with overdriven kicks, but the sound design and arrangement land squarely in hard techno/industrial rather than structured melodic hardstyle",
         "title": "Sara Landry, Shlømo — Play With Me",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02922e2097d03876752a9b6a40",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hard_techno"
       },
       {
-        "url": "https://open.spotify.com/track/0dFSnKgtXQbIGhzlG5J0q1",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6nqoYqcJNE0nGkomcS7HCi",
         "score": 5,
-        "reason": "Combines pounding kicks with clear reverse‑bass drive and a big, catchy lead line, making the hardstyle identity obvious even to non‑heads.",
-        "title": "Technoboy, Tuneboy — Next Dimensional World",
+        "reason": "Quintessential anthem‑era hardstyle: driving reverse‑bass, massive supersaw leads and festival‑scale breakdowns make the genre identity unmistakable",
+        "title": "Technoboy — Next Dimensional World (Qlimax Anthem 2008)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02287c489f915da42ccd911520",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/51czegKF9UbmUZkp8etKj2",
         "score": 3,
-        "reason": "Uptempo and kick‑driven with bright, supersaw melodies, but the manic tempo and hyperpop‑adjacent vocal chops push it toward happy hardcore more than canonical hardstyle.",
+        "reason": "Uptempo and kick‑driven with bright, supersaw melodies, but the manic tempo and hyperpop‑adjacent vocal chops push it toward happy hardcore more than canonical hardstyle",
         "title": "S3RL — Bass Slut - Original Mix",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02503ef3c5cf79b69a68f5f1ef",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "happy_hardcore"
       },
       {
-        "url": "https://open.spotify.com/track/5GbdAyXWP26ChkDJi4DWKY",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1NhpkNQYtPInEPnbSnS4DY",
         "score": 5,
-        "reason": "Big, distorted kicks, mid‑tempo drive and a euphoric lead melody over the trademark hardstyle rhythm — an archetypal mid‑2000s hardstyle banger.",
+        "reason": "Big, distorted kicks, mid‑tempo drive and a euphoric lead melody over the trademark hardstyle rhythm — an archetypal mid‑2000s hardstyle banger",
         "title": "The Nasty Boyz — Angel - Hardstyle Masterz Cut",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fc5f7ba080a1c4e3022d71b2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d163fe83f6cd517a9d135a7c",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7dZBV0I3U5F2Nf4SsvtLtt",
+        "score": 5,
+        "reason": "Straight‑up anthem with pitched leads, gated kicks and big melodic drops that spell out the euphoric hardstyle archetype in one track",
+        "title": "Headhunterz — Dragonborn (Purple Haze Remix)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6LYmMJkbwmQR1CwXq5t6Qq",
         "score": 4,
-        "reason": "Alternates half-time wobble sections with hardstyle kicks, making the genre’s hybrid DNA—dubstep sound design over hardstyle structure—much clearer.",
+        "reason": "Alternates half‑time wobble sections with hardstyle kicks, making the genre’s hybrid DNA—dubstep sound design over hardstyle structure—much clearer",
         "title": "Headhunterz — Scrap Attack (Dubstyle Remix)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 22,
@@ -10041,7 +10070,20 @@
       }
     ],
     "rank_order": 351,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/51czegKF9UbmUZkp8etKj2",
+        "score": 3,
+        "reason": "Uptempo and kick‑driven with bright, supersaw melodies, but the manic tempo and hyperpop‑adjacent vocal chops push it toward happy hardcore more than canonical hardstyle",
+        "title": "S3RL — Bass Slut - Original Mix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02503ef3c5cf79b69a68f5f1ef",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Hardstyle"
+      }
+    ]
   },
   {
     "id": 295,
@@ -11283,7 +11325,7 @@
         "reason": "Snapping, spacious beat, chanty hook and club‑ready bounce put this firmly in the snap continuum, even as it leans more crunk in its energy and ad‑libs.",
         "title": "Lil Jon, E‑40, Sean Paul — Snap Yo Fingers",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa119fab1d342e3a7e4ddb2c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02aa119fab1d342e3a7e4ddb2c",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -11293,7 +11335,7 @@
         "reason": "Slow‑rolling, Auto‑Tuned R&B/rap hybrid with a snap‑friendly, minimal drum pattern; more of a snap‑adjacent club R&B cut, but still clearly built on snap’s rhythmic DNA.",
         "title": "T‑Pain, Yung Joc — Buy U a Drank (Shawty Snappin')",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02baf2f329d4feeb19761eddf4",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02baf2f329d4feeb19761eddf4",
         "source": "spotify",
         "added": "2026-05-31"
       }
@@ -11303,7 +11345,7 @@
     "favoritesongurl": "https://open.spotify.com/track/1tkMs9wDPknQ3ZHcKDw1ES",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02baf2f329d4feeb19761eddf4",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02baf2f329d4feeb19761eddf4",
     "pending_songs": [],
     "monthfavorite": false,
     "monthleastfavorite": false
@@ -14827,7 +14869,20 @@
       }
     ],
     "rank_order": 731,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6PrPWf02VxGUd2jJLs9z1M",
+        "score": 2,
+        "reason": "Relentless, hypnotic four‑on‑the‑floor with overdriven kicks, but the sound design and arrangement land squarely in hard techno/industrial rather than structured melodic hardstyle",
+        "title": "Sara Landry, Shlømo — Play With Me",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02922e2097d03876752a9b6a40",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Hardstyle"
+      }
+    ]
   },
   {
     "id": 435,
