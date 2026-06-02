@@ -17371,7 +17371,20 @@
     "vibe": "Folk music heard from somewhere very far inside your head.",
     "songs_listened": [],
     "rank_order": 606,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6pW2lKORQaIC6JR4qBNG9e",
+        "score": 3,
+        "reason": "Psychedelic blues‑rock with more refined, jam‑oriented playing than the blunt, amateurish garage template",
+        "title": "The Yardbirds — The Train Kept A‑Rollin'",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0295670c43925b9ce8a437c9b4",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Garage rock"
+      }
+    ]
   },
   {
     "id": 516,
@@ -28496,7 +28509,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02185038e768091a37433ae209",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/09r1j5kfshLMalNcJmOZoh",
@@ -28504,19 +28517,31 @@
         "reason": "Mid‑60s fuzz, sneering vocal, and primitive stomp — a canonical 60s garage‑rock single that nails the teenage‑band feel",
         "title": "Count Five — Psychotic Reaction",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0216dd04ec4a099a709b6627b5",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0216dd04ec4a099a709b6627b5",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6pW2lKORQaIC6JR4qBNG9e",
         "score": 3,
-        "reason": "Psychedelic blues‑rock; it has attitude and some rawness, but the playing is more refined and jammy than the knuckle‑dragging garage template",
-        "title": "The Yardbirds — The Train Kept A‑Rollin",
+        "reason": "Psychedelic blues‑rock with more refined, jam‑oriented playing than the blunt, amateurish garage template",
+        "title": "The Yardbirds — The Train Kept A‑Rollin'",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0295670c43925b9ce8a437c9b4",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0295670c43925b9ce8a437c9b4",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "psychedelic_rock"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1h2xVEoJORqrg71HocgqXd",
+        "score": 5,
+        "reason": "Definitive proto‑garage stomp: distorted riff, shout‑along vocal, and raw energy capture the genre’s core immediacy",
+        "title": "The Kingsmen — Louie Louie",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029e447b59bd3e2cbefaa31d91",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5PKwV6vgSn8iXvcG5DUDFX",
@@ -28526,7 +28551,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e9abd896ca80c8bf40ca47ed",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/78JmElAFmrPNhLjovDR9Jm",
@@ -28534,9 +28559,9 @@
         "reason": "Chugging two‑chord riff, ragged vocal, and proto‑distortion place this firmly in the 60s garage/proto‑punk lineage, even if it later reads as “classic rock”",
         "title": "The Kinks — All Day and All of the Night",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023b662e4bab01440eb4f31793",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023b662e4bab01440eb4f31793",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 2,
