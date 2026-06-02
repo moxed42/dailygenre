@@ -35829,42 +35829,43 @@
       {
         "url": "https://open.spotify.com/track/7JKLQOYQBySEu5zWds2nr2",
         "score": 5,
-        "reason": "Quintessential nintendocore: chaotic mathcore riffs, screamed vocals, and 8‑bit keyboard leads explicitly mimicking NES boss‑fight music",
+        "reason": "Quintessential nintendocore: chaotic mathcore riffs, screamed vocals, and 8-bit keyboard leads explicitly mimicking NES boss-fight music.",
         "title": "Horse The Band — Cutsman",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d7b1ca141ede6550011db1a3",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3KNjvbxoVaKQNiXFXxN0pN",
         "score": 4,
-        "reason": "Same metalcore/mid‑2000s scene energy with chiptune‑like synth stabs and gamey melodic motifs, but the 8‑bit voice is a bit less foregrounded than on “Cutsman”",
+        "reason": "Same metalcore/mid-2000s scene energy with chiptune-like synth stabs and gamey melodic motifs, but the 8-bit voice is a bit less foregrounded than on “Cutsman”.",
         "title": "Horse The Band — Bunnies",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d7b1ca141ede6550011db1a3",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d7b1ca141ede6550011db1a3",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5aBO2Roq0p3GYcuFYFF8oX",
         "score": 3,
-        "reason": "Pure chiptune rock with soaring NES‑style leads and pop‑punk drive; shares the game‑music DNA, but lives more in chip/pop than in metal‑based nintendocore",
+        "reason": "Pure chiptune rock with soaring NES-style leads and pop-punk drive; shares the game-music DNA, but lives more in chip/pop than in metal-based nintendocore.",
         "title": "Anamanaguchi — Airbrushed",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f9fc5849882afd0aa7facf93",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/2wvPwR54t4ucclp5Q7s86r",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2wvPwR54t4ucclp5Q7s86r",
         "score": 5,
-        "reason": "Classic example of metalcore songcraft fused with aggressive 8‑bit leads, more directly in the nintendocore lane than “Airbrushed”",
+        "reason": "Classic example of metalcore songcraft fused with aggressive 8-bit leads, more directly in the nintendocore lane than “Airbrushed”.",
         "title": "The Color Of Violence — God Gave Me Deeze Nutz",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 11,
@@ -35872,7 +35873,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1004,
