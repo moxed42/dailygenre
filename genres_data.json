@@ -22946,7 +22946,7 @@
         "reason": "Mingus blends big‑band jazz feel with quasi‑suite structure and orchestrated, almost classical voicings; it is archetypal “third stream in spirit,” even if usually filed under hard bop/post‑bop.",
         "title": "Charles Mingus — Track A – Solo Dancer",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb5b1b39c6c992b79b27651e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02eb5b1b39c6c992b79b27651e",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -22976,7 +22976,7 @@
         "reason": "The piece feels like a contemporary continuation of third stream: extended techniques, chamber‑like ensemble writing, and a blurred line between score and improv embody the jazz/classical hybrid ethos.",
         "title": "Nicole Mitchell — Egoes War",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027d0a82fcd9e20047b669c93f",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027d0a82fcd9e20047b669c93f",
         "source": "spotify",
         "added": "2026-06-01"
       }
@@ -33445,42 +33445,44 @@
       {
         "url": "https://open.spotify.com/track/2ByhUMQMauMc1LJGclDIP5",
         "score": 3,
-        "reason": "Totalselfhatred sits primarily in depressive black metal; the tempo and tremolo riffing are black metal first, with atmosphere coming more from production and repetition than from the widescreen, nature‑drone vibe of classic atmospheric black.",
+        "reason": "Totalselfhatred sits primarily in depressive black metal; the tempo and tremolo riffing are black metal first, with atmosphere coming more from production and repetition than from the widescreen, nature-driven vibe of classic atmospheric black.",
         "title": "Totalselfhatred — Total Self-Hatred",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026872312de9c23830eebba77f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "depressive_black_metal"
       },
       {
-        "url": "https://open.spotify.com/track/0Cj6lL9tJ0sZPULQ9lgSLS",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0Cj6lL9tJ0sZPULQ9lgSLS",
         "score": 5,
-        "reason": "A better exemplar because its expansive, reverb‑washed guitars, nature‑evoking melodies, and long, hypnotic build‑ups are exactly what “atmospheric black metal” means sonically.",
+        "reason": "A better exemplar because its expansive, reverb-washed guitars, nature-evoking melodies, and long, hypnotic build-ups are exactly what “atmospheric black metal” means sonically.",
         "title": "Wolves in the Throne Room — I Will Lay Down My Bones Among the Rocks and Roots",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1wJ5Z1Nkcqknyi2U2mjL0G",
         "score": 5,
-        "reason": "“In The Shadow Of Our Pale Companion” is a towering atmospheric black/doom hybrid: extended song length, layered guitars, and folk‑inflected melancholy make it a perfect “explain atmospheric black/blackgaze to a stranger” piece.",
+        "reason": "“In The Shadow Of Our Pale Companion” is a towering atmospheric black/doom hybrid: extended song length, layered guitars, and folk-inflected melancholy make it a perfect “explain atmospheric black/blackgaze to a stranger” piece.",
         "title": "Agalloch — In The Shadow Of Our Pale Companion (2016 - Remaster)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/1ucpw6yAU7tQ2HPwhsNnQb",
         "score": 5,
-        "reason": "Belongs here as another core atmospheric black cut: shimmering tremolo waves, distant harsh vocals, and long, immersive structure reinforce the genre’s misty, widescreen aesthetic alongside Agalloch and WITTR.",
+        "reason": "Belongs here as another core atmospheric black cut: shimmering tremolo waves, distant harsh vocals, and long, immersive structure reinforce the genre’s misty, widescreen aesthetic alongside Agalloch and Wolves in the Throne Room.",
         "title": "Drudkh — Summoning the Rain",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -33490,8 +33492,9 @@
     "favoritesongurl": "https://open.spotify.com/track/1wJ5Z1Nkcqknyi2U2mjL0G",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65",
-    "monthfavorite": false
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 956,
