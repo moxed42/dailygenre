@@ -2325,25 +2325,15 @@
         "_pendingGenreTag": "mainstream_country"
       },
       {
-        "url": "https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
         "score": 5,
-        "reason": "Banjo, 808‑leaning drums and Bubba’s double‑time flow make this an archetypal early‑2000s country‑rap crossover, stronger genre‑wise than Aldean’s rock‑leaning take.",
+        "reason": "Banjo, 808‑leaning drums and Bubba’s double‑time flow make this a textbook early‑2000s country‑rap crossover, sharpening every hybrid trait Aldean only hints at.",
         "title": "Bubba Sparxxx — Deliverance",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e82286b51cca2e5643b14352",
         "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
-        "url": "🔼 ADD: https://open.spotify.com/track/4FxkQzIhsLAkuiqX5puvU6",
-        "score": 4,
-        "reason": "Dark, moody guitar over trap‑leaning drums and a fully rapped vocal give a modern, clearly identifiable country‑rap angle that complements the Jelly Roll / Bubba axis.",
-        "title": "Yelawolf — Till It's Gone",
-        "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0285b51e47b16a87b82c252dc5",
-        "source": "spotify",
         "added": "2026-06-02",
-        "isAdd": true
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0F7FA14euOIX8KcbEturGH",
@@ -2354,6 +2344,17 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026239187793c9e492e687db01",
         "source": "spotify",
         "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/4FxkQzIhsLAkuiqX5puvU6",
+        "score": 4,
+        "reason": "Dark, moody guitar over trap‑leaning drums and a fully rapped vocal give a modern, clearly identifiable country‑rap angle that complements the Jelly Roll / Bubba / Lil Nas axis.",
+        "title": "Yelawolf — Till It's Gone",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0285b51e47b16a87b82c252dc5",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
       }
     ],
     "rank_order": 16,
