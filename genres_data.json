@@ -34505,12 +34505,12 @@
       {
         "url": "https://open.spotify.com/track/0RmnjzRT7NHFHh7Ia1vKSF?si=db6ad9deb4f84ce8",
         "score": 4,
-        "reason": "Mizmor’s piece is long, glacially paced, and drenched in atmosphere, blending funeral‑doom weight with black‑metal shrieks and tremolo textures—essentially a textbook blackened doom epic.",
+        "reason": "Mizmor’s piece is long, glacially paced, and drenched in atmosphere, blending funeral-doom weight with black-metal shrieks and tremolo textures—essentially a textbook blackened doom epic.",
         "title": "Mizmor — Cairn to God",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fec42d0f49e1cf78c96056ad",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fec42d0f49e1cf78c96056ad",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3huIoXOJoffyEX2FJcG24b",
@@ -34518,29 +34518,41 @@
         "reason": "“Entombed By Winter” feels closer to depressive/atmospheric black metal with a doom crawl than to full blackened doom; it shares mood and tempo but is pulled strongly toward pure black metal.",
         "title": "Forgotten Tomb — Entombed By Winter",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022eac30e15ea620cfa21c0fee",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022eac30e15ea620cfa21c0fee",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/6CtElFwIkm5v6a_FW8NqaC",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6CtElFwIkm5v6a_FW8NqaC",
         "score": 5,
-        "reason": "A better exemplar because its massive, dirge‑like riffing, anguished black‑metal vocals, and suffocating atmosphere sit right at the core of blackened funeral doom, nailing the hybrid more cleanly than the Forgotten Tomb track.",
+        "reason": "A better exemplar because its massive, dirge-like riffing, anguished black-metal vocals, and suffocating atmosphere sit right at the core of blackened funeral doom, nailing the hybrid more cleanly than the Forgotten Tomb track.",
         "title": "Evoken — A Caress of the Void",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/4QFDONqft9cWed8OLydQ8H?si=e5d5c15e356e4c67",
         "score": 5,
-        "reason": "Belongs here as another towering pillar of blackened funeral doom, with cavernous production, drawn‑out, crushing riffs, and tortured black‑metal vocals that reinforce the day’s slow, suffocating aesthetic.",
+        "reason": "Belongs here as another towering pillar of blackened funeral doom, with cavernous production, drawn-out, crushing riffs, and tortured black-metal vocals that reinforce the day’s slow, suffocating aesthetic.",
         "title": "Thou; The Body — Her Strongholds Unvanquishable",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0214a3ded94ec5ca2768ea4356",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0214a3ded94ec5ca2768ea4356",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0Lx2mVt4K6Kx2g3o4x5kQf",
+        "score": 5,
+        "reason": "Colossal, glacial riffing and frostbitten black-metal atmosphere fused into one of the defining blackened doom recordings. The balance between doom weight and black-metal bleakness is nearly perfect.",
+        "title": "Hell — Mourn",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -34549,7 +34561,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 976,
