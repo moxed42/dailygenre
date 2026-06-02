@@ -2892,7 +2892,7 @@
         ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
         : '';
       const pendingNote = s.isPending
-        ? `<div class="pending-note">\u23F3 Nominated from <em>${escapeHtml(s.pendingFrom || 'another genre')}</em> \u2014 <button class="btn-inline" onclick="promotePendingSongLegacy('${escapeHtml(rawUrl)}')">Promote</button> \u00B7 <button class="btn-inline btn-inline-danger" onclick="removePendingSongLegacy('${escapeHtml(rawUrl)}')">Remove</button></div>`
+        ? `<div class="pending-note">\u23F3 Nominated from <em>${escapeHtml(s.pendingFrom || 'another genre')}</em> \u2192 <em>${escapeHtml(currentGenre?.genre || 'this genre')}</em> \u2014 <button class="btn-inline" onclick="promotePendingSongLegacy('${escapeHtml(rawUrl)}')">Promote</button> \u00B7 <button class="btn-inline btn-inline-danger" onclick="removePendingSongLegacy('${escapeHtml(rawUrl)}')">Remove</button></div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
@@ -3102,6 +3102,7 @@
             <div class="pending-song-meta">
               <div class="pending-song-title">${href ? `<a ${href} class="song-title-link">${escapeHtml(song.title || 'Pending song')}<span class="song-link-arrow">↗</span></a>` : escapeHtml(song.title || 'Pending song')}</div>
               <div class="pending-song-sub">${escapeHtml(song.artist || song.source || 'Candidate')}</div>
+              <div class="pending-song-sub">Nominated from ${escapeHtml(song.pendingFrom || 'another genre')} \u2192 ${escapeHtml(genre.genre || 'this genre')}</div>
             </div>
             ${tag}
           </div>
@@ -3191,6 +3192,16 @@
         lastSavedListenSnapshot = buildListenSnapshot();
         setUnsavedState(false);
       }
+
+      if (!options.skipSpotifyHydration) {
+        const hydrationRun = ++spotifyHydrationRun;
+        hydrateGenreSpotifyArtwork(genre).then(changed => {
+          if (!changed || hydrationRun !== spotifyHydrationRun || currentGenre !== genre) return;
+          loadListenScreen(genre, { preserveDirty: true, skipSpotifyHydration: true });
+          renderHistory();
+          renderRankings();
+        });
+      }
     }
 
     function openPasswordModal(action) {
@@ -3260,6 +3271,42 @@
         return next;
       }
       return Promise.all(songs.map(resolveOne));
+    }
+
+    let spotifyHydrationRun = 0;
+
+    async function hydrateGenreSpotifyArtwork(genre) {
+      if (!genre) return false;
+      let changed = false;
+
+      const priorSongs = JSON.stringify(genre.songs_listened || []);
+      const enrichedSongs = await resolveSpotifyTitles(inflateSongsFromStorage(genre.songs_listened || []));
+      if (JSON.stringify(enrichedSongs) !== priorSongs) {
+        genre.songs_listened = enrichedSongs;
+        changed = true;
+      }
+
+      const priorPending = JSON.stringify(genre.pending_songs || []);
+      const enrichedPending = await resolveSpotifyTitles(normalizePendingSongs(genre.pending_songs || []));
+      if (JSON.stringify(enrichedPending) !== priorPending) {
+        genre.pending_songs = enrichedPending;
+        changed = true;
+      }
+
+      if (genre.favoritesongurl && genre.favoritesongurl.includes('spotify.com/track/')) {
+        const beforeFavoriteArt = genre.favoritesongartwork || '';
+        try {
+          const data = await fetchSpotifyOembed(genre.favoritesongurl);
+          if (data) {
+            if (!genre.favoritesong && data.title) genre.favoritesong = data.title.split(/[·\u2013\u2014]/)[0].trim() || data.title;
+            if (data.author_name && !genre.favoriteartist) genre.favoriteartist = data.author_name;
+            if (data.thumbnail_url) genre.favoritesongartwork = data.thumbnail_url;
+          }
+        } catch (e) {}
+        if ((genre.favoritesongartwork || '') !== beforeFavoriteArt) changed = true;
+      }
+
+      return changed;
     }
 
     function genresMatchPendingTag(tag, genreName) {
@@ -3561,8 +3608,22 @@
     function songArtistLine(song) {
       return song.artist ? `<div class="song-artist">${escapeHtml(song.artist)}</div>` : '';
     }
+    const spotifyOembedCache = new Map();
+
     async function fetchSpotifyOembed(url) {
-      return null;
+      const trackUrl = normalizeSongUrl(url || '');
+      if (!/https?:\/\/open\.spotify\.com\/track\//i.test(trackUrl)) return null;
+      if (spotifyOembedCache.has(trackUrl)) return spotifyOembedCache.get(trackUrl);
+
+      const request = fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(trackUrl)}`)
+        .then(async response => {
+          if (!response.ok) throw new Error(`Spotify oEmbed failed (${response.status})`);
+          return response.json();
+        })
+        .catch(() => null);
+
+      spotifyOembedCache.set(trackUrl, request);
+      return request;
     }
 
     function applySpotifyMetadata(song, data) {
