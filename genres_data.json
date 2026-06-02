@@ -2551,12 +2551,12 @@
         "_pendingGenreTag": "pop"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0DKlC2U7kqLyB8S41vD3Q0",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4S518ci8UY4op0Xyp6Hx6o",
         "score": 4,
         "reason": "Mid-tempo island groove with relaxed vocal and sun-drenched imagery; feels much closer to modern bar-band tropical rock.",
         "title": "Zac Brown Band — Toes",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02157d6d0762e17e7dc1ad5203",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -2570,6 +2570,17 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02080cc92336eb13a0ec662146",
         "source": "spotify",
         "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/1lPeuDabCe5f1yKJmLgdLc",
+        "score": 5,
+        "reason": "Buffett's other definitive island-escapist anthem: breezy groove, Caribbean touches, food-and-beach fantasy lyrics, and the laid-back Parrothead worldview that helped define tropical rock as a genre.",
+        "title": "Jimmy Buffett — Cheeseburger In Paradise",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b065002ec760593ec9dbe305",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
       }
     ],
     "rank_order": 78,
