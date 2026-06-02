@@ -30832,13 +30832,13 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0hNARIciCzH48Isbn7eNWz",
         "score": 5,
         "reason": "One of the genre's foundational recordings: swaggering groove, glam attitude, and irresistible hooks distilled into a perfect glam-rock anthem.",
         "title": "T. Rex — Get It On (Bang a Gong)",
         "artist": "",
-        "artwork": "",
-        "source": "manual",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0261a23657edb5d80fa18a630d",
+        "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
       },
@@ -30853,13 +30853,13 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/56vf4V6eq1VzOocBVjN2XB",
         "score": 5,
         "reason": "Art-school glamour, flashy presentation, and driving rock energy make it a cornerstone of early glam rock's more sophisticated wing.",
         "title": "Roxy Music — Virginia Plain",
         "artist": "",
-        "artwork": "",
-        "source": "manual",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e9b2422823fe249021f13da5",
+        "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
       }
