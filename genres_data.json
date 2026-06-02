@@ -20695,9 +20695,9 @@
         "reason": "Extended suite with shifting tempos, dissonant horn voicings, and impressionistic ensemble writing; firmly avant-garde but still tethered to big-band and modal jazz traditions.",
         "title": "Charles Mingus — Track A- Solo Dancer",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb5b1b39c6c992b79b27651e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02eb5b1b39c6c992b79b27651e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6La6a40pMKEoxtpmruuzaP",
@@ -20707,7 +20707,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb5b1b39c6c992b79b27651e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3zIuHdD8dkh1vPxQu334T7",
@@ -20715,19 +20715,21 @@
         "reason": "Modal hard-bop foundation with some exploratory soloing; important but still relatively inside compared to full-on free or avant-garde playing.",
         "title": "John Coltrane — Blue Train",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02611ea3fb281f7956ffd33b77",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02611ea3fb281f7956ffd33b77",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hard_bop"
       },
       {
-        "url": "https://open.spotify.com/track/6lR3GkC6xLz5YxQo2i3dGg",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6lR3GkC6xLz5YxQo2i3dGg",
         "score": 5,
         "reason": "Sheets-of-sound tenor, shifting rhythm, and spiritual intensity that push far beyond bop norms into clearly avant-garde territory.",
         "title": "John Coltrane — Ascension (Edition I)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1ZXu0ib26kWfQQngREMcU2",
@@ -20735,19 +20737,21 @@
         "reason": "Harmonic density and rapid changes define it as advanced hard bop rather than textural or free-form avant-garde work.",
         "title": "John Coltrane — Giant Steps - 2020 Remaster",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02258985b854b3dd27129aeed1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02258985b854b3dd27129aeed1",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hard_bop"
       },
       {
-        "url": "https://open.spotify.com/track/0M5F5Y2Z9gER9f7DmqDve7",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0M5F5Y2Z9gER9f7DmqDve7",
         "score": 5,
         "reason": "Pointillistic sax phrasing, fragmented rhythm, and open form epitomize small-group avant-garde jazz.",
         "title": "Eric Dolphy — Hat and Beard",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0CLbmkYmQIWiEwnsbOkLpd",
@@ -20757,17 +20761,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea42191f549dce4d9c8ecd1a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "spiritual_jazz"
       },
       {
-        "url": "https://open.spotify.com/track/5f1z7m9PX4W2Y2sW2d1zEh",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5f1z7m9PX4W2Y2sW2d1zEh",
         "score": 5,
         "reason": "Collective improvisation over a loose pulse and incantatory themes drive it firmly into the avant-garde spiritual jazz zone.",
         "title": "Pharoah Sanders — The Creator Has a Master Plan (Edit)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7unF2ARDGldwWxZWCmlwDM",
@@ -20777,17 +20783,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea42191f549dce4d9c8ecd1a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "spiritual_jazz"
       },
       {
-        "url": "https://open.spotify.com/track/1HjvPZHV3xP8dwF5EYh3YO",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1HjvPZHV3xP8dwF5EYh3YO",
         "score": 4,
         "reason": "Long-form, modal-leaning improvisation that loosens structure further, edging closer to free jazz language.",
         "title": "Alice Coltrane — Ptah, The El Daoud",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/23aDP04QX8MAHA99FLaPtN",
@@ -20797,7 +20805,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02abd3f4626eb5181c0e0ac1a9",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/59OezEtep4hCy0n62Z3js5",
@@ -20807,7 +20815,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02abd3f4626eb5181c0e0ac1a9",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5DVSVcZjOwfi6qvQoRuDhq",
@@ -20815,9 +20823,9 @@
         "reason": "Long, episodic piece that mixes graphic-score feel with free blowing; deeply avant-garde, though its sheer length and density make it a more advanced example.",
         "title": "Anthony Braxton — Composition 6e",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028260edc501cac246388e1456",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028260edc501cac246388e1456",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4RKZpHfsKmeMb1VUrCAA9M",
@@ -20827,7 +20835,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028260edc501cac246388e1456",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0Jfjs9aYh31vQsy6tJS6y4",
@@ -20837,14 +20845,16 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0253e4da7006b53fad125827e3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 31,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 606,
@@ -21562,6 +21572,30 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Bebop"
+      },
+      {
+        "url": "https://open.spotify.com/track/3zIuHdD8dkh1vPxQu334T7",
+        "score": 3,
+        "reason": "Modal hard-bop foundation with some exploratory soloing; important but still relatively inside compared to full-on free or avant-garde playing.",
+        "title": "John Coltrane — Blue Train",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02611ea3fb281f7956ffd33b77",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Avant-garde jazz"
+      },
+      {
+        "url": "https://open.spotify.com/track/1ZXu0ib26kWfQQngREMcU2",
+        "score": 3,
+        "reason": "Harmonic density and rapid changes define it as advanced hard bop rather than textural or free-form avant-garde work.",
+        "title": "John Coltrane — Giant Steps - 2020 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02258985b854b3dd27129aeed1",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Avant-garde jazz"
       }
     ]
   },
