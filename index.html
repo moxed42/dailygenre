@@ -2515,7 +2515,11 @@
         songsListenedBulk: document.getElementById('songsListenedBulk')?.value || '',
         contender: !!document.getElementById('monthlyContender')?.checked,
         favorite: !!document.getElementById('monthFavorite')?.checked,
-        least: !!document.getElementById('monthLeastFavorite')?.checked
+        least: !!document.getElementById('monthLeastFavorite')?.checked,
+        pendingSongs: normalizePendingSongs(currentGenre.pending_songs || []).map(song => ({
+          key: songIdentity(song),
+          pendingFrom: song.pendingFrom || ''
+        }))
       });
     }
 
@@ -2749,21 +2753,69 @@
     }
 
   function normalizeSongsListened(arr) {
-    return (arr || []).map(s => ({
-    url: s.url || '',
-    score: s.score ?? null,
-    reason: s.reason || '',
-    title: s.title || '',
-    artist: s.artist || '',   // ← ADD
-    artwork: s.artwork || '', // ← ADD
-    source: s.source || '',
-    added: s.added || '',
-    isLevelUp: s.isLevelUp || false,
-    isAdd: s.isAdd || false,
-    _pendingGenreTag: s._pendingGenreTag || '',
-    levelUp: s.levelUp ? normalizeSongsListened([s.levelUp])[0] : null,
-  }));
-}
+    return (arr || []).map(s => {
+      const rawUrl = String(s?.url || '');
+      const isLevelUp = !!s?.isLevelUp || /^(?:🔼\s*)?LEVEL\s*UP:\s*/i.test(rawUrl);
+      const isAdd = !!s?.isAdd || /^(?:🔼\s*)?ADD:\s*/i.test(rawUrl);
+      return {
+        url: rawUrl,
+        score: s?.score ?? null,
+        reason: s?.reason || '',
+        title: s?.title || '',
+        artist: s?.artist || '',
+        artwork: s?.artwork || '',
+        source: s?.source || '',
+        added: s?.added || '',
+        isPending: !!s?.isPending,
+        pendingFrom: s?.pendingFrom || '',
+        isLevelUp,
+        isAdd,
+        _pendingGenreTag: s?._pendingGenreTag || '',
+        levelUp: s?.levelUp ? normalizeSongsListened([s.levelUp])[0] : null,
+      };
+    });
+  }
+
+    function songIdentity(song) {
+      const normalizedUrl = normalizeSongUrl(song?.url || '').trim().toLowerCase();
+      const spotifyTrack = normalizedUrl.match(/spotify\.com\/track\/([a-z0-9]+)/i);
+      if (spotifyTrack) return `spotify:${spotifyTrack[1].toLowerCase()}`;
+      if (normalizedUrl) return `url:${normalizedUrl}`;
+      return `meta:${String(song?.artist || '').trim().toLowerCase()}|${String(song?.title || '').trim().toLowerCase()}`;
+    }
+
+    function inflateSongsFromStorage(arr) {
+      const inflated = [];
+      normalizeSongsListened(arr || []).forEach(song => {
+        song.url = normalizeSongUrl(song.url);
+        if (song.isLevelUp && inflated.length) {
+          song.isLevelUp = true;
+          song.isAdd = false;
+          inflated[inflated.length - 1].levelUp = song;
+          return;
+        }
+        if (song.isLevelUp && !inflated.length) song.isLevelUp = false;
+        inflated.push(song);
+      });
+      return inflated;
+    }
+
+    function normalizePendingSongs(arr) {
+      const unique = [];
+      const seen = new Set();
+      normalizeSongsListened(arr || []).forEach(song => {
+        song.url = normalizeSongUrl(song.url);
+        song.isPending = true;
+        song.isLevelUp = false;
+        song.isAdd = false;
+        song.levelUp = null;
+        const key = songIdentity(song);
+        if (!key || seen.has(key)) return;
+        seen.add(key);
+        unique.push(song);
+      });
+      return unique;
+    }
 
     function countSongsForDisplay(arr) {
       return normalizeSongsListened(arr || []).reduce((total, song) => total + 1 + (song.levelUp ? 1 : 0), 0);
@@ -2771,15 +2823,17 @@
 
     function cleanSongForSave(song, isLevelUp) {
       const out = { ...(song || {}) };
-      const nested = out.levelUp;
       delete out.levelUp;
       out.url = normalizeSongUrl(out.url);
+      delete out.isPending;
+      delete out.pendingFrom;
       if (isLevelUp) {
         out.url = `🔼 LEVEL UP: ${out.url}`;
         out.isLevelUp = true;
         delete out.isAdd;
       } else if (out.isAdd) {
         out.url = `🔼 ADD: ${out.url}`;
+        out.isAdd = true;
         delete out.isLevelUp;
       } else {
         delete out.isLevelUp;
@@ -2787,27 +2841,41 @@
       }
       if (out.title === '') delete out.title;
       if (out.reason === '') delete out.reason;
-      void nested;
+      if (out._pendingGenreTag === '') delete out._pendingGenreTag;
       return out;
     }
 
     function flattenSongsForStorage(arr) {
       const flat = [];
-      normalizeSongsListened(arr || []).forEach(song => {
+      inflateSongsFromStorage(arr || []).filter(song => !song.isPending).forEach(song => {
         flat.push(cleanSongForSave(song, false));
         if (song.levelUp) flat.push(cleanSongForSave(song.levelUp, true));
       });
       return flat;
     }
 
+    function pendingSongsForStorage(arr) {
+      return normalizePendingSongs(arr || []).map(song => {
+        const out = { ...song, isPending: true };
+        delete out.isLevelUp;
+        delete out.isAdd;
+        delete out._pendingGenreTag;
+        delete out.levelUp;
+        if (out.title === '') delete out.title;
+        if (out.reason === '') delete out.reason;
+        return out;
+      });
+    }
+
     function genresForSave() {
       return genres.map(g => {
         const out = { ...g };
         if (Array.isArray(out.songs_listened)) out.songs_listened = flattenSongsForStorage(out.songs_listened);
+        if (Array.isArray(out.pending_songs)) out.pending_songs = pendingSongsForStorage(out.pending_songs);
         return out;
       });
     }
-    
+
     function renderSongEntry(s, isChild) {
       const rawUrl = normalizeSongUrl(s.url || '');
       const hasHref = /^https?:\/\//i.test(rawUrl);
@@ -2916,28 +2984,24 @@
 
     function promotePendingSongLegacy(url) {
       if (!currentGenre) return;
-      const songs = normalizeSongsListened(currentGenre.songs_listened || []);
-      const target = songs.find(s => normalizeSongUrl(s.url) === url && s.isPending);
-      if (!target) return;
-      delete target.isPending;
-      delete target.pendingFrom;
-      currentGenre.songs_listened = songs;
-      markDirty();
-      loadListenScreen(currentGenre, { preserveDirty: true });
+      const key = songIdentity({ url });
+      const pending = normalizePendingSongs(getPendingSongs(currentGenre));
+      const index = pending.findIndex(song => songIdentity(song) === key);
+      if (index !== -1) promotePendingSong(index);
     }
 
     function removePendingSongLegacy(url) {
       if (!currentGenre) return;
-      currentGenre.songs_listened = normalizeSongsListened(currentGenre.songs_listened || [])
-        .filter(s => !(normalizeSongUrl(s.url) === url && s.isPending));
-      markDirty();
-      loadListenScreen(currentGenre, { preserveDirty: true });
+      const key = songIdentity({ url });
+      const pending = normalizePendingSongs(getPendingSongs(currentGenre));
+      const index = pending.findIndex(song => songIdentity(song) === key);
+      if (index !== -1) removePendingSong(index);
     }
-
 
     function getPendingSongs(genre) {
       if (!genre) return [];
-      return Array.isArray(genre.pending_songs) ? genre.pending_songs : [];
+      genre.pending_songs = normalizePendingSongs(genre.pending_songs || []);
+      return genre.pending_songs;
     }
 
     function saveArchiveUiState() {
@@ -2988,32 +3052,38 @@
 
     function promotePendingSong(index) {
       if (!currentGenre) return;
-      const pending = getPendingSongs(currentGenre);
+      const pending = normalizePendingSongs(getPendingSongs(currentGenre));
       const song = pending[index];
       if (!song) return;
-      const official = Array.isArray(currentGenre.songs_listened) ? currentGenre.songs_listened.slice() : [];
-      official.push({ ...song, isPending: false });
+      const official = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(s => !s.isPending);
+      const key = songIdentity(song);
+      if (!official.some(existing => songIdentity(existing) === key)) {
+        const promoted = { ...song };
+        delete promoted.isPending;
+        delete promoted.pendingFrom;
+        official.push(promoted);
+      }
       pending.splice(index, 1);
       currentGenre.songs_listened = official;
       currentGenre.pending_songs = pending;
-      markDirty();
       loadListenScreen(currentGenre, { preserveDirty: true });
+      markDirty();
     }
 
     function removePendingSong(index) {
       if (!currentGenre) return;
-      const pending = getPendingSongs(currentGenre);
+      const pending = normalizePendingSongs(getPendingSongs(currentGenre));
       pending.splice(index, 1);
       currentGenre.pending_songs = pending;
-      markDirty();
       loadListenScreen(currentGenre, { preserveDirty: true });
+      markDirty();
     }
 
     function clearPendingSongs() {
       if (!currentGenre) return;
       currentGenre.pending_songs = [];
-      markDirty();
       loadListenScreen(currentGenre, { preserveDirty: true });
+      markDirty();
     }
 
     function renderPendingSongs(genre) {
@@ -3055,13 +3125,15 @@
       document.getElementById('monthFavorite').checked = !!genre.monthfavorite;
       document.getElementById('monthLeastFavorite').checked = !!genre.monthleastfavorite;
       document.getElementById('notes').value = genre.notes || '';
-      document.getElementById('songsListenedBulk').value = (genre.songs_listened || []).filter(s => !s.isPending).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const reason = s._pendingGenreTag ? `${s.reason || ''} @${s._pendingGenreTag}`.trim() : (s.reason || null); const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, reason, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
+      genre.songs_listened = inflateSongsFromStorage(genre.songs_listened || []);
+      genre.pending_songs = normalizePendingSongs(genre.pending_songs || []);
+      document.getElementById('songsListenedBulk').value = genre.songs_listened.filter(s => !s.isPending).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const reason = s._pendingGenreTag ? `${s.reason || ''} @${s._pendingGenreTag}`.trim() : (s.reason || null); const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, reason, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
       document.getElementById('includeSongsToggle').checked = false;
 
       const listenedDate = dateValue(genre);
-      const songs = normalizeSongsListened(genre.songs_listened || []);
+      const songs = inflateSongsFromStorage(genre.songs_listened || []);
       const activeSongs = songs.filter(s => !s.isPending);
-      const pendingSongs = normalizeSongsListened(getPendingSongs(genre));
+      const pendingSongs = normalizePendingSongs(getPendingSongs(genre));
       const songCount = countSongsForDisplay(activeSongs);
       const art = getGenreArtwork(genre);
       const ratingLabel = genre.rating === 'zanger' ? 'Zanger' : (genre.rating ? `${escapeHtml(String(genre.rating))} ★` : 'Unrated');
@@ -3115,6 +3187,10 @@
       renderPendingSongs(genre);
       renderStars();
       updateDiscordBlock();
+      if (!preserveDirty) {
+        lastSavedListenSnapshot = buildListenSnapshot();
+        setUnsavedState(false);
+      }
     }
 
     function openPasswordModal(action) {
@@ -3202,28 +3278,33 @@
 
     function queuePendingNomination(target, sourceGenreName, songData) {
       if (!target || !songData) return false;
-      if (!Array.isArray(target.pending_songs)) target.pending_songs = [];
-      if (!Array.isArray(target.songs_listened)) target.songs_listened = [];
-      target.pending_songs = normalizeSongsListened(target.pending_songs);
-      target.songs_listened = normalizeSongsListened(target.songs_listened);
-      const normalizedUrl = normalizeSongUrl(songData.url || '');
-      const existsInPending = target.pending_songs.some(s => normalizeSongUrl(s.url || '') === normalizedUrl);
-      const existsInLogged = target.songs_listened.some(s => normalizeSongUrl(s.url || '') === normalizedUrl);
+      target.pending_songs = normalizePendingSongs(target.pending_songs || []);
+      target.songs_listened = inflateSongsFromStorage(target.songs_listened || []).filter(s => !s.isPending);
+      const key = songIdentity(songData);
+      if (!key) return false;
+      const existsInPending = target.pending_songs.some(song => songIdentity(song) === key);
+      const existsInLogged = target.songs_listened.some(song => songIdentity(song) === key);
       if (existsInPending || existsInLogged) return false;
-      const pendingSong = { ...songData, isPending: true, pendingFrom: sourceGenreName || '' };
-      target.pending_songs.push(pendingSong);
+      target.pending_songs.push({
+        ...songData,
+        url: normalizeSongUrl(songData.url || ''),
+        isPending: true,
+        pendingFrom: sourceGenreName || '',
+        isLevelUp: false,
+        isAdd: false,
+        levelUp: null
+      });
       return true;
     }
 
-    function processPendingNominationsForGenre(sourceGenre, consumeTags = false) {
+    function processPendingNominationsForGenre(sourceGenre) {
       if (!sourceGenre) return 0;
       let added = 0;
-      const sourceSongs = normalizeSongsListened(sourceGenre.songs_listened || []);
+      const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
       sourceGenre.songs_listened = sourceSongs;
       for (const song of sourceSongs) {
-        if (!song._pendingGenreTag) continue;
-        const tag = song._pendingGenreTag.toLowerCase();
-        const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(tag, g.genre));
+        if (!song._pendingGenreTag || song.score == null || Number(song.score) > 3) continue;
+        const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(song._pendingGenreTag, g.genre));
         if (!target) continue;
         const pendingSong = {
           url: song.url || '',
@@ -3236,16 +3317,21 @@
           added: song.added || new Date().toISOString().slice(0,10)
         };
         if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
-        if (consumeTags) delete song._pendingGenreTag;
       }
       return added;
+    }
+
+    function removeLoggedSongsFromPending(genre) {
+      if (!genre) return;
+      const loggedKeys = new Set(inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending).map(songIdentity));
+      genre.pending_songs = normalizePendingSongs(genre.pending_songs || []).filter(song => !loggedKeys.has(songIdentity(song)));
     }
 
     function reexaminePendingTags() {
       let added = 0;
       genres.forEach(g => { added += processPendingNominationsForGenre(g, false); });
       if (added > 0) {
-        markDirty();
+        setUnsavedState(true);
         if (currentGenre) loadListenScreen(currentGenre, { preserveDirty: true });
         showSaveToast(`Queued ${added} pending song${added === 1 ? '' : 's'} for review.`);
       } else {
@@ -3278,13 +3364,13 @@
       currentGenre.monthfavorite = document.getElementById('monthFavorite').checked;
       currentGenre.monthleastfavorite = document.getElementById('monthLeastFavorite').checked;
       currentGenre.notes = document.getElementById('notes').value.trim();
-      const existingOfficial = normalizeSongsListened(currentGenre.songs_listened || []).filter(s => !s.isPending);
       const parsedOfficial = parseSongLinks(document.getElementById('songsListenedBulk').value);
       const resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       currentGenre.songs_listened = resolvedOfficial;
-      currentGenre.pending_songs = normalizeSongsListened(getPendingSongs(currentGenre));
+      currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
+      removeLoggedSongsFromPending(currentGenre);
 
-      processPendingNominationsForGenre(currentGenre, true);
+      processPendingNominationsForGenre(currentGenre);
 
       if (!dateValue(currentGenre)) {
         currentGenre.date_normalized = new Date().toISOString().slice(0,10);
@@ -3756,9 +3842,10 @@
 
       genres.forEach(g => {
         if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
-        g.songs_listened = normalizeSongsListened(g.songs_listened);
+        g.songs_listened = inflateSongsFromStorage(g.songs_listened);
         if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
-        g.pending_songs = normalizeSongsListened(g.pending_songs);
+        g.pending_songs = normalizePendingSongs(g.pending_songs);
+        removeLoggedSongsFromPending(g);
       });
 
       applyRankSeed();
@@ -3886,7 +3973,9 @@
         populateMonthFilter();
         renderHistory();
         renderRankings();
-        loadListenScreen(currentGenre, { preserveDirty: true });
+        loadListenScreen(currentGenre, { preserveDirty: false });
+        lastSavedListenSnapshot = buildListenSnapshot();
+        setUnsavedState(false);
         showSaveToast(`Saved. ${currentGenre.genre || 'Genre'} updated.`, false);
       } catch (e) {
         passwordNotice.textContent = 'That password did not work.';
