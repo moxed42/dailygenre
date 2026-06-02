@@ -5576,7 +5576,20 @@
       }
     ],
     "rank_order": 40,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2rOiZGbR0wwI0ip0wSAK26",
+        "score": 3,
+        "reason": "Southern gangsta-rap cut with horrorcore edges; the beat thumps but the emphasis is more on gritty street narrative than pure chant-driven crunk energy.",
+        "title": "Project Pat / Three 6 Mafia / La Chat — Chickenhead",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0231a9a92a652223ca76817a90",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Crunk"
+      }
+    ],
     "favoritesong": "Massive Attack; Elizabeth Fraser — Teardrop",
     "favoritesongurl": "https://open.spotify.com/track/67Hna13dNDkZvBpTXRIaOJ",
     "monthlycontender": false,
@@ -11394,7 +11407,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/0r2Bul2NuCViraT2zX1l5j | 5 | Minimal, trunk‑rattling beat, shouted call‑and‑response hook, and repetitive chant structure make this a textbook early‑2000s crunk club track. | Lil Jon & The East Side Boyz / Ying Yang Twins — Get Low\nhttps://open.spotify.com/track/7vIsPrKWqUMk4F7Bu7aIY0 | 5 | Dark, menacing synths over booming 808s, plus aggressive chant vocals and “tear da club up” ethos—this nails the rowdy, riot‑adjacent side of crunk. | Three 6 Mafia — Tear da Club Up 97\nhttps://open.spotify.com/track/1Q9b6CeMcDuO0uq5OJCrqu | 4 | High‑energy southern party‑rap with a big, repetitive hook and synth‑driven beat; undeniably crunk, though a bit sleeker and more pop‑ready than the rawest cuts. | Ludacris / Mystikal / I-20 — Move Bitch\nhttps://open.spotify.com/track/2rOiZGbR0wwI0ip0wSAK26 | 3 | Southern gangsta‑rap cut with horrorcore edges; the beat thumps but the emphasis is more on gritty street narrative than pure chant‑driven crunk energy. | Project Pat / Three 6 Mafia / La Chat — Chickenhead\nhttps://open.spotify.com/track/5BZ40Ghhuy8BkbYkbZ3Qf5 | 4 | Stomping synth line, shouted hook, and simple, hypnotic structure push fully into hands‑up crunk territory, making the party function clearer than on “Chickenhead.” | Lil Scrappy — Head Bussa\nhttps://open.spotify.com/track/1VFlIrTxWc5LZgprzFm9Sa | 4 | More explicitly horror‑narrative and less party‑driven, with sinister synths that center the horrorcore mood. | Three 6 Mafia — 187 Invitation\nhttps://open.spotify.com/track/25C5cW7ZNems15l2zcqfL3 | 4 | Maximal Auto-Tune hooks, lurching synth-bass, and shouted MySpace-era sleaze make this a much more archetypal crunkcore document. | Brokencyde — Get Crunk",
     "summary": "Crunk was Atlanta's dominant club sound in the early-to-mid 2000s — Lil Jon's production of high-energy call-and-response chants, simple synth riffs, and thunderous 808 drums creating music designed for maximum dancefloor chaos. Simultaneously shouted and danced to, it was one of hip-hop's most physically kinetic subgenres.",
     "key_artists": "Lil Jon & the East Side Boyz, Ludacris, Ying Yang Twins, Three 6 Mafia, Crime Mob (originators)",
     "suggested_songs": "Lil Jon — Get Low, Crime Mob — Knuck If You Buck, Ying Yang Twins — Salt Shaker, Three 6 Mafia — Stay Fly",
@@ -11403,62 +11416,64 @@
       {
         "url": "https://open.spotify.com/track/0r2Bul2NuCViraT2zX1l5j",
         "score": 5,
-        "reason": "Minimal, trunk‑rattling beat, shouted call‑and‑response hook, and repetitive chant structure make this a textbook early‑2000s crunk club track.",
+        "reason": "Minimal, trunk-rattling beat, shouted call-and-response hook, and repetitive chant structure make this a textbook early-2000s crunk club track.",
         "title": "Lil Jon & The East Side Boyz / Ying Yang Twins — Get Low",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023ba0e7112f965bfda72b1c5b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7vIsPrKWqUMk4F7Bu7aIY0",
         "score": 5,
-        "reason": "Dark, menacing synths over booming 808s, plus aggressive chant vocals and “tear da club up” ethos—this nails the rowdy, riot‑adjacent side of crunk.",
+        "reason": "Dark, menacing synths over booming 808s, plus aggressive chant vocals and “tear da club up” ethos—this nails the rowdy, riot-adjacent side of crunk.",
         "title": "Three 6 Mafia — Tear da Club Up 97",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026efefc9deaa50f6f539551ca",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1Q9b6CeMcDuO0uq5OJCrqu",
         "score": 4,
-        "reason": "High‑energy southern party‑rap with a big, repetitive hook and synth‑driven beat; undeniably crunk, though a bit sleeker and more pop‑ready than the rawest cuts.",
+        "reason": "High-energy southern party-rap with a big, repetitive hook and synth-driven beat; undeniably crunk, though a bit sleeker and more pop-ready than the rawest cuts.",
         "title": "Ludacris / Mystikal / I-20 — Move Bitch",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020fd81346621b73edba231d85",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2rOiZGbR0wwI0ip0wSAK26",
         "score": 3,
-        "reason": "Southern gangsta‑rap cut with horrorcore edges; the beat thumps but the emphasis is more on gritty street narrative than pure chant‑driven crunk energy.",
+        "reason": "Southern gangsta-rap cut with horrorcore edges; the beat thumps but the emphasis is more on gritty street narrative than pure chant-driven crunk energy.",
         "title": "Project Pat / Three 6 Mafia / La Chat — Chickenhead",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0231a9a92a652223ca76817a90",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0231a9a92a652223ca76817a90",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hip_hop"
       },
       {
-        "url": "https://open.spotify.com/track/5BZ40Ghhuy8BkbYkbZ3Qf5",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5BZ40Ghhuy8BkbYkbZ3Qf5",
         "score": 4,
-        "reason": "Stomping synth line, shouted hook, and simple, hypnotic structure push fully into hands‑up crunk territory, making the party function clearer than on “Chickenhead.”",
+        "reason": "Stomping synth line, shouted hook, and simple, hypnotic structure push fully into hands-up crunk territory, making the party function clearer than on “Chickenhead.”",
         "title": "Lil Scrappy — Head Bussa",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1VFlIrTxWc5LZgprzFm9Sa",
         "score": 4,
-        "reason": "More explicitly horror‑narrative and less party‑driven, with sinister synths that center the horrorcore mood.",
+        "reason": "More explicitly horror-narrative and less party-driven, with sinister synths that center the horrorcore mood.",
         "title": "Three 6 Mafia — 187 Invitation",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/25C5cW7ZNems15l2zcqfL3",
@@ -11466,9 +11481,9 @@
         "reason": "Maximal Auto-Tune hooks, lurching synth-bass, and shouted MySpace-era sleaze make this a much more archetypal crunkcore document.",
         "title": "Brokencyde — Get Crunk",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c68da345b073a891ac40267e",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c68da345b073a891ac40267e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 20,
