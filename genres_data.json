@@ -2205,7 +2205,8 @@
       }
     ],
     "rank_order": 15,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 66,
@@ -2625,7 +2626,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 75,
@@ -3164,7 +3166,8 @@
     "favoritesongurl": "https://open.spotify.com/track/3EEd6ldsPat620GVYMEhOP",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02133d663963bdaa99891a5cee"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02133d663963bdaa99891a5cee",
+    "monthfavorite": false
   },
   {
     "id": 85,
@@ -5762,7 +5765,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 157,
@@ -7031,6 +7035,17 @@
         "_pendingGenreTag": "experimental_hip_hop"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6J4amIxz2QkU1CpKxuSE7z",
+        "score": 5,
+        "reason": "Maximalist sound‑design, pitched‑up vocals, and explosive drops make this a purer hyperpop rush than Copycats while still scratching the chaotic internet‑rap itch",
+        "title": "glaive — astrid",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/0i5xvpssbEtSY19b09Zmb1",
         "score": 5,
         "reason": "Hyper‑compressed synths, pitched‑up vocals, and sugar‑rush hooks make this a clean, high‑impact hyperpop exemplar to sit next to gecs and SOPHIE",
@@ -7072,6 +7087,17 @@
         "_pendingGenreTag": "breakcore"
       },
       {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3DkSCu5q5VPA45w0l0zHoh",
+        "score": 5,
+        "reason": "Keeps the blown‑out intensity but centers bright hyperpop hooks and chopped vocals, making the hyperpop identity primary instead of an afterthought",
+        "title": "blackwinterwells — goth gf",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
         "url": "https://open.spotify.com/track/0JP9xo3adEtGSdUEISiszL",
         "score": 5,
         "reason": "Bubblegum bass foundation, candy‑sharp synths, and heavily processed vocals make it a textbook “what is hyperpop?” track to bolster the block’s pure‑pop side",
@@ -7089,7 +7115,7 @@
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02140bf64ac9cddf05beaff312",
     "pending_songs": [],
-    "monthfavorite": false,
+    "monthfavorite": true,
     "monthleastfavorite": false
   },
   {
@@ -9253,7 +9279,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 273,
@@ -9626,7 +9653,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 286,
@@ -11244,7 +11272,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02baf2f329d4feeb19761eddf4",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 330,
@@ -11649,7 +11678,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 340,
@@ -14860,7 +14890,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 437,
@@ -18847,7 +18878,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 578,
@@ -20405,7 +20437,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 621,
@@ -23269,7 +23302,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fa301e01c3ec11e2e06ca875",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 704,
@@ -23822,7 +23856,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 717,
@@ -24913,7 +24948,8 @@
     "favoritesongurl": "https://open.spotify.com/track/41dDygR3r7e926oGUXfrLt",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752",
+    "monthfavorite": false
   },
   {
     "id": 744,
@@ -25691,7 +25727,8 @@
     "favoritesongurl": "https://open.spotify.com/track/5uuJruktM9fMdN9Va0DUMl",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d419ed4f1e89669ce14bd369"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d419ed4f1e89669ce14bd369",
+    "monthfavorite": false
   },
   {
     "id": 766,
@@ -25763,7 +25800,8 @@
     "vibe": "Groove music launched into deep space without losing the downbeat.",
     "songs_listened": [],
     "rank_order": 607,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 769,
@@ -25843,7 +25881,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b9b36b0e22870b9f542d937",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 770,
@@ -26167,7 +26206,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e08b1250db5f75643f1508c9",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 787,
@@ -26722,7 +26762,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 800,
@@ -28421,7 +28462,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 869,
@@ -31713,7 +31755,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 960,
@@ -33299,7 +33342,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 1001,
@@ -34025,7 +34069,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027dc7ccc9efe21a79a25b0bc9",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 1011,
@@ -36075,7 +36120,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 1088,
