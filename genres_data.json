@@ -29389,7 +29389,20 @@
     "vibe": "The rhythm section took over the rock band and nobody complained.",
     "songs_listened": [],
     "rank_order": 304,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/7t6a7n23SZQ5A5OuXYu3uO",
+        "score": 3,
+        "reason": "Contemporary melodic punk with anthemic hooks; shares high-energy rock DNA but its primary identity is modern punk rather than retro/classic rock revival.",
+        "title": "Against Me! — I Was a Teenage Anarchist",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a1191cc556c99c62ffb0829b",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "New wave of classic rock"
+      }
+    ]
   },
   {
     "id": 868,
@@ -30409,7 +30422,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026bc799c6c712870ffe1d1546",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0k6CljwEGjj0agrDDagnQr",
@@ -30419,7 +30432,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026b27167f20028528397e7a9f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0ImHLPj7ilfn4dHBFLDone",
@@ -30427,9 +30440,9 @@
         "reason": "Retro-leaning power-pop/rock tune whose harmonies, chord changes, and guitar tones echo 70s classic rock songcraft in a very present-day package.",
         "title": "The Lemon Twigs — Any Time Of Day",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ab764b74918b0adf45fce723",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ab764b74918b0adf45fce723",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0BikNVR79txZhmczhZE68l",
@@ -30439,7 +30452,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0293d436362cc64723d3a04b66",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3CkjLJYnnyOtGk4Jx4iYS4",
@@ -30449,7 +30462,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02335534788cbc39cfd23ee993",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7aOor99o8NNLZYElOXlBG1",
@@ -30457,9 +30470,9 @@
         "reason": "Defines the movement’s “new band, old DNA” ethos with its Zeppelin-indebted riff, classic-rock vocal phrasing, and tight, modern-rock punch.",
         "title": "Greta Van Fleet — Highway Tune",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0257b7f789d328c205b4d15893",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0257b7f789d328c205b4d15893",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0zlaa4AmbFE7MVDijsyD9Q",
@@ -30469,17 +30482,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02339cc033bcc476d11dffba4c",
         "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/3CkjLJYnnyOtGk4Jx4iYS4",
-        "score": 4,
-        "reason": "(If logged twice this day) Still plays as a very 70s-informed hard-rock banger with chorus-first immediacy and crunchy guitars that embody the movement’s reverence for classic rock forms.",
-        "title": "Wolfmother — Woman",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02335534788cbc39cfd23ee993",
-        "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7t6a7n23SZQ5A5OuXYu3uO",
@@ -30487,26 +30490,30 @@
         "reason": "Contemporary melodic punk with anthemic hooks; shares high-energy rock DNA but its primary identity is modern punk rather than retro/classic rock revival.",
         "title": "Against Me! — I Was a Teenage Anarchist",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a1191cc556c99c62ffb0829b",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a1191cc556c99c62ffb0829b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "punk_rock"
       },
       {
-        "url": "https://open.spotify.com/track/2Cw8aZ5rH0U5LzqFZ4ZCqT",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2Cw8aZ5rH0U5LzqFZ4ZCqT",
         "score": 5,
         "reason": "Nails the NWOC blend of massive retro riffing and sleek modern production more cleanly, tilting fully toward hard/classic rock spectacle rather than punk protest.",
         "title": "The Struts — Could Have Been Me",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 6,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 892,
