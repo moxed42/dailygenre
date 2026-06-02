@@ -6491,7 +6491,20 @@
     "vibe": "Silk shirt, bassline first, absolutely no rush.",
     "songs_listened": [],
     "rank_order": 88,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/08MwGIiLtz0uDiTzs2NvsZ",
+        "score": 3,
+        "reason": "Has 4/4 drive and some electro bass, but the laid-back post-disco/boogie feel and full song structure pull it away from the stripped Detroit ghettotech template.",
+        "title": "Emerson; Detroit In Effect — Sending All My Love Out - Detroit In Effect Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fca8b3ed0ac585163e3f6760",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Ghettotech"
+      }
+    ]
   },
   {
     "id": 169,
@@ -13691,9 +13704,9 @@
         "reason": "150 BPM 808s, minimal synths, and chopped vocal stabs epitomize Detroit ghettotech’s raw, looped-up, sexualized club energy.",
         "title": "DJ Assault — Bitchstrumental",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b8b3acdd0665b52e958721b7",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b8b3acdd0665b52e958721b7",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/28fE3dH5fG9hP5QD4LqX9d",
@@ -13701,9 +13714,9 @@
         "reason": "Fast electro-bass groove, raunchy rap chant, and tight 150-ish tempo land this squarely in the ghettotech/booty continuum rather than general Miami bass.",
         "title": "DJ Godfather; Ricky Burns — Block the Hoe",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ac9c8ed017db218958d98474",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ac9c8ed017db218958d98474",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/08MwGIiLtz0uDiTzs2NvsZ",
@@ -13711,19 +13724,21 @@
         "reason": "Has 4/4 drive and some electro bass, but the laid-back post-disco/boogie feel and full song structure pull it away from the stripped Detroit ghettotech template.",
         "title": "Emerson; Detroit In Effect — Sending All My Love Out - Detroit In Effect Remix",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fca8b3ed0ac585163e3f6760",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fca8b3ed0ac585163e3f6760",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "boogie"
       },
       {
-        "url": "https://open.spotify.com/track/0C9H3FrHHB0Ppg1bCg8XPh",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0C9H3FrHHB0Ppg1bCg8XPh",
         "score": 5,
         "reason": "Jacked 150 BPM kicks, chopped “shake that” vocal hook, and bare-bones arrangement nail the quintessential ghettotech DJ tool feel.",
         "title": "DJ Assault — Shake It Baby",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4erJBoqNtQtSgwTmnSGY7A",
@@ -13731,16 +13746,18 @@
         "reason": "Explicit call-and-response hook and pounding Detroit-style bass fit the vibe, though the slower build and more structured song form make it slightly less archetypal than the pure loop tools.",
         "title": "DJ Assault — Sex On The Beach",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028347273eb2e5f34d1e287fd6",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028347273eb2e5f34d1e287fd6",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 33,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 382,
