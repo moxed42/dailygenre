@@ -11089,72 +11089,75 @@
       {
         "url": "https://open.spotify.com/track/0Rv7Ql0ImNHE4LqZFrMldi",
         "score": 4,
-        "reason": "HorsegiirL’s track runs at gabber-adjacent speed with pounding four‑on‑the‑floor and aggressively synthetic texture; it leans more pop‑internet than orthodox Rotterdam, but the kick and tempo keep it clearly in the gabber orbit.",
+        "reason": "HorsegiirL’s track runs at gabber-adjacent speed with pounding four-on-the-floor and aggressively synthetic texture; it leans more pop-internet than orthodox Rotterdam, but the kick and tempo keep it clearly in the gabber orbit.",
         "title": "horsegiirL — eat, sleep, slay, 🔁",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4hjRjhLvBIMUUhRjb7DACd",
         "score": 3,
-        "reason": "Vyrval’s cut is phonk first—808 slides and trap hats—but the blown‑out low end and relentless drive brush up against gabber’s intensity without fully committing to the genre’s kick style or tempo.",
+        "reason": "Vyrval’s cut is phonk first—808 slides and trap hats—but the blown-out low end and relentless drive brush up against gabber’s intensity without fully committing to the genre’s kick style or tempo.",
         "title": "vyrval — ✻H+3+ЯД✻7luCJIo0T6...",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cf51c0044e3008ce1edfcf70",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cf51c0044e3008ce1edfcf70",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "phonk"
       },
       {
-        "url": "https://open.spotify.com/track/4CKl6IkvzHfK8mPk0ZP8s4",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4CKl6IkvzHfK8mPk0ZP8s4",
         "score": 5,
-        "reason": "A better exemplar because it is straight, classic‑feeling hardcore/gabber: extremely fast four‑on‑the‑floor, relentlessly distorted kick, and minimal, shouted hooks that embody the genre’s core without phonk’s trap‑beat baggage.",
+        "reason": "A better exemplar because it is straight, classic-feeling hardcore/gabber: extremely fast four-on-the-floor, relentlessly distorted kick, and minimal, shouted hooks that embody the genre’s core without phonk’s trap-beat baggage.",
         "title": "Rotterdam Terror Corps — Rotterdam Hooligan",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3IVrlcM5gDoj3lghHY9m7I",
         "score": 5,
-        "reason": "Brutalismus 3000 sit right in the modern gabber/acid‑techno crossover: hardcore tempo, clipped industrial kicks, and screamed vocals make this an archetypal example of contemporary gabber extremity.",
+        "reason": "Brutalismus 3000 sit right in the modern gabber/acid-techno crossover: hardcore tempo, clipped industrial kicks, and screamed vocals make this an archetypal example of contemporary gabber extremity.",
         "title": "Brutalismus 3000 — Satan Was A Babyboomer",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0247447a00ad298af19cc0ca41",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0247447a00ad298af19cc0ca41",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5lE64uyiHhhSwS01VI4pV6",
         "score": 4,
-        "reason": "“Buurman Uit Berlijn” blends gabber with miami bass and euro‑rap, but the distorted kick, frantic pace, and rave‑chant hook keep it a clear representative of the neo‑gabber resurgence.",
+        "reason": "“Buurman Uit Berlijn” blends gabber with Miami bass and euro-rap, but the distorted kick, frantic pace, and rave-chant hook keep it a clear representative of the neo-gabber resurgence.",
         "title": "MCR-T; Joost — Buurman Uit Berlijn",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b26068e7903fd1752e93f9d9",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3CXYFdMkJraqKaCBzhPeOv",
         "score": 4,
-        "reason": "Joost’s track is pure party‑gabber: clipped hardcore drums, shouted hooks, and cartoon aggression that read as gabber even while it plays with europop gloss.",
+        "reason": "Joost’s track is pure party-gabber: clipped hardcore drums, shouted hooks, and cartoon aggression that read as gabber even while it plays with europop gloss.",
         "title": "Joost — BOOM BOOM!!!!!",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fb6d09c4700996b57095a41c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 10,
     "pending_songs": [],
     "favoritesong": "horsegiirL — eat, sleep, slay, 🔁",
     "favoritesongurl": "https://open.spotify.com/track/0Rv7Ql0ImNHE4LqZFrMldi",
-    "monthlycontender": false,
+    "monthlycontender": true,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6",
-    "monthfavorite": false
+    "monthfavorite": true,
+    "monthleastfavorite": false
   },
   {
     "id": 301,
@@ -12739,7 +12742,20 @@
       }
     ],
     "rank_order": 220,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4hjRjhLvBIMUUhRjb7DACd",
+        "score": 3,
+        "reason": "Vyrval’s cut is phonk first—808 slides and trap hats—but the blown-out low end and relentless drive brush up against gabber’s intensity without fully committing to the genre’s kick style or tempo.",
+        "title": "vyrval — ✻H+3+ЯД✻7luCJIo0T6...",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cf51c0044e3008ce1edfcf70",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Gabber"
+      }
+    ]
   },
   {
     "id": 345,
@@ -31546,7 +31562,7 @@
     "monthlycontender": true,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028672a409c23eb823a6c71358",
-    "monthfavorite": true,
+    "monthfavorite": false,
     "monthleastfavorite": false
   },
   {
