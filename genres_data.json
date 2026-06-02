@@ -9375,25 +9375,15 @@
         "_pendingGenreTag": "neofolk"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4K3dCty2z0l30P5A45d3jr",
-        "score": 4,
-        "reason": "Long‑form, voice‑plus‑noise piece with minimal conventional “song” structure that pushes closer to power‑electronics practice",
-        "title": "Sutcliffe Jügend — Birthright",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/75f0mim2WHU6SdYi8LwJnt",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/75f0mim2WHU6SdYi8LwJnt",
         "score": 4,
         "reason": "Harsh noise, sinister samples and grinding drones align strongly with power electronics, even as it leans a bit more industrial/PE hybrid than pure PE",
         "title": "Genocide Organ — Mind Control",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a034c00953264f0e2fecf3c0",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 9,
