@@ -4485,7 +4485,20 @@
     "vibe": "A wellness retreat brochure has become sentient and learned piano.",
     "songs_listened": [],
     "rank_order": 530,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5KZ4DC772dYcRBAizx0yYk",
+        "score": 3,
+        "reason": "New-age ambience and Enya’s layered vocals connect to Celtic tradition, but the absence of rock rhythm section makes it Celtic/new age rather than Celtic rock proper.",
+        "title": "Enya — Caribbean Blue - 2009 Remaster",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023184c671068d02838d47b277",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Celtic rock"
+      }
+    ]
   },
   {
     "id": 113,
@@ -18124,7 +18137,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0248aa22984b9dc4d38a8ede95",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2FBmddNjVLziN4AxfUmdQe",
@@ -18134,7 +18147,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d188e7dcd58eb10cf49a9f57",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2uLx3Gka9TGCz9Zgu7Uwav",
@@ -18142,19 +18155,21 @@
         "reason": "Classic rock take on a traditional tune; the twin-guitar leads and bluesy phrasing foreground 70s hard rock more than Celtic dance energy.",
         "title": "Thin Lizzy — Whiskey In The Jar",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d4d20445241a8e71b03e7faa",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d4d20445241a8e71b03e7faa",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "classic_rock"
       },
       {
-        "url": "https://open.spotify.com/track/3KxDRG5VHtXpr1tQGehGz1",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3KxDRG5VHtXpr1tQGehGz1",
         "score": 5,
         "reason": "Electric-guitar-driven arrangement of traditional material with clear Celtic melodic language and rock rhythm section—about as textbook Celtic rock as it gets.",
         "title": "Horslips — Dearg Doom",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1R00EC48t1yyB0ncCW0QaO",
@@ -18164,7 +18179,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025d4e53050a36174855670ea4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5KZ4DC772dYcRBAizx0yYk",
@@ -18174,17 +18189,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023184c671068d02838d47b277",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "new_age"
       },
       {
-        "url": "https://open.spotify.com/track/0eT8FZxvYlLZZH2cNcu6Uo",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0eT8FZxvYlLZZH2cNcu6Uo",
         "score": 4,
         "reason": "Straight-ahead rock band pulse under unmistakably Celtic fiddle lines, giving a clearer rock-driven frame to the same melodic world.",
         "title": "Runrig — Loch Lomond",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2779hybiMKwid1gcrFVMzH",
@@ -18194,7 +18211,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028dcbee93733dd5393e629653",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 4,
@@ -18202,7 +18219,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 506,
@@ -29313,7 +29331,20 @@
       }
     ],
     "rank_order": 152,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2uLx3Gka9TGCz9Zgu7Uwav",
+        "score": 3,
+        "reason": "Classic rock take on a traditional tune; the twin-guitar leads and bluesy phrasing foreground 70s hard rock more than Celtic dance energy.",
+        "title": "Thin Lizzy — Whiskey In The Jar",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d4d20445241a8e71b03e7faa",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Celtic rock"
+      }
+    ]
   },
   {
     "id": 835,
