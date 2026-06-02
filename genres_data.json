@@ -7007,7 +7007,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02140bf64ac9cddf05beaff312",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2SCyDaDxOEmqgEvak5Yt0N",
@@ -7015,9 +7015,9 @@
         "reason": "Glossy but still structurally weird: rubbery bass, glassy sound design, and pitch‑shifted hooks put this firmly in the hyperpop / PRODUCT‑era SOPHIE lane, even if it is a bit more streamlined",
         "title": "SOPHIE — JUST LIKE WE NEVER SAID GOODBYE",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e77ecae9169e22bbe544e479",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e77ecae9169e22bbe544e479",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0N8aH4DmGUEZWJMo6WVPbY",
@@ -7027,7 +7027,8 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0294055492bd9dd87055aae5f3",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "experimental_hip_hop"
       },
       {
         "url": "https://open.spotify.com/track/0i5xvpssbEtSY19b09Zmb1",
@@ -7037,7 +7038,7 @@
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1XD4K4CGAKTIBmFpvuaFru",
@@ -7045,9 +7046,9 @@
         "reason": "Emotive songcraft wrapped in noisy synths, clipping drums, and processed vocals; feels like alt‑emo filtered through hyperpop aesthetics, still clearly part of the scene’s core wave",
         "title": "Jane Remover — Dancing with your eyes closed",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ab0d83b752dcf9f2a7ddd51b",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ab0d83b752dcf9f2a7ddd51b",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0HO7edOcs0Ls9pVJ4n4AQ2",
@@ -7057,7 +7058,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0207adcf3680f1962bde42dc3b",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5TwX6zzWeK15M0mm6StdLA",
@@ -7065,9 +7066,10 @@
         "reason": "Breakneck tempo, distorted kicks, and screamed delivery push this toward breakcore / speedcore, with hyperpop vocal FX and synth stabs as a secondary flavor rather than the main identity",
         "title": "femtanyl, Danny Brown — M3 N MIN3",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027c25969dca09e659da13dfdf",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027c25969dca09e659da13dfdf",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "breakcore"
       },
       {
         "url": "https://open.spotify.com/track/0JP9xo3adEtGSdUEISiszL",
@@ -7075,9 +7077,9 @@
         "reason": "Bubblegum bass foundation, candy‑sharp synths, and heavily processed vocals make it a textbook “what is hyperpop?” track to bolster the block’s pure‑pop side",
         "title": "GFOTY — Tongue",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219f38111bd020b2027232d3c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0219f38111bd020b2027232d3c",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 4,
@@ -7086,7 +7088,9 @@
     "monthlycontender": true,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02140bf64ac9cddf05beaff312",
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 198,
@@ -10046,7 +10050,20 @@
       }
     ],
     "rank_order": 99,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5TwX6zzWeK15M0mm6StdLA",
+        "score": 3,
+        "reason": "Breakneck tempo, distorted kicks, and screamed delivery push this toward breakcore / speedcore, with hyperpop vocal FX and synth stabs as a secondary flavor rather than the main identity",
+        "title": "femtanyl, Danny Brown — M3 N MIN3",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027c25969dca09e659da13dfdf",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Hyperpop"
+      }
+    ]
   },
   {
     "id": 297,
@@ -17499,7 +17516,20 @@
       }
     ],
     "rank_order": 270,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/0N8aH4DmGUEZWJMo6WVPbY",
+        "score": 3,
+        "reason": "Hybrid cut where dense drums and distorted low end lean experimental hip hop, but glitchy vocal treatments and digital sheen tie it loosely back to hyperpop",
+        "title": "Danny Brown, underscores — Copycats",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0294055492bd9dd87055aae5f3",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Hyperpop"
+      }
+    ]
   },
   {
     "id": 524,
