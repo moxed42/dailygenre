@@ -858,7 +858,20 @@
       }
     ],
     "rank_order": 167,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5KF3zQP0cqLklYnF6riogg",
+        "score": 3,
+        "reason": "Gospel-tinged, string-sweetened live cut that leans more classic Nashville sentimental than gritty outlaw, with only Cash’s voice tying it loosely into the outlaw world.",
+        "title": "Johnny Cash — Sunday Morning Coming Down - Live at Ryman Auditorium, Nashville, TN - July 1970",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02299932c18fbb42f4f7cccc3a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Outlaw country"
+      }
+    ]
   },
   {
     "id": 22,
@@ -2908,17 +2921,29 @@
       {
         "url": "https://open.spotify.com/track/5KF3zQP0cqLklYnF6riogg",
         "score": 3,
-        "reason": "Gospel-tinged, string‑sweetened live cut that leans more classic Nashville sentimental than gritty outlaw, with only Cash’s voice tying it loosely into the outlaw world.",
+        "reason": "Gospel-tinged, string-sweetened live cut that leans more classic Nashville sentimental than gritty outlaw, with only Cash’s voice tying it loosely into the outlaw world.",
         "title": "Johnny Cash — Sunday Morning Coming Down - Live at Ryman Auditorium, Nashville, TN - July 1970",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02299932c18fbb42f4f7cccc3a",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "country"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2fDHuS1PTkHBbCWWZF1ph9",
+        "score": 4,
+        "reason": "Prison-show live recording with rough edges, audience roar, and Cash’s defiant delivery that foreground the anti-authoritarian outlaw persona.",
+        "title": "Johnny Cash — Folsom Prison Blues - Live at Folsom State Prison, Folsom, CA - January 1968",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b7e5f0fd9df7a811984a96d6",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7wYcTNEh8ArAVpHe0TxW9t",
         "score": 5,
-        "reason": "Stark, first‑person prison narrative with minimal adornment that perfectly captures outlaw’s rough, morally ambiguous storytelling.",
+        "reason": "Stark, first-person prison narrative with minimal adornment that perfectly captures outlaw’s rough, morally ambiguous storytelling.",
         "title": "Merle Haggard — Mama’s Hungry Eyes",
         "artist": "",
         "artwork": "",
@@ -2926,19 +2951,9 @@
         "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/2fDHuS1PTkHBbCWWZF1ph9",
-        "score": 4,
-        "reason": "Prison‑show live recording with rough edges, audience roar, and Cash’s defiant delivery that foreground the anti‑authoritarian outlaw persona.",
-        "title": "Johnny Cash — Folsom Prison Blues - Live at Folsom State Prison, Folsom, CA - January 1968",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b7e5f0fd9df7a811984a96d6",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
         "url": "https://open.spotify.com/track/2bItf9pag16H6HtjLOqzSS",
         "score": 4,
-        "reason": "Another prison‑yard performance, but with a more romantic, melodic lyric; still, the live grit and Cash’s mythos keep it squarely in outlaw territory.",
+        "reason": "Another prison-yard performance, but with a more romantic, melodic lyric; still, the live grit and Cash’s mythos keep it squarely in outlaw territory.",
         "title": "Johnny Cash — I Walk the Line - Live at San Quentin State Prison, San Quentin, CA - February 1969",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025693188cd64bf587c4ab938a",
@@ -2948,7 +2963,7 @@
       {
         "url": "https://open.spotify.com/track/7wL9EVloIobMw22rT7Ve8x",
         "score": 5,
-        "reason": "Self‑authored protest anthem with spare backing and explicit class politics; this is archetypal outlaw stance in both sound and subject.",
+        "reason": "Self-authored protest anthem with spare backing and explicit class politics; this is archetypal outlaw stance in both sound and subject.",
         "title": "Johnny Cash — Man in Black",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020198a911be09009034bd244a",
@@ -2963,17 +2978,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02084051346f432cc68a1279cd",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "western"
       },
       {
-        "url": "https://open.spotify.com/track/1wGIhYkKWSq4yACGq8bB9V",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1wGIhYkKWSq4yACGq8bB9V",
         "score": 4,
-        "reason": "Edgier barroom narrative with a looser band feel that reads much closer to rough‑and‑tumble outlaw than Robbins’s stately gunfighter tale.",
+        "reason": "Edgier barroom narrative with a looser band feel that reads much closer to rough-and-tumble outlaw than Robbins’s stately gunfighter tale.",
         "title": "David Allan Coe — Longhaired Redneck",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7nVQ8mo77KaUvhUQzh4vMy",
@@ -2988,7 +3005,7 @@
       {
         "url": "https://open.spotify.com/track/0HLBLRkkTOlAmjonShicD0",
         "score": 4,
-        "reason": "Intimate, writerly folk ballad with rural detail and weary delivery that aligns Townes’s outsider Americana directly with the outlaw singer‑songwriter lane.",
+        "reason": "Intimate, writerly folk ballad with rural detail and weary delivery that aligns Townes’s outsider Americana directly with the outlaw singer-songwriter lane.",
         "title": "Townes Van Zandt — I’ll Be Here in the Morning",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023c883be3287c02f857e91c06",
@@ -2998,27 +3015,29 @@
       {
         "url": "https://open.spotify.com/track/62qiyZxpfg6wEIV6S5PE9y",
         "score": 3,
-        "reason": "Western story‑song with a clean, almost crooner‑like vocal and tidy 60s Nashville sound; thematically adjacent to outlaw, but sonically more straight classic country.",
+        "reason": "Western story-song with a clean, almost crooner-like vocal and tidy 60s Nashville sound; thematically adjacent to outlaw, but sonically more straight classic country.",
         "title": "Marty Robbins — Doggone Cowboy",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0229fc151a03bc32dc22fd8ae6",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "western"
       },
       {
-        "url": "https://open.spotify.com/track/0wGvW9IT5Oqqj3r3LEmJXJ",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0wGvW9IT5Oqqj3r3LEmJXJ",
         "score": 4,
-        "reason": "Ragged, story‑driven barroom tune with looser playing that better matches outlaw’s rough edges while keeping the cowboy subject matter.",
+        "reason": "Ragged, story-driven barroom tune with looser playing that better matches outlaw’s rough edges while keeping the cowboy subject matter.",
         "title": "Willie Nelson — Bloody Mary Morning",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5rKTGQ2Q1wndZnX7km8WYu",
         "score": 4,
-        "reason": "Queer twist on the cowboy archetype delivered with drawl, twang, and an easy mid‑tempo swing that feels fully integrated into modern outlaw’s inclusive, outsider ethos.",
+        "reason": "Queer twist on the cowboy archetype delivered with drawl, twang, and an easy mid-tempo swing that feels fully integrated into modern outlaw’s inclusive, outsider ethos.",
         "title": "Orville Peck, Willie Nelson — Cowboys Are Frequently Secretly Fond Of Each Other",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e85363bd7e54323e1d40fdd5",
@@ -3028,7 +3047,7 @@
       {
         "url": "https://open.spotify.com/track/6mFJNq4JYyFjdBH20kpJNt",
         "score": 4,
-        "reason": "Gritty, coal‑country narrative with Steve Earle’s rough vocal and no‑nonsense band sound that fits right into the political, working‑class outlaw songbook.",
+        "reason": "Gritty, coal-country narrative with Steve Earle’s rough vocal and no-nonsense band sound that fits right into the political, working-class outlaw songbook.",
         "title": "Steve Earle — John Henry was a Steel Drivin’ Man",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02362d9662ecd9509d615daa58",
@@ -3038,7 +3057,7 @@
       {
         "url": "https://open.spotify.com/track/5Z0Khiz8xgC8AYMr4ctS8Y",
         "score": 5,
-        "reason": "Groove‑driven, sneering meditation on country history and authenticity that epitomizes Waylon’s role in defining outlaw sonically and lyrically.",
+        "reason": "Groove-driven, sneering meditation on country history and authenticity that epitomizes Waylon’s role in defining outlaw sonically and lyrically.",
         "title": "Waylon Jennings — Are You Sure Hank Done It This Way",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0260cefbd06c59a2b54dbc47e5",
@@ -3048,7 +3067,7 @@
       {
         "url": "https://open.spotify.com/track/6h3YJ05BovN1Pgk145J3r9",
         "score": 4,
-        "reason": "Crisp Bakersfield‑adjacent shuffle with working‑class regret; Haggard’s persona and lyric pull it into the outlaw orbit even with relatively polished production.",
+        "reason": "Crisp Bakersfield-adjacent shuffle with working-class regret; Haggard’s persona and lyric pull it into the outlaw orbit even with relatively polished production.",
         "title": "Merle Haggard — Mama Tried",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022ad2990a9ccda2d86f69568b",
@@ -3264,7 +3283,32 @@
     "vibe": "Country music heard through an English farm, played entirely for laughs.",
     "songs_listened": [],
     "rank_order": 668,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/0AQquaENerGps8BQmbPw14",
+        "score": 3,
+        "reason": "Cowboy ballad with narrative violence and Western imagery, but its smoother croon and 50s Nashville production make it feel more Western classic than scruffy outlaw.",
+        "title": "Marty Robbins — Big Iron",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02084051346f432cc68a1279cd",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Outlaw country"
+      },
+      {
+        "url": "https://open.spotify.com/track/62qiyZxpfg6wEIV6S5PE9y",
+        "score": 3,
+        "reason": "Western story-song with a clean, almost crooner-like vocal and tidy 60s Nashville sound; thematically adjacent to outlaw, but sonically more straight classic country.",
+        "title": "Marty Robbins — Doggone Cowboy",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0229fc151a03bc32dc22fd8ae6",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Outlaw country"
+      }
+    ]
   },
   {
     "id": 86,
