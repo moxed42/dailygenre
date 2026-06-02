@@ -2325,17 +2325,6 @@
         "_pendingGenreTag": "mainstream_country"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0F7FA14euOIX8KcbEturGH",
-        "score": 5,
-        "reason": "Trap‑style beat fused with country guitar and vocal twang makes this a textbook modern country‑rap anthem, clarifying the hybrid feel that Aldean only gestures toward.",
-        "title": "Lil Nas X — Old Town Road",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026239187793c9e492e687db01",
-        "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
-      },
-      {
         "url": "https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
         "score": 5,
         "reason": "Banjo, 808‑leaning drums and Bubba’s double‑time flow make this an archetypal early‑2000s country‑rap crossover, stronger genre‑wise than Aldean’s rock‑leaning take.",
@@ -2355,6 +2344,16 @@
         "source": "spotify",
         "added": "2026-06-02",
         "isAdd": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0F7FA14euOIX8KcbEturGH",
+        "score": 4,
+        "reason": "Trap‑style beat fused with country guitar and vocal twang makes this a pop‑leaning but still very clear country‑rap anthem for the session.",
+        "title": "Lil Nas X — Old Town Road",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026239187793c9e492e687db01",
+        "source": "spotify",
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 16,
