@@ -3194,16 +3194,22 @@
       const sourceSongs = normalizeSongsListened(sourceGenre.songs_listened || []);
       sourceGenre.songs_listened = sourceSongs;
       for (const song of sourceSongs) {
-        if (song._pendingGenreTag && song.levelUp) {
-          const tag = song._pendingGenreTag.toLowerCase();
-          const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(tag, g.genre));
-          if (target) {
-            const { isLevelUp, levelUp, ...base } = song;
-            const pendingSong = { ...(song.levelUp || {}), reason: song.levelUp?.reason || song.reason || '', score: song.levelUp?.score ?? song.score ?? null };
-            if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
-            if (consumeTags) delete song._pendingGenreTag;
-          }
-        }
+        if (!song._pendingGenreTag) continue;
+        const tag = song._pendingGenreTag.toLowerCase();
+        const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(tag, g.genre));
+        if (!target) continue;
+        const pendingSong = {
+          url: song.url || '',
+          score: song.score ?? null,
+          reason: song.reason || '',
+          title: song.title || '',
+          artist: song.artist || '',
+          artwork: song.artwork || '',
+          source: song.source || '',
+          added: song.added || new Date().toISOString().slice(0,10)
+        };
+        if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
+        if (consumeTags) delete song._pendingGenreTag;
       }
       return added;
     }
@@ -3249,7 +3255,7 @@
       const parsedOfficial = parseSongLinks(document.getElementById('songsListenedBulk').value);
       const resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       currentGenre.songs_listened = resolvedOfficial;
-      currentGenre.pending_songs = getPendingSongs(currentGenre);
+      currentGenre.pending_songs = normalizeSongsListened(getPendingSongs(currentGenre));
 
       processPendingNominationsForGenre(currentGenre, true);
 
