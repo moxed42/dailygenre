@@ -1321,6 +1321,17 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a7864231a834edbd0f36394",
         "source": "spotify",
         "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0xJ4x7J5n0L4V7h4wN3T9u",
+        "score": 5,
+        "reason": "One of the definitive Kansas City blues recordings: relaxed swing, riff-driven arrangement, and blues phrasing that helped establish the city's bridge between blues, jazz, and jump blues.",
+        "title": "Jay McShann — Confessin' the Blues",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
       }
     ],
     "rank_order": 11,
