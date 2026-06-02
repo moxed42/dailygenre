@@ -903,6 +903,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Talking blues"
+      },
+      {
+        "url": "https://open.spotify.com/track/28cnXtME493VX9NOw9cIUh",
+        "score": 3,
+        "reason": "Johnny Cash's late-career cover pulls Nine Inch Nails into stripped gospel territory—sparse production and wounded delivery fit americana's acoustic confessional mode, but the song's industrial DNA remains visible beneath the redemption narrative.",
+        "title": "Johnny Cash — Hurt",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026f4f62da3d811b6501a69ffa",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Americana"
       }
     ]
   },
@@ -2330,6 +2342,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Traditional bluegrass"
+      },
+      {
+        "url": "https://open.spotify.com/track/52vA3CYKZqZVdQnzRrdZt6",
+        "score": 3,
+        "reason": "Dylan's protest-era acoustic anthem is foundational folk, but the stark finger-pointing and lack of instrumental color feel more traditional-folk than the genre-blending rootsiness that defines modern americana.",
+        "title": "Bob Dylan — The Times They Are A-Changin'",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b75cedd9435250e77b60bfbe",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Americana"
       }
     ],
     "monthfavorite": false,
@@ -17437,9 +17461,9 @@
         "reason": "Jason Isbell's literate alt-country: fingerpicked acoustic detail and lived-in baritone over measured backbeat, anchoring americana in plainspoken storytelling and roots-rock restraint.",
         "title": "Jason Isbell — 24 Frames",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020d636a92ca157d0fdf2352c2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020d636a92ca157d0fdf2352c2",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/28cnXtME493VX9NOw9cIUh",
@@ -17447,19 +17471,21 @@
         "reason": "Johnny Cash's late-career cover pulls Nine Inch Nails into stripped gospel territory—sparse production and wounded delivery fit americana's acoustic confessional mode, but the song's industrial DNA remains visible beneath the redemption narrative.",
         "title": "Johnny Cash — Hurt",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026f4f62da3d811b6501a69ffa",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026f4f62da3d811b6501a69ffa",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "country"
       },
       {
-        "url": "https://open.spotify.com/track/3WCRCPSqXwa8N6QNUOJnan",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3WCRCPSqXwa8N6QNUOJnan",
         "score": 5,
         "reason": "Cash's Sun Records classic captures country-folk rebellion with minimal acoustic instrumentation and freight-train rhythm, defining the outlaw archetype that runs through americana's lineage.",
         "title": "Johnny Cash — Folsom Prison Blues",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5QFYLEw2XgZE0cqpvwXHPB",
@@ -17469,7 +17495,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b23102aeea3aa79ee91cd1e5",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/17Zzi8qsn8mdm0t0JTGeQo",
@@ -17479,7 +17505,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020bc584e8e6aefded5b054117",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/52vA3CYKZqZVdQnzRrdZt6",
@@ -17489,17 +17515,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b75cedd9435250e77b60bfbe",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "folk"
       },
       {
-        "url": "https://open.spotify.com/track/3AhXZBEqbXxNfD8SCLJjSP",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3AhXZBEqbXxNfD8SCLJjSP",
         "score": 5,
         "reason": "Dylan goes electric-folk on Highway 61: organ swirl, snare crack, and surreal lyrics merge folk storytelling with rock energy, establishing the template for roots music that refuses to stay acoustic.",
         "title": "Bob Dylan — Like a Rolling Stone",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3O81hRvdSg32Vq7H3ne9OM",
@@ -17509,27 +17537,29 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0203c6a79f0920e63681421cd8",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7wfCiX59FY09gsKKFhYfxp",
         "score": 2,
-        "reason": "Lana Del Rey's cinematic orchestral pop nods to nostalgic Americana *imagery*, but the synth pads, lush strings, and studio sheen place it squarely in baroque dream-pop rather than roots instrumentation or genre tradition.",
-        "title": "Lana Del Rey — American",
+        "reason": "Lana Del Rey's cinematic orchestral pop nods to nostalgic Americana imagery, but the synth pads, lush strings, and studio sheen place it squarely in baroque dream-pop rather than roots instrumentation or genre tradition.",
+        "title": "American",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ebc8cfac8b586bc475b04918",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "baroque_pop"
       },
       {
-        "url": "https://open.spotify.com/track/5ygDXis42ncn6kYG14lEVG",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5ygDXis42ncn6kYG14lEVG",
         "score": 5,
         "reason": "Emmylou Harris delivers crystalline country-folk over spare acoustic backing, her purity of tone and reverence for tradition epitomizing americana's bridge between classic country and literate folk.",
         "title": "Emmylou Harris — Boulder to Birmingham",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0211723f2867f29b2134ae47e4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4TWn4YeBaTqDURrYLd6k0a",
@@ -17539,7 +17569,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f5aac98410fb9e64e29827d4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5w6i8twsqy0DnXxGzPLHDp",
@@ -17549,17 +17579,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028352ba18a72a0ebd8cab2e5f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "chamber_pop"
       },
       {
-        "url": "https://open.spotify.com/track/1KxwZYyzWNyZSRyErj2ojT",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1KxwZYyzWNyZSRyErj2ojT",
         "score": 4,
         "reason": "Isakov balances intimate fingerpicking with subtle band textures—pedal steel hints, brushed drums—keeping one foot in folk minimalism and the other in full-band americana warmth.",
         "title": "Gregory Alan Isakov — Amsterdam",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022753d9786604e09ebdbf0244",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2c78oUybrylUrT96i65PuH",
@@ -17569,7 +17601,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02de5f0133f5840a0289a76e2f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1EuvOdyyzhFUP2z3gfr6xz",
@@ -17579,7 +17611,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02272ee11b380eed8b82a1c9a4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4JGyoZ6sHC6sHeAsFPeTMR",
@@ -17589,17 +17621,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02203369ee2591469d6ac1e4ba",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "adult_alternative"
       },
       {
-        "url": "https://open.spotify.com/track/0jHwAMCVPdUXq4RDw5cuyB",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0jHwAMCVPdUXq4RDw5cuyB",
         "score": 5,
         "reason": "Townes Van Zandt's stark, aching ballad exemplifies americana's poetic soul: economy of language, world-weary voice, and fingerpicked guitar distilling heartbreak to its purest form.",
         "title": "Townes Van Zandt — Pancho and Lefty",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/6YfEvtwpQwGAWZBWzNmoIw",
@@ -17609,7 +17643,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e564c5e6be9e9cace137b989",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5DnT9a5IM3eMjKgXTWVJvi",
@@ -17619,7 +17653,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b7a4a59ac03447db7491f37",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 14,
@@ -17653,7 +17687,9 @@
     "favoritesongurl": "https://open.spotify.com/track/5DnT9a5IM3eMjKgXTWVJvi",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b7a4a59ac03447db7491f37"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b7a4a59ac03447db7491f37",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 494,
@@ -23089,7 +23125,20 @@
       }
     ],
     "rank_order": 66,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/7wfCiX59FY09gsKKFhYfxp",
+        "score": 2,
+        "reason": "Lana Del Rey's cinematic orchestral pop nods to nostalgic Americana imagery, but the synth pads, lush strings, and studio sheen place it squarely in baroque dream-pop rather than roots instrumentation or genre tradition.",
+        "title": "American",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ebc8cfac8b586bc475b04918",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Americana"
+      }
+    ]
   },
   {
     "id": 664,
@@ -23822,7 +23871,20 @@
       }
     ],
     "rank_order": 1,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5w6i8twsqy0DnXxGzPLHDp",
+        "score": 3,
+        "reason": "Gregory Alan Isakov's orchestral folk ballad is gorgeous but pulls toward chamber-pop delicacy—the symphonic arrangement and hushed atmosphere edge away from americana's earthier, band-driven core.",
+        "title": "Gregory Alan Isakov — Silver Bell",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028352ba18a72a0ebd8cab2e5f",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Americana"
+      }
+    ],
     "favoritesong": "The Decemberists — Here I Dreamt I Was an Architect",
     "favoritesongurl": "https://open.spotify.com/track/1UyYuaCxOF4ilkRDZ74nJW",
     "monthlycontender": false,
