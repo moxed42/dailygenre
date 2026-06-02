@@ -939,9 +939,9 @@
         "reason": "Archetypal Detroit blues: Alberta’s gritty vocal, electric combo feel, and city‑club groove nail the urban, working‑band side of the style",
         "title": "Alberta Adams — Long Gone",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258ff716f8baaa7cda2d88fa1",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0258ff716f8baaa7cda2d88fa1",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1MwR07lZv0tu8kJePTLVAh",
@@ -951,7 +951,18 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e35fe012c759666513010ee9",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1kPBhUw8TqPVaTkbH7nYIv",
+        "score": 4,
+        "reason": "Tough, electric club blues from a Detroit master, with churning groove and amplified grit that more directly reflects the city’s postwar sound",
+        "title": "John Lee Hooker — Boogie Chillen",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7lSyhl54L5FYRPeGmzVrlL",
@@ -961,7 +972,7 @@
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
@@ -971,7 +982,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02163638a736ec917acc53f637",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5B5JM1VxUe1aZNmtt0M5Zy",
@@ -981,14 +992,16 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0210eb89d605247b9d3dee9e09",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 31,
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 25,
@@ -2699,15 +2712,14 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5Z3GHaZ6ec9bsiI5BenrbY",
+        "url": "https://open.spotify.com/track/5Z3GHaZ6ec9bsiI5BenrbY",
         "score": 5,
         "reason": "Smooth, string‑heavy Nashville ballad that drapes the vocal in classic countrypolitan velvet while staying firmly in country idiom.",
         "title": "Charlie Rich — Behind Closed Doors",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024ac041e0d889d3a2608210d5",
         "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5A9scs52hDGefDOTRNio5o",
@@ -2829,15 +2841,14 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7wYcTNEh8ArAVpHe0TxW9t",
+        "url": "https://open.spotify.com/track/7wYcTNEh8ArAVpHe0TxW9t",
         "score": 5,
         "reason": "Stark, first‑person prison narrative with minimal adornment that perfectly captures outlaw’s rough, morally ambiguous storytelling.",
         "title": "Merle Haggard — Mama’s Hungry Eyes",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2fDHuS1PTkHBbCWWZF1ph9",
@@ -2880,15 +2891,14 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1wGIhYkKWSq4yACGq8bB9V",
+        "url": "https://open.spotify.com/track/1wGIhYkKWSq4yACGq8bB9V",
         "score": 4,
         "reason": "Edgier barroom narrative with a looser band feel that reads much closer to rough‑and‑tumble outlaw than Robbins’s stately gunfighter tale.",
         "title": "David Allan Coe — Longhaired Redneck",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7nVQ8mo77KaUvhUQzh4vMy",
@@ -2921,15 +2931,14 @@
         "added": "2026-06-02"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0wGvW9IT5Oqqj3r3LEmJXJ",
+        "url": "https://open.spotify.com/track/0wGvW9IT5Oqqj3r3LEmJXJ",
         "score": 4,
         "reason": "Ragged, story‑driven barroom tune with looser playing that better matches outlaw’s rough edges while keeping the cowboy subject matter.",
         "title": "Willie Nelson — Bloody Mary Morning",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5rKTGQ2Q1wndZnX7km8WYu",
@@ -21472,15 +21481,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0rMCRqn0aBomdpZ74BEe47",
+        "url": "https://open.spotify.com/track/0rMCRqn0aBomdpZ74BEe47",
         "score": 4,
         "reason": "Classic West Coast small‑group cool with airy sax phrasing and light swing that better foregrounds the regional sound.",
         "title": "Stan Getz — The Girl From Ipanema",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/7yHSPODI3gBcCNl6YOLu2L",
@@ -21503,15 +21511,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0TYiTQkE1AeIpf8ivuvnq4",
+        "url": "https://open.spotify.com/track/0TYiTQkE1AeIpf8ivuvnq4",
         "score": 4,
         "reason": "Light, relaxed swing with West Coast players and a drier studio sound that hits the geographic and stylistic brief more cleanly.",
         "title": "Chet Baker — Look For The Silver Lining",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/3GRRmV65lSUxQ82GHyVAZO",
@@ -21524,15 +21531,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0yVHP0p0nhgYvC3xVH6t2t",
+        "url": "https://open.spotify.com/track/0yVHP0p0nhgYvC3xVH6t2t",
         "score": 4,
         "reason": "Stripped‑down quartet texture and brushed‑drum swing that sound closer to West Coast club‑band cool than orchestrated studio experiments.",
         "title": "Paul Desmond — Take Ten",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/1YQWosTIljIvxAgHWTp7KP",
@@ -21565,15 +21571,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0gN9yVZrjMShq0yvfG8Tnk",
+        "url": "https://open.spotify.com/track/0gN9yVZrjMShq0yvfG8Tnk",
         "score": 4,
         "reason": "Relaxed, spacious trumpet over a light rhythm section by West Coast players that reads much more directly as regional cool jazz.",
         "title": "Chet Baker — My Funny Valentine",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 16,
@@ -34848,15 +34853,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1Z7QFZ79zbyVT5mnyXzvXq",
+        "url": "https://open.spotify.com/track/1Z7QFZ79zbyVT5mnyXzvXq",
         "score": 5,
         "reason": "Straight-up knuckle-dragging beatdown with cavernous vocals and mid-tempo chugs that define the style more clearly than the slick metalcore polish here.",
         "title": "No Zodiac — Evilution",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/3qvwWDx9xOH4PmPaTXOj0d",
@@ -34869,15 +34873,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0E6q9uRmY2aDeb1LBDwZGc",
+        "url": "https://open.spotify.com/track/0E6q9uRmY2aDeb1LBDwZGc",
         "score": 4,
         "reason": "Heavy, mid-tempo hardcore with thick, simple riffs and a street-level stomp that reads more as classic beatdown than slick Euro-metalcore.",
         "title": "Nasty — Fire",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       },
       {
         "url": "https://open.spotify.com/track/0S3YlKnOR7F6T8t20gLhf0",
@@ -34930,15 +34933,14 @@
         "added": "2026-06-01"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1HnYkM6wPDShP0pJi4HiQn",
+        "url": "https://open.spotify.com/track/1HnYkM6wPDShP0pJi4HiQn",
         "score": 4,
         "reason": "Slower, more primitive chugging with brutal vocal cadences that foreground the beatdown side of NYHC much more directly.",
         "title": "Bulldoze — Reputation",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
-        "isLevelUp": true
+        "added": "2026-06-01"
       }
     ],
     "rank_order": 57,
