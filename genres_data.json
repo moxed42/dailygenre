@@ -17819,8 +17819,10 @@
         "artwork": "",
         "source": "spotify",
         "added": "2026-06-02",
-        "isPending": true,
-        "pendingFrom": "Detroit blues"
+        "isLevelUp": false,
+        "isAdd": false,
+        "_pendingGenreTag": "",
+        "levelUp": null
       }
     ]
   },
