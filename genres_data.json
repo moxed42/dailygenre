@@ -4557,6 +4557,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Power electronics"
+      },
+      {
+        "url": "https://open.spotify.com/track/6nDloNj6D5ZrE0rnc2luMD",
+        "score": 3,
+        "reason": "Deeply submerged and static, with more dark ambient/ritual drone feel; it brushes dream punk atmospherically but lacks the urban, melodic vaporwave core.",
+        "title": "F0x3r — Neon Rain",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0206a113f4bbbb807f4c4dd547",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dreampunk"
       }
     ],
     "monthfavorite": false,
@@ -5228,7 +5240,20 @@
       }
     ],
     "rank_order": 11,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4iWHO2J5uDlV9e9vqvguh1",
+        "score": 3,
+        "reason": "Heavy sample chopping and glitchy edits foreground plunderphonic chaos over pure atmosphere, making it more experimental vaporwave than straightforward dream punk.",
+        "title": "death's dynamic shroud — PSEUDO",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0210c305802c8212e2bc781124",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dreampunk"
+      }
+    ],
     "favoritesongurl": "https://open.spotify.com/track/3HfB5hBU0dmBt8T0iCmH42",
     "favoritesong": "Talking Heads — Burning Down the House",
     "favoriteartist": "",
@@ -10706,6 +10731,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Hyperpop"
+      },
+      {
+        "url": "https://open.spotify.com/track/25cIHDEJuvSrza0eIWPd3E",
+        "score": 3,
+        "reason": "Collage-like structure and noisy swells lean into experimental vaporwave/breakcore; the nostalgia haze is there but the aggression pushes it to the edge of dream punk.",
+        "title": "輕描淡寫 — 我昨晚夢見你了",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fed8beb575da1a8e4e487adf",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dreampunk"
       }
     ]
   },
@@ -36071,12 +36108,12 @@
       {
         "url": "https://open.spotify.com/track/2dFUtZtpWydAU4QMmUOK47",
         "score": 5,
-        "reason": "Hazy pads, smeared city ambience, and looped late‑night melodies create a drifting, nocturnal vaporwave soundscape that’s archetypal “dream punk” in mood and pacing.",
+        "reason": "Hazy pads, smeared city ambience, and looped late-night melodies create a drifting, nocturnal vaporwave soundscape that’s archetypal “dream punk” in mood and pacing.",
         "title": "２８１４ — 恢复",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021be92a146cb0b49b0b2222f0",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6nDloNj6D5ZrE0rnc2luMD",
@@ -36084,29 +36121,31 @@
         "reason": "Deeply submerged and static, with more dark ambient/ritual drone feel; it brushes dream punk atmospherically but lacks the urban, melodic vaporwave core.",
         "title": "F0x3r — Neon Rain",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0206a113f4bbbb807f4c4dd547",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0206a113f4bbbb807f4c4dd547",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "dark_ambient"
       },
       {
-        "url": "https://open.spotify.com/track/5TRaHe4teHDkDWgIyF4P2g",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5TRaHe4teHDkDWgIyF4P2g",
         "score": 5,
-        "reason": "Rain‑soaked pads and distant city synths over soft pulses nail the cinematic, urban‑night ambience associated with dream punk.",
+        "reason": "Rain-soaked pads and distant city synths over soft pulses nail the cinematic, urban-night ambience associated with dream punk.",
         "title": "2814 — 新宿ゴールデン街",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7KZGp2H4qEade8352Xhsj5",
         "score": 4,
-        "reason": "Long-form, reverb-heavy synth washes and distant rhythmic swells evoke wandering through a neon-lit mallscape, clearly in the dream‑punky vaporwave zone.",
+        "reason": "Long-form, reverb-heavy synth washes and distant rhythmic swells evoke wandering through a neon-lit mallscape, clearly in the dream-punky vaporwave zone.",
         "title": "２８１４ — Eyes of the Temple",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02429f9ba4e67ea3d5dfd5ad73",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/25cIHDEJuvSrza0eIWPd3E",
@@ -36116,17 +36155,19 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fed8beb575da1a8e4e487adf",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "breakcore"
       },
       {
-        "url": "https://open.spotify.com/track/2lK0B4dz0Yj6r9ZfCmZJLQ",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2lK0B4dz0Yj6r9ZfCmZJLQ",
         "score": 4,
-        "reason": "Smeared samples and gentle percussion drift by like half‑remembered radio, capturing dream punk’s liminal, memory‑fog feel without getting too harsh.",
+        "reason": "Smeared samples and gentle percussion drift by like half-remembered radio, capturing dream punk’s liminal, memory-fog feel without getting too harsh.",
         "title": "t e l e p a t h テレパシー能力者 — 現代消費主義",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4iWHO2J5uDlV9e9vqvguh1",
@@ -36134,26 +36175,30 @@
         "reason": "Heavy sample chopping and glitchy edits foreground plunderphonic chaos over pure atmosphere, making it more experimental vaporwave than straightforward dream punk.",
         "title": "death's dynamic shroud — PSEUDO",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0210c305802c8212e2bc781124",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0210c305802c8212e2bc781124",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "vaporwave"
       },
       {
-        "url": "https://open.spotify.com/track/0puuzRMbNJLu5uJvA9N86j",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0puuzRMbNJLu5uJvA9N86j",
         "score": 5,
-        "reason": "Slow-motion pads, rain-soaked texture, and late‑night melodies over soft beats make this a definitive example of dreamy, urban vaporwave.",
+        "reason": "Slow-motion pads, rain-soaked texture, and late-night melodies over soft beats make this a definitive example of dreamy, urban vaporwave.",
         "title": "猫 シ Corp. — Palm Mall",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 79,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1030,
