@@ -32152,7 +32152,20 @@
       }
     ],
     "rank_order": 193,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6EJfuLTl01JoGXt8rtM1rd",
+        "score": 3,
+        "reason": "Long‑form, orchestrated melodeath/folk piece where choirs and strings are prominent, but the primary identity is epic melodic death metal rather than symphonic metal proper",
+        "title": "Wintersun — Sons of Winter and Stars",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0278466f5ee5abbde34bd00535",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Symphonic metal"
+      }
+    ]
   },
   {
     "id": 965,
@@ -33319,7 +33332,20 @@
       }
     ],
     "rank_order": 195,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/7gQmh1MbKIbXfcVhKS8cZP",
+        "score": 2,
+        "reason": "Orchestral textures appear, but the track’s core is breakdown‑heavy deathcore, with the symphonic layer supporting an extreme metal narrative rather than defining the genre identity",
+        "title": "Synestia, Disembodied Tyrant, Ben Duerr — The Poetic Edda",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0279010c68df3fc6f57ada136c",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Symphonic metal"
+      }
+    ]
   },
   {
     "id": 995,
@@ -34098,7 +34124,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "Krypteria — All Systems Go↗\n4/5\nBig orchestral backdrops, dramatic vocal and metal rhythm section — solid, if slightly less iconic, example of Euro symphonic metal\nNightwish — Wish I Had an Angel [web:104][web:107][web:113]↗\n5/5\nNightwish at full bombast: film‑score strings, double‑kick drums and Tarja’s operatic vocal define the symphonic metal template\nWithin Temptation — See Who I Am [web:106][web:112]↗\n5/5\nGothic choirs, string pads and chugging guitars under a soaring vocal — classic Within Temptation symphonic metal\nWintersun — Sons of Winter and Stars [file:3]↗\n3/5\nEpic, orchestrated melodeath with symphonic touches, but the core identity is melodic death/folk metal rather than symphonic metal proper\nNightwish — Wish I Had an Angel (alt pick if you want two Nightwish cuts in the set) [web:104][web:107]↗\n5/5\nNightwish combining cinematic orchestration, huge chorus and galloping power‑metal rhythm — absolutely central to the genre\nTristania — Crushed Dreams [file:3]↗\n4/5\nDark, doom‑leaning but heavily orchestrated, with gothic choirs — comfortably within the more somber edge of symphonic metal\nNightwish — Nemo [file:3]↗\n5/5\nNightwish’s big single ballad, marrying string arrangements, power‑metal riffing and operatic vocals — genre staple\nNightwish — Ghost Love Score [file:3]↗\n5/5\nMulti‑movement, choir‑laden epic — often cited as one of the towering achievements of symphonic metal\nNightwish — Storytime [file:3]↗\n5/5\nHigh‑energy, orchestral banger with bombastic chorus — a more modern but still quintessential Nightwish symphonic track\nEpica — Unleashed [web:105][web:108][web:111]↗\n5/5\nEpica’s blend of operatic soprano, choirs and full orchestra over heavy riffing is straight down the center of symphonic metal\nNightwish — The Phantom Of The Opera [file:3]↗\n5/5\nGothic duet with big orchestral swells and metal crunch — another archetypal Nightwish symphonic piece\nEvanescence; Lindsey Stirling — Hi‑Lo↗\n2/5\nCinematic alt‑metal with some strings; symphonic flourishes, but the song’s heart is mainstream modern rock\nEpica — Unleashed [web:105][web:108]↗\n5/5\nKeeps the lush, violin‑friendly feel but in a band where orchestra and choir are integral, not ornamental\nSynestia; Disembodied Tyrant; Ben Duerr — The Poetic Edda [file:3]↗\n2/5\nPunishing, orchestral deathcore; symphonic elements are strong but the core is breakdown‑driven extreme metal rather than classic symphonic metal\nEpica — Unleashed [web:105][web:108]↗\n5/5\nIf you want a single, unambiguous symph",
+    "notes": "",
     "summary": "Symphonic metal integrates orchestral arrangements, choral elements, and classically influenced keyboard textures into heavy metal, creating music of considerable grandeur and melodic richness. Nightwish, Epica, and Within Temptation are its biggest acts, and the genre has become one of metal's most commercially successful and globally popular branches, particularly in Europe.",
     "key_artists": "Nightwish, Epica, Within Temptation, Evanescence, Amaranthe (major figures)",
     "suggested_songs": "Nightwish -- Ghost Love Score, Epica -- Consign to Oblivion, Within Temptation -- Mother Earth, Evanescence -- Bring Me to Life, Amaranthe -- Hunger",
@@ -34107,130 +34133,136 @@
       {
         "url": "https://open.spotify.com/track/6EJfuLTl01JoGXt8rtM1rd",
         "score": 3,
-        "reason": "Long‑form, orchestrated melodeath/folk piece where choirs and strings are prominent, but the primary identity is epic melodic death metal rather than symphonic metal proper.",
+        "reason": "Long‑form, orchestrated melodeath/folk piece where choirs and strings are prominent, but the primary identity is epic melodic death metal rather than symphonic metal proper",
         "title": "Wintersun — Sons of Winter and Stars",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0278466f5ee5abbde34bd00535",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "melodic_death_metal"
       },
       {
-        "url": "https://open.spotify.com/track/0R6nPxwE1f0bkCYp2qNwRc",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0R6nPxwE1f0bkCYp2qNwRc",
         "score": 5,
-        "reason": "Keeps the epic sweep but makes orchestra and choir the structural backbone, so the symphonic metal identity is unmistakable from first listen.",
+        "reason": "Keeps the epic sweep but makes orchestra and choir the structural backbone, so the symphonic metal identity is unmistakable from first listen",
         "title": "Epica — Cry for the Moon",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/14FYoYL1fg7cD0fhjzxcot",
         "score": 4,
-        "reason": "Slow, doom‑leaning track thick with strings and gothic choirs, sitting comfortably on the darker, more atmospheric edge of symphonic metal while still reading as part of the genre’s core sound.",
+        "reason": "Slow, doom‑leaning track thick with strings and gothic choirs, sitting comfortably on the darker, more atmospheric edge of symphonic metal while still reading as part of the genre’s core sound",
         "title": "Tristania — Crushed Dreams",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f6dd953bc4dd14e18e3280a8",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f6dd953bc4dd14e18e3280a8",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0tbbaYdhiFLFH0YUvvajI8",
         "score": 5,
-        "reason": "Compact, hook‑forward single where string arrangements, keyboard choir pads and a clear verse‑chorus arc make it a near‑perfect introduction to symphonic metal for newcomers.",
+        "reason": "Compact, hook‑forward single where string arrangements, keyboard choir pads and a clear verse‑chorus arc make it a near‑perfect introduction to symphonic metal for newcomers",
         "title": "Nightwish — Nemo",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c7190a75bf05ad902f52c7a2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c7190a75bf05ad902f52c7a2",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4k2MUm5uMlRH1P9ZQBr0ER",
         "score": 5,
-        "reason": "Multi‑movement epic that fully integrates orchestra and choir with the band, showcasing symphonic metal’s maximal, operatic side and often serving as a definitive genre touchstone.",
+        "reason": "Multi‑movement epic that fully integrates orchestra and choir with the band, showcasing symphonic metal’s maximal, operatic side and often serving as a definitive genre touchstone",
         "title": "Nightwish — Ghost Love Score",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c7190a75bf05ad902f52c7a2",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1otw1I6vguSWf6Pxn9m1oC",
         "score": 5,
-        "reason": "High‑tempo, densely orchestrated anthem whose choirs, string stabs and bombastic chorus embody the genre’s modern blockbuster sound.",
+        "reason": "High‑tempo, densely orchestrated anthem whose choirs, string stabs and bombastic chorus embody the genre’s modern blockbuster sound",
         "title": "Nightwish — Storytime",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dbfe9a51b813ddc881d21dce",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dbfe9a51b813ddc881d21dce",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2EO2MCzUHcZ1L8NWx2vYSJ",
         "score": 5,
-        "reason": "Alternating harsh/clean vocals framed by choir and orchestral hits put Epica’s hybrid of death‑tinged riffing and cinematic arrangement squarely in symphonic metal’s center lane.",
+        "reason": "Alternating harsh/clean vocals framed by choir and orchestral hits put Epica’s hybrid of death‑tinged riffing and cinematic arrangement squarely in symphonic metal’s center lane",
         "title": "Epica — Unleashed",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021b10ef0efe2fc1c1f19a8020",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6VOxRb9IAJQDDyHBlyEdPF",
         "score": 5,
-        "reason": "Rock‑opera style duet where strings, choral flourishes and dramatic dynamics push a theatrical composition firmly into symphonic metal territory.",
+        "reason": "Rock‑opera style duet where strings, choral flourishes and dramatic dynamics push a theatrical composition firmly into symphonic metal territory",
         "title": "Nightwish — The Phantom Of The Opera",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027dc7ccc9efe21a79a25b0bc9",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027dc7ccc9efe21a79a25b0bc9",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/69VoMBUMOPPKfbnYaj2KUw",
         "score": 2,
-        "reason": "Violin leads and string pads add a symphonic gloss, but the songwriting and production sit primarily in polished alternative metal, with orchestral elements feeling ornamental rather than foundational.",
+        "reason": "Violin leads and string pads add a symphonic gloss, but the songwriting and production sit primarily in polished alternative metal, with orchestral elements feeling ornamental rather than foundational",
         "title": "Evanescence, Lindsey Stirling — Hi‑Lo",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e1a2c84e60b182ca208307ca",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "alt_metal"
       },
       {
-        "url": "https://open.spotify.com/track/3XkQh67n1zXy3e2cquEoP1",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3XkQh67n1zXy3e2cquEoP1",
         "score": 5,
-        "reason": "Uses similar melodic drama but with orchestra and choir tightly interwoven into the riffing, so it reads instantly as core symphonic rather than alt‑metal with strings.",
+        "reason": "Uses similar melodic drama but with orchestra and choir tightly interwoven into the riffing, so it reads instantly as core symphonic rather than alt‑metal with strings",
         "title": "Nightwish — Ever Dream",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7gQmh1MbKIbXfcVhKS8cZP",
         "score": 2,
-        "reason": "Orchestral textures appear, but the track’s core is breakdown‑heavy deathcore, with the symphonic layer supporting an extreme metal narrative rather than defining the genre identity.",
+        "reason": "Orchestral textures appear, but the track’s core is breakdown‑heavy deathcore, with the symphonic layer supporting an extreme metal narrative rather than defining the genre identity",
         "title": "Synestia, Disembodied Tyrant, Ben Duerr — The Poetic Edda",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0279010c68df3fc6f57ada136c",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0279010c68df3fc6f57ada136c",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "deathcore"
       },
       {
-        "url": "https://open.spotify.com/track/1POKJlqx9Y0r0U1ZLEPqAF",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1POKJlqx9Y0r0U1ZLEPqAF",
         "score": 5,
-        "reason": "Shows how extreme heaviness and symphonic writing can coexist while keeping orchestra and choir structurally central instead of as a garnish around breakdowns.",
+        "reason": "Shows how extreme heaviness and symphonic writing can coexist while keeping orchestra and choir structurally central instead of as a garnish around breakdowns",
         "title": "Dimmu Borgir — Progenies of the Great Apocalypse",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 3,
     "favoritesong": "Nightwish — The Phantom Of The Opera",
     "favoritesongurl": "https://open.spotify.com/track/6VOxRb9IAJQDDyHBlyEdPF",
-    "monthlycontender": false,
+    "monthlycontender": true,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027dc7ccc9efe21a79a25b0bc9",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027dc7ccc9efe21a79a25b0bc9",
     "pending_songs": [],
     "monthfavorite": false,
     "monthleastfavorite": false
