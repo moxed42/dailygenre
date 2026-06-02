@@ -6716,7 +6716,20 @@
       }
     ],
     "rank_order": 227,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4EFHa8WyL0jFOJ7ni965ok",
+        "score": 2,
+        "reason": "Heavy on melodic dubstep and cinematic drops, with a straight 4/4 but lacking the signature pitched hardstyle kick; it reads more as full-on dubstep than genuine dubstyle fusion.",
+        "title": "Obsidia — Elevation",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026659e11cc91a5d93dd5e1036",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dubstyle"
+      }
+    ]
   },
   {
     "id": 173,
@@ -10333,7 +10346,20 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2JHhMy6BkHhbVMhpFBYCws",
+        "score": 3,
+        "reason": "Full-on hardstyle with screech leads and straight 4/4 drive; structurally it’s more pure hardstyle than kick-and-bass dubstep hybrid, only brushing dubstyle via sound design.",
+        "title": "Noisecontrollers; Pavelow — Quatre Mains",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e719fa3de29344cc24fd744f",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dubstyle"
+      }
+    ],
     "monthfavorite": false,
     "monthleastfavorite": false
   },
@@ -10366,7 +10392,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cc45d2d52835e90997469c53",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2JHhMy6BkHhbVMhpFBYCws",
@@ -10376,17 +10402,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e719fa3de29344cc24fd744f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hardstyle"
       },
       {
-        "url": "https://open.spotify.com/track/6LYmMJkbwmQR1CwXq5t6Qq",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6LYmMJkbwmQR1CwXq5t6Qq",
         "score": 4,
         "reason": "Alternates half-time wobble sections with hardstyle kicks, making the genre’s hybrid DNA—dubstep sound design over hardstyle structure—much clearer.",
         "title": "Headhunterz — Scrap Attack (Dubstyle Remix)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4EFHa8WyL0jFOJ7ni965ok",
@@ -10394,19 +10422,32 @@
         "reason": "Heavy on melodic dubstep and cinematic drops, with a straight 4/4 but lacking the signature pitched hardstyle kick; it reads more as full-on dubstep than genuine dubstyle fusion.",
         "title": "Obsidia — Elevation",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026659e11cc91a5d93dd5e1036",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026659e11cc91a5d93dd5e1036",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "dubstep"
       },
       {
-        "url": "https://open.spotify.com/track/5n0PqSxEiZhfJMfX6uB2fn",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5n0PqSxEiZhfJMfX6uB2fn",
         "score": 5,
         "reason": "Textbook dubstyle: hardstyle kicks and 150 BPM drive interlock with classic wobble and half-time switchups, perfectly embodying the hybrid between hardstyle and dubstep.",
         "title": "Wildstylez — Huh? (Dubstyle Remix)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/0Fv7TQmX0d6Q4Qqg4l4V5X",
+        "score": 5,
+        "reason": "One of the clearest historical snapshots of the genre: pitched hardstyle kicks collide with wobbling basslines and half-time breakdowns, capturing the brief moment when hardstyle producers fully embraced dubstep aesthetics.",
+        "title": "Brennan Heart — Just As Easy (Wildstylez & SMD Dubstyle Remix)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
       }
     ],
     "rank_order": 5,
@@ -10414,7 +10455,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 287,
