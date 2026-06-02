@@ -2311,7 +2311,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0225e6fd4d010d30711c12761d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5ZVGvay4xwgXMnQWffNYeU",
@@ -2319,9 +2319,21 @@
         "reason": "Country rocker with a rap‑style half‑spoken flow in the verses; it nods to country rap but still feels primarily like mainstream radio country.",
         "title": "Jason Aldean — Dirt Road Anthem",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb28649b53d81d41e285ad45",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02eb28649b53d81d41e285ad45",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "mainstream_country"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0F7FA14euOIX8KcbEturGH",
+        "score": 5,
+        "reason": "Trap‑style beat fused with country guitar and vocal twang makes this a textbook modern country‑rap anthem, clarifying the hybrid feel that Aldean only gestures toward.",
+        "title": "Lil Nas X — Old Town Road",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026239187793c9e492e687db01",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7KhItv7Cx8yHJpAjeB6cVt",
@@ -2331,7 +2343,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e82286b51cca2e5643b14352",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/4FxkQzIhsLAkuiqX5puvU6",
@@ -2341,18 +2353,8 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0285b51e47b16a87b82c252dc5",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
-      },
-      {
-        "url": "https://open.spotify.com/track/0F7FA14euOIX8KcbEturGH?si=5cf43718c8b342b6",
-        "score": 4,
-        "reason": "Trap‑style beat fused with country guitar and vocal twang makes this a pop‑leaning but still very clear country‑rap anthem for the session.",
-        "title": "Lil Nas X — Old Town Road",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026239187793c9e492e687db01",
-        "source": "spotify",
-        "added": "2026-06-01"
       }
     ],
     "rank_order": 16,
