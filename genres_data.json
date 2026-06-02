@@ -4076,7 +4076,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/138h11BrRAgwvpUyMASH5z | 2 | Pastoral, lush orchestral writing, but more straight concert music than purpose‑built light‑music entertainment; sits closer to modern classical mood painting. | Eric Coates / John Wilson / BBC Philharmonic — By the Sleepy Lagoon\nhttps://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs | 4 | Snappy march from the London Suite with a singable tune and compact form, written squarely for light‑music broadcast use. | Eric Coates — Knightsbridge: March (London Suite)\nhttps://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kXS | 3 | Iconic “Sailing By” atmosphere with lilting melody and soft orchestration, but functions more as late‑night continuity music than core light‑music repertoire. | Ronald Binge / Vernon Handley / BBC Concert Orchestra — Sailing By\nhttps://open.spotify.com/track/4sHP8GWaDgBu5tJp6Ff9xQ | 5 | Classic mid‑century British light‑music cue, gently swinging and directly written as BBC‑style utility music. | Sidney Torch — London Transport Suite: Piccadilly Line\nhttps://open.spotify.com/track/5gRromS070zI6XKPxL5ByM | 4 | Tuneful, unhurried melody, clear sectional form, and plush but not heavy orchestration—textbook “light concert piece” rather than symphonic statement. | Ronald Binge / Slovak Radio Symphony Orchestra / Ernest Tomlinson — Elizabethan Serenade\nhttps://open.spotify.com/track/4Fo6kov4zj8SNmONi2QH9C | 5 | Directly from a “British Light Classics” set; chipper melody, bright woodwinds, and brisk tempo nail the cheery, utilitarian side of light music. | Robert Farnon / Studio 2 Concert Orchestra / Reginald Kilbey — Portrait of a Flirt\nhttps://open.spotify.com/track/4P8vJrZZzLq6eKHGi7ngUO | 3 | Programmatic orientalism and chorus make this more a novelty orchestral showpiece; light‑music adjacent but leaning into older music‑hall exoticism. | Albert Ketèlbey / Royal Philharmonic Orchestra / Royal Philharmonic Chorus / Eric Rogers — In A Persian Market\nhttps://open.spotify.com/track/1Q4oIHX6qd7q6igkfeE7bM | 4 | Breezy, episodic tune designed for concert‑light programming, with colorful but unfussy orchestration. | Haydn Wood — Joyousness\nhttps://open.spotify.com/track/3bi36AY2NhDYI2qyzXUBkF | 4 | Jaunty, work‑song‑style tune with clean orchestration and modest dynamic arc, exactly in the “music while you work” lineage. | Sidney Torch / Sidney Torch Orchestra — On a Spring Note\nhttps://open.spotify.com/track/2nUcSa4uJuNeMwUDt7OtNF | 5 | Literally from “Light Music While You Work”; chipper melody, steady pulse, and functional background character make it a perfect archetype of British light music. | Sherman Myers / Harold Collins And His Orchestra — Fairy On The Clock",
     "summary": "Light music is a British institution: orchestral and semi-orchestral music designed for pleasant, undemanding listening — marches, waltzes, suites, and melodic arrangements that sit just above elevator music in ambition but never approach the seriousness of classical. The BBC had an entire Light Programme dedicated to it. Eric Coates, who wrote the Dam Busters march, is its unofficial patron saint, and the genre is essentially an extended argument that cheerfulness is an underrated virtue.",
     "key_artists": "Eric Coates, Robert Farnon, Ron Goodwin, Leroy Anderson, Roger Roger (originators) • John Wilson Orchestra (modern preservationist)",
     "suggested_songs": "Eric Coates — Dam Busters March, Leroy Anderson — The Typewriter, Ron Goodwin — 633 Squadron, Robert Farnon — Jumping Bean",
@@ -4085,52 +4085,66 @@
       {
         "url": "https://open.spotify.com/track/138h11BrRAgwvpUyMASH5z",
         "score": 2,
-        "reason": "Pastoral, lush orchestral writing, but more straight concert music than purpose‑built light‑music entertainment; sits closer to modern classical mood painting.",
+        "reason": "Pastoral, lush orchestral writing, but more straight concert music than purpose-built light-music entertainment; sits closer to modern classical mood painting.",
         "title": "Eric Coates / John Wilson / BBC Philharmonic — By the Sleepy Lagoon",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02867cde30e2ca2e7d21348804",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "classical"
       },
       {
-        "url": "https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
-        "score": 4,
-        "reason": "Snappy march from the London Suite with a singable tune and compact form, written squarely for light‑music broadcast use.",
-        "title": "Eric Coates — Knightsbridge: March (London Suite)",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kXS",
-        "score": 3,
-        "reason": "Iconic “Sailing By” atmosphere with lilting melody and soft orchestration, but functions more as late‑night continuity music than core light‑music repertoire.",
-        "title": "Ronald Binge / Vernon Handley / BBC Concert Orchestra — Sailing By",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/4sHP8GWaDgBu5tJp6Ff9xQ",
-        "score": 5,
-        "reason": "Classic mid‑century British light‑music cue, gently swinging and directly written as BBC‑style utility music.",
-        "title": "Sidney Torch — London Transport Suite: Piccadilly Line",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/5gRromS070zI6XKPxL5ByM",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5gRromS070zI6XKPxL5ByM",
         "score": 4,
         "reason": "Tuneful, unhurried melody, clear sectional form, and plush but not heavy orchestration—textbook “light concert piece” rather than symphonic statement.",
         "title": "Ronald Binge / Slovak Radio Symphony Orchestra / Ernest Tomlinson — Elizabethan Serenade",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a80bb0581974a08a58b9aae3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/6FQ0xoxPj6vYpO8m0QExDs",
+        "score": 4,
+        "reason": "Snappy march from the London Suite with a singable tune and compact form, written squarely for light-music broadcast use.",
+        "title": "Eric Coates — Knightsbridge: March (London Suite)",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02"
+      },
+      {
+        "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kXS",
+        "score": 3,
+        "reason": "Iconic “Sailing By” atmosphere with lilting melody and soft orchestration, but functions more as late-night continuity music than core light-music repertoire.",
+        "title": "Ronald Binge / Vernon Handley / BBC Concert Orchestra — Sailing By",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "_pendingGenreTag": "classical"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3bi36AY2NhDYI2qyzXUBkF",
+        "score": 4,
+        "reason": "Jaunty, work-song-style tune with clean orchestration and modest dynamic arc, exactly in the “music while you work” lineage.",
+        "title": "Sidney Torch / Sidney Torch Orchestra — On a Spring Note",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02dde6137df327bbd3de37e459",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/4sHP8GWaDgBu5tJp6Ff9xQ",
+        "score": 5,
+        "reason": "Classic mid-century British light-music cue, gently swinging and directly written as BBC-style utility music.",
+        "title": "Sidney Torch — London Transport Suite: Piccadilly Line",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4Fo6kov4zj8SNmONi2QH9C",
@@ -4138,39 +4152,31 @@
         "reason": "Directly from a “British Light Classics” set; chipper melody, bright woodwinds, and brisk tempo nail the cheery, utilitarian side of light music.",
         "title": "Robert Farnon / Studio 2 Concert Orchestra / Reginald Kilbey — Portrait of a Flirt",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021bbc89693b5886558ee4f3a2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021bbc89693b5886558ee4f3a2",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4P8vJrZZzLq6eKHGi7ngUO",
         "score": 3,
-        "reason": "Programmatic orientalism and chorus make this more a novelty orchestral showpiece; light‑music adjacent but leaning into older music‑hall exoticism.",
+        "reason": "Programmatic orientalism and chorus make this more a novelty orchestral showpiece; light-music adjacent but leaning into older music-hall exoticism.",
         "title": "Albert Ketèlbey / Royal Philharmonic Orchestra / Royal Philharmonic Chorus / Eric Rogers — In A Persian Market",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e76b43a18eb58a7ac273a210",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "classical"
       },
       {
-        "url": "https://open.spotify.com/track/1Q4oIHX6qd7q6igkfeE7bM",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1Q4oIHX6qd7q6igkfeE7bM",
         "score": 4,
-        "reason": "Breezy, episodic tune designed for concert‑light programming, with colorful but unfussy orchestration.",
+        "reason": "Breezy, episodic tune designed for concert-light programming, with colorful but unfussy orchestration.",
         "title": "Haydn Wood — Joyousness",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
-      },
-      {
-        "url": "https://open.spotify.com/track/3bi36AY2NhDYI2qyzXUBkF",
-        "score": 4,
-        "reason": "Jaunty, work‑song‑style tune with clean orchestration and modest dynamic arc, exactly in the “music while you work” lineage.",
-        "title": "Sidney Torch / Sidney Torch Orchestra — On a Spring Note",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dde6137df327bbd3de37e459",
-        "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2nUcSa4uJuNeMwUDt7OtNF",
@@ -4180,7 +4186,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a572ce735b91e2d34a30423",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 5,
@@ -4606,7 +4612,44 @@
       }
     ],
     "rank_order": 507,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/138h11BrRAgwvpUyMASH5z",
+        "score": 2,
+        "reason": "Pastoral, lush orchestral writing, but more straight concert music than purpose-built light-music entertainment; sits closer to modern classical mood painting.",
+        "title": "Eric Coates / John Wilson / BBC Philharmonic — By the Sleepy Lagoon",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02867cde30e2ca2e7d21348804",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Light music"
+      },
+      {
+        "url": "https://open.spotify.com/track/6sJzL3pMlJlujDuI4e13kXS",
+        "score": 3,
+        "reason": "Iconic “Sailing By” atmosphere with lilting melody and soft orchestration, but functions more as late-night continuity music than core light-music repertoire.",
+        "title": "Ronald Binge / Vernon Handley / BBC Concert Orchestra — Sailing By",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Light music"
+      },
+      {
+        "url": "https://open.spotify.com/track/4P8vJrZZzLq6eKHGi7ngUO",
+        "score": 3,
+        "reason": "Programmatic orientalism and chorus make this more a novelty orchestral showpiece; light-music adjacent but leaning into older music-hall exoticism.",
+        "title": "Albert Ketèlbey / Royal Philharmonic Orchestra / Royal Philharmonic Chorus / Eric Rogers — In A Persian Market",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e76b43a18eb58a7ac273a210",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Light music"
+      }
+    ]
   },
   {
     "id": 123,
