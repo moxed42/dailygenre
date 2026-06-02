@@ -1463,7 +1463,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ffffe932598090498459b77c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/3RiPr603aXAoi4GHyXx0uy",
@@ -1473,18 +1473,18 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028ff7c3580d429c8212b9a3b6",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/0JKAKLMNAJBxPREfuf28hR",
+        "url": "🔼 ADD: https://open.spotify.com/track/5ZBnVHVp7PyuQzlAJXoHQ9",
         "score": 5,
         "reason": "Z.Z. Hill's late-career soul-blues classic: slick Southern production with minor-key chromatic descent and impassioned vocal over tight rhythm section, bridging traditional blues and contemporary R&B.",
         "title": "Z.Z. Hill — Down Home Blues",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02308b3a9472fc9484be1f2edf",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -1492,7 +1492,9 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 39,
