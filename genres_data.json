@@ -31809,11 +31809,13 @@
     ],
     "rank_order": 26,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
+    "favoritesong": "The Surfaris — Wipe Out - Hit Version",
+    "favoritesongurl": "https://open.spotify.com/track/0JCV6KRYQ9j0gLqUTTTrP2",
     "monthlycontender": false,
     "monthfavorite": false,
-    "monthleastfavorite": false
+    "monthleastfavorite": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e26350d8b6a86ebe61f9eee4"
   },
   {
     "id": 937,
