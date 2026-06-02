@@ -13719,14 +13719,14 @@
     "vibe": "The Paradise Garage, 1982 — the feeling that music and community are the same thing.",
     "songs_listened": [
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/0y9tF9mYwlcqUWTuOHQ3kL",
+        "url": "🔼 ADD: https://open.spotify.com/track/2SFoFcaiLmQwtRFhWkVqWV",
         "score": 5,
         "reason": "Quintessential Garage house: soulful, gospel-tinged vocal, rich keys, and spiritual Paradise Garage uplift that defines the genre’s emotional core.",
         "title": "Masters At Work — To Be In Love",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029daa96912532acdd9b6f4b74",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       },
       {
@@ -13737,17 +13737,17 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020c0989b16fb930dc0db9a425",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/3X3c8mJd2zjA1Tn5uT8n9w",
+        "url": "🔼 ADD: https://open.spotify.com/track/6yoQriJJb7NYwJyVhgdkFi",
         "score": 4,
         "reason": "Sample-heavy New York house with chunky drums and a raw club edge, tracing the Paradise Garage lineage while showing the rugged side of Garage house history.",
         "title": "Todd Terry Project — Bango (To the Batmobile)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0248f2379a7bf7e4d3cb9d4529",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -13755,7 +13755,9 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 380,
