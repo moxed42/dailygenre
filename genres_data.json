@@ -2206,7 +2206,8 @@
     ],
     "rank_order": 15,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 66,
@@ -2627,7 +2628,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 75,
@@ -3167,7 +3169,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02133d663963bdaa99891a5cee",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 85,
@@ -5766,7 +5769,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 157,
@@ -9280,7 +9284,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 273,
@@ -9654,7 +9659,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 286,
@@ -11273,7 +11279,8 @@
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02baf2f329d4feeb19761eddf4",
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 330,
@@ -11641,7 +11648,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d12aac85fdc8f9eadeadd3fb",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/79s5XnCN4TJKTVMSmOx8Ep",
@@ -11651,7 +11658,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c1522381cb5d91ef16326867",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/01Lr5YepbgjXAWR9iOEyH1",
@@ -11661,17 +11668,29 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a76616abf60ce17491e95891",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P",
-        "score": 5,
-        "reason": "Lean, road‑rap beat and razor‑sharp London delivery make this a canonical UK rap text and stronger pure British‑hip‑hop exemplar.",
+        "score": 2,
+        "reason": "Classic UK road rap with minimal overlap in drill’s sliding basslines or rhythmic patterns; historically adjacent but not part of drill proper",
         "title": "Kano — P's and Q's",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "uk_hip_hop"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1o0y1i0Qz6pQx0Zf8sG6tU",
+        "score": 5,
+        "reason": "Definitive UK drill cut: sliding 808s, dark piano motif, and syncopated flows exemplify the London drill sound",
+        "title": "67 — Let's Lurk",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 6,
@@ -11679,7 +11698,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": true
   },
   {
     "id": 340,
@@ -14891,7 +14911,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 437,
@@ -18879,7 +18900,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 578,
@@ -20438,7 +20460,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 621,
@@ -23303,7 +23326,8 @@
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fa301e01c3ec11e2e06ca875",
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 704,
@@ -23857,7 +23881,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 717,
@@ -24949,7 +24974,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 744,
@@ -25728,7 +25754,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d419ed4f1e89669ce14bd369",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 766,
@@ -25801,7 +25828,8 @@
     "songs_listened": [],
     "rank_order": 607,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 769,
@@ -25882,7 +25910,8 @@
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029b9b36b0e22870b9f542d937",
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 770,
@@ -26207,7 +26236,8 @@
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e08b1250db5f75643f1508c9",
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 787,
@@ -26763,7 +26793,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 800,
@@ -28463,7 +28494,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 869,
@@ -31756,7 +31788,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 960,
@@ -33343,7 +33376,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1001,
@@ -34070,7 +34104,8 @@
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027dc7ccc9efe21a79a25b0bc9",
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1011,
@@ -36121,7 +36156,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1088,
