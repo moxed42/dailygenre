@@ -13674,31 +13674,33 @@
         "url": "https://open.spotify.com/track/1rV83OUTYwJUjSPCWwu680",
         "score": 4,
         "reason": "Strong electro swing fit: vintage swing vocals and horn phrasing are pushed over a crisp, modern dance beat, so the hybrid identity is obvious even if the Louie Prima source material keeps it a little more sample-forward than fully original.",
-        "title": "Louie Prima;Wolfgang Lohr — Black Coffee",
+        "title": "Louie Prima; Wolfgang Lohr — Black Coffee",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022d85d0554935d8626951cfb0",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022d85d0554935d8626951cfb0",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6GEOAMqbQX9zYMrZ18P1SC",
         "score": 3,
         "reason": "It absolutely gestures at electro swing in title and momentum, but it lands more like a game-score pastiche of the style than a core genre statement. The swing signifiers feel thinner and more novelty-driven than the canonical artist tracks here.",
-        "title": "A Hat in Time;Plasma3Music — Trainwreck of Electro Swing",
+        "title": "A Hat in Time; Plasma3Music — Trainwreck of Electro Swing",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0216f09a872815e2e1b68cee5d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "video_game_music"
       },
       {
-        "url": "https://open.spotify.com/track/2V4cW3z3FJSGXmoR38Undx?si=0c6f4b6b2d9b4e2b",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2V4cW3z3FJSGXmoR38Undx",
         "score": 5,
         "reason": "Cleaner statement of the genre’s core formula: swaggering vintage jazz sample design, obvious swing bounce, and club-ready electronic propulsion without feeling gimmicky.",
         "title": "Tape Five — Bad Boy Good Man",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/750jVPZnBVLItCUxaRR5iC",
@@ -13708,7 +13710,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb494c6471de2df7ac69acd9",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1Mv6JFhtA8VP45rc4OZZeE",
@@ -13718,7 +13720,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f4e90873a2933422a5d5c111",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 53,
@@ -13726,7 +13728,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 375,
@@ -17385,6 +17388,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Surf rock"
+      },
+      {
+        "url": "https://open.spotify.com/track/6GEOAMqbQX9zYMrZ18P1SC",
+        "score": 3,
+        "reason": "It absolutely gestures at electro swing in title and momentum, but it lands more like a game-score pastiche of the style than a core genre statement. The swing signifiers feel thinner and more novelty-driven than the canonical artist tracks here.",
+        "title": "A Hat in Time; Plasma3Music — Trainwreck of Electro Swing",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0216f09a872815e2e1b68cee5d",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Electro swing"
       }
     ]
   },
