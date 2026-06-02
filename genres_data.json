@@ -2381,6 +2381,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Tropical Rock"
+      },
+      {
+        "url": "https://open.spotify.com/track/6RCs8r9OgAB1pBQJJKUsBP",
+        "score": 3,
+        "reason": "Big hook and slick 70s production, but rhythm and chorus feel more crossover country-pop than lush countrypolitan tear-jerker.",
+        "title": "Glen Campbell — Rhinestone Cowboy",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0263134b3cf76a63e91647e1bb",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Countrypolitan"
       }
     ],
     "monthfavorite": false,
@@ -2842,27 +2854,27 @@
       {
         "url": "https://open.spotify.com/track/6vmAgl2y9MpoZKrVUXrPe5",
         "score": 4,
-        "reason": "String‑sweetened, slow 70s Nashville ballad with smooth baritone and lush backing vocals that sits just on the honky‑tonk side of countrypolitan polish.",
+        "reason": "String-sweetened, slow 70s Nashville ballad with smooth baritone and lush backing vocals that sits just on the honky-tonk side of countrypolitan polish.",
         "title": "Conway Twitty — Hello Darlin",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bc7f7609fce801806f47fdef",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bc7f7609fce801806f47fdef",
         "source": "spotify",
         "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2Cb2l4UoXynCHCeCYHRZN8",
         "score": 5,
-        "reason": "Archetypal Nashville string‑and‑choir production with big chorus, pedal steel, and tear‑jerker lyric; this is basically the textbook countrypolitan template.",
+        "reason": "Archetypal Nashville string-and-choir production with big chorus, pedal steel, and tear-jerker lyric; this is basically the textbook countrypolitan template.",
         "title": "Tammy Wynette — Stand By Your Man",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028c66ab65968b335b7847a202",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028c66ab65968b335b7847a202",
         "source": "spotify",
         "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1MOC6cJ0Ern3vt3ZeS20Qb",
         "score": 4,
-        "reason": "Orchestral arrangements and smooth crooning turn a plain folk narrative into plush, radio‑ready Nashville pop, squarely in countrypolitan territory.",
+        "reason": "Orchestral arrangements and smooth crooning turn a plain folk narrative into plush, radio-ready Nashville pop, squarely in countrypolitan territory.",
         "title": "Glen Campbell — Wichita Lineman - Remastered 2001",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b367fb90309a051f8aaacc9a",
@@ -2872,27 +2884,29 @@
       {
         "url": "https://open.spotify.com/track/6RCs8r9OgAB1pBQJJKUsBP",
         "score": 3,
-        "reason": "Big hook and slick 70s production, but rhythm and chorus feel more crossover country‑pop than lush countrypolitan tear‑jerker.",
+        "reason": "Big hook and slick 70s production, but rhythm and chorus feel more crossover country-pop than lush countrypolitan tear-jerker.",
         "title": "Glen Campbell — Rhinestone Cowboy",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0263134b3cf76a63e91647e1bb",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "country_pop"
       },
       {
-        "url": "https://open.spotify.com/track/5Z3GHaZ6ec9bsiI5BenrbY",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5Z3GHaZ6ec9bsiI5BenrbY",
         "score": 5,
-        "reason": "Smooth, string‑heavy Nashville ballad that drapes the vocal in classic countrypolitan velvet while staying firmly in country idiom.",
+        "reason": "Smooth, string-heavy Nashville ballad that drapes the vocal in classic countrypolitan velvet while staying firmly in country idiom.",
         "title": "Charlie Rich — Behind Closed Doors",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024ac041e0d889d3a2608210d5",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024ac041e0d889d3a2608210d5",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5A9scs52hDGefDOTRNio5o",
         "score": 4,
-        "reason": "Warmly orchestrated, inspirational ballad with soft rhythm section and choir‑like backing vocals that embody the crossover sheen of countrypolitan gospel‑tinted country.",
+        "reason": "Warmly orchestrated, inspirational ballad with soft rhythm section and choir-like backing vocals that embody the crossover sheen of countrypolitan gospel-tinted country.",
         "title": "Dolly Parton — Light of a Clear Blue Morning",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f6b59b662ca7c409822302e9",
