@@ -9364,12 +9364,12 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/0m1qUTThGNdFk6ucZZQzVz",
+        "url": "https://open.spotify.com/track/0xCJJpK4NLfwk0QOXTaNIp",
         "score": 5,
         "reason": "Vocal abuse over punishing, arrhythmic noise and oscillating feedback fits the power‑electronics template far more directly than a beat‑centric track",
         "title": "Consumer Electronics — Estuary English",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029ebbe894a13ea20f7c2a7f7d",
         "source": "spotify",
         "added": "2026-06-02"
       },
