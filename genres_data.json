@@ -2224,7 +2224,20 @@
       }
     ],
     "rank_order": 15,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/3nNXXPHGzCObHA50xCLzSf",
+        "score": 2,
+        "reason": "This is primarily contemporary folk singer-songwriter material with only a faint Irish adjacency in accent and atmosphere rather than clear Celtic traditional form or instrumentation.",
+        "title": "Schoolyard Days",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020fca023d5767760dcdce73bd",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Celtic music"
+      }
+    ],
     "monthfavorite": false,
     "monthleastfavorite": false,
     "favoritesong": "",
@@ -17115,7 +17128,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/75sSAymXP6tGOeRvImwzOf | 5 | Trad standard with rich, choral female vocals and orchestral backing; this arrangement leans classical crossover but is still an archetypal Celtic ballad choice. | Celtic Woman — Danny Boy\nhttps://open.spotify.com/track/3nNXXPHGzCObHA50xCLzSf | 1 | Contemporary folk‑pop song with no Celtic melodic or stylistic markers; it sits in modern singer‑songwriter territory rather than Celtic tradition. | Amble — Schoolyard Days\nhttps://open.spotify.com/track/5lbf3FvAOz1v2h1d9WiHPT | 4 | Lush, melancholic Celtic ballad feel with clear Gaelic roots, reinforcing the vocal‑centred Celtic vibe alongside Danny Boy. | Julie Fowlis — Touch the Sky\nhttps://open.spotify.com/track/1esmJ8t2PRbYt2yMx2aSEW | 2 | Film soundtrack take on an Irish song title; the performance feels more cinematic and American‑roots (“southern gothic”) than authentically Celtic in arrangement and phrasing. | Jack O’Connell, Brian Dunphy, Darren Holden — Rocky Road to Dublin\nhttps://open.spotify.com/track/1yFvSX3gXi79q7n53dUu1l | 5 | Fast, fiddle‑driven trad performance with strong Irish dance‑tune energy, giving a textbook up‑tempo Celtic session tune. | The Dubliners — Rocky Road to Dublin",
     "summary": "Celtic music encompasses the traditional and folk music traditions of the Celtic nations — Ireland, Scotland, Wales, Brittany, Galicia, and others — united by shared cultural heritage, modal melody, and acoustic instrumentation including fiddle, uilleann pipes, tin whistle, and bodhran. It remains one of the world's most vibrant living folk traditions with a large international diaspora audience.",
     "key_artists": "The Chieftains, Planxty, Altan, Capercaillie, Loreena McKennitt (originators/major figures)",
     "suggested_songs": "The Chieftains — The Foggy Dew, Planxty — Raggle Taggle Gypsy, Altan — The Horse With a Heart, Loreena McKennitt — The Mummers' Dance",
@@ -17123,53 +17136,57 @@
     "songs_listened": [
       {
         "url": "https://open.spotify.com/track/75sSAymXP6tGOeRvImwzOf",
-        "score": 5,
-        "reason": "Trad standard with rich, choral female vocals and orchestral backing; this arrangement leans classical crossover but is still an archetypal Celtic ballad choice.",
+        "score": 4,
+        "reason": "Lush crossover production softens the traditional core, but the melody, arrangement, and explicitly Celtic presentation still make this a solid genre fit.",
         "title": "Celtic Woman — Danny Boy",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0200df517164e035167137c4aa",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3nNXXPHGzCObHA50xCLzSf",
-        "score": 1,
-        "reason": "Contemporary folk‑pop song with no Celtic melodic or stylistic markers; it sits in modern singer‑songwriter territory rather than Celtic tradition.",
-        "title": "Amble — Schoolyard Days",
+        "score": 2,
+        "reason": "This is primarily contemporary folk singer-songwriter material with only a faint Irish adjacency in accent and atmosphere rather than clear Celtic traditional form or instrumentation.",
+        "title": "Schoolyard Days",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020fca023d5767760dcdce73bd",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020fca023d5767760dcdce73bd",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "folk"
       },
       {
-        "url": "https://open.spotify.com/track/5lbf3FvAOz1v2h1d9WiHPT",
-        "score": 4,
-        "reason": "Lush, melancholic Celtic ballad feel with clear Gaelic roots, reinforcing the vocal‑centred Celtic vibe alongside Danny Boy.",
-        "title": "Julie Fowlis — Touch the Sky",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5FtUtk5J7fxjMaCwTlPeWB",
+        "score": 5,
+        "reason": "A canonical traditional performance with unmistakable folk lineage, live ensemble energy, and clear Celtic melodic identity.",
+        "title": "Planxty — Raggle Taggle Gypsy/Tabhair Dom Do Lamh",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f0625179adb1626332232240",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1esmJ8t2PRbYt2yMx2aSEW",
-        "score": 2,
-        "reason": "Film soundtrack take on an Irish song title; the performance feels more cinematic and American‑roots (“southern gothic”) than authentically Celtic in arrangement and phrasing.",
-        "title": "Jack O’Connell, Brian Dunphy, Darren Holden — Rocky Road to Dublin",
+        "score": 3,
+        "reason": "It uses an Irish standard, but the soundtrack framing and Southern-gothic styling pull it away from being a clean Celtic exemplar.",
+        "title": "Rocky Road to Dublin",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021b1d170bc3184f511f8e38b7",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021b1d170bc3184f511f8e38b7",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "southern_gothic"
       },
       {
-        "url": "https://open.spotify.com/track/1yFvSX3gXi79q7n53dUu1l",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5OFXqc0YydDLSJTxEp0AjS",
         "score": 5,
-        "reason": "Fast, fiddle‑driven trad performance with strong Irish dance‑tune energy, giving a textbook up‑tempo Celtic session tune.",
-        "title": "The Dubliners — Rocky Road to Dublin",
+        "reason": "This is a widely recognized modern Celtic touchstone, driven by traditional rhythmic feel and folk instrumentation while remaining immediately legible as Celtic music.",
+        "title": "Loreena McKennitt — The Mummers' Dance",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029e73a48c8b4317b5750f8ca7",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 77,
@@ -17179,7 +17196,8 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0200df517164e035167137c4aa",
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 498,
