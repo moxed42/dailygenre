@@ -24473,7 +24473,20 @@
       }
     ],
     "rank_order": 24,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2stxwFkmW2kZ6SuyJGO5q8",
+        "score": 3,
+        "reason": "Selena’s ballad leans more Tejano/balada and regional Mexican than pop-chart sheen; shares emotional ballad DNA but sits slightly to the side of mainstream Mexican pop.",
+        "title": "Selena — No Me Queda Más",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb6311e55c5e8bc8366ff89d",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Mexican pop"
+      }
+    ],
     "favoritesong": "Ricky Martin — Livin’ la Vida Loca",
     "favoritesongurl": "https://open.spotify.com/track/0Ph6L4l8dYUuXFmb71Ajnd",
     "monthlycontender": false,
@@ -24506,42 +24519,44 @@
       {
         "url": "https://open.spotify.com/track/1uKjQoh8JZj9ryuYRhpd7E",
         "score": 4,
-        "reason": "Late‑80s Luis Miguel doing glossy Spanish‑language pop with big chorus, brass, and melodrama—feels like core Mexican pop songcraft even if it’s also classic Latin pop.",
+        "reason": "Late-80s Luis Miguel doing glossy Spanish-language pop with big chorus, brass, and melodrama—feels like core Mexican pop songcraft even if it’s also classic Latin pop.",
         "title": "Luis Miguel — Ahora Te Puedes Marchar",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026d2d141c6f14e161ca551971",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0oXLSuno5adlHcPzlzs8l6",
         "score": 4,
-        "reason": "Sleek 2000s production, verse/chorus pop structure, and Ana Torroja’s hooky topline put this firmly in the Latin pop lane, with strong Mexican radio‑pop DNA.",
+        "reason": "Sleek 2000s production, verse/chorus pop structure, and Ana Torroja’s hooky topline put this firmly in the Latin pop lane, with strong Mexican radio-pop DNA.",
         "title": "Aleks Syntek / Ana Torroja — Duele El Amor",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0279435be102596f5680b08e6e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2stxwFkmW2kZ6SuyJGO5q8",
         "score": 3,
-        "reason": "Selena’s ballad leans more Tejano/balada and regional Mexican than pop‑chart sheen; shares emotional ballad DNA but sits slightly to the side of mainstream Mexican pop.",
+        "reason": "Selena’s ballad leans more Tejano/balada and regional Mexican than pop-chart sheen; shares emotional ballad DNA but sits slightly to the side of mainstream Mexican pop.",
         "title": "Selena — No Me Queda Más",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02eb6311e55c5e8bc8366ff89d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02eb6311e55c5e8bc8366ff89d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "latin_pop"
       },
       {
-        "url": "https://open.spotify.com/track/0y7sNGuLZKXj4fL0xvFvgG",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0y7sNGuLZKXj4fL0xvFvgG",
         "score": 5,
-        "reason": "Big, polished Mexican pop ballad with soaring hook and radio‑ready production—ideal single‑track explainer for “Mexican pop” in this era.",
+        "reason": "Big, polished Mexican pop ballad with soaring hook and radio-ready production—ideal single-track explainer for “Mexican pop” in this era.",
         "title": "Gloria Trevi — Vestida De Azúcar",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 63,
