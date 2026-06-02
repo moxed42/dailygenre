@@ -5021,22 +5021,24 @@
       {
         "url": "https://open.spotify.com/track/3U6CPINSKmZJ09FtO9PgUa",
         "score": 3,
-        "reason": "Artsy, skeletal club track with sub-heavy low end and clipped vocal chops; feels more like art-pop/alt‑R&B flirting with UK bass aesthetics than a core scene cut.",
+        "reason": "Artsy, skeletal club track with sub-heavy low end and clipped vocal chops; feels more like art-pop/alt-R&B flirting with UK bass aesthetics than a core scene cut.",
         "title": "FKA twigs — Glass & Patron",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c3b888be56c44954fd90fb7c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "alternative_rnb"
       },
       {
-        "url": "https://open.spotify.com/track/72TFWvU3wUYdUuxejTTIzt",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/72TFWvU3wUYdUuxejTTIzt",
         "score": 5,
         "reason": "Contemporary UK bass anthem built on huge low-end pressure, chopped vocals, and a properly warehouse-ready groove, making the bass-first aesthetic unmistakable.",
         "title": "Fred again.. — Jungle",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026be9bac15995f089579074de",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/606wX4SIVeYvA8t28gytnt",
@@ -5044,19 +5046,30 @@
         "reason": "Aggressive, swung drums and rubbery bassline sit right at the intersection of bassline and hard house, making this an archetypal high-energy UK bass banger.",
         "title": "Silva Bumpa — BWU",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b006501c40113e827b12b79e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b006501c40113e827b12b79e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/2uN1dC2z58bG4OFQnYq3gc",
         "score": 5,
-        "reason": "Classic UK bassline/garage hybrid with wobbling low end and skippy drums that firmly grounds the session in the genre’s mid‑late 2000s club roots.",
+        "reason": "Classic UK bassline/garage hybrid with wobbling low end and skippy drums that firmly grounds the session in the genre’s mid-late 2000s club roots.",
         "title": "T2 — Heartbroken (feat. Jodie Aysha)",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2PI5aD48FXC1n4sxGYOqWm",
+        "score": 5,
+        "reason": "One of the foundational UK garage-to-bassline crossover records: skippy drums, infectious vocal hook, and deep low-end pressure that helped shape the scene UK bass later drew from.",
+        "title": "Sweet Female Attitude — Flowers",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020fee04c0f6432cdbd1a55a1a",
+        "source": "spotify",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -5064,7 +5077,9 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 132,
@@ -15261,7 +15276,20 @@
     "vibe": "R&B at 3am, honest about things mainstream R&B doesn't talk about.",
     "songs_listened": [],
     "rank_order": 28,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/3U6CPINSKmZJ09FtO9PgUa",
+        "score": 3,
+        "reason": "Artsy, skeletal club track with sub-heavy low end and clipped vocal chops; feels more like art-pop/alt-R&B flirting with UK bass aesthetics than a core scene cut.",
+        "title": "FKA twigs — Glass & Patron",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c3b888be56c44954fd90fb7c",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "UK bass"
+      }
+    ]
   },
   {
     "id": 432,
