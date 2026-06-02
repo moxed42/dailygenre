@@ -26914,7 +26914,20 @@
       }
     ],
     "rank_order": 29,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/0g9GhfqFotNeAt2TuggiEh",
+        "score": 3,
+        "reason": "Hyper-processed, hooky alt track with heavy guitars; it flirts with pop-metal aesthetics but sits closer to edgy pop/alt-rock than to a metal-scene pop-metal core.",
+        "title": "Vana — BEG!",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2988022575d1cc16266f9a4",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Pop metal"
+      }
+    ]
   },
   {
     "id": 793,
@@ -33873,6 +33886,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Pop metal"
+      },
+      {
+        "url": "https://open.spotify.com/track/5RQyyxszkh4D2mZi0v3Zjx",
+        "score": 1,
+        "reason": "Slow, brooding modern metal piece with limited hook focus and a more atmospheric, prog-leaning construction; it barely engages with pop-metal’s hook-first sensibility.",
+        "title": "Fixation — Dystopia",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0243cd3da6a08f04bcc0c7860a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Pop metal"
       }
     ]
   },
@@ -34129,12 +34154,12 @@
         "_pendingGenreTag": "progressive_metal"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2tAzcTFry1OhmNERFjUR93",
-        "score": 4,
-        "reason": "Verses lean into pop-friendly dynamics and a chantable hook while the guitars and drums stay firmly metal, landing it solidly in metal with a strong pop spine.",
-        "title": "In This Moment — Whore",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5G9d0fZ2B96YVdDFPj1G0L",
+        "score": 5,
+        "reason": "Tighter structure and a laser-focused, radio-ready chorus make this a clearer progressive-leaning pop-metal benchmark without losing heaviness.",
+        "title": "Coheed and Cambria — Welcome Home",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e8166a30a40963beed23cc47",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -34142,7 +34167,7 @@
       {
         "url": "https://open.spotify.com/track/2tAzcTFry1OhmNERFjUR93",
         "score": 4,
-        "reason": "Big chorus and polished melodic framing keep this firmly in pop-metal territory even with a heavier bite than the glossiest examples.",
+        "reason": "Verses lean into pop-friendly dynamics and a chantable hook while the guitars and drums stay firmly metal, landing it solidly in metal with a strong pop spine.",
         "title": "In This Moment — Whore",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e8166a30a40963beed23cc47",
@@ -34152,7 +34177,7 @@
       {
         "url": "https://open.spotify.com/track/6So02Y7y4KbP87mSxUOMuk",
         "score": 4,
-        "reason": "Power-metal riffing and symphonic sheen, but the tight song length, sugar-rush chorus and polished vocal hooks read very strongly as pop-metal crossover.",
+        "reason": "Power-metal riffing and symphonic sheen, but the tight song length and sugar-rush chorus read very strongly as pop-metal crossover.",
         "title": "Amaranthe — Army Of The Night",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029c5a45fa93e88e8a7fddefef",
@@ -34162,7 +34187,7 @@
       {
         "url": "https://open.spotify.com/track/7fw1s9GkS288i2HQxMMlas",
         "score": 2,
-        "reason": "Melodic death metal with some memorable lines, yet the songwriting prioritizes riffs and aggression over earworm choruses, making it only a weak pop-metal fit.",
+        "reason": "Melodic death metal with memorable lines, yet the writing prioritizes riffs and aggression over earworm choruses, making it only a weak pop-metal fit.",
         "title": "In Flames — Cloud Connected",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02787593a5d345063b8071efbb",
@@ -34171,12 +34196,12 @@
         "_pendingGenreTag": "melodic_death_metal"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/43thLwzSasUUZEYjYPeJh3",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6gMXqZ1EnP5d02v0qvQpQw",
         "score": 5,
-        "reason": "Duet power-ballad grandeur, huge melody and radio-ready polish make this a much cleaner pop-metal benchmark.",
-        "title": "Lita Ford, Ozzy Osbourne — Close My Eyes Forever",
+        "reason": "Arena-sized chorus and streamlined arrangement give this a direct pop-metal appeal while still hitting hard.",
+        "title": "HammerFall — Hearts On Fire",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0286a80fa1b62584496a1402b2",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -34190,15 +34215,15 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2988022575d1cc16266f9a4",
         "source": "spotify",
         "added": "2026-06-02",
-        "_pendingGenreTag": "alternative_metal"
+        "_pendingGenreTag": "alternative_rock"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/43thLwzSasUUZEYjYPeJh3",
-        "score": 5,
-        "reason": "Bigger chorus writing and a clearer metal-pop center make this a stronger genre explainer.",
-        "title": "Lita Ford, Ozzy Osbourne — Close My Eyes Forever",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4F4pp8NUW08JuXwnux1fpU",
+        "score": 4,
+        "reason": "Big radio-rock chorus, shiny production and metal-adjacent guitars give this a much clearer pop-metal profile while staying contemporary.",
+        "title": "Halestorm — Love Bites (So Do I)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0286a80fa1b62584496a1402b2",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -34206,7 +34231,7 @@
       {
         "url": "https://open.spotify.com/track/0qdzdBNLU6BAxTCt8FLptu",
         "score": 3,
-        "reason": "EDM-metalcore hybrid with big sing-along sections; its breakdown-heavy structure and meme energy make it more metalcore-with-hooks than straight pop metal.",
+        "reason": "EDM-metalcore hybrid with big sing-along sections; breakdown-heavy structure and meme energy make it more metalcore-with-hooks than straight pop metal.",
         "title": "Electric Callboy — Mindreader",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027bd2dd6afff86e07b4fef398",
@@ -34215,12 +34240,12 @@
         "_pendingGenreTag": "metalcore"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3UygY7qW2cvG9Llkay6i1i",
-        "score": 5,
-        "reason": "Big, unforgettable chorus and radio-ready structure make it a much more direct pop-metal fit.",
-        "title": "Evanescence — Going Under",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4fVuMkRd88g1Vf7r4oGjtG",
+        "score": 4,
+        "reason": "Massive melodic chorus and accessible structure place this closer to classic pop-metal even as it keeps metalcore crunch.",
+        "title": "Bullet For My Valentine — Tears Don’t Fall",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026af0b476d4783151541af05d",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -34237,12 +34262,12 @@
         "_pendingGenreTag": "post_hardcore"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/43thLwzSasUUZEYjYPeJh3",
-        "score": 5,
-        "reason": "Huge melody and glossy arena-ballad presentation make this more straightforwardly pop metal.",
-        "title": "Lita Ford, Ozzy Osbourne — Close My Eyes Forever",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2cMj7Pt0aYyt3twleKmbtS",
+        "score": 4,
+        "reason": "Big, anthemic chorus and glossy production give this a more straightforward pop-metal feel while staying in the same emo-metal orbit.",
+        "title": "Falling In Reverse — The Drug In Me Is You",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0286a80fa1b62584496a1402b2",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -34250,21 +34275,21 @@
       {
         "url": "https://open.spotify.com/track/5RQyyxszkh4D2mZi0v3Zjx",
         "score": 1,
-        "reason": "Slow, brooding modern metal piece with limited hook focus and a more atmospheric construction; it barely engages with pop-metal’s hook-first sensibility.",
+        "reason": "Slow, brooding modern metal piece with limited hook focus and a more atmospheric, prog-leaning construction; it barely engages with pop-metal’s hook-first sensibility.",
         "title": "Fixation — Dystopia",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0243cd3da6a08f04bcc0c7860a",
         "source": "spotify",
         "added": "2026-06-02",
-        "_pendingGenreTag": "rock"
+        "_pendingGenreTag": "progressive_metal"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/43thLwzSasUUZEYjYPeJh3",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7iL6o9tox1zgHpKUfh9vuC",
         "score": 5,
-        "reason": "Classic radio-ballad songwriting and gleaming melodic payoff put this squarely in pop-metal’s center lane.",
-        "title": "Lita Ford, Ozzy Osbourne — Close My Eyes Forever",
+        "reason": "Classic late-80s pop-metal power ballad with huge, radio-ready chorus and guitar heroics, squarely in the genre’s center.",
+        "title": "Skid Row — I Remember You",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0286a80fa1b62584496a1402b2",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f7f74100d5cc850e01172cbf",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
@@ -34273,7 +34298,7 @@
         "url": "https://open.spotify.com/track/43thLwzSasUUZEYjYPeJh3",
         "score": 5,
         "reason": "Duet power ballad with soaring vocal lines and melodic guitar work; a quintessential pop-metal moment from the glam era.",
-        "title": "Lita Ford, Ozzy Osbourne — Close My Eyes Forever",
+        "title": "Lita Ford; Ozzy Osbourne — Close My Eyes Forever",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0286a80fa1b62584496a1402b2",
         "source": "spotify",
@@ -34282,7 +34307,7 @@
       {
         "url": "https://open.spotify.com/track/7eFFWt9UWruLzU9VDIqt3N",
         "score": 4,
-        "reason": "Combines pop-leaning melodies and catchy chorus with crunchy, glitchy nu-metal textures, landing as a strong modern pop-metal hybrid despite its experimental edge.",
+        "reason": "Combines pop-leaning melodies and a catchy chorus with crunchy, glitchy nu-metal textures, landing as a strong modern pop-metal hybrid despite its experimental edge.",
         "title": "Poppy — I Disagree",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02281254a268a229556d982056",
@@ -34293,7 +34318,7 @@
         "url": "https://open.spotify.com/track/7CAbF0By0Fpnbiu6Xn5ZF7",
         "score": 4,
         "reason": "Breakneck metalcore verses but a huge, melodic chorus and BABYMETAL feature give it a strong pop-metal flavor within a heavier framework.",
-        "title": "Bring Me The Horizon, BABYMETAL — Kingslayer",
+        "title": "Bring Me The Horizon; BABYMETAL — Kingslayer",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025149c948fde506624246a684",
         "source": "spotify",
@@ -34302,7 +34327,7 @@
       {
         "url": "https://open.spotify.com/track/3UygY7qW2cvG9Llkay6i1i",
         "score": 5,
-        "reason": "Big, unforgettable chorus, clean-heavy vocal mix and radio-ready songwriting wrapped around a heavy guitar core — archetypal early-2000s pop-metal crossover.",
+        "reason": "Big, unforgettable chorus, clean–heavy vocal mix and radio-ready songwriting wrapped around a heavy guitar core — archetypal early-2000s pop-metal crossover.",
         "title": "Evanescence — Going Under",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026af0b476d4783151541af05d",
@@ -34321,12 +34346,12 @@
         "_pendingGenreTag": "metalcore"
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2wBnZdVWa5jVpvYRfGU7rP",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0Y3agQaa6g2v9X2FAzBi9U",
         "score": 5,
-        "reason": "Huge sing-along chorus, sugar-coated melody and cleaner crossover framing make it a much better pop-metal exemplar.",
-        "title": "Ghost — Mary On A Cross",
+        "reason": "Huge sing-along chorus, sugar-coated melodies and hard-rock guitars make this a pure pop-metal earworm from outside the metalcore meme space.",
+        "title": "Bon Jovi — You Give Love A Bad Name",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023e03417574f87a0a708f8a2a",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-06-02",
         "isLevelUp": true
