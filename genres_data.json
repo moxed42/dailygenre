@@ -21819,7 +21819,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/4QOeo7TtiJntEz9oehagTV | 5 | Hyper‑stylish lounge‑pop with city‑pop chords, retro kitsch, and sampling sensibility—textbook Shibuya‑kei as filtered through 90s Tokyo cool. | Pizzicato Five — TV\nhttps://open.spotify.com/track/0M3gmV8wqB84IWG2BtFIso | 4 | Jangle guitars and indie‑pop bounce, but the sophisticated chord changes and cosmopolitan production keep it firmly in the Shibuya‑kei family. | Flipper’s Guitar — Young, Alive, in Love\nhttps://open.spotify.com/track/3HnGa9GUdqWn4DOM1dlZmT | 3 | Buffalo Daughter lean into experimental rock and noise textures; Shibuya‑kei‑adjacent in scene and aesthetic more than in pure lounge‑pop form. | Buffalo Daughter — Jellyfish Blues (2022 Remastered)\nhttps://open.spotify.com/track/6mF1TR0hPXXeG67emNp5x3 | 5 | Breezy bossa‑touch pop with sampled feel and chic, cosmopolitan sheen—hits the genre’s Stereolab‑via‑Tokyo sweet spot. | Cornelius — If You’re Here\nhttps://open.spotify.com/track/3thO0vpZuI6W7VaKj6YfNV | 4 | Glossy down‑tempo groove with cut‑and‑paste lounge, house, and pop elements; very much in the Shibuya‑kei DJ‑producer wing. | Towa Tei — TECHNOVA",
     "summary": "Shibuya-kei was a 1990s Japanese pop movement centered around Tokyo's Shibuya district, where artists blended lounge, bossa nova, French ye-ye, jazz, electronic music, and crate-digger eclecticism into exquisitely stylish pop collages. Pizzicato Five and Cornelius made it one of Japan's most internationally beloved micro-scenes.",
     "key_artists": "Pizzicato Five, Cornelius, Kahimi Karie, Fantastic Plastic Machine, Flipper's Guitar (originators/major figures)",
     "suggested_songs": "Pizzicato Five — Twiggy Twiggy, Cornelius — If You're Here, Fantastic Plastic Machine — Bachelor Pad",
@@ -21828,52 +21828,54 @@
       {
         "url": "https://open.spotify.com/track/4QOeo7TtiJntEz9oehagTV",
         "score": 5,
-        "reason": "Hyper‑stylish lounge‑pop with city‑pop chords, retro kitsch, and sampling sensibility—textbook Shibuya‑kei as filtered through 90s Tokyo cool.",
+        "reason": "Hyper-stylish lounge-pop with city-pop chords, retro kitsch, and sampling sensibility—textbook Shibuya-kei as filtered through 90s Tokyo cool.",
         "title": "Pizzicato Five — TV",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02976f99ee07d81200e8268774",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0M3gmV8wqB84IWG2BtFIso",
         "score": 4,
-        "reason": "Jangle guitars and indie‑pop bounce, but the sophisticated chord changes and cosmopolitan production keep it firmly in the Shibuya‑kei family.",
+        "reason": "Jangle guitars and indie-pop bounce, but the sophisticated chord changes and cosmopolitan production keep it firmly in the Shibuya-kei family.",
         "title": "Flipper’s Guitar — Young, Alive, in Love",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02daea353cadb9b8e09f767d15",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02daea353cadb9b8e09f767d15",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3HnGa9GUdqWn4DOM1dlZmT",
         "score": 3,
-        "reason": "Buffalo Daughter lean into experimental rock and noise textures; Shibuya‑kei‑adjacent in scene and aesthetic more than in pure lounge‑pop form.",
+        "reason": "Buffalo Daughter lean into experimental rock and noise textures; Shibuya-kei-adjacent in scene and aesthetic more than in pure lounge-pop form.",
         "title": "Buffalo Daughter — Jellyfish Blues (2022 Remastered)",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5cb32e1c047300572c13571",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "experimental_rock"
       },
       {
-        "url": "https://open.spotify.com/track/6mF1TR0hPXXeG67emNp5x3",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6mF1TR0hPXXeG67emNp5x3",
         "score": 5,
-        "reason": "Breezy bossa‑touch pop with sampled feel and chic, cosmopolitan sheen—hits the genre’s Stereolab‑via‑Tokyo sweet spot.",
+        "reason": "Breezy bossa-touch pop with sampled feel and chic, cosmopolitan sheen—hits the genre’s Stereolab-via-Tokyo sweet spot.",
         "title": "Cornelius — If You’re Here",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3thO0vpZuI6W7VaKj6YfNV",
         "score": 4,
-        "reason": "Glossy down‑tempo groove with cut‑and‑paste lounge, house, and pop elements; very much in the Shibuya‑kei DJ‑producer wing.",
+        "reason": "Glossy down-tempo groove with cut-and-paste lounge, house, and pop elements; very much in the Shibuya-kei DJ-producer wing.",
         "title": "Towa Tei — TECHNOVA",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f7e2dc293bed7503de291791",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 28,
@@ -28902,7 +28904,20 @@
       }
     ],
     "rank_order": 271,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/3HnGa9GUdqWn4DOM1dlZmT",
+        "score": 3,
+        "reason": "Buffalo Daughter lean into experimental rock and noise textures; Shibuya-kei-adjacent in scene and aesthetic more than in pure lounge-pop form.",
+        "title": "Buffalo Daughter — Jellyfish Blues (2022 Remastered)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5cb32e1c047300572c13571",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Shibuya-kei"
+      }
+    ]
   },
   {
     "id": 851,
