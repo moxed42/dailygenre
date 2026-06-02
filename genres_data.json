@@ -18117,7 +18117,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/4FStZcPHUOx9Jj92fOpX1Q | 3 | Irish-language rap with UK drill-adjacent production and political bite; tightly tied to the UK ecosystem but primarily Irish rap rather than core British hip hop. | KNEECAP — H.O.O.D\n🔼 LEVEL UP:https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P | 5 | Road-rap beat and razor-sharp London delivery make this a canonical UK rap text and a clearer British hip hop archetype. | Kano — P's and Q's\nhttps://open.spotify.com/track/1Tva251P6CYwQWpJOedwQ8 | 3 | Orchestral, spoken-word-heavy opener that showcases Simz’s voice but functions more as cinematic intro than a standalone hip hop track in this header. | Little Simz — Introvert\nhttps://open.spotify.com/track/35zEswqAFI1D41cmoBXOFK | 4 | Streets-level narrative over a UKG-derived beat, tying MC culture to garage and functioning as a stronger standalone British hip hop statement. | The Streets — Has It Come to This?\nhttps://open.spotify.com/track/5rgG5yCMVO6XWde7IQiK9M | 4 | Laid-back jazz-rap production with unmistakably British cadence and slang; firmly in UK hip hop while leaning into a jazzy, underground corner. | LAUSSE THE CAT — Blue Bossa\nhttps://open.spotify.com/track/0nLfmQWIqjZkCQNhfP0EHv | 4 | Reflective grime/UK rap hybrid with introspective lyrics and a distinctly London sensibility; fits clearly under a broad British hip hop umbrella. | Stormzy — Do Better\nhttps://open.spotify.com/track/05n0mwlh1y3cwjGmHnfVjh | 5 | Soulful, groove-heavy production framing incisive, confessional verses; a perfect “explain modern British hip hop” track with clear UK identity. | Little Simz — Free",
     "summary": "British hip-hop absorbed American hip-hop's form in the late 1980s and gradually developed its own voice — British accents, UK cultural references, grime's eventual breakaway, and a lineage running from Roots Manuva and Skinnyman through to Dave and Little Simz. It took decades to shake the American shadow but produced music of real depth and identity.",
     "key_artists": "Roots Manuva, Skinnyman, Plan B, Dave, Little Simz (major figures across eras)",
     "suggested_songs": "Roots Manuva — Witness (1 Hope), Plan B — Ill Manors, Dave — Black, Little Simz — Introvert",
@@ -18131,67 +18131,69 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0213716121c78223005d67133a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "irish_rap"
       },
       {
-        "url": "https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7KF4r7CeHxX9IKB8PbtF7P",
         "score": 5,
         "reason": "Road-rap beat and razor-sharp London delivery make this a canonical UK rap text and a clearer British hip hop archetype.",
         "title": "Kano — P's and Q's",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1Tva251P6CYwQWpJOedwQ8",
         "score": 3,
-        "reason": "Orchestral, spoken-word-heavy opener that showcases Simz’s voice but functions more as cinematic intro than a standalone hip hop track in this header.",
+        "reason": "Orchestral, spoken-word-heavy opener that showcases Simz’s voice but functions more as a cinematic manifesto than a clean standalone British hip hop archetype.",
         "title": "Little Simz — Introvert",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aede85ed28c2237a33b63dba",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/35zEswqAFI1D41cmoBXOFK",
         "score": 4,
-        "reason": "Streets-level narrative over a UKG-derived beat, tying MC culture to garage and functioning as a stronger standalone British hip hop statement.",
+        "reason": "Streets-level narrative over a UKG-derived beat ties MC culture to garage and lands as a strong standalone British hip hop statement.",
         "title": "The Streets — Has It Come to This?",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b35c6da432ec9a1a2f2df1af",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b35c6da432ec9a1a2f2df1af",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5rgG5yCMVO6XWde7IQiK9M",
         "score": 4,
-        "reason": "Laid-back jazz-rap production with unmistakably British cadence and slang; firmly in UK hip hop while leaning into a jazzy, underground corner.",
+        "reason": "Laid-back jazz-rap production with unmistakably British cadence and slang keeps it firmly in UK hip hop, even from a jazzy underground angle.",
         "title": "LAUSSE THE CAT — Blue Bossa",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02991dcc07512545abdec4a9a9",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0nLfmQWIqjZkCQNhfP0EHv",
         "score": 4,
-        "reason": "Reflective grime/UK rap hybrid with introspective lyrics and a distinctly London sensibility; fits clearly under a broad British hip hop umbrella.",
+        "reason": "Reflective grime/UK rap hybrid with introspective lyrics and a distinctly London sensibility; it fits clearly under a broad British hip hop umbrella.",
         "title": "Stormzy — Do Better",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0203bf634fe9526dfcc79f8526",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/05n0mwlh1y3cwjGmHnfVjh",
         "score": 5,
-        "reason": "Soulful, groove-heavy production framing incisive, confessional verses; a perfect “explain modern British hip hop” track with clear UK identity.",
+        "reason": "Soulful, groove-heavy production framing incisive confessional verses makes this a perfect modern British hip hop exemplar with unmistakable UK identity.",
         "title": "Little Simz — Free",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d0e17539a0ac5b32b6db47bb",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d0e17539a0ac5b32b6db47bb",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 6,
@@ -18200,8 +18202,9 @@
     "favoritesongurl": "https://open.spotify.com/track/05n0mwlh1y3cwjGmHnfVjh",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d0e17539a0ac5b32b6db47bb",
-    "monthfavorite": false
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d0e17539a0ac5b32b6db47bb",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 528,
