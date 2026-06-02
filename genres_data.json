@@ -1232,7 +1232,20 @@
       }
     ],
     "rank_order": 415,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/3gjDwnN5qoAWVm8CeKN21v",
+        "score": 3,
+        "reason": "Vocal-harmony jump tune whose walking bass and rhythm section borrow from boogie-woogie, but the piano style itself is secondary to the close-harmony vocal hook.",
+        "title": "Swanee River Hop",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d7ba528be09db75f310a1c0a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Boogie-woogie"
+      }
+    ]
   },
   {
     "id": 30,
@@ -4035,7 +4048,20 @@
     "vibe": "A jazz orchestra moved to a Texas dance hall and liked it better.",
     "songs_listened": [],
     "rank_order": 775,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5mlGA6opzAZXUEFrNQHA79",
+        "score": 3,
+        "reason": "Big-band swing built on a boogie shuffle feel, but the horn section carries the hook while piano ostinato stays background, so it reads more as swing/jump than pure boogie-woogie.",
+        "title": "In The Mood",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b431545ded22c02473398001",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Boogie-woogie"
+      }
+    ]
   },
   {
     "id": 99,
@@ -21282,29 +21308,31 @@
         "reason": "Archetypal solo boogie-woogie piano with a rolling left hand and riffing right hand that perfectly demonstrates the style’s core groove.",
         "title": "Meade “Lux” Lewis — Honky Tonk Train Blues",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b431545ded22c02473398001",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b431545ded22c02473398001",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5mlGA6opzAZXUEFrNQHA79",
         "score": 3,
         "reason": "Big-band swing built on a boogie shuffle feel, but the horn section carries the hook while piano ostinato stays background, so it reads more as swing/jump than pure boogie-woogie.",
-        "title": "Glenn Miller — In The Mood",
+        "title": "In The Mood",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b431545ded22c02473398001",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "swing"
       },
       {
-        "url": "https://open.spotify.com/track/4ycveKWQZlN7kpMBC08aKX",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4ycveKWQZlN7kpMBC08aKX",
         "score": 5,
         "reason": "Solo piano showcase with a relentless left-hand boogie pattern and cascading right-hand licks, giving a much clearer, piano-centered picture of boogie-woogie than a horn-led swing tune.",
         "title": "Albert Ammons — Boogie Woogie Stomp",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4fiD2HdUWxJFhZ6uViHDze",
@@ -21314,7 +21342,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0256f75aa41e778c475b2d1ba7",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2z35WmSajKJJ7wmgOYIaKu",
@@ -21324,27 +21352,29 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024e6871f79e9cc3acaf3f430c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3gjDwnN5qoAWVm8CeKN21v",
         "score": 3,
         "reason": "Vocal-harmony jump tune whose walking bass and rhythm section borrow from boogie-woogie, but the piano style itself is secondary to the close-harmony vocal hook.",
-        "title": "The Andrews Sisters — Boogie Woogie Bugle Boy",
+        "title": "Swanee River Hop",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d7ba528be09db75f310a1c0a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d7ba528be09db75f310a1c0a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "jump_blues"
       },
       {
-        "url": "https://open.spotify.com/track/3R46JqB1fysgqhfqDPnA2G",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3R46JqB1fysgqhfqDPnA2G",
         "score": 4,
         "reason": "Keeps the wartime swing spirit but pushes boogie-woogie piano figures to the front of the rhythm section, making the piano style itself more central.",
         "title": "Freddie Slack — Beat Me Daddy, Eight to the Bar",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4DysBIfiAHWMrdevS70LIJ",
@@ -21352,9 +21382,9 @@
         "reason": "Modern boogie-woogie piano jam: bright tone, steady left-hand groove, and right-hand licks that clearly reference the classic boogie vocabulary.",
         "title": "Axel Zwingenberger — Blue Note Boogie",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022fe5c6c509b984b7df5a56da",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022fe5c6c509b984b7df5a56da",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0EM6XvukQPiXdUY724xVyE",
@@ -21362,9 +21392,9 @@
         "reason": "Jazz-inflected boogie where a repeating left-hand figure underpins bluesy right-hand lines, keeping the essential boogie-woogie engine while adding more jazz harmony.",
         "title": "Vince Guaraldi — Linus and Lucy",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d307ccd1e336ad74f844b671",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d307ccd1e336ad74f844b671",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 64,
@@ -21372,7 +21402,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 609,
