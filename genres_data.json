@@ -13790,7 +13790,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025c822177885f598ba68ba21d",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2h3t3Foxd1VrOMEM7smWZM",
@@ -13800,28 +13800,28 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0280243261388b391919cf7a9f",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/4C9U96rcM4ZZ9wQt0Kp8i3",
+        "url": "🔼 ADD: https://open.spotify.com/track/5unvmC3ox0cBP7fphc1NX2",
         "score": 5,
         "reason": "One of the genre’s signature anthems: classic donk bass pattern, snappy kicks, and simple rave lead make it an ideal core pillar",
         "title": "Will Sparks, Joel Fletcher — Bring It Back",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b76087fa90af9a8d143f75fd",
         "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/2NEwuxF9XEv7vW0lxiJQh3",
+        "url": "🔼 ADD: https://open.spotify.com/track/28mYWE3UfCUXpbrDkMkZjo",
         "score": 4,
         "reason": "Early‑scene bounce with very clear off‑beat low‑end bounce and party‑chant topline, reinforcing the pure Aus‑festival sound",
         "title": "Deorro, J‑Trick — Rambo (Hardwell Edit)",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0266aa40afe1716183a8568390",
         "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -13830,7 +13830,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 374,
