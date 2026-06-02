@@ -6645,7 +6645,7 @@
         "reason": "Bukem’s rolling breakwork and spacious arrangements foreground the drums while keeping bass restrained, sitting close to the drumfunk ethos inside the atmospheric DnB lane.",
         "title": "LTJ Bukem — Logical Progression",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024a25685f3ca5e3ff48200a0c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024a25685f3ca5e3ff48200a0c",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -32948,7 +32948,20 @@
       }
     ],
     "rank_order": 80,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/2ByhUMQMauMc1LJGclDIP5",
+        "score": 3,
+        "reason": "Depressive, atmospheric black metal textures align sonically with unblack, but the existential misery and lack of Christian inversion make it more of a tonal neighbor than a true ideological fit.",
+        "title": "Totalselfhatred — Total Self-Hatred",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026872312de9c23830eebba77f",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Unblack metal"
+      }
+    ]
   },
   {
     "id": 952,
@@ -33425,19 +33438,21 @@
         "reason": "The tremolo-inflected riffing and apocalyptic Christian themes brush against unblack territory, but the chug-heavy rhythms and breakdown logic read primarily as 90s metalcore.",
         "title": "Zao — Lies Of Serpents, A River Of Tears",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02782f4f39f819d9a4f9ca21d8",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02782f4f39f819d9a4f9ca21d8",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "metalcore"
       },
       {
-        "url": "https://open.spotify.com/track/5k57P6zEwS2b3bnMU0a9gS",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5k57P6zEwS2b3bnMU0a9gS",
         "score": 5,
         "reason": "More purely blackened in its riffing and atmosphere while remaining explicitly Christian, giving a clearer archetype of unblack’s sonic and ideological profile.",
         "title": "Antestor — Mercy Lord",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/30AD3nslmfyW7nZDNun1ny",
@@ -33445,19 +33460,21 @@
         "reason": "Conceptually tied into prophetic Christian extremity, yet musically it’s classic metallic hardcore with mathy turns rather than blackened tremolo or atmosphere.",
         "title": "Zao — The Rising End (The First Prophecy)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "metalcore"
       },
       {
-        "url": "https://open.spotify.com/track/2yF5fVYqAqfHqkKJ1cN6Wm",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2yF5fVYqAqfHqkKJ1cN6Wm",
         "score": 4,
         "reason": "Symphonic-leaning but rooted in black metal’s tremolo and blast beats, Slechtvalk foregrounds explicitly Christian lyrics in a far more stylistically black-metal frame.",
         "title": "Slechtvalk — Thunder of War",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1Dppspcy9iFRzYHM7oZmZM",
@@ -33467,17 +33484,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "metalcore"
       },
       {
-        "url": "https://open.spotify.com/track/1jK0v1Z3xvM8l7CVgK8CkL",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1jK0v1Z3xvM8l7CVgK8CkL",
         "score": 4,
         "reason": "Delivers tremolo-driven, mid-tempo blackened riffing with clear Christian focus, tightening the stylistic link between ideology and classic black metal sound.",
         "title": "Frosthardr — Varg",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4VjOJcZPG1Uo7thRNKdbwC",
@@ -33487,7 +33506,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d5adfb7e7400a753ccb9da4f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4ZF3XcyGuvC8FZburo25GL",
@@ -33495,9 +33514,9 @@
         "reason": "A blistering, concise assault whose raw guitar tone, shrieked vocals, and relentless blasting are pure black metal, functioning as a compact unblack statement alongside the longer centerpiece.",
         "title": "Horde — Blasphemous Abomination Of The Satanic Pentagram",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d5adfb7e7400a753ccb9da4f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d5adfb7e7400a753ccb9da4f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2ByhUMQMauMc1LJGclDIP5",
@@ -33507,24 +33526,28 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026872312de9c23830eebba77f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "depressive_black_metal"
       },
       {
-        "url": "https://open.spotify.com/track/0mV6MsB3r8mK1dFqf6Y6tq",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0mV6MsB3r8mK1dFqf6Y6tq",
         "score": 4,
         "reason": "Keeps the mournful, atmospheric pacing but explicitly frames its black-metal sound in Christian hope and struggle, better embodying unblack’s core inversion of the genre.",
         "title": "Crimson Moonlight — The Cold Grip of Terror",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 29,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 964,
@@ -34806,6 +34829,42 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Rapcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/0rZafkLnrcAFbVTrMo2NIl",
+        "score": 3,
+        "reason": "The tremolo-inflected riffing and apocalyptic Christian themes brush against unblack territory, but the chug-heavy rhythms and breakdown logic read primarily as 90s metalcore.",
+        "title": "Zao — Lies Of Serpents, A River Of Tears",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02782f4f39f819d9a4f9ca21d8",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Unblack metal"
+      },
+      {
+        "url": "https://open.spotify.com/track/30AD3nslmfyW7nZDNun1ny",
+        "score": 2,
+        "reason": "Conceptually tied into prophetic Christian extremity, yet musically it’s classic metallic hardcore with mathy turns rather than blackened tremolo or atmosphere.",
+        "title": "Zao — The Rising End (The First Prophecy)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Unblack metal"
+      },
+      {
+        "url": "https://open.spotify.com/track/1Dppspcy9iFRzYHM7oZmZM",
+        "score": 2,
+        "reason": "Harsh vocals and spiritual-judgment narrative fit the unblack umbrella thematically, but the riffing, groove, and production land squarely in metalcore, not black metal.",
+        "title": "Zao — The Last Revelation (The Last Prophecy)",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5b3972264dd458efbda4af1",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Unblack metal"
       }
     ]
   },
