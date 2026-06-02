@@ -2177,44 +2177,36 @@
     "vibe": "Country and folk discovering they were siblings all along.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/07O8XgFozwV4FST1tPVDfO",
+        "url": "https://open.spotify.com/track/5G7bY5CRxU2Cq74FQSmwQ2",
         "score": 5,
-        "reason": "Archetypal topical talking blues: fully spoken-sung delivery, dry humor, and a strict blues vamp that perfectly captures the form.",
-        "title": "Woody Guthrie — Talking Columbia Blues",
+        "reason": "Core mid‑century country folk: simple acoustic strum, plainspoken melody, and socially grounded lyric that basically defines rural American folk",
+        "title": "Woody Guthrie — This Land Is Your Land",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cd36b6a21bfd31099eb7d5cb",
+        "artwork": "",
         "source": "spotify",
         "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/3KNLPrv0SLI8CB6kD8pKSB",
+        "url": "🔼 ADD: https://open.spotify.com/track/0cIkQFUVd9WJgp6q2uZ6Cw",
         "score": 5,
-        "reason": "Sharp, fully spoken-sung monologue over a simple blues vamp that exemplifies topical talking blues at its most direct and witty.",
-        "title": "Woody Guthrie — Talking Hard Work",
+        "reason": "Classic 60s country‑folk protest song with clear narrative, front‑and‑center vocal, and unadorned acoustic backing that nails the style’s storytelling focus",
+        "title": "Pete Seeger — Waist Deep in the Big Muddy",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ca57ba316aeb7f493fcd9477",
+        "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isAdd": true
       },
       {
-        "url": "https://open.spotify.com/track/1AkjPhgexQuQkeJpB3sS5E",
+        "url": "🔼 ADD: https://open.spotify.com/track/3A0H0Z8iJDV6g7lYLRAZC5",
         "score": 5,
-        "reason": "High lonesome lead, tight trio harmonies, and propulsive rhythm section make this a quintessential traditional bluegrass cut.",
-        "title": "The Stanley Brothers — Rank Stranger",
+        "reason": "Modern but firmly rooted country folk: warm acoustic arrangement, gently twangy vocal, and intimate, character‑driven lyric that carries the tradition forward",
+        "title": "Gillian Welch — Look at Miss Ohio",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dbca0d13a38edb4e1b54a8c5",
+        "artwork": "",
         "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
-        "url": "https://open.spotify.com/track/3AhXZa8sUQht0UEdBJgpGc",
-        "score": 5,
-        "reason": "Dylan goes electric-folk on Highway 61: organ swirl, snare crack, and surreal lyrics merge folk storytelling with rock energy, establishing the template for roots music that refuses to stay acoustic.",
-        "title": "Bob Dylan — Like a Rolling Stone",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020cb0884829c5503b2e242541",
-        "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "isAdd": true
       }
     ],
     "rank_order": 15,
