@@ -2502,8 +2502,30 @@
       if (listenTab) listenTab.classList.toggle('dirty', hasUnsavedChanges);
     }
 
+    let lastSavedListenSnapshot = '';
+
+    function buildListenSnapshot() {
+      if (!currentGenre) return '';
+      return JSON.stringify({
+        id: currentGenre.id || '',
+        rating: currentGenre.rating || '',
+        favoriteSong: document.getElementById('favoriteSong')?.value?.trim() || '',
+        favoriteSongUrl: document.getElementById('favoriteSongUrl')?.value?.trim() || '',
+        notes: document.getElementById('notes')?.value || '',
+        songsListenedBulk: document.getElementById('songsListenedBulk')?.value || ''
+      });
+    }
+
+    function refreshDirtyFromSnapshot() {
+      if (!currentGenre) {
+        setUnsavedState(false);
+        return;
+      }
+      setUnsavedState(buildListenSnapshot() !== lastSavedListenSnapshot);
+    }
+
     function markDirty() {
-      setUnsavedState(true);
+      refreshDirtyFromSnapshot();
     }
 
     function switchScreen(name, options = {}) {
@@ -3210,7 +3232,9 @@
           added: song.added || new Date().toISOString().slice(0,10)
         };
         if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
-        if (consumeTags) delete song._pendingGenreTag;
+      }
+      if (consumeTags) {
+        sourceGenre._pendingScanCompletedAt = new Date().toISOString();
       }
       return added;
     }
@@ -3796,6 +3820,7 @@
           if (data.author_name) currentGenre.favoriteartist = data.author_name;
           if (data.thumbnail_url) currentGenre.favoritesongartwork = data.thumbnail_url;
         }
+        refreshDirtyFromSnapshot();
         statusEl.textContent = '✓ Title and artwork fetched';
         setTimeout(() => { statusEl.textContent = ''; }, 3000);
       } catch(e) {
@@ -3960,16 +3985,26 @@
     function vizArtists(items) {
       const names = new Set();
       let songsWithArtists = 0;
+      const addArtistNames = (value) => {
+        String(value || '').split(/,|&| feat\.? | featuring /i).map(x => x.trim()).filter(Boolean).forEach(n => names.add(n));
+      };
+      const inferArtist = (song) => {
+        const direct = String(song?.artist || '').trim();
+        if (direct) return direct;
+        const title = String(song?.title || '').trim();
+        const parts = title.split(/\s+[—–-]\s+/);
+        return parts.length > 1 ? parts.slice(1).join(' - ').trim() : '';
+      };
       items.forEach(g => {
         vizOfficialSongs(g).forEach(s => {
-          const a = String(s.artist || '').trim();
+          const a = inferArtist(s);
           if (a) {
             songsWithArtists += 1;
-            a.split(/,|&| feat\.? | featuring /i).map(x => x.trim()).filter(Boolean).forEach(n => names.add(n));
+            addArtistNames(a);
           }
         });
         const fa = String(g.favoriteartist || '').trim();
-        if (fa) names.add(fa);
+        if (fa) addArtistNames(fa);
       });
       return { uniqueArtists: names.size, songsWithArtists };
     }
