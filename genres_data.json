@@ -2618,7 +2618,7 @@
         "reason": "Archetypal Lubbock sound proper: droll, literate lyrics over a loose, windswept country‑rock groove, with twang and pedal steel evoking endless West Texas plains.",
         "title": "Terry Allen — Amarillo Highway (for Dave Hickey)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0267a97e60fa4e6179ddcef7db",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0267a97e60fa4e6179ddcef7db",
         "source": "spotify",
         "added": "2026-05-31"
       }
@@ -23320,42 +23320,54 @@
       {
         "url": "https://open.spotify.com/track/59JemC1a4KDC1WxNAt7Zpt",
         "score": 5,
-        "reason": "Archetypal Hindi film / Indian pop ballad: lush orchestration, melodramatic melody, and classic Lata–Kumar duet interplay that basically defines mainstream Bollywood romantic pop.",
+        "reason": "Archetypal Hindi film / Indian pop ballad: lush orchestration, melodramatic melody, and classic Lata–Kumar duet interplay that basically defines mainstream Bollywood romantic pop",
         "title": "Lata Mangeshkar, Kumar Sanu — Tujhe Dekha To",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0284b2a1748261e77836d50568",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0284b2a1748261e77836d50568",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8",
         "score": 4,
-        "reason": "Hyper‑catchy bhangra crossover turned pan‑Indian pop hit; dhol‑driven groove and call‑and‑response hooks sit squarely in the Indian pop mainstream even if it leans Punjabi dance.",
+        "reason": "Hyper‑catchy bhangra crossover turned pan‑Indian pop hit; dhol‑driven groove and call‑and‑response hooks sit squarely in the Indian pop mainstream even if it leans Punjabi dance",
         "title": "Daler Mehndi — Tunak Tunak Tun",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fa301e01c3ec11e2e06ca875",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fa301e01c3ec11e2e06ca875",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7tCmUu18EkTlGhGV2wmE7x",
         "score": 2,
-        "reason": "Primarily US‑style indie R&B with light South Asian coloring; vocal delivery and production live in alt‑R&B, with only subtle melodic and textural nods toward Indian pop.",
+        "reason": "Primarily US‑style indie R&B with light South Asian coloring; vocal delivery and production live in alt‑R&B, with only subtle melodic and textural nods toward Indian pop",
         "title": "Raveena — Mystery",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b60aaa76729296572b78979d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b60aaa76729296572b78979d",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "alt_rnb"
       },
       {
-        "url": "https://open.spotify.com/track/4zAaNEU2xxa6zTRgsEKNwO",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6Qn5zhYkTa37e91HC1D7lb",
         "score": 5,
-        "reason": "Much cleaner archetype for Hindi film pop: sweeping strings, big chorus, and unmistakably cinematic “Yash Raj / Dharma‑era” song structure that explains Indian pop to a stranger in one spin.",
+        "reason": "Definitive modern Bollywood pop: soaring chorus, polished production, and emotive Hindi vocals squarely in the mainstream film‑pop lane",
+        "title": "Arijit Singh — Tum Hi Ho",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025675e83f707f1d7271e5cf8a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0Q0IVlqMVz6u8l2sJf8l0K",
+        "score": 5,
+        "reason": "Canonical Hindi film pop: sweeping strings, big chorus, and unmistakably cinematic structure that cleanly represents mainstream Bollywood songwriting",
         "title": "Alka Yagnik, Udit Narayan — Kuch Kuch Hota Hai",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 54,
@@ -23363,7 +23375,7 @@
     "favoritesongurl": "https://open.spotify.com/track/131yybV7A3TmC34a0qE8u8",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fa301e01c3ec11e2e06ca875",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fa301e01c3ec11e2e06ca875",
     "pending_songs": [],
     "monthfavorite": false,
     "monthleastfavorite": false
@@ -26267,7 +26279,7 @@
         "reason": "Archetypal quiet‑storm: hushed vocal, smooth sax touches, and a gently pulsing rhythm section make this a textbook late‑night Sade slow jam",
         "title": "Sade — Smooth Operator",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ad27e16c5f844ea1ad6797cd",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ad27e16c5f844ea1ad6797cd",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -26287,7 +26299,7 @@
         "reason": "Slow, sensual build, roomy drums, and D’Angelo’s layered vocals channel a smoky, late‑night vibe that’s more head‑nodding neo‑soul but absolutely compatible with quiet‑storm aesthetics",
         "title": "D’Angelo — Untitled (How Does It Feel)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022b3dc336a7a69293c25d9ade",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022b3dc336a7a69293c25d9ade",
         "source": "spotify",
         "added": "2026-05-31"
       }
@@ -26297,7 +26309,7 @@
     "favoritesongurl": "https://open.spotify.com/track/2VjXGuPVVxyhMgER3Uz2Fe",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e08b1250db5f75643f1508c9",
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e08b1250db5f75643f1508c9",
     "pending_songs": [],
     "monthfavorite": false,
     "monthleastfavorite": false
