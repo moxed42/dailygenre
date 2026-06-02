@@ -6030,19 +6030,20 @@
         "reason": "Kraftwerk absolutely feeds the cosmic side of the style, especially the hypnotic motorik futurism and machine-space mood, but this is source material rather than Afro/cosmic music itself. It fits as part of the Baldelli palette more than as a direct exemplar of the club style.",
         "title": "Kraftwerk — Metropolis - 2009 Remaster",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e4c3295cd6464ed5bc0f6c2c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e4c3295cd6464ed5bc0f6c2c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/0qzoaD4D3i4QxQW9R8Ssjr",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0qzoaD4D3i4QxQW9R8Ssjr",
         "score": 5,
         "reason": "A better exemplar because it is one of the clearest bridges between cosmic disco, proto-electronic funk, and the exact Italian DJ aesthetic this genre names.",
         "title": "Giorgio Moroder — From Here to Eternity",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0DWpgeKDZAfzRjkefFuUXe",
@@ -6050,9 +6051,9 @@
         "reason": "Strong fit through its slow-motion Italo pulse, trancey repetition, and DJ-tool feel; it sounds like a modern reconstruction of the Cosmic-club continuum. It leans more straight Italo/cosmic disco than Afro-percussive, but it still belongs clearly in the lane.",
         "title": "Daniel Monaco — Tu Sei Pazza - Original Mix",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258df02834a66190454cd370a",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0258df02834a66190454cd370a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3fVBIebb2ienlQ9t6pw63I",
@@ -6060,9 +6061,9 @@
         "reason": "This is the block’s clearest archetype because it comes directly from Daniele Baldelli and foregrounds the dubbed-out, low-slung, curatorial cosmic aesthetic the genre entry describes. Even with modern production, it reads as a direct statement of the form.",
         "title": "Daniele Baldelli — Isotropofunk",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028aae7e196cf73b3e368a6215",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028aae7e196cf73b3e368a6215",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7dhmZWVV0AAyxUX0FyFaKj",
@@ -6072,17 +6073,18 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0289241d127e99d04ead7f74b6",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/3XokdVgIh8wC0x6lO8n9Hk",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3XokdVgIh8wC0x6lO8n9Hk",
         "score": 5,
         "reason": "A better exemplar because it brings in the African rhythmic source material explicitly, which is one of the defining ingredients in the Afro/cosmic blend described for the genre.",
         "title": "Fela Kuti — Zombie",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 80,
@@ -6090,7 +6092,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 156,
