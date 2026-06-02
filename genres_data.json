@@ -37912,42 +37912,43 @@
       {
         "url": "https://open.spotify.com/track/3dTcwy3L3fOP0vm4Lz0zdD",
         "score": 5,
-        "reason": "Canon proto‑Latino punk: raw garage aggression, shouted Spanish vocals, and snotty riffing that basically prefigures Latin American punk",
+        "reason": "Canon proto-Latino punk: raw garage aggression, shouted Spanish vocals, and snotty riffing that basically prefigures Latin American punk.",
         "title": "Los Saicos — Demolición",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d5716aede7e56fa4b6060468",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d5716aede7e56fa4b6060468",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6kjUqOrNy1dqiT6NWYvvvq",
         "score": 4,
-        "reason": "Straight‑ahead, fast, Spanish‑language punk with classic driving drums and terse melodic lines; very much in the Latino street‑punk lane",
+        "reason": "Straight-ahead, fast, Spanish-language punk with classic driving drums and terse melodic lines; very much in the Latino street-punk lane.",
         "title": "Generacion Suicida — Criminal",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02d53a446026113a1202133b14",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d53a446026113a1202133b14",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4ThmysWjmNKIxehPAB4znj",
         "score": 2,
-        "reason": "Politicized, bilingual punk with horns and sax skronk; feels more like US riot grrrl/queercore than specifically Latino punk in sound and scene",
+        "reason": "Politicized, bilingual punk with horns and sax skronk; feels more like US riot grrrl/queercore than specifically Latino punk in sound and scene.",
         "title": "Downtown Boys — Monstro",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02408678c0d122505bf07885c4",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/33p3JIQWkSDSQSylZsYw5i",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/33p3JIQWkSDSQSylZsYw5i",
         "score": 5,
-        "reason": "Spanish‑language hardcore punk with relentless tempo and classic shouted gang‑style vocals, much closer to the core Latino punk tradition",
+        "reason": "Spanish-language hardcore punk with relentless tempo and classic shouted gang-style vocals, much closer to the core Latino punk tradition.",
         "title": "Los Crudos — Tiempos De La Miseria",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 13,
@@ -37955,7 +37956,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 1067,
