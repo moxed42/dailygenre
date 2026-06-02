@@ -31750,17 +31750,29 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0283272082dc7ff099f823d1a5",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/71oukCqwzyzk7qEebQO9Tr",
         "score": 3,
-        "reason": "Twisted riffs, jazzy rhythm changes, and dissonant chords feel more like experimental prog/mathcore with blackened elements than true black metal at its core",
+        "reason": "Twisted riffs, jazzy rhythm changes, and dissonant chords lean more toward experimental prog/mathcore, with black‑metal elements present but not primary",
         "title": "Ephel Duath — The Passage Pearl Grey",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02122be018e170f32475b68e87",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "experimental_metal"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2lJwYp5nW8t1n0QfGZ7v6K",
+        "score": 5,
+        "reason": "Hallmark avant‑garde black metal: dissonant layering, ritualistic pacing, and warped structures fully embedded within black‑metal language",
+        "title": "Blut Aus Nord — The Choir of the Dead",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1xDTdiJ0G3bsSgGprEY3Ur",
@@ -31770,7 +31782,7 @@
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0TUliIWNB8o0KHRLmcmIFJ",
@@ -31780,7 +31792,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0203162b28505d34c9572db1f3",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 12,
