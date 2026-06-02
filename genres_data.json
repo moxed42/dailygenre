@@ -8015,9 +8015,9 @@
         "reason": "Archetypal NDW: German lyrics, marching beat, bright synth hooks, and a slightly quirky, anti‑rock delivery that nails the genre’s pop/new‑wave hybrid.",
         "title": "Nena — 99 Luftballons",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027e51ffd6a2e8f77ffd56bb8f",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027e51ffd6a2e8f77ffd56bb8f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0DfG1ltJnZyq4Tx3ZLL7ZU",
@@ -8027,17 +8027,28 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02731d2eb04541bef9e4434d4e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/6u9FafVyqDqD0R2KO6cZB9",
+        "url": "🔼 ADD: https://open.spotify.com/track/30ktIEvstXz7md9xyxei6F",
         "score": 5,
         "reason": "Jaunty rhythm, spiky guitars, and deadpan German vocals over synth accents make this a textbook, slightly weirder side of NDW.",
         "title": "Trio — Da Da Da",
         "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02111f2c0da78632aa2070b7f1",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: https://open.spotify.com/track/2x8tU4YgL5Vj7fVxJwW8cM",
+        "score": 5,
+        "reason": "Nervy synth riff, clipped German vocals, and playful art-school weirdness capture the off-kilter, post-punk side of Neue Deutsche Welle at its most iconic.",
+        "title": "Ideal — Blaue Augen",
+        "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -8047,7 +8058,9 @@
     "favoritesongurl": "https://open.spotify.com/track/2IJftBfq7pJ43tfnOR0RB3",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027e51ffd6a2e8f77ffd56bb8f"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027e51ffd6a2e8f77ffd56bb8f",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 212,
