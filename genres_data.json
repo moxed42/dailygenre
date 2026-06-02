@@ -32767,11 +32767,11 @@
         "url": "https://open.spotify.com/track/1dgUYkNw2AS7h6DymX1RF9",
         "score": 4,
         "reason": "Strong fit for viking rock: stomping mid-tempo rock, martial mood, and Scandinavian nationalist identity all line up with the genre’s core scene markers. It reads more as the hard-rock/Oi! side of viking rock than the folkier side, but it still lands clearly in-bounds.",
-        "title": "Ultima Thule;Mjölner — Roots of steel",
+        "title": "Ultima Thule; Mjölner — Roots of steel",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02d670e4b581038222e5e66951",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/76iyWaWATHP45hH7a6ikQv",
@@ -32779,9 +32779,9 @@
         "reason": "Also clearly in the lane: anthemic, rugged, and tied to the same Ultima Thule scene identity that largely defines the genre in practice. It is less immediately archetypal than the strongest skinhead-folk crossover cuts, but it still represents the style well.",
         "title": "Ultima Thule — My Land",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02947db20870a942511d4a547c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02947db20870a942511d4a547c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6R75ivPRLnsjcYMxsIuAs9",
@@ -32791,27 +32791,29 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028a2f8d52d90e090ea3ced026",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "power_metal"
       },
       {
-        "url": "https://open.spotify.com/track/1YkE8j8v4QdT0yTtMTtCfA?si=5c3a4d8a7f6f4b1d",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1YkE8j8v4QdT0yTtMTtCfA",
         "score": 5,
         "reason": "A better exemplar because it gives you the scene’s signature mix of singalong nationalism, street-rock drive, and unmistakable Scandinavian viking rock identity without drifting into metal.",
         "title": "Ultima Thule — Vikingabalk",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/6zWQ8M7rTnF2Jx0m0m6vDk?si=3b4d1c2a9e7f4a11",
+        "url": "🔼 ADD: https://open.spotify.com/track/6zWQ8M7rTnF2Jx0m0m6vDk",
         "score": 5,
         "reason": "Adds a more archetypal statement of the genre’s chant-ready, folk-tinged street-rock core and helps the session reach a proper three-track spine of strong viking rock representation.",
         "title": "Hel — Gråtjod",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -32820,7 +32822,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 939,
@@ -35834,7 +35837,20 @@
       }
     ],
     "rank_order": 581,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6R75ivPRLnsjcYMxsIuAs9",
+        "score": 1,
+        "reason": "This is epic heavy/power metal built around fantasy-war grandeur, not viking rock’s boot-stomp rock-and-roll lineage. The “Norse” or battle imagery is thematic overlap only; musically it belongs elsewhere.",
+        "title": "Manowar — Gods of War",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028a2f8d52d90e090ea3ced026",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Viking rock"
+      }
+    ]
   },
   {
     "id": 1006,
