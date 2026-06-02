@@ -2504,7 +2504,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0219067e826714e50725a0a880",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6JIwvW8ioos5KFp0Q0mS3Y",
@@ -2512,19 +2512,19 @@
         "reason": "Archetypal modern dansband/schlager: straight-ahead dance groove, big key-change chorus, and glossy production tailored for dance floors and Swedish parties.",
         "title": "Charlotte Perrelli — Tusen och en natt",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bff0488fa1726b023856513e",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bff0488fa1726b023856513e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/3p36frx8pePryc3PDIL4lx",
+        "url": "🔼 ADD: https://open.spotify.com/track/7gRCDIs3uZphyJ7rDuiPKO",
         "score": 5,
         "reason": "Classic party-ready dansband cut with a chugging dance groove and ultra-singable chorus that underlines the session’s core sound.",
         "title": "Vikingarna — Kan du hålla dom orden",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027c5d1f08725401f3f59370f4",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -2532,7 +2532,9 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 71,
