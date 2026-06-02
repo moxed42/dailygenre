@@ -346,7 +346,20 @@
       }
     ],
     "rank_order": 533,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4wARBbwZLNAPDVG6nCMhR6",
+        "score": 3,
+        "reason": "Funky/tech house groove and diva vocal put this closer to club-house than trance-inflected trouse, even if it blends fine in a festival set.",
+        "title": "J. Worra, David Penn — some ppl fall - David Penn Remix",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024e878eba89ff46a8cb8d2964",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Trouse"
+      }
+    ]
   },
   {
     "id": 10,
@@ -14214,7 +14227,32 @@
       }
     ],
     "rank_order": 727,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/0w4jWlVP0tWVYw6NIJRTLI",
+        "score": 3,
+        "reason": "Rolling, hypnotic tech/acid-house jam that fits the energy but lives more in underground house than hands-in-the-air trouse.",
+        "title": "Oden & Fatzo — The Shapeshifter",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020790b638af67070070e62cd1",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Trouse"
+      },
+      {
+        "url": "https://open.spotify.com/track/4735w6I97inkg6y3JFTYyw",
+        "score": 3,
+        "reason": "Groove-forward tech-house roller whose focus is bass and percussion rather than euphoric leads, making it more side-room tech house than trouse.",
+        "title": "J. Worra, Leo Stannard — Check Out",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f30fff3f4a5f5723726f02f",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Trouse"
+      }
+    ]
   },
   {
     "id": 403,
@@ -14322,119 +14360,129 @@
       {
         "url": "https://open.spotify.com/track/1Bdd70AWZg3KmivtN5oG3O",
         "score": 4,
-        "reason": "Supersaw lead, sidechained pads, and anthemic vocal make this a near‑canonical festival EDM cut that sits comfortably in trouse territory.",
+        "reason": "Supersaw lead, sidechained pads, and anthemic vocal make this a near-canonical festival EDM cut that sits comfortably in trouse territory.",
         "title": "Avicii — Levels - Original Version",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ffb343926530168be4724dd4",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ffb343926530168be4724dd4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2I0Q1wxFRdnDYtG6Q8W47S",
         "score": 4,
-        "reason": "Deep‑house‑tinted drums but built on trancey chords and a big drop; a hybrid that still reads as festival‑friendly trouse.",
+        "reason": "Deep-house-tinted drums but built on trancey chords and a big drop; a hybrid that still reads as festival-friendly trouse.",
         "title": "MUNA, Tiësto — Winterbreak - Tiësto’s Deep House Remix",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0209a9f84ffb6ac32351860317",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0209a9f84ffb6ac32351860317",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4e4DujMLh9227SuYdFsHK2",
         "score": 4,
-        "reason": "Huge melodic hook, four‑on‑the‑floor stomp, and emotional topline: classic big‑room EDM on the melodic trouse axis.",
+        "reason": "Huge melodic hook, four-on-the-floor stomp, and emotional topline: classic big-room EDM on the melodic trouse axis.",
         "title": "Swedish House Mafia, John Martin — Don’t You Worry Child - Radio Edit",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02544023aa98872d4deb347465",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02544023aa98872d4deb347465",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0w4jWlVP0tWVYw6NIJRTLI",
         "score": 3,
-        "reason": "Rolling, hypnotic tech/acid‑house jam that fits the energy but lives more in underground house than hands‑in‑the‑air trouse.",
+        "reason": "Rolling, hypnotic tech/acid-house jam that fits the energy but lives more in underground house than hands-in-the-air trouse.",
         "title": "Oden & Fatzo — The Shapeshifter",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020790b638af67070070e62cd1",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020790b638af67070070e62cd1",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "tech_house"
       },
       {
-        "url": "https://open.spotify.com/track/7oK9VyNzrYvRFo7nQEYkWN",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7oK9VyNzrYvRFo7nQEYkWN",
         "score": 5,
-        "reason": "Classic progressive‑house / trouse anthem with towering synth riffs and massive drops, a stronger pure festival template than the tech‑house roller.",
+        "reason": "Classic progressive-house / trouse anthem with towering synth riffs and massive drops, a stronger pure festival template than the tech-house roller.",
         "title": "Martin Garrix — Animals",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ccdddd46119a4ff53eaf1f5d",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ccdddd46119a4ff53eaf1f5d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4wARBbwZLNAPDVG6nCMhR6",
         "score": 3,
-        "reason": "Funky/tech house groove and diva vocal put this closer to club‑house than trance‑inflected trouse, even if it blends fine in a festival set.",
+        "reason": "Funky/tech house groove and diva vocal put this closer to club-house than trance-inflected trouse, even if it blends fine in a festival set.",
         "title": "J. Worra, David Penn — some ppl fall - David Penn Remix",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024e878eba89ff46a8cb8d2964",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "house"
       },
       {
-        "url": "https://open.spotify.com/track/0d28khcov6AiegSCpG5TuT",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0d28khcov6AiegSCpG5TuT",
         "score": 5,
-        "reason": "Euphoric synth leads and booming big‑room drums land squarely in the trouse/prog‑house sweet spot.",
+        "reason": "Euphoric synth leads and booming big-room drums land squarely in the trouse/prog-house sweet spot.",
         "title": "Martin Garrix, Dua Lipa — Scared to Be Lonely",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e64af6953d2f6c2843c87e09",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e64af6953d2f6c2843c87e09",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5fp6m6Zo4LetiWaMMrPjy5",
         "score": 2,
-        "reason": "Long ambient intro and drifting trance textures push this toward early‑2010s internet/YouTube trance rather than vocal or big‑room trouse.",
+        "reason": "Long ambient intro and drifting trance textures push this toward early-2010s internet/YouTube trance rather than vocal or big-room trouse.",
         "title": "009 Sound System — Dreamscape",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026298dc3c772f72e70e73d4e8",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026298dc3c772f72e70e73d4e8",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "trance"
       },
       {
-        "url": "https://open.spotify.com/track/7BKLCZ1jbUBVqRi2FVlTVw",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7BKLCZ1jbUBVqRi2FVlTVw",
         "score": 5,
-        "reason": "Piano‑house verses exploding into a huge synth drop; a definitive pop‑trouse festival banger and a clearer fit than the hazy 009 Sound System cut.",
+        "reason": "Piano-house verses exploding into a huge synth drop; a definitive pop-trouse festival banger and a clearer fit than the hazy 009 Sound System cut.",
         "title": "The Chainsmokers, Daya — Don’t Let Me Down",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02495ce6da9aeb159e94eaa453",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4735w6I97inkg6y3JFTYyw",
         "score": 3,
-        "reason": "Groove‑forward tech‑house roller whose focus is bass and percussion rather than euphoric leads, making it more side‑room tech house than trouse.",
+        "reason": "Groove-forward tech-house roller whose focus is bass and percussion rather than euphoric leads, making it more side-room tech house than trouse.",
         "title": "J. Worra, Leo Stannard — Check Out",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022f30fff3f4a5f5723726f02f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022f30fff3f4a5f5723726f02f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "tech_house"
       },
       {
-        "url": "https://open.spotify.com/track/6Zc7uJ0c3irQajvF5d0XbT",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6Zc7uJ0c3irQajvF5d0XbT",
         "score": 4,
-        "reason": "Bright, melodic progressive‑house with a soaring hook; not in your logs and closer to the melodic trouse blueprint.",
+        "reason": "Bright, melodic progressive-house with a soaring hook; not in your logs and closer to the melodic trouse blueprint.",
         "title": "Alesso — Years",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 23,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 406,
@@ -15831,7 +15879,20 @@
       }
     ],
     "rank_order": 743,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5fp6m6Zo4LetiWaMMrPjy5",
+        "score": 2,
+        "reason": "Long ambient intro and drifting trance textures push this toward early-2010s internet/YouTube trance rather than vocal or big-room trouse.",
+        "title": "009 Sound System — Dreamscape",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026298dc3c772f72e70e73d4e8",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Trouse"
+      }
+    ]
   },
   {
     "id": 450,
