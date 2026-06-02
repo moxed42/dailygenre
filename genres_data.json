@@ -21078,7 +21078,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dca9dbd666b3c4115b87345f",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5fBzQNeFIiWfAMS5x4hvg5",
@@ -21086,9 +21086,9 @@
         "reason": "Archetypal samba jazz: Joo Donato’s electric keys lock into a syncopated samba pulse while the band stretches harmonically like a small jazz combo",
         "title": "Joo Donato — Espalhado",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023e5311f773296e02e869d1b7",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023e5311f773296e02e869d1b7",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0aOH62uqDzuvCvN2jdVtZs",
@@ -21098,14 +21098,16 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02edcbd173b4b497f405e1c49b",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 75,
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 645,
