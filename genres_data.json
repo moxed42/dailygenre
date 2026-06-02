@@ -6946,7 +6946,20 @@
       }
     ],
     "rank_order": 249,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/0Xm1uwAeW0ujb1AWRgZOdT",
+        "score": 2,
+        "reason": "EDM production wrapped around post-hardcore vocals and guitars makes this primarily electronic rock, not clean dance pop.",
+        "title": "Breathe Carolina — Blackout",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02003ae97cd3f3558edc8d6cc4",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dance-pop"
+      }
+    ]
   },
   {
     "id": 186,
@@ -7107,7 +7120,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/2goLsvvODILDzeeiT4dAoR | 5 | Auto‑tuned vocal hook, Euro‑club beat, and late‑90s euphoria make this a cornerstone dance‑pop crossover and perfect opener. | Cher — Believe\nhttps://open.spotify.com/track/2ENexcMEMsYk0rVJigVD3i | 5 | Massive chorus, four‑on‑the‑floor stomp, and rave‑ready synths define the big‑room pop sound—about as archetypal dance pop as it gets. | Rihanna — Only Girl In The World\nhttps://open.spotify.com/track/0QkWikH5Z3U0f79T9iuF6c | 5 | Aggressive EDM production, chanted hook, and huge pre‑chorus drop; firmly in the electro‑dance‑pop canon. | Lady Gaga — Judas\nhttps://open.spotify.com/track/043dDJ9u0PQ3ooAXMgcwOe | 4 | Meme‑born pop‑rap cut over a thick, side‑chained beat; playful but structurally a solid internet‑age dance‑pop track. | Doja Cat — MOOO!\nhttps://open.spotify.com/track/4nTYxxF8iWBq54LO3dBUie | 3 | New jack swing groove and political lyrics place it more in R&B/swing history than modern dance pop, even though it works in a high‑energy set. | Janet Jackson — Rhythm Nation\nhttps://open.spotify.com/track/2xLOMHjkOK8nzxJ4r6yOKR | 5 | Glittering synths, huge chorus, and pristine pop structure make this a definitive 2010s dance‑pop single. | Katy Perry — Teenage Dream\nhttps://open.spotify.com/track/4O45RxFmWr88UfFlNtsXUy | 5 | Neon‑sleek synths, driving beat, and massive hook put this at the vanguard of modern indie‑dance‑pop. | Magdalena Bay — Image\nhttps://open.spotify.com/track/7iwPGVfoiedHFNHvpxTznL | 4 | Eurodance‑style synth stabs and pounding kick drum with a catchy topline; classic high‑energy Euro‑dance‑pop. | Erika — I Don’t Know - Radio Mix\nhttps://open.spotify.com/track/0Xm1uwAeW0ujb1AWRgZOdT | 2 | EDM production wrapped around post‑hardcore vocals and guitars makes this primarily electronic rock, not clean dance pop. | Breathe Carolina — Blackout\nhttps://open.spotify.com/track/7hDc8b7IXETo14hHIHdnhd | 5 | Bright, synthetic groove and one of the most instantly recognizable choruses of the 2010s; a perfect mainstream dance‑pop upgrade. | Carly Rae Jepsen — Call Me Maybe\nhttps://open.spotify.com/track/1nH2PkJL1XoUq8oE6tBZoU | 4 | Dark, retro‑disco synths and a pounding 4/4 rhythm make this more neon‑R&B/nu‑disco, but it still reads as club‑ready dance pop. | The Weeknd — Sacrifice\nhttps://open.spotify.com/track/3E7ZwUMJFqpsDOJzEkBrQ7 | 5 | Minimal beat, hypnotic synth riff, and unforgettable chorus make this one of the defining 2000s dance‑pop singles. | Kylie Minogue — Can’t Get You Out of My Head",
     "summary": "Dance-pop is pop music engineered for dancefloor function — melodic hooks and pop song structures over electronic or live dance beats. Emerging in the 1980s from the intersection of pop and disco/club music, it has been one of the most commercially dominant genres in popular music ever since, encompassing everything from Madonna to Britney Spears to modern streaming-era pop.",
     "key_artists": "Madonna, Michael Jackson, Kylie Minogue, Janet Jackson, Britney Spears (originators/major figures) • Dua Lipa, Charli XCX (modern)",
     "suggested_songs": "Madonna — Into the Groove, Janet Jackson — Rhythm Nation, Kylie Minogue — Can't Get You Out of My Head, Dua Lipa — Levitating",
@@ -7116,131 +7129,137 @@
       {
         "url": "https://open.spotify.com/track/2goLsvvODILDzeeiT4dAoR",
         "score": 5,
-        "reason": "Auto‑tuned vocal hook, Euro‑club beat, and late‑90s euphoria make this a cornerstone dance‑pop crossover and perfect opener.",
+        "reason": "Auto-tuned vocal hook, Euro-club beat, and late-90s euphoria make this a cornerstone dance-pop crossover and perfect opener.",
         "title": "Cher — Believe",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0217514eabfbd713237eebd21f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2ENexcMEMsYk0rVJigVD3i",
         "score": 5,
-        "reason": "Massive chorus, four‑on‑the‑floor stomp, and rave‑ready synths define the big‑room pop sound—about as archetypal dance pop as it gets.",
+        "reason": "Massive chorus, four-on-the-floor stomp, and rave-ready synths define the big-room pop sound—about as archetypal dance pop as it gets.",
         "title": "Rihanna — Only Girl In The World",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0231548865f7c729290b96c794",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0231548865f7c729290b96c794",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0QkWikH5Z3U0f79T9iuF6c",
         "score": 5,
-        "reason": "Aggressive EDM production, chanted hook, and huge pre‑chorus drop; firmly in the electro‑dance‑pop canon.",
+        "reason": "Aggressive EDM production, chanted hook, and huge pre-chorus drop; firmly in the electro-dance-pop canon.",
         "title": "Lady Gaga — Judas",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026d2bc35812c2d7f67d110e48",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/043dDJ9u0PQ3ooAXMgcwOe",
         "score": 4,
-        "reason": "Meme‑born pop‑rap cut over a thick, side‑chained beat; playful but structurally a solid internet‑age dance‑pop track.",
+        "reason": "Meme-born pop-rap cut over a thick, side-chained beat; playful but structurally a solid internet-age dance-pop track.",
         "title": "Doja Cat — MOOO!",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021742758fca8805f9110f8248",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021742758fca8805f9110f8248",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4nTYxxF8iWBq54LO3dBUie",
         "score": 3,
-        "reason": "New jack swing groove and political lyrics place it more in R&B/swing history than modern dance pop, even though it works in a high‑energy set.",
+        "reason": "New jack swing groove and political lyrics place it more in R&B/swing history than modern dance pop, even though it works in a high-energy set.",
         "title": "Janet Jackson — Rhythm Nation",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236e9e2e6de0b594414fb80c9",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "new_jack_swing"
       },
       {
-        "url": "https://open.spotify.com/track/2xLOMHjkOK8nzxJ4r6yOKR",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2xLOMHjkOK8nzxJ4r6yOKR",
         "score": 5,
-        "reason": "Glittering synths, huge chorus, and pristine pop structure make this a definitive 2010s dance‑pop single.",
+        "reason": "Glittering synths, huge chorus, and pristine pop structure make this a definitive 2010s dance-pop single.",
         "title": "Katy Perry — Teenage Dream",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0247f930accd8ac01686401fa2",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/4O45RxFmWr88UfFlNtsXUy",
         "score": 5,
-        "reason": "Neon‑sleek synths, driving beat, and massive hook put this at the vanguard of modern indie‑dance‑pop.",
+        "reason": "Neon-sleek synths, driving beat, and massive hook put this at the vanguard of modern indie-dance-pop.",
         "title": "Magdalena Bay — Image",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027339f7e95927d4b823189f62",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027339f7e95927d4b823189f62",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7iwPGVfoiedHFNHvpxTznL",
         "score": 4,
-        "reason": "Eurodance‑style synth stabs and pounding kick drum with a catchy topline; classic high‑energy Euro‑dance‑pop.",
+        "reason": "Eurodance-style synth stabs and pounding kick drum with a catchy topline; classic high-energy Euro-dance-pop.",
         "title": "Erika — I Don’t Know - Radio Mix",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0214586b47eb9ebec3cf898c98",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0Xm1uwAeW0ujb1AWRgZOdT",
         "score": 2,
-        "reason": "EDM production wrapped around post‑hardcore vocals and guitars makes this primarily electronic rock, not clean dance pop.",
+        "reason": "EDM production wrapped around post-hardcore vocals and guitars makes this primarily electronic rock, not clean dance pop.",
         "title": "Breathe Carolina — Blackout",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02003ae97cd3f3558edc8d6cc4",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02003ae97cd3f3558edc8d6cc4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "electronic_rock"
       },
       {
-        "url": "https://open.spotify.com/track/7hDc8b7IXETo14hHIHdnhd",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7hDc8b7IXETo14hHIHdnhd",
         "score": 5,
-        "reason": "Bright, synthetic groove and one of the most instantly recognizable choruses of the 2010s; a perfect mainstream dance‑pop upgrade.",
+        "reason": "Bright, synthetic groove and one of the most instantly recognizable choruses of the 2010s; a perfect mainstream dance-pop upgrade.",
         "title": "Carly Rae Jepsen — Call Me Maybe",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024f0fd9dad63977146e685700",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1nH2PkJL1XoUq8oE6tBZoU",
         "score": 4,
-        "reason": "Dark, retro‑disco synths and a pounding 4/4 rhythm make this more neon‑R&B/nu‑disco, but it still reads as club‑ready dance pop.",
+        "reason": "Dark, retro-disco synths and a pounding 4/4 rhythm make this more neon-R&B/nu-disco, but it still reads as club-ready dance pop.",
         "title": "The Weeknd — Sacrifice",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024ab2520c2c77a1d66b9ee21d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3E7ZwUMJFqpsDOJzEkBrQ7",
         "score": 5,
-        "reason": "Minimal beat, hypnotic synth riff, and unforgettable chorus make this one of the defining 2000s dance‑pop singles.",
+        "reason": "Minimal beat, hypnotic synth riff, and unforgettable chorus make this one of the defining 2000s dance-pop singles.",
         "title": "Kylie Minogue — Can’t Get You Out of My Head",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025d6121285c42ea4535e59048",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 3,
     "pending_songs": [],
     "favoritesong": "Cher — Believe",
     "favoritesongurl": "https://open.spotify.com/track/2goLsvvODILDzeeiT4dAoR",
-    "monthlycontender": false,
+    "monthlycontender": true,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0217514eabfbd713237eebd21f"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0217514eabfbd713237eebd21f",
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 193,
@@ -15301,7 +15320,20 @@
       }
     ],
     "rank_order": 517,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4nTYxxF8iWBq54LO3dBUie",
+        "score": 3,
+        "reason": "New jack swing groove and political lyrics place it more in R&B/swing history than modern dance pop, even though it works in a high-energy set.",
+        "title": "Janet Jackson — Rhythm Nation",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0236e9e2e6de0b594414fb80c9",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Dance-pop"
+      }
+    ]
   },
   {
     "id": 434,
