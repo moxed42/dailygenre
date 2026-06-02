@@ -13579,9 +13579,9 @@
         "reason": "Maximal EDM with saw‑lead riffs, festival build‑and‑drop structure, and mid‑2010s Knife Party sound design; squarely electro‑house, though it leans toward brostep crossover",
         "title": "Knife Party — 404",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4W6X7VhsfG3h5uQ0PQv5h3",
@@ -13591,17 +13591,17 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/7s6uQ1WzFF2VdZGio3dX0Z",
+        "url": "🔼 ADD: https://open.spotify.com/track/7aIiDOQyCBA8yi1dozGojm",
         "score": 5,
         "reason": "Classic peak‑time electro house with chugging bassline, sharp side‑chained leads, and no dubstep detours; a clean archetypal pillar beside the Knife Party hybrids",
         "title": "TJR — Ode To Oi",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02709c3a9016ae1cd8052bc267",
         "source": "spotify",
-        "added": "2026-05-31",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -13610,8 +13610,10 @@
     "favoritesongurl": "https://open.spotify.com/track/63TS3ig8lXWVUDvHSlc0TN",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf",
-    "pending_songs": []
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f75285aee646b314ce8c3caf",
+    "pending_songs": [],
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 368,
