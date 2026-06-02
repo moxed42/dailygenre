@@ -19062,7 +19062,20 @@
     "vibe": "Hip-hop from New York, where it started and still means the most.",
     "songs_listened": [],
     "rank_order": 237,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6O4zEx1kzm32mXlUIOthSw",
+        "score": 2,
+        "reason": "Funky, syncopated bass and loose drums nod to jazz-funk, but the feel and flow sit more in West Coast underground than in explicitly jazz-sampled jazz rap.",
+        "title": "Del The Funky Homosapien — Corner Story",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aafc8647846661b4d4f14749",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Jazz rap"
+      }
+    ]
   },
   {
     "id": 541,
@@ -20420,59 +20433,63 @@
       {
         "url": "https://open.spotify.com/track/671sDyeE398eD0sdGuVbZU",
         "score": 5,
-        "reason": "Stripped boom‑bap drums, upright‑bass‑feeling low end, and horn stabs under laid‑back flows make this an archetypal early‑90s jazz rap cut.",
+        "reason": "Stripped boom-bap drums, upright-bass-feeling low end, and horn stabs under laid-back flows make this an archetypal early-90s jazz rap cut.",
         "title": "A Tribe Called Quest — Steve Biko (Stir It Up)",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f306af1dae08f81f9d6f1f9f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7hzm68uGbxcvQY9FAtpk2s",
         "score": 4,
-        "reason": "Dusty jazz chords and brushed‑snare groove fused with introspective rapping land this squarely in the nujabes‑school jazz rap lane.",
+        "reason": "Dusty jazz chords and brushed-snare groove fused with introspective rapping land this squarely in the nujabes-school jazz rap lane.",
         "title": "Nujabes; Shing02 — battlecry",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0283a1baffae989501a80fffd0",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0283a1baffae989501a80fffd0",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6OkDb9fyi22Pr6QJIrUNdJ",
         "score": 4,
-        "reason": "Looped Rhodes‑style keys and woozy bass give a clear jazz feel, even though the arrangement leans a bit more lo‑fi and abstract than classic live‑band jazz rap.",
+        "reason": "Looped Rhodes-style keys and woozy bass give a clear jazz feel, even though the arrangement leans a bit more lo-fi and abstract than classic live-band jazz rap.",
         "title": "MF DOOM; DJ Cucumber Slice — Rhymes Like Dimes",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026ce90ec627a0198a8efd127f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e026ce90ec627a0198a8efd127f",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6O4zEx1kzm32mXlUIOthSw",
         "score": 2,
-        "reason": "Funky, syncopated bass and loose drums nod to jazz‑funk, but the feel and flow sit more in West Coast underground than in explicitly jazz‑sampled jazz rap.",
+        "reason": "Funky, syncopated bass and loose drums nod to jazz-funk, but the feel and flow sit more in West Coast underground than in explicitly jazz-sampled jazz rap.",
         "title": "Del The Funky Homosapien — Corner Story",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aafc8647846661b4d4f14749",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "west_coast_hip_hop"
       },
       {
-        "url": "https://open.spotify.com/track/7CyPwkp0oE8Ro9Dd5CUDjW",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7CyPwkp0oE8Ro9Dd5CUDjW",
         "score": 5,
-        "reason": "Live‑band jazz groove with walking bass under conversational verses perfectly captures the canonical fusion of rap and straight‑ahead jazz.",
+        "reason": "Live-band jazz groove with walking bass under conversational verses perfectly captures the canonical fusion of rap and straight-ahead jazz.",
         "title": "Gang Starr — Jazz Thing (Movie Mix)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b0dd6a5cd1dec96c4119c262",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b0dd6a5cd1dec96c4119c262",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 22,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 593,
