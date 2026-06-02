@@ -19839,7 +19839,8 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025e10a5aca3763224e2050016",
         "source": "spotify",
-        "added": "2026-06-02"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "hard_bop"
       },
       {
         "url": "🔼 LEVEL UP: https://open.spotify.com/track/2GFb9ghyyL74CmQib7etpc",
@@ -20511,7 +20512,20 @@
       }
     ],
     "rank_order": 344,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/1xicvSO4CJ2ymqYgpk7DFh",
+        "score": 3,
+        "reason": "Classic Miles lineup with bop players and brisk horn lines, but the smoother head‑solo format and modal lean make this feel more like hard bop crossover than tight, frenetic bebop proper",
+        "title": "Miles Davis — Milestones",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025e10a5aca3763224e2050016",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Bebop"
+      }
+    ]
   },
   {
     "id": 625,
