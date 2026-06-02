@@ -7901,6 +7901,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Electro-disco"
+      },
+      {
+        "url": "https://open.spotify.com/track/0wz1LjDb9ZNEYwOmDJ3Q4b",
+        "score": 3,
+        "reason": "The rhythm and harmony are pure early-60s surf-band DNA, but the heavy vocal harmonies and pop structure push it more toward proto-rock/baroque pop than pure surf.",
+        "title": "The Beach Boys — Surfin’ U.S.A. - Remastered 2001",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027cb33b8fab5302942e6a78fb",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Surf rock"
       }
     ]
   },
@@ -16870,7 +16882,20 @@
     "vibe": "Music whose job is to make an imaginary world feel real.",
     "songs_listened": [],
     "rank_order": 767,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/7JX4bnEqhkOaYBkuwlPy9F",
+        "score": 2,
+        "reason": "Chiptune timbres nod to surf’s melodic shapes, but the 8-bit palette and VGM structure make this primarily a retro game-music pastiche rather than true surf rock.",
+        "title": "Lavender Town",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020d0678ca16c267dc3e54f62b",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Surf rock"
+      }
+    ]
   },
   {
     "id": 485,
@@ -31701,7 +31726,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/3Wwy5wlxd8CpKMZGc4Mgjf | 5 | Clean, twangy lead guitar, rolling toms, and that classic minor‑key surf melody make this an archetypal “textbook surf instrumental.” | The Chantays — Pipeline\nhttps://open.spotify.com/track/6lbARvUEjEnU3OBSFOpGmM | 5 | Staccato tremolo picking, rapid‑fire drums, and Middle‑Eastern‑inflected melody define the high‑energy, reverb‑drenched surf‑guitar ideal. | Dick Dale & His Del-Tones — Miserlou\nhttps://open.spotify.com/track/0JCV6KRYQ9j0gLqUTTTrP2 | 5 | Big tom‑heavy beat, shouted breaks, and simple, aggressive lead lines; this is a foundational surf‑band anthem and perfect genre explainer. | The Surfaris — Wipe Out - Hit Version\nhttps://open.spotify.com/track/0wz1LjDb9ZNEYwOmDJ3Q4b | 3 | The rhythm and harmony are pure early‑60s surf‑band DNA, but the heavy vocal harmonies and pop structure push it more toward proto‑rock/baroque pop than pure surf. | The Beach Boys — Surfin’ U.S.A. - Remastered 2001\nhttps://open.spotify.com/track/5W45ACJYATjWEwUDYM5TDi | 5 | Dark, echo‑soaked guitar and menacing, bluesy riffing show the reverb‑heavy instrumental surf sound in a purer, more guitar‑forward form. | Link Wray & The Wraymen — Rumble\nhttps://open.spotify.com/track/7JX4bnEqhkOaYBkuwlPy9F | 2 | Chiptune timbres nod to surf’s melodic shapes, but the 8‑bit palette and VGM structure make this primarily a retro game‑music pastiche rather than true surf rock. | Louie Zong — Lavender Town\nhttps://open.spotify.com/track/5MBRUjlLMeLLcE3fH1aTNX | 5 | Bright, reverb‑drenched guitar leads and pounding toms carry a classic instrumental surf feel with no vocals, making it a cleaner surf reference than the chiptune foil. | The Lively Ones — Surf Rider",
     "summary": "Surf rock is the instrumental and vocal guitar style that emerged in Southern California in the early 1960s, defined by reverb-drenched electric guitar, Duane Eddy-influenced melodic lines, and music evoking ocean waves and beach culture. Dick Dale's ferocious picking technique created the instrumental template, while The Beach Boys and Jan & Dean took the vocal side mainstream.",
     "key_artists": "Dick Dale, The Ventures, The Surfaris, The Beach Boys, Jan & Dean (major figures)",
     "suggested_songs": "Dick Dale — Misirlou, The Surfaris — Wipe Out, The Ventures — Walk Don't Run, The Beach Boys — Surfin' Safari, Jan & Dean — Surf City",
@@ -31710,79 +31735,85 @@
       {
         "url": "https://open.spotify.com/track/3Wwy5wlxd8CpKMZGc4Mgjf",
         "score": 5,
-        "reason": "Clean, twangy lead guitar, rolling toms, and that classic minor‑key surf melody make this an archetypal “textbook surf instrumental.”",
+        "reason": "Clean, twangy lead guitar, rolling toms, and that classic minor-key surf melody make this an archetypal “textbook surf instrumental.”",
         "title": "The Chantays — Pipeline",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02821bb83bdce338e9c1fadd9e",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02821bb83bdce338e9c1fadd9e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6lbARvUEjEnU3OBSFOpGmM",
         "score": 5,
-        "reason": "Staccato tremolo picking, rapid‑fire drums, and Middle‑Eastern‑inflected melody define the high‑energy, reverb‑drenched surf‑guitar ideal.",
+        "reason": "Staccato tremolo picking, rapid-fire drums, and Middle-Eastern-inflected melody define the high-energy, reverb-drenched surf-guitar ideal.",
         "title": "Dick Dale & His Del-Tones — Miserlou",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ae31a3a403adad7e973a48fd",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0JCV6KRYQ9j0gLqUTTTrP2",
         "score": 5,
-        "reason": "Big tom‑heavy beat, shouted breaks, and simple, aggressive lead lines; this is a foundational surf‑band anthem and perfect genre explainer.",
+        "reason": "Big tom-heavy beat, shouted breaks, and simple, aggressive lead lines; this is a foundational surf-band anthem and perfect genre explainer.",
         "title": "The Surfaris — Wipe Out - Hit Version",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e26350d8b6a86ebe61f9eee4",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e26350d8b6a86ebe61f9eee4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0wz1LjDb9ZNEYwOmDJ3Q4b",
         "score": 3,
-        "reason": "The rhythm and harmony are pure early‑60s surf‑band DNA, but the heavy vocal harmonies and pop structure push it more toward proto‑rock/baroque pop than pure surf.",
+        "reason": "The rhythm and harmony are pure early-60s surf-band DNA, but the heavy vocal harmonies and pop structure push it more toward proto-rock/baroque pop than pure surf.",
         "title": "The Beach Boys — Surfin’ U.S.A. - Remastered 2001",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027cb33b8fab5302942e6a78fb",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "pop_rock"
       },
       {
-        "url": "https://open.spotify.com/track/5W45ACJYATjWEwUDYM5TDi",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5W45ACJYATjWEwUDYM5TDi",
         "score": 5,
-        "reason": "Dark, echo‑soaked guitar and menacing, bluesy riffing show the reverb‑heavy instrumental surf sound in a purer, more guitar‑forward form.",
+        "reason": "Dark, echo-soaked guitar and menacing, bluesy riffing show the reverb-heavy instrumental surf sound in a purer, more guitar-forward form.",
         "title": "Link Wray & The Wraymen — Rumble",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02764814c583588edddb838e0e",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024f4cb078f237c593b63d4ce7",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7JX4bnEqhkOaYBkuwlPy9F",
         "score": 2,
-        "reason": "Chiptune timbres nod to surf’s melodic shapes, but the 8‑bit palette and VGM structure make this primarily a retro game‑music pastiche rather than true surf rock.",
-        "title": "Louie Zong — Lavender Town",
+        "reason": "Chiptune timbres nod to surf’s melodic shapes, but the 8-bit palette and VGM structure make this primarily a retro game-music pastiche rather than true surf rock.",
+        "title": "Lavender Town",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020d0678ca16c267dc3e54f62b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "video_game_music"
       },
       {
-        "url": "https://open.spotify.com/track/5MBRUjlLMeLLcE3fH1aTNX",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/5MBRUjlLMeLLcE3fH1aTNX",
         "score": 5,
-        "reason": "Bright, reverb‑drenched guitar leads and pounding toms carry a classic instrumental surf feel with no vocals, making it a cleaner surf reference than the chiptune foil.",
+        "reason": "Bright, reverb-drenched guitar leads and pounding toms carry a classic instrumental surf feel with no vocals, making it a cleaner surf reference than the chiptune foil.",
         "title": "The Lively Ones — Surf Rider",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 26,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 937,
