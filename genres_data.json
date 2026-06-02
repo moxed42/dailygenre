@@ -27085,7 +27085,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/6HiHHP4wUKzTSBEjYZRnCm | 4 | Loose, hypnotic groove with interlocking guitars and Afro‑psych keys; feels like a lighter, highlife‑leaning take on Afro‑rock. | The Lijadu Sisters — Orere‑Elejigbo\nhttps://open.spotify.com/track/2oWex6rYoQ7Bl2D9zG8d3F | 5 | Deep, mid‑tempo Afrobeat pocket with horn stabs, call‑and‑response vocals, and political bite—an archetypal Fela groove for this lane. | Fela Kuti — Water No Get Enemy\nhttps://open.spotify.com/track/7vx87LB2W1D7QlwjF96kh1 | 4 | Tight, percussive jam that blurs Afro‑funk and Afrobeat, with choppy guitars and insistent rhythm section giving it a strong Afro‑rock club energy. | The Funkees — Breakthrough\nhttps://open.spotify.com/track/5xevas4P14kVmD4St0X3yy | 3 | Distorted psych‑guitar and looser rock feel push this toward Zamrock/acid rock, with the Afro groove more in the background than foreground. | Amanaz — Khala My Friend\nhttps://open.spotify.com/track/7qUiZlwGOzK5GkJHc6nJ2u | 5 | Heavy fuzz guitar, locked Afro rhythm section, and chant‑like vocals make this a quintessential Afro‑rock/Zamrock burner that centers the style better than the more diffuse psych cut. | Witch — Lazy Bones\nhttps://open.spotify.com/track/7qSdrXzUd5WvIai13i0HDm | 4 | Polyrhythmic percussion, jangling guitar, and chant‑style vocals live at the crossroads of Afro‑funk and Afro‑rock, giving the session a modern, driving edge. | Baba Commandant & The Mandingo Band — Wasso\nhttps://open.spotify.com/track/11uAWA4bnmxzVBqtwZEuZl | 3 | Sahelian guitar lines and desert‑blues vocal delivery skew this closer to Tuareg/Desert rock than classic Afro‑rock or Afrobeat, despite the shared hypnotic drive. | Mdou Moctar — Imouhar\nhttps://open.spotify.com/track/1bJZJx8b3Yh6U2EMi2pqgk | 5 | Fuzz‑edged guitar riffs, pounding Afro‑funk rhythm, and fiery vocals sit squarely in the Afro‑rock pocket, giving a more direct template for the genre tag. | BLO — Chant to Mother Earth",
     "summary": "Afro rock fuses African rhythmic and melodic foundations with electric rock instrumentation, extended jams, funk, and psychedelia, especially in 1970s West and East African scenes. Artists such as Osibisa, Blo, Amanaz, and Assagai made music that was simultaneously locally grounded and transnationally adventurous.",
     "key_artists": "Osibisa, Blo, Amanaz, Assagai, Hedzoleh Soundz (major figures)",
     "suggested_songs": "Osibisa — Sunshine Day, Blo — Preacherman, Amanaz — Khala My Friend, Assagai — I've Been Waiting, Hedzoleh Soundz — Kum Hon San",
@@ -27094,89 +27094,95 @@
       {
         "url": "https://open.spotify.com/track/6HiHHP4wUKzTSBEjYZRnCm",
         "score": 4,
-        "reason": "Loose, hypnotic groove with interlocking guitars and Afro‑psych keys; feels like a lighter, highlife‑leaning take on Afro‑rock.",
-        "title": "The Lijadu Sisters — Orere‑Elejigbo",
+        "reason": "Loose, hypnotic groove with interlocking guitars and Afro-psych keys; feels like a lighter, highlife-leaning take on Afro-rock.",
+        "title": "The Lijadu Sisters — Orere-Elejigbo",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02949aad45781849228a420a4b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2oWex6rYoQ7Bl2D9zG8d3F",
         "score": 5,
-        "reason": "Deep, mid‑tempo Afrobeat pocket with horn stabs, call‑and‑response vocals, and political bite—an archetypal Fela groove for this lane.",
+        "reason": "Deep, mid-tempo Afrobeat pocket with horn stabs, call-and-response vocals, and political bite—an archetypal Fela groove for this lane.",
         "title": "Fela Kuti — Water No Get Enemy",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa11d0ad6e00ce0f055e7360",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02aa11d0ad6e00ce0f055e7360",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7vx87LB2W1D7QlwjF96kh1",
         "score": 4,
-        "reason": "Tight, percussive jam that blurs Afro‑funk and Afrobeat, with choppy guitars and insistent rhythm section giving it a strong Afro‑rock club energy.",
+        "reason": "Tight, percussive jam that blurs Afro-funk and Afrobeat, with choppy guitars and insistent rhythm section giving it a strong Afro-rock club energy.",
         "title": "The Funkees — Breakthrough",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cb3f2411d8f22cf3f7417dfd",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5xevas4P14kVmD4St0X3yy",
         "score": 3,
-        "reason": "Distorted psych‑guitar and looser rock feel push this toward Zamrock/acid rock, with the Afro groove more in the background than foreground.",
+        "reason": "Distorted psych-guitar and looser rock feel push this toward Zamrock/acid rock, with the Afro groove more in the background than foreground.",
         "title": "Amanaz — Khala My Friend",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e021a3e9f74688b6c8f7fe97751",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021a3e9f74688b6c8f7fe97751",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "zamrock"
       },
       {
-        "url": "https://open.spotify.com/track/7qUiZlwGOzK5GkJHc6nJ2u",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7qUiZlwGOzK5GkJHc6nJ2u",
         "score": 5,
-        "reason": "Heavy fuzz guitar, locked Afro rhythm section, and chant‑like vocals make this a quintessential Afro‑rock/Zamrock burner that centers the style better than the more diffuse psych cut.",
+        "reason": "Heavy fuzz guitar, locked Afro rhythm section, and chant-like vocals make this a quintessential Afro-rock/Zamrock burner that centers the style better than the more diffuse psych cut.",
         "title": "Witch — Lazy Bones",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7qSdrXzUd5WvIai13i0HDm",
         "score": 4,
-        "reason": "Polyrhythmic percussion, jangling guitar, and chant‑style vocals live at the crossroads of Afro‑funk and Afro‑rock, giving the session a modern, driving edge.",
+        "reason": "Polyrhythmic percussion, jangling guitar, and chant-style vocals live at the crossroads of Afro-funk and Afro-rock, giving the session a modern, driving edge.",
         "title": "Baba Commandant & The Mandingo Band — Wasso",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258a8cbdebbb1df901c29fdf6",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/11uAWA4bnmxzVBqtwZEuZl",
         "score": 3,
-        "reason": "Sahelian guitar lines and desert‑blues vocal delivery skew this closer to Tuareg/Desert rock than classic Afro‑rock or Afrobeat, despite the shared hypnotic drive.",
+        "reason": "Sahelian guitar lines and desert-blues vocal delivery skew this closer to Tuareg/Desert rock than classic Afro-rock or Afrobeat, despite the shared hypnotic drive.",
         "title": "Mdou Moctar — Imouhar",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02a090506a260f0d216f83104a",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a090506a260f0d216f83104a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "desert_rock"
       },
       {
-        "url": "https://open.spotify.com/track/1bJZJx8b3Yh6U2EMi2pqgk",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1bJZJx8b3Yh6U2EMi2pqgk",
         "score": 5,
-        "reason": "Fuzz‑edged guitar riffs, pounding Afro‑funk rhythm, and fiery vocals sit squarely in the Afro‑rock pocket, giving a more direct template for the genre tag.",
+        "reason": "Fuzz-edged guitar riffs, pounding Afro-funk rhythm, and fiery vocals sit squarely in the Afro-rock pocket, giving a more direct template for the genre tag.",
         "title": "BLO — Chant to Mother Earth",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 8,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 790,
@@ -28885,7 +28891,20 @@
     "vibe": "Driving a truck with no AC through the Mojave at 104°F, windows down, riff going.",
     "songs_listened": [],
     "rank_order": 204,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/11uAWA4bnmxzVBqtwZEuZl",
+        "score": 3,
+        "reason": "Sahelian guitar lines and desert-blues vocal delivery skew this closer to Tuareg/Desert rock than classic Afro-rock or Afrobeat, despite the shared hypnotic drive.",
+        "title": "Mdou Moctar — Imouhar",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a090506a260f0d216f83104a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Afro rock"
+      }
+    ]
   },
   {
     "id": 848,
