@@ -23964,28 +23964,28 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0252b2a3824413eefe9e33817a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/4FdSj7M1GuhneUcBjP6wIM",
+        "url": "🔼 ADD: https://open.spotify.com/track/70BcjMGYixgH1GKkLS40Jr",
         "score": 5,
         "reason": "A definitive bolero/canción ballad, frequently cited among the most popular boleros; the stately tempo, rich harmonic movement, and soaring vocal make it a perfect “explain canción” piece.",
         "title": "Luis Miguel — Solamente Una Vez",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025bbb2861d3459dbff0148f50",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/5K5UwBqjH8YClN8QawK8b2",
+        "url": "🔼 ADD: https://open.spotify.com/track/6deDgyezRHEFVrQqBewImr",
         "score": 4,
         "reason": "Another canon romantic canción rooted in bolero tradition: gently swaying rhythm, guitar‑led accompaniment, and intensely sentimental lyricism that sits squarely in the canción lineage.",
         "title": "Luis Miguel — Perfidia",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fce696a58c41bc9d3d9135ae",
         "source": "spotify",
-        "added": "2026-06-01",
+        "added": "2026-06-02",
         "isAdd": true
       }
     ],
@@ -23994,7 +23994,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "rank_order": null,
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 674,
