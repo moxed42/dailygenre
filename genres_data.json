@@ -2166,7 +2166,7 @@
     "date_raw": "1/23",
     "date_normalized": "2026-01-23",
     "parse_notes": "",
-    "rating": 4,
+    "rating": "4",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -2177,24 +2177,24 @@
     "vibe": "Country and folk discovering they were siblings all along.",
     "songs_listened": [
       {
-        "url": "https://open.spotify.com/track/6NBtG3l2b7bWMMEZe2VG3T",
+        "url": "https://open.spotify.com/track/07O8XgFozwV4FST1tPVDfO",
         "score": 5,
         "reason": "Archetypal topical talking blues: fully spoken-sung delivery, dry humor, and a strict blues vamp that perfectly captures the form.",
         "title": "Woody Guthrie — Talking Columbia Blues",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02cd36b6a21bfd31099eb7d5cb",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/2QgaEhClMPZdQDW9dXjO71",
+        "url": "https://open.spotify.com/track/1AkjPhgexQuQkeJpB3sS5E",
         "score": 5,
         "reason": "Sharp, fully spoken-sung monologue over a simple blues vamp that exemplifies topical talking blues at its most direct and witty.",
         "title": "Woody Guthrie — Talking Hard Work",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dbca0d13a38edb4e1b54a8c5",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5R0M7jvYpc8yzIYZxkFAxG",
@@ -2204,23 +2204,26 @@
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
-        "url": "https://open.spotify.com/track/3AhXZBEqbXxNfD8SCLJjSP",
+        "url": "https://open.spotify.com/track/3AhXZa8sUQht0UEdBJgpGc",
         "score": 5,
         "reason": "Dylan goes electric-folk on Highway 61: organ swirl, snare crack, and surreal lyrics merge folk storytelling with rock energy, establishing the template for roots music that refuses to stay acoustic.",
         "title": "Bob Dylan — Like a Rolling Stone",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020cb0884829c5503b2e242541",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 15,
     "pending_songs": [],
     "monthfavorite": false,
-    "monthleastfavorite": false
+    "monthleastfavorite": false,
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false
   },
   {
     "id": 66,
