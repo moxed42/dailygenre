@@ -2970,6 +2970,7 @@
       pending.splice(index, 1);
       currentGenre.songs_listened = official;
       currentGenre.pending_songs = pending;
+      markDirty();
       loadListenScreen(currentGenre);
     }
 
@@ -2978,6 +2979,7 @@
       const pending = getPendingSongs(currentGenre);
       pending.splice(index, 1);
       currentGenre.pending_songs = pending;
+      markDirty();
       loadListenScreen(currentGenre);
     }
 
@@ -3032,7 +3034,7 @@
       const listenedDate = dateValue(genre);
       const songs = normalizeSongsListened(genre.songs_listened || []);
       const activeSongs = songs.filter(s => !s.isPending);
-      const pendingSongs = songs.filter(s => !!s.isPending);
+      const pendingSongs = normalizeSongsListened(getPendingSongs(genre));
       const songCount = countSongsForDisplay(activeSongs);
       const art = getGenreArtwork(genre);
       const ratingLabel = genre.rating === 'zanger' ? 'Zanger' : (genre.rating ? `${escapeHtml(String(genre.rating))} ★` : 'Unrated');
@@ -3078,7 +3080,7 @@
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
             ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false)).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
-            ${pendingSongs.length ? `<div class="pending-section"><div class="eyebrow" style="margin-top:18px;margin-bottom:8px;">Pending Nominations</div><div class="detail-song-list">${pendingSongs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
+            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div class="eyebrow" style="margin:0;">Pending Nominations</div><button type="button" class="btn btn-secondary btn-tiny" id="reexaminePendingBtn">Re-examine pending tags</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map(song => renderSongEntry(song, false)).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
           </div>
         </div>
       `;
@@ -3157,6 +3159,60 @@
       return Promise.all(songs.map(resolveOne));
     }
 
+    function genresMatchPendingTag(tag, genreName) {
+      const a = String(tag || '').trim().toLowerCase();
+      const b = String(genreName || '').trim().toLowerCase();
+      if (!a || !b) return false;
+      return levenshtein(b, a) <= 2 || b.includes(a) || a.includes(b);
+    }
+
+    function queuePendingNomination(target, sourceGenreName, songData) {
+      if (!target || !songData) return false;
+      if (!Array.isArray(target.pending_songs)) target.pending_songs = [];
+      if (!Array.isArray(target.songs_listened)) target.songs_listened = [];
+      target.pending_songs = normalizeSongsListened(target.pending_songs);
+      target.songs_listened = normalizeSongsListened(target.songs_listened);
+      const normalizedUrl = normalizeSongUrl(songData.url || '');
+      const existsInPending = target.pending_songs.some(s => normalizeSongUrl(s.url || '') === normalizedUrl);
+      const existsInLogged = target.songs_listened.some(s => normalizeSongUrl(s.url || '') === normalizedUrl);
+      if (existsInPending || existsInLogged) return false;
+      const pendingSong = { ...songData, isPending: true, pendingFrom: sourceGenreName || '' };
+      target.pending_songs.push(pendingSong);
+      return true;
+    }
+
+    function processPendingNominationsForGenre(sourceGenre, consumeTags = false) {
+      if (!sourceGenre) return 0;
+      let added = 0;
+      const sourceSongs = normalizeSongsListened(sourceGenre.songs_listened || []);
+      sourceGenre.songs_listened = sourceSongs;
+      for (const song of sourceSongs) {
+        if (song._pendingGenreTag && song.levelUp) {
+          const tag = song._pendingGenreTag.toLowerCase();
+          const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(tag, g.genre));
+          if (target) {
+            const { isLevelUp, levelUp, ...base } = song;
+            const pendingSong = { ...(song.levelUp || {}), reason: song.levelUp?.reason || song.reason || '', score: song.levelUp?.score ?? song.score ?? null };
+            if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
+            if (consumeTags) delete song._pendingGenreTag;
+          }
+        }
+      }
+      return added;
+    }
+
+    function reexaminePendingTags() {
+      let added = 0;
+      genres.forEach(g => { added += processPendingNominationsForGenre(g, false); });
+      if (added > 0) {
+        markDirty();
+        if (currentGenre) loadListenScreen(currentGenre);
+        showSaveToast(`Queued ${added} pending song${added === 1 ? '' : 's'} for review.`);
+      } else {
+        showSaveToast('No new pending songs found.');
+      }
+    }
+
     async function prepareAndSaveCurrentGenre() {
       if (!currentGenre) {
         alert('Choose a genre first.');
@@ -3164,7 +3220,6 @@
       }
 
       currentGenre.rating = currentGenre.rating === 'zanger' ? 'zanger' : (selectedRating || currentGenre.rating || '');
-      markDirty();
       currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
       currentGenre.favoritesongurl = document.getElementById('favoriteSongUrl').value.trim();
       if (currentGenre.favoritesongurl && currentGenre.favoritesongurl.includes('spotify.com/track/')) {
@@ -3189,31 +3244,7 @@
       currentGenre.songs_listened = resolvedOfficial;
       currentGenre.pending_songs = getPendingSongs(currentGenre);
 
-      // Pending nominations: find levelUp songs tagged @genre and push to target
-      for (const song of currentGenre.songs_listened) {
-        if (song._pendingGenreTag && song.levelUp) {
-          const tag = song._pendingGenreTag.toLowerCase();
-          delete song._pendingGenreTag;
-          const target = genres.find(g =>
-            g.genre && (
-              levenshtein(g.genre.toLowerCase(), tag) <= 2 ||
-              g.genre.toLowerCase().includes(tag) ||
-              tag.includes(g.genre.toLowerCase())
-            )
-          );
-          if (target && target.id !== currentGenre.id) {
-            if (!Array.isArray(target.songs_listened)) target.songs_listened = [];
-            target.songs_listened = normalizeSongsListened(target.songs_listened);
-            const alreadyThere = target.songs_listened.some(s => normalizeSongUrl(s.url) === normalizeSongUrl(song.levelUp.url));
-            if (!alreadyThere) {
-              const { isLevelUp, ...pendingSong } = song.levelUp;
-              pendingSong.isPending = true;
-              pendingSong.pendingFrom = currentGenre.genre;
-              target.songs_listened.push(pendingSong);
-            }
-          }
-        }
-      }
+      processPendingNominationsForGenre(currentGenre, true);
 
       if (!dateValue(currentGenre)) {
         currentGenre.date_normalized = new Date().toISOString().slice(0,10);
@@ -3764,6 +3795,11 @@
 
     document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.classList.add('is-saving'); btn.textContent = 'Saving...'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.classList.remove('is-saving'); btn.textContent = old; } });
     document.getElementById('clearPendingBtn')?.addEventListener('click', clearPendingSongs);
+    document.addEventListener('click', (event) => {
+      const btn = event.target.closest('#reexaminePendingBtn');
+      if (btn) reexaminePendingTags();
+    });
+    document.getElementById('reexaminePendingBtn')?.addEventListener('click', reexaminePendingTags);
     ['favoriteSong','favoriteSongUrl','songsListenedBulk','notes'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', markDirty);
