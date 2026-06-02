@@ -9303,7 +9303,7 @@
         "reason": "Harsh, glacial dark ambient with heavy static and anxiety‑inducing swells; structurally closer to dark ambient/drone but shares enough suffocating noise and dread to brush against power‑electronics territory.",
         "title": "Uboa — Sleep Hygiene",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e027956f1c16347c7c7b6e06c62",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e027956f1c16347c7c7b6e06c62",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -10135,6 +10135,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Hardstyle"
+      },
+      {
+        "url": "https://open.spotify.com/track/7fYEGlFkYPEe3iRV30FBsu",
+        "score": 3,
+        "reason": "Relentlessly noisy, crust‑tinged hardcore with blown‑out production; the political fury fits street‑punk thematically, but the sound is closer to modern crust/hardcore",
+        "title": "BALM Squad — No Pride in Genocide - Redux",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02606a560ae6783d3bbf8346cb",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Street punk"
       }
     ]
   },
@@ -25172,7 +25184,7 @@
         "reason": "Lush arrangement, sophisticated harmony and intimate, late‑night production make this feel like high‑end adult pop with strong sophistipop overlap, even if it also reads as modern soul.",
         "title": "Sade — No Ordinary Love",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ee65bbd54f993b5f01d5c511",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ee65bbd54f993b5f01d5c511",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25182,7 +25194,7 @@
         "reason": "Slick groove, immaculate studio sheen and blue‑eyed soul vocals deliver one of the definitive radio‑pop statements of 80s sophistipop.",
         "title": "Daryl Hall & John Oates — I Can't Go for That (No Can Do)",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c84b9bd63074979108c7c752",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25942,7 +25954,7 @@
         "reason": "Tight, syncopated bass line, clavinet stabs and horn‑friendly groove make this a foundational funk track that also crosses into classic soul — perfect “explain funk” material.",
         "title": "Stevie Wonder — I Wish",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e022fee61bfec596bb6f5447c50",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022fee61bfec596bb6f5447c50",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -25962,7 +25974,7 @@
         "reason": "Motown polish and pop structure, yet the springy bass, drum groove and tight horn punches bring a strong funk feel to an otherwise pure soul single.",
         "title": "The Jackson 5 — I Want You Back",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0216aaf05fe82237576a7d0e38",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0216aaf05fe82237576a7d0e38",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -34552,7 +34564,20 @@
       }
     ],
     "rank_order": 43,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5W3HabqRHHqK4eC35oZQ30",
+        "score": 3,
+        "reason": "Hyper‑fast, metallic hardcore‑leaning riffing and harsher vocals push this toward crossover/thrash territory, with street‑punk attitude but a more metal‑driven sound",
+        "title": "Moose Knuckle — Death Comes Ripping",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029729095ffbd94ce14ad0623e",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Street punk"
+      }
+    ],
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false
@@ -36429,82 +36454,106 @@
       {
         "url": "https://open.spotify.com/track/1EWE1uYIOC0IMSs3wVk6sm",
         "score": 5,
-        "reason": "Mid‑tempo, chant‑ready punk with gang vocals, simple power‑chord riffs and working‑class anger — exactly the kind of anthemic, street‑level sound street punk is built on.",
+        "reason": "Mid‑tempo, chant‑ready punk with gang vocals, simple power‑chord riffs and working‑class anger — exactly the kind of anthemic, street‑level sound street punk is built on",
         "title": "Oxymoron — Crisis Identity",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0242689f2a1d739e08cdcb77a2",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1w4qlRY7zlny8vziTepInX",
         "score": 4,
-        "reason": "Fast, raw D‑beat‑inflected punk with shouted vocals and a rough, street‑demo feel; it leans into hardcore speed but still fits solidly under the street‑punk umbrella.",
+        "reason": "Fast, raw D‑beat‑inflected punk with shouted vocals and a rough, street‑demo feel; it leans into hardcore speed but still fits solidly under the street‑punk umbrella",
         "title": "The Virus — My Life, My World",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a4d074870d089e5b5412f96",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e025a4d074870d089e5b5412f96",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5RYENXYALFOqfHmv9cWTN3",
         "score": 4,
-        "reason": "Aggressive, politically charged punk with shouted choruses and a gritty, boots‑on‑the‑ground sound that lines up well with street‑punk’s confrontational vibe.",
+        "reason": "Aggressive, politically charged punk with shouted choruses and a gritty, boots‑on‑the‑ground sound that lines up well with street‑punk’s confrontational vibe",
         "title": "Defiance — No Future, No Hope",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024b51eab13a72cc635063d561",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e024b51eab13a72cc635063d561",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5W3HabqRHHqK4eC35oZQ30",
         "score": 3,
-        "reason": "Hyper‑fast, metallic hardcore‑leaning riffing and harsher vocals push this toward crossover/thrash territory, with street‑punk attitude but a more metal‑driven sound.",
+        "reason": "Hyper‑fast, metallic hardcore‑leaning riffing and harsher vocals push this toward crossover/thrash territory, with street‑punk attitude but a more metal‑driven sound",
         "title": "Moose Knuckle — Death Comes Ripping",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029729095ffbd94ce14ad0623e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "crossover_thrash"
       },
       {
-        "url": "https://open.spotify.com/track/7tSUx2A9piRnbV0wweAV2d",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7tSUx2A9piRnbV0wweAV2d",
         "score": 5,
-        "reason": "Classic Oi!/street‑punk stomp with massive gang vocals and terrace‑chant chorus, embodying the style’s core more cleanly than a metal‑tinged rager.",
+        "reason": "Classic Oi!/street‑punk stomp with massive gang vocals and terrace‑chant chorus, embodying the style’s core more cleanly than the metal‑tinged Moose Knuckle rager",
         "title": "Cock Sparrer — Riot Squad",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/7tSUx2A9piRnbV0wweAV2d",
+        "score": 5,
+        "reason": "Classic Oi!/street‑punk stomp with massive gang vocals and terrace‑chant chorus, embodying the style’s core more cleanly than a metal‑tinged rager",
+        "title": "Cock Sparrer — Riot Squad",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7fYEGlFkYPEe3iRV30FBsu",
         "score": 3,
-        "reason": "Relentlessly noisy, crust‑tinged hardcore with blown‑out production; the political fury fits street‑punk thematically, but the sound is closer to modern crust/hardcore.",
+        "reason": "Relentlessly noisy, crust‑tinged hardcore with blown‑out production; the political fury fits street‑punk thematically, but the sound is closer to modern crust/hardcore",
         "title": "BALM Squad — No Pride in Genocide - Redux",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02606a560ae6783d3bbf8346cb",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "crust_hardcore"
       },
       {
-        "url": "https://open.spotify.com/track/3JRiqkjOQFvBL7p18EWdJh",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3JRiqkjOQFvBL7p18EWdJh",
         "score": 5,
-        "reason": "Straight, pounding street‑punk rhythm with call‑and‑response chorus and pub‑chant energy, making the genre identity obvious immediately.",
+        "reason": "Straight, pounding street‑punk rhythm with call‑and‑response chorus and pub‑chant energy foregrounds the core style much more clearly than the crust‑leaning BALM Squad track",
         "title": "The Business — Suburban Rebels",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/3JRiqkjOQFvBL7p18EWdJh",
+        "score": 5,
+        "reason": "Straight, pounding street‑punk rhythm with call‑and‑response chorus and pub‑chant energy, making the genre identity obvious immediately",
+        "title": "The Business — Suburban Rebels",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/0PekkGyhlVSPSjwrk5hRVI",
         "score": 4,
-        "reason": "Classic early‑80s UK punk: simple, shout‑along chorus, raw guitars and a snotty, working‑class stance that overlaps heavily with what became codified as street punk.",
+        "reason": "Classic early‑80s UK punk: simple, shout‑along chorus, raw guitars and a snotty, working‑class stance that overlaps heavily with what became codified as street punk",
         "title": "The Exploited — Punk's Not Dead",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f746c48fead8a57d1d808404",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 20,
