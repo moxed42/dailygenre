@@ -1300,7 +1300,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 31,
@@ -3763,7 +3764,8 @@
     "favoritesongurl": "https://open.spotify.com/track/2IVpJWwVPGlfSeZ4uXgGb3",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0245903721fd992cb52e15cda0"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0245903721fd992cb52e15cda0",
+    "monthfavorite": false
   },
   {
     "id": 91,
@@ -3901,7 +3903,8 @@
     "favoritesongurl": "https://open.spotify.com/track/23veAdckaPNwndKQkkp1ov",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ba5965456345a2eb457bbcdd"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ba5965456345a2eb457bbcdd",
+    "monthfavorite": false
   },
   {
     "id": 94,
@@ -5847,7 +5850,8 @@
     "favoritesongurl": "https://open.spotify.com/track/67Hna13dNDkZvBpTXRIaOJ",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f9d5c946c085c46c7823ffb3",
+    "monthfavorite": false
   },
   {
     "id": 153,
@@ -6044,7 +6048,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 156,
@@ -6422,7 +6427,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 163,
@@ -6674,7 +6680,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 172,
@@ -6791,7 +6798,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 175,
@@ -9356,7 +9364,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 256,
@@ -10404,7 +10413,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 287,
@@ -11020,7 +11030,8 @@
     "favoritesongurl": "https://open.spotify.com/track/0Rv7Ql0ImNHE4LqZFrMldi",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ea83e32546192f5ad18997a6",
+    "monthfavorite": false
   },
   {
     "id": 301,
@@ -12158,10 +12169,24 @@
       }
     ],
     "rank_order": 9,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/6yznRV5BpPX4PhPzniKiBj",
+        "score": 3,
+        "reason": "Bouncy, sugary emo-pop with bright keys and hooks that flirt with power pop, yet its scene-era synth gloss keeps it slightly outside the classic template.",
+        "title": "Zolof the Rock & Roll Destroyer — argh...i'm a Pirate",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028316c59afae1baf8d061dc52",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power pop"
+      }
+    ],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 331,
@@ -13619,7 +13644,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 375,
@@ -14630,7 +14656,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 405,
@@ -18132,7 +18159,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 506,
@@ -18790,7 +18818,8 @@
     "favoritesongurl": "https://open.spotify.com/track/0OX9lzZxKlbtn3c2d97uqz",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0263c24ce03c7abc39809b5ccb"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0263c24ce03c7abc39809b5ccb",
+    "monthfavorite": false
   },
   {
     "id": 525,
@@ -20130,7 +20159,20 @@
       }
     ],
     "rank_order": 19,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/59NMauPKEj7TAKY9RlCYa3",
+        "score": 3,
+        "reason": "Fuzzed-out, blown-speaker production and shouty vocals give it a punk/garage edge; the tuneful core hints at power pop but the aesthetic is more lo-fi indie rock.",
+        "title": "Liquid Mike — Rav4",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa420c318f92cf2795d5e35a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power pop"
+      }
+    ],
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
@@ -21269,7 +21311,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 609,
@@ -22729,7 +22772,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 654,
@@ -22927,7 +22971,8 @@
     "vibe": "Radio pop for grown-ups who want melody, polish, and no surprises.",
     "songs_listened": [],
     "rank_order": 786,
-    "pending_songs": []
+    "pending_songs": [],
+    "monthfavorite": false
   },
   {
     "id": 657,
@@ -23731,7 +23776,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "rank_order": null
+    "rank_order": null,
+    "monthfavorite": false
   },
   {
     "id": 674,
@@ -25744,6 +25790,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Rapcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/4hIY051enSBBJ5fzZUzTSU",
+        "score": 2,
+        "reason": "High-energy pop-punk with emo vocal styling; it brushes against power pop via big chorus hooks but is primarily Warped Tour-era pop punk.",
+        "title": "Hey Monday — How You Love Me Now",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dd1d9e19cfe34dac93983739",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power pop"
       }
     ]
   },
@@ -27813,7 +27871,8 @@
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
-    "rank_order": null
+    "rank_order": null,
+    "monthfavorite": false
   },
   {
     "id": 791,
@@ -27880,6 +27939,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Pop metal"
+      },
+      {
+        "url": "https://open.spotify.com/track/3mwvKOyMmG77zZRunnxp9E",
+        "score": 3,
+        "reason": "Huge pop chorus and crunchy guitars fit the vibe, but its 90s alt-rock weight and production mark it more as mainstream alternative with power-pop tendencies.",
+        "title": "Weezer — Buddy Holly",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02345536847e60f622ee0eae96",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power pop"
       }
     ]
   },
@@ -29097,7 +29168,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 833,
@@ -30330,7 +30402,20 @@
     "monthlycontender": false,
     "favoriteartist": "",
     "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023395f3e809dfbc2b1101d464",
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/78zYiMv9yNTHgmm6kaUPCm",
+        "score": 2,
+        "reason": "Sugar-rush youth chant with glam stomp and handclaps, but it leans more bubblegum/glam rock than tightly crafted power pop songcraft.",
+        "title": "Bay City Rollers — Saturday Night",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e905e7ee3aeea15e85fa069b",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power pop"
+      }
+    ]
   },
   {
     "id": 873,
@@ -31072,7 +31157,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0201d93acc198ee0f9154b5b1c",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/78zYiMv9yNTHgmm6kaUPCm",
@@ -31082,17 +31167,19 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e905e7ee3aeea15e85fa069b",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "glam_rock"
       },
       {
-        "url": "https://open.spotify.com/track/3UkbnvEUxwuaWVVBhfhTnD",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3UkbnvEUxwuaWVVBhfhTnD",
         "score": 5,
         "reason": "Archetypal jangle-powered power pop: ringing guitars, bittersweet melody, and economical structure that nails the genre’s Big Star blueprint.",
         "title": "Big Star — September Gurls",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b49450b92fbd1a1950da0545",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b49450b92fbd1a1950da0545",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2ccUQnjjNWT0rsNnsBpsCA",
@@ -31102,7 +31189,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02661e6ba2981201a3e36a46f6",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4oDZ5L8izBals6jKBJDBcX",
@@ -31110,19 +31197,21 @@
         "reason": "Immortal hook and bright guitars, but its slick 80s AOR/arena-pop production pushes it away from classic jangle-forward power pop.",
         "title": "The Outfield — Your Love",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ffaeb2f6c1acc0ed7180929a",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ffaeb2f6c1acc0ed7180929a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "aor"
       },
       {
-        "url": "https://open.spotify.com/track/1JMSZW3Y1JOvjMIrCnQymf",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1JMSZW3Y1JOvjMIrCnQymf",
         "score": 4,
         "reason": "Classic 70s power pop balance of crunch and jangle, with a tight chorus and romantic urgency that sharpen the genre’s core template.",
         "title": "Dwight Twilley Band — I’m On Fire",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b2f52d75ff58c1166e4348c5",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2g9EvzLR2sYscJQubwKGqu",
@@ -31132,7 +31221,7 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e024e2ba23297d6b95d998ea9bc",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3k0xITtgCxdbwyGTxpbpH1",
@@ -31142,7 +31231,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02df6db6e75b87f002ab397d33",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/6TBJCwgdhwkzjpSjdqJUHC",
@@ -31152,7 +31241,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028672a409c23eb823a6c71358",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2XKW8CH8nRZH9cF2DNjBHN",
@@ -31162,7 +31251,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e2dd29cdaa3fadbdc26d59c4",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4alHo6RGd0D3OUbTPExTHN",
@@ -31170,9 +31259,9 @@
         "reason": "Laser-focused guitar hooks and economy of arrangement make this an archetypal, instantly graspable power pop single.",
         "title": "The Cars — Just What I Needed",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3mwvKOyMmG77zZRunnxp9E",
@@ -31182,17 +31271,19 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02345536847e60f622ee0eae96",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "alternative_rock"
       },
       {
-        "url": "https://open.spotify.com/track/4S8HXp1zV1Tf9fbh37IFHa",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0DHbfOecpxXPo2mmg4U5aI",
         "score": 4,
-        "reason": "Bright jangle and melodic snap put this firmly in the classic power pop lane, offering a cleaner genre exemplar than 90s alt-radio gloss.",
-        "title": "Big Star — September Gurls (alternate master)",
+        "reason": "Punchy guitars, concise structure, and sugar-rush melody make this a better pure power pop “primer” than a double-time pop-punk anthem.",
+        "title": "The Records — Starry Eyes",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02471e287a6c0dd5e063059c55",
+        "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/6yznRV5BpPX4PhPzniKiBj",
@@ -31200,19 +31291,21 @@
         "reason": "Bouncy, sugary emo-pop with bright keys and hooks that flirt with power pop, yet its scene-era synth gloss keeps it slightly outside the classic template.",
         "title": "Zolof the Rock & Roll Destroyer — argh...i'm a Pirate",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028316c59afae1baf8d061dc52",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028316c59afae1baf8d061dc52",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "emo_pop"
       },
       {
-        "url": "https://open.spotify.com/track/4etVLoQK3znrv8bVC8grsE",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/4etVLoQK3znrv8bVC8grsE",
         "score": 4,
         "reason": "Tight, hooky songwriting and chiming guitars sit squarely in 70s power pop, emphasizing melody and guitar crunch over emo synth sparkle.",
         "title": "Dwight Twilley Band — I’m On Fire (Remastered)",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0287b604f73133c221178381b3",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/7KXa0APJAlpsC2cNMiQjrD",
@@ -31220,9 +31313,9 @@
         "reason": "Smart, melodic guitar rock with a propulsive groove and bittersweet chorus that slots neatly into the mature, indie-leaning side of power pop.",
         "title": "Nada Surf — Happy Kid",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0226e144cef7fac2c777a1a4ca",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0226e144cef7fac2c777a1a4ca",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4hIY051enSBBJ5fzZUzTSU",
@@ -31232,17 +31325,19 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02dd1d9e19cfe34dac93983739",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "pop_punk"
       },
       {
-        "url": "https://open.spotify.com/track/0DHbfOecpxXPo2mmg4U5aI",
-        "score": 4,
-        "reason": "Punchy guitars, concise structure, and sugar-rush melody make this a better pure power pop “primer” than a double-time pop-punk anthem.",
-        "title": "The Records — Starry Eyes",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1rR4J4x6qzFqFjTE3Ll4jY",
+        "score": 5,
+        "reason": "Clean, chiming guitars and razor-edged hooks embody the genre’s “loud guitars, bigger choruses” ideal without garage murk.",
+        "title": "Badfinger — Baby Blue - 2010 Remaster",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/59NMauPKEj7TAKY9RlCYa3",
@@ -31252,26 +31347,30 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02aa420c318f92cf2795d5e35a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "garage_rock"
       },
       {
-        "url": "https://open.spotify.com/track/1rR4J4x6qzFqFjTE3Ll4jY",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/53LZqMzQEnjBkFXPqOq0cD",
         "score": 5,
-        "reason": "Clean, chiming guitars and razor-edged hooks embody the genre’s “loud guitars, bigger choruses” ideal without garage murk.",
-        "title": "Badfinger — Baby Blue - 2010 Remaster",
+        "reason": "Tight, spiky guitars, immediate hooks, and laser-focused songwriting deliver the kind of concise melodic punch that power pop is built on, bringing the tuneful core into much sharper focus than the fuzzier garage-rock approach.",
+        "title": "Elastica — Connection",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0271db31770df31f435f67d785",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       }
     ],
     "rank_order": 7,
     "pending_songs": [],
     "favoritesong": "The Cars — Just What I Needed",
     "favoritesongurl": "https://open.spotify.com/track/4alHo6RGd0D3OUbTPExTHN",
-    "monthlycontender": false,
+    "monthlycontender": true,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f725bc7907dcf15aa2c6e7b7",
+    "monthfavorite": true,
+    "monthleastfavorite": false
   },
   {
     "id": 898,
@@ -31896,7 +31995,8 @@
     "favoritesongurl": "https://open.spotify.com/track/5X76oXHcR5uCXali0gOyX5",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025c7731f5acdcb2d02d78b7ee"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025c7731f5acdcb2d02d78b7ee",
+    "monthfavorite": false
   },
   {
     "id": 914,
@@ -32520,7 +32620,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 938,
@@ -32599,7 +32700,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 939,
@@ -33139,7 +33241,8 @@
     "favoritesongurl": "https://open.spotify.com/track/1wJ5Z1Nkcqknyi2U2mjL0G",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028643b1779936c3dc7de03c65",
+    "monthfavorite": false
   },
   {
     "id": 956,
@@ -34200,7 +34303,8 @@
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
-    "monthlycontender": false
+    "monthlycontender": false,
+    "monthfavorite": false
   },
   {
     "id": 976,
@@ -34560,7 +34664,8 @@
     "favoritesongurl": "https://open.spotify.com/track/1hlveB9M6ijHZRbzZ2teyh",
     "monthlycontender": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e4ff6efb66c0c9e8bbb5eb71"
+    "favoritesongartwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02e4ff6efb66c0c9e8bbb5eb71",
+    "monthfavorite": false
   },
   {
     "id": 987,
@@ -37435,7 +37540,20 @@
     "vibe": "Doc Martens on pavement, a pub at last call, extremely loud opinions about everything.",
     "songs_listened": [],
     "rank_order": 549,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4oDZ5L8izBals6jKBJDBcX",
+        "score": 3,
+        "reason": "Immortal hook and bright guitars, but its slick 80s AOR/arena-pop production pushes it away from classic jangle-forward power pop.",
+        "title": "The Outfield — Your Love",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ffaeb2f6c1acc0ed7180929a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Power pop"
+      }
+    ]
   },
   {
     "id": 1070,
