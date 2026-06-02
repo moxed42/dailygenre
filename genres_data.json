@@ -3155,7 +3155,7 @@
         "reason": "Demented Are Go push the tempo and distortion toward hardcore, but the slap‑bass bounce and horror‑show vocals keep this firmly in psychobilly territory.",
         "title": "Demented Are Go — Frenzied Beat",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020a325610a9ac620e890c0cdc",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020a325610a9ac620e890c0cdc",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -4290,7 +4290,32 @@
       }
     ],
     "rank_order": 787,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/7o2AeQZzfCERsRmOM86EcB",
+        "score": 1,
+        "reason": "Ambient, beatless synth piece; beautiful but completely outside the dance‑floor‑oriented, groove‑driven electro‑disco frame",
+        "title": "Aphex Twin — Xtal",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0238906032688bb13b135ce19a",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Electro-disco"
+      },
+      {
+        "url": "https://open.spotify.com/track/4TBVy5cFYGmK5BA3rdMGEQ",
+        "score": 1,
+        "reason": "Beatless, drifting experimental piece whose focus is texture over groove; it doesn’t function as disco or dance music despite its electronic palette",
+        "title": "Oneohtrix Point Never — Chrome Country",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c81557c04a17a6efaca23470",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Electro-disco"
+      }
+    ]
   },
   {
     "id": 114,
@@ -5647,142 +5672,192 @@
       {
         "url": "https://open.spotify.com/track/6hHc7Pks7wtBIW8Z6A0iFq",
         "score": 4,
-        "reason": "Proto‑electro‑disco blueprint: sequenced synth bass, rigid drum machine pulse, and icy vocals give it a machine‑funk feel that sits at the root of electro and dance‑floor disco crossover.",
+        "reason": "Proto‑electro‑disco blueprint: sequenced synth bass, rigid drum‑machine pulse, and icy vocals give it a machine‑funk feel that sits at the root of electro and dance‑floor disco crossover",
         "title": "New Order — Blue Monday",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e023c182241fcd86aeca2c68a63",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023c182241fcd86aeca2c68a63",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1pKYYY0dkg23sQQXi0Q5zN",
         "score": 5,
-        "reason": "Locked‑in four‑on‑the‑floor, rubbery synth bassline and vocoder‑like vocal loops create a hypnotic, fully electronic disco groove — archetypal electro‑disco.",
+        "reason": "Locked‑in four‑on‑the‑floor, rubbery synth bassline and vocoder‑like vocal loops create a hypnotic, fully electronic disco groove — archetypal electro‑disco",
         "title": "Daft Punk — Around the World",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028ac778cc7d88779f74d33311",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e028ac778cc7d88779f74d33311",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/33yAEqzKXexYM3WlOYtTfQ",
         "score": 4,
-        "reason": "Chopped vocal hooks, bright synth stabs and a funky bassline bridge French house and electro‑disco; the groove is pure disco filtered through a modern digital sheen.",
+        "reason": "Chopped vocal hooks, bright synth stabs and a funky bassline bridge French house and electro‑disco; the groove is pure disco filtered through a modern digital sheen",
         "title": "Justice — D.A.N.C.E.",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021c0bcf8b536295438d26c70d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4EJjVfB2pQNn0ZFe1DgUOX",
         "score": 2,
-        "reason": "Big, glossy pop‑rock with electronic touches; the beat is four‑on‑the‑floor‑ish, but the song is primarily contemporary pop rather than a disco‑centric or electro‑driven track.",
+        "reason": "Big, glossy pop‑rock with electronic touches; the beat is four‑on‑the‑floor‑ish, but the song is primarily contemporary pop rather than a disco‑centric or electro‑driven track",
         "title": "Miley Cyrus, Brittany Howard — Walk of Fame",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020ae6f06706ab3a955844e9a0",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "pop_rock"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0aF8f7OMTk5hxZ7cGFRuO3",
+        "score": 5,
+        "reason": "Strutting bassline, vocoder vocals, and sleek synth arrangements make this a textbook modern electro‑disco floor‑filler",
+        "title": "Daft Punk — Harder, Better, Faster, Stronger",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/2uMg6b8FMdC0U8MZCTeeyj",
         "score": 5,
-        "reason": "Fully electronic production married to a strutting disco groove and robotic vocal textures makes this a clean, modern electro‑disco anthem.",
+        "reason": "Fully electronic production married to a strutting disco groove and robotic vocal textures makes this a clean, modern electro‑disco anthem",
         "title": "Daft Punk — Digital Love",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1vCBk33l9HaWp5FOnhSGxk",
         "score": 5,
-        "reason": "Classic disco track whose relentless hi‑hat groove, octave‑leaping bass, and shimmering synth strings basically define the disco‑to‑electronic continuum.",
+        "reason": "Classic disco track whose relentless hi‑hat groove, octave‑leaping bass, and shimmering synth strings basically define the disco‑to‑electronic continuum",
         "title": "Donna Summer — I Feel Love",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02c134462a3ef4af6966a3076d",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c134462a3ef4af6966a3076d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/7o2AeQZzfCERsRmOM86EcB",
         "score": 1,
-        "reason": "Ambient, beatless synth piece; beautiful but completely outside the dance‑floor oriented, groove‑driven electro‑disco frame.",
+        "reason": "Ambient, beatless synth piece; beautiful but completely outside the dance‑floor‑oriented, groove‑driven electro‑disco frame",
         "title": "Aphex Twin — Xtal",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0238906032688bb13b135ce19a",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "ambient"
       },
       {
-        "url": "https://open.spotify.com/track/3boU5P1pUi4HBHX0Uq6ItF",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3boU5P1pUi4HBHX0Uq6ItF",
         "score": 4,
-        "reason": "Slow‑burn, electronic disco with pulsing synth bass and filtered textures that match the set’s nocturnal dance‑floor vibe far better than a pure ambient cut.",
+        "reason": "Slow‑burn, electronic disco with pulsing synth bass and filtered textures that match the set’s nocturnal dance‑floor vibe far better than a pure ambient cut",
         "title": "Metro Area — Miura",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/3MF9cjIlg3R9osw3SgRmEb",
         "score": 2,
-        "reason": "Downtempo, head‑nod IDM with a loping groove and hazy synths; there’s rhythmic funk, but it leans toward home‑listening electronica rather than overt disco.",
+        "reason": "Downtempo, head‑nod IDM with a loping groove and hazy synths; there’s rhythmic funk, but it leans toward home‑listening electronica rather than overt disco",
         "title": "Boards of Canada — Music Is Math",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f497660a1c41cb83c94a9066",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f497660a1c41cb83c94a9066",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "idm"
       },
       {
-        "url": "https://open.spotify.com/track/0wSkvBzcbWjN6Qt0yM3Sdy",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0wSkvBzcbWjN6Qt0yM3Sdy",
         "score": 5,
-        "reason": "Punchy synth bass, four‑on‑the‑floor kick and string hits give this track a straight‑up electro‑disco feel that keeps the whole session squarely on the dance floor.",
+        "reason": "Punchy synth bass, four‑on‑the‑floor kick and string hits give this track a straight‑up electro‑disco feel that keeps the whole session squarely on the dance floor",
         "title": "Cerrone — Supernature",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/0wSkvBzcbWjN6Qt0yM3Sdy",
+        "score": 5,
+        "reason": "Punchy synth bass, four‑on‑the‑floor kick and string hits give this track a straight‑up electro‑disco feel that keeps the whole session squarely on the dance floor",
+        "title": "Cerrone — Supernature",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/4TBVy5cFYGmK5BA3rdMGEQ",
         "score": 1,
-        "reason": "Beatless, drifting experimental piece whose focus is texture over groove; it doesn’t function as disco or dance music despite its electronic palette.",
+        "reason": "Beatless, drifting experimental piece whose focus is texture over groove; it doesn’t function as disco or dance music despite its electronic palette",
         "title": "Oneohtrix Point Never — Chrome Country",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c81557c04a17a6efaca23470",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "experimental_ambient"
       },
       {
-        "url": "https://open.spotify.com/track/2w3BbGJyKZcx3UyUFD4SmJ",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2w3BbGJyKZcx3UyUFD4SmJ",
         "score": 4,
-        "reason": "Synth‑forward disco with a clear backbeat and electro‑leaning sound design that supports the session theme without sacrificing danceability.",
+        "reason": "Synth‑forward disco with a clear backbeat and electro‑leaning sound design that supports the session theme without sacrificing danceability",
         "title": "Change — Glow of Love",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/2w3BbGJyKZcx3UyUFD4SmJ",
+        "score": 4,
+        "reason": "Synth‑forward disco with a clear backbeat and electro‑leaning sound design that supports the session theme without sacrificing danceability",
+        "title": "Change — Glow of Love",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/5FE9EjOf2QaIEN74PxSJM7",
         "score": 2,
-        "reason": "Minimal techno with a deep, dubby pulse; electronic and moody but lacking the syncopated bass, hi‑hat patterns and overt funk of electro‑disco.",
+        "reason": "Minimal techno with a deep, dubby pulse; electronic and moody but lacking the syncopated bass, hi‑hat patterns and overt funk of electro‑disco",
         "title": "Trentemøller — Miss You",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0212467d7cca4ad137bbf16b43",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "minimal_techno"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1vJ5XA27EXb5SxC2Hksx2U",
+        "score": 5,
+        "reason": "Sleek, Italo‑tinged electro‑disco with a driving bassline and synth hooks squarely built for the dance floor",
+        "title": "Lindstrøm — I Feel Space",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/1EewpX7pG1ZBjgqS0bkkAm",
         "score": 5,
-        "reason": "Tight, synthetic groove, vocoder hooks, and shimmering pads make this a pinnacle of sleek electro‑disco production.",
+        "reason": "Tight, synthetic groove, vocoder hooks, and shimmering pads make this a pinnacle of sleek electro‑disco production",
         "title": "Chromeo — Fancy Footwork",
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 18,
@@ -7606,7 +7681,20 @@
       }
     ],
     "rank_order": 58,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4EJjVfB2pQNn0ZFe1DgUOX",
+        "score": 2,
+        "reason": "Big, glossy pop‑rock with electronic touches; the beat is four‑on‑the‑floor‑ish, but the song is primarily contemporary pop rather than a disco‑centric or electro‑driven track",
+        "title": "Miley Cyrus, Brittany Howard — Walk of Fame",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020ae6f06706ab3a955844e9a0",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Electro-disco"
+      }
+    ]
   },
   {
     "id": 214,
@@ -14550,7 +14638,20 @@
       }
     ],
     "rank_order": 393,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/3MF9cjIlg3R9osw3SgRmEb",
+        "score": 2,
+        "reason": "Downtempo, head‑nod IDM with a loping groove and hazy synths; there’s rhythmic funk, but it leans toward home‑listening electronica rather than overt disco",
+        "title": "Boards of Canada — Music Is Math",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f497660a1c41cb83c94a9066",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Electro-disco"
+      }
+    ]
   },
   {
     "id": 425,
@@ -14866,6 +14967,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Hardstyle"
+      },
+      {
+        "url": "https://open.spotify.com/track/5FE9EjOf2QaIEN74PxSJM7",
+        "score": 2,
+        "reason": "Minimal techno with a deep, dubby pulse; electronic and moody but lacking the syncopated bass, hi‑hat patterns and overt funk of electro‑disco",
+        "title": "Trentemøller — Miss You",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0212467d7cca4ad137bbf16b43",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Electro-disco"
       }
     ]
   },
