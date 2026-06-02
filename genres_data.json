@@ -4558,6 +4558,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Synth-funk"
+      },
+      {
+        "url": "https://open.spotify.com/track/3sOOE5gy9FI2KuGnjqAiGg",
+        "score": 3,
+        "reason": "DEVO’s jerky rhythms and nervous energy fit the punk side, but guitar and glossy new‑wave hooks keep the synths as color rather than the whole attack.",
+        "title": "DEVO — Puppet Boy",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0293bf74075d2710e9621a2f0d",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Synth-punk"
       }
     ]
   },
@@ -7865,7 +7877,7 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "https://open.spotify.com/track/0sTMWWSms4Mt6vy33rdqgv | 4 | Minimal drum‑machine pulse, wheezing synths, and Vega’s incantatory vocal make this proto‑punk electronics sitting right at the root of synth punk. | Suicide — Ghost Rider 2019 - Remaster\nhttps://open.spotify.com/track/2ZA9Sw1hq8mOaFzOiPyN71 | 4 | Same stark Suicide setup—cheap organ tones, rigid rhythm box, deadpan delivery—core synth‑punk DNA even if it leans more hypnotic than explosive. | Suicide — Rocket USA 2019 - Remaster\nhttps://open.spotify.com/track/3sOOE5gy9FI2KuGnjqAiGg | 3 | DEVO’s jerky rhythms and nervous energy fit the punk side, but guitar and glossy new‑wave hooks keep the synths as color rather than the whole attack. | DEVO — Puppet Boy\nhttps://open.spotify.com/track/5t4L5b2u6U8oUc0Q4KJX5A | 4 | Drum‑machine drive, buzzy synth bass, and bratty vocals foreground the electronics much more clearly as the “punk instrument.” | The Screamers — Vertigo\nhttps://open.spotify.com/track/1Pk1Bde8NZXROgnehsXnve | 3 | Chrome’s noisy guitars and clangy drums feel more mutant post‑punk/industrial, with synths as weird texture rather than the primary punk weapon. | Chrome — Static Gravity\nhttps://open.spotify.com/track/0qE7nhvT9q4PGYrQXjHqJ1 | 5 | Drum‑machine stomp, buzzing synth leads, and snotty vocals all front and center—perfect single‑track definition of synth punk for this session. | The Spits — Tonight",
     "summary": "Synth-punk replaces rock's guitars with synthesizers while keeping punk's aggression, speed, and confrontational energy — a wiry, angular style that emerged from the post-punk era and runs from minimal synth's DIY electronics to Suicide's confrontational minimalism. The absence of guitar makes the music stranger and often more unsettling.",
     "key_artists": "Suicide, Devo, Atari Teenage Riot, Crystal Castles, Hype Williams (originators/major figures)",
     "suggested_songs": "Suicide — Frankie Teardrop, Devo — Mongoloid, Crystal Castles — Air War, Hype Williams — Rainbow Edition",
@@ -7879,7 +7891,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029707d3e2f2406aab2282cf9e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/2ZA9Sw1hq8mOaFzOiPyN71",
@@ -7889,7 +7901,7 @@
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e029707d3e2f2406aab2282cf9e",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/3sOOE5gy9FI2KuGnjqAiGg",
@@ -7897,9 +7909,21 @@
         "reason": "DEVO’s jerky rhythms and nervous energy fit the punk side, but guitar and glossy new‑wave hooks keep the synths as color rather than the whole attack.",
         "title": "DEVO — Puppet Boy",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0293bf74075d2710e9621a2f0d",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0293bf74075d2710e9621a2f0d",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "new_wave"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6pHgsG4V7x3UQjDnk3aMC3",
+        "score": 5,
+        "reason": "Hyperactive drum machine, stabbing synth leads, and yelped vocals push the electronics fully to the front, making the synths the obvious punk weapon in a way Puppet Boy only hints at.",
+        "title": "Lost Sounds — Black Coats / White Fear",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/5t4L5b2u6U8oUc0Q4KJX5A",
@@ -7909,7 +7933,7 @@
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       },
       {
         "url": "https://open.spotify.com/track/1Pk1Bde8NZXROgnehsXnve",
@@ -7919,7 +7943,19 @@
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022095f56767d763d823b9e053",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02",
+        "_pendingGenreTag": "industrial_post_punk"
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0sK7wK8VXl3D1VJ7jxBx2W",
+        "score": 4,
+        "reason": "Lo‑fi drum‑machine thump and abrasive synth squall dominate the mix, keeping the feel noisy and mutant while making the electronics much more central than in Chrome’s guitar‑driven attack.",
+        "title": "Nervous Gender — Cardinal Newman",
+        "artist": "",
+        "artwork": "",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isLevelUp": true
       },
       {
         "url": "https://open.spotify.com/track/0qE7nhvT9q4PGYrQXjHqJ1",
@@ -7929,7 +7965,7 @@
         "artist": "",
         "artwork": "",
         "source": "spotify",
-        "added": "2026-06-01"
+        "added": "2026-06-02"
       }
     ],
     "rank_order": 32,
@@ -10754,7 +10790,7 @@
         "reason": "Hybrid speedcore/happy hardcore: ultra-fast kick patterns and dense fills, but the euphoric, candy-rave melodies soften the extremity a bit.",
         "title": "tpzolite — cheatreal",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02b3c7656ada2567c3cf73629c",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b3c7656ada2567c3cf73629c",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -10764,7 +10800,7 @@
         "reason": "M1DY’s trademark: relentless high-BPM drive and distorted kicks, clearly speedcore even if it keeps a bouncy, gabber-party sensibility.",
         "title": "M1DY — Cold Pizza (Original Mix)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02052c4961a803321979c7dcdb",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02052c4961a803321979c7dcdb",
         "source": "spotify",
         "added": "2026-06-01"
       }
@@ -36471,7 +36507,20 @@
       }
     ],
     "rank_order": 21,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/1Pk1Bde8NZXROgnehsXnve",
+        "score": 3,
+        "reason": "Chrome’s noisy guitars and clangy drums feel more mutant post‑punk/industrial, with synths as weird texture rather than the primary punk weapon.",
+        "title": "Chrome — Static Gravity",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e022095f56767d763d823b9e053",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "isPending": true,
+        "pendingFrom": "Synth-punk"
+      }
+    ],
     "favoritesong": "Joy Division — Love Will Tear Us Apart - 2020 Remaster",
     "favoritesongurl": "https://open.spotify.com/track/34iOH7LY3vme5rQxsVILZ4",
     "monthlycontender": false,
