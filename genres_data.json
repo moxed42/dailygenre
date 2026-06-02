@@ -33486,12 +33486,13 @@
         "isAdd": true
       },
       {
-        "url": "🔼 ADD: ",
+        "url": "🔼 ADD: https://open.spotify.com/track/[TRACK_ID]",
         "score": 5,
         "reason": "Modern atmospheric black metal distilled to its essence: soaring melodies, nature worship, and immersive soundscapes built around atmosphere rather than aggression.",
+        "title": "Elderwind — The Magic of Nature",
         "artist": "",
         "artwork": "",
-        "source": "manual",
+        "source": "spotify",
         "added": "2026-06-02",
         "isAdd": true
       }
