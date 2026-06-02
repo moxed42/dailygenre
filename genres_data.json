@@ -932,69 +932,7 @@
     "key_artists": "John Lee Hooker, Baby Boy Warren, Eddie Burns, Bobo Jenkins, Little Sonny (originators)",
     "suggested_songs": "John Lee Hooker — Boogie Chillen, John Lee Hooker — Boom Boom, Baby Boy Warren — Sanafee, Eddie Burns — Burning Blues",
     "vibe": "Blues in a city with machine rhythms already in the air.",
-    "songs_listened": [
-      {
-        "url": "https://open.spotify.com/track/6peCtspu8qjTpIWUOPprmH",
-        "score": 5,
-        "reason": "Archetypal Detroit blues: Alberta’s gritty vocal, electric combo feel, and city‑club groove nail the urban, working‑band side of the style",
-        "title": "Alberta Adams — Long Gone",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0258ff716f8baaa7cda2d88fa1",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
-        "url": "https://open.spotify.com/track/1MwR07lZv0tu8kJePTLVAh",
-        "score": 2,
-        "reason": "Has a bluesy progression and guitar, but the polished adult‑contemporary production and non‑Detroit singer‑songwriter vibe make it only weakly tied to Detroit blues proper",
-        "title": "Erik Naugle — For You and Me",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02e35fe012c759666513010ee9",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1kPBhUw8TqPVaTkbH7nYIv",
-        "score": 4,
-        "reason": "Tough, electric club blues from a Detroit master, with churning groove and amplified grit that more directly reflects the city’s postwar sound",
-        "title": "John Lee Hooker — Boogie Chillen",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02",
-        "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/7lSyhl54L5FYRPeGmzVrlL",
-        "score": 5,
-        "reason": "Classic electric Detroit blues with rough edges, bar‑band swing, and lived‑in vocal grit; a much stronger local exemplar",
-        "title": "Alberta Adams — Say Baby Say",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
-        "url": "https://open.spotify.com/track/4z7gIlcKdjmD60ZNvKcOpl",
-        "score": 4,
-        "reason": "Tight bar‑band shuffle with electric guitar leads and club‑ready groove; stylistically right in Detroit’s plugged‑in blues‑rock lane even if a bit cleaner and more modern",
-        "title": "Detroit Blues Band — Bums Rush",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02163638a736ec917acc53f637",
-        "source": "spotify",
-        "added": "2026-06-02"
-      },
-      {
-        "url": "https://open.spotify.com/track/5B5JM1VxUe1aZNmtt0M5Zy",
-        "score": 4,
-        "reason": "John Lee’s electric storytelling and boogie rhythm are foundational to Detroit’s scene; feels a bit more general electric blues than strictly “Detroit‑only,” but still a clear pillar for the day’s concept",
-        "title": "John Lee Hooker — One Bourbon, One Scotch, One Beer",
-        "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0210eb89d605247b9d3dee9e09",
-        "source": "spotify",
-        "added": "2026-06-02"
-      }
-    ],
+    "songs_listened": [],
     "rank_order": 31,
     "favoritesong": "",
     "favoritesongurl": "",
