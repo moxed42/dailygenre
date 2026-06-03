@@ -10881,6 +10881,18 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Pop metal"
+      },
+      {
+        "url": "https://open.spotify.com/track/4i4BdwD97mM1W8fti4QBWp",
+        "score": 3,
+        "reason": "Metallic hardcore/deathcore crossover with huge grooves and breakdowns, but still carries significant hardcore identity.",
+        "title": "Breakdown Of Sanity — Traces",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021909c97e8f0ce7351b800c8b",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
       }
     ]
   },
@@ -33795,6 +33807,30 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Symphonic black metal"
+      },
+      {
+        "url": "https://open.spotify.com/track/3bQoMbPYOvvseHaSOWAQ3Q",
+        "score": 1,
+        "reason": "Foundational brutal death metal and hugely influential on deathcore, but fundamentally a death-metal track. No breakdown-centric structure, no metalcore DNA, and no deathcore identity.",
+        "title": "Cannibal Corpse — I Cum Blood",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0286ffd7a7e379a87c13d1b036",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/4l4G8Th3nJpU9GMYgCs4BK",
+        "score": 1,
+        "reason": "Mortician's ultra-slow horror-sample-driven death metal helped inspire slamming deathcore, but this sits firmly in death metal rather than deathcore proper.",
+        "title": "Mortician — Drowned In Your Blood",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021ed7b9013de182dfbd2bf94c",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
       }
     ]
   },
@@ -35693,6 +35729,66 @@
         "added": "2026-06-02",
         "isPending": true,
         "pendingFrom": "Crunkcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/25Yfk4XBeglz1QoXhDqJ2w",
+        "score": 3,
+        "reason": "Excellent modern metalcore/deathcore crossover with emotional hooks and atmosphere, but it leans more metalcore than pure deathcore.",
+        "title": "Make Them Suffer — Ghost Of Me",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c33fc17c1b1c6c83076459bc",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/5v1MdVFx4wfeo2CPI7fYOS",
+        "score": 2,
+        "reason": "Metalcore/death-metal precursor with early breakdown usage. Historically important but predates deathcore as a distinct style.",
+        "title": "Cannae — Anna's Love",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fe5a466d8894f80fd6efcbe3",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/5FuCkxGY4GMDRAFiI0nvY6",
+        "score": 2,
+        "reason": "Historic metalcore precursor whose breakdown-centric approach would help shape deathcore, but it isn't deathcore itself.",
+        "title": "Prayer For Cleansing — A Dead Soul Born",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020b1e352ade50f523cc323c91",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/1l3aAtHncaAiSlf9XixDqn",
+        "score": 3,
+        "reason": "Progressive deathcore/electronicore hybrid. Important to the genre's evolution but not a pure exemplar.",
+        "title": "Born Of Osiris — Machine",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02caf4f821db9b8df6f91f0844",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
+      },
+      {
+        "url": "https://open.spotify.com/track/2MO3DZjBECnLnd7wBgCi0Y",
+        "score": 2,
+        "reason": "More internet-core and modern metal experimentation than a true deathcore archetype. The heaviness is there, but the song's identity sits closer to contemporary metalcore and viral-core hybrids.",
+        "title": "Dal Av — Billie Eilish",
+        "artist": "",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0290f392e873ed73c6627338f2",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "isPending": true,
+        "pendingFrom": "Deathcore"
       }
     ]
   },
@@ -35720,12 +35816,13 @@
       {
         "url": "https://open.spotify.com/track/3bQoMbPYOvvseHaSOWAQ3Q",
         "score": 1,
-        "reason": "@death_metal Foundational brutal death metal and hugely influential on deathcore, but fundamentally a death-metal track. No breakdown-centric structure, no metalcore DNA, and no deathcore identity.",
+        "reason": "Foundational brutal death metal and hugely influential on deathcore, but fundamentally a death-metal track. No breakdown-centric structure, no metalcore DNA, and no deathcore identity.",
         "title": "Cannibal Corpse — I Cum Blood",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0286ffd7a7e379a87c13d1b036",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "death_metal"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
@@ -35741,12 +35838,13 @@
       {
         "url": "https://open.spotify.com/track/4l4G8Th3nJpU9GMYgCs4BK",
         "score": 1,
-        "reason": "@death_metal Mortician's ultra-slow horror-sample-driven death metal helped inspire slamming deathcore, but this sits firmly in death metal rather than deathcore proper.",
+        "reason": "Mortician's ultra-slow horror-sample-driven death metal helped inspire slamming deathcore, but this sits firmly in death metal rather than deathcore proper.",
         "title": "Mortician — Drowned In Your Blood",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021ed7b9013de182dfbd2bf94c",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "death_metal"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
@@ -35762,12 +35860,13 @@
       {
         "url": "https://open.spotify.com/track/25Yfk4XBeglz1QoXhDqJ2w",
         "score": 3,
-        "reason": "@metalcore Excellent modern metalcore/deathcore crossover with emotional hooks and atmosphere, but it leans more metalcore than pure deathcore.",
+        "reason": "Excellent modern metalcore/deathcore crossover with emotional hooks and atmosphere, but it leans more metalcore than pure deathcore.",
         "title": "Make Them Suffer — Ghost Of Me",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c33fc17c1b1c6c83076459bc",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "metalcore"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
@@ -35833,12 +35932,13 @@
       {
         "url": "https://open.spotify.com/track/5v1MdVFx4wfeo2CPI7fYOS",
         "score": 2,
-        "reason": "@metalcore Metalcore/death-metal precursor with early breakdown usage. Historically important but predates deathcore as a distinct style.",
+        "reason": "Metalcore/death-metal precursor with early breakdown usage. Historically important but predates deathcore as a distinct style.",
         "title": "Cannae — Anna's Love",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02fe5a466d8894f80fd6efcbe3",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "metalcore"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
@@ -35854,12 +35954,13 @@
       {
         "url": "https://open.spotify.com/track/5FuCkxGY4GMDRAFiI0nvY6",
         "score": 2,
-        "reason": "@metalcore Historic metalcore precursor whose breakdown-centric approach would help shape deathcore, but it isn't deathcore itself.",
+        "reason": "Historic metalcore precursor whose breakdown-centric approach would help shape deathcore, but it isn't deathcore itself.",
         "title": "Prayer For Cleansing — A Dead Soul Born",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020b1e352ade50f523cc323c91",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "metalcore"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
@@ -35875,12 +35976,13 @@
       {
         "url": "https://open.spotify.com/track/1l3aAtHncaAiSlf9XixDqn",
         "score": 3,
-        "reason": "@progressive_metalcore Progressive deathcore/electronicore hybrid. Important to the genre's evolution but not a pure exemplar.",
+        "reason": "Progressive deathcore/electronicore hybrid. Important to the genre's evolution but not a pure exemplar.",
         "title": "Born Of Osiris — Machine",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02caf4f821db9b8df6f91f0844",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "progressive_metalcore"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
@@ -35916,12 +36018,13 @@
       {
         "url": "https://open.spotify.com/track/4i4BdwD97mM1W8fti4QBWp",
         "score": 3,
-        "reason": "@metallic_hardcore Metallic hardcore/deathcore crossover with huge grooves and breakdowns, but still carries significant hardcore identity.",
-        "title": "Breakdown of Sanity — Traces",
+        "reason": "Metallic hardcore/deathcore crossover with huge grooves and breakdowns, but still carries significant hardcore identity.",
+        "title": "Breakdown Of Sanity — Traces",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e021909c97e8f0ce7351b800c8b",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "metallic_hardcore"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
@@ -35947,12 +36050,13 @@
       {
         "url": "https://open.spotify.com/track/2MO3DZjBECnLnd7wBgCi0Y",
         "score": 2,
-        "reason": "@metalcore More internet-core and modern metal experimentation than a true deathcore archetype. The heaviness is there, but the song's identity sits closer to contemporary metalcore and viral-core hybrids.",
+        "reason": "More internet-core and modern metal experimentation than a true deathcore archetype. The heaviness is there, but the song's identity sits closer to contemporary metalcore and viral-core hybrids.",
         "title": "Dal Av — Billie Eilish",
         "artist": "",
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0290f392e873ed73c6627338f2",
         "source": "spotify",
-        "added": "2026-06-03"
+        "added": "2026-06-03",
+        "_pendingGenreTag": "metalcore"
       },
       {
         "url": "🔼 LEVEL UP: http://url.com",
