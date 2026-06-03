@@ -42293,7 +42293,7 @@
     "date_raw": "",
     "date_normalized": "2026-06-02",
     "parse_notes": "",
-    "rating": "",
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -42571,12 +42571,12 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/1TXlo2VarBenHaGZRHKQAY",
+        "url": "https://open.spotify.com/track/50GnWkNkrqfrx0jMMKBKVN?si=efCbr95RQfutOsEvl8J4wA",
         "score": 5,
         "reason": "Modern deathcore done right: technical riffing, memorable songwriting, and destructive breakdowns.",
         "title": "Carcosa — 1983",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0254651c351bf309d68090e71f",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bc5adce11cf450c8bbedabeb",
         "source": "spotify",
         "added": "2026-06-03",
         "reaction": null,
@@ -42695,7 +42695,7 @@
         "promotedFromFit": null
       }
     ],
-    "rank_order": 195,
+    "rank_order": 36,
     "pending_songs": [
       {
         "url": "https://open.spotify.com/track/7gQmh1MbKIbXfcVhKS8cZP",
