@@ -1953,6 +1953,216 @@
       .viz-section-header { align-items:start; flex-direction:column; }
     }
 
+  
+    /* === Detail editor, nominations, record reactions and Listening Room visuals === */
+    .detail-edit-panel.is-hidden { display:none; }
+    .screen-detail.is-view-mode .listen-grid { grid-template-columns:minmax(0, 1fr); }
+    .edit-mode-toggle { white-space:nowrap; }
+    @media (min-width:981px) {
+      .detail-edit-panel.is-editing {
+        position:sticky;
+        top:18px;
+        align-self:start;
+        max-height:calc(100vh - 36px);
+        overflow-y:auto;
+        scrollbar-width:thin;
+        scrollbar-color:rgba(217,141,37,.45) transparent;
+      }
+    }
+
+    .song-theme-badge {
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      min-width:48px;
+      padding:5px 9px;
+      border-radius:999px;
+      color:#ffe0a1;
+      background:#332013;
+      border:1px solid rgba(255,222,161,.24);
+      font-size:.78rem;
+      font-weight:1000;
+      white-space:nowrap;
+    }
+    .song-theme-badge.pending-fit { background:#5b4329; }
+    .song-theme-badge.low { color:#ffd2c7; border-color:rgba(255,160,140,.28); }
+    .pending-origin-line, .promoted-origin-line {
+      margin-top:8px;
+      font-size:.8rem;
+      color:var(--muted);
+      font-style:italic;
+    }
+    .pending-fit-tools {
+      margin-top:10px;
+      display:flex;
+      gap:7px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .pending-fit-label {
+      font-size:.74rem;
+      font-weight:950;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-right:2px;
+    }
+    .pending-fit-btn {
+      border:1px solid rgba(127,82,28,.3);
+      background:rgba(255,252,241,.7);
+      color:var(--text);
+      border-radius:999px;
+      min-width:30px;
+      padding:5px 8px;
+      font-size:.78rem;
+      font-weight:950;
+      cursor:pointer;
+    }
+    .pending-fit-btn.active {
+      background:var(--accent);
+      color:#24150c;
+      border-color:#f2bd5f;
+    }
+    .song-reaction {
+      margin:11px 0 0 70px;
+      display:flex;
+      align-items:center;
+      gap:7px;
+      flex-wrap:wrap;
+    }
+    .song-reaction-label {
+      font-size:.7rem;
+      color:var(--muted);
+      font-weight:950;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-right:3px;
+    }
+    .song-reaction-btn {
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      border-radius:999px;
+      padding:5px 9px;
+      border:1px solid rgba(127,82,28,.24);
+      background:rgba(255,252,241,.66);
+      color:var(--muted);
+      cursor:pointer;
+      font-size:.75rem;
+      font-weight:900;
+    }
+    .song-reaction-btn .vinyls {
+      letter-spacing:-.12em;
+      color:#7d5933;
+      font-size:.9rem;
+    }
+    .song-reaction-btn.active {
+      background:#2c1a10;
+      color:#ffe0a1;
+      border-color:rgba(255,224,161,.32);
+      box-shadow:0 8px 18px rgba(0,0,0,.10);
+    }
+    .song-reaction-btn.active .vinyls { color:#ffda85; }
+    @media (max-width:900px) {
+      .song-reaction { margin-left:0; }
+    }
+
+    #screen-viz .viz-panel {
+      background:
+        radial-gradient(circle at top right, rgba(217,141,37,.18), transparent 33%),
+        linear-gradient(155deg, rgba(255,248,229,.98), rgba(231,201,150,.96));
+      overflow:hidden;
+    }
+    #screen-viz .viz-hero-card {
+      color:#fff5df;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(255,224,161,.22), transparent 25%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 17px),
+        linear-gradient(135deg, #21140c, #543117 62%, #160e09);
+      border:1px solid rgba(255,224,161,.24);
+      box-shadow:0 18px 42px rgba(39,21,7,.19), inset 0 1px 0 rgba(255,255,255,.09);
+    }
+    #screen-viz .viz-hero-eyebrow { color:#ffd987; }
+    #screen-viz .viz-hero-copy { color:#ead5b1; }
+    #screen-viz .viz-hero-card .viz-kpi {
+      background:rgba(12,8,5,.29);
+      border-color:rgba(255,224,161,.18);
+    }
+    #screen-viz .viz-hero-card .viz-kpi-val { color:#ffdc8e; }
+    #screen-viz .viz-hero-card .viz-kpi-label { color:#dfc69e; }
+    #screen-viz .viz-spotlight-card {
+      background:
+        linear-gradient(180deg, #fff0c6, #e9c886);
+      border-color:rgba(119,75,26,.2);
+    }
+    #screen-viz .viz-secondary-grid > .viz-card,
+    #screen-viz .viz-deep-grid > .viz-card {
+      background:
+        linear-gradient(180deg, rgba(255,249,233,.96), rgba(244,226,192,.96));
+      border:1px solid rgba(127,82,28,.18);
+      box-shadow:0 12px 28px rgba(55,35,10,.08), inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    #screen-viz .viz-card-label { letter-spacing:.1em; }
+    #screen-viz .viz-card-copy {
+      margin:-5px 0 12px;
+      color:var(--muted);
+      font-size:.81rem;
+      line-height:1.42;
+    }
+    #screen-viz .viz-donut-wrap {
+      display:flex;
+      align-items:center;
+      gap:18px;
+      min-height:188px;
+    }
+    #screen-viz .viz-chart-ring {
+      position:relative;
+      width:180px;
+      height:180px;
+      max-width:180px;
+      max-height:180px;
+      flex:0 0 180px;
+      padding:8px;
+      border-radius:50%;
+      background:#fff8e5;
+      box-shadow:inset 0 0 0 1px rgba(127,82,28,.12), 0 10px 22px rgba(64,38,13,.08);
+    }
+    #screen-viz .viz-chart-ring canvas {
+      width:164px !important;
+      height:164px !important;
+      max-width:164px !important;
+      max-height:164px !important;
+    }
+    #screen-viz .viz-card-crossovers { grid-column:span 12; }
+    .viz-crossover-list { display:grid; gap:10px; }
+    .viz-crossover-item {
+      display:grid;
+      grid-template-columns:44px minmax(0,1fr);
+      gap:11px;
+      padding:10px;
+      border-radius:14px;
+      background:rgba(255,252,241,.62);
+      border:1px solid rgba(127,82,28,.13);
+    }
+    .viz-crossover-art {
+      width:44px; height:44px; border-radius:9px; object-fit:cover;
+      background:rgba(127,82,28,.1);
+    }
+    .viz-crossover-name { font-size:.88rem; font-weight:900; color:var(--text); }
+    .viz-crossover-path {
+      margin-top:5px; display:flex; flex-wrap:wrap; gap:5px;
+    }
+    .viz-fit-chip {
+      font-size:.72rem; font-weight:850; color:#ffe0a1; background:#332013;
+      border-radius:999px; padding:3px 8px;
+    }
+    .viz-reaction-records { color:#d88a22; font-weight:950; letter-spacing:-.12em; }
+    .viz-reaction-word { color:var(--muted); font-size:.74rem; font-weight:800; }
+    @media (max-width:760px) {
+      #screen-viz .viz-donut-wrap { flex-direction:column; align-items:center; }
+      #screen-viz .viz-chart-ring { flex-basis:180px; }
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -2018,7 +2228,7 @@
           </div>
         </div>
 
-        <div class="panel stack">
+        <div class="panel stack detail-edit-panel" id="listenEditPanel">
           <div class="form-section share-section collapsed" id="shareSection">
             <button type="button" class="section-toggle" id="shareToggle"><strong>Discord share block</strong><span class="small">Show / hide</span></button>
             <div class="share-body" style="margin-top:12px;">
@@ -2161,9 +2371,9 @@
           <div class="viz-hero">
             <div class="viz-hero-card">
               <div>
-                <div class="viz-hero-eyebrow">Listening dashboard</div>
-                <h2 class="viz-hero-title">Your genre tracking visuals, cleaned up into one clearer dashboard.</h2>
-                <p class="viz-hero-copy">Same metrics, same charts, better grouping and hierarchy so the monthly story is easier to scan at a glance.</p>
+                <div class="viz-hero-eyebrow">Now spinning</div>
+                <h2 class="viz-hero-title">Your listening room.</h2>
+                <p class="viz-hero-copy">Explore the genres you loved, the songs you put back in rotation, and the tracks that bridge more than one style.</p>
               </div>
               <div class="viz-kpi-row" id="vizKpiMonthly"></div>
             </div>
@@ -2177,9 +2387,9 @@
                 <button class="btn btn-ghost" id="vizRefreshBtn" onclick="renderVisuals()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh</button>
               </div>
               <div class="viz-spotlight-card">
-                <div class="viz-spotlight-label">Layout focus</div>
-                <h3 class="viz-spotlight-title">Summary first, deeper breakdowns below.</h3>
-                <p class="viz-spotlight-copy">Use the mode toggle to switch between this month and the all-time view. Charts and calculations stay the same; this screen just gives them more room and better rhythm.</p>
+                <div class="viz-spotlight-label">Listening note</div>
+                <h3 class="viz-spotlight-title">Theme fit is not a review score.</h3>
+                <p class="viz-spotlight-copy">Song fit only appears when it reveals genre crossover. Your new record reactions capture whether a track actually hit for you.</p>
               </div>
             </div>
           </div>
@@ -2189,7 +2399,7 @@
               <div class="viz-section-header">
                 <div>
                   <h3 class="viz-section-title">Monthly breakdown</h3>
-                  <p class="viz-section-copy">Ratings, category mix, highlights, artists, and contenders for the selected month.</p>
+                  <p class="viz-section-copy">Genre ratings, personal song reactions, and crossover discoveries for the selected month.</p>
                 </div>
               </div>
               <div class="viz-secondary-grid">
@@ -2200,7 +2410,7 @@
                 <div class="viz-card viz-card-donut">
                   <div class="viz-card-label">Genre Categories</div>
                   <div class="viz-donut-wrap">
-                    <canvas id="vizCatDonut" height="200"></canvas>
+                    <div class="viz-chart-ring"><canvas id="vizCatDonut" height="180"></canvas></div>
                     <div class="viz-donut-legend" id="vizCatLegend"></div>
                   </div>
                 </div>
@@ -2216,9 +2426,15 @@
                   <div class="viz-card-label">Artist Discovery</div>
                   <div class="viz-artists-row" id="vizArtistsMonthly"></div>
                 </div>
-                <div class="viz-card viz-card-contenders">
-                  <div class="viz-card-label">Top Song Contenders</div>
-                  <div id="vizContendersMonthly"></div>
+                <div class="viz-card viz-card-contenders viz-card-spins">
+                  <div class="viz-card-label">Songs in Rotation</div>
+                  <p class="viz-card-copy">Rated with records, separate from how closely a song fits a genre.</p>
+                  <div id="vizSongReactionsMonthly"></div>
+                </div>
+                <div class="viz-card viz-card-crossovers">
+                  <div class="viz-card-label">Genre Crossovers</div>
+                  <p class="viz-card-copy">Songs with a strong theme fit (4–5) in more than one logged genre.</p>
+                  <div id="vizCrossoversMonthly"></div>
                 </div>
               </div>
             </div>
@@ -2229,7 +2445,7 @@
               <div>
                 <div class="viz-hero-eyebrow">All-time snapshot</div>
                 <h3 class="viz-hero-title" style="font-size:clamp(1.1rem,1.8vw,1.5rem);">Longer-term patterns across your archive.</h3>
-                <p class="viz-hero-copy">Rating mix, category spread, month-by-month volume, decades, contenders, and song-depth all stay intact here.</p>
+                <p class="viz-hero-copy">Genre patterns, listening reactions, and recurring crossover tracks across the complete archive.</p>
               </div>
               <div class="viz-kpi-row" id="vizKpiAlltime"></div>
             </div>
@@ -2244,14 +2460,14 @@
                 <div class="viz-card viz-card-donut">
                   <div class="viz-card-label">All-Time Rating Mix</div>
                   <div class="viz-donut-wrap">
-                    <canvas id="vizRatingsDonut" height="200"></canvas>
+                    <div class="viz-chart-ring"><canvas id="vizRatingsDonut" height="180"></canvas></div>
                     <div class="viz-donut-legend" id="vizRatingsLegend"></div>
                   </div>
                 </div>
                 <div class="viz-card viz-card-donut">
                   <div class="viz-card-label">Genre Categories</div>
                   <div class="viz-donut-wrap">
-                    <canvas id="vizCatDonutAll" height="200"></canvas>
+                    <div class="viz-chart-ring"><canvas id="vizCatDonutAll" height="180"></canvas></div>
                     <div class="viz-donut-legend" id="vizCatLegendAll"></div>
                   </div>
                 </div>
@@ -2263,9 +2479,15 @@
                   <div class="viz-card-label">Decades Explored (All Time)</div>
                   <canvas id="vizDecadesBarAll" height="160"></canvas>
                 </div>
-                <div class="viz-card viz-card-contenders">
-                  <div class="viz-card-label">Monthly Contenders</div>
-                  <div id="vizContendersAll"></div>
+                <div class="viz-card viz-card-contenders viz-card-spins">
+                  <div class="viz-card-label">Personal Song Reactions</div>
+                  <p class="viz-card-copy">The tracks you rated after listening.</p>
+                  <div id="vizSongReactionsAll"></div>
+                </div>
+                <div class="viz-card viz-card-crossovers">
+                  <div class="viz-card-label">Genre Crossovers</div>
+                  <p class="viz-card-copy">Strong-fit recordings showing up across multiple genres.</p>
+                  <div id="vizCrossoversAll"></div>
                 </div>
                 <div class="viz-card">
                   <div class="viz-card-label">Most Songs Logged (Top 15)</div>
@@ -2460,6 +2682,8 @@
     let archiveView = 'all';
     let archiveCurrentItems = [];
     let archiveCurrentLabel = 'All';
+    let detailEditMode = false;
+    const DEFAULT_PAGE_TITLE = 'Daily Genre';
 
     const spinnerTrack = document.getElementById('spinnerTrack');
     const remainingCount = document.getElementById('remainingCount');
@@ -2513,6 +2737,8 @@
         favoriteSongUrl: document.getElementById('favoriteSongUrl')?.value?.trim() || '',
         notes: document.getElementById('notes')?.value || '',
         songsListenedBulk: document.getElementById('songsListenedBulk')?.value || '',
+        songReactions: collectSongReactionSnapshot(currentGenre.songs_listened || []),
+        pendingSongs: pendingSongsForStorage(currentGenre.pending_songs || []),
         contender: !!document.getElementById('monthlyContender')?.checked,
         favorite: !!document.getElementById('monthFavorite')?.checked,
         least: !!document.getElementById('monthLeastFavorite')?.checked,
@@ -2536,6 +2762,7 @@
     }
 
     function switchScreen(name, options = {}) {
+      if (name !== 'listen') document.title = DEFAULT_PAGE_TITLE;
       const currentActive = document.querySelector('.screen.active');
       const currentName = currentActive?.id?.replace('screen-', '') || '';
       if (!options.force && hasUnsavedChanges && currentName === 'listen' && name !== 'listen') {
@@ -2757,6 +2984,10 @@
       const rawUrl = String(s?.url || '');
       const isLevelUp = !!s?.isLevelUp || /^(?:🔼\s*)?LEVEL\s*UP:\s*/i.test(rawUrl);
       const isAdd = !!s?.isAdd || /^(?:🔼\s*)?ADD:\s*/i.test(rawUrl);
+      const reaction = [1,2,3].includes(Number(s?.reaction)) ? Number(s.reaction) : null;
+      const originFit = [1,2,3,4,5].includes(Number(s?.originFit)) ? Number(s.originFit) : null;
+      const nominatedFit = [1,2,3,4,5].includes(Number(s?.nominatedFit)) ? Number(s.nominatedFit) : null;
+      const promotedFromFit = [1,2,3,4,5].includes(Number(s?.promotedFromFit)) ? Number(s.promotedFromFit) : null;
       return {
         url: rawUrl,
         score: s?.score ?? null,
@@ -2766,8 +2997,13 @@
         artwork: s?.artwork || '',
         source: s?.source || '',
         added: s?.added || '',
+        reaction,
         isPending: !!s?.isPending,
         pendingFrom: s?.pendingFrom || '',
+        originFit,
+        nominatedFit,
+        promotedFrom: s?.promotedFrom || '',
+        promotedFromFit,
         isLevelUp,
         isAdd,
         _pendingGenreTag: s?._pendingGenreTag || '',
@@ -2782,6 +3018,70 @@
       if (spotifyTrack) return `spotify:${spotifyTrack[1].toLowerCase()}`;
       if (normalizedUrl) return `url:${normalizedUrl}`;
       return `meta:${String(song?.artist || '').trim().toLowerCase()}|${String(song?.title || '').trim().toLowerCase()}`;
+    }
+
+
+    function eachSongInLog(arr, callback) {
+      (arr || []).forEach(song => {
+        callback(song);
+        if (song.levelUp) callback(song.levelUp);
+      });
+    }
+
+    function collectSongReactionSnapshot(arr) {
+      const snapshot = [];
+      eachSongInLog(inflateSongsFromStorage(arr || []), song => {
+        if (song.reaction != null) snapshot.push([songIdentity(song), Number(song.reaction)]);
+      });
+      return snapshot.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
+    }
+
+    function mergeSongMetadata(parsedSongs, previousSongs) {
+      const stored = new Map();
+      eachSongInLog(inflateSongsFromStorage(previousSongs || []), song => stored.set(songIdentity(song), song));
+      const apply = song => {
+        const prior = stored.get(songIdentity(song));
+        if (prior) {
+          if (prior.reaction != null) song.reaction = prior.reaction;
+          if (prior.promotedFrom) song.promotedFrom = prior.promotedFrom;
+          if (prior.promotedFromFit != null) song.promotedFromFit = prior.promotedFromFit;
+        }
+        if (song.levelUp) apply(song.levelUp);
+        return song;
+      };
+      return (parsedSongs || []).map(apply);
+    }
+
+    function setSongReaction(encodedKey, value) {
+      if (!currentGenre) return;
+      const key = decodeURIComponent(encodedKey || '');
+      const reaction = [1,2,3].includes(Number(value)) ? Number(value) : null;
+      const songs = inflateSongsFromStorage(currentGenre.songs_listened || []);
+      let updated = false;
+      eachSongInLog(songs, song => {
+        if (songIdentity(song) === key) {
+          song.reaction = song.reaction === reaction ? null : reaction;
+          updated = true;
+        }
+      });
+      if (!updated) return;
+      currentGenre.songs_listened = songs;
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      markDirty();
+    }
+
+    function reactionLabel(value) {
+      return Number(value) === 3 ? 'I fuck with this' : Number(value) === 2 ? 'Meh' : 'Not for me';
+    }
+
+    function setPendingNominationFit(index, value) {
+      if (!currentGenre) return;
+      const pending = normalizePendingSongs(getPendingSongs(currentGenre));
+      if (!pending[index]) return;
+      pending[index].nominatedFit = Number(value);
+      currentGenre.pending_songs = pending;
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      markDirty();
     }
 
     function inflateSongsFromStorage(arr) {
@@ -2876,12 +3176,17 @@
       });
     }
 
-    function renderSongEntry(s, isChild) {
+    function renderSongEntry(s, isChild, options = {}) {
       const rawUrl = normalizeSongUrl(s.url || '');
       const hasHref = /^https?:\/\//i.test(rawUrl);
       const titleText = escapeHtml(s.title || (hasHref && rawUrl.includes('spotify') ? 'Spotify track' : (hasHref ? 'Track' : 'Linked track')));
       const href = escapeHtml(rawUrl);
-      const scoreBadge = s.score != null ? `<span class="song-score ${Number(s.score) <= 2 ? 'low' : ''}" title="Genre match score">${s.score}/5</span>` : '';
+      const pendingIndex = Number.isInteger(options.pendingIndex) ? options.pendingIndex : null;
+      const originFit = s.originFit != null ? Number(s.originFit) : (s.isPending && s.score != null ? Number(s.score) : null);
+      const nominatedFit = s.nominatedFit != null ? Number(s.nominatedFit) : null;
+      const scoreBadge = s.isPending
+        ? `<span class="song-theme-badge pending-fit" title="Theme fit: source genre to this genre">${originFit != null ? originFit : '?'}/5 → ${nominatedFit != null ? nominatedFit : '?'}/5</span>`
+        : (s.score != null ? `<span class="song-theme-badge ${Number(s.score) <= 2 ? 'low' : ''}" title="Theme fit for this genre">${s.score}/5</span>` : '');
       const reasonHtml = s.reason ? `<div class="song-reason">${escapeHtml(s.reason)}</div>` : '';
       const showArtwork = !!s.artwork;
       const art = showArtwork ? artworkHtml(s.artwork, 'song-artwork', s.title || 'Album art') : '';
@@ -2892,7 +3197,11 @@
         ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
         : '';
       const pendingNote = s.isPending
-        ? `<div class="pending-note">\u23F3 Nominated from <em>${escapeHtml(s.pendingFrom || 'another genre')}</em> \u2192 <em>${escapeHtml(currentGenre?.genre || 'this genre')}</em> \u2014 <button class="btn-inline" onclick="promotePendingSongLegacy('${escapeHtml(rawUrl)}')">Promote</button> \u00B7 <button class="btn-inline btn-inline-danger" onclick="removePendingSongLegacy('${escapeHtml(rawUrl)}')">Remove</button></div>`
+        ? `<div class="pending-origin-line">⏳ Nominated from <em>${escapeHtml(s.pendingFrom || 'source unavailable')}</em></div>
+           ${pendingIndex != null ? `<div class="pending-fit-tools"><span class="pending-fit-label">Fit here</span>${[1,2,3,4,5].map(n => `<button type="button" class="pending-fit-btn ${Number(nominatedFit) === n ? 'active' : ''}" onclick="setPendingNominationFit(${pendingIndex}, ${n})">${n}</button>`).join('')}<button class="btn-inline" onclick="promotePendingSong(${pendingIndex})">Promote</button><button class="btn-inline btn-inline-danger" onclick="removePendingSong(${pendingIndex})">Remove</button></div>` : ''}`
+        : '';
+      const promotedNote = (!s.isPending && s.promotedFrom)
+        ? `<div class="promoted-origin-line">⏳ Promoted from <em>${escapeHtml(s.promotedFrom)}</em>${s.promotedFromFit != null && s.score != null ? ` · theme fit ${s.promotedFromFit}/5 → ${s.score}/5` : ''}</div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
@@ -2906,7 +3215,15 @@
             data-fav-artwork="${escapeHtml(s.artwork||'')}"
             onclick="setFavoriteSong(this)">\u2605</button>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${levelUpHtml}</div>`;
+      const encodedKey = encodeURIComponent(songIdentity(s));
+      const reactionHtml = !s.isPending
+        ? `<div class="song-reaction"><span class="song-reaction-label">My spin</span>
+            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Not for me"><span class="vinyls">◉</span>Not for me</button>
+            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 2 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 2)" title="Meh"><span class="vinyls">◉◉</span>Meh</button>
+            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I fuck with this"><span class="vinyls">◉◉◉</span>I fuck with this</button>
+           </div>`
+        : '';
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${promotedNote}${reactionHtml}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
@@ -3047,7 +3364,7 @@
       const idx = items.findIndex(g => String(g.id) === String(currentGenre.id));
       if (idx === -1) return;
       const next = items[idx + direction];
-      if (next) openGenreDetail(next, true);
+      if (next) openGenreDetail(next, detailEditMode);
     }
 
     function promotePendingSong(index) {
@@ -3055,18 +3372,29 @@
       const pending = normalizePendingSongs(getPendingSongs(currentGenre));
       const song = pending[index];
       if (!song) return;
+      if (![1,2,3,4,5].includes(Number(song.nominatedFit))) {
+        alert('Choose how well this song fits this genre before promoting it.');
+        return;
+      }
       const official = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(s => !s.isPending);
       const key = songIdentity(song);
       if (!official.some(existing => songIdentity(existing) === key)) {
-        const promoted = { ...song };
+        const promoted = {
+          ...song,
+          score: Number(song.nominatedFit),
+          promotedFrom: song.pendingFrom || '',
+          promotedFromFit: song.originFit != null ? Number(song.originFit) : (song.score != null ? Number(song.score) : null)
+        };
         delete promoted.isPending;
         delete promoted.pendingFrom;
+        delete promoted.originFit;
+        delete promoted.nominatedFit;
         official.push(promoted);
       }
       pending.splice(index, 1);
       currentGenre.songs_listened = official;
       currentGenre.pending_songs = pending;
-      loadListenScreen(currentGenre, { preserveDirty: true });
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       markDirty();
     }
 
@@ -3094,29 +3422,12 @@
         panel.innerHTML = '<div class="pending-song-empty">No pending songs queued.</div>';
         return;
       }
-      panel.innerHTML = pending.map((song, idx) => {
-        const href = /^https?:\/\//i.test(String(song.url || '')) ? `href="${escapeHtml(song.url)}" target="_blank" rel="noopener noreferrer"` : '';
-        const tag = song.score != null ? `<span class="tag">${song.score}/5</span>` : '<span class="tag">Pending</span>';
-        return `<div class="pending-song-card">
-          <div class="pending-song-head">
-            <div class="pending-song-meta">
-              <div class="pending-song-title">${href ? `<a ${href} class="song-title-link">${escapeHtml(song.title || 'Pending song')}<span class="song-link-arrow">↗</span></a>` : escapeHtml(song.title || 'Pending song')}</div>
-              <div class="pending-song-sub">${escapeHtml(song.artist || song.source || 'Candidate')}</div>
-              <div class="pending-song-sub">Nominated from ${escapeHtml(song.pendingFrom || 'another genre')} \u2192 ${escapeHtml(genre.genre || 'this genre')}</div>
-            </div>
-            ${tag}
-          </div>
-          ${song.reason ? `<div class="pending-song-reason">${escapeHtml(song.reason)}</div>` : ''}
-          <div class="pending-song-actions">
-            <button type="button" class="btn btn-primary btn-tiny" onclick="promotePendingSong(${idx})">Promote to logged</button>
-            <button type="button" class="btn btn-secondary btn-tiny" onclick="removePendingSong(${idx})">Remove</button>
-          </div>
-        </div>`;
-      }).join('');
+      panel.innerHTML = pending.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx })).join('');
     }
 
     function loadListenScreen(genre, options = {}) {
       currentGenre = genre;
+      document.title = `${genre.genre || 'Genre'} | Daily Genre`;
       const preserveDirty = !!options.preserveDirty;
       selectedRating = genre.rating && genre.rating !== 'zanger' ? String(genre.rating) : '';
 
@@ -3159,6 +3470,7 @@
                 <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(-1)">← Previous</button>
                 <button type="button" class="btn btn-secondary" onclick="restoreArchiveUiState()">Back to Archive</button>
                 <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(1)">Next →</button>
+                <button type="button" class="btn btn-secondary edit-mode-toggle" onclick="toggleDetailEditMode()">${detailEditMode ? 'Hide Editor' : 'Edit Log'}</button>
                 ${!listenedDate ? `<button type="button" class="btn btn-primary" onclick="startListeningNow()">▶ Start Listening</button>` : ''}
               </div>
 
@@ -3180,7 +3492,7 @@
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
             ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false)).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
-            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div class="eyebrow" style="margin:0;">Pending Nominations</div><button type="button" class="btn btn-secondary btn-tiny" id="reexaminePendingBtn">Re-examine pending tags</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map(song => renderSongEntry(song, false)).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
+            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div class="eyebrow" style="margin:0;">Pending Nominations</div><button type="button" class="btn btn-secondary btn-tiny" id="reexaminePendingBtn">Re-examine pending tags</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
           </div>
         </div>
       `;
@@ -3188,6 +3500,7 @@
       renderPendingSongs(genre);
       renderStars();
       updateDiscordBlock();
+      applyDetailEditMode(false);
       if (!preserveDirty) {
         lastSavedListenSnapshot = buildListenSnapshot();
         setUnsavedState(false);
@@ -3329,14 +3642,26 @@
       target.songs_listened = inflateSongsFromStorage(target.songs_listened || []).filter(s => !s.isPending);
       const key = songIdentity(songData);
       if (!key) return false;
-      const existsInPending = target.pending_songs.some(song => songIdentity(song) === key);
-      const existsInLogged = target.songs_listened.some(song => songIdentity(song) === key);
-      if (existsInPending || existsInLogged) return false;
+      if (target.songs_listened.some(song => songIdentity(song) === key)) return false;
+
+      const existing = target.pending_songs.find(song => songIdentity(song) === key);
+      if (existing) {
+        let repaired = false;
+        if (!existing.pendingFrom && sourceGenreName) { existing.pendingFrom = sourceGenreName; repaired = true; }
+        if (existing.originFit == null && songData.score != null) { existing.originFit = Number(songData.score); repaired = true; }
+        if (!existing.title && songData.title) { existing.title = songData.title; repaired = true; }
+        if (!existing.artist && songData.artist) { existing.artist = songData.artist; repaired = true; }
+        if (!existing.artwork && songData.artwork) { existing.artwork = songData.artwork; repaired = true; }
+        return repaired;
+      }
+
       target.pending_songs.push({
         ...songData,
         url: normalizeSongUrl(songData.url || ''),
         isPending: true,
         pendingFrom: sourceGenreName || '',
+        originFit: songData.score != null ? Number(songData.score) : null,
+        nominatedFit: null,
         isLevelUp: false,
         isAdd: false,
         levelUp: null
@@ -3372,6 +3697,25 @@
       if (!genre) return;
       const loggedKeys = new Set(inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending).map(songIdentity));
       genre.pending_songs = normalizePendingSongs(genre.pending_songs || []).filter(song => !loggedKeys.has(songIdentity(song)));
+    }
+
+
+    function repairExistingPendingSources() {
+      let repaired = 0;
+      genres.forEach(sourceGenre => {
+        const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
+        sourceSongs.forEach(song => {
+          if (!song._pendingGenreTag || song.score == null || Number(song.score) > 3) return;
+          const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(song._pendingGenreTag, g.genre));
+          if (!target) return;
+          target.pending_songs = normalizePendingSongs(target.pending_songs || []);
+          const pending = target.pending_songs.find(candidate => songIdentity(candidate) === songIdentity(song));
+          if (!pending) return;
+          if (!pending.pendingFrom) { pending.pendingFrom = sourceGenre.genre || ''; repaired += 1; }
+          if (pending.originFit == null) pending.originFit = Number(song.score);
+        });
+      });
+      return repaired;
     }
 
     function reexaminePendingTags() {
@@ -3411,7 +3755,8 @@
       currentGenre.monthfavorite = document.getElementById('monthFavorite').checked;
       currentGenre.monthleastfavorite = document.getElementById('monthLeastFavorite').checked;
       currentGenre.notes = document.getElementById('notes').value.trim();
-      const parsedOfficial = parseSongLinks(document.getElementById('songsListenedBulk').value);
+      const previousOfficial = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
+      const parsedOfficial = mergeSongMetadata(parseSongLinks(document.getElementById('songsListenedBulk').value), previousOfficial);
       const resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       currentGenre.songs_listened = resolvedOfficial;
       currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
@@ -3532,7 +3877,7 @@
       [...wrap.querySelectorAll('[data-rank-open-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
           const genre = genres.find(g => String(g.id) === btn.dataset.rankOpenId);
-          if (genre) openGenreDetail(genre, true);
+          if (genre) openGenreDetail(genre, false);
         });
       });
 
@@ -3636,13 +3981,32 @@
       return song;
     }
 
+    function applyDetailEditMode(focusEditor = false) {
+      const screen = document.getElementById('screen-listen');
+      const panel = document.getElementById('listenEditPanel');
+      if (!screen || !panel) return;
+      screen.classList.toggle('is-view-mode', !detailEditMode);
+      panel.classList.toggle('is-hidden', !detailEditMode);
+      panel.classList.toggle('is-editing', detailEditMode);
+      if (detailEditMode && focusEditor) {
+        setTimeout(() => document.getElementById('songsListenedBulk')?.focus(), 0);
+      }
+    }
+
+    function toggleDetailEditMode() {
+      detailEditMode = !detailEditMode;
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      applyDetailEditMode(detailEditMode);
+    }
+
     function openGenreDetail(genre, editMode=false) {
       if (!genre) return;
       saveArchiveUiState();
+      detailEditMode = !!editMode || !dateValue(genre);
       loadListenScreen(genre);
       switchScreen('listen');
+      applyDetailEditMode(detailEditMode);
       if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
-      if (editMode) setTimeout(() => document.getElementById('songsListenedBulk')?.focus(), 0);
     }
 
     function renderArchiveSummary(items, label) {
@@ -3789,7 +4153,7 @@
       [...list.querySelectorAll('[data-open-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
           const genre = genres.find(g => String(g.id) === btn.dataset.openId);
-          if (genre) openGenreDetail(genre, true);
+          if (genre) openGenreDetail(genre, false);
         });
       });
     }
@@ -3908,6 +4272,7 @@
         g.pending_songs = normalizePendingSongs(g.pending_songs);
         removeLoggedSongsFromPending(g);
       });
+      repairExistingPendingSources();
 
       applyRankSeed();
       updateRemainingCount();
@@ -3919,7 +4284,7 @@
       if (hashMatch) {
         const id = decodeURIComponent(hashMatch[1]);
         const genre = genres.find(g => String(g.id) === String(id));
-        if (genre) openGenreDetail(genre, true);
+        if (genre) openGenreDetail(genre, false);
       }
     }
 
@@ -4080,7 +4445,7 @@
       const month = vizSelectedMonth();
       return all.filter(g => (dateValue(g) || '').startsWith(month));
     }
-    function vizOfficialSongs(genre) { return normalizeSongsListened(genre?.songs_listened || []).filter(s => !s.isPending); }
+    function vizOfficialSongs(genre) { return inflateSongsFromStorage(genre?.songs_listened || []).filter(s => !s.isPending).flatMap(s => s.levelUp ? [s, s.levelUp] : [s]); }
     function vizAllOfficialSongs(items) { return items.flatMap(vizOfficialSongs); }
     function vizMonthTitle(month) {
       if (!month) return 'No month selected';
@@ -4134,15 +4499,33 @@
       if (!h) return `${m}m`;
       return `${h}h ${m}m`;
     }
-    function vizTopContenders(items, limit=8) {
-      return items.flatMap(g => vizOfficialSongs(g).map(s => ({ genre: g, song: s, score: Number(s.score || 0) })))
-        .filter(x => x.song && x.song.url)
-        .sort((a,b) => (b.score - a.score) || String(a.genre?.genre || '').localeCompare(String(b.genre?.genre || '')))
-        .slice(0, limit);
+    function vizReactionRows(items) {
+      return items.flatMap(g => vizOfficialSongs(g).map(song => ({ genre:g, song, reaction:Number(song.reaction || 0) })))
+        .filter(row => [1,2,3].includes(row.reaction));
     }
+
+    function vizCrossoverRows(items) {
+      const bySong = new Map();
+      items.forEach(genre => {
+        vizOfficialSongs(genre).forEach(song => {
+          if (Number(song.score || 0) <= 3) return;
+          const key = songIdentity(song);
+          if (!key) return;
+          if (!bySong.has(key)) bySong.set(key, { song, genres:[] });
+          const row = bySong.get(key);
+          if (!row.genres.some(entry => String(entry.genre.id) === String(genre.id))) {
+            row.genres.push({ genre, fit:Number(song.score) });
+          }
+        });
+      });
+      return [...bySong.values()]
+        .filter(row => row.genres.length > 1)
+        .sort((a,b) => b.genres.length - a.genres.length || String(a.song.title || '').localeCompare(String(b.song.title || '')));
+    }
+
     function vizOpenGenreChip(name) {
       const g = (genres || []).find(x => String(x.genre || '') === String(name || ''));
-      if (g) openGenreDetail(g, true);
+      if (g) openGenreDetail(g, false);
     }
     function vizPalette() { return ['#d88a22','#8c5b23','#4e8a35','#b83230','#5b6b82','#c9960e','#8c4fb8','#2c7fb8','#00a8a8','#f05a7e','#8b9b0f','#ff7f0e']; }
     function vizLegend(el, labels, values, colors) {
@@ -4156,7 +4539,7 @@
     function vizRenderRatingsContent(items) {
       const map = { '5': [], '4': [], '3': [], '2': [], '1': [], 'zanger': [] };
       items.forEach(g => { const k = String(g.rating || ''); if (k === 'zanger') map.zanger.push(g); else if (map[k]) map[k].push(g); });
-      const groups = [['5','★★★★★ On repeat'],['4','★★★★ Happy to hear'],['3','★★★ Okay'],['2','★★ Ehhhh'],['1','★ Never again'],['zanger','Zanger']];
+      const groups = [['5','On Repeat'],['4','Happy to Hear'],['3','Okay. Didn’t Hate'],['2','Ehhhhh'],['1','Never Again'],['zanger','Zanger']];
       const root = document.getElementById('vizRatingsContent');
       if (!root) return;
       root.innerHTML = groups.map(([k, label]) => {
@@ -4164,6 +4547,7 @@
         return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? '✕' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button class="viz-chip" onclick="vizOpenGenreChip(${JSON.stringify(String(g.genre || ''))})">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
       }).join('');
     }
+
     function vizRenderHighlights(items) {
       const mount = document.getElementById('vizHighlightsMonthly');
       if (!mount) return;
@@ -4189,13 +4573,28 @@
       const songs = vizAllOfficialSongs(items), artists = vizArtists(items), avg = items.length ? (artists.uniqueArtists / items.length).toFixed(1) : '0';
       mount.innerHTML = [['Unique Artists', artists.uniqueArtists],['Songs Logged', songs.length],['With Artist Data', artists.songsWithArtists],['Artists / Genre', avg]].map(([label, value]) => `<div class="viz-artist-stat"><div class="viz-artist-num">${escapeHtml(String(value))}</div><div class="viz-artist-lbl">${escapeHtml(String(label))}</div></div>`).join('');
     }
-    function vizRenderContenders(mountId, items, limit=8) {
+    function vizRenderSongReactions(mountId, items, limit=10) {
       const mount = document.getElementById(mountId);
       if (!mount) return;
-      const top = vizTopContenders(items, limit);
-      if (!top.length) { mount.innerHTML = '<div class="viz-empty">No scored songs yet.</div>'; return; }
-      mount.innerHTML = top.map((row, i) => `<div class="viz-contender-item"><div class="viz-contender-num">${i + 1}</div>${row.song.artwork ? `<img class="viz-contender-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy" width="36" height="36">` : `<div class="viz-contender-art"></div>`}<div class="viz-contender-info"><div class="viz-contender-title">${escapeHtml(row.song.title || 'Untitled track')}</div><div class="viz-contender-genre">${escapeHtml((row.song.artist ? `${row.song.artist} — ` : '') + (row.genre?.genre || ''))}</div></div><div class="viz-contender-score">${row.score || 0}/5</div></div>`).join('');
+      const rows = vizReactionRows(items).sort((a,b) => b.reaction - a.reaction || String(a.song.title || '').localeCompare(String(b.song.title || ''))).slice(0, limit);
+      if (!rows.length) {
+        mount.innerHTML = '<div class="viz-empty">Rate songs with records on a genre page to build this shelf.</div>';
+        return;
+      }
+      mount.innerHTML = rows.map((row, i) => `<div class="viz-contender-item"><div class="viz-contender-num">${i + 1}</div>${row.song.artwork ? `<img class="viz-contender-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy" width="36" height="36">` : `<div class="viz-contender-art"></div>`}<div class="viz-contender-info"><div class="viz-contender-title">${escapeHtml(row.song.title || 'Untitled track')}</div><div class="viz-contender-genre">${escapeHtml((row.song.artist ? `${row.song.artist} — ` : '') + (row.genre?.genre || ''))}</div></div><div><span class="viz-reaction-records">${'◉'.repeat(row.reaction)}</span><div class="viz-reaction-word">${escapeHtml(reactionLabel(row.reaction))}</div></div></div>`).join('');
     }
+
+    function vizRenderCrossovers(mountId, items, limit=10) {
+      const mount = document.getElementById(mountId);
+      if (!mount) return;
+      const rows = vizCrossoverRows(items).slice(0, limit);
+      if (!rows.length) {
+        mount.innerHTML = '<div class="viz-empty">No songs yet with a 4–5 fit in multiple logged genres.</div>';
+        return;
+      }
+      mount.innerHTML = `<div class="viz-crossover-list">${rows.map(row => `<div class="viz-crossover-item">${row.song.artwork ? `<img class="viz-crossover-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy">` : '<div class="viz-crossover-art"></div>'}<div><div class="viz-crossover-name">${escapeHtml((row.song.artist ? `${row.song.artist} — ` : '') + (row.song.title || 'Untitled track'))}</div><div class="viz-crossover-path">${row.genres.map(entry => `<span class="viz-fit-chip">${escapeHtml(entry.genre.genre || 'Unknown')} ${entry.fit}/5</span>`).join('')}</div></div></div>`).join('')}</div>`;
+    }
+
     function vizMonthlyCharts(items) {
       const palette = vizPalette();
       const catCounts = {};
@@ -4204,7 +4603,7 @@
       const catVals = catLabels.map(k => catCounts[k]);
       const catColors = catLabels.map((_, i) => palette[i % palette.length]);
       const catCanvas = document.getElementById('vizCatDonut');
-      if (catCanvas) _vizCharts.catMonthly = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, plugins:{legend:{display:false}}, cutout:'58%' } });
+      if (catCanvas) _vizCharts.catMonthly = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%' } });
       vizLegend(document.getElementById('vizCatLegend'), catLabels, catVals, catColors);
       const decadeCounts = { '1950s':0,'1960s':0,'1970s':0,'1980s':0,'1990s':0,'2000s':0,'2010s':0,'2020s':0 };
       items.forEach(g => { const d = vizInferDecade(g); if (d) decadeCounts[d] += 1; });
@@ -4219,13 +4618,13 @@
       items.forEach(g => { const k = String(g.rating || ''); if (k === 'zanger') ratingMap.zanger += 1; else if (ratingMap[k] != null) ratingMap[k] += 1; });
       const rd = ratingKeys.map(k => ratingMap[k]);
       const ratingCanvas = document.getElementById('vizRatingsDonut');
-      if (ratingCanvas) _vizCharts.ratingAll = new Chart(ratingCanvas.getContext('2d'), { type:'doughnut', data:{ labels:ratingLabels, datasets:[{ data:rd, backgroundColor:ratingColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, plugins:{legend:{display:false}}, cutout:'58%' } });
+      if (ratingCanvas) _vizCharts.ratingAll = new Chart(ratingCanvas.getContext('2d'), { type:'doughnut', data:{ labels:ratingLabels, datasets:[{ data:rd, backgroundColor:ratingColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%' } });
       vizLegend(document.getElementById('vizRatingsLegend'), ratingLabels, rd, ratingColors);
       const catCounts = {};
       items.forEach(g => { const k = vizCategoryRoot(g); catCounts[k] = (catCounts[k] || 0) + 1; });
       const catLabels = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a]).slice(0, 10), catVals = catLabels.map(k => catCounts[k]), catColors = catLabels.map((_, i) => palette[i % palette.length]);
       const catCanvas = document.getElementById('vizCatDonutAll');
-      if (catCanvas) _vizCharts.catAll = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, plugins:{legend:{display:false}}, cutout:'58%' } });
+      if (catCanvas) _vizCharts.catAll = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%' } });
       vizLegend(document.getElementById('vizCatLegendAll'), catLabels, catVals, catColors);
       const monthCounts = {};
       items.forEach(g => { const m = (dateValue(g) || '').slice(0,7); monthCounts[m] = (monthCounts[m] || 0) + 1; });
@@ -4253,12 +4652,14 @@
         vizRenderRatingsContent(items);
         vizRenderHighlights(items);
         vizRenderArtistStats(items);
-        vizRenderContenders('vizContendersMonthly', items, 10);
+        vizRenderSongReactions('vizSongReactionsMonthly', items, 10);
+        vizRenderCrossovers('vizCrossoversMonthly', items, 10);
         vizMonthlyCharts(items);
       } else {
         const contenderCount = items.filter(g => !!g.monthlycontender).length;
         vizRenderKPIs(document.getElementById('vizKpiAlltime'), [{ label:'Months', value: vizMonths().length },{ label:'Genres', value: items.length },{ label:'Songs', value: songs.length },{ label:'Est. Time', value: vizFormatMinutes(vizEstimatedMinutes(songs.length)) },{ label:'Artists', value: artists.uniqueArtists },{ label:'Contenders', value: contenderCount }]);
-        vizRenderContenders('vizContendersAll', items.filter(g => !!g.monthlycontender), 10);
+        vizRenderSongReactions('vizSongReactionsAll', items, 12);
+        vizRenderCrossovers('vizCrossoversAll', items, 12);
         vizAllTimeCharts(items);
       }
     }
