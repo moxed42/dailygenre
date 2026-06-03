@@ -917,14 +917,19 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "DEV TESt",
     "summary": "Canadian blues refers to the blues tradition developed in Canada — particularly in the prairie provinces and Quebec, where artists absorbed American blues influences and shaped them with Canadian regional identity. Artists like Jeff Healey and Colin James brought Canadian blues to international attention.",
     "key_artists": "Jeff Healey, Colin James, Dutch Mason, Jack de Keyzer, Harry Manx (major figures)",
     "suggested_songs": "Jeff Healey — Angel Eyes, Colin James — Five Long Years, Dutch Mason — Can't Hold Out Much Longer, Harry Manx — God Love Your Soul",
     "vibe": "Blues in a country where winters are longer and the songs adjust accordingly.",
     "songs_listened": [],
-    "rank_order": 119,
-    "pending_songs": []
+    "rank_order": null,
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 18,
