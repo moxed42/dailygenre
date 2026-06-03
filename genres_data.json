@@ -42296,6 +42296,23 @@
         "nominatedFit": null,
         "promotedFrom": "",
         "promotedFromFit": null
+      },
+      {
+        "url": "https://open.spotify.com/track/4kCLtiJnKWnTjEcdVNbgT3?si=04pOAX1tRMKRFH-zRqM-wQ",
+        "score": 3,
+        "reason": "Progressive deathcore/electronicore hybrid. Important to the genre's evolution but not a pure exemplar.",
+        "title": "Born Of Osiris — Machine",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bce1e290de62e1b7ce6daa16",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Deathcore",
+        "originFit": 3,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
       }
     ]
   },
@@ -42556,12 +42573,12 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/1l3aAtHncaAiSlf9XixDqn",
+        "url": "https://open.spotify.com/track/4kCLtiJnKWnTjEcdVNbgT3?si=04pOAX1tRMKRFH-zRqM-wQ",
         "score": 3,
         "reason": "Progressive deathcore/electronicore hybrid. Important to the genre's evolution but not a pure exemplar.",
         "title": "Born Of Osiris — Machine",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02caf4f821db9b8df6f91f0844",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bce1e290de62e1b7ce6daa16",
         "source": "spotify",
         "added": "2026-06-03",
         "reaction": null,
