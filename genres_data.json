@@ -2035,7 +2035,7 @@
         "reason": "Foundational blueprint of blue yodeling — 12‑bar blues chassis, lone acoustic guitar and rail‑roader drifter lyrics, with stark yodel breaks that literally define the style",
         "title": "Jimmie Rodgers — Blue Yodel (T for Texas)",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02510117f1d6a9f9394fe27870",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02510117f1d6a9f9394fe27870",
         "source": "spotify",
         "added": "2026-05-31"
       },
@@ -5321,7 +5321,7 @@
         "reason": "\"Miami Ultras\" delivers wave's signature icy synth pads, nocturnal spaciousness, and melancholic energy; the rap vocal layer is present but the production language is unmistakably wave.",
         "title": "Yung Lean — Miami Ultras",
         "artist": "",
-        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0261064b032571008734f8810c",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0261064b032571008734f8810c",
         "source": "spotify",
         "added": "2026-06-01"
       },
@@ -5331,7 +5331,7 @@
         "reason": "\"Ginseng Strip 2002\" is one of the foundational texts of the wave/cloud rap nexus: its dreamy, fog-drenched production and detached delivery established the aesthetic template the entire genre built on.",
         "title": "Yung Lean — Ginseng Strip 2002",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02581915272a4ffd12551c0202",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02581915272a4ffd12551c0202",
         "source": "spotify",
         "added": "2026-06-01"
       }
@@ -35716,18 +35716,7 @@
     "key_artists": "Suicide Silence, Whitechapel, Despised Icon, Thy Art Is Murder, Carnifex (major figures)",
     "suggested_songs": "Suicide Silence -- No Pity for a Coward, Whitechapel -- This Is Exile, Despised Icon -- Fainted Blue Ornaments, Thy Art Is Murder -- Reign of Darkness, Carnifex -- Dead in My Arms",
     "vibe": "The heaviest breakdown imaginable, framed by death metal.",
-    "songs_listened": [
-      {
-        "url": "https://open.spotify.com/track/1POKJlqx9Y0r0U1ZLEPqAF",
-        "score": 5,
-        "reason": "Shows how extreme heaviness and symphonic writing can coexist while keeping orchestra and choir structurally central instead of as a garnish around breakdowns.",
-        "title": "Dimmu Borgir — Progenies of the Great Apocalypse",
-        "artist": "",
-        "artwork": "",
-        "source": "spotify",
-        "added": "2026-06-02"
-      }
-    ],
+    "songs_listened": [],
     "rank_order": 195,
     "pending_songs": [
       {
