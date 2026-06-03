@@ -14337,53 +14337,62 @@
       {
         "url": "https://open.spotify.com/track/29tm8ZbebPFzcg2shW6hJi",
         "score": 5,
-        "reason": "Archetypal jackin’/Chicago house: swung drums, chunky bass, looped vocal stabs, and that bumping, percussive groove that’s built for the floor rather than headphones",
+        "reason": "Archetypal jackin' house: swung drums, chunky bass, looped vocal stabs, and that bumping, percussive groove that's built for the floor rather than headphones.",
         "title": "Derrick Carter — Where U At",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020a2d0592103cd6e7b2f18836",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-03"
       },
       {
         "url": "https://open.spotify.com/track/1ww5uLbLRXdZXF5gLJbawz",
         "score": 3,
-        "reason": "Funky, disco‑leaning house with jazzy keys and a bouncy 4/4, but the sheen and nu‑disco smoothness push it away from the rawer, tracky jackin’ feel",
+        "reason": "Funky, disco-leaning house with jazzy keys and a bouncy 4/4, but the sheen and nu-disco smoothness push it away from the rawer, trackier jackin' feel.",
         "title": "Henry Navarro — Knee Deep",
         "artist": "",
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02709778229b48b6181091fdae",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-03"
       },
       {
-        "url": "https://open.spotify.com/track/0wQZt5qFif5Q66unTgS8yC",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/29tm8ZbebPFzcg2shW6hJi",
         "score": 5,
-        "reason": "Classic swing, chopped vocal hits, and a rough, looping drum track make this a textbook jackin’ house club tool",
-        "title": "Johnny Fiasco — Jack Yo Body",
+        "reason": "Derrick Carter's chunky drums, swinging groove, and stripped-down Chicago bump embody the core jackin' house sound better than disco-forward house cuts.",
+        "title": "Derrick Carter — Where U At",
         "artist": "",
-        "artwork": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e020a2d0592103cd6e7b2f18836",
         "source": "spotify",
-        "added": "2026-05-31"
+        "added": "2026-06-03",
+        "isLevelUp": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/5iEgY9ZbQEQJ8uM5qh1Jut",
+        "url": "🔼 ADD: ",
         "score": 5,
-        "reason": "Adds a mid‑2000s Chicago jackin’ staple with crisp hats and tracky repetition that underlines the style’s core",
-        "title": "Sneak — Fix My Sink",
+        "reason": "One of the most influential Chicago house records ever made: raw drum programming, infectious vocal hooks, and unmistakable jackin' energy that helped define the genre's dancefloor DNA.",
         "artist": "",
         "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31",
+        "source": "manual",
+        "added": "2026-06-03",
         "isAdd": true
       },
       {
-        "url": "🔼 ADD: https://open.spotify.com/track/6fLRUrkgSsJYqvaxpMvc4w",
-        "score": 4,
-        "reason": "Brings in a slightly more modern but still properly swung and sample‑choppy jackin’ vibe to flesh out the session",
-        "title": "DJ Mes — Back To The Program",
+        "url": "🔼 ADD: ",
+        "score": 5,
+        "reason": "Filtered samples, rolling groove, and relentless swing make this one of the clearest examples of classic Chicago jackin' house at full strength.",
         "artist": "",
         "artwork": "",
-        "source": "spotify",
-        "added": "2026-05-31",
+        "source": "manual",
+        "added": "2026-06-03",
+        "isAdd": true
+      },
+      {
+        "url": "🔼 ADD: ",
+        "score": 4,
+        "reason": "Brings in a slightly more modern but still properly swung and sample-choppy jackin' vibe, extending the genre's Chicago groove into a later era.",
+        "artist": "",
+        "artwork": "",
+        "source": "manual",
+        "added": "2026-06-03",
         "isAdd": true
       }
     ],
@@ -14392,7 +14401,8 @@
     "favoritesongurl": "",
     "monthlycontender": false,
     "pending_songs": [],
-    "monthfavorite": false
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 388,
