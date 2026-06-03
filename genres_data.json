@@ -36027,13 +36027,13 @@
         "_pendingGenreTag": "metallic_hardcore"
       },
       {
-        "url": "🔼 LEVEL UP: http://url.com",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2NVQbNEmJ0ZVulQOpWa0PD",
         "score": 5,
         "reason": "More representative of pure deathcore's death-metal influence and breakdown focus.",
         "title": "Carnifex — Lie To My Face",
         "artist": "",
-        "artwork": "",
-        "source": "other",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f41f1fdfa6f494d4558c4d0c",
+        "source": "spotify",
         "added": "2026-06-03",
         "isLevelUp": true
       },
