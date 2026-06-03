@@ -2283,6 +2283,71 @@
       .song-metadata-line, .song-reaction-save-hint { margin-left:0; }
     }
 
+  
+    /* === Per-card track corrections + save conflict protection === */
+    .track-card-editor {
+      margin:11px 0 0 70px;
+      padding:8px 10px 10px;
+      border-radius:12px;
+      background:rgba(45,27,14,.07);
+      border:1px dashed rgba(127,82,28,.24);
+    }
+    .track-card-editor summary {
+      cursor:pointer;
+      list-style:none;
+      color:var(--accent-dark);
+      font-size:.75rem;
+      font-weight:950;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .track-card-editor summary::-webkit-details-marker { display:none; }
+    .track-card-editor summary::before {
+      content:"✎";
+      margin-right:6px;
+      color:var(--accent);
+    }
+    .track-card-edit-body {
+      display:grid;
+      gap:8px;
+      margin-top:9px;
+    }
+    .track-card-edit-body input {
+      padding:9px 11px;
+      font-size:.82rem;
+      border-radius:11px;
+    }
+    .track-card-edit-actions {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .track-card-edit-actions .btn {
+      padding:7px 11px;
+      font-size:.76rem;
+      border-radius:10px;
+    }
+    .track-card-edit-note {
+      color:var(--muted);
+      font-size:.72rem;
+      font-style:italic;
+      line-height:1.35;
+    }
+    .sync-warning {
+      padding:10px 12px;
+      border-radius:13px;
+      background:rgba(139,46,46,.12);
+      border:1px solid rgba(139,46,46,.23);
+      color:var(--danger);
+      font-size:.84rem;
+      font-weight:800;
+      line-height:1.4;
+    }
+    @media (max-width:900px) {
+      .track-card-editor { margin-left:0; }
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -2816,6 +2881,8 @@
     let archiveCurrentItems = [];
     let archiveCurrentLabel = 'All';
     let detailEditMode = false;
+    let serverDataFingerprint = '';
+    let saveConflictDetected = false;
     const DEFAULT_PAGE_TITLE = 'Daily Genre';
 
     const spinnerTrack = document.getElementById('spinnerTrack');
@@ -3231,6 +3298,134 @@
       return Number(value) === 3 ? 'I fuck with this' : Number(value) === 2 ? 'Meh' : 'Not for me';
     }
 
+
+    function buildSongsBulkEditorText(genre) {
+      return inflateSongsFromStorage(genre?.songs_listened || []).filter(song => !song.isPending).flatMap(song => {
+        const prefix = song.isAdd ? '🔼 ADD: ' : '';
+        const reason = song._pendingGenreTag ? `${song.reason || ''} @${song._pendingGenreTag}`.trim() : (song.reason || null);
+        const lines = [
+          prefix + [normalizeSongUrl(song.url), song.score != null ? song.score : null, reason, song.title || null]
+            .filter(value => value !== null && value !== '')
+            .join(' | ')
+        ];
+        if (song.levelUp) {
+          lines.push('🔼 LEVEL UP: ' + [
+            normalizeSongUrl(song.levelUp.url),
+            song.levelUp.score != null ? song.levelUp.score : null,
+            song.levelUp.reason || null,
+            song.levelUp.title || null
+          ].filter(value => value !== null && value !== '').join(' | '));
+        }
+        return lines;
+      }).join('\n');
+    }
+
+    function syncBulkDraftIntoSongModel() {
+      if (!currentGenre) return;
+      const textarea = document.getElementById('songsListenedBulk');
+      if (!textarea) return;
+      const expected = buildSongsBulkEditorText(currentGenre);
+      if (textarea.value === expected) return;
+      const previous = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
+      currentGenre.songs_listened = mergeSongMetadata(parseSongLinks(textarea.value), previous);
+    }
+
+    function findOfficialSongByIdentity(key) {
+      const songs = inflateSongsFromStorage(currentGenre?.songs_listened || []).filter(song => !song.isPending);
+      currentGenre.songs_listened = songs;
+      for (let index = 0; index < songs.length; index += 1) {
+        if (songIdentity(songs[index]) === key) return { song: songs[index], parent: null, index, songs };
+        if (songs[index].levelUp && songIdentity(songs[index].levelUp) === key) {
+          return { song: songs[index].levelUp, parent: songs[index], index, songs };
+        }
+      }
+      return null;
+    }
+
+    async function updateTrackUrlFromCard(encodedKey, pendingIndex, button) {
+      if (!currentGenre || !detailEditMode) return;
+      const editor = button.closest('.track-card-editor');
+      const input = editor?.querySelector('[data-track-url-input]');
+      const nextUrl = normalizeSongUrl(input?.value || '');
+      if (!/^https?:\/\//i.test(nextUrl)) {
+        alert('Paste a valid Spotify or web track URL.');
+        return;
+      }
+
+      let target = null;
+      let officialResult = null;
+      const isPendingEdit = Number.isInteger(pendingIndex) && pendingIndex >= 0;
+      if (isPendingEdit) {
+        currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+        target = currentGenre.pending_songs[pendingIndex];
+      } else {
+        syncBulkDraftIntoSongModel();
+        officialResult = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
+        target = officialResult?.song || null;
+      }
+      if (!target) {
+        showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
+        loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+        return;
+      }
+
+      const oldUrl = normalizeSongUrl(target.url || '');
+      const nestedLevelUp = target.levelUp || null;
+      target.url = nextUrl;
+      target.artwork = '';
+      target.releaseDate = '';
+      target.releaseYear = null;
+      target.releaseSource = '';
+      if (/spotify\.com\/track\//i.test(nextUrl)) {
+        target.title = '';
+        target.artist = '';
+      }
+
+      const resolved = (await resolveSpotifyTitles([{ ...target, levelUp: null }]))[0];
+      resolved.levelUp = nestedLevelUp;
+      Object.assign(target, resolved);
+
+      if (!isPendingEdit && normalizeSongUrl(currentGenre.favoritesongurl || '') === oldUrl) {
+        currentGenre.favoritesongurl = nextUrl;
+        currentGenre.favoritesong = target.title || currentGenre.favoritesong || '';
+        currentGenre.favoriteartist = target.artist || '';
+        currentGenre.favoritesongartwork = target.artwork || '';
+      }
+      if (isPendingEdit) currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+      removeLoggedSongsFromPending(currentGenre);
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      markDirty();
+      showSaveToast('Track URL updated — click Save Changes to keep it.', false);
+    }
+
+    function removeTrackFromCard(encodedKey, pendingIndex) {
+      if (!currentGenre || !detailEditMode) return;
+      if (!window.confirm('Remove this track from this genre? This change will not be permanent until you click Save Changes.')) return;
+
+      const isPendingRemove = Number.isInteger(pendingIndex) && pendingIndex >= 0;
+      if (isPendingRemove) {
+        const pending = normalizePendingSongs(currentGenre.pending_songs || []);
+        pending.splice(pendingIndex, 1);
+        currentGenre.pending_songs = pending;
+      } else {
+        syncBulkDraftIntoSongModel();
+        const result = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
+        if (!result) {
+          showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
+          return;
+        }
+        if (result.parent) {
+          result.parent.levelUp = null;
+        } else {
+          result.songs.splice(result.index, 1);
+        }
+        currentGenre.songs_listened = result.songs;
+      }
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      markDirty();
+      showSaveToast('Track removed — click Save Changes to keep it.', false);
+    }
+
     function setPendingNominationFit(index, value) {
       if (!currentGenre) return;
       const pending = normalizePendingSongs(getPendingSongs(currentGenre));
@@ -3364,7 +3559,7 @@
         ? `<div class="song-metadata-line">Released ${escapeHtml(String(s.releaseYear))}${s.releaseSource ? ` · ${escapeHtml(s.releaseSource)}` : ''}</div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
-        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
+        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: options.allowTrackEdit })}</div>`
         : '';
       const favIsActive = !!(currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl);
       const favBtn = (!isChild && !s.isPending && hasHref)
@@ -3376,6 +3571,10 @@
             onclick="setFavoriteSong(this)">\u2605</button>`
         : '';
       const encodedKey = encodeURIComponent(songIdentity(s));
+      const editPendingIndex = Number.isInteger(pendingIndex) ? pendingIndex : -1;
+      const trackEditHtml = options.allowTrackEdit
+        ? `<details class="track-card-editor"><summary>Edit track URL</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this)">Update Track</button><button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})">Remove Track</button></div><div class="track-card-edit-note">Updating a Spotify URL refreshes its title, artist, and album art. Save Changes to persist.</div></div></details>`
+        : '';
       const reactionHtml = !s.isPending
         ? `<div class="song-reaction"><span class="song-reaction-label">My spin</span>
             <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Not for me"><span class="vinyls">◉</span>Not for me</button>
@@ -3383,7 +3582,7 @@
             <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I fuck with this"><span class="vinyls">◉◉◉</span>I fuck with this</button>
            </div><div class="song-reaction-save-hint">Reaction changes save with “Save Changes.”</div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${promotedNote}${releaseNote}${reactionHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${promotedNote}${releaseNote}${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
@@ -3604,7 +3803,7 @@
         panel.innerHTML = '<div class="pending-song-empty">No pending songs queued.</div>';
         return;
       }
-      panel.innerHTML = pending.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx })).join('');
+      panel.innerHTML = pending.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: detailEditMode })).join('');
     }
 
     function loadListenScreen(genre, options = {}) {
@@ -3621,7 +3820,7 @@
       document.getElementById('notes').value = genre.notes || '';
       genre.songs_listened = inflateSongsFromStorage(genre.songs_listened || []);
       genre.pending_songs = normalizePendingSongs(genre.pending_songs || []);
-      document.getElementById('songsListenedBulk').value = genre.songs_listened.filter(s => !s.isPending).flatMap(s => { const prefix = s.isAdd ? '🔼 ADD: ' : ''; const reason = s._pendingGenreTag ? `${s.reason || ''} @${s._pendingGenreTag}`.trim() : (s.reason || null); const out = [prefix + [normalizeSongUrl(s.url), s.score!=null?s.score:null, reason, s.title||null].filter(x=>x!==null&&x!=='').join(' | ')]; if (s.levelUp) out.push('🔼 LEVEL UP: ' + [normalizeSongUrl(s.levelUp.url), s.levelUp.score!=null?s.levelUp.score:null, s.levelUp.reason||null, s.levelUp.title||null].filter(x=>x!==null&&x!=='').join(' | ')); return out; }).join('\n');
+      document.getElementById('songsListenedBulk').value = buildSongsBulkEditorText(genre);
       document.getElementById('includeSongsToggle').checked = false;
 
       const listenedDate = dateValue(genre);
@@ -3675,8 +3874,8 @@
           </div>
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
-            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false)).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
-            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div class="eyebrow" style="margin:0;">Pending Nominations</div><button type="button" class="btn btn-secondary btn-tiny" id="reexaminePendingBtn">Re-examine pending tags</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
+            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false, { allowTrackEdit: detailEditMode })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
+            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div class="eyebrow" style="margin:0;">Pending Nominations</div><button type="button" class="btn btn-secondary btn-tiny" id="reexaminePendingBtn">Re-examine pending tags</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: detailEditMode })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
           </div>
         </div>
       `;
@@ -3719,20 +3918,54 @@
       passwordNotice.textContent = '';
     }
 
+
+    function fingerprintServerData(value) {
+      return JSON.stringify(value || []);
+    }
+
+    async function detectNewerServerData() {
+      if (!serverDataFingerprint) return false;
+      try {
+        const response = await fetch(`${DATA_URL}?fresh=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) return false;
+        const latest = await response.json();
+        return fingerprintServerData(latest) !== serverDataFingerprint;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    async function guardAgainstStaleSave() {
+      const newerDataExists = await detectNewerServerData();
+      if (!newerDataExists) return;
+      saveConflictDetected = true;
+      const shouldReload = window.confirm(
+        'Newer saved data exists, likely from another device or tab. Reload now before saving so you do not overwrite those changes?\\n\\nOK = reload latest data\\nCancel = keep this page open without saving'
+      );
+      if (shouldReload) window.location.reload();
+      const error = new Error('Newer saved data exists. Reload before saving.');
+      error.code = 'STALE_DATA';
+      throw error;
+    }
+
     async function doSaveWithPassword(password) {
+      await guardAgainstStaleSave();
+      const payload = genresForSave();
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-Password': password
         },
-        body: JSON.stringify(genresForSave())
+        body: JSON.stringify(payload)
       });
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) {
         throw new Error('Save failed');
       }
+      serverDataFingerprint = fingerprintServerData(payload);
+      saveConflictDetected = false;
       return data;
     }
 
@@ -4010,6 +4243,10 @@
         setUnsavedState(false);
         showSaveToast(markListened ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
       } catch (e) {
+        if (e && e.code === 'STALE_DATA') {
+          showSaveToast('Newer data exists elsewhere — reload before saving.', true);
+          return;
+        }
         appPassword = '';
         openPasswordModal(markListened ? 'mark_listened' : 'save');
         passwordNotice.textContent = 'Password failed. Try again.';
@@ -4533,8 +4770,10 @@
 
     async function loadData() {
       remainingCount.textContent = 'Loading genres...';
-      const res = await fetch(DATA_URL);
+      const res = await fetch(DATA_URL, { cache: 'no-store' });
       genres = await res.json();
+      serverDataFingerprint = fingerprintServerData(genres);
+      saveConflictDetected = false;
       window.genres = genres;
 
       genres.forEach(g => {
@@ -4683,6 +4922,11 @@
         showSaveToast(pendingSaveAction === 'mark_listened' ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
         pendingSaveAction = null;
       } catch (e) {
+        if (e && e.code === 'STALE_DATA') {
+          passwordNotice.textContent = 'Newer saved data exists. Reload before saving so it is not overwritten.';
+          showSaveToast('Newer data exists elsewhere — reload before saving.', true);
+          return;
+        }
         passwordNotice.textContent = 'That password did not work.';
       }
     });
