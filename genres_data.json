@@ -42279,6 +42279,23 @@
         "nominatedFit": null,
         "promotedFrom": "",
         "promotedFromFit": null
+      },
+      {
+        "url": "https://open.spotify.com/track/0hSKdyzmXtEKFCI1dUq5PX?si=hbHjtMuaT3WU6tpJVxoFig",
+        "score": 2,
+        "reason": "Metalcore/death-metal precursor with early breakdown usage. Historically important but predates deathcore as a distinct style.",
+        "title": "Cannae — Anna's Love",
+        "artist": "",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ade5bb822cf5967e5b290b8b",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Deathcore",
+        "originFit": 2,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
       }
     ]
   },
@@ -42468,19 +42485,19 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0254651c351bf309d68090e71f",
         "source": "spotify",
         "added": "2026-06-03",
-        "reaction": null,
+        "reaction": 1,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
         "promotedFromFit": null
       },
       {
-        "url": "https://open.spotify.com/track/5v1MdVFx4wfeo2CPI7fYOS",
+        "url": "https://open.spotify.com/track/0hSKdyzmXtEKFCI1dUq5PX?si=hbHjtMuaT3WU6tpJVxoFig",
         "score": 2,
         "reason": "Metalcore/death-metal precursor with early breakdown usage. Historically important but predates deathcore as a distinct style.",
         "title": "Cannae — Anna's Love",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fe5a466d8894f80fd6efcbe3",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02ade5bb822cf5967e5b290b8b",
         "source": "spotify",
         "added": "2026-06-03",
         "reaction": null,
@@ -42687,7 +42704,7 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02edea4030420a54a603562b42",
         "source": "spotify",
         "added": "2026-06-03",
-        "reaction": null,
+        "reaction": 1,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
@@ -42714,11 +42731,13 @@
         "promotedFromFit": null
       }
     ],
-    "favoritesong": "",
-    "favoritesongurl": "",
+    "favoritesong": "Traumadoll - Withdrawal Edition",
+    "favoritesongurl": "https://open.spotify.com/track/3twv46z3wIFAG3sKbOi8SO?si=e2258k_GRKmx5hQaDJyWWw",
     "monthlycontender": false,
     "monthfavorite": false,
-    "monthleastfavorite": false
+    "monthleastfavorite": false,
+    "favoriteartist": "",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02edea4030420a54a603562b42"
   },
   {
     "id": 995,
