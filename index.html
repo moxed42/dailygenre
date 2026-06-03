@@ -3194,6 +3194,19 @@
       return String(url || '').replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '').replace(/^(?:🔼\s*)?ADD:\s*/i, '').trim();
     }
 
+  function normalizeSongArtistAndTitle(title='', artist='') {
+    let normalizedTitle = String(title || '').trim();
+    let normalizedArtist = String(artist || '').trim();
+    if (!normalizedArtist) {
+      const match = normalizedTitle.match(/^(.+?)\s+[—–]\s+(.+)$/);
+      if (match) {
+        normalizedArtist = match[1].trim();
+        normalizedTitle = match[2].trim();
+      }
+    }
+    return { title: normalizedTitle, artist: normalizedArtist };
+  }
+
   function normalizeSongsListened(arr) {
     return (arr || []).map(s => {
       const rawUrl = String(s?.url || '');
@@ -3205,12 +3218,13 @@
       const promotedFromFit = [1,2,3,4,5].includes(Number(s?.promotedFromFit)) ? Number(s.promotedFromFit) : null;
       const parsedReleaseYear = Number(s?.releaseYear || String(s?.releaseDate || '').slice(0, 4));
       const releaseYear = Number.isInteger(parsedReleaseYear) && parsedReleaseYear > 1800 && parsedReleaseYear < 2200 ? parsedReleaseYear : null;
+      const songLabel = normalizeSongArtistAndTitle(s?.title || '', s?.artist || '');
       return {
         url: rawUrl,
         score: s?.score ?? null,
         reason: s?.reason || '',
-        title: s?.title || '',
-        artist: s?.artist || '',
+        title: songLabel.title,
+        artist: songLabel.artist,
         artwork: s?.artwork || '',
         source: s?.source || '',
         added: s?.added || '',
@@ -3300,11 +3314,16 @@
 
 
     function buildSongsBulkEditorText(genre) {
+      const displaySongLabel = song => {
+        const title = String(song?.title || '').trim();
+        const artist = String(song?.artist || '').trim();
+        return artist && title ? `${artist} — ${title}` : (title || null);
+      };
       return inflateSongsFromStorage(genre?.songs_listened || []).filter(song => !song.isPending).flatMap(song => {
         const prefix = song.isAdd ? '🔼 ADD: ' : '';
         const reason = song._pendingGenreTag ? `${song.reason || ''} @${song._pendingGenreTag}`.trim() : (song.reason || null);
         const lines = [
-          prefix + [normalizeSongUrl(song.url), song.score != null ? song.score : null, reason, song.title || null]
+          prefix + [normalizeSongUrl(song.url), song.score != null ? song.score : null, reason, displaySongLabel(song)]
             .filter(value => value !== null && value !== '')
             .join(' | ')
         ];
@@ -3313,7 +3332,7 @@
             normalizeSongUrl(song.levelUp.url),
             song.levelUp.score != null ? song.levelUp.score : null,
             song.levelUp.reason || null,
-            song.levelUp.title || null
+            displaySongLabel(song.levelUp)
           ].filter(value => value !== null && value !== '').join(' | '));
         }
         return lines;
@@ -4181,7 +4200,10 @@
       currentGenre.notes = document.getElementById('notes').value.trim();
 
       const previousOfficial = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
-      const parsedOfficial = mergeSongMetadata(parseSongLinks(document.getElementById('songsListenedBulk').value), previousOfficial);
+      const parsedOfficial = mergeSongMetadata(
+        normalizeSongsListened(parseSongLinks(document.getElementById('songsListenedBulk').value)),
+        previousOfficial
+      );
       const resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       currentGenre.songs_listened = resolvedOfficial;
       currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
@@ -5096,7 +5118,7 @@
       const mount = document.getElementById('vizArtistsMonthly');
       if (!mount) return;
       const songs = vizAllOfficialSongs(items), artists = vizArtists(items), avg = items.length ? (artists.uniqueArtists / items.length).toFixed(1) : '0';
-      mount.innerHTML = [['Unique Artists', artists.uniqueArtists],['Songs Logged', songs.length],['With Artist Data', artists.songsWithArtists],['Artists / Genre', avg]].map(([label, value]) => `<div class="viz-artist-stat"><div class="viz-artist-num">${escapeHtml(String(value))}</div><div class="viz-artist-lbl">${escapeHtml(String(label))}</div></div>`).join('');
+      mount.innerHTML = [['Unique Artists', artists.uniqueArtists],['Songs Logged', songs.length],['With Artist Data', artists.songsWithArtists],['Artists / Genre', avg]].map(([label, value]) => `<div class="viz-artist-stat"><div class="viz-artist-num">${escapeHtml(String(value))}</div><div class="viz-artist-lbl">${escapeHtml(String(label))}</div></div>`).join('') + (songs.length && !artists.uniqueArtists ? '<div class="small" style="grid-column:1/-1;">Artist names could not be inferred from stored song labels. Use Edit track URL or refresh metadata for those entries.</div>' : '');
     }
     function vizReactionCountSummary(songs) {
       const counts = { 3:0, 2:0, 1:0, unrated:0 };
