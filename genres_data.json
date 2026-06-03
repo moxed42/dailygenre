@@ -6314,7 +6314,7 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02581915272a4ffd12551c0202",
         "source": "spotify",
         "added": "2026-06-03",
-        "reaction": null,
+        "reaction": 1,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
