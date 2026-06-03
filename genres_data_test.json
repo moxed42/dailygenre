@@ -25223,14 +25223,19 @@
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
-    "notes": "",
+    "notes": "DEV TEST HARMLESS NOTE",
     "summary": "Political hip-hop uses rap as a vehicle for explicit political commentary — from Public Enemy's revolutionary fury through dead prez's black nationalism to Kendrick Lamar's nuanced social analysis. It treats hip-hop as a form of journalism, testimony, and advocacy, and its best work ranks among the most powerful political art in American culture.",
     "key_artists": "Public Enemy, KRS-One, dead prez, Immortal Technique, Kendrick Lamar (major figures)",
     "suggested_songs": "Public Enemy — Fight the Power, KRS-One — Sound of da Police, dead prez — Hip Hop, Kendrick Lamar — Alright",
     "vibe": "Hip-hop that has something specific and important to say about power.",
     "songs_listened": [],
-    "rank_order": 568,
-    "pending_songs": []
+    "rank_order": null,
+    "pending_songs": [],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 564,
