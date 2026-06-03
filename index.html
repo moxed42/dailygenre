@@ -2348,10 +2348,27 @@
       .track-card-editor { margin-left:0; }
     }
 
+  
+    .dev-environment-banner {
+      position: sticky;
+      top: 0;
+      z-index: 99999;
+      text-align: center;
+      padding: 8px 12px;
+      background: #8b2e2e;
+      color: #fff6ea;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      font-size: .76rem;
+      box-shadow: 0 3px 12px rgba(0,0,0,.18);
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <div class="dev-environment-banner">Development Test Mode · saves go to genres_data_test.json</div>
   <div class="app">
     <header class="topbar">
       <div class="brand-wrap">
@@ -2723,8 +2740,8 @@
   </div>
 
   <script>
-    const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data.json';
-    const WORKER_URL = 'https://genre-spinner.sam-moxed.workers.dev/';
+    const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data_test.json';
+    const WORKER_URL = 'https://genre-spinner-dev.sam-moxed.workers.dev/';
 
     const RANK_SEED = {
       'synth pop': {"rating":"4","rank_order":1},
