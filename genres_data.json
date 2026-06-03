@@ -14355,21 +14355,20 @@
         "added": "2026-06-03"
       },
       {
-        "url": "🔼 LEVEL UP: ",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/451Av6ktCUTBkLYRkkpVyK",
         "score": 5,
         "reason": "Filtered samples, rolling groove, and relentless swing make this one of the clearest examples of classic Chicago jackin' house at full strength.",
         "title": "DJ Sneak — You Can't Hide From Your Bud",
         "artist": "",
-        "artwork": "",
-        "source": "manual",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0201da79374b8001de0d5f8b80",
+        "source": "spotify",
         "added": "2026-06-03",
         "isLevelUp": true
       },
       {
         "url": "🔼 ADD: ",
-        "score": 4,
-        "reason": "Brings in a slightly more modern but still properly swung and sample-choppy jackin' vibe, extending the genre's Chicago groove into a later era.",
-        "title": "DJ Mes — Back To The Program",
+        "score": null,
+        "reason": "DJ Mes — Back To The Program",
         "artist": "",
         "artwork": "",
         "source": "manual",
