@@ -2163,6 +2163,126 @@
       #screen-viz .viz-chart-ring { flex-basis:180px; }
     }
 
+  
+    /* === Bundled workflow and analytics refinements === */
+    .crate-dig-note {
+      margin:10px auto 0;
+      text-align:center;
+      max-width:62ch;
+      color:#d7bc93;
+      font-style:italic;
+    }
+    .editor-save-actions {
+      display:grid;
+      gap:10px;
+      padding-top:4px;
+    }
+    .save-behavior-note {
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,224,161,.12);
+      border:1px dashed rgba(127,82,28,.26);
+      line-height:1.45;
+    }
+    .listen-correction-btn {
+      color:#ffd2c7 !important;
+      background:rgba(128,38,29,.45) !important;
+      border-color:rgba(255,160,140,.25) !important;
+    }
+    .viz-refresh-status {
+      flex:1 0 100%;
+      margin-top:4px;
+      color:var(--muted);
+      min-height:1.1em;
+    }
+    .viz-decade-note {
+      margin-top:10px;
+      font-style:italic;
+      line-height:1.4;
+    }
+    .viz-reaction-summary {
+      display:grid;
+      grid-template-columns:repeat(4, minmax(90px,1fr));
+      gap:8px;
+      margin-bottom:14px;
+    }
+    .viz-reaction-tile {
+      border-radius:13px;
+      padding:10px 8px;
+      text-align:center;
+      background:rgba(255,252,241,.66);
+      border:1px solid rgba(127,82,28,.14);
+    }
+    .viz-reaction-tile strong {
+      display:block;
+      font-size:1.3rem;
+      letter-spacing:-.04em;
+      color:var(--text);
+    }
+    .viz-reaction-tile .records {
+      display:block;
+      color:var(--accent);
+      font-weight:1000;
+      letter-spacing:-.13em;
+      min-height:18px;
+    }
+    .viz-reaction-tile span:last-child {
+      display:block;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-size:.63rem;
+      font-weight:900;
+      line-height:1.3;
+    }
+    .viz-reaction-table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:.82rem;
+    }
+    .viz-reaction-table th {
+      text-align:right;
+      padding:7px 6px;
+      color:var(--muted);
+      font-size:.68rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      border-bottom:1px solid rgba(127,82,28,.18);
+    }
+    .viz-reaction-table th:first-child,
+    .viz-reaction-table td:first-child { text-align:left; }
+    .viz-reaction-table td {
+      text-align:right;
+      padding:7px 6px;
+      border-bottom:1px solid rgba(127,82,28,.10);
+    }
+    .viz-reaction-table .genre-link {
+      padding:0;
+      border:0;
+      background:transparent;
+      color:var(--text);
+      font-weight:850;
+      cursor:pointer;
+      text-align:left;
+    }
+    .song-metadata-line {
+      margin:5px 0 0 70px;
+      font-size:.75rem;
+      color:var(--faint);
+      font-style:italic;
+    }
+    .song-reaction-save-hint {
+      margin-left:70px;
+      margin-top:7px;
+      font-size:.72rem;
+      color:var(--faint);
+      font-style:italic;
+    }
+    @media (max-width:760px) {
+      .viz-reaction-summary { grid-template-columns:repeat(2, minmax(90px,1fr)); }
+      .song-metadata-line, .song-reaction-save-hint { margin-left:0; }
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -2200,8 +2320,10 @@
 
         <div class="spin-actions">
           <button class="btn btn-primary" id="spinBtn">SPIN</button>
+          <button class="btn btn-secondary" id="crateDigBtn">💿 Crate Dig</button>
           <button class="btn btn-secondary" id="manualToggleBtn">Toggle manual picker</button>
         </div>
+        <div class="small crate-dig-note">Crate Dig takes you back to a random genre you have already listened to without changing its history.</div>
 
         <div class="panel hidden" id="manualPanel" style="margin-top:18px;">
           <label for="manualSearch2">Search here too</label>
@@ -2294,8 +2416,13 @@
             <textarea id="notes" placeholder="Quick reactions, standout artists, context..."></textarea>
           </div>
 
-          <div class="row">
-            <button class="btn btn-primary" id="saveBtn">Save</button>
+          <div class="editor-save-actions">
+            <div class="row">
+              <button class="btn btn-primary" id="saveBtn">Save Changes</button>
+              <button class="btn btn-secondary" id="markListenedBtn">Mark as Listened Today</button>
+              <button class="btn btn-danger hidden" id="unlistenBtn">Undo Listen / Remove Date</button>
+            </div>
+            <div class="small save-behavior-note">Save Changes keeps notes, songs, and reactions without marking a new genre as listened. Use “Mark as Listened Today” only after completing the listen.</div>
           </div>
         </div>
       </div>
@@ -2310,6 +2437,7 @@
             <p class="small archive-subtitle">Search everything you have logged, review a month, find Alt Takes, or jump back in to edit a genre.</p>
           </div>
           <div class="archive-actions">
+            <button class="btn btn-primary" id="archiveCrateDigBtn">💿 Crate Dig</button>
             <button class="btn btn-secondary" id="archiveCopyBtn">Copy current view</button>
           </div>
         </div>
@@ -2384,7 +2512,8 @@
                   <button class="viz-mode-btn" data-viz-mode="alltime">All Time</button>
                 </div>
                 <select id="vizMonthSelect" class="viz-month-sel"></select>
-                <button class="btn btn-ghost" id="vizRefreshBtn" onclick="renderVisuals()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh</button>
+                <button class="btn btn-ghost" id="vizRefreshBtn" onclick="refreshVisualMetadata()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh Metadata</button>
+                <div class="small viz-refresh-status" id="vizRefreshStatus"></div>
               </div>
               <div class="viz-spotlight-card">
                 <div class="viz-spotlight-label">Listening note</div>
@@ -2415,8 +2544,10 @@
                   </div>
                 </div>
                 <div class="viz-card viz-card-decades">
-                  <div class="viz-card-label">Decades Explored</div>
+                  <div class="viz-card-label">Song Release Decades</div>
+                  <p class="viz-card-copy">Based on release-year metadata for the songs logged this month, not on the genre name.</p>
                   <canvas id="vizDecadesBar" height="160"></canvas>
+                  <div class="small viz-decade-note" id="vizDecadesNoteMonthly"></div>
                 </div>
                 <div class="viz-card viz-card-highlights">
                   <div class="viz-card-label">Highlights</div>
@@ -2428,7 +2559,7 @@
                 </div>
                 <div class="viz-card viz-card-contenders viz-card-spins">
                   <div class="viz-card-label">Songs in Rotation</div>
-                  <p class="viz-card-copy">Rated with records, separate from how closely a song fits a genre.</p>
+                  <p class="viz-card-copy">Your reaction counts overall and by genre, separate from theme fit.</p>
                   <div id="vizSongReactionsMonthly"></div>
                 </div>
                 <div class="viz-card viz-card-crossovers">
@@ -2476,12 +2607,14 @@
                   <canvas id="vizMonthlyBar" height="150"></canvas>
                 </div>
                 <div class="viz-card viz-card-decades">
-                  <div class="viz-card-label">Decades Explored (All Time)</div>
+                  <div class="viz-card-label">Song Release Decades (All Time)</div>
+                  <p class="viz-card-copy">Calculated from stored song release years after metadata refresh.</p>
                   <canvas id="vizDecadesBarAll" height="160"></canvas>
+                  <div class="small viz-decade-note" id="vizDecadesNoteAll"></div>
                 </div>
                 <div class="viz-card viz-card-contenders viz-card-spins">
                   <div class="viz-card-label">Personal Song Reactions</div>
-                  <p class="viz-card-copy">The tracks you rated after listening.</p>
+                  <p class="viz-card-copy">Reaction counts across every listened genre, with an unrated queue.</p>
                   <div id="vizSongReactionsAll"></div>
                 </div>
                 <div class="viz-card viz-card-crossovers">
@@ -2808,6 +2941,21 @@
       return '🎵';
     }
 
+
+    function openRandomListenedGenre() {
+      const pool = genres.filter(g =>
+        (g.status || '').toLowerCase() === 'listened' &&
+        !!dateValue(g) &&
+        String(g.rating || '').toLowerCase() !== 'zanger'
+      );
+      if (!pool.length) {
+        showSaveToast('No listened genres available for Crate Dig yet.', true);
+        return;
+      }
+      const genre = pool[Math.floor(Math.random() * pool.length)];
+      openGenreDetail(genre, false);
+    }
+
     function randomGenre() {
       const pool = getUnlistened();
       return pool[Math.floor(Math.random() * pool.length)];
@@ -2988,6 +3136,8 @@
       const originFit = [1,2,3,4,5].includes(Number(s?.originFit)) ? Number(s.originFit) : null;
       const nominatedFit = [1,2,3,4,5].includes(Number(s?.nominatedFit)) ? Number(s.nominatedFit) : null;
       const promotedFromFit = [1,2,3,4,5].includes(Number(s?.promotedFromFit)) ? Number(s.promotedFromFit) : null;
+      const parsedReleaseYear = Number(s?.releaseYear || String(s?.releaseDate || '').slice(0, 4));
+      const releaseYear = Number.isInteger(parsedReleaseYear) && parsedReleaseYear > 1800 && parsedReleaseYear < 2200 ? parsedReleaseYear : null;
       return {
         url: rawUrl,
         score: s?.score ?? null,
@@ -2997,6 +3147,9 @@
         artwork: s?.artwork || '',
         source: s?.source || '',
         added: s?.added || '',
+        releaseDate: s?.releaseDate || '',
+        releaseYear,
+        releaseSource: s?.releaseSource || '',
         reaction,
         isPending: !!s?.isPending,
         pendingFrom: s?.pendingFrom || '',
@@ -3045,6 +3198,9 @@
           if (prior.reaction != null) song.reaction = prior.reaction;
           if (prior.promotedFrom) song.promotedFrom = prior.promotedFrom;
           if (prior.promotedFromFit != null) song.promotedFromFit = prior.promotedFromFit;
+          if (prior.releaseDate) song.releaseDate = prior.releaseDate;
+          if (prior.releaseYear != null) song.releaseYear = prior.releaseYear;
+          if (prior.releaseSource) song.releaseSource = prior.releaseSource;
         }
         if (song.levelUp) apply(song.levelUp);
         return song;
@@ -3068,6 +3224,7 @@
       currentGenre.songs_listened = songs;
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       markDirty();
+      showSaveToast('Reaction updated — click Save Changes to keep it.', false);
     }
 
     function reactionLabel(value) {
@@ -3203,6 +3360,9 @@
       const promotedNote = (!s.isPending && s.promotedFrom)
         ? `<div class="promoted-origin-line">⏳ Promoted from <em>${escapeHtml(s.promotedFrom)}</em>${s.promotedFromFit != null && s.score != null ? ` · theme fit ${s.promotedFromFit}/5 → ${s.score}/5` : ''}</div>`
         : '';
+      const releaseNote = (!s.isPending && s.releaseYear)
+        ? `<div class="song-metadata-line">Released ${escapeHtml(String(s.releaseYear))}${s.releaseSource ? ` · ${escapeHtml(s.releaseSource)}` : ''}</div>`
+        : '';
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true)}</div>`
         : '';
@@ -3221,9 +3381,9 @@
             <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Not for me"><span class="vinyls">◉</span>Not for me</button>
             <button type="button" class="song-reaction-btn ${Number(s.reaction) === 2 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 2)" title="Meh"><span class="vinyls">◉◉</span>Meh</button>
             <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I fuck with this"><span class="vinyls">◉◉◉</span>I fuck with this</button>
-           </div>`
+           </div><div class="song-reaction-save-hint">Reaction changes save with “Save Changes.”</div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${promotedNote}${reactionHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${promotedNote}${releaseNote}${reactionHtml}${levelUpHtml}</div>`;
     }
 
     function buildDiscordBlock() {
@@ -3293,10 +3453,32 @@
     }
 
     function startListeningNow() {
+      markCurrentGenreListened();
+    }
+
+    async function markCurrentGenreListened() {
       if (!currentGenre) return;
-      currentGenre.date_normalized = new Date().toISOString().slice(0,10);
+      await prepareAndSaveCurrentGenre({ markListened: true });
+    }
+
+    function unlistenCurrentGenre() {
+      if (!currentGenre || !dateValue(currentGenre)) return;
+      const okay = window.confirm('Remove the listened date and return this genre to the unlistened pool? Notes, songs, reactions, and pending nominations will be kept.');
+      if (!okay) return;
+      const formerRating = currentGenre.rating;
+      currentGenre.date_normalized = '';
+      currentGenre.datenormalized = '';
+      currentGenre.status = 'unlistened';
+      currentGenre.rating = '';
+      currentGenre.rank_order = null;
+      currentGenre.monthlycontender = false;
+      currentGenre.monthfavorite = false;
+      currentGenre.monthleastfavorite = false;
+      selectedRating = '';
+      if (formerRating && formerRating !== 'zanger') ensureRankOrderForRating(formerRating);
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       markDirty();
-      prepareAndSaveCurrentGenre();
+      showSaveToast('Listen removed — click Save Changes to keep this correction.', false);
     }
 
     function promotePendingSongLegacy(url) {
@@ -3471,7 +3653,9 @@
                 <button type="button" class="btn btn-secondary" onclick="restoreArchiveUiState()">Back to Archive</button>
                 <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(1)">Next →</button>
                 <button type="button" class="btn btn-secondary edit-mode-toggle" onclick="toggleDetailEditMode()">${detailEditMode ? 'Hide Editor' : 'Edit Log'}</button>
-                ${!listenedDate ? `<button type="button" class="btn btn-primary" onclick="startListeningNow()">▶ Start Listening</button>` : ''}
+                ${!listenedDate
+                  ? `<button type="button" class="btn btn-primary" onclick="markCurrentGenreListened()">✓ Mark as Listened Today</button>`
+                  : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Undo Listen / Remove Date</button>`}
               </div>
 
             </div>
@@ -3500,6 +3684,10 @@
       renderPendingSongs(genre);
       renderStars();
       updateDiscordBlock();
+      const markBtn = document.getElementById('markListenedBtn');
+      const unlistenBtn = document.getElementById('unlistenBtn');
+      if (markBtn) markBtn.classList.toggle('hidden', !!listenedDate);
+      if (unlistenBtn) unlistenBtn.classList.toggle('hidden', !listenedDate);
       applyDetailEditMode(false);
       if (!preserveDirty) {
         lastSavedListenSnapshot = buildListenSnapshot();
@@ -3576,6 +3764,7 @@
             }
           } catch(e) {}
         }
+        await enrichSongReleaseMetadata(next);
         if (next.levelUp) {
           next.levelUp = { ...next.levelUp };
           next.levelUp.url = normalizeSongUrl(next.levelUp.url);
@@ -3730,11 +3919,13 @@
       }
     }
 
-    async function prepareAndSaveCurrentGenre() {
+    async function prepareAndSaveCurrentGenre(options = {}) {
       if (!currentGenre) {
         alert('Choose a genre first.');
         return;
       }
+      const markListened = !!options.markListened;
+      const alreadyListened = !!dateValue(currentGenre);
 
       currentGenre.rating = currentGenre.rating === 'zanger' ? 'zanger' : (selectedRating || currentGenre.rating || '');
       currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
@@ -3755,44 +3946,56 @@
       currentGenre.monthfavorite = document.getElementById('monthFavorite').checked;
       currentGenre.monthleastfavorite = document.getElementById('monthLeastFavorite').checked;
       currentGenre.notes = document.getElementById('notes').value.trim();
+
       const previousOfficial = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
       const parsedOfficial = mergeSongMetadata(parseSongLinks(document.getElementById('songsListenedBulk').value), previousOfficial);
       const resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       currentGenre.songs_listened = resolvedOfficial;
       currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
       removeLoggedSongsFromPending(currentGenre);
-
       processPendingNominationsForGenre(currentGenre);
 
-      if (!dateValue(currentGenre)) {
+      if (markListened && !dateValue(currentGenre)) {
         currentGenre.date_normalized = new Date().toISOString().slice(0,10);
       }
 
-      const currentMonthKey = (dateValue(currentGenre) || '').slice(0,7);
-      if (currentMonthKey && (currentGenre.monthfavorite || currentGenre.monthleastfavorite)) {
-        genres.forEach(g => {
-          if (!g || g.id === currentGenre.id) return;
-          if ((dateValue(g) || '').slice(0,7) !== currentMonthKey) return;
-          if (currentGenre.monthfavorite) g.monthfavorite = false;
-          if (currentGenre.monthleastfavorite) g.monthleastfavorite = false;
-        });
-      }
-
-      if (currentGenre.rating === 'zanger') {
-        currentGenre.status = 'veto';
-        currentGenre.rank_order = null;
-      } else {
-        currentGenre.status = 'listened';
-        if (!currentGenre.rank_order) {
-          const sameTierCount = genres.filter(g => String(g.rating) === String(currentGenre.rating) && g.rating !== 'zanger' && g.id !== currentGenre.id).length;
-          currentGenre.rank_order = sameTierCount + 1;
+      const completedListen = markListened || alreadyListened || !!dateValue(currentGenre);
+      if (completedListen && dateValue(currentGenre)) {
+        const currentMonthKey = (dateValue(currentGenre) || '').slice(0,7);
+        if (currentMonthKey && (currentGenre.monthfavorite || currentGenre.monthleastfavorite)) {
+          genres.forEach(g => {
+            if (!g || g.id === currentGenre.id) return;
+            if ((dateValue(g) || '').slice(0,7) !== currentMonthKey) return;
+            if (currentGenre.monthfavorite) g.monthfavorite = false;
+            if (currentGenre.monthleastfavorite) g.monthleastfavorite = false;
+          });
         }
-        ensureRankOrderForRating(currentGenre.rating);
+
+        if (currentGenre.rating === 'zanger') {
+          currentGenre.status = 'veto';
+          currentGenre.rank_order = null;
+        } else {
+          currentGenre.status = 'listened';
+          if (currentGenre.rating) {
+            if (!currentGenre.rank_order) {
+              const sameTierCount = genres.filter(g => String(g.rating) === String(currentGenre.rating) && g.rating !== 'zanger' && g.id !== currentGenre.id).length;
+              currentGenre.rank_order = sameTierCount + 1;
+            }
+            ensureRankOrderForRating(currentGenre.rating);
+          }
+        }
+      } else {
+        currentGenre.status = 'unlistened';
+        currentGenre.rank_order = null;
+        currentGenre.monthlycontender = false;
+        currentGenre.monthfavorite = false;
+        currentGenre.monthleastfavorite = false;
       }
 
       if (!appPassword) {
+        pendingSaveAction = markListened ? 'mark_listened' : 'save';
         showSaveToast('Waiting for password…', false);
-        openPasswordModal('save');
+        openPasswordModal(pendingSaveAction);
         return;
       }
 
@@ -3805,10 +4008,10 @@
         loadListenScreen(currentGenre, { preserveDirty: false });
         lastSavedListenSnapshot = buildListenSnapshot();
         setUnsavedState(false);
-        showSaveToast(`Saved. ${currentGenre.genre || 'Genre'} updated.`, false);
+        showSaveToast(markListened ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
       } catch (e) {
         appPassword = '';
-        openPasswordModal('save');
+        openPasswordModal(markListened ? 'mark_listened' : 'save');
         passwordNotice.textContent = 'Password failed. Try again.';
         showSaveToast('Save failed. Check password.', true);
       }
@@ -3969,6 +4172,75 @@
 
       spotifyOembedCache.set(trackUrl, request);
       return request;
+    }
+
+
+    const releaseMetadataCache = new Map();
+
+    function cleanCatalogText(value='') {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/\([^)]*\)/g, ' ')
+        .replace(/\b(remaster(?:ed)?|version|edit|single|radio|mono|stereo)\b/g, ' ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function catalogTrackQueryTitle(song) {
+      const raw = String(song?.title || '').trim();
+      const parts = raw.split(/\s+[—–]\s+/);
+      if (parts.length > 1 && song?.artist && cleanCatalogText(parts[0]).includes(cleanCatalogText(song.artist))) {
+        return parts.slice(1).join(' ');
+      }
+      return raw;
+    }
+
+    async function fetchSongReleaseMetadata(song) {
+      if (!song || song.releaseYear || !song.artist || !song.title) return null;
+      const track = catalogTrackQueryTitle(song);
+      const cacheKey = `${cleanCatalogText(song.artist)}|${cleanCatalogText(track)}`;
+      if (!cacheKey || cacheKey === '|') return null;
+      if (releaseMetadataCache.has(cacheKey)) return releaseMetadataCache.get(cacheKey);
+
+      const lookup = fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=12&term=${encodeURIComponent(`${song.artist} ${track}`)}`)
+        .then(async response => {
+          if (!response.ok) throw new Error('Catalog lookup failed');
+          const payload = await response.json();
+          const wantedArtist = cleanCatalogText(song.artist);
+          const wantedTrack = cleanCatalogText(track);
+          const candidates = Array.isArray(payload.results) ? payload.results : [];
+          const scored = candidates.map(item => {
+            const itemArtist = cleanCatalogText(item.artistName);
+            const itemTrack = cleanCatalogText(item.trackName);
+            let score = 0;
+            if (itemTrack === wantedTrack) score += 6;
+            else if (itemTrack.includes(wantedTrack) || wantedTrack.includes(itemTrack)) score += 3;
+            if (itemArtist === wantedArtist) score += 5;
+            else if (itemArtist.includes(wantedArtist) || wantedArtist.includes(itemArtist)) score += 2;
+            return { item, score };
+          }).sort((a, b) => b.score - a.score);
+          const best = scored[0];
+          if (!best || best.score < 5 || !best.item.releaseDate) return null;
+          const year = Number(String(best.item.releaseDate).slice(0, 4));
+          if (!Number.isInteger(year)) return null;
+          return { releaseDate: best.item.releaseDate, releaseYear: year, releaseSource: 'catalog match' };
+        })
+        .catch(() => null);
+
+      releaseMetadataCache.set(cacheKey, lookup);
+      return lookup;
+    }
+
+    async function enrichSongReleaseMetadata(song) {
+      if (!song || song.releaseYear) return song;
+      const data = await fetchSongReleaseMetadata(song);
+      if (data) {
+        song.releaseDate = data.releaseDate || song.releaseDate || '';
+        song.releaseYear = data.releaseYear || song.releaseYear || null;
+        song.releaseSource = data.releaseSource || song.releaseSource || '';
+      }
+      return song;
     }
 
     function applySpotifyMetadata(song, data) {
@@ -4299,6 +4571,8 @@
     });
 
     spinBtn.addEventListener('click', spinWheel);
+    document.getElementById('crateDigBtn')?.addEventListener('click', openRandomListenedGenre);
+    document.getElementById('archiveCrateDigBtn')?.addEventListener('click', openRandomListenedGenre);
     manualToggleBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
 
     const manualSearch2 = document.getElementById('manualSearch2');
@@ -4326,6 +4600,8 @@
     });
 
     document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.classList.add('is-saving'); btn.textContent = 'Saving...'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.classList.remove('is-saving'); btn.textContent = old; } });
+    document.getElementById('markListenedBtn')?.addEventListener('click', markCurrentGenreListened);
+    document.getElementById('unlistenBtn')?.addEventListener('click', unlistenCurrentGenre);
     document.getElementById('clearPendingBtn')?.addEventListener('click', clearPendingSongs);
     document.addEventListener('click', (event) => {
       const btn = event.target.closest('#reexaminePendingBtn');
@@ -4392,9 +4668,11 @@
       }
 
       try {
+        const completedAction = pendingSaveAction;
         await doSaveWithPassword(pw);
         appPassword = pw;
         closePasswordModal();
+        pendingSaveAction = completedAction;
         updateRemainingCount();
         populateMonthFilter();
         renderHistory();
@@ -4402,7 +4680,8 @@
         loadListenScreen(currentGenre, { preserveDirty: false });
         lastSavedListenSnapshot = buildListenSnapshot();
         setUnsavedState(false);
-        showSaveToast(`Saved. ${currentGenre.genre || 'Genre'} updated.`, false);
+        showSaveToast(pendingSaveAction === 'mark_listened' ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
+        pendingSaveAction = null;
       } catch (e) {
         passwordNotice.textContent = 'That password did not work.';
       }
@@ -4462,21 +4741,23 @@
       const raw = categoryLine(g) || 'Uncategorized';
       return raw.split(/[/>|]/).map(x => String(x || '').trim()).filter(Boolean)[0] || raw || 'Uncategorized';
     }
-    function vizInferDecade(genre) {
-      const text = [genre?.genre, categoryLine(genre), genre?.notes].filter(Boolean).join(' ').toLowerCase();
-      const checks = [
-        ['1950s', /(1950s|50s|rockabilly|doo[- ]?wop)/],
-        ['1960s', /(1960s|60s|psychedelia|garage rock|beat music)/],
-        ['1970s', /(1970s|70s|disco|krautrock|glam rock|classic punk)/],
-        ['1980s', /(1980s|80s|new wave|synthpop|hair metal|post[- ]?punk)/],
-        ['1990s', /(1990s|90s|grunge|britpop|trip hop|boom bap|shoegaze)/],
-        ['2000s', /(2000s|00s|bloghouse|crunk|nu metal|electroclash|emo rap)/],
-        ['2010s', /(2010s|2010|cloud rap|hyperpop|vaporwave|bedroom pop|drill|uk garage)/],
-        ['2020s', /(2020s|2020|digicore|rage|phonk|drift phonk|pluggnb)/],
-      ];
-      const found = checks.filter(([label, re]) => re.test(text)).map(([label]) => label);
-      return found[0] || null;
+    function vizSongDecadeStats(items) {
+      const counts = {};
+      let known = 0;
+      let unknown = 0;
+      vizAllOfficialSongs(items).forEach(song => {
+        const year = Number(song.releaseYear || String(song.releaseDate || '').slice(0,4));
+        if (!Number.isInteger(year) || year < 1800 || year > 2200) {
+          unknown += 1;
+          return;
+        }
+        const decade = `${Math.floor(year / 10) * 10}s`;
+        counts[decade] = (counts[decade] || 0) + 1;
+        known += 1;
+      });
+      return { counts, known, unknown };
     }
+
     function vizArtists(items) {
       const names = new Set();
       let songsWithArtists = 0;
@@ -4573,15 +4854,42 @@
       const songs = vizAllOfficialSongs(items), artists = vizArtists(items), avg = items.length ? (artists.uniqueArtists / items.length).toFixed(1) : '0';
       mount.innerHTML = [['Unique Artists', artists.uniqueArtists],['Songs Logged', songs.length],['With Artist Data', artists.songsWithArtists],['Artists / Genre', avg]].map(([label, value]) => `<div class="viz-artist-stat"><div class="viz-artist-num">${escapeHtml(String(value))}</div><div class="viz-artist-lbl">${escapeHtml(String(label))}</div></div>`).join('');
     }
-    function vizRenderSongReactions(mountId, items, limit=10) {
+    function vizReactionCountSummary(songs) {
+      const counts = { 3:0, 2:0, 1:0, unrated:0 };
+      songs.forEach(song => {
+        const reaction = Number(song.reaction || 0);
+        if ([1,2,3].includes(reaction)) counts[reaction] += 1;
+        else counts.unrated += 1;
+      });
+      return counts;
+    }
+
+    function vizRenderSongReactions(mountId, items) {
       const mount = document.getElementById(mountId);
       if (!mount) return;
-      const rows = vizReactionRows(items).sort((a,b) => b.reaction - a.reaction || String(a.song.title || '').localeCompare(String(b.song.title || ''))).slice(0, limit);
-      if (!rows.length) {
-        mount.innerHTML = '<div class="viz-empty">Rate songs with records on a genre page to build this shelf.</div>';
+      const allSongs = vizAllOfficialSongs(items);
+      if (!allSongs.length) {
+        mount.innerHTML = '<div class="viz-empty">No logged songs in this view yet.</div>';
         return;
       }
-      mount.innerHTML = rows.map((row, i) => `<div class="viz-contender-item"><div class="viz-contender-num">${i + 1}</div>${row.song.artwork ? `<img class="viz-contender-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy" width="36" height="36">` : `<div class="viz-contender-art"></div>`}<div class="viz-contender-info"><div class="viz-contender-title">${escapeHtml(row.song.title || 'Untitled track')}</div><div class="viz-contender-genre">${escapeHtml((row.song.artist ? `${row.song.artist} — ` : '') + (row.genre?.genre || ''))}</div></div><div><span class="viz-reaction-records">${'◉'.repeat(row.reaction)}</span><div class="viz-reaction-word">${escapeHtml(reactionLabel(row.reaction))}</div></div></div>`).join('');
+      const overall = vizReactionCountSummary(allSongs);
+      const rows = items.map(genre => {
+        const songs = vizOfficialSongs(genre);
+        return { genre, songs: songs.length, counts: vizReactionCountSummary(songs) };
+      }).filter(row => row.songs > 0)
+        .sort((a,b) => b.counts[3] - a.counts[3] || b.songs - a.songs || String(a.genre.genre || '').localeCompare(String(b.genre.genre || '')));
+
+      mount.innerHTML = `
+        <div class="viz-reaction-summary">
+          <div class="viz-reaction-tile"><strong>${overall[3]}</strong><span class="records">◉◉◉</span><span>I fuck with this</span></div>
+          <div class="viz-reaction-tile"><strong>${overall[2]}</strong><span class="records">◉◉</span><span>Meh</span></div>
+          <div class="viz-reaction-tile"><strong>${overall[1]}</strong><span class="records">◉</span><span>Not for me</span></div>
+          <div class="viz-reaction-tile"><strong>${overall.unrated}</strong><span class="records">○</span><span>Unrated</span></div>
+        </div>
+        <table class="viz-reaction-table">
+          <thead><tr><th>Genre</th><th>◉◉◉</th><th>◉◉</th><th>◉</th><th>Unrated</th></tr></thead>
+          <tbody>${rows.map(row => `<tr><td><button type="button" class="genre-link" onclick="vizOpenGenreChip(${JSON.stringify(String(row.genre.genre || ''))})">${escapeHtml(row.genre.genre || 'Unknown')}</button></td><td>${row.counts[3]}</td><td>${row.counts[2]}</td><td>${row.counts[1]}</td><td>${row.counts.unrated}</td></tr>`).join('')}</tbody>
+        </table>`;
     }
 
     function vizRenderCrossovers(mountId, items, limit=10) {
@@ -4605,12 +4913,18 @@
       const catCanvas = document.getElementById('vizCatDonut');
       if (catCanvas) _vizCharts.catMonthly = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%' } });
       vizLegend(document.getElementById('vizCatLegend'), catLabels, catVals, catColors);
-      const decadeCounts = { '1950s':0,'1960s':0,'1970s':0,'1980s':0,'1990s':0,'2000s':0,'2010s':0,'2020s':0 };
-      items.forEach(g => { const d = vizInferDecade(g); if (d) decadeCounts[d] += 1; });
-      const dLabels = Object.keys(decadeCounts), dVals = dLabels.map(k => decadeCounts[k]);
+
+      const decadeStats = vizSongDecadeStats(items);
+      const dLabels = Object.keys(decadeStats.counts).sort();
+      const dVals = dLabels.map(k => decadeStats.counts[k]);
       const decadeCanvas = document.getElementById('vizDecadesBar');
-      if (decadeCanvas) _vizCharts.decadesMonthly = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
+      if (decadeCanvas && dLabels.length) _vizCharts.decadesMonthly = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
+      const note = document.getElementById('vizDecadesNoteMonthly');
+      if (note) note.textContent = decadeStats.known
+        ? `${decadeStats.known} song${decadeStats.known === 1 ? '' : 's'} with release-year data${decadeStats.unknown ? ` · ${decadeStats.unknown} still missing metadata` : ''}.`
+        : `No release years stored yet${decadeStats.unknown ? ` for ${decadeStats.unknown} logged songs` : ''}. Use Refresh Metadata above.`;
     }
+
     function vizAllTimeCharts(items) {
       const palette = vizPalette();
       const ratingKeys = ['5','4','3','2','1','zanger'], ratingLabels = ['★5','★4','★3','★2','★1','Zanger'], ratingColors = ['#3d7a1a','#6fa832','#d88a22','#c9540e','#b83230','#5b6b82'];
@@ -4620,26 +4934,72 @@
       const ratingCanvas = document.getElementById('vizRatingsDonut');
       if (ratingCanvas) _vizCharts.ratingAll = new Chart(ratingCanvas.getContext('2d'), { type:'doughnut', data:{ labels:ratingLabels, datasets:[{ data:rd, backgroundColor:ratingColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%' } });
       vizLegend(document.getElementById('vizRatingsLegend'), ratingLabels, rd, ratingColors);
+
       const catCounts = {};
       items.forEach(g => { const k = vizCategoryRoot(g); catCounts[k] = (catCounts[k] || 0) + 1; });
       const catLabels = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a]).slice(0, 10), catVals = catLabels.map(k => catCounts[k]), catColors = catLabels.map((_, i) => palette[i % palette.length]);
       const catCanvas = document.getElementById('vizCatDonutAll');
       if (catCanvas) _vizCharts.catAll = new Chart(catCanvas.getContext('2d'), { type:'doughnut', data:{ labels:catLabels, datasets:[{ data:catVals, backgroundColor:catColors, borderWidth:2, borderColor:'#fffdf8' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%' } });
       vizLegend(document.getElementById('vizCatLegendAll'), catLabels, catVals, catColors);
+
       const monthCounts = {};
-      items.forEach(g => { const m = (dateValue(g) || '').slice(0,7); monthCounts[m] = (monthCounts[m] || 0) + 1; });
+      items.forEach(g => { const m = (dateValue(g) || '').slice(0,7); if (m) monthCounts[m] = (monthCounts[m] || 0) + 1; });
       const mLabels = Object.keys(monthCounts).sort(), mVals = mLabels.map(m => monthCounts[m]);
       const monthCanvas = document.getElementById('vizMonthlyBar');
       if (monthCanvas) _vizCharts.monthlyBar = new Chart(monthCanvas.getContext('2d'), { type:'bar', data:{ labels:mLabels, datasets:[{ data:mVals, backgroundColor:'#d88a22', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
-      const decadeCounts = { '1950s':0,'1960s':0,'1970s':0,'1980s':0,'1990s':0,'2000s':0,'2010s':0,'2020s':0 };
-      items.forEach(g => { const d = vizInferDecade(g); if (d) decadeCounts[d] += 1; });
-      const dLabels = Object.keys(decadeCounts), dVals = dLabels.map(k => decadeCounts[k]);
+
+      const decadeStats = vizSongDecadeStats(items);
+      const dLabels = Object.keys(decadeStats.counts).sort();
+      const dVals = dLabels.map(k => decadeStats.counts[k]);
       const decadeCanvas = document.getElementById('vizDecadesBarAll');
-      if (decadeCanvas) _vizCharts.decadesAll = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
+      if (decadeCanvas && dLabels.length) _vizCharts.decadesAll = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
+      const note = document.getElementById('vizDecadesNoteAll');
+      if (note) note.textContent = decadeStats.known
+        ? `${decadeStats.known} song${decadeStats.known === 1 ? '' : 's'} with release-year data${decadeStats.unknown ? ` · ${decadeStats.unknown} still missing metadata` : ''}.`
+        : `No release years stored yet${decadeStats.unknown ? ` for ${decadeStats.unknown} logged songs` : ''}. Use Refresh Metadata above.`;
+
       const topDepth = items.map(g => ({ genre: g.genre || 'Unknown', count: vizOfficialSongs(g).length })).filter(x => x.count > 0).sort((a,b) => b.count - a.count || a.genre.localeCompare(b.genre)).slice(0,15);
       const depthCanvas = document.getElementById('vizSongsDepth');
       if (depthCanvas) _vizCharts.depth = new Chart(depthCanvas.getContext('2d'), { type:'bar', data:{ labels:topDepth.map(x => x.genre), datasets:[{ data:topDepth.map(x => x.count), backgroundColor:'#5b6b82', borderRadius:4, borderSkipped:false }] }, options:{ indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, precision:0 }, y:{ ticks:{ font:{ size:10 } } } } } });
     }
+
+
+    async function refreshVisualMetadata() {
+      const button = document.getElementById('vizRefreshBtn');
+      const status = document.getElementById('vizRefreshStatus');
+      const items = vizBaseGenres();
+      if (!items.length) {
+        if (status) status.textContent = 'No logged genres in this view to refresh.';
+        return;
+      }
+      const originalLabel = button ? button.textContent : '';
+      if (button) button.disabled = true;
+      let changed = 0;
+      try {
+        for (let start = 0; start < items.length; start += 3) {
+          const batch = items.slice(start, start + 3);
+          const result = await Promise.all(batch.map(g => hydrateGenreSpotifyArtwork(g)));
+          changed += result.filter(Boolean).length;
+          if (status) status.textContent = `Refreshing metadata… ${Math.min(start + batch.length, items.length)} / ${items.length} genres checked.`;
+        }
+        renderHistory();
+        renderRankings();
+        renderVisuals();
+        if (changed > 0) {
+          setUnsavedState(true);
+          if (status) status.textContent = `Updated metadata for ${changed} genre${changed === 1 ? '' : 's'}. Open any genre and click Save Changes to persist it.`;
+          showSaveToast('Metadata refreshed — click Save Changes on a genre page to persist it.', false);
+        } else if (status) {
+          status.textContent = 'Metadata refresh complete. No new song details were found.';
+        }
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent = originalLabel || '↺ Refresh Metadata';
+        }
+      }
+    }
+
     function renderVisuals() {
       if (typeof Chart === 'undefined') return;
       vizDestroyAll();
