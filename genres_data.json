@@ -42594,7 +42594,7 @@
         "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bf5cef66535fbf9d2caac05c",
         "source": "spotify",
         "added": "2026-06-03",
-        "reaction": null,
+        "reaction": 1,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
@@ -42633,12 +42633,12 @@
         "isLevelUp": true
       },
       {
-        "url": "https://open.spotify.com/track/4CBgp0F4HzYHn9g1oRYgaH",
+        "url": "https://open.spotify.com/track/6xikYfhXuak7z2pK0aNaJO?si=RKkAATWRT2eGRvZwH_vLRg",
         "score": 5,
         "reason": "Chelsea Grin operating right in the genre's center lane: vicious vocals, modern production, and huge breakdowns.",
         "title": "Chelsea Grin — Mourning Hymn",
         "artist": "",
-        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02bce1e290de62e1b7ce6daa16",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02f5cb838cb8f644615f3aeada",
         "source": "spotify",
         "added": "2026-06-03",
         "reaction": null,
