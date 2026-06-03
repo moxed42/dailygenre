@@ -35985,13 +35985,13 @@
         "_pendingGenreTag": "progressive_metalcore"
       },
       {
-        "url": "🔼 LEVEL UP: http://url.com",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1PZ1po0vZzESv0AJCURC72",
         "score": 5,
         "reason": "A landmark deathcore anthem whose breakdowns, riffs, and vocal performance helped define an era.",
         "title": "Chelsea Grin — Recreant",
         "artist": "",
-        "artwork": "",
-        "source": "other",
+        "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b80c64b9e144b6a2f5939d4b",
+        "source": "spotify",
         "added": "2026-06-03",
         "isLevelUp": true
       },
@@ -36059,13 +36059,13 @@
         "_pendingGenreTag": "metalcore"
       },
       {
-        "url": "🔼 LEVEL UP: http://url.com",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1D7UOeKgTlPWH54038dS6r",
         "score": 5,
         "reason": "Symphonic deathcore at its most recognizable and influential.",
         "title": "Lorna Shore — Sun//Eater",
         "artist": "",
-        "artwork": "",
-        "source": "other",
+        "artwork": "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e029fa8bc8445ae369a3baf7baf",
+        "source": "spotify",
         "added": "2026-06-03",
         "isLevelUp": true
       },
@@ -36078,50 +36078,6 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02c65a3ca9f0805800bf36f144",
         "source": "spotify",
         "added": "2026-06-03"
-      },
-      {
-        "url": "🔼 ADD: http://url.com",
-        "score": 5,
-        "reason": "Perhaps the single most important deathcore song ever recorded; primitive, brutal, and massively influential.",
-        "title": "Suicide Silence — Unanswered",
-        "artist": "",
-        "artwork": "",
-        "source": "other",
-        "added": "2026-06-03",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: http://url.com",
-        "score": 5,
-        "reason": "One of the genre's defining early classics and a blueprint for countless bands that followed.",
-        "title": "Whitechapel — This Is Exile",
-        "artist": "",
-        "artwork": "",
-        "source": "other",
-        "added": "2026-06-03",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: http://url.com",
-        "score": 5,
-        "reason": "Perfect balance of death metal brutality and hardcore breakdowns from one of the genre's founding bands.",
-        "title": "Despised Icon — MVP",
-        "artist": "",
-        "artwork": "",
-        "source": "other",
-        "added": "2026-06-03",
-        "isAdd": true
-      },
-      {
-        "url": "🔼 ADD: http://url.com",
-        "score": 5,
-        "reason": "Modern symphonic deathcore's breakout anthem and one of the most influential extreme-metal tracks of the 2020s.",
-        "title": "Lorna Shore — To The Hellfire",
-        "artist": "",
-        "artwork": "",
-        "source": "other",
-        "added": "2026-06-03",
-        "isAdd": true
       }
     ],
     "rank_order": 195,
