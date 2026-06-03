@@ -42581,7 +42581,7 @@
         "artwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bce1e290de62e1b7ce6daa16",
         "source": "spotify",
         "added": "2026-06-03",
-        "reaction": null,
+        "reaction": 1,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
@@ -42748,13 +42748,13 @@
         "promotedFromFit": null
       }
     ],
-    "favoritesong": "Traumadoll - Withdrawal Edition",
-    "favoritesongurl": "https://open.spotify.com/track/3twv46z3wIFAG3sKbOi8SO?si=e2258k_GRKmx5hQaDJyWWw",
+    "favoritesong": "Born Of Osiris — Machine",
+    "favoritesongurl": "https://open.spotify.com/track/4kCLtiJnKWnTjEcdVNbgT3?si=04pOAX1tRMKRFH-zRqM-wQ",
     "monthlycontender": false,
     "monthfavorite": false,
     "monthleastfavorite": false,
     "favoriteartist": "",
-    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02edea4030420a54a603562b42"
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02bce1e290de62e1b7ce6daa16"
   },
   {
     "id": 995,
