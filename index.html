@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daily Genre</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
   <style>
     :root{
       --bg:#f6f1e8;
@@ -2500,6 +2502,323 @@
       text-transform:uppercase;
     }
 
+  
+    /* === Spotify metadata queue + resumable refresh === */
+    .viz-metadata-summary {
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      margin-bottom:12px;
+    }
+    .viz-metadata-filter {
+      border:1px solid rgba(127,82,28,.17);
+      background:#fff8e6;
+      color:var(--text);
+      border-radius:999px;
+      padding:6px 10px;
+      cursor:pointer;
+      font-size:.72rem;
+      font-weight:900;
+    }
+    .viz-metadata-filter.active {
+      background:#342013;
+      color:#ffe0a1;
+      border-color:#342013;
+    }
+    .viz-metadata-report {
+      margin:0 0 12px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(216,138,34,.11);
+      border:1px solid rgba(216,138,34,.23);
+      font-size:.78rem;
+      line-height:1.45;
+      color:var(--text);
+    }
+    .viz-metadata-list { display:grid; gap:8px; }
+    .viz-metadata-row {
+      display:grid;
+      grid-template-columns:minmax(180px,1fr) auto;
+      align-items:center;
+      gap:10px;
+      padding:10px;
+      border-radius:13px;
+      background:rgba(255,252,241,.68);
+      border:1px solid rgba(127,82,28,.13);
+    }
+    .viz-metadata-title { font-size:.84rem; font-weight:900; color:var(--text); }
+    .viz-metadata-context {
+      display:flex;
+      gap:6px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:5px;
+    }
+    .viz-metadata-genre {
+      border:0;
+      padding:0;
+      background:transparent;
+      color:var(--accent-dark);
+      font-size:.72rem;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .viz-missing-chip {
+      padding:3px 7px;
+      border-radius:999px;
+      font-size:.65rem;
+      font-weight:900;
+      letter-spacing:.03em;
+      background:rgba(184,50,48,.10);
+      color:#8b2e2e;
+    }
+    .viz-meta-actions {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap:6px;
+    }
+    .viz-meta-actions button {
+      border:1px solid rgba(127,82,28,.18);
+      background:#fff8e6;
+      color:var(--text);
+      border-radius:999px;
+      padding:6px 9px;
+      cursor:pointer;
+      font-size:.7rem;
+      font-weight:900;
+    }
+    .viz-meta-actions button.primary {
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#25150b;
+    }
+    .viz-meta-link {
+      border:0;
+      background:transparent;
+      padding:0;
+      color:var(--accent-dark);
+      text-decoration:underline;
+      cursor:pointer;
+      font:inherit;
+      font-weight:900;
+    }
+    .viz-refresh-progress {
+      display:grid;
+      gap:6px;
+      margin-top:8px;
+    }
+    .viz-refresh-paused {
+      color:#8b2e2e;
+      font-weight:900;
+    }
+    .viz-refresh-bar {
+      height:8px;
+      overflow:hidden;
+      background:rgba(127,82,28,.14);
+      border-radius:999px;
+    }
+    .viz-refresh-bar > span {
+      display:block;
+      height:100%;
+      background:var(--accent);
+      border-radius:inherit;
+    }
+    @media (max-width:760px) {
+      .viz-metadata-row { grid-template-columns:1fr; }
+      .viz-meta-actions { justify-content:flex-start; }
+    }
+
+  
+    /* === Emoji track reactions + genre recap === */
+    .song-reaction {
+      gap:10px;
+      align-items:center;
+      margin-top:12px;
+    }
+    .song-reaction-label {
+      width:100%;
+      margin:0 0 2px;
+    }
+    .song-reaction-btn {
+      width:58px;
+      height:54px;
+      justify-content:center;
+      padding:0;
+      border-radius:15px;
+      font-size:30px;
+      line-height:1;
+      background:rgba(255,252,241,.82);
+      transition:transform .12s ease, background .12s ease, box-shadow .12s ease;
+    }
+    .song-reaction-btn:hover { transform:translateY(-1px); }
+    .song-reaction-btn .reaction-emoji {
+      font-size:30px;
+      line-height:1;
+    }
+    .song-reaction-btn.active {
+      background:#ffdf91;
+      border-color:#cb8322;
+      box-shadow:0 8px 18px rgba(127,82,28,.18), inset 0 0 0 2px rgba(255,248,223,.6);
+    }
+    .song-reaction-unsaved {
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      padding:5px 8px;
+      background:rgba(78,138,53,.13);
+      color:#396817;
+      font-size:.67rem;
+      font-weight:950;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+    .track-reaction-summary {
+      margin:18px 0 14px;
+      border-radius:16px;
+      padding:13px;
+      border:1px solid rgba(127,82,28,.16);
+      background:rgba(255,252,241,.58);
+    }
+    .track-reaction-summary-head {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .track-reaction-counts {
+      display:grid;
+      grid-template-columns:repeat(4, minmax(72px,1fr));
+      gap:7px;
+    }
+    .track-reaction-counter {
+      display:grid;
+      place-items:center;
+      gap:2px;
+      padding:9px 5px;
+      border-radius:12px;
+      background:rgba(255,248,230,.88);
+      border:1px solid rgba(127,82,28,.10);
+    }
+    .track-reaction-counter .emoji { font-size:25px; line-height:1; }
+    .track-reaction-counter strong { font-size:1.05rem; }
+    .track-reaction-counter small {
+      color:var(--muted);
+      font-size:.61rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      text-align:center;
+    }
+    .genre-share-actions {
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px;
+      margin:12px 0 2px;
+    }
+    .save-reactions-btn {
+      background:#4e8a35 !important;
+      color:#fff8e8 !important;
+      border-color:#396817 !important;
+    }
+    .viz-quick-rate button {
+      min-width:49px;
+      min-height:48px;
+      font-size:27px;
+      line-height:1;
+      padding:7px 8px;
+    }
+    .viz-reaction-legend-row .emoji {
+      font-size:22px;
+      vertical-align:middle;
+      margin-right:5px;
+    }
+    @media (max-width:760px) {
+      .song-reaction-btn {
+        width:66px;
+        height:62px;
+      }
+      .song-reaction-btn .reaction-emoji { font-size:38px; }
+      .track-reaction-counts { grid-template-columns:repeat(2, minmax(80px,1fr)); }
+      .viz-quick-rate button { min-width:57px; min-height:54px; font-size:33px; }
+    }
+
+  
+    /* === Current refinement bundle: star score + compact emoji controls === */
+    .genre-star-rating {
+      display:inline-flex;
+      align-items:center;
+      font-size:2.15rem;
+      font-weight:950;
+      line-height:1;
+      letter-spacing:.055em;
+      color:#dc9322;
+      text-shadow:0 2px 0 rgba(111,61,9,.10);
+      padding:3px 1px;
+    }
+    .genre-zanger-badge {
+      display:inline-flex;
+      align-items:center;
+      font-size:.82rem;
+      font-weight:950;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      padding:8px 13px;
+      border-radius:999px;
+      color:#7d2626;
+      background:rgba(184,50,48,.11);
+      border:1px solid rgba(184,50,48,.22);
+    }
+    .song-reaction-btn {
+      width:46px !important;
+      height:44px !important;
+      border-radius:13px !important;
+    }
+    .song-reaction-btn .reaction-emoji {
+      font-size:24px !important;
+    }
+    .viz-quick-rate button {
+      min-width:44px !important;
+      min-height:43px !important;
+      font-size:24px !important;
+    }
+    @media (max-width:760px) {
+      .genre-star-rating { font-size:2.35rem; }
+      .song-reaction-btn {
+        width:52px !important;
+        height:50px !important;
+      }
+      .song-reaction-btn .reaction-emoji {
+        font-size:29px !important;
+      }
+      .viz-quick-rate button {
+        min-width:48px !important;
+        min-height:47px !important;
+        font-size:28px !important;
+      }
+    }
+
+  
+    .tab-action-btn {
+      color:#ffe3a8;
+      border-color:rgba(220,147,34,.48);
+    }
+    .tab-action-btn:hover {
+      transform:translateY(-1px);
+      box-shadow:0 8px 16px rgba(0,0,0,.12);
+    }
+
+  
+    .history-card .tag:first-of-type,
+    .archive-card .tag:first-of-type {
+      letter-spacing:.08em;
+      white-space:nowrap;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -2521,6 +2840,7 @@
     <nav class="tabs">
       <button class="tab-btn active" data-screen="spin">Spin</button>
       <button class="tab-btn" data-screen="history">Archive</button>
+      <button class="tab-btn tab-action-btn" id="topCrateDigBtn" type="button">Crate Dig</button>
       <button class="tab-btn" data-screen="viz">Visuals</button>
       <button class="tab-btn" data-screen="ranking">Ranking</button>
     </nav>
@@ -2537,7 +2857,6 @@
 
         <div class="spin-actions">
           <button class="btn btn-primary" id="spinBtn">SPIN</button>
-          <button class="btn btn-secondary" id="crateDigBtn">💿 Crate Dig</button>
           <button class="btn btn-secondary" id="manualToggleBtn">Toggle manual picker</button>
         </div>
 
@@ -2653,7 +2972,6 @@
             <p class="small archive-subtitle">Search everything you have logged, review a month, find Alt Takes, or jump back in to edit a genre.</p>
           </div>
           <div class="archive-actions">
-            <button class="btn btn-primary" id="archiveCrateDigBtn">💿 Crate Dig</button>
             <button class="btn btn-secondary" id="archiveCopyBtn">Copy current view</button>
           </div>
         </div>
@@ -2674,11 +2992,11 @@
           </select>
           <select id="historyRatingFilter">
             <option value="">All ratings</option>
-            <option value="1">1 star</option>
-            <option value="2">2 stars</option>
-            <option value="3">3 stars</option>
-            <option value="4">4 stars</option>
-            <option value="5">5 stars</option>
+            <option value="1">1★ Get This Off My Turntable</option>
+            <option value="2">2★ Respectfully, Nah</option>
+            <option value="3">3★ Glad I Heard It</option>
+            <option value="4">4★ Hell Yeah, Run It Back</option>
+            <option value="5">5★ Inject This Into My Veins</option>
             <option value="zanger">Zanger</option>
           </select>
           <select id="archiveFlagFilter">
@@ -2728,7 +3046,7 @@
                   <button class="viz-mode-btn" data-viz-mode="alltime">All Time</button>
                 </div>
                 <select id="vizMonthSelect" class="viz-month-sel"></select>
-                <button class="btn btn-ghost" id="vizRefreshBtn" onclick="refreshVisualMetadata()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh Metadata</button>
+                <button class="btn btn-ghost" id="vizRefreshBtn" onclick="refreshVisualMetadata()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh Next 5 Spotify Tracks</button>
                 <button class="btn btn-primary hidden" id="vizSaveLibraryBtn" onclick="saveLibraryUpdates()" style="padding:6px 12px;font-size:.82rem;">Save Library Updates</button>
                 <button class="btn btn-ghost" id="vizBackupBtn" onclick="downloadGenreBackup()" style="padding:6px 12px;font-size:.82rem;">↓ Backup JSON</button>
                 <div class="small viz-refresh-status" id="vizRefreshStatus"></div>
@@ -2795,6 +3113,11 @@
                   <p class="viz-card-copy">Rate songs quickly here, then save library updates above.</p>
                   <div id="vizUnratedSongsMonthly"></div>
                 </div>
+                <div class="viz-card viz-card-crossovers viz-card-metadata">
+                  <div class="viz-card-label">Missing Metadata Queue</div>
+                  <p class="viz-card-copy">Find tracks still missing Spotify details, correct broken URLs, or refresh one track at a time.</p>
+                  <div id="vizMetadataQueueMonthly"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -2856,6 +3179,11 @@
                   <p class="viz-card-copy">Rate unreviewed songs without opening each genre.</p>
                   <div id="vizUnratedSongsAll"></div>
                 </div>
+                <div class="viz-card viz-card-crossovers viz-card-metadata">
+                  <div class="viz-card-label">Missing Metadata Queue</div>
+                  <p class="viz-card-copy">Tracks missing official Spotify metadata, grouped by what can be fixed.</p>
+                  <div id="vizMetadataQueueAll"></div>
+                </div>
                 <div class="viz-card">
                   <div class="viz-card-label">Most Songs Logged (Top 15)</div>
                   <canvas id="vizSongsDepth" height="220"></canvas>
@@ -2881,7 +3209,7 @@
   <div class="modal-backdrop" id="passwordModal">
     <div class="modal">
       <h3>Save changes</h3>
-      <p>Enter the app password to save changes to your genre data.</p>
+      <p>Enter the development app password to save changes to the test genre data through Cloudflare.</p>
       <input id="passwordInput" type="password" placeholder="App password" />
       <div class="row" style="margin-top:14px;">
         <button class="btn btn-primary" id="passwordSubmitBtn">Save now</button>
@@ -3053,6 +3381,14 @@
     let serverFileSha = '';
     let libraryUpdatesPending = false;
     const stagedQueueReactionKeys = new Set();
+    let metadataQueueFilter = 'spotify';
+    let spotifyRefreshRunning = false;
+    let spotifyRefreshCancelRequested = false;
+    let spotifyRefreshReport = null;
+    const SPOTIFY_COOLDOWN_STORAGE_KEY = 'dailygenre.spotifyCooldownUntil';
+    let spotifyRefreshPausedUntil = Number(localStorage.getItem(SPOTIFY_COOLDOWN_STORAGE_KEY) || 0);
+    let spotifyRefreshCountdownTimer = null;
+    const spotifyMetadataFailures = new Map();
     const DEFAULT_PAGE_TITLE = 'Daily Genre';
 
     const spinnerTrack = document.getElementById('spinnerTrack');
@@ -3393,8 +3729,17 @@
         artwork: s?.artwork || '',
         source: s?.source || '',
         added: s?.added || '',
+        spotifyId: s?.spotifyId || '',
+        spotifyUrl: s?.spotifyUrl || '',
+        album: s?.album || '',
+        artists: Array.isArray(s?.artists) ? s.artists.filter(Boolean) : [],
+        durationMs: Number(s?.durationMs || 0) || null,
+        isrc: s?.isrc || '',
+        spotifyMetadataFetched: Boolean(s?.spotifyMetadataFetched || s?.spotifyId),
+        spotifyMetadataFetchedAt: s?.spotifyMetadataFetchedAt || '',
         releaseDate: s?.releaseDate || '',
         releaseYear,
+        releasePrecision: s?.releasePrecision || '',
         releaseSource: s?.releaseSource || '',
         reaction,
         isPending: !!s?.isPending,
@@ -3412,13 +3757,16 @@
   }
 
     function songIdentity(song) {
+      const isrc = String(song?.isrc || '').trim().toLowerCase();
+      if (isrc) return `isrc:${isrc}`;
+      const spotifyId = String(song?.spotifyId || '').trim().toLowerCase();
+      if (spotifyId) return `spotify:${spotifyId}`;
       const normalizedUrl = normalizeSongUrl(song?.url || '').trim().toLowerCase();
       const spotifyTrack = normalizedUrl.match(/spotify\.com\/track\/([a-z0-9]+)/i);
       if (spotifyTrack) return `spotify:${spotifyTrack[1].toLowerCase()}`;
       if (normalizedUrl) return `url:${normalizedUrl}`;
       return `meta:${String(song?.artist || '').trim().toLowerCase()}|${String(song?.title || '').trim().toLowerCase()}`;
     }
-
 
     function eachSongInLog(arr, callback) {
       (arr || []).forEach(song => {
@@ -3444,8 +3792,17 @@
           if (prior.reaction != null) song.reaction = prior.reaction;
           if (prior.promotedFrom) song.promotedFrom = prior.promotedFrom;
           if (prior.promotedFromFit != null) song.promotedFromFit = prior.promotedFromFit;
+          if (prior.spotifyId) song.spotifyId = prior.spotifyId;
+          if (prior.spotifyUrl) song.spotifyUrl = prior.spotifyUrl;
+          if (prior.album) song.album = prior.album;
+          if (Array.isArray(prior.artists) && prior.artists.length) song.artists = prior.artists;
+          if (prior.durationMs != null) song.durationMs = prior.durationMs;
+          if (prior.isrc) song.isrc = prior.isrc;
+          if (prior.spotifyMetadataFetched) song.spotifyMetadataFetched = true;
+          if (prior.spotifyMetadataFetchedAt) song.spotifyMetadataFetchedAt = prior.spotifyMetadataFetchedAt;
           if (prior.releaseDate) song.releaseDate = prior.releaseDate;
           if (prior.releaseYear != null) song.releaseYear = prior.releaseYear;
+          if (prior.releasePrecision) song.releasePrecision = prior.releasePrecision;
           if (prior.releaseSource) song.releaseSource = prior.releaseSource;
         }
         if (song.levelUp) apply(song.levelUp);
@@ -3468,13 +3825,126 @@
       });
       if (!updated) return;
       currentGenre.songs_listened = songs;
+      stagedQueueReactionKeys.add(stagedReactionKey(currentGenre.id, key));
+      libraryUpdatesPending = true;
+      setUnsavedState(true);
+      toggleLibrarySaveButton(true);
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-      markDirty();
-      showSaveToast('Reaction updated — click Save Changes to keep it.', false);
+      applyDetailEditMode(detailEditMode);
+      showSaveToast('Reaction selected — click Save Reactions to persist it.', false);
+    }
+
+    const GENRE_RATING_LABELS = {
+      '5': 'Inject This Into My Veins',
+      '4': 'Hell Yeah, Run It Back',
+      '3': 'Glad I Heard It',
+      '2': 'Respectfully, Nah',
+      '1': 'Get This Off My Turntable',
+      'zanger': 'Zanger'
+    };
+
+    function genreRatingLabel(value) {
+      return GENRE_RATING_LABELS[String(value || '')] || 'Unrated';
+    }
+
+    function genreRatingStarsOnly(genre) {
+      if (!genre || !genre.rating) return 'Unrated';
+      if (String(genre.rating) === 'zanger') return '✕ Zanger';
+      const n = Number(genre.rating);
+      if (!Number.isFinite(n) || n < 1 || n > 5) return 'Unrated';
+      return `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
+    }
+
+    function genreRatingHeroMarkup(genre) {
+      if (!genre || !genre.rating) return '<span class="tag">Unrated</span>';
+      if (String(genre.rating) === 'zanger') return '<span class="genre-zanger-badge">✕ Zanger</span>';
+      const n = Number(genre.rating);
+      const stars = `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
+      return `<span class="genre-star-rating" title="${escapeHtml(genreRatingLabel(genre.rating))}" aria-label="${escapeHtml(`${stars} ${genreRatingLabel(genre.rating)}`)}">${stars}</span>`;
+    }
+
+    function genreRatingDisplay(genre) {
+      if (!genre || !genre.rating) return 'Unrated';
+      if (String(genre.rating) === 'zanger') return '✕ Zanger';
+      const n = Number(genre.rating);
+      return `${'★'.repeat(n)}${'☆'.repeat(5 - n)} ${genreRatingLabel(genre.rating)}`;
+    }
+
+    function reactionEmoji(value) {
+      return Number(value) === 3 ? '👍' : Number(value) === 2 ? '🤷' : Number(value) === 1 ? '👎' : '—';
     }
 
     function reactionLabel(value) {
-      return Number(value) === 3 ? 'I fuck with this' : Number(value) === 2 ? 'Meh' : 'Not for me';
+      return Number(value) === 3 ? 'I Fuck With This' : Number(value) === 2 ? 'Meh, It’s Fine' : Number(value) === 1 ? 'Fuck Off' : 'Unrated';
+    }
+
+    function genreReactionSongs(genre) {
+      const result = [];
+      inflateSongsFromStorage(genre?.songs_listened || []).filter(song => !song.isPending).forEach(song => {
+        result.push(song);
+        if (song.levelUp) result.push(song.levelUp);
+      });
+      return result;
+    }
+
+    function genreReactionCounts(genre) {
+      const counts = { 3:0, 2:0, 1:0, unrated:0 };
+      genreReactionSongs(genre).forEach(song => {
+        const value = Number(song.reaction || 0);
+        if ([1,2,3].includes(value)) counts[value] += 1;
+        else counts.unrated += 1;
+      });
+      return counts;
+    }
+
+    function renderGenreReactionSummary(genre) {
+      const counts = genreReactionCounts(genre);
+      const total = counts[1] + counts[2] + counts[3] + counts.unrated;
+      if (!total) return '';
+      return `<div class="track-reaction-summary">
+        <div class="track-reaction-summary-head">
+          <div class="eyebrow" style="margin:0;">Track Reactions</div>
+          ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary btn-tiny save-reactions-btn" onclick="saveLibraryUpdates()">Save Reactions</button>' : ''}
+        </div>
+        <div class="track-reaction-counts">
+          <div class="track-reaction-counter"><span class="emoji">👍</span><strong>${counts[3]}</strong><small>I Fuck With This</small></div>
+          <div class="track-reaction-counter"><span class="emoji">🤷</span><strong>${counts[2]}</strong><small>Meh, It’s Fine</small></div>
+          <div class="track-reaction-counter"><span class="emoji">👎</span><strong>${counts[1]}</strong><small>Fuck Off</small></div>
+          <div class="track-reaction-counter"><span class="emoji">—</span><strong>${counts.unrated}</strong><small>Unrated</small></div>
+        </div>
+        <div class="genre-share-actions">
+          <button type="button" class="btn btn-secondary btn-tiny" onclick="copyGenreReactionRecap(false)">Copy Reaction Totals</button>
+          <button type="button" class="btn btn-secondary btn-tiny" onclick="copyGenreReactionRecap(true)">Copy Reaction Track List</button>
+        </div>
+        <div class="small" style="margin-top:8px;">Reaction recaps are separate from the genre summary / description post.</div>
+      </div>`;
+    }
+
+    function buildGenreReactionRecap(includeTracks=false) {
+      if (!currentGenre) return '';
+      const counts = genreReactionCounts(currentGenre);
+      let text = `**${String(currentGenre.genre || 'UNKNOWN').toUpperCase()} — Track Reactions**\n\n`;
+      text += `👍 I Fuck With This: ${counts[3]}\n`;
+      text += `🤷 Meh, It’s Fine: ${counts[2]}\n`;
+      text += `👎 Fuck Off: ${counts[1]}\n`;
+      text += `— Unrated: ${counts.unrated}`;
+      if (includeTracks) {
+        const songs = genreReactionSongs(currentGenre);
+        [3,2,1,0].forEach(value => {
+          const group = songs.filter(song => value ? Number(song.reaction) === value : ![1,2,3].includes(Number(song.reaction)));
+          if (!group.length) return;
+          text += `\n\n${reactionEmoji(value)} ${reactionLabel(value)}\n`;
+          text += group.map(song => `• ${(song.artist ? `${song.artist} — ` : '')}${song.title || 'Untitled track'}`).join('\n');
+        });
+      }
+      return text;
+    }
+
+    async function copyGenreReactionRecap(includeTracks=false) {
+      const text = buildGenreReactionRecap(includeTracks);
+      if (!text) return;
+      await navigator.clipboard.writeText(text);
+      showSaveToast(includeTracks ? 'Reaction track list copied.' : 'Reaction totals copied.', false);
     }
 
 
@@ -3739,8 +4209,8 @@
       const promotedNote = (!s.isPending && s.promotedFrom)
         ? `<div class="promoted-origin-line">⏳ Promoted from <em>${escapeHtml(s.promotedFrom)}</em>${s.promotedFromFit != null && s.score != null ? ` · theme fit ${s.promotedFromFit}/5 → ${s.score}/5` : ''}</div>`
         : '';
-      const releaseNote = (!s.isPending && s.releaseYear)
-        ? `<div class="song-metadata-line">Released ${escapeHtml(String(s.releaseYear))}${s.releaseSource ? ` · ${escapeHtml(s.releaseSource)}` : ''}</div>`
+      const releaseNote = (!s.isPending && (s.releaseYear || s.album))
+        ? `<div class="song-metadata-line">${s.album ? `${escapeHtml(s.album)}${s.releaseYear ? ' · ' : ''}` : ''}${s.releaseYear ? `Released ${escapeHtml(String(s.releaseYear))}` : ''}${s.releaseSource ? ` · ${escapeHtml(s.releaseSource)}` : ''}</div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: options.allowTrackEdit })}</div>`
@@ -3759,12 +4229,14 @@
       const trackEditHtml = options.allowTrackEdit
         ? `<details class="track-card-editor"><summary>Edit track URL</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this)">Update Track</button><button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})">Remove Track</button></div><div class="track-card-edit-note">Updating a Spotify URL refreshes its title, artist, and album art. Save Changes to persist.</div></div></details>`
         : '';
+      const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const reactionHtml = !s.isPending
-        ? `<div class="song-reaction"><span class="song-reaction-label">My spin</span>
-            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Not for me"><span class="vinyls">◉</span>Not for me</button>
-            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 2 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 2)" title="Meh"><span class="vinyls">◉◉</span>Meh</button>
-            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I fuck with this"><span class="vinyls">◉◉◉</span>I fuck with this</button>
-           </div><div class="song-reaction-save-hint">Reaction changes save with “Save Changes.”</div>`
+        ? `<div class="song-reaction"><span class="song-reaction-label">How did this track hit?</span>
+            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I Fuck With This" aria-label="I Fuck With This"><span class="reaction-emoji">👍</span></button>
+            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 2 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 2)" title="Meh, It’s Fine" aria-label="Meh, It’s Fine"><span class="reaction-emoji">🤷</span></button>
+            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Fuck Off" aria-label="Fuck Off"><span class="reaction-emoji">👎</span></button>
+            ${reactionStaged ? '<span class="song-reaction-unsaved">Unsaved</span>' : ''}
+           </div>`
         : '';
       return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${promotedNote}${releaseNote}${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
     }
@@ -4043,7 +4515,7 @@
       const pendingSongs = normalizePendingSongs(getPendingSongs(genre));
       const songCount = countSongsForDisplay(activeSongs);
       const art = getGenreArtwork(genre);
-      const ratingLabel = genre.rating === 'zanger' ? 'Zanger' : (genre.rating ? `${escapeHtml(String(genre.rating))} ★` : 'Unrated');
+      const ratingHero = genreRatingHeroMarkup(genre);
       document.getElementById('listenDetails').innerHTML = `
         <div class="detail-hero">
           <div class="detail-record-card">
@@ -4053,7 +4525,7 @@
               <h2>${escapeHtml(genre.genre || 'Unknown')}</h2>
               <div class="subtle">${escapeHtml(categoryLine(genre))}</div>
               <div class="status-row">
-                <span class="tag">${ratingLabel}</span>
+                ${ratingHero}
                 ${listenedDate ? `<span class="tag">Listened on ${escapeHtml(listenedDate)}</span>` : ''}
                 ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
@@ -4086,6 +4558,7 @@
               <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
             </div>
           </div>
+          ${renderGenreReactionSummary(genre)}
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
             ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false, { allowTrackEdit: detailEditMode })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
@@ -4184,30 +4657,29 @@
 
     async function resolveSpotifyTitles(songs) {
       if (!songs || !songs.length) return songs;
+
       async function resolveOne(song) {
         const next = { ...song };
         next.url = normalizeSongUrl(next.url);
+
         if (next.url && next.url.includes('spotify.com/track/')) {
-          try {
-            const data = await fetchSpotifyOembed(next.url);
-            if (data) {
-              // Always refresh title/artist if missing; always refresh artwork
-              const raw = data.title || '';
-              const clean = raw.split(/[·–—]/)[0].trim() || raw;
-              if (clean) next.title = clean;
-              if (data.author_name) next.artist = data.author_name;
-              if (data.thumbnail_url) next.artwork = data.thumbnail_url;
-            }
-          } catch(e) {}
+          const official = await fetchSpotifyTrackMetadata(next.url);
+          if (official) {
+            applyOfficialSpotifyMetadata(next, official);
+          } else {
+            const fallback = await fetchSpotifyOembed(next.url);
+            if (fallback) applySpotifyMetadata(next, fallback);
+          }
+        } else {
+          await enrichSongReleaseMetadata(next);
         }
-        await enrichSongReleaseMetadata(next);
+
         if (next.levelUp) {
-          next.levelUp = { ...next.levelUp };
-          next.levelUp.url = normalizeSongUrl(next.levelUp.url);
-          next.levelUp = await resolveOne(next.levelUp);
+          next.levelUp = await resolveOne({ ...next.levelUp, url: normalizeSongUrl(next.levelUp.url) });
         }
         return next;
       }
+
       return Promise.all(songs.map(resolveOne));
     }
 
@@ -4232,33 +4704,51 @@
       }
 
       if (genre.favoritesongurl && genre.favoritesongurl.includes('spotify.com/track/')) {
-        const beforeFavoriteArt = genre.favoritesongartwork || '';
-        try {
-          const data = await fetchSpotifyOembed(genre.favoritesongurl);
-          if (data) {
-            if (!genre.favoritesong && data.title) genre.favoritesong = data.title.split(/[·\u2013\u2014]/)[0].trim() || data.title;
-            if (data.author_name && !genre.favoriteartist) genre.favoriteartist = data.author_name;
-            if (data.thumbnail_url) genre.favoritesongartwork = data.thumbnail_url;
+        const beforeFavorite = JSON.stringify([genre.favoritesong || '', genre.favoriteartist || '', genre.favoritesongartwork || '']);
+        const official = await fetchSpotifyTrackMetadata(genre.favoritesongurl);
+        if (official) {
+          genre.favoritesong = official.title || genre.favoritesong || '';
+          genre.favoriteartist = official.artist || genre.favoriteartist || '';
+          genre.favoritesongartwork = official.artwork || genre.favoritesongartwork || '';
+        } else {
+          const fallback = await fetchSpotifyOembed(genre.favoritesongurl);
+          if (fallback) {
+            if (!genre.favoritesong && fallback.title) genre.favoritesong = fallback.title.split(/[·\u2013\u2014]/)[0].trim() || fallback.title;
+            if (fallback.author_name && !genre.favoriteartist) genre.favoriteartist = fallback.author_name;
+            if (fallback.thumbnail_url) genre.favoritesongartwork = fallback.thumbnail_url;
           }
-        } catch (e) {}
-        if ((genre.favoritesongartwork || '') !== beforeFavoriteArt) changed = true;
+        }
+        if (JSON.stringify([genre.favoritesong || '', genre.favoriteartist || '', genre.favoritesongartwork || '']) !== beforeFavorite) changed = true;
       }
 
       return changed;
     }
 
-    function genresMatchPendingTag(tag, genreName) {
-      const normalizeTag = (value) => String(value || '')
+    function normalizePendingTag(value) {
+      return String(value || '')
         .trim()
         .toLowerCase()
         .replace(/[_-]+/g, ' ')
         .replace(/[^a-z0-9\s]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
-      const a = normalizeTag(tag);
-      const b = normalizeTag(genreName);
-      if (!a || !b) return false;
-      return a === b || levenshtein(b, a) <= 2 || b.includes(a) || a.includes(b);
+    }
+
+    function resolvePendingTargetGenre(tag, sourceGenreId) {
+      const wanted = normalizePendingTag(tag);
+      if (!wanted) return { target: null, ambiguous: false };
+      const candidates = genres.filter(g => g && String(g.id) !== String(sourceGenreId) && g.genre);
+      const exact = candidates.filter(g => normalizePendingTag(g.genre) === wanted);
+      if (exact.length === 1) return { target: exact[0], ambiguous: false };
+      if (exact.length > 1) return { target: null, ambiguous: true };
+
+      const near = candidates.filter(g => levenshtein(normalizePendingTag(g.genre), wanted) <= 2);
+      if (near.length === 1) return { target: near[0], ambiguous: false };
+      return { target: null, ambiguous: near.length > 1 };
+    }
+
+    function genresMatchPendingTag(tag, genreName) {
+      return normalizePendingTag(tag) === normalizePendingTag(genreName);
     }
 
     function queuePendingNomination(target, sourceGenreName, songData) {
@@ -4301,7 +4791,8 @@
       sourceGenre.songs_listened = sourceSongs;
       for (const song of sourceSongs) {
         if (!song._pendingGenreTag || song.score == null || Number(song.score) > 3) continue;
-        const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(song._pendingGenreTag, g.genre));
+        const resolved = resolvePendingTargetGenre(song._pendingGenreTag, sourceGenre.id);
+        const target = resolved.target;
         if (!target) continue;
         const pendingSong = {
           url: song.url || '',
@@ -4311,6 +4802,18 @@
           artist: song.artist || '',
           artwork: song.artwork || '',
           source: song.source || '',
+          spotifyId: song.spotifyId || '',
+          spotifyUrl: song.spotifyUrl || '',
+          album: song.album || '',
+          artists: Array.isArray(song.artists) ? song.artists.slice() : [],
+          durationMs: song.durationMs || null,
+          isrc: song.isrc || '',
+          releaseDate: song.releaseDate || '',
+          releaseYear: song.releaseYear || null,
+          releasePrecision: song.releasePrecision || '',
+          releaseSource: song.releaseSource || '',
+          spotifyMetadataFetched: !!song.spotifyMetadataFetched,
+          spotifyMetadataFetchedAt: song.spotifyMetadataFetchedAt || '',
           added: song.added || new Date().toISOString().slice(0,10)
         };
         if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
@@ -4331,13 +4834,13 @@
         const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
         sourceSongs.forEach(song => {
           if (!song._pendingGenreTag || song.score == null || Number(song.score) > 3) return;
-          const target = genres.find(g => g && g.id !== sourceGenre.id && g.genre && genresMatchPendingTag(song._pendingGenreTag, g.genre));
+          const target = resolvePendingTargetGenre(song._pendingGenreTag, sourceGenre.id).target;
           if (!target) return;
           target.pending_songs = normalizePendingSongs(target.pending_songs || []);
           const pending = target.pending_songs.find(candidate => songIdentity(candidate) === songIdentity(song));
           if (!pending) return;
           if (!pending.pendingFrom) { pending.pendingFrom = sourceGenre.genre || ''; repaired += 1; }
-          if (pending.originFit == null) pending.originFit = Number(song.score);
+          if (pending.originFit == null) { pending.originFit = Number(song.score); repaired += 1; }
         });
       });
       return repaired;
@@ -4345,13 +4848,66 @@
 
     function reexaminePendingTags() {
       let added = 0;
-      genres.forEach(g => { added += processPendingNominationsForGenre(g, false); });
-      if (added > 0) {
+      let removed = 0;
+      let unresolved = 0;
+
+      genres.forEach(sourceGenre => {
+        const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
+        sourceSongs.forEach(song => {
+          if (!song._pendingGenreTag || song.score == null || Number(song.score) > 3) return;
+          const resolution = resolvePendingTargetGenre(song._pendingGenreTag, sourceGenre.id);
+          const target = resolution.target;
+          if (!target) {
+            unresolved += 1;
+            return;
+          }
+
+          const key = songIdentity(song);
+          genres.forEach(possibleTarget => {
+            if (String(possibleTarget.id) === String(target.id)) return;
+            const pending = normalizePendingSongs(possibleTarget.pending_songs || []);
+            const kept = pending.filter(candidate => {
+              const fromSameSource = normalizePendingTag(candidate.pendingFrom || '') === normalizePendingTag(sourceGenre.genre || '');
+              return !(fromSameSource && songIdentity(candidate) === key);
+            });
+            removed += pending.length - kept.length;
+            possibleTarget.pending_songs = kept;
+          });
+
+          const pendingSong = {
+            url: song.url || '',
+            score: song.score ?? null,
+            reason: song.reason || '',
+            title: song.title || '',
+            artist: song.artist || '',
+            artwork: song.artwork || '',
+            source: song.source || '',
+            spotifyId: song.spotifyId || '',
+            spotifyUrl: song.spotifyUrl || '',
+            album: song.album || '',
+            artists: Array.isArray(song.artists) ? song.artists.slice() : [],
+            durationMs: song.durationMs || null,
+            isrc: song.isrc || '',
+            releaseDate: song.releaseDate || '',
+            releaseYear: song.releaseYear || null,
+            releasePrecision: song.releasePrecision || '',
+            releaseSource: song.releaseSource || '',
+            spotifyMetadataFetched: !!song.spotifyMetadataFetched,
+            spotifyMetadataFetchedAt: song.spotifyMetadataFetchedAt || '',
+            added: song.added || new Date().toISOString().slice(0,10)
+          };
+          if (queuePendingNomination(target, sourceGenre.genre, pendingSong)) added += 1;
+        });
+      });
+
+      if (added || removed) {
         setUnsavedState(true);
-        if (currentGenre) loadListenScreen(currentGenre, { preserveDirty: true });
-        showSaveToast(`Queued ${added} pending song${added === 1 ? '' : 's'} for review.`);
+        if (currentGenre) loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+        showSaveToast(`Pending review updated: ${added} queued, ${removed} misplaced removed.${unresolved ? ` ${unresolved} tag${unresolved === 1 ? '' : 's'} need manual review.` : ''}`);
+      } else if (unresolved) {
+        showSaveToast(`${unresolved} pending tag${unresolved === 1 ? '' : 's'} could not be routed automatically.`, true);
       } else {
-        showSaveToast('No new pending songs found.');
+        showSaveToast('No pending routing changes found.');
       }
     }
 
@@ -4367,7 +4923,12 @@
       currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
       currentGenre.favoritesongurl = document.getElementById('favoriteSongUrl').value.trim();
       if (currentGenre.favoritesongurl && currentGenre.favoritesongurl.includes('spotify.com/track/')) {
-        try {
+        const officialFavorite = await fetchSpotifyTrackMetadata(currentGenre.favoritesongurl);
+        if (officialFavorite) {
+          currentGenre.favoritesong = officialFavorite.title || currentGenre.favoritesong || '';
+          currentGenre.favoriteartist = officialFavorite.artist || currentGenre.favoriteartist || '';
+          currentGenre.favoritesongartwork = officialFavorite.artwork || currentGenre.favoritesongartwork || '';
+        } else {
           const favData = await fetchSpotifyOembed(currentGenre.favoritesongurl);
           if (favData) {
             const raw = favData.title || '';
@@ -4376,7 +4937,7 @@
             if (favData.author_name) currentGenre.favoriteartist = favData.author_name;
             if (favData.thumbnail_url) currentGenre.favoritesongartwork = favData.thumbnail_url;
           }
-        } catch(e) {}
+        }
       }
       currentGenre.monthlycontender = document.getElementById('monthlyContender').checked;
       currentGenre.monthfavorite = document.getElementById('monthFavorite').checked;
@@ -4491,11 +5052,11 @@
     function renderRankings() {
       const wrap = document.getElementById('rankingWrap');
       const tiers = [
-        { rating: 5, label: 'On Repeat (5★)' },
-        { rating: 4, label: 'Happy to Hear (4★)' },
-        { rating: 3, label: 'Okay. Didn’t Hate (3★)' },
-        { rating: 2, label: 'Ehhhhh (2★)' },
-        { rating: 1, label: 'Never (1★)' }
+        { rating: 5, label: 'Inject This Into My Veins (5★)' },
+        { rating: 4, label: 'Hell Yeah, Run It Back (4★)' },
+        { rating: 3, label: 'Glad I Heard It (3★)' },
+        { rating: 2, label: 'Respectfully, Nah (2★)' },
+        { rating: 1, label: 'Get This Off My Turntable (1★)' }
       ];
 
       wrap.innerHTML = tiers.map(tier => {
@@ -4544,17 +5105,7 @@
         confirmPanel.innerHTML = '';
       }
     }
-  window.toggleSongLog = function(id) {
-  const wrap = document.getElementById(id) || document.getElementById('sl-' + id);
-  if (!wrap) return;
-  const list = wrap.querySelector('.song-log-list');
-  const btn = wrap.querySelector('.song-log-toggle');
-  if (!list || !btn) return;
-  const isHidden = list.style.display === 'none' || list.style.display === '';
-  list.style.display = isHidden ? 'grid' : 'none';
-  const count = list.querySelectorAll('a[target="_blank"]').length || list.querySelectorAll(':scope > div').length;
-  btn.textContent = (isHidden ? '▼ ' : '▶ ') + count + ' song' + (count === 1 ? '' : 's') + ' logged';
-}
+
     function hasPending(genre) {
       return inflateSongsFromStorage(genre.songs_listened || []).some(s => !!s.isPending) || !!((genre.pending_songs || []).length);
     }
@@ -4603,6 +5154,67 @@
     function songArtistLine(song) {
       return song.artist ? `<div class="song-artist">${escapeHtml(song.artist)}</div>` : '';
     }
+    const spotifyOfficialCache = new Map();
+
+    function classifySpotifyMetadataError(message='') {
+      const text = String(message || '').toLowerCase();
+      if (/rate|too many|429/.test(text)) return 'rate_limited';
+      if (/not found|invalid|404|provide a valid/.test(text)) return 'broken';
+      return 'failed';
+    }
+
+    async function fetchSpotifyTrackResult(urlOrId, force=false) {
+      const trackRef = String(urlOrId || '').trim();
+      if (!trackRef) return { ok:false, code:'broken', error:'No Spotify track URL saved.' };
+      const cacheKey = normalizeSongUrl(trackRef) || trackRef;
+      if (!force && spotifyOfficialCache.has(cacheKey)) return spotifyOfficialCache.get(cacheKey);
+
+      const request = fetch(`${WORKER_URL}spotify/track?url=${encodeURIComponent(cacheKey)}`, { cache: 'no-store' })
+        .then(async response => {
+          const payload = await response.json().catch(() => ({}));
+          if (response.ok && payload.ok && payload.track) return { ok:true, track:payload.track };
+          const error = payload.error || `Spotify lookup failed (${response.status}).`;
+          if (response.status === 429 || payload.code === 'RATE_LIMITED') {
+            return {
+              ok:false,
+              code:'rate_limited',
+              error,
+              retryAfterSeconds: Math.max(1, Number(payload.retryAfterSeconds || 30))
+            };
+          }
+          return { ok:false, code:classifySpotifyMetadataError(error), error };
+        })
+        .catch(() => ({ ok:false, code:'failed', error:'Could not reach Spotify metadata service.' }));
+
+      if (!force) spotifyOfficialCache.set(cacheKey, request);
+      return request;
+    }
+
+    async function fetchSpotifyTrackMetadata(urlOrId, force=false) {
+      const result = await fetchSpotifyTrackResult(urlOrId, force);
+      return result.ok ? result.track : null;
+    }
+
+    function applyOfficialSpotifyMetadata(song, track) {
+      if (!song || !track) return song;
+      song.spotifyId = track.spotifyId || song.spotifyId || '';
+      song.spotifyUrl = track.spotifyUrl || song.spotifyUrl || '';
+      song.title = track.title || song.title || '';
+      song.artist = track.artist || song.artist || '';
+      song.artists = Array.isArray(track.artists) ? track.artists.filter(Boolean) : (song.artists || []);
+      song.album = track.album || song.album || '';
+      song.artwork = track.artwork || song.artwork || '';
+      song.releaseDate = track.releaseDate || song.releaseDate || '';
+      song.releaseYear = track.releaseYear || song.releaseYear || null;
+      song.releasePrecision = track.releasePrecision || song.releasePrecision || '';
+      song.releaseSource = 'Spotify';
+      song.durationMs = Number(track.durationMs || 0) || song.durationMs || null;
+      song.isrc = track.isrc || song.isrc || '';
+      song.spotifyMetadataFetched = true;
+      song.spotifyMetadataFetchedAt = new Date().toISOString();
+      return song;
+    }
+
     const spotifyOembedCache = new Map();
 
     async function fetchSpotifyOembed(url) {
@@ -4836,7 +5448,7 @@
       list.innerHTML = items.map(g => {
         const songs = normalizeSongsListened(g.songs_listened || []);
         const songCount = countSongsForDisplay(songs);
-        const ratingLabel = g.rating === 'zanger' ? 'Zanger' : `${escapeHtml(String(g.rating || '—'))}${g.rating ? ' ★' : ''}`;
+        const ratingLabel = escapeHtml(genreRatingStarsOnly(g));
         const art = getGenreArtwork(g);
         return `
         <div class="list-item archive-card">
@@ -5023,13 +5635,12 @@
       event.returnValue = '';
     });
 
-    document.querySelectorAll('.tab-btn').forEach(btn => {
+    document.querySelectorAll('.tab-btn[data-screen]').forEach(btn => {
       btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
     });
 
     spinBtn.addEventListener('click', spinWheel);
-    document.getElementById('crateDigBtn')?.addEventListener('click', openRandomListenedGenre);
-    document.getElementById('archiveCrateDigBtn')?.addEventListener('click', openRandomListenedGenre);
+    document.getElementById('topCrateDigBtn')?.addEventListener('click', openRandomListenedGenre);
     manualToggleBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
 
     const manualSearch2 = document.getElementById('manualSearch2');
@@ -5135,6 +5746,10 @@
           toggleLibrarySaveButton(false);
           setUnsavedState(false);
           renderVisuals();
+          if (currentGenre && document.getElementById('screen-listen')?.classList.contains('active')) {
+            loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });
+            applyDetailEditMode(detailEditMode);
+          }
           const status = document.getElementById('vizRefreshStatus');
           if (status) status.textContent = 'Library updates saved.';
           showSaveToast('Library updates saved.', false);
@@ -5147,7 +5762,7 @@
         pendingSaveAction = null;
       } catch (e) {
         if (e && (e.code === 'STALE_DATA' || e.code === 'NO_REVISION')) {
-          passwordNotice.textContent = 'Newer saved data exists. Reload this development page before saving so it is not overwritten.';
+          passwordNotice.textContent = 'Newer saved data exists. Reload this page before saving so it is not overwritten.';
           showSaveToast('Newer data exists elsewhere — reload before saving.', true);
           return;
         }
@@ -5247,7 +5862,12 @@
       });
       return { uniqueArtists: names.size, songsWithArtists };
     }
-    function vizEstimatedMinutes(songCount) { return Math.round(songCount * 3.5); }
+    function vizEstimatedMinutes(songs) {
+      const list = Array.isArray(songs) ? songs : [];
+      const totalMs = list.reduce((sum, song) => sum + (Number(song.durationMs || 0) || (3.5 * 60 * 1000)), 0);
+      return Math.round(totalMs / 60000);
+    }
+
     function vizFormatMinutes(mins) {
       const h = Math.floor(mins / 60), m = mins % 60;
       if (!h) return `${m}m`;
@@ -5301,7 +5921,7 @@
     function vizRenderRatingsContent(items) {
       const map = { '5': [], '4': [], '3': [], '2': [], '1': [], 'zanger': [] };
       items.forEach(g => { const k = String(g.rating || ''); if (k === 'zanger') map.zanger.push(g); else if (map[k]) map[k].push(g); });
-      const groups = [['5','On Repeat'],['4','Happy to Hear'],['3','Okay. Didn’t Hate'],['2','Ehhhhh'],['1','Never Again'],['zanger','Zanger']];
+      const groups = [['5','Inject This Into My Veins'],['4','Hell Yeah, Run It Back'],['3','Glad I Heard It'],['2','Respectfully, Nah'],['1','Get This Off My Turntable'],['zanger','Zanger']];
       const root = document.getElementById('vizRatingsContent');
       if (!root) return;
       root.innerHTML = groups.map(([k, label]) => {
@@ -5367,17 +5987,17 @@
           <div class="viz-reaction-overview">
             <div class="viz-reaction-ring"><canvas id="${chartId}"></canvas></div>
             <div class="viz-reaction-legend">
-              <div class="viz-reaction-legend-row"><span>◉◉◉ I fuck with this</span><strong>${overall[3]}</strong></div>
-              <div class="viz-reaction-legend-row"><span>◉◉ Meh</span><strong>${overall[2]}</strong></div>
-              <div class="viz-reaction-legend-row"><span>◉ Not for me</span><strong>${overall[1]}</strong></div>
-              <div class="viz-reaction-legend-row"><span>○ Unrated</span><strong>${overall.unrated}</strong></div>
+              <div class="viz-reaction-legend-row"><span><span class="emoji">👍</span>I Fuck With This</span><strong>${overall[3]}</strong></div>
+              <div class="viz-reaction-legend-row"><span><span class="emoji">🤷</span>Meh, It’s Fine</span><strong>${overall[2]}</strong></div>
+              <div class="viz-reaction-legend-row"><span><span class="emoji">👎</span>Fuck Off</span><strong>${overall[1]}</strong></div>
+              <div class="viz-reaction-legend-row"><span><span class="emoji">—</span>Unrated</span><strong>${overall.unrated}</strong></div>
             </div>
           </div>
           ${rows.length ? `<div class="viz-reaction-bars">${rows.map(row => {
             const denom = row.songs || 1;
             return `<div class="viz-reaction-bar-row">
               <button type="button" class="viz-reaction-bar-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>
-              <div class="viz-stackbar" title="${row.counts[3]} like · ${row.counts[2]} meh · ${row.counts[1]} no · ${row.counts.unrated} unrated">
+              <div class="viz-stackbar" title="${row.counts[3]} liked · ${row.counts[2]} meh · ${row.counts[1]} disliked · ${row.counts.unrated} unrated">
                 <span class="viz-stack-like" style="width:${(row.counts[3] / denom) * 100}%"></span>
                 <span class="viz-stack-meh" style="width:${(row.counts[2] / denom) * 100}%"></span>
                 <span class="viz-stack-no" style="width:${(row.counts[1] / denom) * 100}%"></span>
@@ -5392,7 +6012,7 @@
       if (canvas) {
         _vizCharts[chartId] = new Chart(canvas.getContext('2d'), {
           type:'doughnut',
-          data:{ labels:['I fuck with this','Meh','Not for me','Unrated'], datasets:[{ data:[overall[3], overall[2], overall[1], overall.unrated], backgroundColor:['#4e8a35','#d88a22','#b83230','#cabca6'], borderWidth:2, borderColor:'#fffdf8' }] },
+          data:{ labels:['I Fuck With This','Meh, It’s Fine','Fuck Off','Unrated'], datasets:[{ data:[overall[3], overall[2], overall[1], overall.unrated], backgroundColor:['#4e8a35','#d88a22','#b83230','#cabca6'], borderWidth:2, borderColor:'#fffdf8' }] },
           options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%' }
         });
       }
@@ -5407,6 +6027,15 @@
         return;
       }
       mount.innerHTML = `<div class="viz-crossover-list">${rows.map(row => `<div class="viz-crossover-item">${row.song.artwork ? `<img class="viz-crossover-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy">` : '<div class="viz-crossover-art"></div>'}<div><div class="viz-crossover-name">${escapeHtml((row.song.artist ? `${row.song.artist} — ` : '') + (row.song.title || 'Untitled track'))}</div><div class="viz-crossover-path">${row.genres.map(entry => `<button type="button" class="viz-fit-chip viz-click-chip" onclick="vizOpenGenreEncoded('${visualActionArg(entry.genre.genre || '')}')">${escapeHtml(entry.genre.genre || 'Unknown')} ${entry.fit}/5</button>`).join('')}</div></div></div>`).join('')}</div>`;
+    }
+
+    function renderDecadeCoverageNote(note, decadeStats, mode) {
+      if (!note) return;
+      if (decadeStats.known) {
+        note.innerHTML = `${decadeStats.known} song${decadeStats.known === 1 ? '' : 's'} with release-year data${decadeStats.unknown ? ` · <button type="button" class="viz-meta-link" onclick="openMetadataQueue('spotify', '${mode}')">${decadeStats.unknown} still missing metadata</button>` : ''}.`;
+      } else {
+        note.innerHTML = `No release years stored yet${decadeStats.unknown ? ` for <button type="button" class="viz-meta-link" onclick="openMetadataQueue('spotify', '${mode}')">${decadeStats.unknown} logged songs</button>` : ''}. Use Refresh Spotify Metadata above.`;
+      }
     }
 
     function vizMonthlyCharts(items) {
@@ -5425,15 +6054,12 @@
       const dVals = dLabels.map(k => decadeStats.counts[k]);
       const decadeCanvas = document.getElementById('vizDecadesBar');
       if (decadeCanvas && dLabels.length) _vizCharts.decadesMonthly = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
-      const note = document.getElementById('vizDecadesNoteMonthly');
-      if (note) note.textContent = decadeStats.known
-        ? `${decadeStats.known} song${decadeStats.known === 1 ? '' : 's'} with release-year data${decadeStats.unknown ? ` · ${decadeStats.unknown} still missing metadata` : ''}.`
-        : `No release years stored yet${decadeStats.unknown ? ` for ${decadeStats.unknown} logged songs` : ''}. Use Refresh Metadata above.`;
+      renderDecadeCoverageNote(document.getElementById('vizDecadesNoteMonthly'), decadeStats, 'monthly');
     }
 
     function vizAllTimeCharts(items) {
       const palette = vizPalette();
-      const ratingKeys = ['5','4','3','2','1','zanger'], ratingLabels = ['★5','★4','★3','★2','★1','Zanger'], ratingColors = ['#3d7a1a','#6fa832','#d88a22','#c9540e','#b83230','#5b6b82'];
+      const ratingKeys = ['5','4','3','2','1','zanger'], ratingLabels = ['5★ Inject This Into My Veins','4★ Hell Yeah, Run It Back','3★ Glad I Heard It','2★ Respectfully, Nah','1★ Get This Off My Turntable','Zanger'], ratingColors = ['#3d7a1a','#6fa832','#d88a22','#c9540e','#b83230','#5b6b82'];
       const ratingMap = { '5':0,'4':0,'3':0,'2':0,'1':0,'zanger':0 };
       items.forEach(g => { const k = String(g.rating || ''); if (k === 'zanger') ratingMap.zanger += 1; else if (ratingMap[k] != null) ratingMap[k] += 1; });
       const rd = ratingKeys.map(k => ratingMap[k]);
@@ -5453,10 +6079,7 @@
       const dVals = dLabels.map(k => decadeStats.counts[k]);
       const decadeCanvas = document.getElementById('vizDecadesBarAll');
       if (decadeCanvas && dLabels.length) _vizCharts.decadesAll = new Chart(decadeCanvas.getContext('2d'), { type:'bar', data:{ labels:dLabels, datasets:[{ data:dVals, backgroundColor:'#8c5b23', borderRadius:4, borderSkipped:false }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ font:{ size:10 } } }, y:{ beginAtZero:true, precision:0 } } } });
-      const note = document.getElementById('vizDecadesNoteAll');
-      if (note) note.textContent = decadeStats.known
-        ? `${decadeStats.known} song${decadeStats.known === 1 ? '' : 's'} with release-year data${decadeStats.unknown ? ` · ${decadeStats.unknown} still missing metadata` : ''}.`
-        : `No release years stored yet${decadeStats.unknown ? ` for ${decadeStats.unknown} logged songs` : ''}. Use Refresh Metadata above.`;
+      renderDecadeCoverageNote(document.getElementById('vizDecadesNoteAll'), decadeStats, 'alltime');
 
       const topDepth = items.map(g => ({ genre: g.genre || 'Unknown', count: vizOfficialSongs(g).length })).filter(x => x.count > 0).sort((a,b) => b.count - a.count || a.genre.localeCompare(b.genre)).slice(0,15);
       const depthCanvas = document.getElementById('vizSongsDepth');
@@ -5465,6 +6088,181 @@
 
 
 
+    function validSpotifyTrackUrl(url='') {
+      return /open\.spotify\.com\/track\/[A-Za-z0-9]{22}/i.test(normalizeSongUrl(url));
+    }
+
+    function looksLikeSpotifyUrl(url='') {
+      return /spotify/i.test(String(url || ''));
+    }
+
+    function spotifyMetadataMissingFields(song) {
+      const missing = [];
+      if (!song.artist) missing.push('artist');
+      if (!song.artwork) missing.push('art');
+      if (!song.releaseYear) missing.push('year');
+      if (!song.durationMs) missing.push('duration');
+      if (!song.spotifyId) missing.push('Spotify ID');
+      if (!song.isrc && !song.spotifyMetadataFetched) missing.push('ISRC');
+      return missing;
+    }
+
+    function spotifyTrackNeedsRefresh(song) {
+      if (!validSpotifyTrackUrl(song?.url || '')) return false;
+      if (!song.spotifyMetadataFetched) return true;
+      return !song.artist || !song.artwork || !song.releaseYear || !song.durationMs || !song.spotifyId;
+    }
+
+    function collectMetadataRows(items) {
+      return items.flatMap(genre => vizOfficialSongs(genre).map(song => {
+        const missing = spotifyMetadataMissingFields(song);
+        const url = normalizeSongUrl(song.url || '');
+        let group = '';
+        if (validSpotifyTrackUrl(url) && spotifyTrackNeedsRefresh(song)) group = 'spotify';
+        else if (!validSpotifyTrackUrl(url) && looksLikeSpotifyUrl(url)) group = 'broken';
+        else if (!looksLikeSpotifyUrl(url) && missing.length) group = 'nonspotify';
+        if (!group) return null;
+        const key = stagedReactionKey(genre.id, songIdentity(song));
+        return { genre, song, missing, group, key, failure:spotifyMetadataFailures.get(key) || null };
+      }).filter(Boolean));
+    }
+
+    function setMetadataQueueFilter(filter, mountId) {
+      metadataQueueFilter = filter || 'spotify';
+      const items = mountId === 'vizMetadataQueueMonthly' ? vizBaseGenres() : allListenedGenresForMaintenance();
+      renderMetadataQueue(mountId, items);
+    }
+
+    function openMetadataQueue(filter='spotify', mode='alltime') {
+      metadataQueueFilter = filter;
+      if (mode === 'alltime' && vizMode() !== 'alltime') {
+        document.querySelector('[data-viz-mode="alltime"]')?.click();
+      }
+      setTimeout(() => {
+        const mount = document.getElementById(mode === 'monthly' ? 'vizMetadataQueueMonthly' : 'vizMetadataQueueAll');
+        if (mount) {
+          renderMetadataQueue(mount.id, mode === 'monthly' ? vizBaseGenres() : allListenedGenresForMaintenance());
+          mount.closest('.viz-card')?.scrollIntoView({ behavior:'smooth', block:'start' });
+        }
+      }, 30);
+    }
+
+    function findSongForMetadataAction(genreId, key) {
+      const genre = (genres || []).find(g => String(g.id) === String(genreId));
+      if (!genre) return null;
+      const songs = inflateSongsFromStorage(genre.songs_listened || []);
+      let found = null;
+      eachSongInLog(songs, song => {
+        if (!found && songIdentity(song) === key) found = song;
+      });
+      return found ? { genre, songs, song:found } : null;
+    }
+
+    async function refreshSingleSpotifyTrack(encodedGenreId, encodedKey) {
+      const genreId = decodeURIComponent(String(encodedGenreId || ''));
+      const key = decodeURIComponent(String(encodedKey || ''));
+      if (Date.now() < spotifyRefreshPausedUntil) {
+        const wait = Math.ceil((spotifyRefreshPausedUntil - Date.now()) / 1000);
+        showSaveToast(`Spotify asked us to pause. Try again in ${wait} seconds.`, true);
+        return;
+      }
+      const target = findSongForMetadataAction(genreId, key);
+      if (!target) {
+        showSaveToast('Could not find that track in its genre.', true);
+        return;
+      }
+      const result = await fetchSpotifyTrackResult(target.song.url, true);
+      if (!result.ok) {
+        spotifyMetadataFailures.set(stagedReactionKey(genreId, key), result);
+        if (result.code === 'rate_limited') {
+          beginSpotifyPause(result.retryAfterSeconds || 30);
+          renderVisuals();
+          return;
+        }
+        renderVisuals();
+        showSaveToast(`Spotify refresh failed: ${result.error}`, true);
+        return;
+      }
+      applyOfficialSpotifyMetadata(target.song, result.track);
+      target.genre.songs_listened = target.songs;
+      spotifyMetadataFailures.delete(stagedReactionKey(genreId, key));
+      libraryUpdatesPending = true;
+      setUnsavedState(true);
+      toggleLibrarySaveButton(true);
+      renderVisuals();
+      showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
+    }
+
+    function editMetadataTrackUrl(encodedGenreName) {
+      const name = decodeURIComponent(String(encodedGenreName || ''));
+      const genre = (genres || []).find(g => String(g.genre || '') === name);
+      if (!genre) return;
+      openGenreDetail(genre, true);
+      showSaveToast('Use Edit track URL on the song card, then click Save Changes.', false);
+    }
+
+    function renderMetadataQueue(mountId, items) {
+      const mount = document.getElementById(mountId);
+      if (!mount) return;
+      const rows = collectMetadataRows(items);
+      const counts = {
+        spotify: rows.filter(row => row.group === 'spotify').length,
+        broken: rows.filter(row => row.group === 'broken').length,
+        nonspotify: rows.filter(row => row.group === 'nonspotify').length
+      };
+      const visible = rows.filter(row => row.group === metadataQueueFilter).slice(0, 25);
+      const report = spotifyRefreshReport
+        ? `<div class="viz-metadata-report"><strong>Last refresh:</strong> ${spotifyRefreshReport.updated} updated · ${spotifyRefreshReport.remaining} remaining Spotify tracks · ${spotifyRefreshReport.broken} broken/unresolved · ${spotifyRefreshReport.failed} other failures${spotifyRefreshReport.rateLimited ? ` · paused by Spotify${spotifyRefreshReport.pausedSeconds ? ` (${spotifyRefreshReport.pausedSeconds}s wait requested)` : ''}` : ''}${spotifyRefreshReport.stopped && !spotifyRefreshReport.rateLimited ? ' · stopped early' : ''}.</div>`
+        : '';
+      mount.innerHTML = `${report}<div class="viz-metadata-summary">
+        <button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'spotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('spotify', '${mountId}')">Ready for Spotify refresh · ${counts.spotify}</button>
+        <button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'broken' ? 'active' : ''}" onclick="setMetadataQueueFilter('broken', '${mountId}')">Broken / unrecognized · ${counts.broken}</button>
+        <button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'nonspotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('nonspotify', '${mountId}')">Non-Spotify · ${counts.nonspotify}</button>
+      </div>${visible.length ? `<div class="viz-metadata-list">${visible.map(row => {
+        const songTitle = (row.song.artist ? `${row.song.artist} — ` : '') + (row.song.title || 'Untitled track');
+        const failure = row.failure ? `<span class="viz-missing-chip">${escapeHtml(row.failure.code === 'rate_limited' ? 'rate limited' : row.failure.error)}</span>` : '';
+        return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${escapeHtml(songTitle)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}</div></div><div class="viz-meta-actions">${row.group === 'spotify' ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">Refresh Track</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button></div></div>`;
+      }).join('')}</div>` : '<div class="viz-empty">Nothing in this metadata group.</div>'}${rows.filter(row => row.group === metadataQueueFilter).length > 25 ? '<div class="small" style="margin-top:10px;">Showing the first 25 tracks in this group. Continue saving and refreshing to shrink the queue.</div>' : ''}`;
+    }
+
+    function updateSpotifyPauseDisplay() {
+      const status = document.getElementById('vizRefreshStatus');
+      const button = document.getElementById('vizRefreshBtn');
+      const remaining = Math.max(0, Math.ceil((spotifyRefreshPausedUntil - Date.now()) / 1000));
+      if (remaining > 0) {
+        const availableAt = new Date(spotifyRefreshPausedUntil).toLocaleString();
+        if (status) status.innerHTML = `<span class="viz-refresh-paused">Spotify cooldown active — try again after ${escapeHtml(availableAt)} (${remaining}s remaining).</span>`;
+        if (button && !spotifyRefreshRunning) {
+          button.disabled = true;
+          button.textContent = 'Spotify Cooldown Active';
+        }
+      } else {
+        spotifyRefreshPausedUntil = 0;
+        localStorage.removeItem(SPOTIFY_COOLDOWN_STORAGE_KEY);
+        if (spotifyRefreshCountdownTimer) {
+          clearInterval(spotifyRefreshCountdownTimer);
+          spotifyRefreshCountdownTimer = null;
+        }
+        if (button && !spotifyRefreshRunning) {
+          button.disabled = false;
+          button.textContent = '↺ Refresh Next 5 Spotify Tracks';
+        }
+        if (status && spotifyRefreshReport?.rateLimited) status.textContent = 'Spotify cooldown is over. Start a small five-track metadata batch when ready.';
+      }
+    }
+
+    function beginSpotifyPause(seconds=30) {
+      spotifyRefreshPausedUntil = Date.now() + (Math.max(1, Number(seconds || 30)) * 1000);
+      localStorage.setItem(SPOTIFY_COOLDOWN_STORAGE_KEY, String(spotifyRefreshPausedUntil));
+      if (spotifyRefreshCountdownTimer) clearInterval(spotifyRefreshCountdownTimer);
+      spotifyRefreshCountdownTimer = setInterval(updateSpotifyPauseDisplay, 1000);
+      updateSpotifyPauseDisplay();
+    }
+
+    function waitForSpotifyPacing(ms=2500) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     function allListenedGenresForMaintenance() {
       return (genres || []).filter(g => ['listened','veto'].includes(String(g.status || '').toLowerCase()) && dateValue(g));
     }
@@ -5472,7 +6270,10 @@
     function maintenanceStats() {
       const listened = allListenedGenresForMaintenance();
       const pendingGenres = (genres || []).filter(g => normalizePendingSongs(g.pending_songs || []).length > 0);
-      const missingMetadataGenres = listened.filter(g => vizOfficialSongs(g).some(s => !s.artist || !s.artwork || !s.releaseYear));
+      const missingMetadataGenres = listened.filter(g => vizOfficialSongs(g).some(s =>
+        !s.artist || !s.artwork || !s.releaseYear ||
+        (String(s.url || '').includes('spotify.com/track/') && (!s.spotifyId || !s.durationMs))
+      ));
       const unratedGenres = listened.filter(g => vizOfficialSongs(g).some(s => ![1,2,3].includes(Number(s.reaction))));
       const drafts = (genres || []).filter(g => (g.status || '').toLowerCase() === 'unlistened' && ((g.notes || '').trim() || vizOfficialSongs(g).length || g.favoritesong));
       const duplicates = listened.filter(g => {
@@ -5577,9 +6378,9 @@
             ${row.staged ? '<div class="viz-unsaved-reaction">Unsaved reaction</div>' : ''}
           </div>
           <div class="viz-quick-rate">
-            <button type="button" class="${reaction === 1 ? 'active' : ''}" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 1)" title="Not for me">◉</button>
-            <button type="button" class="${reaction === 2 ? 'active' : ''}" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 2)" title="Meh">◉◉</button>
-            <button type="button" class="${reaction === 3 ? 'active' : ''}" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 3)" title="I fuck with this">◉◉◉</button>
+            <button type="button" class="${reaction === 3 ? 'active' : ''}" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 3)" title="I Fuck With This" aria-label="I Fuck With This">👍</button>
+            <button type="button" class="${reaction === 2 ? 'active' : ''}" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 2)" title="Meh, It’s Fine" aria-label="Meh, It’s Fine">🤷</button>
+            <button type="button" class="${reaction === 1 ? 'active' : ''}" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 1)" title="Fuck Off" aria-label="Fuck Off">👎</button>
           </div>
         </div>`;
       }).join('')}</div>`;
@@ -5618,6 +6419,10 @@
         toggleLibrarySaveButton(false);
         setUnsavedState(false);
         renderVisuals();
+        if (currentGenre && document.getElementById('screen-listen')?.classList.contains('active')) {
+          loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });
+          applyDetailEditMode(detailEditMode);
+        }
         const status = document.getElementById('vizRefreshStatus');
         if (status) status.textContent = 'Library updates saved.';
         showSaveToast('Library updates saved.', false);
@@ -5639,37 +6444,92 @@
     async function refreshVisualMetadata() {
       const button = document.getElementById('vizRefreshBtn');
       const status = document.getElementById('vizRefreshStatus');
-      const items = allListenedGenresForMaintenance();
-      if (!items.length) {
-        if (status) status.textContent = 'No logged genres to refresh.';
+
+      if (spotifyRefreshRunning) {
+        spotifyRefreshCancelRequested = true;
+        if (status) status.textContent = 'Stopping Spotify refresh after the current track…';
         return;
       }
-      const originalLabel = button ? button.textContent : '';
-      if (button) button.disabled = true;
-      let changed = 0;
+
+      if (Date.now() < spotifyRefreshPausedUntil) {
+        updateSpotifyPauseDisplay();
+        return;
+      }
+
+      const items = allListenedGenresForMaintenance();
+      const allRows = collectMetadataRows(items).filter(row => row.group === 'spotify');
+      if (!allRows.length) {
+        if (status) status.textContent = 'No valid Spotify tracks are currently missing official metadata.';
+        openMetadataQueue('broken', 'alltime');
+        return;
+      }
+
+      const rows = allRows.slice(0, 5);
+      spotifyRefreshRunning = true;
+      spotifyRefreshCancelRequested = false;
+      spotifyRefreshReport = { updated:0, attempted:0, remaining:allRows.length, broken:0, rateLimited:0, failed:0, stopped:false, pausedSeconds:0 };
+      if (button) button.textContent = '■ Stop Refresh';
+
       try {
-        for (let start = 0; start < items.length; start += 3) {
-          const batch = items.slice(start, start + 3);
-          const result = await Promise.all(batch.map(g => hydrateGenreSpotifyArtwork(g)));
-          changed += result.filter(Boolean).length;
-          if (status) status.textContent = `Refreshing metadata… ${Math.min(start + batch.length, items.length)} / ${items.length} genres checked.`;
+        for (let i = 0; i < rows.length; i += 1) {
+          if (spotifyRefreshCancelRequested) {
+            spotifyRefreshReport.stopped = true;
+            break;
+          }
+          const row = rows[i];
+          spotifyRefreshReport.attempted += 1;
+          if (status) status.innerHTML = `<div class="viz-refresh-progress"><div>Refreshing a safe batch… ${i + 1} / ${rows.length} (${allRows.length} initially pending)</div><div class="viz-refresh-bar"><span style="width:${Math.round(((i + 1) / rows.length) * 100)}%"></span></div><div class="small">Only five tracks are attempted per run to protect your Spotify API quota.</div></div>`;
+
+          const result = await fetchSpotifyTrackResult(row.song.url, true);
+          if (result.ok) {
+            const target = findSongForMetadataAction(row.genre.id, songIdentity(row.song));
+            if (target) {
+              applyOfficialSpotifyMetadata(target.song, result.track);
+              target.genre.songs_listened = target.songs;
+              spotifyRefreshReport.updated += 1;
+              spotifyMetadataFailures.delete(row.key);
+            }
+          } else if (result.code === 'rate_limited') {
+            spotifyMetadataFailures.set(row.key, result);
+            spotifyRefreshReport.rateLimited = 1;
+            spotifyRefreshReport.pausedSeconds = result.retryAfterSeconds || 30;
+            spotifyRefreshReport.stopped = true;
+            beginSpotifyPause(spotifyRefreshReport.pausedSeconds);
+            break;
+          } else {
+            spotifyMetadataFailures.set(row.key, result);
+            if (result.code === 'broken') spotifyRefreshReport.broken += 1;
+            else spotifyRefreshReport.failed += 1;
+          }
+
+          await waitForSpotifyPacing();
         }
+
+        spotifyRefreshReport.remaining = collectMetadataRows(allListenedGenresForMaintenance()).filter(row => row.group === 'spotify').length;
         renderHistory();
         renderRankings();
         renderVisuals();
-        if (changed > 0) {
+
+        if (spotifyRefreshReport.updated > 0) {
           libraryUpdatesPending = true;
           setUnsavedState(true);
           toggleLibrarySaveButton(true);
-          if (status) status.innerHTML = `<span class="viz-library-save-callout">Updated metadata for ${changed} genre${changed === 1 ? '' : 's'}. Click Save Library Updates to persist it.</span>`;
-          showSaveToast('Metadata refreshed — save library updates to persist it.', false);
+        }
+
+        if (spotifyRefreshReport.rateLimited) {
+          updateSpotifyPauseDisplay();
+          showSaveToast('Spotify paused requests. Save any completed updates; do not retry until the countdown ends.', false);
+        } else if (spotifyRefreshReport.updated > 0) {
+          if (status) status.innerHTML = `<span class="viz-library-save-callout">Updated ${spotifyRefreshReport.updated} Spotify track${spotifyRefreshReport.updated === 1 ? '' : 's'}. Click Save Library Updates, then run another batch later.</span>`;
+          showSaveToast('Spotify metadata batch complete — save library updates to persist it.', false);
         } else if (status) {
-          status.textContent = 'Metadata refresh complete. No new song details were found.';
+          status.textContent = 'No tracks were updated. Check the Missing Metadata Queue below.';
         }
       } finally {
-        if (button) {
-          button.disabled = false;
-          button.textContent = originalLabel || '↺ Refresh Metadata';
+        spotifyRefreshRunning = false;
+        spotifyRefreshCancelRequested = false;
+        if (button && Date.now() >= spotifyRefreshPausedUntil) {
+          button.textContent = spotifyRefreshReport?.remaining ? '↺ Refresh Next 5 Spotify Tracks' : '↺ Refresh Next 5 Spotify Tracks';
         }
       }
     }
@@ -5684,7 +6544,7 @@
       if (monthlyView) monthlyView.style.display = vizMode() === 'monthly' ? '' : 'none';
       if (alltimeView) alltimeView.style.display = vizMode() === 'alltime' ? '' : 'none';
       if (vizMode() === 'monthly') {
-        vizRenderKPIs(document.getElementById('vizKpiMonthly'), [{ label:'Month', value: vizMonthTitle(month) },{ label:'Songs', value: songs.length },{ label:'Artists', value: artists.uniqueArtists },{ label:'Rated songs', value: ratedSongs },{ label:'Est. time', value: vizFormatMinutes(vizEstimatedMinutes(songs.length)) }]);
+        vizRenderKPIs(document.getElementById('vizKpiMonthly'), [{ label:'Month', value: vizMonthTitle(month) },{ label:'Songs', value: songs.length },{ label:'Artists', value: artists.uniqueArtists },{ label:'Rated songs', value: ratedSongs },{ label:'Est. time', value: vizFormatMinutes(vizEstimatedMinutes(songs)) }]);
         vizRenderRatingsContent(items);
         vizRenderHighlights(items);
         vizRenderArtistStats(items);
@@ -5692,17 +6552,20 @@
         vizRenderCrossovers('vizCrossoversMonthly', items, 10);
         renderNeedsAttention('vizNeedsAttentionMonthly');
         renderUnratedSongs('vizUnratedSongsMonthly', items);
+        renderMetadataQueue('vizMetadataQueueMonthly', items);
         vizMonthlyCharts(items);
       } else {
         const contenderCount = items.filter(g => !!g.monthlycontender).length;
-        vizRenderKPIs(document.getElementById('vizKpiAlltime'), [{ label:'Months', value: vizMonths().length },{ label:'Songs', value: songs.length },{ label:'Artists', value: artists.uniqueArtists },{ label:'Rated songs', value: ratedSongs },{ label:'Est. time', value: vizFormatMinutes(vizEstimatedMinutes(songs.length)) },{ label:'Contenders', value: contenderCount }]);
+        vizRenderKPIs(document.getElementById('vizKpiAlltime'), [{ label:'Months', value: vizMonths().length },{ label:'Songs', value: songs.length },{ label:'Artists', value: artists.uniqueArtists },{ label:'Rated songs', value: ratedSongs },{ label:'Est. time', value: vizFormatMinutes(vizEstimatedMinutes(songs)) },{ label:'Contenders', value: contenderCount }]);
         vizRenderSongReactions('vizSongReactionsAll', items);
         vizRenderCrossovers('vizCrossoversAll', items, 12);
         renderNeedsAttention('vizNeedsAttentionAll');
         renderUnratedSongs('vizUnratedSongsAll', items);
+        renderMetadataQueue('vizMetadataQueueAll', items);
         vizAllTimeCharts(items);
       }
       toggleLibrarySaveButton(libraryUpdatesPending);
+      if (Date.now() < spotifyRefreshPausedUntil) updateSpotifyPauseDisplay();
     }
 
     function initVisuals() {
