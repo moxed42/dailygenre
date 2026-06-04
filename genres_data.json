@@ -60908,7 +60908,7 @@
         "releaseYear": null,
         "releasePrecision": "",
         "releaseSource": "",
-        "reaction": null,
+        "reaction": 3,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
