@@ -5799,7 +5799,7 @@
         "releaseYear": null,
         "releasePrecision": "",
         "releaseSource": "",
-        "reaction": null,
+        "reaction": 2,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
