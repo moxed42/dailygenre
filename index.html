@@ -2342,22 +2342,6 @@
     }
 
   
-    .dev-environment-banner {
-      position: sticky;
-      top: 0;
-      z-index: 99999;
-      text-align: center;
-      padding: 8px 12px;
-      background: #8b2e2e;
-      color: #fff6ea;
-      font-weight: 900;
-      letter-spacing: .09em;
-      text-transform: uppercase;
-      font-size: .76rem;
-      box-shadow: 0 3px 12px rgba(0,0,0,.18);
-    }
-
-  
     /* === Development revision: visual maintenance + compact reactions === */
     .viz-click-chip {
       border:0;
@@ -2520,7 +2504,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="dev-environment-banner">Development Test Mode · saves go to genres_data_test.json</div>
   <div class="app">
     <header class="topbar">
       <div class="brand-wrap">
@@ -2898,7 +2881,7 @@
   <div class="modal-backdrop" id="passwordModal">
     <div class="modal">
       <h3>Save changes</h3>
-      <p>Enter the development app password to save changes to the test genre data through Cloudflare.</p>
+      <p>Enter the app password to save changes to your genre data.</p>
       <input id="passwordInput" type="password" placeholder="App password" />
       <div class="row" style="margin-top:14px;">
         <button class="btn btn-primary" id="passwordSubmitBtn">Save now</button>
@@ -2909,8 +2892,8 @@
   </div>
 
   <script>
-    const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data_test.json';
-    const WORKER_URL = 'https://genre-spinner-dev.sam-moxed.workers.dev/';
+    const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data.json';
+    const WORKER_URL = 'https://genre-spinner.sam-moxed.workers.dev/';
 
     const RANK_SEED = {
       'synth pop': {"rating":"4","rank_order":1},
@@ -4163,7 +4146,7 @@
           body: JSON.stringify(payload)
         });
       } catch (networkError) {
-        const error = new Error('Could not reach the development Worker.');
+        const error = new Error('Could not reach the save service.');
         error.code = 'NETWORK_ERROR';
         throw error;
       }
@@ -4175,7 +4158,7 @@
         throw error;
       }
       if (res.status === 409 || data.conflict) {
-        const error = new Error('Newer saved data exists. Reload this development page before saving.');
+        const error = new Error('Newer saved data exists. Reload this page before saving.');
         error.code = 'STALE_DATA';
         throw error;
       }
@@ -4467,7 +4450,7 @@
         showSaveToast(markListened ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
       } catch (e) {
         if (e && (e.code === 'STALE_DATA' || e.code === 'NO_REVISION')) {
-          showSaveToast('Newer data exists elsewhere — reload this development page before saving.', true);
+          showSaveToast('Newer data exists elsewhere — reload this page before saving.', true);
           return;
         }
         if (e && e.code === 'AUTH_FAILED') {
@@ -5001,8 +4984,8 @@
       const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
       const loaded = await res.json().catch(() => ({}));
       if (!res.ok || !loaded.ok || !Array.isArray(loaded.data) || !loaded.sha) {
-        remainingCount.textContent = 'Could not load development test data.';
-        showSaveToast('Could not load test data through the development Worker.', true);
+        remainingCount.textContent = 'Could not load live genre data.';
+        showSaveToast('Could not load genre data through the save service.', true);
         return;
       }
 
