@@ -5771,7 +5771,7 @@
         "releaseYear": null,
         "releasePrecision": "",
         "releaseSource": "",
-        "reaction": null,
+        "reaction": 2,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
@@ -5836,11 +5836,13 @@
     ],
     "rank_order": 37,
     "pending_songs": [],
-    "favoritesong": "",
-    "favoritesongurl": "",
+    "favoritesong": "I Am A Cider Drinker",
+    "favoritesongurl": "https://open.spotify.com/track/0d652s1NyeLhyIQIxD2VTp",
     "monthlycontender": false,
     "monthfavorite": false,
-    "monthleastfavorite": false
+    "monthleastfavorite": false,
+    "favoriteartist": "The Wurzels",
+    "favoritesongartwork": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02a9fac8819b0a3c2a55a013da"
   },
   {
     "id": 86,
