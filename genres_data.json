@@ -24701,7 +24701,7 @@
         "releaseYear": 2011,
         "releasePrecision": "year",
         "releaseSource": "Spotify",
-        "reaction": null,
+        "reaction": 2,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
@@ -24710,13 +24710,13 @@
     ],
     "rank_order": 39,
     "pending_songs": [],
-    "favoritesong": "Lovelee Dae - Original",
-    "favoritesongurl": "https://open.spotify.com/track/3CUZhJEreKw7B80VTL9K6e",
+    "favoritesong": "Envision",
+    "favoritesongurl": "https://open.spotify.com/track/3MO0kyk5mKA6WrCJCXFlXZ",
     "monthlycontender": false,
     "monthfavorite": false,
     "monthleastfavorite": false,
-    "favoriteartist": "Blaze",
-    "favoritesongartwork": "https://i.scdn.co/image/ab67616d0000b273c087dbd6e94af51ff89f816c"
+    "favoriteartist": "Osunlade",
+    "favoritesongartwork": "https://i.scdn.co/image/ab67616d0000b273a1ca61a70d3fcb4efc6e5bcd"
   },
   {
     "id": 401,
