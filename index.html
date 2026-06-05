@@ -2819,6 +2819,100 @@
       white-space:nowrap;
     }
 
+  
+    /* === View-mode genre ratings + trophy favorites === */
+    .view-rating-panel {
+      margin:14px 0 14px;
+      padding:13px;
+      border-radius:16px;
+      border:1px solid rgba(127,82,28,.16);
+      background:rgba(255,252,241,.58);
+    }
+    .view-rating-head {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .view-rating-stars {
+      display:flex;
+      gap:4px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .view-rating-star {
+      border:1px solid rgba(127,82,28,.18);
+      background:#fff8e6;
+      color:#b87918;
+      border-radius:11px;
+      min-width:42px;
+      height:40px;
+      padding:0 9px;
+      cursor:pointer;
+      font-size:1.35rem;
+      line-height:1;
+      font-weight:950;
+      transition:transform .12s ease, background .12s ease, box-shadow .12s ease;
+    }
+    .view-rating-star:hover { transform:translateY(-1px); }
+    .view-rating-star.active {
+      background:#ffdf91;
+      color:#6b3d08;
+      border-color:#cb8322;
+      box-shadow:0 8px 18px rgba(127,82,28,.15), inset 0 0 0 2px rgba(255,248,223,.66);
+    }
+    .view-rating-zanger {
+      border:1px solid rgba(184,50,48,.22);
+      background:rgba(184,50,48,.09);
+      color:#8b2e2e;
+      border-radius:999px;
+      height:38px;
+      padding:0 12px;
+      cursor:pointer;
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    .view-rating-zanger.active {
+      background:#8b2e2e;
+      color:#fff7ea;
+    }
+    .song-favorite-btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:42px;
+      height:40px;
+      border-radius:13px;
+      border:1px solid rgba(127,82,28,.18);
+      background:#fff8e6;
+      color:#7b4b12;
+      cursor:pointer;
+      font-size:1.22rem;
+      line-height:1;
+      transition:transform .12s ease, background .12s ease, box-shadow .12s ease;
+    }
+    .song-favorite-btn:hover { transform:translateY(-1px); }
+    .song-favorite-btn.active {
+      background:#ffdf91;
+      border-color:#cb8322;
+      color:#613802;
+      box-shadow:0 8px 18px rgba(127,82,28,.15), inset 0 0 0 2px rgba(255,248,223,.66);
+    }
+    .song-quick-actions {
+      display:flex;
+      gap:6px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    @media (max-width:760px) {
+      .view-rating-star { min-width:39px; height:38px; font-size:1.22rem; }
+      .song-favorite-btn { width:46px; height:44px; font-size:1.36rem; }
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -3619,6 +3713,17 @@
       };
     }
 
+    function cleanPastedCitationArtifacts(value='') {
+      return String(value || '')
+        .replace(/:contentReference\[[^\]]*\]\{[^}]*\}/g, '')
+        .replace(/contentReference\[[^\]]*\]\{[^}]*\}/g, '')
+        .replace(/:oaicite\[[^\]]*\]\{[^}]*\}/g, '')
+        .replace(/oaicite\[[^\]]*\]\{[^}]*\}/g, '')
+        .replace(/\s+↗\s*$/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+    }
+
     function parseSongLinks(text) {
       const lines = String(text || '').replace(/\\n/g, '\n').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const songs = [];
@@ -3637,9 +3742,9 @@
         const quoted = text.match(/[“"]([^”"]+)[”"]/);
         const byArtist = text.match(/\bby\s+([^–—-]+?)(?:\s+[–—-]\s+|$)/i);
         return {
-          title: quoted ? quoted[1].trim() : (text.split(/[–—-]/)[0] || 'Alt Take').replace(/^try\s+/i, '').trim(),
-          artist: byArtist ? byArtist[1].trim() : '',
-          reason: text
+          title: cleanPastedCitationArtifacts(quoted ? quoted[1].trim() : (text.split(/[–—-]/)[0] || 'Alt Take').replace(/^try\s+/i, '').trim()),
+          artist: cleanPastedCitationArtifacts(byArtist ? byArtist[1].trim() : ''),
+          reason: cleanPastedCitationArtifacts(text)
         };
       };
       for (const line of lines) {
@@ -3651,8 +3756,8 @@
         const raw = p[1] ? parseInt(p[1], 10) : null;
         const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
         const freeform = (!url && isLevelUp) ? parseFreeformAltTake(clean) : null;
-        const title = p.slice(3).join(' | ') || freeform?.title || '';
-        const rawReason = p[2] || freeform?.reason || '';
+        const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || freeform?.title || '');
+        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');
         const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
         const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
         const cleanReason = pendingGenreTag ? rawReason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : rawReason;
@@ -3696,13 +3801,13 @@
     }
 
   function normalizeSongArtistAndTitle(title='', artist='') {
-    let normalizedTitle = String(title || '').trim();
-    let normalizedArtist = String(artist || '').trim();
+    let normalizedTitle = cleanPastedCitationArtifacts(title);
+    let normalizedArtist = cleanPastedCitationArtifacts(artist);
     if (!normalizedArtist) {
       const match = normalizedTitle.match(/^(.+?)\s+[—–]\s+(.+)$/);
       if (match) {
-        normalizedArtist = match[1].trim();
-        normalizedTitle = match[2].trim();
+        normalizedArtist = cleanPastedCitationArtifacts(match[1]);
+        normalizedTitle = cleanPastedCitationArtifacts(match[2]);
       }
     }
     return { title: normalizedTitle, artist: normalizedArtist };
@@ -3723,7 +3828,7 @@
       return {
         url: rawUrl,
         score: s?.score ?? null,
-        reason: s?.reason || '',
+        reason: cleanPastedCitationArtifacts(s?.reason || ''),
         title: songLabel.title,
         artist: songLabel.artist,
         artwork: s?.artwork || '',
@@ -3853,6 +3958,80 @@
       const n = Number(genre.rating);
       if (!Number.isFinite(n) || n < 1 || n > 5) return 'Unrated';
       return `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
+    }
+
+    function isSameFavoriteSong(genre, song) {
+      if (!genre || !song) return false;
+      const favUrl = normalizeSongUrl(genre.favoritesongurl || '');
+      const songUrl = normalizeSongUrl(song.url || song.spotifyUrl || '');
+      if (favUrl && songUrl && favUrl === songUrl) return true;
+      const favTitle = cleanPastedCitationArtifacts(genre.favoritesong || '').toLowerCase();
+      const favArtist = cleanPastedCitationArtifacts(genre.favoriteartist || '').toLowerCase();
+      const songTitle = cleanPastedCitationArtifacts(song.title || '').toLowerCase();
+      const songArtist = cleanPastedCitationArtifacts(song.artist || '').toLowerCase();
+      return !!favTitle && !!songTitle && favTitle === songTitle && (!favArtist || !songArtist || favArtist === songArtist);
+    }
+
+    function renderGenreRatingPanel(genre) {
+      if (!genre) return '';
+      const active = String(genre.rating || '');
+      return `<div class="view-rating-panel">
+        <div class="view-rating-head">
+          <div class="eyebrow" style="margin:0;">Genre Rating</div>
+          ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary btn-tiny save-reactions-btn" onclick="saveLibraryUpdates()">Save Rating / Favorite</button>' : ''}
+        </div>
+        <div class="view-rating-stars" aria-label="Genre rating controls">
+          ${[1,2,3,4,5].map(n => `<button type="button" class="view-rating-star ${active === String(n) ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="${n} stars, ${escapeHtml(genreRatingLabel(n))}">★</button>`).join('')}
+          <button type="button" class="view-rating-zanger ${active === 'zanger' ? 'active' : ''}" onclick="setGenreRatingFromView('zanger')" title="Zanger">✕ Zanger</button>
+        </div>
+      </div>`;
+    }
+
+    function setGenreRatingFromView(value) {
+      if (!currentGenre) return;
+      if (String(value) === 'zanger') {
+        setListenDateTodayIfNeeded(currentGenre);
+        currentGenre.rating = 'zanger';
+        currentGenre.status = 'veto';
+        currentGenre.rank_order = null;
+      } else {
+        const rating = Number(value);
+        if (!Number.isFinite(rating) || rating < 1 || rating > 5) return;
+        setListenDateTodayIfNeeded(currentGenre);
+        currentGenre.rating = String(rating);
+        currentGenre.status = 'listened';
+        selectedRating = String(rating);
+      }
+      libraryUpdatesPending = true;
+      setUnsavedState(true);
+      toggleLibrarySaveButton(true);
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      applyDetailEditMode(detailEditMode);
+      showSaveToast('Genre rating updated — click Save Rating / Favorite to persist it.', false);
+    }
+
+    function makeSongFavorite(encodedKey) {
+      if (!currentGenre) return;
+      const key = decodeURIComponent(encodedKey || '');
+      let selected = null;
+      const songs = inflateSongsFromStorage(currentGenre.songs_listened || []);
+      eachSongInLog(songs, song => {
+        if (!selected && songIdentity(song) === key) selected = song;
+      });
+      if (!selected) {
+        showSaveToast('Could not find that song to mark favorite.', true);
+        return;
+      }
+      currentGenre.favoritesong = cleanPastedCitationArtifacts(selected.title || '');
+      currentGenre.favoriteartist = cleanPastedCitationArtifacts(selected.artist || '');
+      currentGenre.favoritesongurl = normalizeSongUrl(selected.url || selected.spotifyUrl || '');
+      currentGenre.favoritesongartwork = selected.artwork || '';
+      libraryUpdatesPending = true;
+      setUnsavedState(true);
+      toggleLibrarySaveButton(true);
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      applyDetailEditMode(detailEditMode);
+      showSaveToast('Favorite track updated — click Save Rating / Favorite to persist it.', false);
     }
 
     function genreRatingHeroMarkup(genre) {
@@ -4131,6 +4310,9 @@
       const out = { ...(song || {}) };
       delete out.levelUp;
       out.url = normalizeSongUrl(out.url);
+      out.title = cleanPastedCitationArtifacts(out.title || '');
+      out.artist = cleanPastedCitationArtifacts(out.artist || '');
+      out.reason = cleanPastedCitationArtifacts(out.reason || '');
       delete out.isPending;
       delete out.pendingFrom;
       if (isLevelUp) {
@@ -4163,6 +4345,9 @@
     function pendingSongsForStorage(arr) {
       return normalizePendingSongs(arr || []).map(song => {
         const out = { ...song, isPending: true };
+        out.title = cleanPastedCitationArtifacts(out.title || '');
+        out.artist = cleanPastedCitationArtifacts(out.artist || '');
+        out.reason = cleanPastedCitationArtifacts(out.reason || '');
         delete out.isLevelUp;
         delete out.isAdd;
         delete out._pendingGenreTag;
@@ -4230,12 +4415,16 @@
         ? `<details class="track-card-editor"><summary>Edit track URL</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this)">Update Track</button><button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})">Remove Track</button></div><div class="track-card-edit-note">Updating a Spotify URL refreshes its title, artist, and album art. Save Changes to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
+      const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
       const reactionHtml = !s.isPending
         ? `<div class="song-reaction"><span class="song-reaction-label">How did this track hit?</span>
-            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I Fuck With This" aria-label="I Fuck With This"><span class="reaction-emoji">👍</span></button>
-            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 2 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 2)" title="Meh, It’s Fine" aria-label="Meh, It’s Fine"><span class="reaction-emoji">🤷</span></button>
-            <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Fuck Off" aria-label="Fuck Off"><span class="reaction-emoji">👎</span></button>
-            ${reactionStaged ? '<span class="song-reaction-unsaved">Unsaved</span>' : ''}
+            <div class="song-quick-actions">
+              <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I Fuck With This" aria-label="I Fuck With This"><span class="reaction-emoji">👍</span></button>
+              <button type="button" class="song-reaction-btn ${Number(s.reaction) === 2 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 2)" title="Meh, It’s Fine" aria-label="Meh, It’s Fine"><span class="reaction-emoji">🤷</span></button>
+              <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Fuck Off" aria-label="Fuck Off"><span class="reaction-emoji">👎</span></button>
+              <button type="button" class="song-favorite-btn ${isFavorite ? 'active' : ''}" onclick="makeSongFavorite('${encodedKey}')" title="${isFavorite ? 'Favorite track' : 'Make favorite track'}" aria-label="${isFavorite ? 'Favorite track' : 'Make favorite track'}">🏆</button>
+              ${reactionStaged ? '<span class="song-reaction-unsaved">Unsaved</span>' : ''}
+            </div>
            </div>`
         : '';
       return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : ''} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}</div></div>${reasonHtml}${pendingNote}${promotedNote}${releaseNote}${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
@@ -4558,6 +4747,7 @@
               <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
             </div>
           </div>
+          ${renderGenreRatingPanel(genre)}
           ${renderGenreReactionSummary(genre)}
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
@@ -5597,7 +5787,7 @@
       const loaded = await res.json().catch(() => ({}));
       if (!res.ok || !loaded.ok || !Array.isArray(loaded.data) || !loaded.sha) {
         remainingCount.textContent = 'Could not load live genre data.';
-        showSaveToast('Could not load genre data through the save service.', true);
+        showSaveToast('Could not load test data through the save service.', true);
         return;
       }
 
