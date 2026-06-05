@@ -2344,6 +2344,8 @@
     }
 
   
+
+  
     /* === Development revision: visual maintenance + compact reactions === */
     .viz-click-chip {
       border:0;
@@ -3194,6 +3196,74 @@
         grid-template-columns:1fr;
         max-height:none;
         overflow:visible;
+      }
+    }
+
+  
+    .viz-era-form-metadata {
+      margin-top:8px;
+      align-items:center;
+      gap:7px;
+      flex-wrap:wrap;
+    }
+    .viz-era-form-metadata span {
+      font-size:.76rem;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+
+
+    /* === Production candidate microfix: compact metadata era override controls === */
+    #screen-viz .viz-metadata-row .viz-era-form-metadata {
+      display:flex !important;
+      align-items:center !important;
+      gap:6px !important;
+      flex-wrap:wrap !important;
+      margin-top:8px !important;
+      padding-top:4px !important;
+    }
+    #screen-viz .viz-metadata-row .viz-era-form-metadata span {
+      flex:0 1 100% !important;
+      font-size:.72rem !important;
+      line-height:1.25 !important;
+      color:var(--muted) !important;
+      font-weight:850 !important;
+    }
+    #screen-viz .viz-metadata-row .viz-era-form-metadata input {
+      width:126px !important;
+      max-width:126px !important;
+      min-width:0 !important;
+      height:32px !important;
+      min-height:0 !important;
+      padding:4px 8px !important;
+      border-radius:10px !important;
+      font-size:.78rem !important;
+      line-height:1.1 !important;
+      font-weight:850 !important;
+      letter-spacing:0 !important;
+      background:#fffaf0 !important;
+      box-shadow:inset 0 1px 3px rgba(77,45,14,.08) !important;
+    }
+    #screen-viz .viz-metadata-row .viz-era-form-metadata input::placeholder {
+      color:#8a765c !important;
+      font-size:.78rem !important;
+      opacity:.85 !important;
+    }
+    #screen-viz .viz-metadata-row .viz-era-form-metadata button {
+      height:32px !important;
+      min-height:0 !important;
+      padding:4px 10px !important;
+      border-radius:999px !important;
+      font-size:.70rem !important;
+      line-height:1 !important;
+      font-weight:950 !important;
+      white-space:nowrap !important;
+    }
+    @media (max-width:720px) {
+      #screen-viz .viz-metadata-row .viz-era-form-metadata input {
+        width:120px !important;
+        max-width:120px !important;
       }
     }
 
@@ -4703,15 +4773,9 @@
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: options.allowTrackEdit })}</div>`
         : '';
-      const favIsActive = !!(currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl);
-      const favBtn = (!isChild && !s.isPending && hasHref)
-        ? `<button class="song-fav-btn ${favIsActive ? 'active' : ''}" title="Set as favorite song"
-            data-fav-url="${escapeHtml(rawUrl)}"
-            data-fav-title="${escapeHtml(s.title||'')}"
-            data-fav-artist="${escapeHtml(s.artist||'')}"
-            data-fav-artwork="${escapeHtml(s.artwork||'')}"
-            onclick="setFavoriteSong(this)">\u2605</button>`
-        : '';
+      // Favorite song is controlled only by the trophy button in the reaction row.
+      // The older standalone star button is intentionally disabled to avoid duplicate favorite controls.
+      const favBtn = '';
       const encodedKey = encodeURIComponent(songIdentity(s));
       const editPendingIndex = Number.isInteger(pendingIndex) ? pendingIndex : -1;
       const trackEditHtml = options.allowTrackEdit
@@ -6530,7 +6594,7 @@
         const art = row.song.artwork ? `<img class="viz-drill-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy">` : '<div class="viz-drill-art"></div>';
         const eraLine = effective.year ? `${effective.source}: ${effective.year}` : 'No year';
         const spotifyLine = row.song.releaseYear && (effective.source !== 'Spotify' || savedEra) ? ` · Spotify: ${row.song.releaseYear}` : '';
-        return `<div class="viz-drill-row viz-record-row">${art}<div><div class="viz-drill-title-line">${vizSongTitleLink(row.song)}</div><div class="viz-drill-meta">${escapeHtml(row.genre.genre || 'Unknown genre')} · ${reactionEmoji(reaction)} ${escapeHtml(reactionLabel(reaction))}${fit ? ` · Fit ${fit}/5` : ''} · ${escapeHtml(vizSourceLabel(row.song))}</div><div class="viz-drill-meta">${escapeHtml(eraLine)}${escapeHtml(spotifyLine)}</div>${vizDrilldownState.type === 'decade' ? `<div class="viz-era-form"><input id="${inputId}" type="text" placeholder="1950s or 1953" value="${escapeHtml(savedEra)}"><button type="button" onclick="saveEraOverride('${visualActionArg(row.genre.id)}','${visualActionArg(songIdentity(row.song))}','${inputId}')">Save Era</button></div>` : ''}</div><div class="viz-drill-actions"><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button>${spotifyHref(row.song) ? `<button type="button" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}</div></div>`;
+        return `<div class="viz-drill-row viz-record-row">${art}<div><div class="viz-drill-title-line">${vizSongTitleLink(row.song)}</div><div class="viz-drill-meta">${escapeHtml(row.genre.genre || 'Unknown genre')} · ${reactionEmoji(reaction)} ${escapeHtml(reactionLabel(reaction))}${fit ? ` · Fit ${fit}/5` : ''} · ${escapeHtml(vizSourceLabel(row.song))}</div><div class="viz-drill-meta">${escapeHtml(eraLine)}${escapeHtml(spotifyLine)}</div></div><div class="viz-drill-actions"><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button>${spotifyHref(row.song) ? `<button type="button" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}</div></div>`;
       }).join('')}</div>` : '<div class="viz-empty">No songs found for this drilldown.</div>'}</div>`;
     }
 
@@ -6891,34 +6955,22 @@
       }).filter(Boolean));
     }
 
-    function vizMetadataScopeItems(mode=vizMode()) {
-      const base = mode === 'monthly' ? vizBaseGenres() : allListenedGenresForMaintenance();
-      return vizFilteredItems(base);
-    }
-
-    function vizMetadataScopeLabel(mode=vizMode()) {
-      const parts = [mode === 'monthly' ? vizMonthTitle(vizSelectedMonth()) : 'All Time'];
-      const focus = vizFocusedGenre();
-      if (focus) parts.push(focus.genre || 'Focused genre');
-      return parts.join(' · ');
-    }
-
     function setMetadataQueueFilter(filter, mountId) {
       metadataQueueFilter = filter || 'spotify';
-      const mode = mountId === 'vizMetadataQueueMonthly' ? 'monthly' : 'alltime';
-      renderMetadataQueue(mountId, vizMetadataScopeItems(mode));
+      const base = mountId === 'vizMetadataQueueMonthly' ? vizBaseGenres() : allListenedGenresForMaintenance();
+      renderMetadataQueue(mountId, vizFilteredItems(base));
     }
 
     function openMetadataQueue(filter='spotify', mode='alltime') {
       metadataQueueFilter = filter;
-      const nextMode = mode === 'monthly' ? 'monthly' : 'alltime';
-      if (vizMode() !== nextMode) {
-        document.querySelector(`[data-viz-mode="${nextMode}"]`)?.click();
+      if (mode === 'alltime' && vizMode() !== 'alltime') {
+        document.querySelector('[data-viz-mode="alltime"]')?.click();
       }
       setTimeout(() => {
-        const mount = document.getElementById(nextMode === 'monthly' ? 'vizMetadataQueueMonthly' : 'vizMetadataQueueAll');
+        const mount = document.getElementById(mode === 'monthly' ? 'vizMetadataQueueMonthly' : 'vizMetadataQueueAll');
         if (mount) {
-          renderMetadataQueue(mount.id, vizMetadataScopeItems(nextMode));
+          const base = mode === 'monthly' ? vizBaseGenres() : allListenedGenresForMaintenance();
+          renderMetadataQueue(mount.id, vizFilteredItems(base));
           mount.closest('.viz-card')?.scrollIntoView({ behavior:'smooth', block:'start' });
         }
       }, 30);
@@ -6991,15 +7043,20 @@
       const allVisible = rows.filter(row => row.group === metadataQueueFilter);
       const visible = allVisible.slice(0, limit);
       const report = spotifyRefreshReport
-        ? `<div class="viz-metadata-report"><strong>Last refresh${spotifyRefreshReport.scope ? ` · ${escapeHtml(spotifyRefreshReport.scope)}` : ''}:</strong> ${spotifyRefreshReport.updated} updated · ${spotifyRefreshReport.remaining} remaining Spotify tracks · ${spotifyRefreshReport.broken} broken/unresolved · ${spotifyRefreshReport.failed} other failures${spotifyRefreshReport.rateLimited ? ` · paused by Spotify${spotifyRefreshReport.pausedSeconds ? ` (${spotifyRefreshReport.pausedSeconds}s wait requested)` : ''}` : ''}${spotifyRefreshReport.stopped && !spotifyRefreshReport.rateLimited ? ' · stopped early' : ''}.</div>`
+        ? `<div class="viz-metadata-report"><strong>Last refresh${spotifyRefreshReport.scope ? ` (${escapeHtml(spotifyRefreshReport.scope)})` : ''}:</strong> ${spotifyRefreshReport.updated} updated · ${spotifyRefreshReport.remaining} remaining Spotify tracks · ${spotifyRefreshReport.broken} broken/unresolved · ${spotifyRefreshReport.failed} other failures${spotifyRefreshReport.rateLimited ? ` · paused by Spotify${spotifyRefreshReport.pausedSeconds ? ` (${spotifyRefreshReport.pausedSeconds}s wait requested)` : ''}` : ''}${spotifyRefreshReport.stopped && !spotifyRefreshReport.rateLimited ? ' · stopped early' : ''}.</div>`
         : '';
       mount.innerHTML = `<details class="viz-queue-fold" ${spotifyRefreshReport ? 'open' : ''}>
         <summary><span>Missing Metadata Queue</span><span class="viz-queue-count">${rows.length}</span></summary>
-        <div class="viz-queue-body">${report}<div class="viz-metadata-summary"><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'spotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('spotify', '${mountId}')">Ready for Spotify refresh · ${counts.spotify}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'broken' ? 'active' : ''}" onclick="setMetadataQueueFilter('broken', '${mountId}')">Broken / unrecognized · ${counts.broken}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'nonspotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('nonspotify', '${mountId}')">Non-Spotify · ${counts.nonspotify}</button></div>${visible.length ? `<div class="viz-metadata-list">${visible.map(row => {
+        <div class="viz-queue-body">${report}<div class="viz-metadata-summary"><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'spotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('spotify', '${mountId}')">Ready for Spotify refresh · ${counts.spotify}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'broken' ? 'active' : ''}" onclick="setMetadataQueueFilter('broken', '${mountId}')">Broken / unrecognized · ${counts.broken}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'nonspotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('nonspotify', '${mountId}')">Non-Spotify · ${counts.nonspotify}</button></div>${visible.length ? `<div class="viz-metadata-list">${visible.map((row, idx) => {
           const failure = row.failure ? `<span class="viz-missing-chip">${escapeHtml(row.failure.code === 'rate_limited' ? 'rate limited' : row.failure.error)}</span>` : '';
           const skipped = row.bulkSkipped ? '<span class="viz-missing-chip">skipped from bulk refresh</span>' : '';
           const canRefresh = row.group === 'spotify' || row.bulkSkipped;
-          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div></div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${row.bulkSkipped ? 'Retry Track' : 'Refresh Track'}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button></div></div>`;
+          const eraInputId = `metadataEra_${mountId}_${idx}_${String(row.genre.id).replace(/[^a-zA-Z0-9]/g,'')}`;
+          const savedEra = row.song.eraYear || row.song.eraDecade || '';
+          const effective = songEffectiveYear(row.song);
+          const eraNote = effective.year ? `${effective.source}: ${effective.year}${row.song.releaseYear && effective.source !== 'Spotify' ? ` · Spotify: ${row.song.releaseYear}` : ''}` : 'No era/release year yet';
+          const eraForm = `<div class="viz-era-form viz-era-form-metadata"><span>${escapeHtml(eraNote)}</span><input id="${eraInputId}" type="text" placeholder="1950s or 1953" value="${escapeHtml(savedEra)}"><button type="button" onclick="saveEraOverride('${visualActionArg(row.genre.id)}','${visualActionArg(songIdentity(row.song))}','${eraInputId}')">Save Era</button></div>`;
+          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${row.bulkSkipped ? 'Retry Track' : 'Refresh Track'}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button></div></div>`;
         }).join('')}</div>` : '<div class="viz-empty">Nothing in this metadata group.</div>'}${allVisible.length > limit ? `<button type="button" class="viz-show-more" onclick="showMoreVizQueue('metadata')">Show 8 more</button>` : ''}</div>
       </details>`;
     }
@@ -7044,6 +7101,21 @@
 
     function allListenedGenresForMaintenance() {
       return (genres || []).filter(g => ['listened','veto'].includes(String(g.status || '').toLowerCase()) && dateValue(g));
+    }
+
+    function visualRefreshScopeItems() {
+      // Bulk Spotify refresh should respect the active Visuals scope:
+      // monthly mode refreshes only that month; all-time mode refreshes the full archive.
+      const scoped = vizMode() === 'monthly' ? vizBaseGenres() : allListenedGenresForMaintenance();
+      return vizFilteredItems(scoped);
+    }
+
+    function visualRefreshScopeLabel() {
+      const focus = vizFocusedGenre();
+      const focusText = focus ? ` · ${focus.genre}` : '';
+      return vizMode() === 'monthly'
+        ? `${vizMonthTitle(vizSelectedMonth())}${focusText}`
+        : `All time${focusText}`;
     }
 
     function maintenanceStats() {
@@ -7224,9 +7296,8 @@
         return;
       }
 
-      const scopeMode = vizMode() === 'monthly' ? 'monthly' : 'alltime';
-      const scopeLabel = vizMetadataScopeLabel(scopeMode);
-      const items = vizMetadataScopeItems(scopeMode);
+      const items = visualRefreshScopeItems();
+      const scopeLabel = visualRefreshScopeLabel();
       const allMetadataRows = collectMetadataRows(items);
       const skippedBulkRows = allMetadataRows.filter(row => row.bulkSkipped);
       const allRows = allMetadataRows.filter(row => row.group === 'spotify' && !row.bulkSkipped);
@@ -7234,7 +7305,7 @@
         if (status) status.textContent = skippedBulkRows.length
           ? `No bulk-refreshable Spotify tracks remain in ${scopeLabel}. Resource-missing tracks were skipped; use Retry Track or Edit URL in the Broken queue.`
           : `No valid Spotify tracks are currently missing official metadata in ${scopeLabel}.`;
-        openMetadataQueue('broken', scopeMode);
+        openMetadataQueue('broken', vizMode());
         return;
       }
 
@@ -7252,7 +7323,7 @@
           }
           const row = rows[i];
           spotifyRefreshReport.attempted += 1;
-          if (status) status.innerHTML = `<div class="viz-refresh-progress"><div>Refreshing ${escapeHtml(scopeLabel)}… ${i + 1} / ${rows.length} (${allRows.length} initially pending in this view)</div><div class="viz-refresh-bar"><span style="width:${Math.round(((i + 1) / rows.length) * 100)}%"></span></div><div class="small">Only five tracks are attempted per run to protect your Spotify API quota. Monthly view now refreshes only that month; All Time refreshes the full archive.</div></div>`;
+          if (status) status.innerHTML = `<div class="viz-refresh-progress"><div>Refreshing ${escapeHtml(scopeLabel)}… ${i + 1} / ${rows.length} (${allRows.length} initially pending in this scope)</div><div class="viz-refresh-bar"><span style="width:${Math.round(((i + 1) / rows.length) * 100)}%"></span></div><div class="small">Only five tracks are attempted per run to protect your Spotify API quota.</div></div>`;
 
           const result = await fetchSpotifyTrackResult(row.song.url, true);
           if (result.ok) {
@@ -7279,7 +7350,7 @@
           await waitForSpotifyPacing();
         }
 
-        spotifyRefreshReport.remaining = collectMetadataRows(vizMetadataScopeItems(scopeMode)).filter(row => row.group === 'spotify' && !row.bulkSkipped).length;
+        spotifyRefreshReport.remaining = collectMetadataRows(visualRefreshScopeItems()).filter(row => row.group === 'spotify' && !row.bulkSkipped).length;
         renderHistory();
         renderRankings();
         renderVisuals();
@@ -7297,13 +7368,13 @@
           if (status) status.innerHTML = `<span class="viz-library-save-callout">Updated ${spotifyRefreshReport.updated} Spotify track${spotifyRefreshReport.updated === 1 ? '' : 's'} in ${escapeHtml(scopeLabel)}. Click Save Library Updates, then run another batch later.</span>`;
           showSaveToast('Spotify metadata batch complete — save library updates to persist it.', false);
         } else if (status) {
-          status.textContent = `No tracks were updated in ${scopeLabel}. Check the Missing Metadata Queue below.`;
+          status.textContent = 'No tracks were updated. Check the Missing Metadata Queue below.';
         }
       } finally {
         spotifyRefreshRunning = false;
         spotifyRefreshCancelRequested = false;
         if (button && Date.now() >= spotifyRefreshPausedUntil) {
-          button.textContent = '↺ Refresh Next 5 Spotify Tracks';
+          button.textContent = spotifyRefreshReport?.remaining ? '↺ Refresh Next 5 Spotify Tracks' : '↺ Refresh Next 5 Spotify Tracks';
         }
       }
     }
