@@ -24610,7 +24610,7 @@
         "releaseYear": 1991,
         "releasePrecision": "day",
         "releaseSource": "Spotify",
-        "reaction": null,
+        "reaction": 2,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
