@@ -4244,6 +4244,32 @@
       return `meta:${String(song?.artist || '').trim().toLowerCase()}|${String(song?.title || '').trim().toLowerCase()}`;
     }
 
+    function songIdentityKeys(song) {
+      const keys = [];
+      const add = key => {
+        const clean = String(key || '').trim().toLowerCase();
+        if (clean && !keys.includes(clean)) keys.push(clean);
+      };
+      const isrc = String(song?.isrc || '').trim().toLowerCase();
+      if (isrc) add(`isrc:${isrc}`);
+      const spotifyId = String(song?.spotifyId || '').trim().toLowerCase();
+      if (spotifyId) add(`spotify:${spotifyId}`);
+      const normalizedUrl = normalizeSongUrl(song?.url || song?.spotifyUrl || '').trim().toLowerCase();
+      const spotifyTrack = normalizedUrl.match(/spotify\.com\/track\/([a-z0-9]+)/i);
+      if (spotifyTrack) add(`spotify:${spotifyTrack[1].toLowerCase()}`);
+      if (normalizedUrl) add(`url:${normalizedUrl}`);
+      const title = String(song?.title || '').trim().toLowerCase();
+      const artist = String(song?.artist || '').trim().toLowerCase();
+      if (title || artist) add(`meta:${artist}|${title}`);
+      return keys.length ? keys : [songIdentity(song)];
+    }
+
+    function songsIdentityMatch(a, bOrKey) {
+      const aKeys = new Set(songIdentityKeys(a));
+      if (typeof bOrKey === 'string') return aKeys.has(String(bOrKey || '').trim().toLowerCase());
+      return songIdentityKeys(bOrKey).some(key => aKeys.has(key));
+    }
+
     function eachSongInLog(arr, callback) {
       (arr || []).forEach(song => {
         callback(song);
@@ -4261,9 +4287,11 @@
 
     function mergeSongMetadata(parsedSongs, previousSongs) {
       const stored = new Map();
-      eachSongInLog(inflateSongsFromStorage(previousSongs || []), song => stored.set(songIdentity(song), song));
+      eachSongInLog(inflateSongsFromStorage(previousSongs || []), song => {
+        songIdentityKeys(song).forEach(key => stored.set(key, song));
+      });
       const apply = song => {
-        const prior = stored.get(songIdentity(song));
+        const prior = songIdentityKeys(song).map(key => stored.get(key)).find(Boolean);
         if (prior) {
           if (prior.reaction != null) song.reaction = prior.reaction;
           if (prior.promotedFrom) song.promotedFrom = prior.promotedFrom;
@@ -4540,12 +4568,56 @@
       const songs = inflateSongsFromStorage(currentGenre?.songs_listened || []).filter(song => !song.isPending);
       currentGenre.songs_listened = songs;
       for (let index = 0; index < songs.length; index += 1) {
-        if (songIdentity(songs[index]) === key) return { song: songs[index], parent: null, index, songs };
-        if (songs[index].levelUp && songIdentity(songs[index].levelUp) === key) {
+        if (songsIdentityMatch(songs[index], key)) return { song: songs[index], parent: null, index, songs };
+        if (songs[index].levelUp && songsIdentityMatch(songs[index].levelUp, key)) {
           return { song: songs[index].levelUp, parent: songs[index], index, songs };
         }
       }
       return null;
+    }
+
+    async function refreshGenrePageSpotifyTrack(encodedKey, button) {
+      if (!currentGenre || !detailEditMode) return;
+      syncBulkDraftIntoSongModel();
+      const key = decodeURIComponent(encodedKey || '');
+      const result = findOfficialSongByIdentity(key);
+      if (!result?.song) {
+        showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
+        return;
+      }
+      const url = normalizeSongUrl(result.song.url || result.song.spotifyUrl || '');
+      if (!/spotify\.com\/track\//i.test(url)) {
+        showSaveToast('That track does not have a Spotify track URL to refresh.', true);
+        return;
+      }
+      const oldText = button?.textContent || '';
+      if (button) {
+        button.disabled = true;
+        button.classList.add('is-saving');
+        button.textContent = 'Refreshing…';
+      }
+      try {
+        const refreshed = await fetchSpotifyTrackResult(url, true);
+        if (!refreshed.ok) {
+          spotifyMetadataFailures.set(stagedReactionKey(currentGenre.id, songIdentity(result.song)), refreshed);
+          if (refreshed.code === 'rate_limited') beginSpotifyPause(refreshed.retryAfterSeconds || 30);
+          showSaveToast(`Spotify refresh failed: ${refreshed.error}`, true);
+          return;
+        }
+        applyOfficialSpotifyMetadata(result.song, refreshed.track);
+        currentGenre.songs_listened = result.songs;
+        spotifyMetadataFailures.delete(stagedReactionKey(currentGenre.id, songIdentity(result.song)));
+        loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+        applyDetailEditMode(true);
+        markDirty();
+        showSaveToast('Spotify metadata refreshed — click Save Changes to keep it.', false);
+      } finally {
+        if (button && document.body.contains(button)) {
+          button.disabled = false;
+          button.classList.remove('is-saving');
+          button.textContent = oldText || 'Refresh Spotify';
+        }
+      }
     }
 
     async function updateTrackUrlFromCard(encodedKey, pendingIndex, button) {
@@ -4767,8 +4839,13 @@
       const promotedNote = (!s.isPending && s.promotedFrom)
         ? `<div class="promoted-origin-line">⏳ Promoted from <em>${escapeHtml(s.promotedFrom)}</em>${s.promotedFromFit != null && s.score != null ? ` · theme fit ${s.promotedFromFit}/5 → ${s.score}/5` : ''}</div>`
         : '';
-      const releaseNote = (!s.isPending && (s.releaseYear || s.album))
-        ? `<div class="song-metadata-line">${s.album ? `${escapeHtml(s.album)}${s.releaseYear ? ' · ' : ''}` : ''}${s.releaseYear ? `Released ${escapeHtml(String(s.releaseYear))}` : ''}${s.releaseSource ? ` · ${escapeHtml(s.releaseSource)}` : ''}</div>`
+      const spotifyFacts = [];
+      if (s.album) spotifyFacts.push(escapeHtml(s.album));
+      if (s.releaseYear) spotifyFacts.push(`Released ${escapeHtml(String(s.releaseYear))}`);
+      if (s.durationMs) spotifyFacts.push(formatTrackDuration(s.durationMs));
+      if (s.releaseSource) spotifyFacts.push(escapeHtml(s.releaseSource));
+      const releaseNote = (!s.isPending && spotifyFacts.length)
+        ? `<div class="song-metadata-line">${spotifyFacts.join(' · ')}</div>`
         : '';
       const levelUpHtml = (!isChild && s.levelUp)
         ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: options.allowTrackEdit })}</div>`
@@ -4778,8 +4855,9 @@
       const favBtn = '';
       const encodedKey = encodeURIComponent(songIdentity(s));
       const editPendingIndex = Number.isInteger(pendingIndex) ? pendingIndex : -1;
+      const canSpotifyRefresh = !s.isPending && /spotify\.com\/track\//i.test(rawUrl);
       const trackEditHtml = options.allowTrackEdit
-        ? `<details class="track-card-editor"><summary>Edit track URL</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this)">Update Track</button><button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})">Remove Track</button></div><div class="track-card-edit-note">Updating a Spotify URL refreshes its title, artist, and album art. Save Changes to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this)">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this)">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})">Remove Track</button></div><div class="track-card-edit-note">Refresh Spotify updates title, artist, album, artwork, release year, duration, Spotify ID, and ISRC. Save Changes to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
@@ -5711,6 +5789,14 @@
     function songArtistLine(song) {
       return song.artist ? `<div class="song-artist">${escapeHtml(song.artist)}</div>` : '';
     }
+
+    function formatTrackDuration(ms) {
+      const totalSeconds = Math.round(Number(ms || 0) / 1000);
+      if (!totalSeconds) return '';
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = String(totalSeconds % 60).padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
     const spotifyOfficialCache = new Map();
 
     function classifySpotifyMetadataError(message='') {
@@ -5773,6 +5859,12 @@
       song.releasePrecision = track.releasePrecision || song.releasePrecision || '';
       song.releaseSource = 'Spotify';
       song.durationMs = Number(track.durationMs || 0) || song.durationMs || null;
+      if (track.explicit != null) song.explicit = !!track.explicit;
+      if (track.popularity != null) song.popularity = Number(track.popularity);
+      if (track.trackNumber != null) song.trackNumber = Number(track.trackNumber);
+      if (track.discNumber != null) song.discNumber = Number(track.discNumber);
+      if (track.albumType) song.albumType = track.albumType;
+      if (track.albumTotalTracks != null) song.albumTotalTracks = Number(track.albumTotalTracks);
       song.isrc = track.isrc || song.isrc || '';
       song.spotifyMetadataFetched = true;
       song.spotifyMetadataFetchedAt = new Date().toISOString();
@@ -6982,7 +7074,7 @@
       const songs = inflateSongsFromStorage(genre.songs_listened || []);
       let found = null;
       eachSongInLog(songs, song => {
-        if (!found && songIdentity(song) === key) found = song;
+        if (!found && songsIdentityMatch(song, key)) found = song;
       });
       return found ? { genre, songs, song:found } : null;
     }
