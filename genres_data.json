@@ -24525,7 +24525,7 @@
     "date_raw": "",
     "date_normalized": "2026-06-05",
     "parse_notes": "",
-    "rating": "",
+    "rating": "2",
     "favorite_song": "",
     "favorite_song_url": "",
     "monthly_contender": false,
@@ -24553,7 +24553,7 @@
         "durationMs": 456533,
         "isrc": "GBCPZ1104910",
         "spotifyMetadataFetched": true,
-        "spotifyMetadataFetchedAt": "2026-06-05T23:29:47.013Z",
+        "spotifyMetadataFetchedAt": "2026-06-05T23:30:50.638Z",
         "eraYear": "",
         "eraDecade": "",
         "releaseDate": "2011-04-04",
@@ -24585,7 +24585,7 @@
         "durationMs": 400133,
         "isrc": "USAT20000122",
         "spotifyMetadataFetched": true,
-        "spotifyMetadataFetchedAt": "2026-06-05T23:29:47.013Z",
+        "spotifyMetadataFetchedAt": "2026-06-05T23:30:50.638Z",
         "eraYear": "",
         "eraDecade": "",
         "releaseDate": "1991-08-02",
@@ -24616,7 +24616,7 @@
         "durationMs": 254710,
         "isrc": "ITK141100142",
         "spotifyMetadataFetched": true,
-        "spotifyMetadataFetchedAt": "2026-06-05T23:29:47.013Z",
+        "spotifyMetadataFetchedAt": "2026-06-05T23:30:50.638Z",
         "eraYear": "",
         "eraDecade": "",
         "releaseDate": "2011",
@@ -24630,7 +24630,7 @@
         "promotedFromFit": null
       }
     ],
-    "rank_order": 693,
+    "rank_order": 39,
     "pending_songs": [],
     "favoritesong": "",
     "favoritesongurl": "",
@@ -37617,7 +37617,7 @@
         "promotedFromFit": null
       }
     ],
-    "rank_order": 56,
+    "rank_order": 38,
     "favoritesong": "Contort Yourself",
     "favoritesongurl": "https://open.spotify.com/track/46t0fQYXgQ6gK9MT8oTsiB?si=ZDlSjKc2T4ewfY66EJYGng",
     "monthlycontender": false,
