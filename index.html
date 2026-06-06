@@ -1972,21 +1972,6 @@
       }
     }
 
-
-    /* Keep the main Discord share block visible on the genre detail page, not hidden inside Edit mode. */
-    .detail-discord-slot {
-      margin-top:16px;
-    }
-    .detail-discord-slot .share-section {
-      background:rgba(255,252,241,.46);
-      border:1px solid rgba(127,82,28,.18);
-      border-radius:20px;
-      padding:14px;
-    }
-    .detail-discord-slot textarea {
-      min-height:160px;
-    }
-
     .song-theme-badge {
       display:inline-flex;
       align-items:center;
@@ -3628,7 +3613,7 @@
   <div class="modal-backdrop" id="passwordModal">
     <div class="modal">
       <h3>Save changes</h3>
-      <p>Enter the development app password to save changes to the test genre data through Cloudflare.</p>
+      <p>Enter the app password to save changes to the production genre data through Cloudflare.</p>
       <input id="passwordInput" type="password" placeholder="App password" />
       <div class="row" style="margin-top:14px;">
         <button class="btn btn-primary" id="passwordSubmitBtn">Save now</button>
@@ -3640,6 +3625,7 @@
 
   <script>
     const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data.json';
+    const DATA_API_URL = 'https://api.github.com/repos/moxed42/dailygenre/contents/genres_data.json?ref=main';
     const WORKER_URL = 'https://genre-spinner.sam-moxed.workers.dev/';
 
     const RANK_SEED = {
@@ -4773,18 +4759,8 @@
       return text.trim();
     }
 
-    function mountDiscordShareSection() {
-      const share = document.getElementById('shareSection');
-      const slot = document.getElementById('discordShareSlot');
-      if (share && slot && share.parentElement !== slot) {
-        slot.appendChild(share);
-      }
-    }
-
     function updateDiscordBlock() {
-      mountDiscordShareSection();
-      const block = document.getElementById('discordBlock');
-      if (block) block.value = buildDiscordBlock();
+      document.getElementById('discordBlock').value = buildDiscordBlock();
     }
 
     function renderStars() {
@@ -5084,7 +5060,6 @@
               <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
             </div>
           </div>
-          <div id="discordShareSlot" class="detail-discord-slot"></div>
           ${renderGenreRatingPanel(genre)}
           ${renderGenreReactionSummary(genre)}
           <div class="detail-log-section">
@@ -5096,7 +5071,6 @@
       `;
 
       renderPendingSongs(genre);
-      mountDiscordShareSection();
       renderStars();
       updateDiscordBlock();
       const markBtn = document.getElementById('markListenedBtn');
@@ -5148,7 +5122,7 @@
           body: JSON.stringify(payload)
         });
       } catch (networkError) {
-        const error = new Error('Could not reach the development Worker.');
+        const error = new Error('Could not reach the production Worker.');
         error.code = 'NETWORK_ERROR';
         throw error;
       }
@@ -5160,7 +5134,7 @@
         throw error;
       }
       if (res.status === 409 || data.conflict) {
-        const error = new Error('Newer saved data exists. Reload this development page before saving.');
+        const error = new Error('Newer saved data exists. Reload this production page before saving.');
         error.code = 'STALE_DATA';
         throw error;
       }
@@ -5540,7 +5514,7 @@
         showSaveToast(markListened ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
       } catch (e) {
         if (e && (e.code === 'STALE_DATA' || e.code === 'NO_REVISION')) {
-          showSaveToast('Newer data exists elsewhere — reload this development page before saving.', true);
+          showSaveToast('Newer data exists elsewhere — reload this production page before saving.', true);
           return;
         }
         if (e && e.code === 'AUTH_FAILED') {
@@ -6126,19 +6100,67 @@
       [1,2,3,4,5].forEach(ensureRankOrderForRating);
     }
 
+    function decodeBase64Utf8(value='') {
+      const clean = String(value || '').replace(/\s/g, '');
+      const binary = atob(clean);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+      return new TextDecoder().decode(bytes);
+    }
+
+    async function fetchProductionDataFallback() {
+      try {
+        const apiRes = await fetch(DATA_API_URL, { cache: 'no-store' });
+        const meta = await apiRes.json().catch(() => ({}));
+        if (apiRes.ok && meta && meta.content) {
+          const parsed = JSON.parse(decodeBase64Utf8(meta.content));
+          if (Array.isArray(parsed)) return { data: parsed, sha: meta.sha || '', source: 'github-api' };
+        }
+      } catch (apiError) {
+        console.warn('GitHub contents fallback failed', apiError);
+      }
+
+      try {
+        const rawRes = await fetch(DATA_URL, { cache: 'no-store' });
+        const parsed = await rawRes.json().catch(() => null);
+        if (rawRes.ok && Array.isArray(parsed)) return { data: parsed, sha: '', source: 'raw-json' };
+      } catch (rawError) {
+        console.warn('Raw JSON fallback failed', rawError);
+      }
+
+      return null;
+    }
+
     async function loadData() {
       remainingCount.textContent = 'Loading genres...';
 
-      const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
-      const loaded = await res.json().catch(() => ({}));
-      if (!res.ok || !loaded.ok || !Array.isArray(loaded.data) || !loaded.sha) {
-        remainingCount.textContent = 'Could not load development test data.';
-        showSaveToast('Could not load test data through the development Worker.', true);
+      let loaded = null;
+
+      try {
+        const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok && Array.isArray(data.data)) {
+          loaded = { data: data.data, sha: data.sha || '', source: 'worker' };
+        } else {
+          console.warn('Production Worker data load did not return the expected shape; falling back to GitHub JSON.', data);
+        }
+      } catch (workerError) {
+        console.warn('Production Worker data load failed; falling back to GitHub JSON.', workerError);
+      }
+
+      if (!loaded || !loaded.sha) {
+        const fallback = await fetchProductionDataFallback();
+        if (fallback && (!loaded || fallback.sha)) loaded = fallback;
+      }
+
+      if (!loaded || !Array.isArray(loaded.data)) {
+        remainingCount.textContent = 'Could not load production data.';
+        showSaveToast('Could not load production data from the Worker or GitHub JSON.', true);
         return;
       }
 
       genres = loaded.data;
-      serverFileSha = loaded.sha;
+      serverFileSha = loaded.sha || '';
       window.genres = genres;
 
       genres.forEach(g => {
@@ -6184,7 +6206,7 @@
 
     manualSearch2.addEventListener('input', () => searchGenresInto(manualSearch2, manualResults2));
 
-    document.getElementById('includeSongsToggle')?.addEventListener('change', updateDiscordBlock);
+    document.getElementById('includeSongsToggle').addEventListener('change', updateDiscordBlock);
     document.getElementById('shareToggle')?.addEventListener('click', () => document.getElementById('shareSection')?.classList.toggle('collapsed'));
     document.getElementById('favoriteSongUrl').addEventListener('change', function() {
       const url = this.value.trim();
@@ -6199,8 +6221,8 @@
       refreshDirtyFromSnapshot();
     });
 
-    document.getElementById('copyDiscordBtn')?.addEventListener('click', async () => {
-      await navigator.clipboard.writeText(document.getElementById('discordBlock')?.value || '');
+    document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
     });
 
     document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.classList.add('is-saving'); btn.textContent = 'Saving...'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.classList.remove('is-saving'); btn.textContent = old; } });
@@ -6298,7 +6320,7 @@
         pendingSaveAction = null;
       } catch (e) {
         if (e && (e.code === 'STALE_DATA' || e.code === 'NO_REVISION')) {
-          passwordNotice.textContent = 'Newer saved data exists. Reload this development page before saving so it is not overwritten.';
+          passwordNotice.textContent = 'Newer saved data exists. Reload this production page before saving so it is not overwritten.';
           showSaveToast('Newer data exists elsewhere — reload before saving.', true);
           return;
         }
