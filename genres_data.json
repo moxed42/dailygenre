@@ -10463,7 +10463,7 @@
         "releaseYear": 2014,
         "releasePrecision": "day",
         "releaseSource": "Spotify",
-        "reaction": null,
+        "reaction": 3,
         "originFit": null,
         "nominatedFit": null,
         "promotedFrom": "",
