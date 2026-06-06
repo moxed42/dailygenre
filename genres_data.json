@@ -21,7 +21,41 @@
     "vibe": "Music that refused to stay in one lane and was right about it.",
     "songs_listened": [],
     "rank_order": 176,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5ZVGvay4xwgXMnQWffNYeU",
+        "score": 3,
+        "reason": "Country rocker with a rap‑style half‑spoken flow in the verses; it nods to country rap but still feels primarily like mainstream radio country.",
+        "title": "Dirt Road Anthem",
+        "artist": "Jason Aldean",
+        "artwork": "https://i.scdn.co/image/ab67616d0000b273eb28649b53d81d41e285ad45",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "spotifyId": "5ZVGvay4xwgXMnQWffNYeU",
+        "spotifyUrl": "https://open.spotify.com/track/5ZVGvay4xwgXMnQWffNYeU",
+        "album": "My Kinda Party",
+        "artists": [
+          "Jason Aldean"
+        ],
+        "durationMs": 229400,
+        "isrc": "US58E1000234",
+        "spotifyMetadataFetched": true,
+        "spotifyMetadataFetchedAt": "2026-06-05T11:26:21.261Z",
+        "eraYear": "",
+        "eraDecade": "",
+        "releaseDate": "2010-11-02",
+        "releaseYear": 2010,
+        "releasePrecision": "day",
+        "releaseSource": "Spotify",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Country rap",
+        "originFit": 3,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
+      }
+    ]
   },
   {
     "id": 1,
