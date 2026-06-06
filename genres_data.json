@@ -4114,6 +4114,39 @@
         "nominatedFit": null,
         "promotedFrom": "",
         "promotedFromFit": null
+      },
+      {
+        "url": "https://open.spotify.com/track/6y7Lx242dvEFaUHmDwLYLC",
+        "score": 3,
+        "reason": "Early country tune with prominent spoken sections and comic storytelling, but structurally closer to old-time country than canonical talking blues.",
+        "title": "Waltz Me Around Again Willie (Recorded 1927)",
+        "artist": "Chris Bouchillon",
+        "artwork": "https://i.scdn.co/image/ab67616d0000b273a4cfae3ee845dd7f6827fe48",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "spotifyId": "6y7Lx242dvEFaUHmDwLYLC",
+        "spotifyUrl": "https://open.spotify.com/track/6y7Lx242dvEFaUHmDwLYLC",
+        "album": "Early Country Songs, Vol. 7 (Legendary Country Artists) [Recorded 1925-1928]",
+        "artists": [
+          "Chris Bouchillon"
+        ],
+        "durationMs": 181315,
+        "isrc": "USDHM1504279",
+        "spotifyMetadataFetched": true,
+        "spotifyMetadataFetchedAt": "2026-06-06T01:17:36.338Z",
+        "eraYear": "",
+        "eraDecade": "",
+        "releaseDate": "2015-02-05",
+        "releaseYear": 2015,
+        "releasePrecision": "day",
+        "releaseSource": "Spotify",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Talking blues",
+        "originFit": 3,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
       }
     ],
     "monthfavorite": false,
@@ -7131,7 +7164,74 @@
     "vibe": "The American frontier as a musical state of mind.",
     "songs_listened": [],
     "rank_order": 774,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/0AQquaENerGps8BQmbPw14",
+        "score": 3,
+        "reason": "Cowboy ballad with narrative violence and Western imagery, but its smoother croon and 50s Nashville production make it feel more Western classic than scruffy outlaw.",
+        "title": "Big Iron",
+        "artist": "Marty Robbins",
+        "artwork": "https://i.scdn.co/image/ab67616d0000b273084051346f432cc68a1279cd",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "spotifyId": "0AQquaENerGps8BQmbPw14",
+        "spotifyUrl": "https://open.spotify.com/track/0AQquaENerGps8BQmbPw14",
+        "album": "Gunfighter Ballads And Trail Songs",
+        "artists": [
+          "Marty Robbins"
+        ],
+        "durationMs": 235733,
+        "isrc": "USSM15901193",
+        "spotifyMetadataFetched": true,
+        "spotifyMetadataFetchedAt": "2026-06-05T23:39:31.762Z",
+        "eraYear": "",
+        "eraDecade": "",
+        "releaseDate": "1959",
+        "releaseYear": 1959,
+        "releasePrecision": "year",
+        "releaseSource": "Spotify",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Outlaw country",
+        "originFit": 3,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
+      },
+      {
+        "url": "https://open.spotify.com/track/62qiyZxpfg6wEIV6S5PE9y",
+        "score": 3,
+        "reason": "Western story-song with a clean, almost crooner-like vocal and tidy 60s Nashville sound; thematically adjacent to outlaw, but sonically more straight classic country.",
+        "title": "Doggone Cowboy",
+        "artist": "Marty Robbins",
+        "artwork": "https://i.scdn.co/image/ab67616d0000b27329fc151a03bc32dc22fd8ae6",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "spotifyId": "62qiyZxpfg6wEIV6S5PE9y",
+        "spotifyUrl": "https://open.spotify.com/track/62qiyZxpfg6wEIV6S5PE9y",
+        "album": "Return of the Gunfighter",
+        "artists": [
+          "Marty Robbins"
+        ],
+        "durationMs": 129973,
+        "isrc": "USSM10500432",
+        "spotifyMetadataFetched": true,
+        "spotifyMetadataFetchedAt": "2026-06-05T23:39:43.136Z",
+        "eraYear": "",
+        "eraDecade": "",
+        "releaseDate": "1963-12-17",
+        "releaseYear": 1963,
+        "releasePrecision": "day",
+        "releaseSource": "Spotify",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Outlaw country",
+        "originFit": 3,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
+      }
+    ]
   },
   {
     "id": 92,
@@ -29447,7 +29547,41 @@
     "vibe": "Old songs discovering they had things to say about the present.",
     "songs_listened": [],
     "rank_order": 35,
-    "pending_songs": []
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/0eZoEIFWMNTt3BVejJdUH7",
+        "score": 3,
+        "reason": "Guthrie’s narration is more straight folk ballad than patter-blues, but the conversational vocal and minimal accompaniment put it near talking blues territory.",
+        "title": "Talking Dust Bowl",
+        "artist": "Woody Guthrie",
+        "artwork": "https://i.scdn.co/image/ab67616d0000b2734061eed83357b2d16e14c1ee",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "spotifyId": "0eZoEIFWMNTt3BVejJdUH7",
+        "spotifyUrl": "https://open.spotify.com/track/0eZoEIFWMNTt3BVejJdUH7",
+        "album": "Woody at 100: The Woody Guthrie Centennial Collection",
+        "artists": [
+          "Woody Guthrie"
+        ],
+        "durationMs": 114240,
+        "isrc": "USSF11120005",
+        "spotifyMetadataFetched": true,
+        "spotifyMetadataFetchedAt": "2026-06-06T00:43:03.076Z",
+        "eraYear": "",
+        "eraDecade": "",
+        "releaseDate": "2012-06-18",
+        "releaseYear": 2012,
+        "releasePrecision": "day",
+        "releaseSource": "Spotify",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Talking blues",
+        "originFit": 3,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
+      }
+    ]
   },
   {
     "id": 493,
@@ -45048,7 +45182,41 @@
       }
     ],
     "rank_order": 34,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/5qHYXcVvc9xsFB2uH7GpMN",
+        "score": 3,
+        "reason": "Beachy harmonies and tourist-tropical lyrics, but the glossy early-’80s Beach Boys production reads more as nostalgic pop than true trop-rock bar-band energy.",
+        "title": "Kokomo",
+        "artist": "The Beach Boys",
+        "artwork": "https://i.scdn.co/image/ab67616d0000b273c5634c0532097e175199f07e",
+        "source": "spotify",
+        "added": "2026-06-02",
+        "spotifyId": "5qHYXcVvc9xsFB2uH7GpMN",
+        "spotifyUrl": "https://open.spotify.com/track/5qHYXcVvc9xsFB2uH7GpMN",
+        "album": "The Very Best Of The Beach Boys: Sounds Of Summer",
+        "artists": [
+          "The Beach Boys"
+        ],
+        "durationMs": 217692,
+        "isrc": "USNPD0713481",
+        "spotifyMetadataFetched": true,
+        "spotifyMetadataFetchedAt": "2026-06-05T23:14:22.820Z",
+        "eraYear": "",
+        "eraDecade": "",
+        "releaseDate": "2003-01-01",
+        "releaseYear": 2003,
+        "releasePrecision": "day",
+        "releaseSource": "Spotify",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Tropical Rock",
+        "originFit": 3,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
+      }
+    ],
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false
