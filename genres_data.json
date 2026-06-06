@@ -63148,39 +63148,6 @@
         "nominatedFit": null,
         "promotedFrom": "",
         "promotedFromFit": null
-      },
-      {
-        "url": "https://open.spotify.com/track/4DPCLivw1GxdHzCbnrILz9?si=f6b6478c7fcb4c25",
-        "score": 2,
-        "reason": "Historic metalcore precursor whose breakdown-centric approach would help shape deathcore, but it isn't deathcore itself.",
-        "title": "Traces",
-        "artist": "Breakdown of Sanity",
-        "artwork": "https://i.scdn.co/image/ab67616d0000b273f1c8c6cb4012ae1ed7755f20",
-        "source": "spotify",
-        "added": "2026-06-03",
-        "spotifyId": "4DPCLivw1GxdHzCbnrILz9",
-        "spotifyUrl": "https://open.spotify.com/track/4DPCLivw1GxdHzCbnrILz9",
-        "album": "Traces",
-        "artists": [
-          "Breakdown of Sanity"
-        ],
-        "durationMs": 326069,
-        "isrc": "TCAFC2090647",
-        "spotifyMetadataFetched": true,
-        "spotifyMetadataFetchedAt": "2026-06-05T23:25:27.448Z",
-        "eraYear": "",
-        "eraDecade": "",
-        "releaseDate": "2020-09-25",
-        "releaseYear": 2020,
-        "releasePrecision": "day",
-        "releaseSource": "Spotify",
-        "reaction": null,
-        "isPending": true,
-        "pendingFrom": "Deathcore",
-        "originFit": 2,
-        "nominatedFit": null,
-        "promotedFrom": "",
-        "promotedFromFit": null
       }
     ]
   },
@@ -67812,7 +67779,41 @@
       }
     ],
     "rank_order": 57,
-    "pending_songs": [],
+    "pending_songs": [
+      {
+        "url": "https://open.spotify.com/track/4DPCLivw1GxdHzCbnrILz9?si=f6b6478c7fcb4c25",
+        "score": 2,
+        "reason": "Historic metalcore precursor whose breakdown-centric approach would help shape deathcore, but it isn't deathcore itself.",
+        "title": "Traces",
+        "artist": "Breakdown of Sanity",
+        "artwork": "https://i.scdn.co/image/ab67616d0000b273f1c8c6cb4012ae1ed7755f20",
+        "source": "spotify",
+        "added": "2026-06-03",
+        "spotifyId": "4DPCLivw1GxdHzCbnrILz9",
+        "spotifyUrl": "https://open.spotify.com/track/4DPCLivw1GxdHzCbnrILz9",
+        "album": "Traces",
+        "artists": [
+          "Breakdown of Sanity"
+        ],
+        "durationMs": 326069,
+        "isrc": "TCAFC2090647",
+        "spotifyMetadataFetched": true,
+        "spotifyMetadataFetchedAt": "2026-06-05T23:25:27.448Z",
+        "eraYear": "",
+        "eraDecade": "",
+        "releaseDate": "2020-09-25",
+        "releaseYear": 2020,
+        "releasePrecision": "day",
+        "releaseSource": "Spotify",
+        "reaction": null,
+        "isPending": true,
+        "pendingFrom": "Deathcore",
+        "originFit": 2,
+        "nominatedFit": null,
+        "promotedFrom": "",
+        "promotedFromFit": null
+      }
+    ],
     "favoritesong": "",
     "favoritesongurl": "",
     "monthlycontender": false,
