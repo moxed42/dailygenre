@@ -4029,26 +4029,62 @@
       refreshDirtyFromSnapshot();
     }
 
+    function screenTitle(name) {
+      const labels = {
+        spin: 'Spin',
+        history: 'Archive',
+        viz: 'Visuals',
+        review: 'Review',
+        ranking: 'Ranking'
+      };
+      return labels[name] ? `${labels[name]} | Daily Genre` : DEFAULT_PAGE_TITLE;
+    }
+
     function switchScreen(name, options = {}) {
-      if (name !== 'listen') document.title = DEFAULT_PAGE_TITLE;
       const currentActive = document.querySelector('.screen.active');
       const currentName = currentActive?.id?.replace('screen-', '') || '';
+
       if (!options.force && hasUnsavedChanges && currentName === 'listen' && name !== 'listen') {
         const shouldLeave = window.confirm('You have unsaved changes. Leave without saving?');
         if (!shouldLeave) return false;
       }
-      if (name === 'viz') { setTimeout(()=>{ if(typeof initVisuals==='function'){initVisuals();renderVisuals();} }, 50); }
-      if (name === 'review') { setTimeout(()=>{ if(typeof renderReview==='function'){renderReview();} }, 20); }
+
+      if (name === 'viz') {
+        setTimeout(() => {
+          if (typeof initVisuals === 'function') {
+            initVisuals();
+            renderVisuals();
+          }
+        }, 50);
+      }
+
+      if (name === 'review') {
+        setTimeout(() => {
+          if (typeof renderReview === 'function') {
+            renderReview();
+          }
+        }, 20);
+      }
+
       const screen = document.getElementById(`screen-${name}`);
       if (!screen) return false;
+
       document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
       screen.classList.add('active');
+
       const tab = document.querySelector(`.tab-btn[data-screen="${name}"]`);
       if (tab) tab.classList.add('active');
+
+      if (name !== 'listen') {
+        document.title = screenTitle(name);
+      }
+
       if (!options.preserveScroll) {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
       }
+
       return true;
     }
 
@@ -6136,13 +6172,29 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       const key = decodeURIComponent(String(encodedKey || ''));
       const select = document.getElementById(selectId);
       const targetId = select?.value || '';
-      if (!targetId) { showSaveToast('Choose a target genre first.', true); return; }
+
+      if (!targetId) {
+        showSaveToast('Choose a target genre first.', true);
+        return;
+      }
+
       const sourceGenre = (genres || []).find(g => String(g.id) === String(sourceId));
       const target = (genres || []).find(g => String(g.id) === String(targetId));
-      if (!sourceGenre || !target) { showSaveToast('Could not find that source or target genre.', true); return; }
+
+      if (!sourceGenre || !target) {
+        showSaveToast('Could not find that source or target genre.', true);
+        return;
+      }
+
       const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
-      const song = sourceSongs.find(candidate => songIdentity(candidate) === key);
-      if (!song) { showSaveToast('Could not find that pending source song.', true); return; }
+      const songIndex = sourceSongs.findIndex(candidate => songIdentity(candidate) === key);
+      const song = songIndex >= 0 ? sourceSongs[songIndex] : null;
+
+      if (!song) {
+        showSaveToast('Could not find that pending source song.', true);
+        return;
+      }
+
       genres.forEach(possibleTarget => {
         const pending = normalizePendingSongs(possibleTarget.pending_songs || []);
         possibleTarget.pending_songs = pending.filter(candidate => {
@@ -6150,18 +6202,32 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           return !(fromSameSource && songIdentity(candidate) === key);
         });
       });
+
       const added = queuePendingNomination(target, sourceGenre.genre, pendingReviewSongPayload(song));
+
+      // This manual Review move resolves the original pending tag marker.
+      // Without clearing it, renderReview() immediately shows the same row again.
+      delete sourceSongs[songIndex]._pendingGenreTag;
+      sourceGenre.songs_listened = sourceSongs;
+
       setUnsavedState(true);
       libraryUpdatesPending = true;
       toggleLibrarySaveButton(true);
       renderReview();
+
       if (currentGenre) {
         const restore = preserveScrollSnapshot();
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
         applyDetailEditMode(detailEditMode);
         restore();
       }
-      showSaveToast(added ? `Moved pending nomination to ${target.genre}. Save Library Updates to persist.` : `Pending nomination already exists in ${target.genre}. Save Library Updates to persist.`, false);
+
+      showSaveToast(
+        added
+          ? `Moved pending nomination to ${target.genre}. Save Library Updates to persist.`
+          : `Pending nomination already exists in ${target.genre}. Save Library Updates to persist.`,
+        false
+      );
     }
 
 
