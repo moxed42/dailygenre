@@ -28935,9 +28935,9 @@
     "subsubcategory": "Techno",
     "subsubsubcategory": "",
     "category_path": "Electronic > Techno",
-    "status": "unlistened",
+    "status": "listened",
     "date_raw": "",
-    "date_normalized": "",
+    "date_normalized": "2026-06-06",
     "parse_notes": "",
     "rating": "",
     "favorite_song": "",
@@ -29015,7 +29015,12 @@
         "promotedFrom": "",
         "promotedFromFit": null
       }
-    ]
+    ],
+    "favoritesong": "",
+    "favoritesongurl": "",
+    "monthlycontender": false,
+    "monthfavorite": false,
+    "monthleastfavorite": false
   },
   {
     "id": 447,
