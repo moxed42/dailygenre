@@ -1957,8 +1957,15 @@
 
   
     /* === Detail editor, nominations, record reactions and Listening Room visuals === */
-    .detail-edit-panel.is-hidden { display:none; }
+    /* Keep the Discord copy/share block visible even when the log editor is hidden. */
+    .detail-edit-panel.is-hidden { display:block; }
     .screen-detail.is-view-mode .listen-grid { grid-template-columns:minmax(0, 1fr); }
+    .screen-detail.is-view-mode .detail-edit-panel {
+      margin-top:16px;
+      max-width:780px;
+    }
+    .screen-detail.is-view-mode .detail-edit-panel > :not(#shareSection) { display:none !important; }
+    .screen-detail.is-view-mode #shareSection { display:block !important; }
     .edit-mode-toggle { white-space:nowrap; }
     @media (min-width:981px) {
       .detail-edit-panel.is-editing {
@@ -3279,7 +3286,7 @@
         </div>
 
         <div class="panel stack detail-edit-panel" id="listenEditPanel">
-          <div class="form-section share-section collapsed" id="shareSection">
+          <div class="form-section share-section" id="shareSection">
             <button type="button" class="section-toggle" id="shareToggle"><strong>Discord share block</strong><span class="small">Show / hide</span></button>
             <div class="share-body" style="margin-top:12px;">
               <label style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
@@ -3289,7 +3296,7 @@
               <label for="discordBlock">Discord text</label>
               <textarea id="discordBlock" readonly></textarea>
               <div class="row" style="margin-top:12px;">
-                <button class="btn btn-secondary" id="copyDiscordBtn">Copy block</button>
+                <button class="btn btn-secondary" id="copyDiscordBtn">Copy Discord text</button>
               </div>
             </div>
           </div>
@@ -4760,7 +4767,8 @@
     }
 
     function updateDiscordBlock() {
-      document.getElementById('discordBlock').value = buildDiscordBlock();
+      const discordEl = document.getElementById('discordBlock');
+      if (discordEl) discordEl.value = buildDiscordBlock();
     }
 
     function renderStars() {
@@ -5010,6 +5018,7 @@
       genre.pending_songs = normalizePendingSongs(genre.pending_songs || []);
       document.getElementById('songsListenedBulk').value = buildSongsBulkEditorText(genre);
       document.getElementById('includeSongsToggle').checked = false;
+      document.getElementById('shareSection')?.classList.remove('collapsed');
 
       const listenedDate = dateValue(genre);
       const songs = inflateSongsFromStorage(genre.songs_listened || []);
@@ -6222,7 +6231,25 @@
     });
 
     document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
-      await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
+      const discordEl = document.getElementById('discordBlock');
+      const text = discordEl?.value || '';
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else if (discordEl) {
+          discordEl.focus();
+          discordEl.select();
+          document.execCommand('copy');
+          discordEl.setSelectionRange(0, 0);
+        }
+        showSaveToast('Discord text copied.', false);
+      } catch (err) {
+        if (discordEl) {
+          discordEl.focus();
+          discordEl.select();
+        }
+        showSaveToast('Copy failed — Discord text is selected so you can copy it manually.', true);
+      }
     });
 
     document.getElementById('saveBtn').addEventListener('click', async () => { const btn = document.getElementById('saveBtn'); const old = btn.textContent; btn.disabled = true; btn.classList.add('is-saving'); btn.textContent = 'Saving...'; try { await prepareAndSaveCurrentGenre(); } finally { btn.disabled = false; btn.classList.remove('is-saving'); btn.textContent = old; } });
