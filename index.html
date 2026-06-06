@@ -3340,6 +3340,13 @@
     }
 
 
+
+    /* Safety fix: force the selected Visuals mode to own the layout. */
+    #screen-viz.viz-mode-monthly #vizViewMonthly { display:grid !important; }
+    #screen-viz.viz-mode-monthly #vizViewAlltime { display:none !important; }
+    #screen-viz.viz-mode-alltime #vizViewMonthly { display:none !important; }
+    #screen-viz.viz-mode-alltime #vizViewAlltime { display:grid !important; }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -4028,16 +4035,21 @@
       const currentName = currentActive?.id?.replace('screen-', '') || '';
       if (!options.force && hasUnsavedChanges && currentName === 'listen' && name !== 'listen') {
         const shouldLeave = window.confirm('You have unsaved changes. Leave without saving?');
-        if (!shouldLeave) return;
+        if (!shouldLeave) return false;
       }
       if (name === 'viz') { setTimeout(()=>{ if(typeof initVisuals==='function'){initVisuals();renderVisuals();} }, 50); }
       if (name === 'review') { setTimeout(()=>{ if(typeof renderReview==='function'){renderReview();} }, 20); }
+      const screen = document.getElementById(`screen-${name}`);
+      if (!screen) return false;
       document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-      const screen = document.getElementById(`screen-${name}`);
-      if (screen) screen.classList.add('active');
+      screen.classList.add('active');
       const tab = document.querySelector(`.tab-btn[data-screen="${name}"]`);
       if (tab) tab.classList.add('active');
+      if (!options.preserveScroll) {
+        requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
+      }
+      return true;
     }
 
     function preserveScrollSnapshot() {
@@ -4097,10 +4109,20 @@
       );
       if (!pool.length) {
         showSaveToast('No listened genres available for Crate Dig yet.', true);
-        return;
+        return false;
       }
       const genre = pool[Math.floor(Math.random() * pool.length)];
-      openGenreDetail(genre, false);
+      return openGenreDetail(genre, false, { fromCrateDig: true }) !== false;
+    }
+
+    function openCrateDig(event) {
+      if (event) event.preventDefault();
+      const opened = openRandomListenedGenre();
+      if (opened) {
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('topCrateDigBtn')?.classList.add('active');
+        requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
+      }
     }
 
     function randomGenre() {
@@ -5802,14 +5824,25 @@
     }
 
 
-    function openGenreDetail(genre, editMode=false) {
-      if (!genre) return;
+    function openGenreDetail(genre, editMode=false, options = {}) {
+      if (!genre) return false;
       saveArchiveUiState();
       detailEditMode = !!editMode || !dateValue(genre);
-      loadListenScreen(genre);
-      switchScreen('listen');
+      try {
+        loadListenScreen(genre);
+      } catch (error) {
+        console.error('Could not open genre detail', error, genre);
+        showSaveToast('Could not open that genre. Check the console for details.', true);
+        return false;
+      }
+      const switched = switchScreen('listen', { force: !!options.force, preserveScroll: !!options.preserveScroll });
+      if (!switched) return false;
       applyDetailEditMode(detailEditMode);
       if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
+      if (!options.preserveScroll) {
+        requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
+      }
+      return true;
     }
 
     function renderArchiveSummary(items, label) {
@@ -6112,7 +6145,7 @@
     });
 
     spinBtn.addEventListener('click', spinWheel);
-    document.getElementById('topCrateDigBtn')?.addEventListener('click', openRandomListenedGenre);
+    document.getElementById('topCrateDigBtn')?.addEventListener('click', openCrateDig);
     manualToggleBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
 
     const manualSearch2 = document.getElementById('manualSearch2');
@@ -6270,6 +6303,31 @@
       return [...new Set((genres || []).map(g => dateValue(g)).filter(Boolean).map(d => d.slice(0,7)))].sort();
     }
     function vizMode() { return _vizMode || 'monthly'; }
+
+    function applyVizModeDisplay() {
+      const mode = vizMode() === 'alltime' ? 'alltime' : 'monthly';
+      const screen = document.getElementById('screen-viz');
+      if (screen) {
+        screen.classList.toggle('viz-mode-monthly', mode === 'monthly');
+        screen.classList.toggle('viz-mode-alltime', mode === 'alltime');
+      }
+      document.querySelectorAll('[data-viz-mode]').forEach(btn => {
+        btn.classList.toggle('active', (btn.dataset.vizMode || 'monthly') === mode);
+      });
+      const monthSel = document.getElementById('vizMonthSelect');
+      if (monthSel) monthSel.style.display = mode === 'monthly' ? '' : 'none';
+      const monthlyView = document.getElementById('vizViewMonthly');
+      const alltimeView = document.getElementById('vizViewAlltime');
+      if (monthlyView) monthlyView.style.setProperty('display', mode === 'monthly' ? 'grid' : 'none', 'important');
+      if (alltimeView) alltimeView.style.setProperty('display', mode === 'alltime' ? 'grid' : 'none', 'important');
+    }
+
+    function setVizMode(mode) {
+      _vizMode = mode === 'alltime' ? 'alltime' : 'monthly';
+      clearVisualDrilldown(false);
+      applyVizModeDisplay();
+      renderVisuals();
+    }
     function vizSelectedMonth() {
       const sel = document.getElementById('vizMonthSelect');
       const months = vizMonths();
@@ -6355,10 +6413,11 @@
       renderVisuals();
     }
 
-    function clearVisualDrilldown() {
+    function clearVisualDrilldown(rerender=true) {
       vizDrilldownState = null;
-      renderVisuals();
+      if (rerender) renderVisuals();
     }
+
 
     function setVisualDrilldown(type, value, mode='alltime') {
       const nextMode = mode || vizMode();
@@ -7302,9 +7361,7 @@
       const reactions = vizReactionCountSummary(songs);
       const ratedSongs = reactions[1] + reactions[2] + reactions[3];
       const health = visualHealthStats(items);
-      const monthlyView = document.getElementById('vizViewMonthly'), alltimeView = document.getElementById('vizViewAlltime');
-      if (monthlyView) monthlyView.style.display = vizMode() === 'monthly' ? '' : 'none';
-      if (alltimeView) alltimeView.style.display = vizMode() === 'alltime' ? '' : 'none';
+      applyVizModeDisplay();
       renderGenreDossier(items);
       if (vizMode() === 'monthly') {
         vizRenderKPIs(document.getElementById('vizKpiMonthly'), [{ label:'Month', value: vizMonthTitle(month) },{ label:'Songs', value: songs.length },{ label:'Artists', value: artists.uniqueArtists },{ label:'Rated', value: `${health.ratedPct}%` },{ label:'Like rate', value: health.rated ? `${health.likeRate}%` : '—' }]);
@@ -7344,16 +7401,10 @@
         }
       }
       document.querySelectorAll('[data-viz-mode]').forEach(btn => {
-        btn.onclick = () => {
-          _vizMode = btn.dataset.vizMode || 'monthly';
-          document.querySelectorAll('[data-viz-mode]').forEach(b => b.classList.toggle('active', b === btn));
-          const monthSel = document.getElementById('vizMonthSelect');
-          if (monthSel) monthSel.style.display = _vizMode === 'monthly' ? '' : 'none';
-          renderVisuals();
-        };
+        btn.onclick = () => setVizMode(btn.dataset.vizMode || 'monthly');
       });
       document.getElementById('vizMonthSelect')?.addEventListener('change', renderVisuals);
-      if (document.getElementById('vizMonthSelect')) document.getElementById('vizMonthSelect').style.display = vizMode() === 'monthly' ? '' : 'none';
+      applyVizModeDisplay();
       renderVisuals();
     }
 
