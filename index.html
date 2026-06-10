@@ -7195,64 +7195,64 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       return null;
     }
 
-    async function loadData() {
-      remainingCount.textContent = 'Loading genres...';
+async function loadData() {
+  remainingCount.textContent = 'Loading genres...';
 
-      let loaded = null;
+  let loaded = null;
 
-      try {
-        const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
-        const data = await res.json().catch(() => ({}));
-        if (res.ok && data.ok && Array.isArray(data.data)) {
-          loaded = { data: data.data, sha: data.sha || '', source: 'worker' };
-        } else {
-          console.warn('Production Worker data load did not return the expected shape; falling back to GitHub JSON.', data);
-        }
-      } catch (workerError) {
-        console.warn('Production Worker data load failed; falling back to GitHub JSON.', workerError);
-      }
-
-      if (!loaded || !loaded.sha) {
-        const fallback = await fetchProductionDataFallback();
-        if (fallback && (!loaded || fallback.sha || !loaded.data)) loaded = fallback;
-      }
-
-      if (!loaded || !Array.isArray(loaded.data)) {
-        remainingCount.textContent = 'Could not load production data.';
-        showSaveToast('Could not load production data from the Worker or GitHub JSON.', true);
-        return;
-      }
-
-      genres = loaded.data;
-      serverFileSha = loaded.sha || '';
-      window.genres = genres;
-
-      genres.forEach(g => {
-        if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
-        if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
-      });
-      genres.forEach(g => {
-        g.songs_listened = inflateSongsFromStorage(g.songs_listened);
-        g.pending_songs = normalizePendingSongs(g.pending_songs);
-        removeLoggedSongsFromPending(g);
-      });
-      repairExistingPendingSources();
-
-      // RANK_SEED is retained as historical reference only. Saved data is now authoritative;
-      // do not mutate statuses or undo manual “Remove Date” corrections at load time.
-      updateRemainingCount();
-      buildSpinnerPool();
-      populateMonthFilter();
-      renderHistory();
-      renderRankings();
-      const hashMatch = location.hash.match(/^#genre=(.+)$/);
-      if (hashMatch) {
-        const id = decodeURIComponent(hashMatch[1]);
-        const genre = genres.find(g => String(g.id) === String(id));
-        if (genre) openGenreDetail(genre, false);
-      }
+  try {
+    const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.ok && Array.isArray(data.data)) {
+      loaded = { data: data.data, sha: data.sha || '', source: 'worker' };
+    } else {
+      console.warn('Production Worker data load did not return the expected shape; falling back to GitHub JSON.', data);
     }
+  } catch (workerError) {
+    console.warn('Production Worker data load failed; falling back to GitHub JSON.', workerError);
+  }
 
+  if (!loaded || !loaded.sha) {
+    const fallback = await fetchProductionDataFallback();
+    if (fallback && (!loaded || fallback.sha || !loaded.data)) loaded = fallback;
+  }
+
+  if (!loaded || !Array.isArray(loaded.data)) {
+    remainingCount.textContent = 'Could not load production data.';
+    showSaveToast('Could not load production data from the Worker or GitHub JSON.', true);
+    return;
+  }
+
+  genres = loaded.data;
+  serverFileSha = loaded.sha || '';
+  window.genres = genres;
+
+  genres.forEach(g => {
+    if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
+    if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
+  });
+
+  genres.forEach(g => {
+    g.songs_listened = inflateSongsFromStorage(g.songs_listened);
+    g.pending_songs = normalizePendingSongs(g.pending_songs);
+    removeLoggedSongsFromPending(g);
+  });
+
+  repairExistingPendingSources();
+
+  updateRemainingCount();
+  buildSpinnerPool();
+  populateMonthFilter();
+  renderHistory();
+  renderRankings();
+
+  const hashMatch = location.hash.match(/^#genre=(.+)$/);
+  if (hashMatch) {
+    const id = decodeURIComponent(hashMatch[1]);
+    const genre = genres.find(g => String(g.id) === String(id));
+    if (genre) openGenreDetail(genre, false);
+  }
+}
     window.addEventListener('beforeunload', (event) => {
       if (!hasUnsavedChanges) return;
       event.preventDefault();
@@ -8137,9 +8137,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
       }
 
-    function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
-      
-    function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
+  function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
       if (!window.confirm('Permanently delete this track from its genre? This cannot be undone until you reload without saving.')) return;
       const genreId = decodeURIComponent(encodedGenreId || '');
       const key = decodeURIComponent(encodedKey || '');
