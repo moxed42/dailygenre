@@ -4620,20 +4620,34 @@
         const clean = String(key || '').trim().toLowerCase();
         if (clean && !keys.includes(clean)) keys.push(clean);
       };
+      const canonicalSongTitle = value => String(value || '')
+        .toLowerCase()
+        .replace(/\s*[\(\[]?(?:\d{4}\s*)?(?:remaster(?:ed)?|mono|stereo|single version|single edit|radio edit|edit|version)[^\)\]]*[\)\]]?\s*$/i, '')
+        .replace(/\s*-\s*(?:\d{4}\s*)?(?:remaster(?:ed)?|mono|stereo|single version|single edit|radio edit|edit|version)\s*$/i, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
       const isrc = String(song?.isrc || '').trim().toLowerCase();
       if (isrc) add(`isrc:${isrc}`);
+
       const spotifyId = String(song?.spotifyId || '').trim().toLowerCase();
       if (spotifyId) add(`spotify:${spotifyId}`);
+
       const normalizedUrl = normalizeSongUrl(song?.url || song?.spotifyUrl || '').trim().toLowerCase();
       const spotifyTrack = normalizedUrl.match(/spotify\.com\/track\/([a-z0-9]+)/i);
       if (spotifyTrack) add(`spotify:${spotifyTrack[1].toLowerCase()}`);
       if (normalizedUrl) add(`url:${normalizedUrl}`);
+
       const title = String(song?.title || '').trim().toLowerCase();
       const artist = String(song?.artist || '').trim().toLowerCase();
       if (title || artist) add(`meta:${artist}|${title}`);
+
+      const canonicalTitle = canonicalSongTitle(song?.title || '');
+      if (canonicalTitle || artist) add(`canon:${artist}|${canonicalTitle}`);
+
       return keys.length ? keys : [songIdentity(song)];
     }
-
+    
     function songsIdentityMatch(a, bOrKey) {
       const aKeys = new Set(songIdentityKeys(a));
       if (typeof bOrKey === 'string') return aKeys.has(String(bOrKey || '').trim().toLowerCase());
@@ -5014,6 +5028,7 @@
       let target = null;
       let officialResult = null;
       const isPendingEdit = Number.isInteger(pendingIndex) && pendingIndex >= 0;
+
       if (isPendingEdit) {
         currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
         target = currentGenre.pending_songs[pendingIndex];
@@ -5022,35 +5037,54 @@
         officialResult = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
         target = officialResult?.song || null;
       }
+
       if (!target) {
         showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
         return;
       }
 
-      const oldUrl = normalizeSongUrl(target.url || '');
+      const oldUrl = normalizeSongUrl(target.url);
       const nestedLevelUp = target.levelUp || null;
+
       target.url = nextUrl;
       target.artwork = '';
       target.releaseDate = '';
       target.releaseYear = null;
       target.releaseSource = '';
+
       if (/spotify\.com\/track\//i.test(nextUrl)) {
         target.title = '';
         target.artist = '';
+        const resolved = (await resolveSpotifyTitles([{ ...target, levelUp: null }]))[0];
+        if (resolved) {
+          resolved.levelUp = nestedLevelUp;
+          Object.assign(target, resolved);
+        }
       }
-
-      const resolved = (await resolveSpotifyTitles([{ ...target, levelUp: null }]))[0];
-      resolved.levelUp = nestedLevelUp;
-      Object.assign(target, resolved);
 
       if (!isPendingEdit && normalizeSongUrl(currentGenre.favoritesongurl || '') === oldUrl) {
         currentGenre.favoritesongurl = nextUrl;
-        currentGenre.favoritesong = target.title || currentGenre.favoritesong || '';
-        currentGenre.favoriteartist = target.artist || '';
-        currentGenre.favoritesongartwork = target.artwork || '';
+        currentGenre.favoritesong = target.title || currentGenre.favoritesong;
+        currentGenre.favoriteartist = target.artist || currentGenre.favoriteartist;
+        currentGenre.favoritesongartwork = target.artwork || currentGenre.favoritesongartwork;
       }
-      if (isPendingEdit) currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+
+      if (isPendingEdit) {
+        currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+      } else {
+        const deduped = [];
+        const seen = new Set();
+        inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending).forEach(song => {
+          const keys = songIdentityKeys(song);
+          const duplicate = keys.some(key => seen.has(key));
+          if (duplicate) return;
+          keys.forEach(key => seen.add(key));
+          deduped.push(song);
+        });
+        currentGenre.songs_listened = deduped;
+      }
+
       removeLoggedSongsFromPending(currentGenre);
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       markDirty();
@@ -5167,14 +5201,17 @@
         song.isLevelUp = false;
         song.isAdd = false;
         song.levelUp = null;
-        const key = songIdentity(song);
-        if (!key || seen.has(key)) return;
-        seen.add(key);
+
+        const keys = songIdentityKeys(song);
+        const duplicate = keys.some(key => seen.has(key));
+        if (duplicate) return;
+
+        keys.forEach(key => seen.add(key));
         unique.push(song);
       });
       return unique;
     }
-
+    
     function countSongsForDisplay(arr) {
       return normalizeSongsListened(arr || []).reduce((total, song) => total + 1 + (song.levelUp ? 1 : 0), 0);
     }
