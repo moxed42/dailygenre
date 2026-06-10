@@ -4801,7 +4801,14 @@
       const expected = buildSongsBulkEditorText(currentGenre);
       if (textarea.value === expected) return;
       const previous = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
-      currentGenre.songs_listened = mergeSongMetadata(parseSongLinks(textarea.value), previous);
+      const merged = mergeSongMetadata(parseSongLinks(textarea.value), previous);
+      const seenKeys = new Set();
+      currentGenre.songs_listened = merged.filter(song => {
+        const k = songIdentity(song);
+        if (!k || seenKeys.has(k)) return false;
+        seenKeys.add(k);
+        return true;
+      });
     }
 
     function findOfficialSongByIdentity(key) {
@@ -6193,7 +6200,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
     }
 
     function pendingReviewRowId(sourceId, key) {
-      return `pending-review-${String(sourceId || '').replace(/[^a-z0-9_-]/gi, '-')}-${btoa(unescape(encodeURIComponent(String(key || '')))).replace(/[^a-z0-9_-]/gi, '').slice(0, 18)}`;
+      const b64 = btoa(unescape(encodeURIComponent(String(key || '')))).replace(/[^a-z0-9_-]/gi, '');
+      return `pending-review-${String(sourceId || '').replace(/[^a-z0-9_-]/gi, '-')}-${b64.slice(-24)}`;
     }
 
     function renderReview() {
