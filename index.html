@@ -7335,7 +7335,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       archiveSearchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') { clearTimeout(archiveSearchTimer); renderHistory(); }
       });
-    } renderHistory);
+    }
     if (archiveFlagFilter) archiveFlagFilter.addEventListener('change', renderHistory);
     if (archiveSortFilter) archiveSortFilter.addEventListener('change', renderHistory);
 
