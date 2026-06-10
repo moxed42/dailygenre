@@ -7226,6 +7226,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       genres = loaded.data;
       serverFileSha = loaded.sha || '';
       window.genres = genres;
+
       genres.forEach(g => {
         if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
         if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
