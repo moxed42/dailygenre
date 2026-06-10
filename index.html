@@ -3352,6 +3352,61 @@
     }
     .review-card-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-bottom:12px; }
     .review-card h3 { margin:0; letter-spacing:-.035em; }
+        .inbox-card {
+      margin-top: 14px;
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(229,240,255,.96), rgba(195,218,248,.80));
+      border: 1px solid rgba(37,100,217,.18);
+      box-shadow: var(--shadow);
+    }
+    .inbox-card h3 { margin: 0; letter-spacing: -.035em; }
+    .inbox-input-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .inbox-input-row input {
+      flex: 1;
+      min-width: 200px;
+      border-radius: 999px;
+      border: 1px solid rgba(37,100,217,.25);
+      background: white;
+      padding: 10px 16px;
+      outline: none;
+    }
+    .inbox-input-row input:focus {
+      border-color: #2564d9;
+      box-shadow: 0 0 0 3px rgba(37,100,217,.12);
+    }
+    .inbox-result {
+      margin-top: 10px;
+      font-size: .9rem;
+      color: var(--muted);
+      min-height: 20px;
+    }
+    .inbox-result.ok { color: var(--success); font-weight: 700; }
+    .inbox-result.err { color: var(--danger); }
+    .inbox-unassigned-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .inbox-unassigned-row {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(180px,auto);
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(37,100,217,.15);
+    }
+    .inbox-unassigned-title { font-weight: 800; font-size: .9rem; letter-spacing: -.02em; }
+    .inbox-unassigned-meta { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+    .inbox-move-row { display: flex; gap: 6px; align-items: center; }
+    .inbox-move-row select { border-radius: 999px; border: 1px solid var(--border); padding: 7px 10px; font-size: .85rem; background: white; flex: 1; }
     .review-row {
       display:grid;
       grid-template-columns:minmax(0,1.3fr) minmax(220px,.75fr);
@@ -4040,6 +4095,7 @@
     };
 
     let genres = [];
+    let songInbox = []; // in-memory unassigned song inbox
     let currentGenre = null;
     let selectedRating = '';
     let appPassword = '';
@@ -6328,12 +6384,247 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       return `pending-review-${String(sourceId || '').replace(/[^a-z0-9_-]/gi, '-')}-${b64.slice(-24)}`;
     }
 
+      function renderSongInboxCard() {
+      const unassigned = songInbox.filter(s => !s._routed);
+      const unassignedHtml = unassigned.length ? `
+        <div style="margin-top:14px;">
+          <div class="eyebrow" style="margin-bottom:8px;">Unassigned (${unassigned.length})</div>
+          <div class="inbox-unassigned-list">
+            ${unassigned.map((song, idx) => {
+              const selectId = `inbox-route-${idx}`;
+              const label = (song.artist ? `${song.artist} — ` : '') + (song.title || song.url || 'Unknown');
+              return `<div class="inbox-unassigned-row">
+                <div>
+                  <div class="inbox-unassigned-title">${escapeHtml(label)}</div>
+                  <div class="inbox-unassigned-meta">${song.guessNote ? escapeHtml(song.guessNote) : 'No genre guessed'}</div>
+                </div>
+                <div class="inbox-move-row">
+                  <select id="${selectId}" aria-label="Route to genre">
+                    <option value="">Choose genre…</option>
+                    ${(genres||[]).filter(g=>g&&g.genre).sort((a,b)=>String(a.genre).localeCompare(String(b.genre))).map(g=>`<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre)}</option>`).join('')}
+                  </select>
+                  <button type="button" class="btn btn-primary" style="white-space:nowrap;" onclick="routeInboxSong(${idx}, '${selectId}')">Route</button>
+                  <button type="button" class="btn btn-danger" onclick="dismissInboxSong(${idx})">✕</button>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>` : '';
+
+      return `<div class="inbox-card">
+        <div class="review-card-head">
+          <div>
+            <h3>Song Inbox</h3>
+            <p class="small" style="margin:6px 0 0;">Paste a Spotify URL or type Artist — Title. We'll try to guess the right genre and route it to pending.</p>
+          </div>
+        </div>
+        <div class="inbox-input-row">
+          <input type="text" id="inboxSongInput" placeholder="https://open.spotify.com/track/… or Artist — Title" onkeydown="if(event.key==='Enter')addToSongInbox()">
+          <button type="button" class="btn btn-primary" onclick="addToSongInbox()">Add to Inbox</button>
+        </div>
+        <div class="inbox-result" id="inboxResult"></div>
+        ${unassignedHtml}
+      </div>`;
+    }
+
+    async function addToSongInbox() {
+      const input = document.getElementById('inboxSongInput');
+      const resultEl = document.getElementById('inboxResult');
+      if (!input || !resultEl) return;
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      resultEl.className = 'inbox-result';
+      resultEl.textContent = 'Looking up track…';
+
+      let song = { url: '', title: '', artist: '', artwork: '', spotifyId: '', guessNote: '' };
+      const spotifyMatch = raw.match(/spotify\.com\/track\/([a-z0-9]+)/i);
+
+      if (spotifyMatch) {
+        // Fetch via existing worker
+        const track = await fetchSpotifyTrackMetadata(raw);
+        if (track) {
+          song.url = track.spotifyUrl || raw;
+          song.title = track.title || '';
+          song.artist = track.artist || '';
+          song.artwork = track.artwork || '';
+          song.spotifyId = track.spotifyId || spotifyMatch[1];
+          song.album = track.album || '';
+          song.durationMs = track.durationMs || null;
+          song.releaseYear = track.releaseYear || null;
+          song.isrc = track.isrc || '';
+          song.source = 'spotify';
+        } else {
+          song.url = raw;
+          song.source = 'spotify';
+          // Try oembed fallback
+          const oembed = await fetchSpotifyOembed(raw);
+          if (oembed) {
+            song.title = oembed.title || '';
+            song.artist = oembed.author_name || '';
+            song.artwork = oembed.thumbnail_url || '';
+          }
+        }
+      } else {
+        // Text input: try iTunes search
+        song.source = 'manual';
+        const dashMatch = raw.match(/^(.+?)\s*[—–-]\s*(.+)$/);
+        const artist = dashMatch ? dashMatch[1].trim() : '';
+        const title = dashMatch ? dashMatch[2].trim() : raw;
+        song.title = title;
+        song.artist = artist;
+        // Try iTunes to confirm / get artwork
+        try {
+          const term = encodeURIComponent(artist ? `${artist} ${title}` : title);
+          const resp = await fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=5&term=${term}`);
+          if (resp.ok) {
+            const data = await resp.json();
+            const best = (data.results || [])[0];
+            if (best) {
+              song.title = best.trackName || title;
+              song.artist = best.artistName || artist;
+              song.artwork = (best.artworkUrl100 || '').replace('100x100', '300x300');
+              song.album = best.collectionName || '';
+              song.releaseYear = best.releaseDate ? Number(String(best.releaseDate).slice(0,4)) : null;
+            }
+          }
+        } catch(e) {}
+      }
+
+      if (!song.title && !song.url) {
+        resultEl.className = 'inbox-result err';
+        resultEl.textContent = 'Could not find that track. Try a Spotify URL.';
+        return;
+      }
+
+      // Guess genre using artist name fuzzy match against genre list
+      const guessResult = guessGenreForSong(song);
+      song.guessNote = guessResult.note;
+
+      if (guessResult.target) {
+        // Auto-route to guessed genre's pending queue
+        const added = queuePendingNomination(guessResult.target, 'Song Inbox', {
+          ...song,
+          score: null,
+          reason: '',
+          isPending: true,
+          pendingFrom: 'Song Inbox',
+          originFit: null,
+          nominatedFit: null,
+          isLevelUp: false,
+          isAdd: false,
+          levelUp: null
+        });
+        setUnsavedState(true);
+        libraryUpdatesPending = true;
+        toggleLibrarySaveButton(true);
+        input.value = '';
+        resultEl.className = 'inbox-result ok';
+        resultEl.textContent = `✓ Routed "${song.artist ? song.artist + ' — ' : ''}${song.title}" to pending in ${guessResult.target.genre}. ${guessResult.note}`;
+      } else {
+        // Can't guess — add to unassigned inbox
+        songInbox.push(song);
+        input.value = '';
+        resultEl.className = 'inbox-result';
+        resultEl.textContent = `Added "${song.artist ? song.artist + ' — ' : ''}${song.title}" to unassigned inbox. ${song.guessNote}`;
+      }
+
+      renderReview();
+    }
+
+    function guessGenreForSong(song) {
+      // Strategy 1: artist name directly matches a genre name (e.g. artist "Blues" → genre "Blues")
+      // Strategy 2: fuzzy artist name appears inside a genre name or vice versa
+      // Strategy 3: title keywords match genre name keywords
+      const candidateGenres = (genres || []).filter(g => g && g.genre);
+      if (!candidateGenres.length) return { target: null, note: 'No genres in library.' };
+
+      const norm = s => String(s || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+      const artistNorm = norm(song.artist);
+      const titleNorm = norm(song.title);
+
+      // Score each genre
+      const scored = candidateGenres.map(g => {
+        const genreNorm = norm(g.genre);
+        let score = 0;
+
+        // Check existing songs in this genre for same artist
+        const genreSongs = inflateSongsFromStorage(g.songs_listened || []).filter(s => !s.isPending);
+        const artistMatch = genreSongs.some(s => norm(s.artist) === artistNorm && artistNorm.length > 2);
+        if (artistMatch) score += 12; // Strong signal: artist already logged in this genre
+
+        // Genre name words appear in artist or title
+        const genreWords = genreNorm.split(' ').filter(w => w.length > 3);
+        genreWords.forEach(w => {
+          if (artistNorm.includes(w)) score += 3;
+          if (titleNorm.includes(w)) score += 2;
+        });
+
+        // Levenshtein proximity between artist and genre name
+        const lev = levenshtein(artistNorm, genreNorm);
+        if (lev <= 2 && artistNorm.length > 3) score += 6;
+        else if (lev <= 4 && artistNorm.length > 4) score += 2;
+
+        return { genre: g, score };
+      }).sort((a, b) => b.score - a.score);
+
+      const best = scored[0];
+      const second = scored[1];
+
+      // Only auto-route if the top guess is confident and clearly ahead of second
+      if (best.score >= 10 && (!second || best.score >= second.score + 4)) {
+        return {
+          target: best.genre,
+          note: `Guessed "${best.genre.genre}" (score ${best.score}).`
+        };
+      }
+
+      if (best.score >= 4) {
+        return {
+          target: null,
+          note: `Top guesses: ${scored.slice(0,3).filter(s=>s.score>0).map(s=>`${s.genre.genre} (${s.score})`).join(', ')}. Needs manual routing.`
+        };
+      }
+
+      return { target: null, note: 'No confident genre match found.' };
+    }
+
+    function routeInboxSong(idx, selectId) {
+      const song = songInbox[idx];
+      const select = document.getElementById(selectId);
+      if (!song || !select?.value) { showSaveToast('Choose a target genre first.', true); return; }
+      const target = (genres || []).find(g => String(g.id) === String(select.value));
+      if (!target) { showSaveToast('Genre not found.', true); return; }
+      queuePendingNomination(target, 'Song Inbox', {
+        ...song,
+        score: null,
+        reason: '',
+        isPending: true,
+        pendingFrom: 'Song Inbox',
+        originFit: null,
+        nominatedFit: null,
+        isLevelUp: false,
+        isAdd: false,
+        levelUp: null
+      });
+      songInbox[idx]._routed = true;
+      setUnsavedState(true);
+      libraryUpdatesPending = true;
+      toggleLibrarySaveButton(true);
+      showSaveToast(`Routed to ${target.genre}. Save Library Updates to persist.`);
+      renderReview();
+    }
+
+    function dismissInboxSong(idx) {
+      songInbox.splice(idx, 1);
+      renderReview();
+    }
     function renderReview() {
       const mount = document.getElementById('reviewContent');
       if (!mount) return;
       const stats = pendingReviewStats();
       const manualRows = stats.rows.filter(row => row.status !== 'routable');
-      mount.innerHTML = `
+      mount.innerHTML = renderSongInboxCard() + `
         <div class="review-stat-grid">
           <div class="review-stat"><strong>${stats.pendingTotal}</strong><span>Pending nominations</span></div>
           <div class="review-stat"><strong>${stats.routable}</strong><span>Auto-routable @tags</span></div>
