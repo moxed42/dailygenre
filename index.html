@@ -4474,7 +4474,9 @@
         // For freeform entries (no URL), use p[0] as the full title if p.slice(3) is empty.
         const p0AsTitle = !url && !extractUrl(p[0] || '') ? cleanPastedCitationArtifacts(p[0] || '') : '';
         const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || p0AsTitle || freeform?.title || '');
-        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
+        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');
+        const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
+        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
         const cleanReason = pendingGenreTag ? rawReason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : rawReason;
         const song = {
           url,
