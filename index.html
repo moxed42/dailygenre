@@ -7231,7 +7231,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         const end = Math.min(start + 20, list.length);
         for (let i = start; i < end; i++) {
           const g = list[i];
-          g.songs_listened = inflateSongsFromStorage(g.songs_listened);
+
           g.pending_songs = normalizePendingSongs(g.pending_songs);
           removeLoggedSongsFromPending(g);
         }
