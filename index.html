@@ -8122,10 +8122,12 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       libraryUpdatesPending = true;
       setUnsavedState(true);
       toggleLibrarySaveButton(true);
-      if (!spotifyRefreshReport) spotifyRefreshReport = { updated: 0, remaining: 0, broken: 0, failed: 0, scope: 'single track' };
-      { const restore = preserveScrollSnapshot(); renderVisuals(); restore(); }
+        if (!spotifyRefreshReport) spotifyRefreshReport = { updated: 0, remaining: 0, broken: 0, failed: 0, scope: 'single track' };
+        { const restore = preserveScrollSnapshot(); renderVisuals(); restore(); }
       showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
+      }
 
+    function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
       
     function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
       if (!window.confirm('Permanently delete this track from its genre? This cannot be undone until you reload without saving.')) return;
