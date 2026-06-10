@@ -4486,7 +4486,7 @@
         };
         if (pendingGenreTag) song._pendingGenreTag = pendingGenreTag;
         if (!song.url && !song.title && !song.reason) continue;
-        if (!isLevelUp && !isAdd && !isPromote && !song.url) continue;
+        if (!isLevelUp && !isAdd && !isPromote && !song.url && !song.title) continue;        
         if (isLevelUp) {
           song.isLevelUp = true;
           if (songs.length > 0) songs[songs.length - 1].levelUp = song;
