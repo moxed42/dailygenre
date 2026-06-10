@@ -4464,7 +4464,9 @@
         const isAdd = !isLevelUp && !isPromote && addPrefix.test(line);
         const clean = line.replace(levelUpPrefix, '').replace(promotePrefix, '').replace(addPrefix, '').trim();
         const p = clean.split('|').map(x => x.trim());
-        const url = extractUrl(p[0] || '');
+        const urlRaw = extractUrl(p[0] || '');
+        const isPlaceholderUrl = /^https?:\/\/url\.com\/?$/i.test(urlRaw.trim().toLowerCase());
+        const url = isPlaceholderUrl ? '' : urlRaw;
         const raw = p[1] ? parseInt(p[1], 10) : null;
         const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
         const freeform = (!url && isLevelUp) ? parseFreeformAltTake(clean) : null;
@@ -4636,8 +4638,9 @@
       const normalizedUrl = normalizeSongUrl(song?.url || song?.spotifyUrl || '').trim().toLowerCase();
       const spotifyTrack = normalizedUrl.match(/spotify\.com\/track\/([a-z0-9]+)/i);
       if (spotifyTrack) add(`spotify:${spotifyTrack[1].toLowerCase()}`);
-      if (normalizedUrl) add(`url:${normalizedUrl}`);
-
+      const isPlaceholderUrl = /^https?:\/\/url\.com\/?$/i.test(normalizedUrl);
+      if (normalizedUrl && !isPlaceholderUrl) add(`url:${normalizedUrl}`);
+      
       const title = String(song?.title || '').trim().toLowerCase();
       const artist = String(song?.artist || '').trim().toLowerCase();
       if (title || artist) add(`meta:${artist}|${title}`);
