@@ -4440,9 +4440,15 @@
     function parseSongLinks(text) {
       const lines = String(text || '').replace(/\\n/g, '\n').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const songs = [];
+      const PLACEHOLDER_URLS = ['http://url.com', 'https://url.com'];
+      const urlRaw = extractUrl(p[0] || '');
+      const url = PLACEHOLDER_URLS.includes(urlRaw.toLowerCase()) ? '' : urlRaw;
       const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
       const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
       const promotePrefix = /^(?:🔼\s*)?PROMOTE:\s*/i;
+      const looksLikePipeFormat = p.length >= 3 && /^[1-5]$/.test((p[1] || '').trim());
+const p0AsTitle = !url && !extractUrl(p[0] || '') && looksLikePipeFormat
+  ? cleanPastedCitationArtifacts(p[0] || '') : '';
       const extractUrl = (value) => {
         const v = String(value || '').trim();
         const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
@@ -7228,14 +7234,14 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       });
       // Defer full song inflation to avoid blocking initial render — process in idle chunks
       const inflateChunk = (list, start) => {
-        const end = Math.min(start + 20, list.length);
-        for (let i = start; i < end; i++) {
-          const g = list[i];
-
-          g.pending_songs = normalizePendingSongs(g.pending_songs);
-          removeLoggedSongsFromPending(g);
-        }
-        if (end < list.length) {
+  const end = Math.min(start + 20, list.length);
+  for (let i = start; i < end; i++) {
+    const g = list[i];
+    g.songs_listened = inflateSongsFromStorage(g.songs_listened); // ← ADD THIS
+    g.pending_songs = normalizePendingSongs(g.pending_songs);
+    removeLoggedSongsFromPending(g);
+  }
+  ...        if (end < list.length) {
           ('requestIdleCallback' in window ? requestIdleCallback : setTimeout)(() => inflateChunk(list, end));
         }
       };
