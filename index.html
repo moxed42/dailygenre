@@ -1624,6 +1624,36 @@
       font-weight: 1000;
       font-size: .75rem;
     }
+        .song-card-promote {
+      border-color: rgba(100,60,180,.30) !important;
+      box-shadow: 0 8px 18px rgba(60,20,120,.07);
+    }
+    .promote-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #4a2e80;
+      background: rgba(100,60,180,.12);
+      border: 1px solid rgba(100,60,180,.25);
+      border-radius: 999px;
+      padding: 3px 9px 3px 6px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      font-size: .66rem;
+      font-weight: 1000;
+    }
+    .promote-badge-icon {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: rgba(100,60,180,.15);
+      background: #4a2e80;
+      font-weight: 1000;
+      font-size: .75rem;
+    }
     .song-card-pending {
       opacity: .78;
       background: rgba(200,195,185,.22) !important;
@@ -4336,6 +4366,7 @@
       const songs = [];
       const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
       const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
+      const promotePrefix = /^(?:🔼\s*)?PROMOTE:\s*/i;
       const extractUrl = (value) => {
         const v = String(value || '').trim();
         const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
@@ -4343,10 +4374,10 @@
         const inline = v.match(/https?:\/\/[^\s)]+/i);
         return inline ? inline[0].trim() : '';
       };
-      const isRealUrl = (value) => /^https?:\/\//i.test(String(value || '').trim());
+      const isPlaceholderUrl = (url) => /^https?:\/\/url\.com\b/i.test(String(url || '').trim());
       const parseFreeformAltTake = (value) => {
         const text = String(value || '').trim();
-        const quoted = text.match(/[“"]([^”"]+)[”"]/);
+        const quoted = text.match(/[""]([^""]+)[""]/);
         const byArtist = text.match(/\bby\s+([^–—-]+?)(?:\s+[–—-]\s+|$)/i);
         return {
           title: cleanPastedCitationArtifacts(quoted ? quoted[1].trim() : (text.split(/[–—-]/)[0] || 'Alt Take').replace(/^try\s+/i, '').trim()),
@@ -4356,8 +4387,9 @@
       };
       for (const line of lines) {
         const isLevelUp = levelUpPrefix.test(line);
-        const isAdd = !isLevelUp && addPrefix.test(line);
-        const clean = line.replace(levelUpPrefix, '').replace(addPrefix, '').trim();
+        const isPromote = !isLevelUp && promotePrefix.test(line);
+        const isAdd = !isLevelUp && !isPromote && addPrefix.test(line);
+        const clean = line.replace(levelUpPrefix, '').replace(promotePrefix, '').replace(addPrefix, '').trim();
         const p = clean.split('|').map(x => x.trim());
         const url = extractUrl(p[0] || '');
         const raw = p[1] ? parseInt(p[1], 10) : null;
@@ -4379,19 +4411,42 @@
         };
         if (pendingGenreTag) song._pendingGenreTag = pendingGenreTag;
         if (!song.url && !song.title && !song.reason) continue;
-        if (!isLevelUp && !isAdd && !song.url) continue;
+        if (!isLevelUp && !isAdd && !isPromote && !song.url) continue;
         if (isLevelUp) {
           song.isLevelUp = true;
           if (songs.length > 0) songs[songs.length - 1].levelUp = song;
           else songs.push(song);
         } else {
           if (isAdd) song.isAdd = true;
+          if (isPromote) song.isPromote = true;
           songs.push(song);
         }
       }
-      return songs;
+      // Cross-format dedup: if a placeholder-URL entry (http://url.com) and a real-URL entry
+      // refer to the same song by artist+title, keep only the real-URL one.
+      const metaSeen = new Map(); // metaKey -> index in deduped array
+      const deduped = [];
+      for (const song of songs) {
+        const artist = String(song.artist || '').trim().toLowerCase();
+        const title = String(song.title || '').trim().toLowerCase();
+        const metaKey = artist || title ? `${artist}|${title}` : null;
+        const hasRealUrl = song.url && !isPlaceholderUrl(song.url);
+        if (metaKey && metaSeen.has(metaKey)) {
+          const existingIdx = metaSeen.get(metaKey);
+          const existing = deduped[existingIdx];
+          const existingHasRealUrl = existing.url && !isPlaceholderUrl(existing.url);
+          // If the current entry has a real URL and the existing one doesn't, replace it
+          if (hasRealUrl && !existingHasRealUrl) {
+            deduped[existingIdx] = song;
+          }
+          // Skip — don't add a second entry for the same song
+          continue;
+        }
+        if (metaKey) metaSeen.set(metaKey, deduped.length);
+        deduped.push(song);
+      }
+      return deduped;
     }
-
     function showSaveToast(message, isError) {
       const el = document.getElementById('saveToast');
       if (!el) return;
@@ -4404,9 +4459,13 @@
     }
 
     function normalizeSongUrl(url) {
-      return String(url || '').replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '').replace(/^(?:🔼\s*)?ADD:\s*/i, '').trim();
+      return String(url || '')
+        .replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '')
+        .replace(/^(?:🔼\s*)?ADD:\s*/i, '')
+        .replace(/^(?:🔼\s*)?PROMOTE:\s*/i, '')
+        .trim();
     }
-
+    
   function normalizeSongArtistAndTitle(title='', artist='') {
     let normalizedTitle = cleanPastedCitationArtifacts(title);
     let normalizedArtist = cleanPastedCitationArtifacts(artist);
@@ -4775,7 +4834,7 @@
         return artist && title ? `${artist} — ${title}` : (title || null);
       };
       return inflateSongsFromStorage(genre?.songs_listened || []).filter(song => !song.isPending).flatMap(song => {
-        const prefix = song.isAdd ? '🔼 ADD: ' : '';
+        const prefix = song.isPromote ? '🔼 PROMOTE: ' : (song.isAdd ? '🔼 ADD: ' : '');
         const reason = song._pendingGenreTag ? `${song.reason || ''} @${song._pendingGenreTag}`.trim() : (song.reason || null);
         const lines = [
           prefix + [normalizeSongUrl(song.url), song.score != null ? song.score : null, reason, displaySongLabel(song)]
@@ -4793,7 +4852,7 @@
         return lines;
       }).join('\n');
     }
-
+    
     function syncBulkDraftIntoSongModel() {
       if (!currentGenre) return;
       const textarea = document.getElementById('songsListenedBulk');
@@ -4927,32 +4986,79 @@
 
     function removeTrackFromCard(encodedKey, pendingIndex) {
       if (!currentGenre || !detailEditMode) return;
-      if (!window.confirm('Remove this track from this genre? This change will not be permanent until you click Save Changes.')) return;
 
       const isPendingRemove = Number.isInteger(pendingIndex) && pendingIndex >= 0;
       if (isPendingRemove) {
+        // Removing a pending song: just delete it (no loop-back needed)
+        if (!window.confirm('Remove this pending nomination? It will be permanently deleted from this genre.')) return;
         const pending = normalizePendingSongs(currentGenre.pending_songs || []);
         pending.splice(pendingIndex, 1);
         currentGenre.pending_songs = pending;
-      } else {
-        syncBulkDraftIntoSongModel();
-        const result = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
-        if (!result) {
-          showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
-          return;
-        }
-        if (result.parent) {
-          result.parent.levelUp = null;
-        } else {
-          result.songs.splice(result.index, 1);
-        }
-        currentGenre.songs_listened = result.songs;
+        loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+        markDirty();
+        showSaveToast('Pending nomination removed — click Save Changes to keep it.', false);
+        return;
       }
+
+      // Removing an official song: send it back to pending for re-review
+      if (!window.confirm('Remove this track and send it back to Pending for re-review? You can suggest another genre from there.')) return;
+
+      syncBulkDraftIntoSongModel();
+      const result = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
+      if (!result) {
+        showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
+        return;
+      }
+
+      const removedSong = result.song;
+
+      if (result.parent) {
+        result.parent.levelUp = null;
+      } else {
+        result.songs.splice(result.index, 1);
+      }
+      currentGenre.songs_listened = result.songs;
+
+      // Queue removed song back into this genre's pending list for re-review
+      currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+      const alreadyPending = currentGenre.pending_songs.some(p => songIdentity(p) === songIdentity(removedSong));
+      if (!alreadyPending) {
+        currentGenre.pending_songs.push({
+          url: removedSong.url || '',
+          score: removedSong.score ?? null,
+          reason: removedSong.reason || '',
+          title: removedSong.title || '',
+          artist: removedSong.artist || '',
+          artwork: removedSong.artwork || '',
+          source: removedSong.source || '',
+          spotifyId: removedSong.spotifyId || '',
+          spotifyUrl: removedSong.spotifyUrl || '',
+          album: removedSong.album || '',
+          artists: Array.isArray(removedSong.artists) ? removedSong.artists.slice() : [],
+          durationMs: removedSong.durationMs || null,
+          isrc: removedSong.isrc || '',
+          releaseDate: removedSong.releaseDate || '',
+          releaseYear: removedSong.releaseYear || null,
+          releasePrecision: removedSong.releasePrecision || '',
+          releaseSource: removedSong.releaseSource || '',
+          spotifyMetadataFetched: !!removedSong.spotifyMetadataFetched,
+          spotifyMetadataFetchedAt: removedSong.spotifyMetadataFetchedAt || '',
+          added: removedSong.added || new Date().toISOString().slice(0,10),
+          isPending: true,
+          pendingFrom: currentGenre.genre || '',
+          originFit: removedSong.score != null ? Number(removedSong.score) : null,
+          nominatedFit: null,
+          isLevelUp: false,
+          isAdd: false,
+          levelUp: null
+        });
+      }
+
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       markDirty();
-      showSaveToast('Track removed — click Save Changes to keep it.', false);
+      showSaveToast('Track moved to Pending — assign a genre and click Save Changes.', false);
     }
-
+    
     function setPendingNominationFit(index, value) {
       if (!currentGenre) return;
       const pending = normalizePendingSongs(getPendingSongs(currentGenre));
@@ -5456,6 +5562,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         const promoted = {
           ...song,
           score: Number(song.nominatedFit),
+          isPromote: true,
           promotedFrom: song.pendingFrom || '',
           promotedFromFit: song.originFit != null ? Number(song.originFit) : (song.score != null ? Number(song.score) : null)
         };
@@ -5471,7 +5578,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       markDirty();
     }
-
+    
     function removePendingSong(index) {
       if (!currentGenre) return;
       const pending = normalizePendingSongs(getPendingSongs(currentGenre));
