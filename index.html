@@ -7260,8 +7260,19 @@ async function prepareAndSaveCurrentGenre(options = {}) {
     const manualSearch2 = document.getElementById('manualSearch2');
     const manualResults2 = document.getElementById('manualResults2');
 
-    manualSearch2.addEventListener('input', () => searchGenresInto(manualSearch2, manualResults2));
-
+    if (manualSearch2) {
+      let manualSearchTimer = null;
+      manualSearch2.addEventListener('input', () => {
+        clearTimeout(manualSearchTimer);
+        const val = manualSearch2.value.trim();
+        if (val.length === 0) { searchGenresInto(manualSearch2, manualResults2); return; }
+        if (val.length < 3) return;
+        manualSearchTimer = setTimeout(() => searchGenresInto(manualSearch2, manualResults2), 300);
+      });
+      manualSearch2.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { clearTimeout(manualSearchTimer); searchGenresInto(manualSearch2, manualResults2); }
+      });
+    }
     document.getElementById('includeSongsToggle').addEventListener('change', updateDiscordBlock);
     document.getElementById('shareToggle')?.addEventListener('click', () => document.getElementById('shareSection')?.classList.toggle('collapsed'));
     document.getElementById('favoriteSongUrl').addEventListener('change', function() {
@@ -7312,7 +7323,19 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
     if (historyMonthFilter) historyMonthFilter.addEventListener('change', renderHistory);
     if (historyRatingFilter) historyRatingFilter.addEventListener('change', renderHistory);
-    if (archiveSearchInput) archiveSearchInput.addEventListener('input', renderHistory);
+        if (archiveSearchInput) {
+      let archiveSearchTimer = null;
+      archiveSearchInput.addEventListener('input', () => {
+        clearTimeout(archiveSearchTimer);
+        const val = archiveSearchInput.value.trim();
+        if (val.length === 0) { renderHistory(); return; }
+        if (val.length < 3) return;
+        archiveSearchTimer = setTimeout(renderHistory, 300);
+      });
+      archiveSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { clearTimeout(archiveSearchTimer); renderHistory(); }
+      });
+    } renderHistory);
     if (archiveFlagFilter) archiveFlagFilter.addEventListener('change', renderHistory);
     if (archiveSortFilter) archiveSortFilter.addEventListener('change', renderHistory);
 
