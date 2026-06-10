@@ -4469,10 +4469,9 @@
         const url = isPlaceholderUrl ? '' : urlRaw;
         const raw = p[1] ? parseInt(p[1], 10) : null;
         const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
-        const freeform = (!url && isLevelUp) ? parseFreeformAltTake(clean) : null;
+        const freeform = (!url && (isLevelUp || isAdd || isPromote)) ? parseFreeformAltTake(clean) : null;
         const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || freeform?.title || '');
-        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');
-        const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
+        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');        const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
         const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
         const cleanReason = pendingGenreTag ? rawReason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : rawReason;
         const song = {
@@ -5019,11 +5018,26 @@
       }
 
       if (!target) {
+        // Fallback: search by decoded key as title string (handles placeholder-URL levelUp children)
+        const decodedKey = decodeURIComponent(encodedKey || '');
+        const allSongs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(s => !s.isPending);
+        for (const parent of allSongs) {
+          if (parent.levelUp && songIdentity(parent.levelUp) === decodedKey) {
+            target = parent.levelUp;
+            break;
+          }
+          if (songIdentity(parent) === decodedKey) {
+            target = parent;
+            break;
+          }
+        }
+      }
+      if (!target) {
         showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
         return;
       }
-
+      
       const oldUrl = normalizeSongUrl(target.url);
       const nestedLevelUp = target.levelUp || null;
 
@@ -5034,15 +5048,19 @@
       target.releaseSource = '';
 
       if (/spotify\.com\/track\//i.test(nextUrl)) {
+        const savedReason = target.reason || '';
+        const savedScore = target.score;
         target.title = '';
         target.artist = '';
         const resolved = (await resolveSpotifyTitles([{ ...target, levelUp: null }]))[0];
         if (resolved) {
           resolved.levelUp = nestedLevelUp;
+          resolved.reason = savedReason;
+          resolved.score = savedScore;
           Object.assign(target, resolved);
         }
       }
-
+      
       if (!isPendingEdit && normalizeSongUrl(currentGenre.favoritesongurl || '') === oldUrl) {
         currentGenre.favoritesongurl = nextUrl;
         currentGenre.favoritesong = target.title || currentGenre.favoritesong;
