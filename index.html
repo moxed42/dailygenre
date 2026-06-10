@@ -2653,6 +2653,9 @@
       font:inherit;
       font-weight:900;
     }
+    .viz-meta-delete { color: var(--danger) !important; border-color: color-mix(in oklab, var(--danger) 30%, transparent) !important; }
+    .viz-meta-delete:hover { background: color-mix(in oklab, var(--danger) 10%, transparent) !important; }
+    
     .viz-refresh-progress {
       display:grid;
       gap:6px;
@@ -8098,6 +8101,29 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
     }
 
+      function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
+      if (!window.confirm('Permanently delete this track from its genre? This cannot be undone until you reload without saving.')) return;
+      const genreId = decodeURIComponent(encodedGenreId || '');
+      const key = decodeURIComponent(encodedKey || '');
+      const genre = genres.find(g => String(g.id) === String(genreId));
+      if (!genre) return;
+      const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(s => !s.isPending);
+      const filtered = [];
+      for (const song of songs) {
+        if (songsIdentityMatch(song, key)) continue; // skip deleted
+        if (song.levelUp && songsIdentityMatch(song.levelUp, key)) song.levelUp = null;
+        filtered.push(song);
+      }
+      genre.songs_listened = filtered;
+      libraryUpdatesPending = true;
+      toggleLibrarySaveButton(true);
+      setUnsavedState(true);
+      showSaveToast('Track deleted — click Save Library Updates to persist.', false);
+      const restore = preserveScrollSnapshot();
+      renderVisuals();
+      restore();
+    }
+
     function editMetadataTrackUrl(encodedGenreName) {
       const name = decodeURIComponent(String(encodedGenreName || ''));
       const genre = (genres || []).find(g => String(g.genre || '') === name);
@@ -8132,7 +8158,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           const effective = songEffectiveYear(row.song);
           const eraNote = effective.year ? `${effective.source}: ${effective.year}${row.song.releaseYear && effective.source !== 'Spotify' ? ` · Spotify: ${row.song.releaseYear}` : ''}` : 'No era/release year yet';
           const eraForm = `<div class="viz-era-form viz-era-form-metadata"><span>${escapeHtml(eraNote)}</span><input id="${eraInputId}" type="text" placeholder="1950s or 1953" value="${escapeHtml(savedEra)}"><button type="button" onclick="saveEraOverride('${visualActionArg(row.genre.id)}','${visualActionArg(songIdentity(row.song))}','${eraInputId}')">Save Era</button></div>`;
-          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${row.bulkSkipped ? 'Retry Track' : 'Refresh Track'}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button></div></div>`;
+          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${row.bulkSkipped ? 'Retry Track' : 'Refresh Track'}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button><button type="button" class="viz-meta-delete" onclick="deleteFromMetadataQueue('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}', '${mountId}')" title="Remove this track from the genre entirely">Delete</button></div>;
         }).join('')}</div>` : '<div class="viz-empty">Nothing in this metadata group.</div>'}${allVisible.length > limit ? `<button type="button" class="viz-show-more" onclick="showMoreVizQueue('metadata')">Show 8 more</button>` : ''}</div>
       </details>`;
     }
