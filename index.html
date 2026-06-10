@@ -4470,9 +4470,11 @@
         const raw = p[1] ? parseInt(p[1], 10) : null;
         const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
         const freeform = (!url && (isLevelUp || isAdd || isPromote)) ? parseFreeformAltTake(clean) : null;
-        const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || freeform?.title || '');
-        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');        const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
-        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
+        // p[0] may be "Artist — Title" (no URL), p[2] is reason, p[3]+ is title in URL-format entries.
+        // For freeform entries (no URL), use p[0] as the full title if p.slice(3) is empty.
+        const p0AsTitle = !url && !extractUrl(p[0] || '') ? cleanPastedCitationArtifacts(p[0] || '') : '';
+        const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || p0AsTitle || freeform?.title || '');
+        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
         const cleanReason = pendingGenreTag ? rawReason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : rawReason;
         const song = {
           url,
