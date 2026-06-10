@@ -7226,26 +7226,15 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       genres = loaded.data;
       serverFileSha = loaded.sha || '';
       window.genres = genres;
-
-      genres.forEach(g => {
       genres.forEach(g => {
         if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
         if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
       });
-      // Defer full song inflation to avoid blocking initial render — process in idle chunks
-      const inflateChunk = (list, start) => {
-  const end = Math.min(start + 20, list.length);
-  for (let i = start; i < end; i++) {
-    const g = list[i];
-    g.songs_listened = inflateSongsFromStorage(g.songs_listened); // ← ADD THIS
-    g.pending_songs = normalizePendingSongs(g.pending_songs);
-    removeLoggedSongsFromPending(g);
-  }
-  ...        if (end < list.length) {
-          ('requestIdleCallback' in window ? requestIdleCallback : setTimeout)(() => inflateChunk(list, end));
-        }
-      };
-      inflateChunk(genres, 0);
+      genres.forEach(g => {
+        g.songs_listened = inflateSongsFromStorage(g.songs_listened);
+        g.pending_songs = normalizePendingSongs(g.pending_songs);
+        removeLoggedSongsFromPending(g);
+      });
       repairExistingPendingSources();
 
       // RANK_SEED is retained as historical reference only. Saved data is now authoritative;
