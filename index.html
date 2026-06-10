@@ -4497,30 +4497,7 @@
           songs.push(song);
         }
       }
-      // Cross-format dedup: if a placeholder-URL entry (http://url.com) and a real-URL entry
-      // refer to the same song by artist+title, keep only the real-URL one.
-      const metaSeen = new Map(); // metaKey -> index in deduped array
-      const deduped = [];
-      for (const song of songs) {
-        const artist = String(song.artist || '').trim().toLowerCase();
-        const title = String(song.title || '').trim().toLowerCase();
-        const metaKey = artist || title ? `${artist}|${title}` : null;
-        const hasRealUrl = song.url && !isPlaceholderUrl(song.url);
-        if (metaKey && metaSeen.has(metaKey)) {
-          const existingIdx = metaSeen.get(metaKey);
-          const existing = deduped[existingIdx];
-          const existingHasRealUrl = existing.url && !isPlaceholderUrl(existing.url);
-          // If the current entry has a real URL and the existing one doesn't, replace it
-          if (hasRealUrl && !existingHasRealUrl) {
-            deduped[existingIdx] = song;
-          }
-          // Skip — don't add a second entry for the same song
-          continue;
-        }
-        if (metaKey) metaSeen.set(metaKey, deduped.length);
-        deduped.push(song);
-      }
-      return deduped;
+      return songs;
     }
     function showSaveToast(message, isError) {
       const el = document.getElementById('saveToast');
