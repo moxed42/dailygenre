@@ -8155,10 +8155,14 @@ async function loadData() {
       setUnsavedState(true);
       showSaveToast('Track deleted — click Save Library Updates to persist.', false);
       const metaDetailsOpen = !!document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.open;
+          const metaDetailsOpen = !!document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.open;
       const restore = preserveScrollSnapshot();
       renderVisuals();
       restore();
       if (metaDetailsOpen) {
+        document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.setAttribute('open', '');
+      }  
+    if (metaDetailsOpen) {
         document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.setAttribute('open', '');
       }
     function editMetadataTrackUrl(encodedGenreName) {
@@ -8184,8 +8188,7 @@ async function loadData() {
       const report = spotifyRefreshReport
         ? `<div class="viz-metadata-report"><strong>Last refresh${spotifyRefreshReport.scope ? ` (${escapeHtml(spotifyRefreshReport.scope)})` : ''}:</strong> ${spotifyRefreshReport.updated} updated · ${spotifyRefreshReport.remaining} remaining Spotify tracks · ${spotifyRefreshReport.broken} broken/unresolved · ${spotifyRefreshReport.failed} other failures${spotifyRefreshReport.rateLimited ? ` · paused by Spotify${spotifyRefreshReport.pausedSeconds ? ` (${spotifyRefreshReport.pausedSeconds}s wait requested)` : ''}` : ''}${spotifyRefreshReport.stopped && !spotifyRefreshReport.rateLimited ? ' · stopped early' : ''}.</div>`
         : '';
-      const _metaWasOpen = mount.querySelector('details.viz-queue-fold')?.open ?? !!spotifyRefreshReport;
-      mount.innerHTML = `<details class="viz-queue-fold" ${_metaWasOpen ? 'open' : ''}>
+      mount.innerHTML = `<details class="viz-queue-fold" ${spotifyRefreshReport ? 'open' : ''}>
       <summary><span>Missing Metadata Queue</span><span class="viz-queue-count">${rows.length}</span></summary>
         <div class="viz-queue-body">${report}<div class="viz-metadata-summary"><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'spotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('spotify', '${mountId}')">Ready for Spotify refresh · ${counts.spotify}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'broken' ? 'active' : ''}" onclick="setMetadataQueueFilter('broken', '${mountId}')">Broken / unrecognized · ${counts.broken}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'nonspotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('nonspotify', '${mountId}')">Non-Spotify · ${counts.nonspotify}</button></div>${visible.length ? `<div class="viz-metadata-list">${visible.map((row, idx) => {
           const failure = row.failure ? `<span class="viz-missing-chip">${escapeHtml(row.failure.code === 'rate_limited' ? 'rate limited' : row.failure.error)}</span>` : '';
