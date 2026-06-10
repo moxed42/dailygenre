@@ -4475,7 +4475,9 @@
         const freeform = (!url && (isLevelUp || isAdd || isPromote)) ? parseFreeformAltTake(clean) : null;
         // p[0] may be "Artist — Title" (no URL), p[2] is reason, p[3]+ is title in URL-format entries.
         // For freeform entries (no URL), use p[0] as the full title if p.slice(3) is empty.
-        const p0AsTitle = !url && !extractUrl(p[0] || '') ? cleanPastedCitationArtifacts(p[0] || '') : '';
+                const looksLikePipeFormat = p.length >= 3 && /^[1-5]$/.test((p[1] || '').trim());
+        const p0AsTitle = !url && !extractUrl(p[0] || '') && looksLikePipeFormat ? cleanPastedCitationArtifacts(p[0] || '') : '';
+        
         const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || p0AsTitle || freeform?.title || '');
         const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');
         const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
@@ -7220,12 +7222,24 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       window.genres = genres;
 
       genres.forEach(g => {
+      genres.forEach(g => {
         if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
-        g.songs_listened = inflateSongsFromStorage(g.songs_listened);
         if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
-        g.pending_songs = normalizePendingSongs(g.pending_songs);
-        removeLoggedSongsFromPending(g);
       });
+      // Defer full song inflation to avoid blocking initial render — process in idle chunks
+      const inflateChunk = (list, start) => {
+        const end = Math.min(start + 20, list.length);
+        for (let i = start; i < end; i++) {
+          const g = list[i];
+          g.songs_listened = inflateSongsFromStorage(g.songs_listened);
+          g.pending_songs = normalizePendingSongs(g.pending_songs);
+          removeLoggedSongsFromPending(g);
+        }
+        if (end < list.length) {
+          ('requestIdleCallback' in window ? requestIdleCallback : setTimeout)(() => inflateChunk(list, end));
+        }
+      };
+      inflateChunk(genres, 0);
       repairExistingPendingSources();
 
       // RANK_SEED is retained as historical reference only. Saved data is now authoritative;
