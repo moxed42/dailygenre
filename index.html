@@ -2708,6 +2708,11 @@
       font:inherit;
       font-weight:900;
     }
+    .viz-meta-actions .viz-meta-link {
+      align-self:center;
+      font-size:.7rem;
+      white-space:nowrap;
+    }
     .viz-meta-delete { color: var(--danger) !important; border-color: color-mix(in oklab, var(--danger) 30%, transparent) !important; }
     .viz-meta-delete:hover { background: color-mix(in oklab, var(--danger) 10%, transparent) !important; }
     
@@ -8270,19 +8275,30 @@ async function loadData() {
 
     function spotifyMetadataMissingFields(song) {
       const missing = [];
-      if (!song.artist) missing.push('artist');
-      if (!song.artwork) missing.push('art');
-      if (!song.releaseYear) missing.push('year');
-      if (!song.durationMs) missing.push('duration');
-      if (!song.spotifyId) missing.push('Spotify ID');
-      if (!song.isrc && !song.spotifyMetadataFetched) missing.push('ISRC');
+      if (!String(song?.title || '').trim()) missing.push('title');
+      if (!String(song?.artist || '').trim()) missing.push('artist');
+      if (!String(song?.artwork || '').trim()) missing.push('album art');
+      if (!song?.releaseYear) missing.push('year');
+      if (!song?.durationMs) missing.push('duration');
+      if (!song?.spotifyId) missing.push('Spotify ID');
+      if (!song?.isrc && !song?.spotifyMetadataFetched) missing.push('ISRC');
       return missing;
+    }
+
+    function metadataRowMissingAlbumArt(row) {
+      return (row?.missing || []).some(field => /art/i.test(String(field || '')));
+    }
+
+    function metadataFilterMatches(row, filter) {
+      const active = ['spotify', 'art', 'broken', 'nonspotify'].includes(filter) ? filter : 'spotify';
+      if (active === 'art') return metadataRowMissingAlbumArt(row);
+      return row.group === active;
     }
 
     function spotifyTrackNeedsRefresh(song) {
       if (!validSpotifyTrackUrl(song?.url || '')) return false;
-      if (!song.spotifyMetadataFetched) return true;
-      return !song.artist || !song.artwork || !song.releaseYear || !song.durationMs || !song.spotifyId;
+      if (!song?.spotifyMetadataFetched) return true;
+      return !String(song?.artist || '').trim() || !String(song?.artwork || '').trim() || !song?.releaseYear || !song?.durationMs || !song?.spotifyId;
     }
 
     function collectMetadataRows(items) {
@@ -8292,24 +8308,25 @@ async function loadData() {
         const key = stagedReactionKey(genre.id, songIdentity(song));
         const failure = spotifyMetadataFailures.get(key) || null;
         const validSpotify = validSpotifyTrackUrl(url);
-        const bulkSkipped = validSpotify && spotifyTrackNeedsRefresh(song) && spotifyFailureShouldSkipBulk(failure);
+        const needsRefresh = validSpotify && spotifyTrackNeedsRefresh(song);
+        const bulkSkipped = needsRefresh && spotifyFailureShouldSkipBulk(failure);
         let group = '';
-        if (validSpotify && spotifyTrackNeedsRefresh(song)) group = bulkSkipped ? 'broken' : 'spotify';
+        if (validSpotify && needsRefresh) group = bulkSkipped ? 'broken' : 'spotify';
         else if (!validSpotify && looksLikeSpotifyUrl(url)) group = 'broken';
-        else if (!looksLikeSpotifyUrl(url) && missing.length) group = 'nonspotify';
+        else if (missing.length) group = 'nonspotify';
         if (!group) return null;
         return { genre, song, missing, group, key, failure, validSpotify, bulkSkipped };
       }).filter(Boolean));
     }
 
     function setMetadataQueueFilter(filter, mountId) {
-      metadataQueueFilter = filter || 'spotify';
+      metadataQueueFilter = ['spotify', 'art', 'broken', 'nonspotify'].includes(filter) ? filter : 'spotify';
       const base = mountId === 'vizMetadataQueueMonthly' ? vizBaseGenres() : allListenedGenresForMaintenance();
       renderMetadataQueue(mountId, vizFilteredItems(base));
     }
 
     function openMetadataQueue(filter='spotify', mode='alltime') {
-      metadataQueueFilter = filter;
+      metadataQueueFilter = ['spotify', 'art', 'broken', 'nonspotify'].includes(filter) ? filter : 'spotify';
       if (mode === 'alltime' && vizMode() !== 'alltime') {
         document.querySelector('[data-viz-mode="alltime"]')?.click();
       }
@@ -8415,28 +8432,35 @@ async function loadData() {
       const rows = collectMetadataRows(items);
       const counts = {
         spotify: rows.filter(row => row.group === 'spotify').length,
+        art: rows.filter(metadataRowMissingAlbumArt).length,
         broken: rows.filter(row => row.group === 'broken').length,
         nonspotify: rows.filter(row => row.group === 'nonspotify').length
       };
+      if (!['spotify', 'art', 'broken', 'nonspotify'].includes(metadataQueueFilter)) metadataQueueFilter = 'spotify';
       const limit = vizQueueLimits.metadata || 8;
-      const allVisible = rows.filter(row => row.group === metadataQueueFilter);
+      const allVisible = rows.filter(row => metadataFilterMatches(row, metadataQueueFilter));
       const visible = allVisible.slice(0, limit);
       const report = spotifyRefreshReport
         ? `<div class="viz-metadata-report"><strong>Last refresh${spotifyRefreshReport.scope ? ` (${escapeHtml(spotifyRefreshReport.scope)})` : ''}:</strong> ${spotifyRefreshReport.updated} updated · ${spotifyRefreshReport.remaining} remaining Spotify tracks · ${spotifyRefreshReport.broken} broken/unresolved · ${spotifyRefreshReport.failed} other failures${spotifyRefreshReport.rateLimited ? ` · paused by Spotify${spotifyRefreshReport.pausedSeconds ? ` (${spotifyRefreshReport.pausedSeconds}s wait requested)` : ''}` : ''}${spotifyRefreshReport.stopped && !spotifyRefreshReport.rateLimited ? ' · stopped early' : ''}.</div>`
         : '';
+      const emptyCopy = metadataQueueFilter === 'art'
+        ? 'No tracks are missing album art in this scope.'
+        : 'Nothing in this metadata group.';
       mount.innerHTML = `<details class="viz-queue-fold" ${spotifyRefreshReport ? 'open' : ''}>
       <summary><span>Missing Metadata Queue</span><span class="viz-queue-count">${rows.length}</span></summary>
-        <div class="viz-queue-body">${report}<div class="viz-metadata-summary"><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'spotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('spotify', '${mountId}')">Ready for Spotify refresh · ${counts.spotify}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'broken' ? 'active' : ''}" onclick="setMetadataQueueFilter('broken', '${mountId}')">Broken / unrecognized · ${counts.broken}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'nonspotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('nonspotify', '${mountId}')">Non-Spotify · ${counts.nonspotify}</button></div>${visible.length ? `<div class="viz-metadata-list">${visible.map((row, idx) => {
+        <div class="viz-queue-body">${report}<div class="viz-metadata-summary"><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'spotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('spotify', '${mountId}')">Ready for Spotify refresh · ${counts.spotify}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'art' ? 'active' : ''}" onclick="setMetadataQueueFilter('art', '${mountId}')">Missing album art · ${counts.art}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'broken' ? 'active' : ''}" onclick="setMetadataQueueFilter('broken', '${mountId}')">Broken / unrecognized · ${counts.broken}</button><button type="button" class="viz-metadata-filter ${metadataQueueFilter === 'nonspotify' ? 'active' : ''}" onclick="setMetadataQueueFilter('nonspotify', '${mountId}')">Non-Spotify · ${counts.nonspotify}</button></div>${visible.length ? `<div class="viz-metadata-list">${visible.map((row, idx) => {
           const failure = row.failure ? `<span class="viz-missing-chip">${escapeHtml(row.failure.code === 'rate_limited' ? 'rate limited' : row.failure.error)}</span>` : '';
           const skipped = row.bulkSkipped ? '<span class="viz-missing-chip">skipped from bulk refresh</span>' : '';
-          const canRefresh = row.group === 'spotify' || row.bulkSkipped;
+          const canRefresh = row.validSpotify;
+          const refreshText = metadataRowMissingAlbumArt(row) ? (row.bulkSkipped ? 'Retry Artwork' : 'Pull Album Art') : (row.bulkSkipped ? 'Retry Track' : 'Refresh Track');
           const eraInputId = `metadataEra_${mountId}_${idx}_${String(row.genre.id).replace(/[^a-zA-Z0-9]/g,'')}`;
           const savedEra = row.song.eraYear || row.song.eraDecade || '';
           const effective = songEffectiveYear(row.song);
           const eraNote = effective.year ? `${effective.source}: ${effective.year}${row.song.releaseYear && effective.source !== 'Spotify' ? ` · Spotify: ${row.song.releaseYear}` : ''}` : 'No era/release year yet';
           const eraForm = `<div class="viz-era-form viz-era-form-metadata"><span>${escapeHtml(eraNote)}</span><input id="${eraInputId}" type="text" placeholder="1950s or 1953" value="${escapeHtml(savedEra)}"><button type="button" onclick="saveEraOverride('${visualActionArg(row.genre.id)}','${visualActionArg(songIdentity(row.song))}','${eraInputId}')">Save Era</button></div>`;
-          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${row.bulkSkipped ? 'Retry Track' : 'Refresh Track'}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button><button type="button" class="viz-meta-delete" onclick="deleteFromMetadataQueue('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}', '${mountId}')" title="Remove this track from the genre entirely">Delete</button></div>`;
-        }).join('')}</div>` : '<div class="viz-empty">Nothing in this metadata group.</div>'}${allVisible.length > limit ? `<button type="button" class="viz-show-more" onclick="showMoreVizQueue('metadata')">Show 8 more</button>` : ''}</div>
+          const trackLink = row.song.url ? `<a class="viz-meta-link" href="${escapeHtml(row.song.url)}" target="_blank" rel="noopener noreferrer">Open Track ↗</a>` : '';
+          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${refreshText}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button>${trackLink}<button type="button" class="viz-meta-delete" onclick="deleteFromMetadataQueue('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}', '${mountId}')" title="Remove this track from the genre entirely">Delete</button></div></div>`;
+        }).join('')}</div>` : `<div class="viz-empty">${escapeHtml(emptyCopy)}</div>`}${allVisible.length > limit ? `<button type="button" class="viz-show-more" onclick="showMoreVizQueue('metadata')">Show 8 more</button>` : ''}</div>
       </details>`;
     }
 
@@ -8499,23 +8523,15 @@ async function loadData() {
 
     function maintenanceStats() {
       const listened = allListenedGenresForMaintenance();
-      const pendingGenres = (genres || []).filter(g => normalizePendingSongs(g.pending_songs || []).length > 0);
-      const missingMetadataGenres = listened.filter(g => vizOfficialSongs(g).some(s =>
-        !s.artist || !s.artwork || !s.releaseYear ||
-        (String(s.url || '').includes('spotify.com/track/') && (!s.spotifyId || !s.durationMs))
-      ));
-      const unratedGenres = listened.filter(g => vizOfficialSongs(g).some(s => ![1,2,3].includes(Number(s.reaction))));
+      const pendingRows = collectQueuedPendingNominationRows();
+      const missingMetadataRows = collectMetadataRows(listened);
+      const unratedRows = listened.flatMap(genre => vizOfficialSongs(genre)
+        .filter(song => ![1,2,3].includes(Number(song.reaction)))
+        .map(song => ({ type:'unrated', genre, song, key:songIdentity(song) }))
+      );
       const drafts = (genres || []).filter(g => (g.status || '').toLowerCase() === 'unlistened' && ((g.notes || '').trim() || vizOfficialSongs(g).length || g.favoritesong));
-      const duplicates = listened.filter(g => {
-        const seen = new Set();
-        return vizOfficialSongs(g).some(song => {
-          const key = songIdentity(song);
-          if (seen.has(key)) return true;
-          seen.add(key);
-          return false;
-        });
-      });
-      return { pendingGenres, missingMetadataGenres, unratedGenres, drafts, duplicates };
+      const duplicates = collectDuplicateMaintenanceRows();
+      return { pendingRows, missingMetadataRows, unratedRows, drafts, duplicates };
     }
 
     function renderNeedsAttention(mountId) {
@@ -8523,14 +8539,14 @@ async function loadData() {
       if (!mount) return;
       const stats = maintenanceStats();
       const buckets = [
-        ['Pending nominations', stats.pendingGenres],
-        ['Missing song metadata', stats.missingMetadataGenres],
-        ['Unrated songs', stats.unratedGenres],
+        ['Pending nominations', stats.pendingRows],
+        ['Missing song metadata', stats.missingMetadataRows],
+        ['Unrated songs', stats.unratedRows],
         ['Prepared drafts', stats.drafts],
         ['Possible duplicates', stats.duplicates]
       ];
       mount.innerHTML = `<div class="viz-maint-grid">${buckets.map(([label, list]) => `<button type="button" class="viz-maint-card" data-maint-label="${escapeHtml(label)}" onclick="showMaintenanceGenres(${JSON.stringify(label)})"><strong>${list.length}</strong><span>${escapeHtml(label)}</span></button>`).join('')}</div><div class="viz-maint-detail" id="${mountId}Detail"><span class="small">Click a maintenance box to see the exact songs or genres behind that count.</span></div>`;
-      mount.dataset.maintenance = JSON.stringify(buckets.reduce((acc, [label, list]) => { acc[label] = list.map(g => String(g.genre || '')); return acc; }, {}));
+      mount.dataset.maintenance = JSON.stringify(buckets.reduce((acc, [label, list]) => { acc[label] = list.length; return acc; }, {}));
     }
 
     function maintenanceRowsForLabel(label) {
@@ -8569,7 +8585,9 @@ async function loadData() {
       }
       if (row.type === 'metadata') {
         const groupLabel = row.group === 'spotify' ? 'ready for refresh' : row.group === 'broken' ? 'broken/unrecognized' : 'non-Spotify';
-        return `<div class="viz-maint-row"><div><div class="viz-maint-title">${vizSongTitleLink(row.song)}</div><div class="viz-maint-meta"><span class="review-chip">${escapeHtml(row.genre.genre || 'Unknown genre')}</span><span class="review-chip warn">${escapeHtml(groupLabel)}</span>${row.missing.map(field => `<span class="review-chip warn">missing ${escapeHtml(field)}</span>`).join('')}</div></div><div class="viz-maint-actions"><button type="button" class="primary" onclick="openMetadataQueue('${row.group === 'broken' ? 'broken' : row.group === 'nonspotify' ? 'nonspotify' : 'spotify'}', 'alltime')">Open Metadata Queue</button><button type="button" onclick="openGenreByIdEncoded('${visualActionArg(row.genre.id)}', false)">Open Genre</button></div></div>`;
+        const filter = metadataRowMissingAlbumArt(row) ? 'art' : (row.group === 'broken' ? 'broken' : row.group === 'nonspotify' ? 'nonspotify' : 'spotify');
+        const refreshButton = row.validSpotify ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${metadataRowMissingAlbumArt(row) ? 'Pull Album Art' : 'Refresh Track'}</button>` : '';
+        return `<div class="viz-maint-row"><div><div class="viz-maint-title">${vizSongTitleLink(row.song)}</div><div class="viz-maint-meta"><span class="review-chip">${escapeHtml(row.genre.genre || 'Unknown genre')}</span><span class="review-chip warn">${escapeHtml(groupLabel)}</span>${row.missing.map(field => `<span class="review-chip warn">missing ${escapeHtml(field)}</span>`).join('')}</div></div><div class="viz-maint-actions">${refreshButton}<button type="button" class="primary" onclick="openMetadataQueue('${filter}', 'alltime')">Open ${filter === 'art' ? 'Art' : 'Metadata'} Queue</button><button type="button" onclick="openGenreByIdEncoded('${visualActionArg(row.genre.id)}', true)">Open & Edit</button></div></div>`;
       }
       if (row.type === 'unrated') {
         const genreId = visualActionArg(row.genre.id);
