@@ -6805,7 +6805,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
       // This manual Review move resolves the original pending tag marker.
       // Without clearing it, renderReview() immediately shows the same row again.
-      delete sourceSongs[songIndex]._pendingGenreTag;
+      sourceSongs[songIndex]._pendingGenreTag = '';
       sourceGenre.songs_listened = sourceSongs;
 
       setUnsavedState(true);
