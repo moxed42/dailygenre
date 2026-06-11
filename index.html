@@ -3940,7 +3940,7 @@
   <div class="modal-backdrop" id="passwordModal">
     <div class="modal">
       <h3>Save changes</h3>
-      <p>Enter the development app password to save changes to the test genre data through Cloudflare.</p>
+      <p>Enter the app password to save changes through Cloudflare.</p>
       <input id="passwordInput" type="password" placeholder="App password" />
       <div class="row" style="margin-top:14px;">
         <button class="btn btn-primary" id="passwordSubmitBtn">Save now</button>
@@ -4438,68 +4438,110 @@
     }
 
     function parseSongLinks(text) {
-      const extractUrl = value => {
-        const v = String(value).trim();
-        const md = v.match(/https?:\/\/\S+/i);
-        if (md) return md[1] ? md[1].trim() : md[0].trim();
-        const inline = v.match(/https?:\/\/\S+/i);
-        return inline ? inline[0].trim() : '';
-      };
-    function parseSongLinks(text) {
       const extractUrl = (value) => {
         const v = String(value || '').trim();
-        const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
+        const md = v.match(/^\s*\[[^\]]*\]\((https?:\/\/[^\s)]+)\)\s*$/i);
         if (md) return md[1].trim();
         const inline = v.match(/https?:\/\/[^\s)]+/i);
         return inline ? inline[0].trim() : '';
       };
-      const isPlaceholderUrl = (url) => /^https?:\/\/url\.com\b/i.test(String(url || '').trim());
-      const parseFreeformAltTake = (value) => {
-        const text = String(value || '').trim();
-        const quoted = text.match(/[""]([^""]+)[""]/);
-        const byArtist = text.match(/\bby\s+([^–—-]+?)(?:\s+[–—-]\s+|$)/i);
-        return {
-          title: cleanPastedCitationArtifacts(quoted ? quoted[1].trim() : (text.split(/[–—-]/)[0] || 'Alt Take').replace(/^try\s+/i, '').trim()),
-          artist: cleanPastedCitationArtifacts(byArtist ? byArtist[1].trim() : ''),
-          reason: cleanPastedCitationArtifacts(text)
-        };
+
+      const extractMarkdownLabel = (value) => {
+        const md = String(value || '').trim().match(/^\s*\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)\s*$/i);
+        return md ? cleanPastedCitationArtifacts(md[1]) : '';
       };
-      const lines = String(text).replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
+
+      const stripUrlFromLabel = (value, url) => {
+        let label = cleanPastedCitationArtifacts(value || '');
+        if (url) label = label.replace(url, '').trim();
+        label = label.replace(/^\[[^\]]*\]\(\s*\)$/i, '').trim();
+        return label.replace(/^[-–—\s|]+|[-–—\s|]+$/g, '').trim();
+      };
+
+      const isPlaceholderUrl = (url) => /^https?:\/\/url\.com\/?$/i.test(String(url || '').trim());
+      const isScore = (value) => /^[1-5]$/.test(String(value || '').trim());
+      const lineParts = (line) => String(line || '').split('|').map(part => cleanPastedCitationArtifacts(part).trim());
+      const prefixInfo = (line) => {
+        let clean = String(line || '').trim();
+        const flags = { isLevelUp:false, isAdd:false, isPromote:false };
+        if (/^(?:🔼\s*)?LEVEL\s*UP\s*:/i.test(clean)) {
+          flags.isLevelUp = true;
+          clean = clean.replace(/^(?:🔼\s*)?LEVEL\s*UP\s*:\s*/i, '');
+        } else if (/^(?:🔼\s*)?ADD\s*:/i.test(clean)) {
+          flags.isAdd = true;
+          clean = clean.replace(/^(?:🔼\s*)?ADD\s*:\s*/i, '');
+        } else if (/^(?:🔼\s*)?PROMOTE\s*:/i.test(clean)) {
+          flags.isPromote = true;
+          clean = clean.replace(/^(?:🔼\s*)?PROMOTE\s*:\s*/i, '');
+        }
+        return { clean, ...flags };
+      };
+
+      const lines = String(text || '').replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
       const songs = [];
-      const PLACEHOLDER_URLS = ['http://url.com', 'https://url.com'];
-      const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
-      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
-      const promotePrefix = /^(?:🔼\s*)?PROMOTE:\s*/i;
-      for (const line of lines) {
-        const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || p0AsTitle || freeform?.title || '');
-        const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');
-        const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
-        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : null;
-        const cleanReason = pendingGenreTag ? rawReason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : rawReason;
+
+      for (const rawLine of lines) {
+        const { clean: line, isLevelUp, isAdd, isPromote } = prefixInfo(rawLine);
+        const parts = lineParts(line);
+        if (!parts.length) continue;
+
+        const first = parts[0] || '';
+        let url = extractUrl(first);
+        const markdownLabel = extractMarkdownLabel(first);
+        let score = null;
+        let reason = '';
+        let displayLabel = markdownLabel || stripUrlFromLabel(first, url);
+
+        if (parts.length > 1 && isScore(parts[1])) {
+          score = parts[1];
+          reason = parts[2] || '';
+          displayLabel = parts.slice(3).filter(Boolean).join(' | ') || displayLabel;
+        } else if (parts.length > 1) {
+          reason = parts[1] || '';
+          displayLabel = parts.slice(2).filter(Boolean).join(' | ') || displayLabel;
+        }
+
+        if (!url) {
+          const anyUrlPart = parts.find(part => extractUrl(part));
+          if (anyUrlPart) url = extractUrl(anyUrlPart);
+        }
+
+        if (!displayLabel && !url && first && !isScore(first)) displayLabel = first;
+        if (isPlaceholderUrl(url)) url = '';
+
+        const genreTagMatch = reason.match(/@([\w\s-]+?)(\s*\||$)/);
+        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : '';
+        const cleanReason = pendingGenreTag ? reason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : reason;
+        const label = normalizeSongArtistAndTitle(displayLabel || '', '');
+
         const song = {
           url,
           score,
           reason: cleanReason,
-          title,
-          artist: freeform?.artist || '',
-          source: url.includes('spotify.com') ? 'spotify' : ((url.includes('youtube') || url.includes('youtu.be')) ? 'youtube' : (url ? 'other' : 'manual')),
+          title: label.title,
+          artist: label.artist,
+          source: /spotify\.com\/track\//i.test(url) ? 'spotify' : ((/youtu\.?be|youtube\.com/i.test(url)) ? 'youtube' : (url ? 'other' : 'manual')),
           added: new Date().toISOString().slice(0,10)
         };
+
         if (pendingGenreTag) song._pendingGenreTag = pendingGenreTag;
+        if (isAdd) song.isAdd = true;
+        if (isPromote) song.isPromote = true;
+        if (isLevelUp) song.isLevelUp = true;
+
         if (!song.url && !song.title && !song.reason) continue;
-        if (!isLevelUp && !isAdd && !isPromote && !song.url && !song.title) continue;        
-        if (isLevelUp) {
-          song.isLevelUp = true;
-          if (songs.length > 0) songs[songs.length - 1].levelUp = song;
-          else songs.push(song);
+        if (!isLevelUp && !isAdd && !isPromote && !song.url && !song.title) continue;
+
+        if (isLevelUp && songs.length > 0) {
+          songs[songs.length - 1].levelUp = song;
         } else {
-          if (isAdd) song.isAdd = true;
-          if (isPromote) song.isPromote = true;
           songs.push(song);
         }
       }
+
       return songs;
     }
+
     function showSaveToast(message, isError) {
       const el = document.getElementById('saveToast');
       if (!el) return;
@@ -4576,6 +4618,7 @@
         promotedFromFit,
         isLevelUp,
         isAdd,
+        isPromote: !!s?.isPromote,
         _pendingGenreTag: s?._pendingGenreTag || '',
         levelUp: s?.levelUp ? normalizeSongsListened([s.levelUp])[0] : null,
       };
@@ -5823,8 +5866,24 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       passwordNotice.textContent = '';
     }
 
+    async function refreshServerFileSha() {
+      if (serverFileSha) return serverFileSha;
+      try {
+        const apiRes = await fetch(DATA_API_URL, { cache: 'no-store' });
+        const meta = await apiRes.json().catch(() => ({}));
+        if (apiRes.ok && meta && meta.sha) {
+          serverFileSha = meta.sha;
+          return serverFileSha;
+        }
+      } catch (error) {
+        console.warn('Could not refresh GitHub file SHA before save', error);
+      }
+      return '';
+    }
+
 
     async function doSaveWithPassword(password) {
+      if (!serverFileSha) await refreshServerFileSha();
       if (!serverFileSha) {
         const error = new Error('No loaded data revision is available. Reload before saving.');
         error.code = 'NO_REVISION';
