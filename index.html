@@ -8173,8 +8173,9 @@ async function loadData() {
       restore();
       if (metaDetailsOpen) {
         document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.setAttribute('open', '');
-      }  
-    
+      }
+    }
+
     function editMetadataTrackUrl(encodedGenreName) {
       const name = decodeURIComponent(String(encodedGenreName || ''));
       const genre = (genres || []).find(g => String(g.genre || '') === name);
