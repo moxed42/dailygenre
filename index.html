@@ -7301,7 +7301,20 @@ async function loadData() {
     document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
       await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
     });
-
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('saveBtn');
+      const old = btn.textContent;
+      btn.disabled = true;
+      btn.classList.add('is-saving');
+      btn.textContent = 'Saving...';
+      try {
+        await prepareAndSaveCurrentGenre();
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove('is-saving');
+        btn.textContent = old;
+      }
+    });
     document.getElementById('markListenedBtn')?.addEventListener('click', markCurrentGenreListened);
     document.getElementById('unlistenBtn')?.addEventListener('click', unlistenCurrentGenre);
     document.getElementById('clearPendingBtn')?.addEventListener('click', clearPendingSongs);
