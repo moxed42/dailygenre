@@ -7301,7 +7301,7 @@ async function loadData() {
     document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
       await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
     });
-        document.getElementById('saveBtn').addEventListener('click', async () => {
+    document.getElementById('saveBtn').addEventListener('click', async () => {
       const btn = document.getElementById('saveBtn');
       const old = btn.textContent;
       btn.disabled = true;
