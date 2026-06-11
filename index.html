@@ -8155,16 +8155,13 @@ async function loadData() {
       setUnsavedState(true);
       showSaveToast('Track deleted — click Save Library Updates to persist.', false);
       const metaDetailsOpen = !!document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.open;
-          const metaDetailsOpen = !!document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.open;
       const restore = preserveScrollSnapshot();
       renderVisuals();
       restore();
       if (metaDetailsOpen) {
         document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.setAttribute('open', '');
       }  
-    if (metaDetailsOpen) {
-        document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.setAttribute('open', '');
-      }
+    
     function editMetadataTrackUrl(encodedGenreName) {
       const name = decodeURIComponent(String(encodedGenreName || ''));
       const genre = (genres || []).find(g => String(g.genre || '') === name);
