@@ -2478,6 +2478,61 @@
     }
     .viz-maint-card strong { display:block; font-size:1.28rem; color:var(--text); }
     .viz-maint-card span { display:block; font-size:.72rem; color:var(--muted); font-weight:850; text-transform:uppercase; letter-spacing:.04em; }
+    .viz-maint-card:hover,
+    .viz-maint-card:focus-visible,
+    .viz-maint-card.active {
+      transform:translateY(-1px);
+      background:#fff8e6;
+      border-color:rgba(216,138,34,.40);
+      box-shadow:0 10px 20px rgba(80,48,18,.10);
+    }
+    .viz-maint-panel {
+      flex:1 1 100%;
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(127,82,28,.16);
+      background:rgba(255,252,241,.72);
+    }
+    .viz-maint-panel-head {
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .viz-maint-panel-title { margin:0; font-size:.98rem; letter-spacing:-.025em; }
+    .viz-maint-panel-copy { margin:4px 0 0; color:var(--muted); font-size:.78rem; line-height:1.35; }
+    .viz-maint-list { display:grid; gap:8px; }
+    .viz-maint-row {
+      display:grid;
+      grid-template-columns:minmax(180px,1fr) auto;
+      gap:10px;
+      align-items:center;
+      padding:10px;
+      border-radius:13px;
+      background:rgba(255,252,241,.78);
+      border:1px solid rgba(127,82,28,.12);
+    }
+    .viz-maint-title { font-size:.84rem; font-weight:950; color:var(--text); }
+    .viz-maint-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:5px; }
+    .viz-maint-actions { display:flex; gap:6px; justify-content:flex-end; flex-wrap:wrap; }
+    .viz-maint-actions button {
+      border:1px solid rgba(127,82,28,.18);
+      background:#fff8e6;
+      color:var(--text);
+      border-radius:999px;
+      padding:6px 9px;
+      cursor:pointer;
+      font-size:.7rem;
+      font-weight:900;
+    }
+    .viz-maint-actions button.primary { background:var(--accent); border-color:var(--accent); color:#25150b; }
+    @media (max-width:760px) {
+      .viz-maint-row { grid-template-columns:1fr; }
+      .viz-maint-actions { justify-content:flex-start; }
+    }
     .viz-maint-detail { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; }
     .viz-maint-pill {
       border:1px solid rgba(127,82,28,.16);
@@ -3346,6 +3401,41 @@
     }
     .review-stat strong { display:block; font-size:1.85rem; line-height:1; letter-spacing:-.04em; color:#fff8e8; }
     .review-stat span { display:block; margin-top:5px; font-size:.76rem; text-transform:uppercase; letter-spacing:.08em; font-weight:900; opacity:.84; }
+    button.review-stat {
+      display:block;
+      width:100%;
+      text-align:left;
+      font:inherit;
+      cursor:pointer;
+    }
+    button.review-stat:hover,
+    button.review-stat:focus-visible {
+      transform:translateY(-1px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 16px 30px rgba(0,0,0,.16);
+    }
+    .review-filter-row {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin:10px 0 12px;
+    }
+    .review-filter-row input {
+      flex:1 1 240px;
+      border-radius:999px;
+      border:1px solid rgba(127,82,28,.22);
+      background:white;
+      padding:9px 13px;
+      font-size:.84rem;
+    }
+    .review-list-scroll {
+      display:grid;
+      gap:8px;
+      max-height:720px;
+      overflow:auto;
+      padding-right:4px;
+    }
+    .review-row.is-hidden { display:none; }
     .review-card {
       padding:18px;
       border-radius:22px;
@@ -4124,7 +4214,7 @@
     const spotifyMetadataFailures = new Map();
     let vizFocusedGenreId = '';
     let vizOpenQueue = '';
-    let vizQueueLimits = { unrated: 8, metadata: 8 };
+    let vizQueueLimits = { unrated: 8, metadata: 8, maintenance: 40, reviewPending: 160 };
     let vizDrilldownState = null;
     const DEFAULT_PAGE_TITLE = 'Daily Genre';
 
@@ -6467,6 +6557,74 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       };
     }
 
+    function collectQueuedPendingNominationRows() {
+      return (genres || []).flatMap(targetGenre => normalizePendingSongs(targetGenre.pending_songs || []).map((song, index) => {
+        const sourceName = song.pendingFrom || song.source || '';
+        const fit = song.originFit ?? song.nominatedFit ?? song.score ?? '';
+        return {
+          targetGenre,
+          song,
+          index,
+          key: songIdentity(song),
+          sourceName,
+          fit,
+          added: song.added || ''
+        };
+      })).sort((a, b) =>
+        String(a.targetGenre.genre || '').localeCompare(String(b.targetGenre.genre || '')) ||
+        String(a.sourceName || '').localeCompare(String(b.sourceName || '')) ||
+        String(a.song.artist || '').localeCompare(String(b.song.artist || '')) ||
+        String(a.song.title || '').localeCompare(String(b.song.title || ''))
+      );
+    }
+
+    function reviewQueuedPendingRowHtml(row) {
+      const source = row.sourceName || 'Unknown source';
+      const fitLine = row.fit !== '' && row.fit != null ? `<span class="review-chip">source fit ${escapeHtml(String(row.fit))}/5</span>` : '';
+      const addedLine = row.added ? `<span class="review-chip">added ${escapeHtml(String(row.added))}</span>` : '';
+      const searchText = [row.song.artist, row.song.title, row.targetGenre.genre, source, row.song.url].join(' ').toLowerCase();
+      return `<div class="review-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
+        <div>
+          <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
+          <div class="review-meta">
+            <span class="review-chip">queued in ${escapeHtml(row.targetGenre.genre || 'Unknown genre')}</span>
+            <span class="review-chip">from ${escapeHtml(source)}</span>
+            ${fitLine}
+            ${addedLine}
+          </div>
+        </div>
+        <div class="review-move">
+          <button type="button" class="btn btn-secondary" onclick="openGenreByIdEncoded('${visualActionArg(row.targetGenre.id)}', false)">Open Target</button>
+          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}
+        </div>
+      </div>`;
+    }
+
+    function filterReviewPendingQueue(inputId) {
+      const input = document.getElementById(inputId);
+      const term = String(input?.value || '').trim().toLowerCase();
+      const rows = Array.from(document.querySelectorAll('[data-review-pending-row]'));
+      let visible = 0;
+      rows.forEach(row => {
+        const haystack = String(row.dataset.reviewPendingText || '').toLowerCase();
+        const show = !term || haystack.includes(term);
+        row.classList.toggle('is-hidden', !show);
+        if (show) visible += 1;
+      });
+      const count = document.getElementById('reviewPendingVisibleCount');
+      if (count) count.textContent = `${visible} shown`;
+    }
+
+    function scrollToReviewPendingQueue() {
+      const target = document.getElementById('reviewPendingQueueCard');
+      target?.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    function scrollToReviewManualQueue() {
+      const target = document.getElementById('reviewManualQueueCard');
+      target?.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
     function reviewGenreOptions(excludeId='') {
       return (genres || [])
         .filter(g => g && g.genre && String(g.id) !== String(excludeId))
@@ -6720,18 +6878,33 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       if (!mount) return;
       const stats = pendingReviewStats();
       const manualRows = stats.rows.filter(row => row.status !== 'routable');
+      const queuedRows = collectQueuedPendingNominationRows();
       mount.innerHTML = renderSongInboxCard() + `
         <div class="review-stat-grid">
-          <div class="review-stat"><strong>${stats.pendingTotal}</strong><span>Pending nominations</span></div>
+          <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${stats.pendingTotal}</strong><span>Queued pending nominations</span></button>
           <div class="review-stat"><strong>${stats.routable}</strong><span>Auto-routable @tags</span></div>
-          <div class="review-stat"><strong>${stats.unresolved}</strong><span>Need manual review</span></div>
+          <button type="button" class="review-stat" onclick="scrollToReviewManualQueue()"><strong>${stats.unresolved}</strong><span>Need manual review</span></button>
           <div class="review-stat"><strong>${libraryUpdatesPending || hasUnsavedChanges ? 'Yes' : 'No'}</strong><span>Unsaved cleanup</span></div>
         </div>
-        <div class="review-card">
+        <div class="review-card" id="reviewPendingQueueCard">
+          <div class="review-card-head">
+            <div>
+              <h3>Queued pending nominations</h3>
+              <p class="small" style="margin:6px 0 0;">These are the actual songs sitting in each genre’s pending queue. Click a target genre to see/listen/edit it there.</p>
+            </div>
+            <span class="review-chip">${queuedRows.length} total</span>
+          </div>
+          <div class="review-filter-row">
+            <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
+            <span class="small" id="reviewPendingVisibleCount">${queuedRows.length} shown</span>
+          </div>
+          ${queuedRows.length ? `<div class="review-list-scroll">${queuedRows.map(reviewQueuedPendingRowHtml).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
+        </div>
+        <div class="review-card" id="reviewManualQueueCard">
           <div class="review-card-head">
             <div>
               <h3>Pending nomination routing</h3>
-              <p class="small" style="margin:6px 0 0;">Auto-cleanup only moves exact/low-risk matches. Ambiguous tags stay here for manual routing.</p>
+              <p class="small" style="margin:6px 0 0;">This section is only for low-fit songs with unresolved @tags that have not been safely routed yet.</p>
             </div>
             ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
           </div>
@@ -6805,7 +6978,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
       // This manual Review move resolves the original pending tag marker.
       // Without clearing it, renderReview() immediately shows the same row again.
-      sourceSongs[songIndex]._pendingGenreTag = '';
+      delete sourceSongs[songIndex]._pendingGenreTag;
       sourceGenre.songs_listened = sourceSongs;
 
       setUnsavedState(true);
@@ -7888,6 +8061,12 @@ async function loadData() {
       vizOpenGenreChip(decodeURIComponent(String(encodedName || '')));
     }
 
+    function openGenreByIdEncoded(encodedId, editMode=false) {
+      const id = decodeURIComponent(String(encodedId || ''));
+      const g = (genres || []).find(x => String(x.id) === String(id));
+      if (g) openGenreDetail(g, !!editMode);
+    }
+
     function vizOpenGenreChip(name) {
       const g = (genres || []).find(x => String(x.genre || '') === String(name || ''));
       if (g) openGenreDetail(g, false);
@@ -8256,7 +8435,7 @@ async function loadData() {
           const effective = songEffectiveYear(row.song);
           const eraNote = effective.year ? `${effective.source}: ${effective.year}${row.song.releaseYear && effective.source !== 'Spotify' ? ` · Spotify: ${row.song.releaseYear}` : ''}` : 'No era/release year yet';
           const eraForm = `<div class="viz-era-form viz-era-form-metadata"><span>${escapeHtml(eraNote)}</span><input id="${eraInputId}" type="text" placeholder="1950s or 1953" value="${escapeHtml(savedEra)}"><button type="button" onclick="saveEraOverride('${visualActionArg(row.genre.id)}','${visualActionArg(songIdentity(row.song))}','${eraInputId}')">Save Era</button></div>`;
-          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${row.bulkSkipped ? 'Retry Track' : 'Refresh Track'}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button><button type="button" class="viz-meta-delete" onclick="deleteFromMetadataQueue('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}', '${mountId}')" title="Remove this track from the genre entirely">Delete</button></div></div>`;
+          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${row.bulkSkipped ? 'Retry Track' : 'Refresh Track'}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button><button type="button" class="viz-meta-delete" onclick="deleteFromMetadataQueue('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}', '${mountId}')" title="Remove this track from the genre entirely">Delete</button></div>`;
         }).join('')}</div>` : '<div class="viz-empty">Nothing in this metadata group.</div>'}${allVisible.length > limit ? `<button type="button" class="viz-show-more" onclick="showMoreVizQueue('metadata')">Show 8 more</button>` : ''}</div>
       </details>`;
     }
@@ -8350,21 +8529,83 @@ async function loadData() {
         ['Prepared drafts', stats.drafts],
         ['Possible duplicates', stats.duplicates]
       ];
-      mount.innerHTML = `<div class="viz-maint-grid">${buckets.map(([label, list]) => `<button type="button" class="viz-maint-card" onclick="showMaintenanceGenres(${JSON.stringify(label)})"><strong>${list.length}</strong><span>${escapeHtml(label)}</span></button>`).join('')}</div><div class="viz-maint-detail" id="${mountId}Detail"></div>`;
+      mount.innerHTML = `<div class="viz-maint-grid">${buckets.map(([label, list]) => `<button type="button" class="viz-maint-card" data-maint-label="${escapeHtml(label)}" onclick="showMaintenanceGenres(${JSON.stringify(label)})"><strong>${list.length}</strong><span>${escapeHtml(label)}</span></button>`).join('')}</div><div class="viz-maint-detail" id="${mountId}Detail"><span class="small">Click a maintenance box to see the exact songs or genres behind that count.</span></div>`;
       mount.dataset.maintenance = JSON.stringify(buckets.reduce((acc, [label, list]) => { acc[label] = list.map(g => String(g.genre || '')); return acc; }, {}));
+    }
+
+    function maintenanceRowsForLabel(label) {
+      const listened = allListenedGenresForMaintenance();
+      if (label === 'Pending nominations') return collectQueuedPendingNominationRows().map(row => ({ ...row, type:'pending' }));
+      if (label === 'Missing song metadata') return collectMetadataRows(listened).map(row => ({ ...row, type:'metadata' }));
+      if (label === 'Unrated songs') return listened.flatMap(genre => vizOfficialSongs(genre)
+        .filter(song => ![1,2,3].includes(Number(song.reaction)))
+        .map(song => ({ type:'unrated', genre, song, key:songIdentity(song) }))
+      );
+      if (label === 'Prepared drafts') return (genres || [])
+        .filter(g => (g.status || '').toLowerCase() === 'unlistened' && ((g.notes || '').trim() || vizOfficialSongs(g).length || g.favoritesong))
+        .map(genre => ({ type:'draft', genre }));
+      if (label === 'Possible duplicates') return collectDuplicateMaintenanceRows();
+      return [];
+    }
+
+    function collectDuplicateMaintenanceRows() {
+      const rows = [];
+      allListenedGenresForMaintenance().forEach(genre => {
+        const seen = [];
+        vizOfficialSongs(genre).forEach(song => {
+          const match = seen.find(entry => songsIdentityMatch(entry.song, song));
+          if (match) rows.push({ type:'duplicate', genre, song, first:match.song, key:songIdentity(song) });
+          else seen.push({ song, key:songIdentity(song) });
+        });
+      });
+      return rows;
+    }
+
+    function maintenanceRowHtml(row, label) {
+      if (row.type === 'pending') {
+        const source = row.sourceName || 'Unknown source';
+        const fit = row.fit !== '' && row.fit != null ? `<span class="review-chip">source fit ${escapeHtml(String(row.fit))}/5</span>` : '';
+        return `<div class="viz-maint-row"><div><div class="viz-maint-title">${vizSongTitleLink(row.song)}</div><div class="viz-maint-meta"><span class="review-chip">queued in ${escapeHtml(row.targetGenre.genre || 'Unknown genre')}</span><span class="review-chip">from ${escapeHtml(source)}</span>${fit}</div></div><div class="viz-maint-actions"><button type="button" class="primary" onclick="openGenreByIdEncoded('${visualActionArg(row.targetGenre.id)}', false)">Open Target</button><button type="button" onclick="switchScreen('review'); setTimeout(scrollToReviewPendingQueue, 40);">Open Review</button></div></div>`;
+      }
+      if (row.type === 'metadata') {
+        const groupLabel = row.group === 'spotify' ? 'ready for refresh' : row.group === 'broken' ? 'broken/unrecognized' : 'non-Spotify';
+        return `<div class="viz-maint-row"><div><div class="viz-maint-title">${vizSongTitleLink(row.song)}</div><div class="viz-maint-meta"><span class="review-chip">${escapeHtml(row.genre.genre || 'Unknown genre')}</span><span class="review-chip warn">${escapeHtml(groupLabel)}</span>${row.missing.map(field => `<span class="review-chip warn">missing ${escapeHtml(field)}</span>`).join('')}</div></div><div class="viz-maint-actions"><button type="button" class="primary" onclick="openMetadataQueue('${row.group === 'broken' ? 'broken' : row.group === 'nonspotify' ? 'nonspotify' : 'spotify'}', 'alltime')">Open Metadata Queue</button><button type="button" onclick="openGenreByIdEncoded('${visualActionArg(row.genre.id)}', false)">Open Genre</button></div></div>`;
+      }
+      if (row.type === 'unrated') {
+        const genreId = visualActionArg(row.genre.id);
+        const songKey = visualActionArg(songIdentity(row.song));
+        return `<div class="viz-maint-row"><div><div class="viz-maint-title">${vizSongTitleLink(row.song)}</div><div class="viz-maint-meta"><span class="review-chip">${escapeHtml(row.genre.genre || 'Unknown genre')}</span><span class="review-chip warn">unrated</span></div></div><div class="viz-maint-actions"><button type="button" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 3)">👍</button><button type="button" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 2)">🤷</button><button type="button" onclick="setSongReactionFromVisuals('${genreId}', '${songKey}', 1)">👎</button><button type="button" class="primary" onclick="openGenreByIdEncoded('${genreId}', false)">Open Genre</button></div></div>`;
+      }
+      if (row.type === 'draft') {
+        const songCount = vizOfficialSongs(row.genre).length;
+        return `<div class="viz-maint-row"><div><div class="viz-maint-title">${escapeHtml(row.genre.genre || 'Untitled genre')}</div><div class="viz-maint-meta"><span class="review-chip">unlistened draft</span>${row.genre.notes ? '<span class="review-chip">has notes</span>' : ''}${songCount ? `<span class="review-chip">${songCount} song${songCount === 1 ? '' : 's'}</span>` : ''}${row.genre.favoritesong ? '<span class="review-chip">has favorite</span>' : ''}</div></div><div class="viz-maint-actions"><button type="button" class="primary" onclick="openGenreByIdEncoded('${visualActionArg(row.genre.id)}', true)">Open & Edit</button></div></div>`;
+      }
+      if (row.type === 'duplicate') {
+        return `<div class="viz-maint-row"><div><div class="viz-maint-title">${vizSongTitleLink(row.song)}</div><div class="viz-maint-meta"><span class="review-chip">${escapeHtml(row.genre.genre || 'Unknown genre')}</span><span class="review-chip warn">possible duplicate in same genre</span></div></div><div class="viz-maint-actions"><button type="button" class="primary" onclick="openGenreByIdEncoded('${visualActionArg(row.genre.id)}', true)">Open & Edit</button></div></div>`;
+      }
+      return '';
     }
 
     function showMaintenanceGenres(label) {
       const visibleMount = document.getElementById(vizMode() === 'monthly' ? 'vizNeedsAttentionMonthly' : 'vizNeedsAttentionAll');
       if (!visibleMount) return;
-      let data = {};
-      try { data = JSON.parse(visibleMount.dataset.maintenance || '{}'); } catch(e) {}
-      const names = data[label] || [];
+      visibleMount.querySelectorAll('.viz-maint-card').forEach(card => card.classList.toggle('active', card.dataset.maintLabel === label));
       const detail = visibleMount.querySelector('.viz-maint-detail');
       if (!detail) return;
-      detail.innerHTML = names.length
-        ? names.slice(0, 16).map(name => `<button type="button" class="viz-maint-pill" onclick="vizOpenGenreEncoded('${visualActionArg(name)}')">${escapeHtml(name)}</button>`).join('')
-        : '<span class="small">Nothing in this queue.</span>';
+      const rows = maintenanceRowsForLabel(label);
+      const limit = vizQueueLimits.maintenance || 40;
+      const visible = rows.slice(0, limit);
+      const copy = label === 'Pending nominations'
+        ? 'Songs already queued in another genre’s pending list.'
+        : label === 'Missing song metadata'
+          ? 'Tracks missing Spotify/title/art/year/duration fields or needing URL repair.'
+          : label === 'Unrated songs'
+            ? 'Tracks that still need a 👍 / 🤷 / 👎 reaction.'
+            : label === 'Prepared drafts'
+              ? 'Unlistened genres that already have notes, songs, or favorite data prepared.'
+              : 'Likely duplicate songs inside the same listened genre.';
+      detail.innerHTML = `<div class="viz-maint-panel"><div class="viz-maint-panel-head"><div><h4 class="viz-maint-panel-title">${escapeHtml(label)} · ${rows.length}</h4><p class="viz-maint-panel-copy">${escapeHtml(copy)}</p></div>${label === 'Pending nominations' ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review'); setTimeout(scrollToReviewPendingQueue, 40);">Open full Review list</button>` : ''}</div>${visible.length ? `<div class="viz-maint-list">${visible.map(row => maintenanceRowHtml(row, label)).join('')}</div>${rows.length > limit ? `<button type="button" class="viz-show-more" onclick="showMoreVizQueue('maintenance'); showMaintenanceGenres(${JSON.stringify(label)})">Show more</button>` : ''}` : '<div class="viz-empty">Nothing in this queue.</div>'}</div>`;
+      detail.scrollIntoView({ behavior:'smooth', block:'start' });
     }
 
     function stagedReactionKey(genreId, songKey) {
