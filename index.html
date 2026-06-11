@@ -4438,7 +4438,14 @@
     }
 
     function parseSongLinks(text) {
-      const lines = String(text || '').replace(/\\n/g, '\n').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const extractUrl = value => {
+        const v = String(value).trim();
+        const md = v.match(/https?:\/\/\S+/i);
+        if (md) return md[1] ? md[1].trim() : md[0].trim();
+        const inline = v.match(/https?:\/\/\S+/i);
+        return inline ? inline[0].trim() : '';
+      };
+      const lines = String(text).replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
       const songs = [];
       const PLACEHOLDER_URLS = ['http://url.com', 'https://url.com'];
       const urlRaw = extractUrl(p[0] || '');
