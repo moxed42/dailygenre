@@ -4445,17 +4445,7 @@
         const inline = v.match(/https?:\/\/\S+/i);
         return inline ? inline[0].trim() : '';
       };
-      const lines = String(text).replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
-      const songs = [];
-      const PLACEHOLDER_URLS = ['http://url.com', 'https://url.com'];
-      const urlRaw = extractUrl(p[0] || '');
-      const url = PLACEHOLDER_URLS.includes(urlRaw.toLowerCase()) ? '' : urlRaw;
-      const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
-      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
-      const promotePrefix = /^(?:🔼\s*)?PROMOTE:\s*/i;
-      const looksLikePipeFormat = p.length >= 3 && /^[1-5]$/.test((p[1] || '').trim());
-const p0AsTitle = !url && !extractUrl(p[0] || '') && looksLikePipeFormat
-  ? cleanPastedCitationArtifacts(p[0] || '') : '';
+    function parseSongLinks(text) {
       const extractUrl = (value) => {
         const v = String(value || '').trim();
         const md = v.match(/^\[[^\]]*\]\((https?:\/\/[^\s)]+)\)$/i);
@@ -4474,23 +4464,13 @@ const p0AsTitle = !url && !extractUrl(p[0] || '') && looksLikePipeFormat
           reason: cleanPastedCitationArtifacts(text)
         };
       };
+      const lines = String(text).replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
+      const songs = [];
+      const PLACEHOLDER_URLS = ['http://url.com', 'https://url.com'];
+      const levelUpPrefix = /^(?:🔼\s*)?LEVEL\s*UP:\s*/i;
+      const addPrefix = /^(?:🔼\s*)?ADD:\s*/i;
+      const promotePrefix = /^(?:🔼\s*)?PROMOTE:\s*/i;
       for (const line of lines) {
-        const isLevelUp = levelUpPrefix.test(line);
-        const isPromote = !isLevelUp && promotePrefix.test(line);
-        const isAdd = !isLevelUp && !isPromote && addPrefix.test(line);
-        const clean = line.replace(levelUpPrefix, '').replace(promotePrefix, '').replace(addPrefix, '').trim();
-        const p = clean.split('|').map(x => x.trim());
-        const urlRaw = extractUrl(p[0] || '');
-        const isPlaceholderUrl = /^https?:\/\/url\.com\/?$/i.test(urlRaw.trim().toLowerCase());
-        const url = isPlaceholderUrl ? '' : urlRaw;
-        const raw = p[1] ? parseInt(p[1], 10) : null;
-        const score = (!isNaN(raw) && raw >= 1 && raw <= 5) ? raw : null;
-        const freeform = (!url && (isLevelUp || isAdd || isPromote)) ? parseFreeformAltTake(clean) : null;
-        // p[0] may be "Artist — Title" (no URL), p[2] is reason, p[3]+ is title in URL-format entries.
-        // For freeform entries (no URL), use p[0] as the full title if p.slice(3) is empty.
-                const looksLikePipeFormat = p.length >= 3 && /^[1-5]$/.test((p[1] || '').trim());
-        const p0AsTitle = !url && !extractUrl(p[0] || '') && looksLikePipeFormat ? cleanPastedCitationArtifacts(p[0] || '') : '';
-        
         const title = cleanPastedCitationArtifacts(p.slice(3).join(' | ') || p0AsTitle || freeform?.title || '');
         const rawReason = cleanPastedCitationArtifacts(p[2] || freeform?.reason || '');
         const genreTagMatch = rawReason.match(/@([\w\s-]+?)(\s*\||$)/);
