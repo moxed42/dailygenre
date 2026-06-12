@@ -3650,6 +3650,54 @@
   cursor:pointer; transition:background 0.15s;
 }
 .spotify-queue-btn:hover { background:color-mix(in oklab,#1DB954 28%,transparent); }
+
+
+    /* === Regression fix 2026-06-12: Spotify mini player visibility + readable cards === */
+    .spotify-connect-btn.spotify-connected {
+      background:#1DB954 !important;
+      color:#06140a !important;
+      border:1px solid #7be99f !important;
+      box-shadow:0 10px 24px rgba(29,185,84,.22) !important;
+    }
+    #spotifyNowPlaying {
+      color:#1b160f !important;
+      background:linear-gradient(180deg, #efffec, #dbf6dc) !important;
+      border:1px solid rgba(29,185,84,.45) !important;
+      box-shadow:0 10px 24px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.70) !important;
+    }
+    .spotify-now-playing-label { color:#0b7e34 !important; }
+    .spotify-now-playing-track,
+    .spotify-now-playing-track a {
+      color:#172011 !important;
+      text-decoration:none !important;
+      white-space:normal !important;
+      overflow:visible !important;
+      text-overflow:clip !important;
+      line-height:1.25 !important;
+    }
+    .spotify-now-playing-match { color:#3d5535 !important; }
+    .song-card .song-title-link,
+    .archive-card-title,
+    .viz-contender-title,
+    .viz-replayed-title,
+    .viz-maint-title,
+    .viz-song-link {
+      white-space:normal !important;
+      overflow:visible !important;
+      text-overflow:clip !important;
+      color:#23160c !important;
+      line-height:1.22 !important;
+    }
+    .song-card .song-artist,
+    .song-card .song-reason,
+    .archive-card-meta,
+    .viz-contender-genre,
+    .viz-replayed-meta,
+    .viz-drill-meta,
+    .viz-maint-meta {
+      color:#5f4328 !important;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -9183,7 +9231,10 @@ function spotifyDisconnect() {
   spotifyPollingInterval = null;
   spotifyNowPlayingInterval = null;
   const nowPlaying = document.getElementById('spotifyNowPlaying');
-  if (nowPlaying) nowPlaying.innerHTML = '';
+  if (nowPlaying) {
+    nowPlaying.innerHTML = '';
+    nowPlaying.style.display = 'none';
+  }
   updateSpotifyUI();
   showSaveToast('Spotify disconnected.', false);
 }
@@ -9264,6 +9315,7 @@ function updateSpotifyUI() {
 function spotifyRenderNowPlaying(track, isPlaying=false) {
   const mount = document.getElementById('spotifyNowPlaying');
   if (!mount) return;
+  mount.style.display = spotifySession?.access_token ? 'block' : 'none';
   if (!track) {
     mount.innerHTML = spotifySession?.access_token
       ? '<div class="spotify-now-playing-inner"><div class="spotify-now-playing-text"><span class="spotify-now-playing-label">Spotify connected</span><span class="spotify-now-playing-match">Nothing playing right now.</span></div></div>'
@@ -9286,7 +9338,11 @@ function spotifyRenderNowPlaying(track, isPlaying=false) {
 }
 
 async function spotifyRefreshNowPlaying() {
-  if (!spotifySession?.access_token) return;
+  if (!spotifySession?.access_token) {
+    const mount = document.getElementById('spotifyNowPlaying');
+    if (mount) mount.style.display = 'none';
+    return;
+  }
   try {
     const res = await spotifyApiFetch('me/player/currently-playing');
     if (res.status === 204 || res.status === 202) {
