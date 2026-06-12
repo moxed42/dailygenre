@@ -9529,14 +9529,6 @@ function spotifyUpdateSpinQueueBtn(genre) {
   btn.style.display = hasSongs ? 'inline-flex' : 'none';
 }
 
-// Init — deferred so loadData() runs first
-setTimeout(async function spotifyInit() {
-  if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
-    await spotifyHandleCallback();
-  } else {
-    loadSpotifySession();
-  }
-}, 0);
   </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
