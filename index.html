@@ -3698,6 +3698,149 @@
       color:#5f4328 !important;
     }
 
+
+    /* === Spotify sticky mini-player + inline play buttons === */
+    body.spotify-sticky-open {
+      padding-bottom: 128px;
+    }
+    .song-title-control-row {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      min-width:0;
+    }
+    .song-title-control-row .song-title-link {
+      flex:1 1 auto;
+      min-width:min(280px, 100%);
+      display:inline !important;
+    }
+    .sp-play-btn {
+      width:28px;
+      height:28px;
+      display:inline-grid;
+      place-items:center;
+      flex:0 0 auto;
+      border:1px solid rgba(29,185,84,.55);
+      border-radius:999px;
+      background:#1DB954;
+      color:#06140a;
+      cursor:pointer;
+      font-weight:1000;
+      font-size:.78rem;
+      line-height:1;
+      box-shadow:0 5px 12px rgba(29,185,84,.22), inset 0 1px 0 rgba(255,255,255,.28);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+    }
+    .sp-play-btn:hover {
+      transform:translateY(-1px) scale(1.03);
+      background:#1ed760;
+      box-shadow:0 8px 16px rgba(29,185,84,.30), inset 0 1px 0 rgba(255,255,255,.34);
+    }
+    .sp-play-btn:focus-visible {
+      outline:3px solid rgba(29,185,84,.30);
+      outline-offset:2px;
+    }
+    .spotify-sticky-player {
+      display:none;
+      position:fixed;
+      left:16px;
+      right:16px;
+      bottom:16px;
+      z-index:5000;
+      color:#fff8e8;
+      pointer-events:none;
+    }
+    .spotify-sticky-player.open { display:block; }
+    .spotify-sticky-shell {
+      width:min(980px, calc(100vw - 32px));
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:64px minmax(160px, 1fr) minmax(280px, 420px) auto;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border-radius:22px;
+      background:linear-gradient(135deg, #15100c, #2d1b10 58%, #0b0806);
+      border:1px solid rgba(255,224,161,.28);
+      box-shadow:0 22px 58px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.10);
+      pointer-events:auto;
+    }
+    .spotify-sticky-art {
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      object-fit:cover;
+      background:radial-gradient(circle at 50% 50%, #ffe0a1 0 10%, #1b120c 11% 30%, #1DB954 31% 36%, #0c0806 37% 63%, #2a1a10 64% 100%);
+      border:1px solid rgba(255,224,161,.26);
+      box-shadow:0 10px 18px rgba(0,0,0,.25);
+    }
+    .spotify-sticky-meta {
+      min-width:0;
+      display:grid;
+      gap:4px;
+    }
+    .spotify-sticky-label {
+      color:#1ed760;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:.70rem;
+      font-weight:1000;
+    }
+    .spotify-sticky-title {
+      color:#fff8e8;
+      font-weight:1000;
+      line-height:1.18;
+      overflow-wrap:anywhere;
+    }
+    .spotify-sticky-artist {
+      color:#d8c29b;
+      font-size:.86rem;
+      font-weight:750;
+      line-height:1.2;
+      overflow-wrap:anywhere;
+    }
+    .spotify-sticky-frame-wrap {
+      min-width:0;
+    }
+    .spotify-sticky-frame-wrap iframe {
+      display:block;
+      width:100%;
+      height:80px;
+      border:0;
+      border-radius:14px;
+      background:#0f0f0f;
+    }
+    .spotify-sticky-close {
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,245,223,.20);
+      border-radius:999px;
+      background:rgba(255,245,223,.10);
+      color:#fff8e8;
+      cursor:pointer;
+      font-size:1.15rem;
+      font-weight:1000;
+      line-height:1;
+    }
+    .spotify-sticky-close:hover {
+      background:rgba(255,245,223,.18);
+    }
+    @media (max-width:760px) {
+      body.spotify-sticky-open { padding-bottom:220px; }
+      .spotify-sticky-player { left:10px; right:10px; bottom:10px; }
+      .spotify-sticky-shell {
+        width:calc(100vw - 20px);
+        grid-template-columns:52px 1fr auto;
+      }
+      .spotify-sticky-art { width:52px; height:52px; border-radius:12px; }
+      .spotify-sticky-frame-wrap { grid-column:1 / -1; }
+      .spotify-sticky-frame-wrap iframe { height:80px; }
+      .sp-play-btn { width:30px; height:30px; }
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -4135,6 +4278,20 @@
     </div>
   </div>
 
+  <div id="spotifyStickyPlayer" class="spotify-sticky-player" aria-live="polite" aria-label="Spotify mini player">
+    <div class="spotify-sticky-shell">
+      <img id="spotifyStickyArtwork" class="spotify-sticky-art" alt="" />
+      <div class="spotify-sticky-meta">
+        <div class="spotify-sticky-label">Spotify mini player</div>
+        <div id="spotifyStickyTitle" class="spotify-sticky-title">Track</div>
+        <div id="spotifyStickyArtist" class="spotify-sticky-artist">Artist</div>
+      </div>
+      <div class="spotify-sticky-frame-wrap">
+        <iframe id="spotifyStickyIframe" title="Spotify embedded player" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+      <button type="button" class="spotify-sticky-close" onclick="stickyPlayerClose()" aria-label="Close Spotify mini player">×</button>
+    </div>
+  </div>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
   <script>
@@ -5507,6 +5664,73 @@
       });
     }
 
+
+    const stickyPlayerPayloads = new Map();
+    let stickyPlayerPayloadCounter = 0;
+
+    function spotifyTrackId(input) {
+      const raw = typeof input === 'object' && input
+        ? String(input.spotifyId || input.id || input.url || input.spotifyUrl || '')
+        : String(input || '');
+      const idOnly = raw.match(/^[A-Za-z0-9]{22}$/);
+      if (idOnly) return idOnly[0];
+      const urlMatch = raw.match(/(?:open\.spotify\.com\/track\/|spotify:track:)([A-Za-z0-9]{22})/i);
+      return urlMatch ? urlMatch[1] : '';
+    }
+
+    function spPlayBtn(song) {
+      if (!spotifySession?.access_token) return '';
+      const trackId = spotifyTrackId(song) || spotifyTrackId(song?.url) || spotifyTrackId(song?.spotifyUrl);
+      if (!trackId) return '';
+      if (stickyPlayerPayloads.size > 800) stickyPlayerPayloads.clear();
+      const key = `sp-${Date.now().toString(36)}-${++stickyPlayerPayloadCounter}`;
+      stickyPlayerPayloads.set(key, {
+        trackId,
+        title: cleanPastedCitationArtifacts(song?.title || 'Spotify track'),
+        artist: cleanPastedCitationArtifacts(song?.artist || ''),
+        artwork: song?.artwork || ''
+      });
+      return `<button type="button" class="sp-play-btn" onclick="stickyPlayerOpen('${key}')" title="Play in Spotify mini player" aria-label="Play ${escapeHtml(song?.title || 'track')} in Spotify mini player">▶</button>`;
+    }
+
+    function stickyPlayerOpen(payloadOrKey) {
+      const payload = typeof payloadOrKey === 'string'
+        ? (stickyPlayerPayloads.get(payloadOrKey) || { trackId: spotifyTrackId(payloadOrKey) })
+        : (payloadOrKey || {});
+      const trackId = spotifyTrackId(payload.trackId || payload.url || payload.spotifyUrl || payload);
+      if (!trackId) {
+        showSaveToast('Spotify mini player could not find a track ID for that song.', true);
+        return;
+      }
+      const player = document.getElementById('spotifyStickyPlayer');
+      const iframe = document.getElementById('spotifyStickyIframe');
+      const title = document.getElementById('spotifyStickyTitle');
+      const artist = document.getElementById('spotifyStickyArtist');
+      const art = document.getElementById('spotifyStickyArtwork');
+      if (!player || !iframe || !title || !artist || !art) return;
+
+      title.textContent = payload.title || 'Spotify track';
+      artist.textContent = payload.artist || 'Spotify';
+      if (payload.artwork) {
+        art.src = payload.artwork;
+        art.style.visibility = 'visible';
+      } else {
+        art.removeAttribute('src');
+        art.style.visibility = 'visible';
+      }
+      iframe.src = `https://open.spotify.com/embed/track/${encodeURIComponent(trackId)}?utm_source=generator`;
+      player.classList.add('open');
+      document.body.classList.add('spotify-sticky-open');
+    }
+
+    function stickyPlayerClose() {
+      const player = document.getElementById('spotifyStickyPlayer');
+      const iframe = document.getElementById('spotifyStickyIframe');
+      if (iframe) iframe.src = '';
+      if (player) player.classList.remove('open');
+      document.body.classList.remove('spotify-sticky-open');
+    }
+
     function renderSongEntry(s, isChild, options = {}) {
       const rawUrl = normalizeSongUrl(s.url || '');
       const hasHref = /^https?:\/\//i.test(rawUrl);
@@ -5524,6 +5748,7 @@
       const titleHtml = hasHref
         ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>`
         : `<span class="song-title-link">${titleText}</span>`;
+      const playBtnHtml = spPlayBtn(s);
       const addBadge = (!isChild && s.isAdd)
         ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
         : (!isChild && s.isPromote)
@@ -5568,7 +5793,7 @@
             </div>
            </div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${options.allowTrackEdit ? `<button type="button" class="song-remove-btn" title="Remove track" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}...${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;"><div class="song-title-control-row">${titleHtml}${playBtnHtml}</div>${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${options.allowTrackEdit ? `<button type="button" class="song-remove-btn" title="Remove track" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
     }
     function buildDiscordBlock() {
       if (!currentGenre) return '';
@@ -9006,26 +9231,50 @@ let spotifyNowPlayingInterval = null;
 let spotifyPkceVerifierMemory = null;
 let spotifyAuthStateMemory = null;
 
+function spotifyTempKeys(key) {
+  if (key === 'spotify-pkce-verifier' || key === 'spotify_pkce_verifier') {
+    return ['spotify_pkce_verifier', 'spotify-pkce-verifier'];
+  }
+  if (key === 'spotify-auth-state' || key === 'spotify_auth_state') {
+    return ['spotify_auth_state', 'spotify-auth-state'];
+  }
+  return [key];
+}
+
 function setSpotifyTempValue(key, value) {
-  if (key === 'spotify-pkce-verifier') spotifyPkceVerifierMemory = value;
-  if (key === 'spotify-auth-state') spotifyAuthStateMemory = value;
-  try { sessionStorage.setItem(key, value); } catch {}
+  if (key === 'spotify-pkce-verifier' || key === 'spotify_pkce_verifier') spotifyPkceVerifierMemory = value;
+  if (key === 'spotify-auth-state' || key === 'spotify_auth_state') spotifyAuthStateMemory = value;
+  spotifyTempKeys(key).forEach(k => {
+    try { localStorage.setItem(k, value); } catch {}
+    try { sessionStorage.setItem(k, value); } catch {}
+  });
 }
 
 function getSpotifyTempValue(key) {
-  try {
-    const value = sessionStorage.getItem(key);
-    if (value) return value;
-  } catch {}
-  if (key === 'spotify-pkce-verifier') return spotifyPkceVerifierMemory;
-  if (key === 'spotify-auth-state') return spotifyAuthStateMemory;
+  for (const k of spotifyTempKeys(key)) {
+    try {
+      const value = localStorage.getItem(k);
+      if (value) return value;
+    } catch {}
+  }
+  for (const k of spotifyTempKeys(key)) {
+    try {
+      const value = sessionStorage.getItem(k);
+      if (value) return value;
+    } catch {}
+  }
+  if (key === 'spotify-pkce-verifier' || key === 'spotify_pkce_verifier') return spotifyPkceVerifierMemory;
+  if (key === 'spotify-auth-state' || key === 'spotify_auth_state') return spotifyAuthStateMemory;
   return null;
 }
 
 function clearSpotifyTempValue(key) {
-  if (key === 'spotify-pkce-verifier') spotifyPkceVerifierMemory = null;
-  if (key === 'spotify-auth-state') spotifyAuthStateMemory = null;
-  try { sessionStorage.removeItem(key); } catch {}
+  if (key === 'spotify-pkce-verifier' || key === 'spotify_pkce_verifier') spotifyPkceVerifierMemory = null;
+  if (key === 'spotify-auth-state' || key === 'spotify_auth_state') spotifyAuthStateMemory = null;
+  spotifyTempKeys(key).forEach(k => {
+    try { localStorage.removeItem(k); } catch {}
+    try { sessionStorage.removeItem(k); } catch {}
+  });
 }
 
 function spotifyBase64Url(bytes) {
@@ -9060,6 +9309,34 @@ async function generateSpotifyCodeChallenge(v) {
   return spotifyBase64Url(new Uint8Array(digest));
 }
 
+
+function spotifyAuthWindowHref() {
+  try {
+    if (window.top && window.top.location && window.top.location.href) return window.top.location.href;
+  } catch {}
+  return window.location.href;
+}
+
+function spotifyCleanAuthUrl() {
+  try {
+    if (window.top && window.top !== window && window.top.history && window.top.location) {
+      window.top.history.replaceState({}, '', SPOTIFY_REDIRECT_URI);
+      return;
+    }
+  } catch {}
+  try { window.history.replaceState({}, '', SPOTIFY_REDIRECT_URI); } catch {}
+}
+
+function spotifyNavigateToAuth(authUrl) {
+  try {
+    if (window.top && window.top !== window) {
+      window.top.location.href = authUrl;
+      return;
+    }
+  } catch {}
+  window.location.assign(authUrl);
+}
+
 async function spotifyConnect() {
   try {
     const verifier = generateSpotifyCodeVerifier();
@@ -9080,7 +9357,7 @@ async function spotifyConnect() {
       show_dialog: 'false'
     });
 
-    window.location.assign(`https://accounts.spotify.com/authorize?${p.toString()}`);
+    spotifyNavigateToAuth(`https://accounts.spotify.com/authorize?${p.toString()}`);
   } catch (err) {
     console.error('Spotify auth start failed', err);
     showSaveToast('Spotify auth could not start. Check browser storage/privacy settings.', true);
@@ -9088,13 +9365,14 @@ async function spotifyConnect() {
 }
 
 async function spotifyHandleCallback() {
-  const url = new URL(window.location.href);
+  const url = new URL(spotifyAuthWindowHref());
   const error = url.searchParams.get('error');
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
 
   if (error) {
-    window.history.replaceState({}, '', SPOTIFY_REDIRECT_URI);
+    spotifyCleanAuthUrl();
+    console.error('Spotify authorization returned an error:', error);
     showSaveToast(`Spotify auth failed: ${error}`, true);
     return;
   }
@@ -9104,7 +9382,7 @@ async function spotifyHandleCallback() {
   const verifier = getSpotifyTempValue('spotify-pkce-verifier');
   const expectedState = getSpotifyTempValue('spotify-auth-state');
 
-  window.history.replaceState({}, '', SPOTIFY_REDIRECT_URI);
+  spotifyCleanAuthUrl();
 
   if (!verifier) {
     showSaveToast('Spotify auth failed: missing PKCE verifier.', true);
@@ -9123,6 +9401,7 @@ async function spotifyHandleCallback() {
   showSaveToast('Connecting to Spotify…', false);
 
   try {
+    console.info('Exchanging Spotify authorization code for tokens…');
     const res = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -9137,6 +9416,7 @@ async function spotifyHandleCallback() {
 
     const data = await res.json().catch(() => ({}));
     if (!res.ok || !data.access_token) {
+      console.error('Spotify token exchange failed', { status: res.status, data });
       throw new Error(data.error_description || data.error || `Token exchange failed (HTTP ${res.status})`);
     }
 
@@ -9224,6 +9504,7 @@ async function spotifySetSession(tokenPayload) {
 }
 
 function spotifyDisconnect() {
+  stickyPlayerClose();
   spotifySession = null;
   spotifyStorageRemove(SPOTIFY_SESSION_STORAGE_KEY);
   if (spotifyPollingInterval) clearInterval(spotifyPollingInterval);
@@ -9366,11 +9647,16 @@ function spotifyStartPolling() {
 }
 
 async function bootApp() {
-  const params = new URL(window.location.href).searchParams;
+  const params = new URL(spotifyAuthWindowHref()).searchParams;
   const hasSpotifyCallback = params.has('code') || params.has('error');
 
   loadSpotifySession();
-  if (hasSpotifyCallback) await spotifyHandleCallback();
+  if (hasSpotifyCallback) {
+    await spotifyHandleCallback().catch(err => {
+      console.error('Spotify callback error:', err);
+      showSaveToast(`Spotify callback failed: ${err?.message || 'Unknown error'}`, true);
+    });
+  }
   if (spotifySession?.access_token) spotifyStartPolling();
   await loadData();
 }
