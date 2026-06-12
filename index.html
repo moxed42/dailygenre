@@ -3622,8 +3622,8 @@
 }
 .spotify-connect-btn:hover { background: #1ed760; }
 .spotify-connect-btn.spotify-connected {
-  background: color-mix(in oklab, #1DB954 12%, var(--bg,#fff));
-  color: var(--text,#111); border: 1px solid #1DB954;
+  background: color-mix(in oklab, #1DB954 20%, var(--bg,#fff));
+  color: #1DB954; border: 1px solid color-mix(in oklab, #1DB954 60%, transparent);
 }
 #spotifyNowPlaying {
   display:none; margin:12px 0 0;
@@ -4550,6 +4550,7 @@
           <button class="btn btn-secondary" id="respinBtn">Respin / Skip</button>
           <button class="btn btn-danger" id="vetoBtn">Mark as Zanger Today</button>
           <button class="btn btn-primary" id="listenBtn">I’ll Listen to This</button>
+          <button class="spotify-queue-btn" id="spinQueueBtn" style="display:none" onclick="spotifyQueueGenreSongs(currentSpin)">&#9654; Queue in Spotify</button>
         </div>
       `;
 
@@ -4559,8 +4560,13 @@
       if (_respin) _respin.onclick = spinWheel;
       if (_veto) _veto.onclick = () => markAsZangerToday(genre);
       if (_listen) _listen.onclick = () => {
+        // Auto-queue in Spotify if connected (Premium feature, non-blocking)
+        if (typeof spotifySession !== 'undefined' && spotifySession) {
+          spotifyQueueGenreSongs(genre, true).catch(() => {});
+        }
         openGenreDetail(genre, true);
       };
+      if (typeof spotifyUpdateSpinQueueBtn === 'function') spotifyUpdateSpinQueueBtn(genre);
     }
 
     function cleanPastedCitationArtifacts(value='') {
@@ -9169,9 +9175,9 @@ function spotifyStopPolling() {
   if (spotifyNowPlayingInterval) { clearInterval(spotifyNowPlayingInterval); spotifyNowPlayingInterval=null; }
 }
 
-async function spotifyQueueTracks(urls) {
+async function spotifyQueueTracks(urls, silent=false) {
   const token = await spotifyGetToken();
-  if (!token) { showSaveToast('Connect Spotify first.', true); return; }
+  if (!token) { if (!silent) showSaveToast('Connect Spotify first.', true); return; }
   let queued = 0;
   for (const url of urls) {
     const m = url.match(/track[/:]([A-Za-z0-9]{22})/);
@@ -9181,14 +9187,17 @@ async function spotifyQueueTracks(urls) {
     });
     if (res.ok || res.status===204) queued++;
   }
-  showSaveToast(queued>0 ? `Added ${queued} track${queued>1?'s':''} to your Spotify queue.` : 'Could not queue — is Spotify open on a device?', queued===0);
+  if (!silent) showSaveToast(queued>0 ? `Added ${queued} track${queued>1?'s':''} to your Spotify queue.` : 'Could not queue — is Spotify open on a device?', queued===0);
 }
 
-async function spotifyQueueGenreSongs(genre) {
+async function spotifyQueueGenreSongs(genre, silent=false) {
   if (!genre) return;
   const songs = (genre.songs_listened||[]).filter(s => /spotify\.com\/track\//i.test(s.url||''));
-  if (!songs.length) { showSaveToast('No Spotify-linked songs logged for this genre yet.', true); return; }
-  await spotifyQueueTracks(songs.map(s=>s.url));
+  if (!songs.length) {
+    if (!silent) showSaveToast('No Spotify-linked songs logged for this genre yet.', true);
+    return;
+  }
+  await spotifyQueueTracks(songs.map(s=>s.url), silent);
 }
 
 function updateNowPlayingWidget(track) {
