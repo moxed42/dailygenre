@@ -9093,7 +9093,7 @@ async function spotifyConnect() {
   const p = new URLSearchParams({
     client_id: SPOTIFY_CLIENT_ID, response_type: 'code',
     redirect_uri: SPOTIFY_REDIRECT_URI, code_challenge_method: 'S256',
-    code_challenge: challenge, scope: SPOTIFY_SCOPES, show_dialog: 'false'
+    code_challenge: challenge, scope: SPOTIFY_SCOPES, show_dialog: 'true'
   });
   window.location.href = `https://accounts.spotify.com/authorize?${p}`;
 }
@@ -9207,7 +9207,7 @@ async function spotifyFetch(path, options={}) {
   });
   if (res.status === 204) return {};
   if (res.status === 401) { spotifyDisconnect(); return null; }
-  if (!res.ok) return null;
+  if (!res.ok) { console.warn('Spotify API error:', res.status, path); return null; }
   return res.json().catch(()=>null);
 }
 
@@ -9457,16 +9457,22 @@ async function spotifyAddGenreToPlaylist(genre) {
 
   // Fetch user's playlists (up to 200)
   let userPlaylists = [];
+  let playlistFetchError = false;
   try {
     let offset = 0;
     while (offset < 200) {
       const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
-      if (!data?.items?.length) break;
+      if (!data) { playlistFetchError = true; break; }
+      if (!data.items?.length) break;
       userPlaylists = userPlaylists.concat(data.items);
       if (data.items.length < 50) break;
       offset += 50;
     }
-  } catch {}
+  } catch(e) { playlistFetchError = true; console.error('Playlist fetch error:', e); }
+  if (playlistFetchError) {
+    showSaveToast('Could not load playlists — try disconnecting and reconnecting Spotify.', true);
+    return;
+  }
 
   const matchedPlaylist = userPlaylists.find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
 
