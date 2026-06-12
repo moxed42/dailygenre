@@ -3614,7 +3614,42 @@
         max-width:120px !important;
       }
     }
-
+.spotify-connect-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+  background: #1DB954; color: #000; border: none; cursor: pointer;
+  transition: background 0.15s; white-space: nowrap;
+}
+.spotify-connect-btn:hover { background: #1ed760; }
+.spotify-connect-btn.spotify-connected {
+  background: color-mix(in oklab, #1DB954 12%, var(--bg,#fff));
+  color: var(--text,#111); border: 1px solid #1DB954;
+}
+#spotifyNowPlaying {
+  display:none; margin:12px 0 0;
+  background: color-mix(in oklab, #1DB954 8%, var(--surface,#fff));
+  border: 1px solid color-mix(in oklab, #1DB954 30%, transparent);
+  border-radius: 10px; padding: 10px 14px;
+}
+.spotify-now-playing-inner { display:flex; align-items:center; gap:10px; }
+.spotify-now-playing-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.spotify-now-playing-label { font-size:0.7rem; font-weight:700; color:#1DB954; text-transform:uppercase; letter-spacing:.05em; }
+.spotify-now-playing-track { font-size:0.85rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.spotify-now-playing-match { font-size:0.75rem; color:var(--text-muted,#888); }
+.viz-replayed-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--divider,#eee); }
+.viz-replayed-row:last-child { border-bottom:none; }
+.viz-replayed-info { flex:1; min-width:0; }
+.viz-replayed-title { font-weight:600; font-size:0.875rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.viz-replayed-meta { display:flex; align-items:center; gap:6px; margin-top:3px; flex-wrap:wrap; }
+.viz-replayed-count { font-size:1.1rem; font-weight:800; color:#1DB954; flex-shrink:0; min-width:36px; text-align:right; }
+.spotify-queue-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:6px 14px; border-radius:16px; font-size:0.8rem; font-weight:600;
+  background:color-mix(in oklab,#1DB954 15%,transparent);
+  color:#1DB954; border:1px solid color-mix(in oklab,#1DB954 50%,transparent);
+  cursor:pointer; transition:background 0.15s;
+}
+.spotify-queue-btn:hover { background:color-mix(in oklab,#1DB954 28%,transparent); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -3630,6 +3665,7 @@
       </div>
       <div class="top-actions">
         <div class="pill" id="remainingCount">Loading genres...</div>
+        <button id="spotifyConnectBtn" class="spotify-connect-btn" onclick="spotifyConnect()">Connect Spotify</button>
       </div>
     </header>
 
@@ -3833,6 +3869,7 @@
                 <div class="viz-hero-eyebrow">Now spinning</div>
                 <h2 class="viz-hero-title">Your listening room.</h2>
                 <p class="viz-hero-copy">Explore the genres you loved, the songs you put back in rotation, and the tracks that bridge more than one style.</p>
+              <div id="spotifyNowPlaying"></div>
               </div>
               <div class="viz-kpi-row" id="vizKpiMonthly"></div>
             </div>
@@ -3944,6 +3981,11 @@
                 </div>
               </div>
               <div class="viz-deep-grid">
+                <div class="viz-card" style="grid-column:1/-1">
+                <div class="viz-card-label">Most Replayed Tracks</div>
+                <p class="viz-card-copy">Songs you actually keep coming back to — tracked live from Spotify.</p>
+                <div id="vizMostReplayed"><div class="viz-empty">Connect Spotify above to start tracking play counts.</div></div>
+</div>
                 <div class="viz-card viz-card-donut">
                   <div class="viz-card-label">All-Time Rating Mix</div>
                   <div class="viz-donut-wrap">
@@ -6983,7 +7025,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
       // This manual Review move resolves the original pending tag marker.
       // Without clearing it, renderReview() immediately shows the same row again.
-      delete sourceSongs[songIndex]._pendingGenreTag;
+      sourceSongs[songIndex]._pendingGenreTag = '';
       sourceGenre.songs_listened = sourceSongs;
 
       setUnsavedState(true);
@@ -8896,7 +8938,349 @@ async function loadData() {
       applyVizModeDisplay();
       renderVisuals();
     }
+// ═══════════════════════ SPOTIFY INTEGRATION ═══════════════════════
 
+const SPOTIFY_CLIENT_ID = 'aa1010957e674237abf9a3508382174b';
+const SPOTIFY_REDIRECT_URI = 'https://moxed42.github.io/dailygenre';
+const SPOTIFY_SCOPES = [
+  'user-read-recently-played','user-read-currently-playing',
+  'user-read-playback-state','user-modify-playback-state'
+].join(' ');
+
+let spotifySession = null;
+let spotifyPollingInterval = null;
+let spotifyNowPlayingInterval = null;
+
+function generateSpotifyCodeVerifier() {
+  const arr = new Uint8Array(64);
+  crypto.getRandomValues(arr);
+  return btoa(String.fromCharCode(...arr)).replace(/[+/=]/g, c=>({'+':'-','/':'_','=':''}[c]));
+}
+async function generateSpotifyCodeChallenge(v) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+  return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/[+/=]/g, c=>({'+':'-','/':'_','=':''}[c]));
+}
+
+async function spotifyConnect() {
+  const verifier = generateSpotifyCodeVerifier();
+  const challenge = await generateSpotifyCodeChallenge(verifier);
+  sessionStorage.setItem('spotify_pkce_verifier', verifier);
+  const p = new URLSearchParams({
+    client_id: SPOTIFY_CLIENT_ID, response_type: 'code',
+    redirect_uri: SPOTIFY_REDIRECT_URI, code_challenge_method: 'S256',
+    code_challenge: challenge, scope: SPOTIFY_SCOPES, show_dialog: 'false'
+  });
+  window.location.href = `https://accounts.spotify.com/authorize?${p}`;
+}
+
+async function spotifyHandleCallback() {
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get('code');
+  if (!code) return;
+  window.history.replaceState({}, '', window.location.pathname);
+  const verifier = sessionStorage.getItem('spotify_pkce_verifier');
+  if (!verifier) return;
+  sessionStorage.removeItem('spotify_pkce_verifier');
+  showSaveToast('Connecting to Spotify…', false);
+  try {
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({
+        client_id: SPOTIFY_CLIENT_ID, grant_type: 'authorization_code',
+        code, redirect_uri: SPOTIFY_REDIRECT_URI, code_verifier: verifier
+      })
+    });
+    const data = await res.json().catch(()=>({}));
+    if (!res.ok || !data.access_token) throw new Error(data.error_description || 'Token exchange failed');
+    await spotifySetSession(data);
+    showSaveToast(`Spotify connected as ${spotifySession.displayName || 'you'}!`, false);
+    updateSpotifyUI();
+    spotifyStartPolling();
+  } catch(err) {
+    showSaveToast('Spotify connection failed: ' + err.message, true);
+  }
+}
+
+async function spotifyRefreshAccessToken() {
+  if (!spotifySession?.refreshToken) return false;
+  try {
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({
+        client_id: SPOTIFY_CLIENT_ID, grant_type: 'refresh_token',
+        refresh_token: spotifySession.refreshToken
+      })
+    });
+    const data = await res.json().catch(()=>({}));
+    if (!res.ok || !data.access_token) return false;
+    spotifySession.accessToken = data.access_token;
+    spotifySession.expiresAt = Date.now() + (Number(data.expires_in||3600)*1000);
+    if (data.refresh_token) spotifySession.refreshToken = data.refresh_token;
+    saveSpotifySession();
+    return true;
+  } catch { return false; }
+}
+
+async function spotifyGetToken() {
+  if (!spotifySession) return null;
+  if (Date.now() > spotifySession.expiresAt - 60000) {
+    const ok = await spotifyRefreshAccessToken();
+    if (!ok) { spotifyDisconnect(); return null; }
+  }
+  return spotifySession.accessToken;
+}
+
+async function spotifySetSession(data) {
+  let displayName = '', userId = '';
+  try {
+    const r = await fetch('https://api.spotify.com/v1/me', {
+      headers: {Authorization: `Bearer ${data.access_token}`}
+    });
+    const p = await r.json().catch(()=>({}));
+    displayName = p.display_name || p.id || '';
+    userId = p.id || '';
+  } catch {}
+  spotifySession = {
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token || '',
+    expiresAt: Date.now() + (Number(data.expires_in||3600)*1000),
+    displayName, userId
+  };
+  saveSpotifySession();
+}
+
+function saveSpotifySession() {
+  try { sessionStorage.setItem('spotify_session', JSON.stringify(spotifySession)); } catch {}
+}
+function loadSpotifySession() {
+  try {
+    const raw = sessionStorage.getItem('spotify_session');
+    if (!raw) return;
+    const p = JSON.parse(raw);
+    if (p?.accessToken && p?.expiresAt > Date.now()) {
+      spotifySession = p;
+      updateSpotifyUI();
+      spotifyStartPolling();
+    }
+  } catch {}
+}
+function spotifyDisconnect() {
+  spotifySession = null; spotifyStopPolling();
+  try { sessionStorage.removeItem('spotify_session'); } catch {}
+  updateSpotifyUI();
+  showSaveToast('Spotify disconnected.', false);
+}
+
+async function spotifyFetch(path, options={}) {
+  const token = await spotifyGetToken();
+  if (!token) return null;
+  const res = await fetch(`https://api.spotify.com/v1${path}`, {
+    ...options, headers: {Authorization:`Bearer ${token}`, ...(options.headers||{})}
+  });
+  if (res.status === 204) return {};
+  if (res.status === 401) { spotifyDisconnect(); return null; }
+  if (!res.ok) return null;
+  return res.json().catch(()=>null);
+}
+
+const _spotifySeenPlayIds = new Set();
+
+function spotifyMatchSong(track) {
+  const sid = (track?.id||'').toLowerCase();
+  const isrc = (track?.external_ids?.isrc||'').toLowerCase();
+  const title = (track?.name||'').toLowerCase().trim();
+  const artist = (track?.artists?.[0]?.name||'').toLowerCase().trim();
+  for (const genre of (genres||[])) {
+    for (const s of (genre.songs_listened||[])) {
+      const norm = normalizeSongsListened([s])[0];
+      const sId = (norm.spotifyId||'').toLowerCase();
+      const sIsrc = (norm.isrc||'').toLowerCase();
+      const sTitle = (norm.title||'').toLowerCase().trim();
+      const sArtist = (norm.artist||'').toLowerCase().trim();
+      if (sid && sId && sid===sId) return {genre,song:s};
+      if (isrc && sIsrc && isrc===sIsrc) return {genre,song:s};
+      if (title && sTitle && artist && sArtist && title===sTitle && artist===sArtist) return {genre,song:s};
+    }
+  }
+  return null;
+}
+
+function spotifyIncrementPlayCount(genre, song, playedAt) {
+  const key = `${songIdentity(song)}::${playedAt}`;
+  if (_spotifySeenPlayIds.has(key)) return false;
+  _spotifySeenPlayIds.add(key);
+  const songs = genre.songs_listened || [];
+  for (let i = 0; i < songs.length; i++) {
+    const norm = normalizeSongsListened([songs[i]])[0];
+    const sid = (norm.spotifyId||'').toLowerCase();
+    const isrc = (norm.isrc||'').toLowerCase();
+    const sSid = (song.spotifyId||'').toLowerCase();
+    const sIsrc = (song.isrc||'').toLowerCase();
+    const titleMatch = (norm.title||'').toLowerCase()===(song.title||'').toLowerCase()
+                    && (norm.artist||'').toLowerCase()===(song.artist||'').toLowerCase();
+    if ((sid&&sSid&&sid===sSid)||(isrc&&sIsrc&&isrc===sIsrc)||titleMatch) {
+      songs[i] = {...songs[i], playCount:(Number(songs[i].playCount)||0)+1, lastPlayedAt:playedAt};
+      genre.songs_listened = songs;
+      // Only flag for save when owner (app password is set and active)
+      if (typeof appPassword !== 'undefined' && appPassword && typeof toggleLibrarySaveButton === 'function') {
+        toggleLibrarySaveButton(true);
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+async function spotifyPollRecentlyPlayed() {
+  const data = await spotifyFetch('/me/player/recently-played?limit=50');
+  if (!data?.items) return;
+  let newPlays = 0;
+  for (const item of data.items) {
+    const match = spotifyMatchSong(item.track);
+    if (match && spotifyIncrementPlayCount(match.genre, match.song, item.played_at)) newPlays++;
+  }
+  if (newPlays > 0) renderMostReplayed();
+}
+
+let _lastNowPlayingId = '';
+async function spotifyPollNowPlaying() {
+  const data = await spotifyFetch('/me/player/currently-playing');
+  if (!data?.item) return;
+  const track = data.item;
+  updateNowPlayingWidget(track);
+  if (track.id !== _lastNowPlayingId && Number(data.progress_ms) > 30000) {
+    _lastNowPlayingId = track.id;
+    const match = spotifyMatchSong(track);
+    if (match) spotifyIncrementPlayCount(match.genre, match.song, new Date().toISOString());
+  }
+}
+
+function spotifyStartPolling() {
+  spotifyStopPolling();
+  spotifyPollRecentlyPlayed();
+  spotifyPollNowPlaying();
+  spotifyPollingInterval = setInterval(spotifyPollRecentlyPlayed, 2*60*1000);
+  spotifyNowPlayingInterval = setInterval(spotifyPollNowPlaying, 30*1000);
+}
+function spotifyStopPolling() {
+  if (spotifyPollingInterval) { clearInterval(spotifyPollingInterval); spotifyPollingInterval=null; }
+  if (spotifyNowPlayingInterval) { clearInterval(spotifyNowPlayingInterval); spotifyNowPlayingInterval=null; }
+}
+
+async function spotifyQueueTracks(urls) {
+  const token = await spotifyGetToken();
+  if (!token) { showSaveToast('Connect Spotify first.', true); return; }
+  let queued = 0;
+  for (const url of urls) {
+    const m = url.match(/track[/:]([A-Za-z0-9]{22})/);
+    if (!m) continue;
+    const res = await fetch(`https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent('spotify:track:'+m[1])}`, {
+      method:'POST', headers:{Authorization:`Bearer ${token}`}
+    });
+    if (res.ok || res.status===204) queued++;
+  }
+  showSaveToast(queued>0 ? `Added ${queued} track${queued>1?'s':''} to your Spotify queue.` : 'Could not queue — is Spotify open on a device?', queued===0);
+}
+
+async function spotifyQueueGenreSongs(genre) {
+  if (!genre) return;
+  const songs = (genre.songs_listened||[]).filter(s => /spotify\.com\/track\//i.test(s.url||''));
+  if (!songs.length) { showSaveToast('No Spotify-linked songs logged for this genre yet.', true); return; }
+  await spotifyQueueTracks(songs.map(s=>s.url));
+}
+
+function updateNowPlayingWidget(track) {
+  const w = document.getElementById('spotifyNowPlaying');
+  if (!w) return;
+  const match = spotifyMatchSong(track);
+  const artists = (track.artists||[]).map(a=>a.name).join(', ');
+  const art = track.album?.images?.[1]?.url || track.album?.images?.[0]?.url || '';
+  w.innerHTML = `<div class="spotify-now-playing-inner">
+    ${art?`<img src="${escapeHtml(art)}" alt="art" width="36" height="36" style="border-radius:4px;flex-shrink:0">`:''}
+    <div class="spotify-now-playing-text">
+      <span class="spotify-now-playing-label">&#9654; Now playing</span>
+      <span class="spotify-now-playing-track">${escapeHtml(track.name||'')} &mdash; ${escapeHtml(artists)}</span>
+      ${match?`<span class="spotify-now-playing-match">Logged in: ${escapeHtml(match.genre.genre||'')}</span>`:''}
+    </div>
+  </div>`;
+  w.style.display = 'block';
+}
+
+function collectMostReplayed(topN=15) {
+  const results = [];
+  for (const genre of (genres||[])) {
+    for (const s of (genre.songs_listened||[])) {
+      const count = Number(s.playCount)||0;
+      if (count > 0) results.push({genre, song:s, count});
+    }
+  }
+  return results.sort((a,b)=>b.count-a.count).slice(0,topN);
+}
+
+function renderMostReplayed() {
+  const mount = document.getElementById('vizMostReplayed');
+  if (!mount) return;
+  const top = collectMostReplayed();
+  if (!top.length) {
+    mount.innerHTML = '<div class="viz-empty">No play data yet — connect Spotify and listen to some songs.</div>';
+    return;
+  }
+  mount.innerHTML = top.map(({genre,song,count}) => {
+    const art = song.artwork ? `<img src="${escapeHtml(song.artwork)}" alt="art" width="36" height="36" loading="lazy" style="border-radius:4px;flex-shrink:0">` : '';
+    const contradiction = (Number(song.reaction)===1 && count>=3) ? '<span class="viz-missing-chip" title="Low reaction but high plays">&#128064; contradiction</span>' : '';
+    return `<div class="viz-replayed-row">
+      ${art}
+      <div class="viz-replayed-info">
+        <div class="viz-replayed-title">${escapeHtml(song.title||'Untitled')}${song.artist?` &mdash; ${escapeHtml(song.artist)}`:''}
+        </div>
+        <div class="viz-replayed-meta">
+          <button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(genre.genre||'')}')">${escapeHtml(genre.genre||'')}</button>
+          ${contradiction}
+        </div>
+      </div>
+      <div class="viz-replayed-count" title="${count} play${count!==1?'s':''}">x${count}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateSpotifyUI() {
+  const btn = document.getElementById('spotifyConnectBtn');
+  if (btn) {
+    if (spotifySession) {
+      btn.textContent = `Spotify: ${spotifySession.displayName || 'Connected'}`;
+      btn.classList.add('spotify-connected');
+      btn.onclick = () => { if (confirm('Disconnect Spotify?')) spotifyDisconnect(); };
+    } else {
+      btn.textContent = 'Connect Spotify';
+      btn.classList.remove('spotify-connected');
+      btn.onclick = spotifyConnect;
+    }
+  }
+  // Show/hide Queue buttons based on session
+  document.querySelectorAll('.spotify-queue-btn').forEach(b => {
+    b.style.display = spotifySession ? 'inline-flex' : 'none';
+  });
+  renderMostReplayed();
+}
+
+// Show queue btn on spin result when genre has spotify songs
+function spotifyUpdateSpinQueueBtn(genre) {
+  const btn = document.getElementById('spinQueueBtn');
+  if (!btn || !spotifySession) return;
+  const hasSongs = (genre?.songs_listened||[]).some(s => /spotify\.com\/track\//i.test(s.url||''));
+  btn.style.display = hasSongs ? 'inline-flex' : 'none';
+}
+
+// Init
+(async function spotifyInit() {
+  if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
+    await spotifyHandleCallback();
+  } else {
+    loadSpotifySession();
+  }
+})();
   </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
