@@ -9457,15 +9457,13 @@ async function spotifyAddGenreToPlaylist(genre) {
   const songs = (genre.songs_listened || []).filter(s => /spotify\.com\/track\//i.test(s.url || ''));
   if (!songs.length) { showSaveToast('No Spotify-linked songs logged for this genre yet.', true); return; }
 
-  // Determine target month playlist from listenedDate
   let targetPlaylistName = null;
   const listenedDate = genre.date_listened || genre.listenedDate || null;
   if (listenedDate) {
     const d = new Date(listenedDate);
     if (!isNaN(d)) {
       const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const yyyy = d.getFullYear();
-      targetPlaylistName = `Genres ${yyyy} ${mm}`;
+      targetPlaylistName = `Genres ${d.getFullYear()} ${mm}`;
     }
   }
   if (!targetPlaylistName) {
@@ -9474,41 +9472,37 @@ async function spotifyAddGenreToPlaylist(genre) {
     targetPlaylistName = `Genres ${now.getFullYear()} ${mm}`;
   }
 
-  // Fetch user's playlists (up to 200)
-  let userPlaylists = [];
-  let playlistFetchError = false;
+  // Cache-first: no API call needed if we've seen this playlist before
+  const cached = _getPlaylistCache();
+  const cachedEntry = Object.values(cached).find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
+  if (cachedEntry) {
+    await _doAddToPlaylist(cachedEntry.id, cachedEntry.name, songs);
+    return;
+  }
+
+  // Not in cache — try API (non-fatal if 403), then show modal
+  let userPlaylists = Object.values(cached);
   try {
     let offset = 0;
     while (offset < 200) {
       const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
-      if (!data) { playlistFetchError = true; break; }
-      if (!data.items?.length) break;
-      userPlaylists = userPlaylists.concat(data.items);
+      if (!data?.items?.length) break;
+      data.items.filter(p => p.owner?.id === spotifySession.userId).forEach(p => {
+        _cachePlaylist(p.name, p.id);
+        if (!userPlaylists.find(u => u.id === p.id)) userPlaylists.push({ id: p.id, name: p.name });
+      });
       if (data.items.length < 50) break;
       offset += 50;
     }
-  } catch(e) { playlistFetchError = true; console.error('Playlist fetch error:', e); }
-  if (playlistFetchError) {
-    console.warn('Playlist fetch failed — showing create-only modal');
+  } catch {}
+
+  const apiMatch = userPlaylists.find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
+  if (apiMatch) {
+    await _doAddToPlaylist(apiMatch.id, apiMatch.name, songs);
+    return;
   }
 
-  // Merge cached playlists into the list
-  const cached = _getCachedPlaylists();
-  for (const cp of cached) {
-    if (!userPlaylists.find(p => p.id === cp.id)) {
-      userPlaylists.push({ id: cp.id, name: cp.name });
-    }
-  }
-
-  const matchedPlaylist = userPlaylists.find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
-
-  if (matchedPlaylist) {
-    // Auto-match found — add directly
-    await _doAddToPlaylist(matchedPlaylist.id, matchedPlaylist.name, songs);
-  } else {
-    // No match — show modal
-    _showPlaylistModal(targetPlaylistName, userPlaylists, songs, genre);
-  }
+  _showPlaylistModal(targetPlaylistName, userPlaylists, songs, genre);
 }
 
 async function _doAddToPlaylist(playlistId, playlistName, songs) {
@@ -9555,6 +9549,7 @@ async function _createAndAddToPlaylist(name, songs) {
   const cached = _findCachedPlaylist(name);
   if (cached) {
     showSaveToast(`Adding to existing playlist “${name}”…`, false);
+    _cachePlaylist(name, pl.id);
     await _doAddToPlaylist(cached.id, name, songs);
     return;
   }
