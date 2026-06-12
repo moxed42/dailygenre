@@ -9269,7 +9269,7 @@ function updateSpotifyUI() {
   }
   // Show/hide Queue buttons based on session
   document.querySelectorAll('.spotify-queue-btn').forEach(b => {
-    b.style.display = spotifySession ? 'inline-flex' : 'none';
+    if (b) b.style.display = spotifySession ? 'inline-flex' : 'none';
   });
   renderMostReplayed();
 }
@@ -9282,14 +9282,14 @@ function spotifyUpdateSpinQueueBtn(genre) {
   btn.style.display = hasSongs ? 'inline-flex' : 'none';
 }
 
-// Init
-(async function spotifyInit() {
+// Init — deferred so loadData() runs first
+setTimeout(async function spotifyInit() {
   if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
     await spotifyHandleCallback();
   } else {
     loadSpotifySession();
   }
-})();
+}, 0);
   </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
