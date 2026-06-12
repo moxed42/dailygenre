@@ -3650,6 +3650,23 @@
   cursor:pointer; transition:background 0.15s;
 }
 .spotify-queue-btn:hover { background:color-mix(in oklab,#1DB954 28%,transparent); }
+  
+    /* ── Listening Verification panel ── */
+    .heard-panel { border: 1px solid color-mix(in oklab, #1DB954 30%, transparent); border-radius: 10px; overflow: hidden; }
+    .heard-panel-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: color-mix(in oklab, #1DB954 8%, var(--surface, #fff)); flex-wrap: wrap; gap: 4px; }
+    .heard-panel-title { font-size: 0.85rem; font-weight: 700; color: #1DB954; }
+    .heard-panel-sub { font-size: 0.75rem; color: var(--muted, #888); }
+    .heard-panel-body { padding: 4px 0; }
+    .heard-row { display: flex; align-items: center; gap: 8px; padding: 5px 14px; font-size: 0.82rem; }
+    .heard-row:hover { background: rgba(0,0,0,0.03); }
+    .heard-dot { font-size: 0.85rem; flex-shrink: 0; width: 16px; text-align: center; }
+    .heard-yes .heard-dot { color: #1DB954; font-weight: 700; }
+    .heard-no .heard-dot { color: var(--muted, #bbb); }
+    .heard-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .heard-artist { color: var(--muted, #888); font-weight: 400; }
+    .heard-no .heard-title { color: var(--muted, #888); }
+    .heard-when { font-size: 0.72rem; color: var(--muted, #888); flex-shrink: 0; }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -3789,13 +3806,13 @@
               <button class="btn btn-primary" id="saveBtn">Save Changes</button>
               <button class="btn btn-secondary" id="markListenedBtn">Mark as Listened Today</button>
               <button class="btn btn-danger hidden" id="unlistenBtn">Undo Listen / Remove Date</button>
-              <button class="spotify-queue-btn" id="addToPlaylistBtn" style="display:none" onclick="spotifyAddGenreToPlaylist(currentGenre)">🎵 Save to Playlist</button>
+              <button class="spotify-queue-btn" id="addToPlaylistBtn" style="display:none" onclick="spotifyAddGenreToPlaylist(currentGenre)" title="Save all logged songs to a Spotify playlist named after this genre">&#127925; Save to Playlist</button>
             </div>
             <div class="small save-behavior-note">Save Changes keeps notes, songs, and reactions without marking a new genre as listened. Use “Mark as Listened Today” only after completing the listen.</div>
           </div>
+          <div id="heardVerificationPanel" style="padding: 0 16px 16px;"></div>
         </div>
       </div>
-      <div id="heardVerificationPanel"></div>
     </section>
 
     <section class="screen" id="screen-history">
@@ -7092,8 +7109,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       if (!switched) return false;
       applyDetailEditMode(detailEditMode);
       if (typeof renderHeardVerification === 'function') renderHeardVerification(genre);
-      const _pl = document.getElementById('addToPlaylistBtn');
-      if (_pl) _pl.style.display = spotifySession ? 'inline-flex' : 'none';
+      const _plBtn = document.getElementById('addToPlaylistBtn');
+      if (_plBtn) _plBtn.style.display = spotifySession ? 'inline-flex' : 'none';
       if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
       if (!options.preserveScroll) {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
@@ -9133,7 +9150,7 @@ function spotifyIncrementPlayCount(genre, song, playedAt) {
     const titleMatch = (norm.title||'').toLowerCase()===(song.title||'').toLowerCase()
                     && (norm.artist||'').toLowerCase()===(song.artist||'').toLowerCase();
     if ((sid&&sSid&&sid===sSid)||(isrc&&sIsrc&&isrc===sIsrc)||titleMatch) {
-        songs[i] = {...songs[i], playCount:(Number(songs[i].playCount)||0)+1, lastPlayedAt:playedAt, heard:true, firstHeardAt:songs[i].firstHeardAt||playedAt};
+      songs[i] = {...songs[i], playCount:(Number(songs[i].playCount)||0)+1, lastPlayedAt:playedAt, heard:true, firstHeardAt:songs[i].firstHeardAt||playedAt};
       genre.songs_listened = songs;
       // Only flag for save when owner (app password is set and active)
       if (typeof appPassword !== 'undefined' && appPassword && typeof toggleLibrarySaveButton === 'function') {
@@ -9275,9 +9292,104 @@ function updateSpotifyUI() {
   }
   // Show/hide Queue buttons based on session
   document.querySelectorAll('.spotify-queue-btn').forEach(b => {
-    if (b) b.style.display = spotifySession ? 'inline-flex' : 'none';
+    b.style.display = spotifySession ? 'inline-flex' : 'none';
   });
+  if (typeof currentGenre !== 'undefined' && currentGenre && typeof renderHeardVerification === 'function') {
+    renderHeardVerification(currentGenre);
+  }
   renderMostReplayed();
+}
+
+
+// ── Add to Playlist ───────────────────────────────────────────────────────────
+
+async function spotifyGetOrCreatePlaylist(genreName) {
+  const token = await spotifyGetToken();
+  if (!token || !spotifySession?.userId) return null;
+  const userId = spotifySession.userId;
+  let offset = 0, found = null;
+  while (!found && offset < 200) {
+    const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
+    if (!data?.items?.length) break;
+    found = data.items.find(p => p.name.toLowerCase() === genreName.toLowerCase() && p.owner?.id === userId);
+    if (data.items.length < 50) break;
+    offset += 50;
+  }
+  if (found) return found.id;
+  const res = await fetch(`https://api.spotify.com/v1/users/${encodeURIComponent(userId)}/playlists`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: genreName, description: `Songs logged in Daily Genre — ${genreName}`, public: false })
+  });
+  const pl = await res.json().catch(() => ({}));
+  return pl.id || null;
+}
+
+async function spotifyAddGenreToPlaylist(genre) {
+  if (!spotifySession) { showSaveToast('Connect Spotify first.', true); return; }
+  if (!genre) return;
+  const genreName = genre.genre || 'Unknown Genre';
+  const songs = (genre.songs_listened || []).filter(s => /spotify\.com\/track\//i.test(s.url || ''));
+  if (!songs.length) { showSaveToast('No Spotify-linked songs logged for this genre yet.', true); return; }
+  showSaveToast(`Saving to playlist \u201c${genreName}\u201d\u2026`, false);
+  const playlistId = await spotifyGetOrCreatePlaylist(genreName);
+  if (!playlistId) { showSaveToast('Could not find or create playlist.', true); return; }
+  let existingUris = new Set();
+  try {
+    let plOffset = 0;
+    while (plOffset < 500) {
+      const ex = await spotifyFetch(`/playlists/${playlistId}/tracks?fields=items(track(uri)),next&limit=100&offset=${plOffset}`);
+      if (!ex?.items?.length) break;
+      ex.items.forEach(item => { if (item?.track?.uri) existingUris.add(item.track.uri); });
+      if (!ex.next) break;
+      plOffset += 100;
+    }
+  } catch {}
+  const urisToAdd = [];
+  for (const s of songs) {
+    const m = (s.url || '').match(/track[/:]([A-Za-z0-9]{22})/);
+    if (!m) continue;
+    const uri = `spotify:track:${m[1]}`;
+    if (!existingUris.has(uri)) urisToAdd.push(uri);
+  }
+  if (!urisToAdd.length) { showSaveToast(`All songs already in \u201c${genreName}\u201d playlist.`, false); return; }
+  const token = await spotifyGetToken();
+  let added = 0;
+  for (let i = 0; i < urisToAdd.length; i += 100) {
+    const chunk = urisToAdd.slice(i, i + 100);
+    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uris: chunk })
+    });
+    if (res.ok || res.status === 201) added += chunk.length;
+  }
+  showSaveToast(added > 0 ? `Added ${added} track${added > 1 ? 's' : ''} to \u201c${genreName}\u201d playlist \u2713` : 'Could not add tracks to playlist.', added === 0);
+}
+
+// ── Listening Verification ────────────────────────────────────────────────────
+
+function renderHeardVerification(genre) {
+  const mount = document.getElementById('heardVerificationPanel');
+  if (!mount) return;
+  if (!spotifySession) { mount.innerHTML = ''; return; }
+  const songs = (genre.songs_listened || []).filter(s => !s.isPending);
+  if (!songs.length) { mount.innerHTML = ''; return; }
+  const heard = songs.filter(s => s.heard);
+  const unheard = songs.filter(s => !s.heard && /spotify\.com\/track\//i.test(s.url || ''));
+  if (!heard.length && !unheard.length) { mount.innerHTML = ''; return; }
+  const heardRows = heard.map(s => {
+    const when = s.firstHeardAt ? new Date(s.firstHeardAt).toLocaleDateString() : '';
+    const title = (s.title || s.url || 'Untitled').replace(/</g,'&lt;');
+    const artist = s.artist ? ` <span class="heard-artist">\u2014 ${s.artist.replace(/</g,'&lt;')}</span>` : '';
+    return `<div class="heard-row heard-yes"><span class="heard-dot">\u2713</span><span class="heard-title">${title}${artist}</span>${when ? `<span class="heard-when">${when}</span>` : ''}</div>`;
+  }).join('');
+  const unheardRows = unheard.map(s => {
+    const title = (s.title || s.url || 'Untitled').replace(/</g,'&lt;');
+    const artist = s.artist ? ` <span class="heard-artist">\u2014 ${s.artist.replace(/</g,'&lt;')}</span>` : '';
+    return `<div class="heard-row heard-no"><span class="heard-dot">\u25cb</span><span class="heard-title">${title}${artist}</span><span class="heard-when">not detected yet</span></div>`;
+  }).join('');
+  mount.innerHTML = `<div class="heard-panel"><div class="heard-panel-header"><span class="heard-panel-title">\uD83D\uDD0A Listening Verification</span><span class="heard-panel-sub">${heard.length} of ${songs.length} songs detected via Spotify</span></div><div class="heard-panel-body">${heardRows}${unheardRows}</div></div>`;
 }
 
 // Show queue btn on spin result when genre has spotify songs
