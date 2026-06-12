@@ -9423,7 +9423,7 @@ async function spotifyGetOrCreatePlaylist(genreName) {
     offset += 50;
   }
   if (found) return found.id;
-  const res = await fetch(`https://api.spotify.com/v1/users/${encodeURIComponent(userId)}/playlists`, {
+  const res = await fetch(`https://api.spotify.com/v1/me/playlists`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: genreName, description: `Songs logged in Daily Genre — ${genreName}`, public: false })
@@ -9470,8 +9470,7 @@ async function spotifyAddGenreToPlaylist(genre) {
     }
   } catch(e) { playlistFetchError = true; console.error('Playlist fetch error:', e); }
   if (playlistFetchError) {
-    showSaveToast('Could not load playlists — try disconnecting and reconnecting Spotify.', true);
-    return;
+    console.warn('Playlist fetch failed — showing create-only modal');
   }
 
   const matchedPlaylist = userPlaylists.find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
@@ -9491,7 +9490,7 @@ async function _doAddToPlaylist(playlistId, playlistName, songs) {
   try {
     let offset = 0;
     while (offset < 500) {
-      const ex = await spotifyFetch(`/playlists/${playlistId}/tracks?fields=items(track(uri)),next&limit=100&offset=${offset}`);
+      const ex = await spotifyFetch(`/playlists/${playlistId}/items?fields=items(track(uri)),next&limit=100&offset=${offset}`);
       if (!ex?.items?.length) break;
       ex.items.forEach(item => { if (item?.track?.uri) existingUris.add(item.track.uri); });
       if (!ex.next) break;
@@ -9510,7 +9509,7 @@ async function _doAddToPlaylist(playlistId, playlistName, songs) {
   let added = 0;
   for (let i = 0; i < urisToAdd.length; i += 100) {
     const chunk = urisToAdd.slice(i, i + 100);
-    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/items`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ uris: chunk })
@@ -9525,7 +9524,7 @@ async function _createAndAddToPlaylist(name, songs) {
   const userId = spotifySession?.userId;
   if (!userId) return;
   showSaveToast(`Creating playlist \u201c${name}\u201d\u2026`, false);
-  const res = await fetch(`https://api.spotify.com/v1/users/${encodeURIComponent(userId)}/playlists`, {
+  const res = await fetch(`https://api.spotify.com/v1/me/playlists`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, description: 'Created by Daily Genre', public: false })
