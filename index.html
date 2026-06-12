@@ -7737,7 +7737,49 @@ async function loadData() {
     passwordModal.addEventListener('click', (e) => {
       if (e.target === passwordModal) closePasswordModal();
     });
+    // ── paste these right before the startup if/else ──
 
+    function spotifyTrackId(url) {
+      const m = String(url || '').match(/track[/:]([A-Za-z0-9]{22})/);
+      return m ? m[1] : null;
+    }
+
+    function spPlayBtn(song) {
+      const url = song?.url || '';
+      const trackId = spotifyTrackId(url);
+      if (!trackId || !spotifySession) return '';
+      const title  = (song.title  || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const artist = (song.artist || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const art    = (song.artwork|| '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return `<button class="sp-play-btn" title="Open in mini player" onclick="stickyPlayerOpen('${trackId}','${title}','${artist}','${art}')">▶</button>`;
+    }
+
+    function stickyPlayerOpen(trackId, title, artist, art) {
+      const player = document.getElementById('stickyPlayer');
+      const frame  = document.getElementById('stickyPlayerFrame');
+      const titleEl  = document.getElementById('stickyPlayerTitle');
+      const artistEl = document.getElementById('stickyPlayerArtist');
+      const artEl    = document.getElementById('stickyPlayerArt');
+      if (!player) return;
+      if (titleEl)  titleEl.textContent  = title  || 'Unknown track';
+      if (artistEl) artistEl.textContent = artist || '';
+      if (artEl) { artEl.src = art || ''; artEl.style.display = art ? 'block' : 'none'; }
+      if (frame) { frame.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator`; frame.style.display = 'block'; }
+      player.style.display = 'block';
+      document.body.classList.add('sticky-player-open');
+    }
+
+    function stickyPlayerClose() {
+      const player = document.getElementById('stickyPlayer');
+      const frame  = document.getElementById('stickyPlayerFrame');
+      if (frame)  frame.src = '';
+      if (player) player.style.display = 'none';
+      document.body.classList.remove('sticky-player-open');
+    }
+
+    // ── startup ──
+    if (new URL(window.location.href).searchParams.get('code')) {
+    
     // Restore Spotify session; handle OAuth callback if ?code= present
     if (new URL(window.location.href).searchParams.get('code')) {
       spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
@@ -8972,7 +9014,7 @@ async function loadData() {
       document.getElementById('vizMonthSelect')?.addEventListener('change', renderVisuals);
       applyVizModeDisplay();
       renderVisuals();
-    }
+    
 // ═══════════════════════ SPOTIFY INTEGRATION ═══════════════════════
 
 const SPOTIFY_CLIENT_ID = 'aa1010957e674237abf9a3508382174b';
