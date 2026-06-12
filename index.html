@@ -8950,7 +8950,8 @@ const SPOTIFY_CLIENT_ID = 'aa1010957e674237abf9a3508382174b';
 const SPOTIFY_REDIRECT_URI = 'https://moxed42.github.io/dailygenre';
 const SPOTIFY_SCOPES = [
   'user-read-recently-played','user-read-currently-playing',
-  'user-read-playback-state','user-modify-playback-state'
+  'user-read-playback-state','user-modify-playback-state',
+  'playlist-modify-public','playlist-modify-private'
 ].join(' ');
 
 let spotifySession = null;
@@ -9127,7 +9128,7 @@ function spotifyIncrementPlayCount(genre, song, playedAt) {
     const titleMatch = (norm.title||'').toLowerCase()===(song.title||'').toLowerCase()
                     && (norm.artist||'').toLowerCase()===(song.artist||'').toLowerCase();
     if ((sid&&sSid&&sid===sSid)||(isrc&&sIsrc&&isrc===sIsrc)||titleMatch) {
-      songs[i] = {...songs[i], playCount:(Number(songs[i].playCount)||0)+1, lastPlayedAt:playedAt};
+        songs[i] = {...songs[i], playCount:(Number(songs[i].playCount)||0)+1, lastPlayedAt:playedAt, heard:true, firstHeardAt:songs[i].firstHeardAt||playedAt};
       genre.songs_listened = songs;
       // Only flag for save when owner (app password is set and active)
       if (typeof appPassword !== 'undefined' && appPassword && typeof toggleLibrarySaveButton === 'function') {
