@@ -9532,5 +9532,25 @@ function spotifyUpdateSpinQueueBtn(genre) {
   </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
+  <!-- Sticky Spotify Mini Player -->
+<div id="stickyPlayer" class="sticky-player" style="display:none;" role="complementary" aria-label="Spotify mini player">
+  <div class="sticky-player-inner">
+    <div class="sticky-player-info">
+      <img id="stickyPlayerArt" src="" alt="Album art" width="40" height="40" loading="lazy" style="display:none;" />
+      <div class="sticky-player-text">
+        <div id="stickyPlayerTitle" class="sticky-player-title">Nothing loaded</div>
+        <div id="stickyPlayerArtist" class="sticky-player-artist"></div>
+      </div>
+    </div>
+    <div class="sticky-player-embed-wrap">
+      <iframe id="stickyPlayerFrame" style="border-radius:8px;display:none;"
+        src="" width="100%" height="80" frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    </div>
+    <button class="sticky-player-close" onclick="stickyPlayerClose()" aria-label="Close player">✕</button>
+  </div>
+</div>
+
 </body>
 </html>
