@@ -9171,7 +9171,8 @@ async function spotifySetSession(data) {
     accessToken: data.access_token,
     refreshToken: data.refresh_token || '',
     expiresAt: Date.now() + (Number(data.expires_in||3600)*1000),
-    displayName, userId
+    displayName, userId,
+    hasPlaylistScope: true
   };
   saveSpotifySession();
 }
@@ -9377,9 +9378,12 @@ function updateSpotifyUI() {
   const btn = document.getElementById('spotifyConnectBtn');
   if (btn) {
     if (spotifySession) {
-      btn.textContent = `♫ ${spotifySession.displayName || 'Connected'}`;
+      const needsReauth = !spotifySession.hasPlaylistScope;
+      btn.textContent = needsReauth ? `⚠ Reconnect Spotify` : `♫ ${spotifySession.displayName || 'Connected'}`;
+      btn.style.outline = needsReauth ? '2px solid #e05' : '';
+      btn.title = needsReauth ? 'Playlist permissions missing — click to disconnect, then reconnect' : '';
       btn.classList.add('spotify-connected');
-      btn.onclick = () => { if (confirm('Disconnect Spotify?')) spotifyDisconnect(); };
+      btn.onclick = () => { if (confirm(needsReauth ? 'Reconnect Spotify to enable playlist features?' : 'Disconnect Spotify?')) spotifyDisconnect(); };
     } else {
       btn.textContent = 'Connect Spotify';
       btn.classList.remove('spotify-connected');
@@ -9458,7 +9462,7 @@ async function spotifyAddGenreToPlaylist(genre) {
     while (offset < 200) {
       const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
       if (!data?.items?.length) break;
-      userPlaylists = userPlaylists.concat(data.items.filter(p => p.owner?.id === spotifySession.userId));
+      userPlaylists = userPlaylists.concat(data.items);
       if (data.items.length < 50) break;
       offset += 50;
     }
@@ -9520,6 +9524,12 @@ async function _createAndAddToPlaylist(name, songs) {
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, description: 'Created by Daily Genre', public: false })
   });
+  if (res.status === 403) {
+    showSaveToast('Permission denied — please disconnect Spotify and reconnect to grant playlist access.', true);
+    const btn = document.getElementById('spotifyConnectBtn');
+    if (btn) { btn.style.outline = '3px solid #e05'; btn.textContent = '⚠ Reconnect Spotify'; setTimeout(()=>{ btn.style.outline=''; updateSpotifyUI(); }, 8000); }
+    return;
+  }
   const pl = await res.json().catch(() => ({}));
   if (!pl.id) { showSaveToast('Could not create playlist.', true); return; }
   await _doAddToPlaylist(pl.id, name, songs);
