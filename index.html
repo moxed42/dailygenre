@@ -7832,8 +7832,13 @@ async function loadData() {
       if (e.target === passwordModal) closePasswordModal();
     });
 
-    loadData();
-
+   // Handle Spotify OAuth callback first if ?code= is in URL
+if (new URL(window.location.href).searchParams.get('code')) {
+  spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
+} else {
+  loadSpotifySession();
+  loadData();
+}
         // ── Visualization helpers ─────────────────────────────────────────
     let _vizCharts = {};
     let _vizMode = 'monthly';
