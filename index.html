@@ -9559,16 +9559,17 @@ function _showPlaylistModal(suggestedName, userPlaylists, songs, genre) {
         <button id="plModalCreate" class="btn btn-primary" style="width:100%;">
           ✚ Create &ldquo;${suggestedName}&rdquo;
         </button>
+        ${userPlaylists.length > 0 ? `
         <div style="display:flex;gap:8px;align-items:center;">
-          <select id="plModalSelect" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);font-size:.9rem;">
+          <select id="plModalSelect" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;color:#222;font-size:.9rem;">
             <option value="">— Choose existing playlist —</option>
             ${opts}
           </select>
           <button id="plModalAddExisting" class="btn btn-secondary">Add</button>
-        </div>
+        </div>` : `<div style="font-size:.82rem;color:var(--muted,#888);padding:4px 2px;">&#x26A0; Couldn&#x27;t load your playlists (Spotify API restriction) — use Create above or type a name below.</div>`}
         <div style="display:flex;gap:8px;align-items:center;">
           <input id="plModalNewName" type="text" placeholder="New playlist name\u2026" value="${suggestedName}"
-            style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);font-size:.9rem;" />
+            style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;color:#222;font-size:.9rem;" />
           <button id="plModalCreateCustom" class="btn btn-secondary">Create</button>
         </div>
         <button id="plModalCancel" class="btn btn-ghost" style="width:100%;margin-top:4px;">Cancel</button>
@@ -9580,13 +9581,13 @@ function _showPlaylistModal(suggestedName, userPlaylists, songs, genre) {
     modal.remove();
     await _createAndAddToPlaylist(suggestedName, songs);
   };
-  document.getElementById('plModalAddExisting').onclick = async () => {
+  document.getElementById('plModalAddExisting')?.addEventListener('click', async () => {
     const sel = document.getElementById('plModalSelect');
     const idx = parseInt(sel.value);
     if (isNaN(idx) || !userPlaylists[idx]) return;
     modal.remove();
     await _doAddToPlaylist(userPlaylists[idx].id, userPlaylists[idx].name, songs);
-  };
+  });
   document.getElementById('plModalCreateCustom').onclick = async () => {
     const name = document.getElementById('plModalNewName').value.trim();
     if (!name) return;
