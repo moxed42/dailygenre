@@ -3900,7 +3900,7 @@
               <button class="btn btn-primary" id="saveBtn">Save Changes</button>
               <button class="btn btn-secondary" id="markListenedBtn">Mark as Listened Today</button>
               <button class="btn btn-danger hidden" id="unlistenBtn">Undo Listen / Remove Date</button>
-              <button class="spotify-queue-btn" id="addToPlaylistBtn" style="display:none" onclick="spotifyAddGenreToPlaylist(currentGenre)" title="Save all logged songs to a Spotify playlist named after this genre">&#127925; Save to Playlist</button>
+              
             </div>
             <div class="small save-behavior-note">Save Changes keeps notes, songs, and reactions without marking a new genre as listened. Use “Mark as Listened Today” only after completing the listen.</div>
           </div>
@@ -6065,6 +6065,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 ${!listenedDate
                   ? `<button type="button" class="btn btn-primary" onclick="markCurrentGenreListened()">✓ Mark as Listened Today</button>`
                   : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Undo Listen / Remove Date</button>`}
+                ${spotifySession ? `<button type="button" class="btn btn-secondary spotify-queue-btn" onclick="spotifyAddGenreToPlaylist(currentGenre)" title="Save logged songs to a Spotify playlist">&#127925; Save to Playlist</button>` : ''}
               </div>
 
             </div>
@@ -7204,8 +7205,6 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       if (!switched) return false;
       applyDetailEditMode(detailEditMode);
       if (typeof renderHeardVerification === 'function') renderHeardVerification(genre);
-      const _plBtn = document.getElementById('addToPlaylistBtn');
-      if (_plBtn) _plBtn.style.display = spotifySession ? 'inline-flex' : 'none';
       if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
       if (!options.preserveScroll) {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
@@ -9394,9 +9393,13 @@ function updateSpotifyUI() {
   if (typeof currentGenre !== 'undefined' && currentGenre && typeof renderHeardVerification === 'function') {
     renderHeardVerification(currentGenre);
   }
-  // Show/hide the Save to Playlist button in detail view
-  const _plBtn2 = document.getElementById('addToPlaylistBtn');
-  if (_plBtn2) _plBtn2.style.display = spotifySession ? 'inline-flex' : 'none';
+  // Refresh detail screen action bar so Save to Playlist btn appears/disappears live
+  if (typeof currentGenre !== 'undefined' && currentGenre && typeof loadListenScreen === 'function') {
+    const ls = document.getElementById('screen-listen');
+    if (ls && !ls.classList.contains('hidden')) {
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+    }
+  }
   renderMostReplayed();
 }
 
