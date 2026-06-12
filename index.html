@@ -3789,11 +3789,13 @@
               <button class="btn btn-primary" id="saveBtn">Save Changes</button>
               <button class="btn btn-secondary" id="markListenedBtn">Mark as Listened Today</button>
               <button class="btn btn-danger hidden" id="unlistenBtn">Undo Listen / Remove Date</button>
+              <button class="spotify-queue-btn" id="addToPlaylistBtn" style="display:none" onclick="spotifyAddGenreToPlaylist(currentGenre)">🎵 Save to Playlist</button>
             </div>
             <div class="small save-behavior-note">Save Changes keeps notes, songs, and reactions without marking a new genre as listened. Use “Mark as Listened Today” only after completing the listen.</div>
           </div>
         </div>
       </div>
+      <div id="heardVerificationPanel"></div>
     </section>
 
     <section class="screen" id="screen-history">
@@ -7089,6 +7091,9 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       const switched = switchScreen('listen', { force: !!options.force, preserveScroll: !!options.preserveScroll });
       if (!switched) return false;
       applyDetailEditMode(detailEditMode);
+      if (typeof renderHeardVerification === 'function') renderHeardVerification(genre);
+      const _pl = document.getElementById('addToPlaylistBtn');
+      if (_pl) _pl.style.display = spotifySession ? 'inline-flex' : 'none';
       if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
       if (!options.preserveScroll) {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
