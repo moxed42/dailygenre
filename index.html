@@ -3669,82 +3669,17 @@
 
   
     /* ── Sticky Spotify Mini Player ── */
-    .sticky-player {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 8000;
-      background: var(--surface, #fff);
-      border-top: 1px solid var(--border, #e0ddd8);
-      box-shadow: 0 -4px 24px rgba(0,0,0,.12);
-      padding: 8px 16px;
-      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
-    }
-    .sticky-player-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .sticky-player-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      flex-shrink: 0;
-      max-width: 200px;
-    }
-    #stickyPlayerArt {
-      border-radius: 6px;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
+    .sticky-player { position: fixed; bottom: 0; left: 0; right: 0; z-index: 8000; background: var(--surface, #fff); border-top: 1px solid var(--border, #e0ddd8); box-shadow: 0 -4px 24px rgba(0,0,0,.12); padding: 8px 16px; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+    .sticky-player-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+    .sticky-player-info { display: flex; align-items: center; gap: 10px; min-width: 0; flex-shrink: 0; max-width: 200px; }
+    #stickyPlayerArt { border-radius: 6px; object-fit: cover; flex-shrink: 0; }
     .sticky-player-text { min-width: 0; }
-    .sticky-player-title {
-      font-weight: 800;
-      font-size: 0.82rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--text, #1a1a1a);
-    }
-    .sticky-player-artist {
-      font-size: 0.75rem;
-      color: var(--muted, #888);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .sticky-player-title { font-weight: 800; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text, #1a1a1a); }
+    .sticky-player-artist { font-size: 0.75rem; color: var(--muted, #888); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .sticky-player-embed-wrap { flex: 1; min-width: 0; }
-    .sticky-player-close {
-      flex-shrink: 0;
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: var(--surface-offset, #f0ece6);
-      border: none;
-      cursor: pointer;
-      font-size: 0.75rem;
-      color: var(--muted, #888);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .sticky-player-close { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--surface-offset, #f0ece6); border: none; cursor: pointer; font-size: 0.75rem; color: var(--muted, #888); display: flex; align-items: center; justify-content: center; }
     .sticky-player-close:hover { background: var(--border, #e0ddd8); }
-    .sp-play-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: #1DB954;
-      color: #fff;
-      font-size: 0.6rem;
-      margin-left: 6px;
-      cursor: pointer;
-      border: none;
-      vertical-align: middle;
-      flex-shrink: 0;
-    }
+    .sp-play-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #1DB954; color: #fff; font-size: 0.6rem; margin-left: 6px; cursor: pointer; border: none; vertical-align: middle; flex-shrink: 0; }
     .sp-play-btn:hover { background: #17a349; transform: scale(1.12); }
     body.sticky-player-open { padding-bottom: 110px; }
 </style>
@@ -7819,8 +7754,8 @@ async function loadData() {
     });
 
     // Restore Spotify session; handle OAuth callback if ?code= present
-    if (new URL(window.location.href).searchParams.get('code')) {
-      spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
+    if (new URL((function(){ try { return window.top !== window ? window.top.location.href : window.location.href; } catch(e) { return window.location.href; }})()).searchParams.get('code')) {
+      spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); }).catch(e => { console.error('Spotify callback error:', e); loadData(); });
     } else {
       loadSpotifySession();
       loadData();
@@ -9080,23 +9015,28 @@ async function generateSpotifyCodeChallenge(v) {
 async function spotifyConnect() {
   const verifier = generateSpotifyCodeVerifier();
   const challenge = await generateSpotifyCodeChallenge(verifier);
-  sessionStorage.setItem('spotify_pkce_verifier', verifier);
+  localStorage.setItem('spotify_pkce_verifier', verifier);
   const p = new URLSearchParams({
     client_id: SPOTIFY_CLIENT_ID, response_type: 'code',
     redirect_uri: SPOTIFY_REDIRECT_URI, code_challenge_method: 'S256',
     code_challenge: challenge, scope: SPOTIFY_SCOPES, show_dialog: 'false'
   });
-  window.location.href = `https://accounts.spotify.com/authorize?${p}`;
+  if (window.top !== window) {
+    window.top.location.href = `https://accounts.spotify.com/authorize?${p}`;
+  } else {
+    window.location.href = `https://accounts.spotify.com/authorize?${p}`;
+  }
 }
 
 async function spotifyHandleCallback() {
-  const url = new URL(window.location.href);
+  const _topHref = (function(){ try { return window.top !== window ? window.top.location.href : window.location.href; } catch(e) { return window.location.href; }})();
+  const url = new URL(_topHref);
   const code = url.searchParams.get('code');
   if (!code) return;
-  window.history.replaceState({}, '', window.location.pathname);
-  const verifier = sessionStorage.getItem('spotify_pkce_verifier');
-  if (!verifier) return;
-  sessionStorage.removeItem('spotify_pkce_verifier');
+  try { (window.top !== window ? window.top.history : window.history).replaceState({}, '', window.location.pathname); } catch(e) {}
+  const verifier = localStorage.getItem('spotify_pkce_verifier');
+  if (!verifier) { showSaveToast('Spotify auth failed — verifier missing. Try again.', true); return; }
+  localStorage.removeItem('spotify_pkce_verifier');
   showSaveToast('Connecting to Spotify…', false);
   try {
     const res = await fetch('https://accounts.spotify.com/api/token', {
@@ -9618,12 +9558,11 @@ setTimeout(async function spotifyInit() {
   }
 }, 0);
   
-  // ── Sticky Mini Player ──────────────────────────────────
+  // ── Sticky Mini Player ──
   function spotifyTrackId(url) {
     const m = String(url || '').match(/track[/:]([A-Za-z0-9]{22})/);
     return m ? m[1] : null;
   }
-
   function spPlayBtn(song) {
     if (!spotifySession) return '';
     const trackId = spotifyTrackId(song?.url || '');
@@ -9631,9 +9570,8 @@ setTimeout(async function spotifyInit() {
     const title  = (song.title  || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
     const artist = (song.artist || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
     const art    = (song.artwork|| '').replace(/'/g, "\'").replace(/"/g, '&quot;');
-    return `<button class="sp-play-btn" title="Open in Spotify mini player" onclick="stickyPlayerOpen('${trackId}','${title}','${artist}','${art}')">▶</button>`;
+    return `<button class="sp-play-btn" title="Open in Spotify mini player" onclick="stickyPlayerOpen('${trackId}','${title}','${artist}','${art}')">&#9654;</button>`;
   }
-
   function stickyPlayerOpen(trackId, title, artist, art) {
     const player  = document.getElementById('stickyPlayer');
     const frame   = document.getElementById('stickyPlayerFrame');
@@ -9644,11 +9582,10 @@ setTimeout(async function spotifyInit() {
     if (titleEl) titleEl.textContent  = title  || 'Unknown track';
     if (artEl)   artEl.textContent    = artist || '';
     if (imgEl)   { imgEl.src = art || ''; imgEl.style.display = art ? 'block' : 'none'; }
-    if (frame)   { frame.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator`; frame.style.display = 'block'; }
+    if (frame)   { frame.src = 'https://open.spotify.com/embed/track/' + trackId + '?utm_source=generator'; frame.style.display = 'block'; }
     player.style.display = 'block';
     document.body.classList.add('sticky-player-open');
   }
-
   function stickyPlayerClose() {
     const player = document.getElementById('stickyPlayer');
     const frame  = document.getElementById('stickyPlayerFrame');
@@ -9656,7 +9593,6 @@ setTimeout(async function spotifyInit() {
     if (player) player.style.display = 'none';
     document.body.classList.remove('sticky-player-open');
   }
-  // ────────────────────────────────────────────────────────
 </script>
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
