@@ -7342,6 +7342,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
               <span class="small archive-card-date">${escapeHtml(dateValue(g) || 'No date')}</span>
               <button class="btn btn-primary archive-primary-action" data-open-id="${g.id}">Open / Edit</button>
               ${songCount ? `<button type="button" class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.8rem;font-weight:900;white-space:nowrap;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${songCount} song${songCount===1?'':'s'} logged</button>` : ''}
+              ${(spotifySession && songs.filter(s => /spotify\.com\/track\//i.test(s.url||'')).length) ? `<button type="button" class="btn btn-ghost spotify-queue-btn" style="padding:5px 10px;font-size:.8rem;white-space:nowrap;" onclick="spotifyQueueGenreSongs(allGenres.find(x=>x.id==='${g.id}'), false)">▶ Queue</button>` : ''}
             </div>
           </div>
           ${songCount ? `<div class="song-log-wrap" id="sl-h-${g.id}"><div class="song-log-list">${songs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
@@ -8010,7 +8011,7 @@ async function loadData() {
         const art = row.song.artwork ? `<img class="viz-drill-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy">` : '<div class="viz-drill-art"></div>';
         const eraLine = effective.year ? `${effective.source}: ${effective.year}` : 'No year';
         const spotifyLine = row.song.releaseYear && (effective.source !== 'Spotify' || savedEra) ? ` · Spotify: ${row.song.releaseYear}` : '';
-        return `<div class="viz-drill-row viz-record-row">${art}<div><div class="viz-drill-title-line">${vizSongTitleLink(row.song)}</div><div class="viz-drill-meta">${escapeHtml(row.genre.genre || 'Unknown genre')} · ${reactionEmoji(reaction)} ${escapeHtml(reactionLabel(reaction))}${fit ? ` · Fit ${fit}/5` : ''} · ${escapeHtml(vizSourceLabel(row.song))}</div><div class="viz-drill-meta">${escapeHtml(eraLine)}${escapeHtml(spotifyLine)}</div></div><div class="viz-drill-actions"><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button>${spotifyHref(row.song) ? `<button type="button" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}</div></div>`;
+        return `<div class="viz-drill-row viz-record-row">${art}<div><div class="viz-drill-title-line">${vizSongTitleLink(row.song)}</div><div class="viz-drill-meta">${escapeHtml(row.genre.genre || 'Unknown genre')} · ${reactionEmoji(reaction)} ${escapeHtml(reactionLabel(reaction))}${fit ? ` · Fit ${fit}/5` : ''} · ${escapeHtml(vizSourceLabel(row.song))}</div><div class="viz-drill-meta">${escapeHtml(eraLine)}${escapeHtml(spotifyLine)}</div></div><div class="viz-drill-actions"><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button></div></div>`;
       }).join('')}</div>` : '<div class="viz-empty">No songs found for this drilldown.</div>'}</div>`;
     }
 
@@ -9331,21 +9332,61 @@ async function spotifyGetOrCreatePlaylist(genreName) {
 async function spotifyAddGenreToPlaylist(genre) {
   if (!spotifySession) { showSaveToast('Connect Spotify first.', true); return; }
   if (!genre) return;
-  const genreName = genre.genre || 'Unknown Genre';
   const songs = (genre.songs_listened || []).filter(s => /spotify\.com\/track\//i.test(s.url || ''));
   if (!songs.length) { showSaveToast('No Spotify-linked songs logged for this genre yet.', true); return; }
-  showSaveToast(`Saving to playlist \u201c${genreName}\u201d\u2026`, false);
-  const playlistId = await spotifyGetOrCreatePlaylist(genreName);
-  if (!playlistId) { showSaveToast('Could not find or create playlist.', true); return; }
+
+  // Determine target month playlist from listenedDate
+  let targetPlaylistName = null;
+  const listenedDate = genre.date_listened || genre.listenedDate || null;
+  if (listenedDate) {
+    const d = new Date(listenedDate);
+    if (!isNaN(d)) {
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      targetPlaylistName = `Genres ${yyyy} ${mm}`;
+    }
+  }
+  if (!targetPlaylistName) {
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    targetPlaylistName = `Genres ${now.getFullYear()} ${mm}`;
+  }
+
+  // Fetch user's playlists (up to 200)
+  let userPlaylists = [];
+  try {
+    let offset = 0;
+    while (offset < 200) {
+      const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
+      if (!data?.items?.length) break;
+      userPlaylists = userPlaylists.concat(data.items.filter(p => p.owner?.id === spotifySession.userId));
+      if (data.items.length < 50) break;
+      offset += 50;
+    }
+  } catch {}
+
+  const matchedPlaylist = userPlaylists.find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
+
+  if (matchedPlaylist) {
+    // Auto-match found — add directly
+    await _doAddToPlaylist(matchedPlaylist.id, matchedPlaylist.name, songs);
+  } else {
+    // No match — show modal
+    _showPlaylistModal(targetPlaylistName, userPlaylists, songs, genre);
+  }
+}
+
+async function _doAddToPlaylist(playlistId, playlistName, songs) {
+  showSaveToast(`Saving to \u201c${playlistName}\u201d\u2026`, false);
   let existingUris = new Set();
   try {
-    let plOffset = 0;
-    while (plOffset < 500) {
-      const ex = await spotifyFetch(`/playlists/${playlistId}/tracks?fields=items(track(uri)),next&limit=100&offset=${plOffset}`);
+    let offset = 0;
+    while (offset < 500) {
+      const ex = await spotifyFetch(`/playlists/${playlistId}/tracks?fields=items(track(uri)),next&limit=100&offset=${offset}`);
       if (!ex?.items?.length) break;
       ex.items.forEach(item => { if (item?.track?.uri) existingUris.add(item.track.uri); });
       if (!ex.next) break;
-      plOffset += 100;
+      offset += 100;
     }
   } catch {}
   const urisToAdd = [];
@@ -9355,7 +9396,7 @@ async function spotifyAddGenreToPlaylist(genre) {
     const uri = `spotify:track:${m[1]}`;
     if (!existingUris.has(uri)) urisToAdd.push(uri);
   }
-  if (!urisToAdd.length) { showSaveToast(`All songs already in \u201c${genreName}\u201d playlist.`, false); return; }
+  if (!urisToAdd.length) { showSaveToast(`All songs already in \u201c${playlistName}\u201d \u2713`, false); return; }
   const token = await spotifyGetToken();
   let added = 0;
   for (let i = 0; i < urisToAdd.length; i += 100) {
@@ -9367,7 +9408,79 @@ async function spotifyAddGenreToPlaylist(genre) {
     });
     if (res.ok || res.status === 201) added += chunk.length;
   }
-  showSaveToast(added > 0 ? `Added ${added} track${added > 1 ? 's' : ''} to \u201c${genreName}\u201d playlist \u2713` : 'Could not add tracks to playlist.', added === 0);
+  showSaveToast(added > 0 ? `Added ${added} track${added > 1 ? 's' : ''} to \u201c${playlistName}\u201d \u2713` : `Could not add tracks to \u201c${playlistName}\u201d.`, added === 0);
+}
+
+async function _createAndAddToPlaylist(name, songs) {
+  const token = await spotifyGetToken();
+  const userId = spotifySession?.userId;
+  if (!userId) return;
+  showSaveToast(`Creating playlist \u201c${name}\u201d\u2026`, false);
+  const res = await fetch(`https://api.spotify.com/v1/users/${encodeURIComponent(userId)}/playlists`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, description: 'Created by Daily Genre', public: false })
+  });
+  const pl = await res.json().catch(() => ({}));
+  if (!pl.id) { showSaveToast('Could not create playlist.', true); return; }
+  await _doAddToPlaylist(pl.id, name, songs);
+}
+
+function _showPlaylistModal(suggestedName, userPlaylists, songs, genre) {
+  // Remove any existing modal
+  document.getElementById('playlistPickerModal')?.remove();
+  const opts = userPlaylists.map((p, i) =>
+    `<option value="${i}">${p.name.replace(/"/g, '&quot;')}</option>`
+  ).join('');
+  const modal = document.createElement('div');
+  modal.id = 'playlistPickerModal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);';
+  modal.innerHTML = `
+    <div style="background:var(--surface,#fff);border-radius:16px;padding:28px 24px;max-width:420px;width:92%;box-shadow:0 8px 40px rgba(0,0,0,.3);">
+      <div style="font-weight:800;font-size:1.05rem;margin-bottom:6px;">Save to Playlist</div>
+      <div style="font-size:.85rem;color:var(--muted,#888);margin-bottom:18px;">
+        No playlist named <strong>${suggestedName}</strong> found in your library.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button id="plModalCreate" class="btn btn-primary" style="width:100%;">
+          ✚ Create &ldquo;${suggestedName}&rdquo;
+        </button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select id="plModalSelect" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);font-size:.9rem;">
+            <option value="">— Choose existing playlist —</option>
+            ${opts}
+          </select>
+          <button id="plModalAddExisting" class="btn btn-secondary">Add</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="plModalNewName" type="text" placeholder="New playlist name\u2026" value="${suggestedName}"
+            style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);font-size:.9rem;" />
+          <button id="plModalCreateCustom" class="btn btn-secondary">Create</button>
+        </div>
+        <button id="plModalCancel" class="btn btn-ghost" style="width:100%;margin-top:4px;">Cancel</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  document.getElementById('plModalCreate').onclick = async () => {
+    modal.remove();
+    await _createAndAddToPlaylist(suggestedName, songs);
+  };
+  document.getElementById('plModalAddExisting').onclick = async () => {
+    const sel = document.getElementById('plModalSelect');
+    const idx = parseInt(sel.value);
+    if (isNaN(idx) || !userPlaylists[idx]) return;
+    modal.remove();
+    await _doAddToPlaylist(userPlaylists[idx].id, userPlaylists[idx].name, songs);
+  };
+  document.getElementById('plModalCreateCustom').onclick = async () => {
+    const name = document.getElementById('plModalNewName').value.trim();
+    if (!name) return;
+    modal.remove();
+    await _createAndAddToPlaylist(name, songs);
+  };
+  document.getElementById('plModalCancel').onclick = () => modal.remove();
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
 }
 
 // ── Listening Verification ────────────────────────────────────────────────────
