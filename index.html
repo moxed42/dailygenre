@@ -7833,19 +7833,14 @@ async function loadData() {
       if (e.target === passwordModal) closePasswordModal();
     });
 
-   // Handle Spotify OAuth callback first if ?code= is in URL
-if (new URL(window.location.href).searchParams.get('code')) {
-  spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
-} else {
-  loadSpotifySession();
-// Handle Spotify OAuth callback if redirected back from Spotify
-if (new URL(window.location.href).searchParams.get('code')) {
-  spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
-} else {
-  loadSpotifySession();
-  loadData();
-}
-}
+    if (new URL(window.location.href).searchParams.get('code')) {
+      spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
+    } else {
+      loadSpotifySession();
+      loadData();
+    }
+
+      
         // ── Visualization helpers ─────────────────────────────────────────
     let _vizCharts = {};
     let _vizMode = 'monthly';
@@ -9430,15 +9425,6 @@ function updateSpotifyUI() {
   if (typeof currentGenre !== 'undefined' && currentGenre && typeof renderHeardVerification === 'function') {
     renderHeardVerification(currentGenre);
   }
-  // Refresh detail screen action bar so Save to Playlist btn appears/disappears live
-  if (typeof currentGenre !== 'undefined' && currentGenre && typeof loadListenScreen === 'function') {
-    const ls = document.getElementById('screen-listen');
-    if (ls && !ls.classList.contains('hidden')) {
-      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-    }
-  }
-  renderMostReplayed();
-}
 
 
 // ── Add to Playlist ───────────────────────────────────────────────────────────
