@@ -9521,9 +9521,31 @@ async function _doAddToPlaylist(playlistId, playlistName, songs) {
 
 async function _createAndAddToPlaylist(name, songs) {
   const token = await spotifyGetToken();
-  const userId = spotifySession?.userId;
-  if (!userId) return;
-  showSaveToast(`Creating playlist \u201c${name}\u201d\u2026`, false);
+  if (!token) return;
+  // Search existing playlists for a matching name first
+  showSaveToast(`Looking for playlist “${name}”…`, false);
+  let existingId = null;
+  try {
+    let offset = 0;
+    outer: while (offset < 400) {
+      const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
+      if (!data?.items?.length) break;
+      for (const p of data.items) {
+        if (p.name.toLowerCase() === name.toLowerCase()) { existingId = p.id; break outer; }
+      }
+      if (data.items.length < 50) break;
+      offset += 50;
+    }
+  } catch(e) { console.warn('Playlist search error:', e); }
+
+  if (existingId) {
+    showSaveToast(`Adding to existing playlist “${name}”…`, false);
+    await _doAddToPlaylist(existingId, name, songs);
+    return;
+  }
+
+  // Not found — create it
+  showSaveToast(`Creating playlist “${name}”…`, false);
   const res = await fetch(`https://api.spotify.com/v1/me/playlists`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -9568,9 +9590,9 @@ function _showPlaylistModal(suggestedName, userPlaylists, songs, genre) {
           <button id="plModalAddExisting" class="btn btn-secondary">Add</button>
         </div>` : `<div style="font-size:.82rem;color:var(--muted,#888);padding:4px 2px;">&#x26A0; Couldn&#x27;t load your playlists (Spotify API restriction) — use Create above or type a name below.</div>`}
         <div style="display:flex;gap:8px;align-items:center;">
-          <input id="plModalNewName" type="text" placeholder="New playlist name\u2026" value="${suggestedName}"
+          <input id="plModalNewName" type="text" placeholder="Playlist name — creates or adds to existing\u2026" value="${suggestedName}"
             style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;color:#222;font-size:.9rem;" />
-          <button id="plModalCreateCustom" class="btn btn-secondary">Create</button>
+          <button id="plModalCreateCustom" class="btn btn-secondary">Save</button>
         </div>
         <button id="plModalCancel" class="btn btn-ghost" style="width:100%;margin-top:4px;">Cancel</button>
       </div>
