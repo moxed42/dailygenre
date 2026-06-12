@@ -3666,22 +3666,88 @@
     .heard-artist { color: var(--muted, #888); font-weight: 400; }
     .heard-no .heard-title { color: var(--muted, #888); }
     .heard-when { font-size: 0.72rem; color: var(--muted, #888); flex-shrink: 0; }
-    
-    /* Sticky Spotify Mini Player */
-    .sticky-player { position: fixed; bottom: 0; left: 0; right: 0; z-index: 8000; background: var(--surface, #fff); border-top: 1px solid var(--border, #e0ddd8); box-shadow: 0 -4px 24px rgba(0,0,0,.12); padding: 8px 16px; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
-	.sticky-player-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
-	.sticky-player-info { display: flex; align-items: center; gap: 10px; min-width: 0; flex-shrink: 0; max-width: 200px; }
-	#stickyPlayerArt { border-radius: 6px; object-fit: cover; flex-shrink: 0; }
-	.sticky-player-text { min-width: 0; }
-	.sticky-player-title { font-weight: 800; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text, #1a1a1a); }
-	.sticky-player-artist { font-size: 0.75rem; color: var(--muted, #888); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-	.sticky-player-embed-wrap { flex: 1; min-width: 0; }
-	.sticky-player-close { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--surface-offset, #f0ece6); border: none; cursor: pointer; font-size: 0.75rem; color: var(--muted, #888); display: flex; align-items: center; justify-content: center; }
-	.sp-play-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #1DB954; color: #fff; font-size: 0.6rem; margin-left: 6px; cursor: pointer; border: none; vertical-align: middle; flex-shrink: 0; }
-	.sp-play-btn:hover { background: #17a349; transform: scale(1.12); }
-	body.sticky-player-open { padding-bottom: 110px; }
 
-  </style>
+  
+    /* ── Sticky Spotify Mini Player ── */
+    .sticky-player {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 8000;
+      background: var(--surface, #fff);
+      border-top: 1px solid var(--border, #e0ddd8);
+      box-shadow: 0 -4px 24px rgba(0,0,0,.12);
+      padding: 8px 16px;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .sticky-player-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sticky-player-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex-shrink: 0;
+      max-width: 200px;
+    }
+    #stickyPlayerArt {
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .sticky-player-text { min-width: 0; }
+    .sticky-player-title {
+      font-weight: 800;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text, #1a1a1a);
+    }
+    .sticky-player-artist {
+      font-size: 0.75rem;
+      color: var(--muted, #888);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sticky-player-embed-wrap { flex: 1; min-width: 0; }
+    .sticky-player-close {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--surface-offset, #f0ece6);
+      border: none;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: var(--muted, #888);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sticky-player-close:hover { background: var(--border, #e0ddd8); }
+    .sp-play-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #1DB954;
+      color: #fff;
+      font-size: 0.6rem;
+      margin-left: 6px;
+      cursor: pointer;
+      border: none;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .sp-play-btn:hover { background: #17a349; transform: scale(1.12); }
+    body.sticky-player-open { padding-bottom: 110px; }
+</style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -5511,7 +5577,7 @@
       const showArtwork = !!s.artwork;
       const art = showArtwork ? artworkHtml(s.artwork, 'song-artwork', s.title || 'Album art') : '';
       const titleHtml = hasHref
-        ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>`
+        ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>${spPlayBtn(s)}`
         : `<span class="song-title-link">${titleText}</span>`;
       const addBadge = (!isChild && s.isAdd)
         ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
@@ -9551,62 +9617,68 @@ setTimeout(async function spotifyInit() {
     loadSpotifySession();
   }
 }, 0);
-
-function spotifyTrackId(url) {
-  const m = String(url || '').match(/track[/:]([A-Za-z0-9]{22})/);
-  return m ? m[1] : null;
-}
-function spPlayBtn(song) {
-  if (!spotifySession) return '';
-  const trackId = spotifyTrackId(song?.url || '');
-  if (!trackId) return '';
-  const title  = (song.title  || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-  const artist = (song.artist || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-  const art    = (song.artwork|| '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-  return `<button class="sp-play-btn" title="Open in mini player" onclick="stickyPlayerOpen('${trackId}','${title}','${artist}','${art}')">▶</button>`;
-}
-function stickyPlayerOpen(trackId, title, artist, art) {
-  const player = document.getElementById('stickyPlayer');
-  const frame  = document.getElementById('stickyPlayerFrame');
-  if (!player) return;
-  document.getElementById('stickyPlayerTitle').textContent  = title  || 'Unknown track';
-  document.getElementById('stickyPlayerArtist').textContent = artist || '';
-  const artEl = document.getElementById('stickyPlayerArt');
-  artEl.src = art || ''; artEl.style.display = art ? 'block' : 'none';
-  frame.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator`;
-  frame.style.display = 'block';
-  player.style.display = 'block';
-  document.body.classList.add('sticky-player-open');
-}
-function stickyPlayerClose() {
-  const player = document.getElementById('stickyPlayer');
-  const frame  = document.getElementById('stickyPlayerFrame');
-  if (frame)  frame.src = '';
-  if (player) player.style.display = 'none';
-  document.body.classList.remove('sticky-player-open');
-}
-  </script>
-  <div id="saveToast" class="save-toast" aria-live="polite"></div>
   
-  <!-- Sticky Spotify Mini Player -->
-<div id="stickyPlayer" class="sticky-player" style="display:none;" role="complementary" aria-label="Spotify mini player">
-  <div class="sticky-player-inner">
-    <div class="sticky-player-info">
-      <img id="stickyPlayerArt" src="" alt="Album art" width="40" height="40" loading="lazy" style="display:none;" />
-      <div class="sticky-player-text">
-        <div id="stickyPlayerTitle" class="sticky-player-title">Nothing loaded</div>
-        <div id="stickyPlayerArtist" class="sticky-player-artist"></div>
-      </div>
-    </div>
-    <div class="sticky-player-embed-wrap">
-      <iframe id="stickyPlayerFrame" style="border-radius:8px;display:none;"
-        src="" width="100%" height="80" frameBorder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
-    </div>
-    <button class="sticky-player-close" onclick="stickyPlayerClose()" aria-label="Close player">✕</button>
-  </div>
-</div>
+  // ── Sticky Mini Player ──────────────────────────────────
+  function spotifyTrackId(url) {
+    const m = String(url || '').match(/track[/:]([A-Za-z0-9]{22})/);
+    return m ? m[1] : null;
+  }
 
+  function spPlayBtn(song) {
+    if (!spotifySession) return '';
+    const trackId = spotifyTrackId(song?.url || '');
+    if (!trackId) return '';
+    const title  = (song.title  || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
+    const artist = (song.artist || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
+    const art    = (song.artwork|| '').replace(/'/g, "\'").replace(/"/g, '&quot;');
+    return `<button class="sp-play-btn" title="Open in Spotify mini player" onclick="stickyPlayerOpen('${trackId}','${title}','${artist}','${art}')">▶</button>`;
+  }
+
+  function stickyPlayerOpen(trackId, title, artist, art) {
+    const player  = document.getElementById('stickyPlayer');
+    const frame   = document.getElementById('stickyPlayerFrame');
+    const titleEl = document.getElementById('stickyPlayerTitle');
+    const artEl   = document.getElementById('stickyPlayerArtist');
+    const imgEl   = document.getElementById('stickyPlayerArt');
+    if (!player) return;
+    if (titleEl) titleEl.textContent  = title  || 'Unknown track';
+    if (artEl)   artEl.textContent    = artist || '';
+    if (imgEl)   { imgEl.src = art || ''; imgEl.style.display = art ? 'block' : 'none'; }
+    if (frame)   { frame.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator`; frame.style.display = 'block'; }
+    player.style.display = 'block';
+    document.body.classList.add('sticky-player-open');
+  }
+
+  function stickyPlayerClose() {
+    const player = document.getElementById('stickyPlayer');
+    const frame  = document.getElementById('stickyPlayerFrame');
+    if (frame)  frame.src = '';
+    if (player) player.style.display = 'none';
+    document.body.classList.remove('sticky-player-open');
+  }
+  // ────────────────────────────────────────────────────────
+</script>
+  <div id="saveToast" class="save-toast" aria-live="polite"></div>
+
+
+  <!-- Sticky Spotify Mini Player -->
+  <div id="stickyPlayer" class="sticky-player" style="display:none;" role="complementary" aria-label="Spotify mini player">
+    <div class="sticky-player-inner">
+      <div class="sticky-player-info">
+        <img id="stickyPlayerArt" src="" alt="Album art" width="40" height="40" loading="lazy" style="display:none;" />
+        <div class="sticky-player-text">
+          <div id="stickyPlayerTitle" class="sticky-player-title">Nothing loaded</div>
+          <div id="stickyPlayerArtist" class="sticky-player-artist"></div>
+        </div>
+      </div>
+      <div class="sticky-player-embed-wrap">
+        <iframe id="stickyPlayerFrame" style="border-radius:8px;display:none;"
+          src="" width="100%" height="80" frameBorder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
+      </div>
+      <button class="sticky-player-close" onclick="stickyPlayerClose()" aria-label="Close player">✕</button>
+    </div>
+  </div>
 </body>
 </html>
