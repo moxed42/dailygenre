@@ -5543,7 +5543,7 @@
             </div>
            </div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${options.allowTrackEdit ? `<button type="button" class="song-remove-btn" title="Remove track" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}...${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${options.allowTrackEdit ? `<button type="button" class="song-remove-btn" title="Remove track" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
     }
     function buildDiscordBlock() {
       if (!currentGenre) return '';
@@ -9281,7 +9281,7 @@ function updateSpotifyUI() {
   const btn = document.getElementById('spotifyConnectBtn');
   if (btn) {
     if (spotifySession) {
-      btn.textContent = `Spotify: ${spotifySession.displayName || 'Connected'}`;
+      btn.textContent = `♫ ${spotifySession.displayName || 'Connected'}`;
       btn.classList.add('spotify-connected');
       btn.onclick = () => { if (confirm('Disconnect Spotify?')) spotifyDisconnect(); };
     } else {
@@ -9297,6 +9297,9 @@ function updateSpotifyUI() {
   if (typeof currentGenre !== 'undefined' && currentGenre && typeof renderHeardVerification === 'function') {
     renderHeardVerification(currentGenre);
   }
+  // Show/hide the Save to Playlist button in detail view
+  const _plBtn2 = document.getElementById('addToPlaylistBtn');
+  if (_plBtn2) _plBtn2.style.display = spotifySession ? 'inline-flex' : 'none';
   renderMostReplayed();
 }
 
