@@ -3667,100 +3667,6 @@
     .heard-no .heard-title { color: var(--muted, #888); }
     .heard-when { font-size: 0.72rem; color: var(--muted, #888); flex-shrink: 0; }
 
-  
-    /* ── Sticky Spotify Mini Player ── */
-    .sticky-player {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 8000;
-      background: var(--surface, #fff);
-      border-top: 1px solid var(--border, #e0ddd8);
-      box-shadow: 0 -4px 24px rgba(0,0,0,.12);
-      padding: 8px 16px;
-      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
-    }
-    .sticky-player-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .sticky-player-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      flex-shrink: 0;
-      max-width: 200px;
-    }
-    #stickyPlayerArt {
-      border-radius: 6px;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-    .sticky-player-text {
-      min-width: 0;
-    }
-    .sticky-player-title {
-      font-weight: 800;
-      font-size: 0.82rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--text, #1a1a1a);
-    }
-    .sticky-player-artist {
-      font-size: 0.75rem;
-      color: var(--muted, #888);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .sticky-player-embed-wrap {
-      flex: 1;
-      min-width: 0;
-    }
-    .sticky-player-close {
-      flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--surface-offset, #f0ece6);
-      border: none;
-      cursor: pointer;
-      font-size: 0.75rem;
-      color: var(--muted, #888);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s;
-    }
-    .sticky-player-close:hover { background: var(--border, #ddd); }
-    /* Play button on song titles */
-    .sp-play-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #1DB954;
-      color: #fff;
-      font-size: 0.6rem;
-      margin-left: 6px;
-      cursor: pointer;
-      border: none;
-      vertical-align: middle;
-      flex-shrink: 0;
-      transition: background 0.15s, transform 0.15s;
-      line-height: 1;
-    }
-    .sp-play-btn:hover { background: #17a349; transform: scale(1.12); }
-    .sp-play-btn[data-active="true"] { background: #17a349; box-shadow: 0 0 0 3px rgba(29,185,84,.3); }
-    /* push page content up when player is visible */
-    body.sticky-player-open { padding-bottom: 110px; }
-
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
@@ -3776,7 +3682,6 @@
       </div>
       <div class="top-actions">
         <div class="pill" id="remainingCount">Loading genres...</div>
-        
         <button id="spotifyConnectBtn" class="spotify-connect-btn" onclick="spotifyConnect()">Connect Spotify</button>
       </div>
     </header>
@@ -3901,7 +3806,7 @@
               <button class="btn btn-primary" id="saveBtn">Save Changes</button>
               <button class="btn btn-secondary" id="markListenedBtn">Mark as Listened Today</button>
               <button class="btn btn-danger hidden" id="unlistenBtn">Undo Listen / Remove Date</button>
-              
+              <button class="spotify-queue-btn" id="addToPlaylistBtn" style="display:none" onclick="spotifyAddGenreToPlaylist(currentGenre)" title="Save all logged songs to a Spotify playlist named after this genre">&#127925; Save to Playlist</button>
             </div>
             <div class="small save-behavior-note">Save Changes keeps notes, songs, and reactions without marking a new genre as listened. Use “Mark as Listened Today” only after completing the listen.</div>
           </div>
@@ -5591,9 +5496,8 @@
       const reasonHtml = s.reason ? `<div class="song-reason">${escapeHtml(s.reason)}</div>` : '';
       const showArtwork = !!s.artwork;
       const art = showArtwork ? artworkHtml(s.artwork, 'song-artwork', s.title || 'Album art') : '';
-      const _sPlayBtn = (typeof spPlayBtn === 'function' && /spotify\.com\/track\//i.test(rawUrl)) ? spPlayBtn(s) : '';
       const titleHtml = hasHref
-        ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>${_sPlayBtn}`
+        ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}<span class="song-link-arrow">↗</span></a>`
         : `<span class="song-title-link">${titleText}</span>`;
       const addBadge = (!isChild && s.isAdd)
         ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
@@ -6066,7 +5970,6 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 ${!listenedDate
                   ? `<button type="button" class="btn btn-primary" onclick="markCurrentGenreListened()">✓ Mark as Listened Today</button>`
                   : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Undo Listen / Remove Date</button>`}
-                ${spotifySession ? `<button type="button" class="btn btn-secondary spotify-queue-btn" onclick="spotifyAddGenreToPlaylist(currentGenre)" title="Save logged songs to a Spotify playlist">&#127925; Save to Playlist</button>` : ''}
               </div>
 
             </div>
@@ -7206,6 +7109,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       if (!switched) return false;
       applyDetailEditMode(detailEditMode);
       if (typeof renderHeardVerification === 'function') renderHeardVerification(genre);
+      const _plBtn = document.getElementById('addToPlaylistBtn');
+      if (_plBtn) _plBtn.style.display = spotifySession ? 'inline-flex' : 'none';
       if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
       if (!options.preserveScroll) {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
@@ -7833,6 +7738,7 @@ async function loadData() {
       if (e.target === passwordModal) closePasswordModal();
     });
 
+    // Restore Spotify session; handle OAuth callback if ?code= present
     if (new URL(window.location.href).searchParams.get('code')) {
       spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
     } else {
@@ -7840,7 +7746,6 @@ async function loadData() {
       loadData();
     }
 
-      
         // ── Visualization helpers ─────────────────────────────────────────
     let _vizCharts = {};
     let _vizMode = 'monthly';
@@ -7896,10 +7801,9 @@ async function loadData() {
     function vizSongTitleLink(song) {
       const href = spotifyHref(song);
       const label = escapeHtml(songDisplayName(song));
-      const playBtn = typeof spPlayBtn === 'function' ? spPlayBtn(song) : '';
       return href
-        ? `<a class="viz-song-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>${playBtn}`
-        : `<span>${label}</span>${playBtn}`;
+        ? `<a class="viz-song-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`
+        : `<span>${label}</span>`;
     }
 
     function songEffectiveYear(song) {
@@ -9100,7 +9004,7 @@ async function spotifyConnect() {
   const p = new URLSearchParams({
     client_id: SPOTIFY_CLIENT_ID, response_type: 'code',
     redirect_uri: SPOTIFY_REDIRECT_URI, code_challenge_method: 'S256',
-    code_challenge: challenge, scope: SPOTIFY_SCOPES, show_dialog: 'true'
+    code_challenge: challenge, scope: SPOTIFY_SCOPES, show_dialog: 'false'
   });
   window.location.href = `https://accounts.spotify.com/authorize?${p}`;
 }
@@ -9178,8 +9082,7 @@ async function spotifySetSession(data) {
     accessToken: data.access_token,
     refreshToken: data.refresh_token || '',
     expiresAt: Date.now() + (Number(data.expires_in||3600)*1000),
-    displayName, userId,
-    hasPlaylistScope: true
+    displayName, userId
   };
   saveSpotifySession();
 }
@@ -9199,27 +9102,6 @@ function loadSpotifySession() {
     }
   } catch {}
 }
-// ── Spotify Playlist ID Cache (localStorage, persists across sessions) ────────
-function _getPlaylistCache() {
-  try { return JSON.parse(localStorage.getItem('dg_playlist_cache') || '{}'); } catch { return {}; }
-}
-function _savePlaylistCache(cache) {
-  try { localStorage.setItem('dg_playlist_cache', JSON.stringify(cache)); } catch {}
-}
-function _cachePlaylist(name, id) {
-  const c = _getPlaylistCache();
-  c[name.toLowerCase()] = { id, name };
-  _savePlaylistCache(c);
-}
-function _findCachedPlaylist(name) {
-  const c = _getPlaylistCache();
-  return c[name.toLowerCase()] || null;
-}
-function _getCachedPlaylists() {
-  const c = _getPlaylistCache();
-  return Object.values(c);
-}
-
 function spotifyDisconnect() {
   spotifySession = null; spotifyStopPolling();
   try { sessionStorage.removeItem('spotify_session'); } catch {}
@@ -9235,7 +9117,7 @@ async function spotifyFetch(path, options={}) {
   });
   if (res.status === 204) return {};
   if (res.status === 401) { spotifyDisconnect(); return null; }
-  if (!res.ok) { console.warn('Spotify API error:', res.status, path); return null; }
+  if (!res.ok) return null;
   return res.json().catch(()=>null);
 }
 
@@ -9406,12 +9288,9 @@ function updateSpotifyUI() {
   const btn = document.getElementById('spotifyConnectBtn');
   if (btn) {
     if (spotifySession) {
-      const needsReauth = !spotifySession.hasPlaylistScope;
-      btn.textContent = needsReauth ? `⚠ Reconnect Spotify` : `♫ ${spotifySession.displayName || 'Connected'}`;
-      btn.style.outline = needsReauth ? '2px solid #e05' : '';
-      btn.title = needsReauth ? 'Playlist permissions missing — click to disconnect, then reconnect' : '';
+      btn.textContent = `♫ ${spotifySession.displayName || 'Connected'}`;
       btn.classList.add('spotify-connected');
-      btn.onclick = () => { if (confirm(needsReauth ? 'Reconnect Spotify to enable playlist features?' : 'Disconnect Spotify?')) spotifyDisconnect(); };
+      btn.onclick = () => { if (confirm('Disconnect Spotify?')) spotifyDisconnect(); };
     } else {
       btn.textContent = 'Connect Spotify';
       btn.classList.remove('spotify-connected');
@@ -9425,40 +9304,24 @@ function updateSpotifyUI() {
   if (typeof currentGenre !== 'undefined' && currentGenre && typeof renderHeardVerification === 'function') {
     renderHeardVerification(currentGenre);
   }
+  // Show/hide the Save to Playlist button in detail view
+  const _plBtn2 = document.getElementById('addToPlaylistBtn');
+  if (_plBtn2) _plBtn2.style.display = spotifySession ? 'inline-flex' : 'none';
+  renderMostReplayed();
+}
 
 
 // ── Add to Playlist ───────────────────────────────────────────────────────────
 
-async function spotifyGetOrCreatePlaylist(genreName) {
-  const token = await spotifyGetToken();
-  if (!token || !spotifySession?.userId) return null;
-  const userId = spotifySession.userId;
-  let offset = 0, found = null;
-  while (!found && offset < 200) {
-    const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
-    if (!data?.items?.length) break;
-    found = data.items.find(p => p.name.toLowerCase() === genreName.toLowerCase() && p.owner?.id === userId);
-    if (data.items.length < 50) break;
-    offset += 50;
-  }
-  if (found) return found.id;
-  const res = await fetch(`https://api.spotify.com/v1/me/playlists`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: genreName, description: `Songs logged in Daily Genre — ${genreName}`, public: false })
-  });
-  const pl = await res.json().catch(() => ({}));
-  return pl.id || null;
-}
-
 async function spotifyAddGenreToPlaylist(genre) {
   if (!spotifySession) { showSaveToast('Connect Spotify first.', true); return; }
   if (!genre) return;
-  const songs = (genre.songs_listened || []).filter(s => /spotify\.com\/track\//i.test(s.url || ''));
+  const songs = (genre.songslistened || []).filter(s => /spotify\.com\/track\//i.test(s.url || ''));
   if (!songs.length) { showSaveToast('No Spotify-linked songs logged for this genre yet.', true); return; }
 
+  // Build target playlist name from listenedDate
   let targetPlaylistName = null;
-  const listenedDate = genre.date_listened || genre.listenedDate || null;
+  const listenedDate = genre.datenormalized || genre.date_listened || genre.listenedDate || null;
   if (listenedDate) {
     const d = new Date(listenedDate);
     if (!isNaN(d)) {
@@ -9472,7 +9335,7 @@ async function spotifyAddGenreToPlaylist(genre) {
     targetPlaylistName = `Genres ${now.getFullYear()} ${mm}`;
   }
 
-  // Cache-first: no API call needed if we've seen this playlist before
+  // 1. Cache-first: no API call needed if we've seen this playlist before
   const cached = _getPlaylistCache();
   const cachedEntry = Object.values(cached).find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
   if (cachedEntry) {
@@ -9480,7 +9343,7 @@ async function spotifyAddGenreToPlaylist(genre) {
     return;
   }
 
-  // Not in cache — try API (non-fatal if 403), then show modal
+  // 2. Not in cache — try API (non-fatal if 403), populate picker
   let userPlaylists = Object.values(cached);
   try {
     let offset = 0;
@@ -9494,14 +9357,16 @@ async function spotifyAddGenreToPlaylist(genre) {
       if (data.items.length < 50) break;
       offset += 50;
     }
-  } catch {}
+  } catch (e) { /* 403 in dev mode is expected */ }
 
+  // 3. Check again after API (may have found it)
   const apiMatch = userPlaylists.find(p => p.name.toLowerCase() === targetPlaylistName.toLowerCase());
   if (apiMatch) {
     await _doAddToPlaylist(apiMatch.id, apiMatch.name, songs);
     return;
   }
 
+  // 4. Not found anywhere — show modal
   _showPlaylistModal(targetPlaylistName, userPlaylists, songs, genre);
 }
 
@@ -9518,10 +9383,10 @@ async function _doAddToPlaylist(playlistId, playlistName, songs) {
       if (!ex.next) break;
       offset += 100;
     }
-  } catch {}
+  } catch (e) {}
   const urisToAdd = [];
   for (const s of songs) {
-    const m = (s.url || '').match(/track[/:]([A-Za-z0-9]{22})/);
+    const m = (s.url || '').match(/track[\/:]([A-Za-z0-9]{22})/);
     if (!m) continue;
     const uri = `spotify:track:${m[1]}`;
     if (!existingUris.has(uri)) urisToAdd.push(uri);
@@ -9531,7 +9396,7 @@ async function _doAddToPlaylist(playlistId, playlistName, songs) {
   let added = 0;
   for (let i = 0; i < urisToAdd.length; i += 100) {
     const chunk = urisToAdd.slice(i, i + 100);
-    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/items`, {
+    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ uris: chunk })
@@ -9543,54 +9408,137 @@ async function _doAddToPlaylist(playlistId, playlistName, songs) {
 
 async function _createAndAddToPlaylist(name, songs) {
   const token = await spotifyGetToken();
-  if (!token) return;
-
-  // Check local cache first (works even when /me/playlists returns 403)
-  const cached = _findCachedPlaylist(name);
-  if (cached) {
-    showSaveToast(`Adding to existing playlist “${name}”…`, false);
-    _cachePlaylist(name, pl.id);
-    await _doAddToPlaylist(cached.id, name, songs);
-    return;
-  }
-
-  // Try live search via /me/playlists (may 403 in dev mode)
-  let existingId = null;
-  try {
-    let offset = 0;
-    outer: while (offset < 400) {
-      const data = await spotifyFetch(`/me/playlists?limit=50&offset=${offset}`);
-      if (!data?.items?.length) break;
-      for (const p of data.items) {
-        _cachePlaylist(p.name, p.id); // cache everything we see
-        if (p.name.toLowerCase() === name.toLowerCase()) { existingId = p.id; break outer; }
-      }
-      if (data.items.length < 50) break;
-      offset += 50;
-    }
-  } catch(e) { console.warn('Playlist search error:', e); }
-
-  if (existingId) {
-    showSaveToast(`Adding to existing playlist “${name}”…`, false);
-    await _doAddToPlaylist(existingId, name, songs);
-    return;
-  }
-
-  // Create new playlist
-  showSaveToast(`Creating playlist “${name}”…`, false);
-  const res = await fetch(`https://api.spotify.com/v1/me/playlists`, {
+  const userId = spotifySession?.userId;
+  if (!userId) return;
+  // Check cache one more time before creating
+  const cached = _getPlaylistCache();
+  const existing = Object.values(cached).find(p => p.name.toLowerCase() === name.toLowerCase());
+  if (existing) { await _doAddToPlaylist(existing.id, existing.name, songs); return; }
+  showSaveToast(`Creating playlist \u201c${name}\u201d\u2026`, false);
+  const res = await fetch(`https://api.spotify.com/v1/users/${encodeURIComponent(userId)}/playlists`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, description: 'Created by Daily Genre', public: false })
   });
   if (res.status === 403) {
-    showSaveToast('Permission denied — please disconnect Spotify and reconnect to grant playlist access.', true);
+    showSaveToast('Permission denied — disconnect and reconnect Spotify to grant playlist access.', true);
     const btn = document.getElementById('spotifyConnectBtn');
-    if (btn) { btn.style.outline = '3px solid #e05'; btn.textContent = '⚠ Reconnect Spotify'; setTimeout(()=>{ btn.style.outline=''; updateSpotifyUI(); }, 8000); }
+    if (btn) { btn.style.outline = '3px solid #e05'; btn.textContent = '⚠ Reconnect Spotify'; setTimeout(() => { btn.style.outline = ''; updateSpotifyUI(); }, 8000); }
     return;
   }
   const pl = await res.json().catch(() => ({}));
   if (!pl.id) { showSaveToast('Could not create playlist.', true); return; }
-  _cachePlaylist(name, pl.id); // cache the new playlist
+  _cachePlaylist(name, pl.id);
   await _doAddToPlaylist(pl.id, name, songs);
 }
+
+function _getPlaylistCache() {
+  try { return JSON.parse(localStorage.getItem('dg_playlist_cache') || '{}'); } catch { return {}; }
+}
+function _savePlaylistCache(cache) {
+  try { localStorage.setItem('dg_playlist_cache', JSON.stringify(cache)); } catch {}
+}
+function _cachePlaylist(name, id) {
+  const c = _getPlaylistCache();
+  c[name.toLowerCase()] = { id, name };
+  _savePlaylistCache(c);
+}
+
+function _showPlaylistModal(suggestedName, userPlaylists, songs, genre) {
+  document.getElementById('playlistPickerModal')?.remove();
+  const opts = userPlaylists.map((p, i) =>
+    `<option value="${i}">${p.name.replace(/"/g, '&quot;')}</option>`
+  ).join('');
+  const modal = document.createElement('div');
+  modal.id = 'playlistPickerModal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);';
+  modal.innerHTML = `
+    <div style="background:var(--surface,#fff);border-radius:16px;padding:28px 24px;max-width:420px;width:92%;box-shadow:0 8px 40px rgba(0,0,0,.3);">
+      <div style="font-weight:800;font-size:1.05rem;margin-bottom:6px;">Save to Playlist</div>
+      <div style="font-size:.85rem;color:var(--muted,#888);margin-bottom:18px;">
+        No cached playlist named <strong>${suggestedName}</strong> found.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button id="plModalCreate" class="btn btn-primary" style="width:100%;">
+          ✚ Create &ldquo;${suggestedName}&rdquo;
+        </button>
+        ${opts ? `<div style="display:flex;gap:8px;align-items:center;">
+          <select id="plModalSelect" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);font-size:.9rem;">
+            <option value="">— Choose existing playlist —</option>
+            ${opts}
+          </select>
+          <button id="plModalAddExisting" class="btn btn-secondary">Add</button>
+        </div>` : ''}
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="plModalNewName" type="text" placeholder="New playlist name\u2026" value="${suggestedName}"
+            style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);font-size:.9rem;" />
+          <button id="plModalCreateCustom" class="btn btn-secondary">Create</button>
+        </div>
+        <button id="plModalCancel" class="btn btn-ghost" style="width:100%;margin-top:4px;">Cancel</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  document.getElementById('plModalCreate').onclick = async () => { modal.remove(); await _createAndAddToPlaylist(suggestedName, songs); };
+  document.getElementById('plModalAddExisting')?.addEventListener('click', async () => {
+    const sel = document.getElementById('plModalSelect');
+    const idx = parseInt(sel.value);
+    if (isNaN(idx) || !userPlaylists[idx]) return;
+    modal.remove();
+    await _doAddToPlaylist(userPlaylists[idx].id, userPlaylists[idx].name, songs);
+  });
+  document.getElementById('plModalCreateCustom').onclick = async () => {
+    const name = document.getElementById('plModalNewName').value.trim();
+    if (!name) return;
+    modal.remove();
+    await _createAndAddToPlaylist(name, songs);
+  };
+  document.getElementById('plModalCancel').onclick = () => modal.remove();
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
+// ── Listening Verification ────────────────────────────────────────────────────
+
+function renderHeardVerification(genre) {
+  const mount = document.getElementById('heardVerificationPanel');
+  if (!mount) return;
+  if (!spotifySession) { mount.innerHTML = ''; return; }
+  const songs = (genre.songs_listened || []).filter(s => !s.isPending);
+  if (!songs.length) { mount.innerHTML = ''; return; }
+  const heard = songs.filter(s => s.heard);
+  const unheard = songs.filter(s => !s.heard && /spotify\.com\/track\//i.test(s.url || ''));
+  if (!heard.length && !unheard.length) { mount.innerHTML = ''; return; }
+  const heardRows = heard.map(s => {
+    const when = s.firstHeardAt ? new Date(s.firstHeardAt).toLocaleDateString() : '';
+    const title = (s.title || s.url || 'Untitled').replace(/</g,'&lt;');
+    const artist = s.artist ? ` <span class="heard-artist">\u2014 ${s.artist.replace(/</g,'&lt;')}</span>` : '';
+    return `<div class="heard-row heard-yes"><span class="heard-dot">\u2713</span><span class="heard-title">${title}${artist}</span>${when ? `<span class="heard-when">${when}</span>` : ''}</div>`;
+  }).join('');
+  const unheardRows = unheard.map(s => {
+    const title = (s.title || s.url || 'Untitled').replace(/</g,'&lt;');
+    const artist = s.artist ? ` <span class="heard-artist">\u2014 ${s.artist.replace(/</g,'&lt;')}</span>` : '';
+    return `<div class="heard-row heard-no"><span class="heard-dot">\u25cb</span><span class="heard-title">${title}${artist}</span><span class="heard-when">not detected yet</span></div>`;
+  }).join('');
+  mount.innerHTML = `<div class="heard-panel"><div class="heard-panel-header"><span class="heard-panel-title">\uD83D\uDD0A Listening Verification</span><span class="heard-panel-sub">${heard.length} of ${songs.length} songs detected via Spotify</span></div><div class="heard-panel-body">${heardRows}${unheardRows}</div></div>`;
+}
+
+// Show queue btn on spin result when genre has spotify songs
+function spotifyUpdateSpinQueueBtn(genre) {
+  const btn = document.getElementById('spinQueueBtn');
+  if (!btn || !spotifySession) return;
+  const hasSongs = (genre?.songs_listened||[]).some(s => /spotify\.com\/track\//i.test(s.url||''));
+  btn.style.display = hasSongs ? 'inline-flex' : 'none';
+}
+
+// Init — deferred so loadData() runs first
+setTimeout(async function spotifyInit() {
+  if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
+    await spotifyHandleCallback();
+  } else {
+    loadSpotifySession();
+  }
+}, 0);
+  </script>
+  <div id="saveToast" class="save-toast" aria-live="polite"></div>
+
+</body>
+</html>
