@@ -7838,7 +7838,13 @@ if (new URL(window.location.href).searchParams.get('code')) {
   spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
 } else {
   loadSpotifySession();
+// Handle Spotify OAuth callback if redirected back from Spotify
+if (new URL(window.location.href).searchParams.get('code')) {
+  spotifyHandleCallback().then(() => { loadSpotifySession(); loadData(); });
+} else {
+  loadSpotifySession();
   loadData();
+}
 }
         // ── Visualization helpers ─────────────────────────────────────────
     let _vizCharts = {};
