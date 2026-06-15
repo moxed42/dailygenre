@@ -5486,17 +5486,74 @@ body.spotify-player-open { padding-bottom: 116px; }
       return null;
     }
 
-    async function refreshGenrePageSpotifyTrack(encodedKey, button) {
+
+    function encodeSongKeyForInline(song) {
+      // encodeURIComponent intentionally leaves apostrophes unescaped; inline onclick strings do not.
+      return encodeURIComponent(songIdentity(song)).replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+    }
+
+    function decodeInlineSongKey(encodedKey) {
+      try { return decodeURIComponent(encodedKey || ''); }
+      catch (err) { return String(encodedKey || ''); }
+    }
+
+    function findOfficialSongByPath(path) {
+      if (!currentGenre) return null;
+      const match = String(path || '').match(/^song:(\d+)(?:\.(levelUp))?$/);
+      if (!match) return null;
+      const songs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
+      currentGenre.songs_listened = songs;
+      const index = Number(match[1]);
+      if (!Number.isInteger(index) || index < 0 || index >= songs.length) return null;
+      if (match[2] === 'levelUp') {
+        if (!songs[index]?.levelUp) return null;
+        return { song: songs[index].levelUp, parent: songs[index], index, songs };
+      }
+      return { song: songs[index], parent: null, index, songs };
+    }
+
+    function findEditableSongTarget(encodedKey, pendingIndex, path = '') {
+      if (!currentGenre) return null;
+      const isPendingEdit = Number.isInteger(pendingIndex) && pendingIndex >= 0;
+      if (isPendingEdit) {
+        currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+        const song = currentGenre.pending_songs[pendingIndex];
+        return song ? { song, parent: null, index: pendingIndex, songs: currentGenre.pending_songs, isPending: true } : null;
+      }
+
+      const byPath = findOfficialSongByPath(path);
+      if (byPath?.song) return byPath;
+
+      const key = decodeInlineSongKey(encodedKey);
+      const byIdentity = findOfficialSongByIdentity(key);
+      if (byIdentity?.song) return byIdentity;
+
+      // Last-resort fallback for malformed/old curation rows: compare against common identity variants
+      // without reparsing the editor again. This avoids silent failures on bad ALT TAKE / LEVEL UP rows.
+      const songs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
+      currentGenre.songs_listened = songs;
+      for (let index = 0; index < songs.length; index += 1) {
+        const parent = songs[index];
+        if (songIdentity(parent) === key || songIdentityKeys(parent).includes(String(key || '').toLowerCase())) {
+          return { song: parent, parent: null, index, songs };
+        }
+        if (parent.levelUp && (songIdentity(parent.levelUp) === key || songIdentityKeys(parent.levelUp).includes(String(key || '').toLowerCase()))) {
+          return { song: parent.levelUp, parent, index, songs };
+        }
+      }
+      return null;
+    }
+
+    async function refreshGenrePageSpotifyTrack(encodedKey, button, path = '') {
       if (!currentGenre) return;
       syncBulkDraftIntoSongModel();
-      const key = decodeURIComponent(encodedKey || '');
-      const result = findOfficialSongByIdentity(key);
+      const result = findEditableSongTarget(encodedKey, -1, path);
       if (!result?.song) {
         showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
         return;
       }
       const url = normalizeSongUrl(result.song.url || result.song.spotifyUrl || '');
-      if (!/spotify\.com\/track\//i.test(url)) {
+      if (!/spotify\.com\/track\//i.test(url) && !/^spotify:track:/i.test(url)) {
         showSaveToast('That track does not have a Spotify track URL to refresh.', true);
         return;
       }
@@ -5519,10 +5576,13 @@ body.spotify-player-open { padding-bottom: 116px; }
         spotifyMetadataFailures.delete(stagedReactionKey(currentGenre.id, songIdentity(result.song)));
         const restore = preserveScrollSnapshot();
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-        applyDetailEditMode(true);
+        applyDetailEditMode(detailEditMode);
         restore();
         markDirty();
         showSaveToast('Spotify metadata refreshed — click Save Changes to keep it.', false);
+      } catch (err) {
+        console.error('Spotify refresh failed', err);
+        showSaveToast(`Spotify refresh failed: ${err?.message || err || 'Unknown error'}`, true);
       } finally {
         if (button && document.body.contains(button)) {
           button.disabled = false;
@@ -5532,12 +5592,12 @@ body.spotify-player-open { padding-bottom: 116px; }
       }
     }
 
-    async function updateTrackUrlFromCard(encodedKey, pendingIndex, button) {
+    async function updateTrackUrlFromCard(encodedKey, pendingIndex, button, path = '') {
       if (!currentGenre) return;
       const editor = button?.closest('.track-card-editor');
       const input = editor?.querySelector('[data-track-url-input]');
       const nextUrl = normalizeSongUrl(input?.value || '');
-      if (!/^https?:\/\//i.test(nextUrl)) {
+      if (!/^https?:\/\//i.test(nextUrl) && !/^spotify:track:/i.test(nextUrl)) {
         alert('Paste a valid Spotify, YouTube, or web track URL.');
         return;
       }
@@ -5550,34 +5610,13 @@ body.spotify-player-open { padding-bottom: 116px; }
       }
 
       try {
-        let target = null;
         const isPendingEdit = Number.isInteger(pendingIndex) && pendingIndex >= 0;
-
-        if (isPendingEdit) {
-          currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
-          target = currentGenre.pending_songs[pendingIndex];
-        } else {
-          syncBulkDraftIntoSongModel();
-          const officialResult = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
-          target = officialResult?.song || null;
-        }
+        if (!isPendingEdit) syncBulkDraftIntoSongModel();
+        const result = findEditableSongTarget(encodedKey, pendingIndex, path);
+        const target = result?.song || null;
 
         if (!target) {
-          const decodedKey = decodeURIComponent(encodedKey || '');
-          const allSongs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(s => !s.isPending);
-          for (const parent of allSongs) {
-            if (parent.levelUp && songIdentity(parent.levelUp) === decodedKey) {
-              target = parent.levelUp;
-              break;
-            }
-            if (songIdentity(parent) === decodedKey) {
-              target = parent;
-              break;
-            }
-          }
-        }
-        if (!target) {
-          showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
+          showSaveToast('That song changed or was malformed. Reopen the card and try again.', true);
           loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
           return;
         }
@@ -5596,17 +5635,24 @@ body.spotify-player-open { padding-bottom: 116px; }
         target.releaseYear = null;
         target.releaseSource = '';
 
-        if (/spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl)) {
+        const isSpotifyTrack = /spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl);
+        let metadataWarning = '';
+
+        if (isSpotifyTrack) {
           target.source = 'spotify';
-          target.title = '';
-          target.artist = '';
-          const resolved = (await resolveSpotifyTitles([{ ...target, levelUp: null }]))[0];
-          if (resolved) {
-            resolved.levelUp = nestedLevelUp;
-            resolved.reason = savedReason;
-            resolved.score = savedScore;
-            resolved.reaction = savedReaction;
-            Object.assign(target, resolved);
+          target.spotifyUrl = /^spotify:track:/i.test(nextUrl)
+            ? `https://open.spotify.com/track/${spotifyTrackId(nextUrl)}`
+            : nextUrl;
+          target.spotifyId = spotifyTrackId(nextUrl) || target.spotifyId || '';
+          target.title = savedTitle;
+          target.artist = savedArtist;
+
+          const refreshed = await fetchSpotifyTrackResult(nextUrl, true);
+          if (refreshed.ok) {
+            applyOfficialSpotifyMetadata(target, refreshed.track);
+          } else {
+            metadataWarning = refreshed.error || 'Spotify metadata could not be refreshed.';
+            if (refreshed.code === 'rate_limited') beginSpotifyPause(refreshed.retryAfterSeconds || 30);
           }
         } else if (isYoutubeUrl(nextUrl)) {
           target.source = 'youtube';
@@ -5618,8 +5664,8 @@ body.spotify-player-open { padding-bottom: 116px; }
           target.artists = [];
           target.durationMs = null;
           target.isrc = '';
-          target.title = target.title || savedTitle || 'YouTube track';
-          target.artist = target.artist || savedArtist || '';
+          target.title = savedTitle || target.title || 'YouTube track';
+          target.artist = savedArtist || target.artist || '';
         } else {
           target.source = 'web';
           target.spotifyId = '';
@@ -5630,9 +5676,14 @@ body.spotify-player-open { padding-bottom: 116px; }
           target.artists = [];
           target.durationMs = null;
           target.isrc = '';
-          target.title = target.title || savedTitle || 'Track';
-          target.artist = target.artist || savedArtist || '';
+          target.title = savedTitle || target.title || 'Track';
+          target.artist = savedArtist || target.artist || '';
         }
+
+        target.levelUp = nestedLevelUp;
+        target.reason = savedReason;
+        target.score = savedScore;
+        target.reaction = savedReaction;
 
         const currentFavUrl = normalizeSongUrl(currentGenre.favoritesongurl || '');
         if (!isPendingEdit && currentFavUrl && oldUrl && currentFavUrl === oldUrl) {
@@ -5642,25 +5693,24 @@ body.spotify-player-open { padding-bottom: 116px; }
           currentGenre.favoritesongartwork = target.artwork || currentGenre.favoritesongartwork;
         }
 
-        if (isPendingEdit) {
-          currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
-        } else {
-          const deduped = [];
-          const seen = new Set();
-          inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending).forEach(song => {
-            const keys = songIdentityKeys(song);
-            const duplicate = keys.some(key => seen.has(key));
-            if (duplicate) return;
-            keys.forEach(key => seen.add(key));
-            deduped.push(song);
-          });
-          currentGenre.songs_listened = deduped;
+        if (result?.isPending) {
+          currentGenre.pending_songs = result.songs;
+        } else if (result?.songs) {
+          currentGenre.songs_listened = result.songs;
         }
 
         removeLoggedSongsFromPending(currentGenre);
+        const restore = preserveScrollSnapshot();
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+        applyDetailEditMode(detailEditMode);
+        restore();
         markDirty();
-        showSaveToast('Track URL updated — click Save Changes to keep it.', false);
+        if (metadataWarning) {
+          console.warn('Track URL updated but metadata refresh failed:', metadataWarning);
+          showSaveToast(`URL saved, but Spotify metadata did not refresh: ${metadataWarning}`, true);
+        } else {
+          showSaveToast('Track URL updated — click Save Changes to keep it.', false);
+        }
       } catch (err) {
         console.error('Track URL update failed', err);
         showSaveToast(`Track update failed: ${err?.message || err || 'Unknown error'}`, true);
@@ -5673,7 +5723,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       }
     }
 
-    function removeTrackFromCard(encodedKey, pendingIndex) {
+    function removeTrackFromCard(encodedKey, pendingIndex, path = '') {
       if (!currentGenre) return;
 
       const isPendingRemove = Number.isInteger(pendingIndex) && pendingIndex >= 0;
@@ -5693,9 +5743,9 @@ body.spotify-player-open { padding-bottom: 116px; }
       if (!window.confirm('Remove this track and send it back to Pending for re-review? You can suggest another genre from there.')) return;
 
       syncBulkDraftIntoSongModel();
-      const result = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
+      const result = findEditableSongTarget(encodedKey, -1, path);
       if (!result) {
-        showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
+        showSaveToast('That song changed or was malformed. Reopen the card and try again.', true);
         return;
       }
 
@@ -5901,14 +5951,16 @@ body.spotify-player-open { padding-bottom: 116px; }
         : '';
       const canShowTrackTools = options.allowTrackEdit === true || (!s.isPending && options.allowTrackEdit !== false);
       const levelUpHtml = (!isChild && s.levelUp)
-        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: canShowTrackTools })}</div>`
+        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: canShowTrackTools, songIndex: options.songIndex, childKey: 'levelUp' })}</div>`
         : '';
       const favBtn = '';
-      const encodedKey = encodeURIComponent(songIdentity(s));
+      const encodedKey = encodeSongKeyForInline(s);
       const editPendingIndex = Number.isInteger(pendingIndex) ? pendingIndex : -1;
-      const canSpotifyRefresh = !s.isPending && /spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '');
+      const songPath = Number.isInteger(options.songIndex) ? `song:${options.songIndex}${options.childKey ? `.${options.childKey}` : ''}` : '';
+      const encodedPath = encodeURIComponent(songPath).replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+      const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
-        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, or web track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this)">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this)">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})">Remove Track</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, or other web track links. Refresh Spotify updates title, artist, album, artwork, release year, duration, Spotify ID, and ISRC for Spotify tracks. Save Changes to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, or web track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove Track</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, or other web track links. Refresh Spotify updates title, artist, album, artwork, release year, duration, Spotify ID, and ISRC for Spotify tracks. Save Changes to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
@@ -5923,7 +5975,7 @@ body.spotify-player-open { padding-bottom: 116px; }
             </div>
            </div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${canShowTrackTools ? `<button type="button" class="song-remove-btn" title="Remove track" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${canShowTrackTools ? `<button type="button" class="song-remove-btn" title="Remove track" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}${reactionHtml}${trackEditHtml}${levelUpHtml}</div>`;
     }
     function buildDiscordBlock() {
       if (!currentGenre) return '';
@@ -6298,7 +6350,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         panel.innerHTML = '<div class="pending-song-empty">No pending songs queued.</div>';
         return;
       }
-      panel.innerHTML = pending.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: detailEditMode })).join('');
+      panel.innerHTML = pending.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: true })).join('');
     }
 
     function loadListenScreen(genre, options = {}) {
@@ -6372,8 +6424,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           ${renderGenreReactionSummary(genre)}
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
-            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false, { allowTrackEdit: detailEditMode })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
-            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: detailEditMode })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
+            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map((song, idx) => renderSongEntry(song, false, { allowTrackEdit: true, songIndex: idx })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
+            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: true })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
           </div>
         </div>
       `;
