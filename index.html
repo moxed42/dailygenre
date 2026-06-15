@@ -3841,6 +3841,34 @@ body.spotify-player-open { padding-bottom: 116px; }
   gap:10px;
   align-items:end;
 }
+.spotify-playlist-row.is-unselected {
+  opacity:.58;
+}
+.spotify-playlist-genre-meta {
+  color:var(--accent-dark);
+  font-weight:900;
+}
+.spotify-playlist-relation-meta {
+  color:var(--muted);
+  font-weight:800;
+}
+.archive-playlist-tools {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.archive-select-genre {
+  display:inline-flex;
+  gap:7px;
+  align-items:center;
+  margin:0;
+  font-size:.78rem;
+  font-weight:950;
+  color:var(--muted);
+  cursor:pointer;
+}
+.archive-select-genre input { width:auto; margin:0; }
 @media (max-width:720px) {
   body.spotify-player-open { padding-bottom: 190px; }
   #spotifyStickyPlayer {
@@ -4009,6 +4037,10 @@ body.spotify-player-open { padding-bottom: 116px; }
           </div>
           <div class="archive-actions">
             <button class="btn btn-secondary" id="archiveCopyBtn">Copy current view</button>
+            <div class="archive-playlist-tools">
+              <button type="button" class="btn btn-secondary" id="archivePlaylistToggleVisibleBtn">Select visible for playlist</button>
+              <button type="button" class="btn btn-primary" id="archivePlaylistSelectedBtn">＋ Playlist selected</button>
+            </div>
           </div>
         </div>
 
@@ -4319,12 +4351,13 @@ body.spotify-player-open { padding-bottom: 116px; }
       <div class="form-section" style="margin:14px 0;">
         <div class="row" style="justify-content:space-between; align-items:center;">
           <strong>Tracks to add</strong>
-          <button type="button" class="btn btn-ghost" style="padding:7px 11px;" onclick="spotifyTogglePlaylistSelections()">Toggle visible</button>
+          <button type="button" class="btn btn-ghost" style="padding:7px 11px;" onclick="spotifyTogglePlaylistSelections()">Toggle all</button>
         </div>
-        <div class="spotify-playlist-filter-row" aria-label="Playlist song type filters">
-          <label><input type="checkbox" id="spotifyPlaylistIncludeDirect" checked onchange="spotifyRenderPlaylistSongs()" /> Direct songs</label>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeLevelUps" checked onchange="spotifyRenderPlaylistSongs()" /> Level Ups</label>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeAdds" checked onchange="spotifyRenderPlaylistSongs()" /> Adds</label>
+        <div class="spotify-playlist-filter-row" aria-label="Playlist bulk song type controls">
+          <span class="small" style="font-weight:900;color:var(--text);">Bulk include:</span>
+          <label><input type="checkbox" id="spotifyPlaylistIncludeDirect" checked onchange="spotifySetPlaylistTypeSelection('direct', this.checked)" /> Direct songs</label>
+          <label><input type="checkbox" id="spotifyPlaylistIncludeLevelUps" checked onchange="spotifySetPlaylistTypeSelection('levelUp', this.checked)" /> Level Ups</label>
+          <label><input type="checkbox" id="spotifyPlaylistIncludeAdds" checked onchange="spotifySetPlaylistTypeSelection('add', this.checked)" /> Adds</label>
         </div>
         <div id="spotifyPlaylistBreakdown" class="spotify-playlist-breakdown"></div>
         <div id="spotifyPlaylistSongs" style="margin-top:8px;"></div>
@@ -7542,6 +7575,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       archiveCurrentItems = items;
       archiveCurrentLabel = label;
       renderArchiveSummary(items, label);
+      archiveUpdatePlaylistButtons();
 
       if (!items.length) {
         list.innerHTML = `<div class="small">No matching entries yet.</div>`;
@@ -7578,6 +7612,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
             <div class="archive-card-right">
               <span class="small archive-card-date">${escapeHtml(dateValue(g) || 'No date')}</span>
               <button class="btn btn-primary archive-primary-action" data-open-id="${g.id}">Open / Edit</button>
+              ${songCount ? `<label class="archive-select-genre"><input type="checkbox" data-archive-playlist-genre="${escapeHtml(String(g.id))}" ${archivePlaylistSelectedGenreIds.has(String(g.id)) ? 'checked' : ''} onchange="archivePlaylistSelectionChanged(this)" /> Playlist</label>` : ''}
               ${songCount ? `<button type="button" class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.8rem;font-weight:900;white-space:nowrap;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${songCount} song${songCount===1?'':'s'} logged</button>` : ''}
             </div>
           </div>
@@ -7590,6 +7625,73 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           const genre = genres.find(g => String(g.id) === btn.dataset.openId);
           if (genre) openGenreDetail(genre, false);
         });
+      });
+    }
+
+    function archiveVisiblePlaylistGenreIds() {
+      return (archiveCurrentItems || [])
+        .filter(g => spotifyPlaylistSongRows(g).length > 0)
+        .map(g => String(g.id));
+    }
+
+    function archiveUpdatePlaylistButtons() {
+      const selectedCount = archivePlaylistSelectedGenreIds.size;
+      const selectedBtn = document.getElementById('archivePlaylistSelectedBtn');
+      if (selectedBtn) selectedBtn.textContent = selectedCount ? `＋ Playlist selected (${selectedCount})` : '＋ Playlist selected';
+      const toggleBtn = document.getElementById('archivePlaylistToggleVisibleBtn');
+      if (toggleBtn) {
+        const visibleIds = archiveVisiblePlaylistGenreIds();
+        const allVisibleSelected = visibleIds.length > 0 && visibleIds.every(id => archivePlaylistSelectedGenreIds.has(id));
+        toggleBtn.textContent = allVisibleSelected ? 'Clear visible playlist picks' : 'Select visible for playlist';
+      }
+    }
+
+    function archivePlaylistSelectionChanged(box) {
+      const id = String(box?.dataset?.archivePlaylistGenre || '');
+      if (!id) return;
+      if (box.checked) archivePlaylistSelectedGenreIds.add(id);
+      else archivePlaylistSelectedGenreIds.delete(id);
+      archiveUpdatePlaylistButtons();
+    }
+
+    function archiveToggleVisiblePlaylistSelection() {
+      const visibleIds = archiveVisiblePlaylistGenreIds();
+      if (!visibleIds.length) {
+        showSaveToast('No visible archive entries have Spotify tracks.', true);
+        return;
+      }
+      const allVisibleSelected = visibleIds.every(id => archivePlaylistSelectedGenreIds.has(id));
+      visibleIds.forEach(id => {
+        if (allVisibleSelected) archivePlaylistSelectedGenreIds.delete(id);
+        else archivePlaylistSelectedGenreIds.add(id);
+      });
+      renderHistory();
+      archiveUpdatePlaylistButtons();
+    }
+
+    async function openArchivePlaylistModal() {
+      const selectedIds = [...archivePlaylistSelectedGenreIds];
+      if (!selectedIds.length) {
+        showSaveToast('Select at least one archive genre for the playlist.', true);
+        return;
+      }
+      if (!(await spotifyEnsurePlaylistScopes({ reopenPlaylistGenreIds: selectedIds, returnScreen: 'history' }))) return;
+
+      const selectedGenres = selectedIds
+        .map(id => (genres || []).find(g => String(g.id) === String(id)))
+        .filter(Boolean);
+      const rows = spotifyPlaylistSongRowsForGenres(selectedGenres);
+      if (!rows.length) {
+        showSaveToast('The selected archive genres do not have Spotify track URLs.', true);
+        return;
+      }
+      const dateStamp = new Date().toISOString().slice(0,10);
+      spotifyOpenPlaylistModalWithRows({
+        rows,
+        sourceName: `${selectedGenres.length} selected archive genre${selectedGenres.length === 1 ? '' : 's'}`,
+        playlistName: `Daily Genre — Backlog ${dateStamp}`,
+        contextType: 'archive',
+        genreIds: selectedGenres.map(g => String(g.id))
       });
     }
 
@@ -7726,6 +7828,32 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       return null;
     }
 
+function spotifyRestoreReturnAfterDataLoad() {
+  const state = spotifyReturnStateAfterCallback || spotifyReadReturnState();
+  if (!state) return;
+
+  let restoredGenre = false;
+  if (state.hash && /^#genre=/.test(state.hash)) {
+    const id = decodeURIComponent(state.hash.replace(/^#genre=/, ''));
+    const genre = (genres || []).find(g => String(g.id) === String(id));
+    if (genre) restoredGenre = openGenreDetail(genre, false, { force: true }) !== false;
+  } else if (state.screen && state.screen !== 'spin') {
+    switchScreen(state.screen, { force: true });
+  }
+
+  if (Array.isArray(state.reopenPlaylistGenreIds) && state.reopenPlaylistGenreIds.length) {
+    archivePlaylistSelectedGenreIds = new Set(state.reopenPlaylistGenreIds.map(String));
+    if (!restoredGenre) switchScreen('history', { force: true });
+    renderHistory();
+    setTimeout(() => openArchivePlaylistModal(), 250);
+  } else if (state.reopenPlaylistGenreId) {
+    setTimeout(() => openSpotifyPlaylistModal(encodeURIComponent(String(state.reopenPlaylistGenreId))), 250);
+  }
+
+  spotifyClearReturnState();
+  spotifyReturnStateAfterCallback = null;
+}
+
 async function loadData() {
   remainingCount.textContent = 'Loading genres...';
 
@@ -7783,6 +7911,7 @@ async function loadData() {
     const genre = genres.find(g => String(g.id) === String(id));
     if (genre) openGenreDetail(genre, false);
   }
+  spotifyRestoreReturnAfterDataLoad();
 }
     window.addEventListener('beforeunload', (event) => {
       if (!hasUnsavedChanges) return;
@@ -7873,6 +8002,8 @@ async function loadData() {
     const archiveFlagFilter = document.getElementById('archiveFlagFilter');
     const archiveSortFilter = document.getElementById('archiveSortFilter');
     const archiveCopyBtn = document.getElementById('archiveCopyBtn');
+    const archivePlaylistToggleVisibleBtn = document.getElementById('archivePlaylistToggleVisibleBtn');
+    const archivePlaylistSelectedBtn = document.getElementById('archivePlaylistSelectedBtn');
 
     if (historyMonthFilter) historyMonthFilter.addEventListener('change', renderHistory);
     if (historyRatingFilter) historyRatingFilter.addEventListener('change', renderHistory);
@@ -7891,6 +8022,8 @@ async function loadData() {
     }
     if (archiveFlagFilter) archiveFlagFilter.addEventListener('change', renderHistory);
     if (archiveSortFilter) archiveSortFilter.addEventListener('change', renderHistory);
+    if (archivePlaylistToggleVisibleBtn) archivePlaylistToggleVisibleBtn.addEventListener('click', archiveToggleVisiblePlaylistSelection);
+    if (archivePlaylistSelectedBtn) archivePlaylistSelectedBtn.addEventListener('click', openArchivePlaylistModal);
 
     document.querySelectorAll('.archive-view-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -9309,8 +9442,57 @@ function spotifySafeTopUrl() {
   return new URL(window.location.href);
 }
 
-function spotifyCleanCallbackUrl() {
-  const cleanPath = SPOTIFY_REDIRECT_URI;
+function spotifyActiveScreenName() {
+  return document.querySelector('.screen.active')?.id?.replace('screen-', '') || 'spin';
+}
+
+function spotifyBuildReturnState(options = {}) {
+  const activeScreen = spotifyActiveScreenName();
+  const activeGenreId = currentGenre?.id != null ? String(currentGenre.id) : '';
+  const hash = activeScreen === 'listen' && activeGenreId
+    ? `#genre=${encodeURIComponent(activeGenreId)}`
+    : '';
+  return {
+    screen: options.returnScreen || activeScreen,
+    hash,
+    genreId: activeGenreId,
+    reopenPlaylistGenreId: options.reopenPlaylistGenreId ? String(options.reopenPlaylistGenreId) : '',
+    reopenPlaylistGenreIds: Array.isArray(options.reopenPlaylistGenreIds) ? options.reopenPlaylistGenreIds.map(String) : [],
+    ts: Date.now()
+  };
+}
+
+function spotifyRememberReturnState(options = {}) {
+  const state = spotifyBuildReturnState(options);
+  const raw = JSON.stringify(state);
+  try { sessionStorage.setItem(SPOTIFY_RETURN_STORAGE_KEY, raw); } catch {}
+  try { localStorage.setItem(SPOTIFY_RETURN_STORAGE_KEY, raw); } catch {}
+  return state;
+}
+
+function spotifyReadReturnState() {
+  let raw = '';
+  try { raw = sessionStorage.getItem(SPOTIFY_RETURN_STORAGE_KEY) || ''; } catch {}
+  if (!raw) {
+    try { raw = localStorage.getItem(SPOTIFY_RETURN_STORAGE_KEY) || ''; } catch {}
+  }
+  if (!raw) return null;
+  try {
+    const state = JSON.parse(raw);
+    if (!state || Date.now() - Number(state.ts || 0) > 30 * 60 * 1000) return null;
+    return state;
+  } catch {
+    return null;
+  }
+}
+
+function spotifyClearReturnState() {
+  try { sessionStorage.removeItem(SPOTIFY_RETURN_STORAGE_KEY); } catch {}
+  try { localStorage.removeItem(SPOTIFY_RETURN_STORAGE_KEY); } catch {}
+}
+
+function spotifyCleanCallbackUrl(returnState = null) {
+  const cleanPath = `${SPOTIFY_REDIRECT_URI}${returnState?.hash || ''}`;
   try {
     if (window.top && window.top.history && window.top.location) {
       window.top.history.replaceState({}, '', cleanPath);
@@ -9332,6 +9514,7 @@ function spotifyNavigateToAuth(url) {
 
 async function spotifyConnect(options = {}) {
   try {
+    spotifyRememberReturnState(options);
     const verifier = generateSpotifyCodeVerifier();
     const challenge = await generateSpotifyCodeChallenge(verifier);
     const state = generateSpotifyAuthState();
@@ -9359,12 +9542,13 @@ async function spotifyConnect(options = {}) {
 
 async function spotifyHandleCallback() {
   const url = spotifySafeTopUrl();
+  const returnState = spotifyReadReturnState();
   const error = url.searchParams.get('error');
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
 
   if (error) {
-    spotifyCleanCallbackUrl();
+    spotifyCleanCallbackUrl(returnState);
     showSaveToast(`Spotify auth failed: ${error}`, true);
     return;
   }
@@ -9374,7 +9558,7 @@ async function spotifyHandleCallback() {
   const verifier = getSpotifyTempValue('spotify-pkce-verifier');
   const expectedState = getSpotifyTempValue('spotify-auth-state');
 
-  spotifyCleanCallbackUrl();
+  spotifyCleanCallbackUrl(returnState);
 
   if (!verifier) {
     showSaveToast('Spotify auth failed: missing PKCE verifier.', true);
@@ -9416,6 +9600,7 @@ async function spotifyHandleCallback() {
       expires_in: data.expires_in
     });
 
+    spotifyReturnStateAfterCallback = returnState || null;
     showSaveToast(`Spotify connected as ${spotifySession.displayName || 'you'}!`, false);
     updateSpotifyUI();
     spotifyStartPolling();
@@ -9494,6 +9679,8 @@ async function spotifySetSession(tokenPayload) {
 }
 
 function spotifyDisconnect() {
+  const activeScreen = spotifyActiveScreenName();
+  const activeGenreId = currentGenre?.id != null ? String(currentGenre.id) : '';
   spotifySession = null;
   spotifyStorageRemove(SPOTIFY_SESSION_STORAGE_KEY);
   if (spotifyPollingInterval) clearInterval(spotifyPollingInterval);
@@ -9507,6 +9694,10 @@ function spotifyDisconnect() {
   }
   stickyPlayerClose();
   updateSpotifyUI();
+  if (activeScreen === 'listen' && activeGenreId) {
+    try { history.replaceState(null, '', '#genre=' + encodeURIComponent(activeGenreId)); } catch {}
+    switchScreen('listen', { force: true, preserveScroll: true });
+  }
   showSaveToast('Spotify disconnected.', false);
 }
 
@@ -9634,6 +9825,10 @@ function stickyPlayerClose() {
 
 let spotifyPlaylistContext = null;
 let spotifyPlaylistCache = [];
+let spotifyReturnStateAfterCallback = null;
+let archivePlaylistSelectedGenreIds = new Set();
+
+const SPOTIFY_RETURN_STORAGE_KEY = 'dailygenre.spotifyReturn.v2';
 
 const SPOTIFY_PLAYLIST_REQUIRED_SCOPES = [
   'playlist-read-private',
@@ -9650,11 +9845,11 @@ function spotifyMissingScopes(required = SPOTIFY_PLAYLIST_REQUIRED_SCOPES) {
   return required.filter(scope => !scopes.has(scope));
 }
 
-async function spotifyEnsurePlaylistScopes() {
+async function spotifyEnsurePlaylistScopes(returnOptions = {}) {
   loadSpotifySession();
   if (!spotifySession?.access_token) {
     showSaveToast('Connect Spotify first, then add songs to a playlist.', true);
-    await spotifyConnect({ force: true });
+    await spotifyConnect({ force: true, ...returnOptions });
     return false;
   }
 
@@ -9664,7 +9859,7 @@ async function spotifyEnsurePlaylistScopes() {
     spotifyStorageRemove(SPOTIFY_SESSION_STORAGE_KEY);
     updateSpotifyUI();
     showSaveToast('Reconnect Spotify to approve playlist permissions.', true);
-    await spotifyConnect({ force: true });
+    await spotifyConnect({ force: true, ...returnOptions });
     return false;
   }
 
@@ -9730,13 +9925,30 @@ function spotifyPlaylistSongRows(genre) {
         score: song.score,
         type: rowType,
         sourceLabel: rowType === 'levelUp' ? 'Level Up' : (rowType === 'add' ? 'Add' : 'Direct'),
-        parentTitle: parent ? songDisplayName(parent) : ''
+        parentTitle: parent ? songDisplayName(parent) : '',
+        genreId: genre.id != null ? String(genre.id) : '',
+        genreName: genre.genre || 'Unknown genre',
+        date: dateValue(genre) || ''
       });
     }
     if (song.levelUp) visit(song.levelUp, 'levelUp', song);
   };
 
   songs.forEach(song => visit(song, spotifyPlaylistSongType(song), null));
+  return rows;
+}
+
+function spotifyPlaylistSongRowsForGenres(genreList = []) {
+  const rows = [];
+  const seen = new Set();
+  genreList.filter(Boolean).forEach(genre => {
+    spotifyPlaylistSongRows(genre).forEach(row => {
+      const key = String(row.id || row.uri || row.url || '').toLowerCase();
+      if (!key || seen.has(key)) return;
+      seen.add(key);
+      rows.push(row);
+    });
+  });
   return rows;
 }
 
@@ -9759,69 +9971,134 @@ function spotifyPlaylistCountsText(rows = []) {
   return parts.join(' · ') || 'No Spotify tracks';
 }
 
-function spotifyPlaylistIncludeSettings() {
-  return {
-    direct: document.getElementById('spotifyPlaylistIncludeDirect')?.checked !== false,
-    levelUp: document.getElementById('spotifyPlaylistIncludeLevelUps')?.checked !== false,
-    add: document.getElementById('spotifyPlaylistIncludeAdds')?.checked !== false
-  };
+function spotifyPlaylistTypeKey(rowOrType) {
+  const type = typeof rowOrType === 'string' ? rowOrType : rowOrType?.type;
+  if (type === 'levelUp') return 'levelUp';
+  if (type === 'add') return 'add';
+  return 'direct';
 }
 
-function spotifyPlaylistRowAllowed(row, settings = spotifyPlaylistIncludeSettings()) {
-  if (row.type === 'levelUp') return !!settings.levelUp;
-  if (row.type === 'add') return !!settings.add;
-  return !!settings.direct;
+function spotifyPlaylistSelectedRows() {
+  const rows = spotifyPlaylistContext?.rows || [];
+  const selected = spotifyPlaylistContext?.selected || [];
+  return rows.filter((row, idx) => selected[idx] !== false);
+}
+
+function spotifyUpdatePlaylistTypeControls() {
+  if (!spotifyPlaylistContext) return;
+  const rows = spotifyPlaylistContext.rows || [];
+  const selected = spotifyPlaylistContext.selected || [];
+  const controlMap = {
+    direct: 'spotifyPlaylistIncludeDirect',
+    levelUp: 'spotifyPlaylistIncludeLevelUps',
+    add: 'spotifyPlaylistIncludeAdds'
+  };
+  Object.entries(controlMap).forEach(([type, id]) => {
+    const box = document.getElementById(id);
+    if (!box) return;
+    const indexes = rows.map((row, idx) => spotifyPlaylistTypeKey(row) === type ? idx : -1).filter(idx => idx >= 0);
+    const checkedCount = indexes.filter(idx => selected[idx] !== false).length;
+    box.disabled = indexes.length === 0;
+    box.checked = indexes.length > 0 && checkedCount === indexes.length;
+    box.indeterminate = checkedCount > 0 && checkedCount < indexes.length;
+  });
+}
+
+function spotifyPlaylistTrackCheckboxChanged(box) {
+  if (!spotifyPlaylistContext || !box) return;
+  const idx = Number(box.dataset.spotifyPlaylistTrack);
+  if (!Number.isFinite(idx)) return;
+  spotifyPlaylistContext.selected[idx] = !!box.checked;
+  box.closest('.spotify-playlist-row')?.classList.toggle('is-unselected', !box.checked);
+  spotifyUpdatePlaylistTypeControls();
+  spotifyUpdatePlaylistIntro();
+}
+
+function spotifySetPlaylistTypeSelection(type, checked) {
+  if (!spotifyPlaylistContext) return;
+  const key = spotifyPlaylistTypeKey(type);
+  spotifyPlaylistContext.rows.forEach((row, idx) => {
+    if (spotifyPlaylistTypeKey(row) === key) spotifyPlaylistContext.selected[idx] = !!checked;
+  });
+  spotifyRenderPlaylistSongs();
+}
+
+function spotifyUpdatePlaylistIntro() {
+  const rows = spotifyPlaylistContext?.rows || [];
+  const selectedRows = spotifyPlaylistSelectedRows();
+  const sourceName = spotifyPlaylistContext?.sourceName || spotifyPlaylistContext?.genreName || 'this selection';
+  const intro = document.getElementById('spotifyPlaylistIntro');
+  const breakdown = document.getElementById('spotifyPlaylistBreakdown');
+  if (intro) {
+    intro.textContent = `Add ${selectedRows.length} selected Spotify track${selectedRows.length === 1 ? '' : 's'} from ${sourceName} to an existing or new playlist.`;
+  }
+  if (breakdown) {
+    breakdown.textContent = `${spotifyPlaylistCountsText(rows)} found · ${selectedRows.length} currently selected. Use the bulk controls or uncheck individual songs below.`;
+  }
 }
 
 function spotifyRenderPlaylistSongs() {
   const rows = spotifyPlaylistContext?.rows || [];
-  const settings = spotifyPlaylistIncludeSettings();
-  const visibleRows = rows.filter(row => spotifyPlaylistRowAllowed(row, settings));
-  const genreName = spotifyPlaylistContext?.genreName || 'this genre';
-  const intro = document.getElementById('spotifyPlaylistIntro');
-  const breakdown = document.getElementById('spotifyPlaylistBreakdown');
   const songMount = document.getElementById('spotifyPlaylistSongs');
   const status = document.getElementById('spotifyPlaylistStatus');
 
-  if (intro) {
-    intro.textContent = `Add ${visibleRows.length} selected Spotify track${visibleRows.length === 1 ? '' : 's'} from ${genreName} to an existing or new playlist.`;
-  }
-  if (breakdown) {
-    breakdown.textContent = `${spotifyPlaylistCountsText(rows)} found. Filters currently show ${visibleRows.length}.`;
-  }
+  spotifyUpdatePlaylistIntro();
   if (!songMount) return;
 
   if (!rows.length) {
-    songMount.innerHTML = '<div class="small">No Spotify track URLs found for this genre.</div>';
-    return;
-  }
-  if (!visibleRows.length) {
-    songMount.innerHTML = '<div class="small">No tracks match the selected filters. Turn on Direct, Level Ups, or Adds above.</div>';
-    if (status) status.textContent = '';
+    songMount.innerHTML = '<div class="small">No Spotify track URLs found for this selection.</div>';
     return;
   }
 
-  songMount.innerHTML = visibleRows.map(row => {
-    const idx = rows.indexOf(row);
+  const selected = spotifyPlaylistContext.selected || rows.map(() => true);
+  songMount.innerHTML = rows.map((row, idx) => {
     const typeClass = row.type === 'levelUp' ? 'levelup' : (row.type === 'add' ? 'add' : 'direct');
-    const parentMeta = row.parentTitle ? ` · from ${row.parentTitle}` : '';
+    const isChecked = selected[idx] !== false;
+    const parentMeta = row.parentTitle ? ` <span class="spotify-playlist-relation-meta">· Level Up from: ${escapeHtml(row.parentTitle)}</span>` : '';
+    const genreMeta = row.genreName ? `<span class="spotify-playlist-genre-meta">${escapeHtml(row.genreName)}</span>${row.date ? ` · ${escapeHtml(row.date)}` : ''} · ` : '';
     return `
-      <label class="spotify-playlist-row">
-        <input type="checkbox" data-spotify-playlist-track="${idx}" checked />
+      <label class="spotify-playlist-row ${isChecked ? '' : 'is-unselected'}">
+        <input type="checkbox" data-spotify-playlist-track="${idx}" ${isChecked ? 'checked' : ''} onchange="spotifyPlaylistTrackCheckboxChanged(this)" />
         <span>
           <span class="spotify-playlist-song-title">${escapeHtml(row.title)}<span class="spotify-playlist-type-badge ${escapeHtml(typeClass)}">${escapeHtml(row.sourceLabel)}</span></span>
-          <span class="spotify-playlist-song-meta">${escapeHtml(row.artist || 'Unknown artist')}${row.score != null ? ` · fit ${escapeHtml(String(row.score))}/5` : ''}${escapeHtml(parentMeta)}</span>
+          <span class="spotify-playlist-song-meta">${genreMeta}${escapeHtml(row.artist || 'Unknown artist')}${row.score != null ? ` · fit ${escapeHtml(String(row.score))}/5` : ''}${parentMeta}</span>
         </span>
       </label>
     `;
   }).join('');
+  spotifyUpdatePlaylistTypeControls();
   if (status) status.textContent = '';
 }
 
-async function openSpotifyPlaylistModal(encodedGenreId='') {
-  if (!(await spotifyEnsurePlaylistScopes())) return;
+function spotifyOpenPlaylistModalWithRows({ rows = [], sourceName = 'this selection', playlistName = 'Daily Genre — Playlist', contextType = 'genre', genreId = '', genreIds = [] } = {}) {
+  if (!rows.length) {
+    showSaveToast('No Spotify track URLs found for this selection.', true);
+    return;
+  }
 
+  spotifyPlaylistContext = {
+    contextType,
+    genreId,
+    genreIds: Array.isArray(genreIds) ? genreIds.map(String) : [],
+    genreName: sourceName,
+    sourceName,
+    rows,
+    selected: rows.map(() => true)
+  };
+  const modal = document.getElementById('spotifyPlaylistModal');
+  const nameInput = document.getElementById('spotifyPlaylistName');
+  const status = document.getElementById('spotifyPlaylistStatus');
+  if (nameInput) nameInput.value = playlistName;
+  if (status) status.textContent = '';
+  spotifyRenderPlaylistSongs();
+  if (modal) modal.classList.add('show');
+  spotifyReloadPlaylists();
+}
+
+async function openSpotifyPlaylistModal(encodedGenreId='') {
   const genreId = encodedGenreId ? decodeURIComponent(encodedGenreId) : (currentGenre?.id || '');
+  if (!(await spotifyEnsurePlaylistScopes({ reopenPlaylistGenreId: genreId }))) return;
+
   const genre = genreId ? (genres || []).find(g => String(g.id) === String(genreId)) : currentGenre;
   if (!genre) {
     showSaveToast('Open a genre first, then add it to a Spotify playlist.', true);
@@ -9833,19 +10110,13 @@ async function openSpotifyPlaylistModal(encodedGenreId='') {
     return;
   }
 
-  spotifyPlaylistContext = { genreId: genre.id, genreName: genre.genre || 'Daily Genre', rows };
-  const modal = document.getElementById('spotifyPlaylistModal');
-  const nameInput = document.getElementById('spotifyPlaylistName');
-  const status = document.getElementById('spotifyPlaylistStatus');
-  if (nameInput) nameInput.value = `Daily Genre — ${genre.genre || 'Playlist'}`;
-  if (status) status.textContent = '';
-  ['spotifyPlaylistIncludeDirect', 'spotifyPlaylistIncludeLevelUps', 'spotifyPlaylistIncludeAdds'].forEach(id => {
-    const box = document.getElementById(id);
-    if (box) box.checked = true;
+  spotifyOpenPlaylistModalWithRows({
+    rows,
+    sourceName: genre.genre || 'this genre',
+    playlistName: `Daily Genre — ${genre.genre || 'Playlist'}`,
+    contextType: 'genre',
+    genreId: genre.id != null ? String(genre.id) : ''
   });
-  spotifyRenderPlaylistSongs();
-  if (modal) modal.classList.add('show');
-  await spotifyReloadPlaylists();
 }
 
 function closeSpotifyPlaylistModal() {
@@ -9854,9 +10125,11 @@ function closeSpotifyPlaylistModal() {
 }
 
 function spotifyTogglePlaylistSelections() {
-  const boxes = [...document.querySelectorAll('[data-spotify-playlist-track]')];
-  const shouldCheck = boxes.some(box => !box.checked);
-  boxes.forEach(box => { box.checked = shouldCheck; });
+  if (!spotifyPlaylistContext) return;
+  const selected = spotifyPlaylistContext.selected || [];
+  const shouldCheck = selected.some(value => value === false);
+  spotifyPlaylistContext.selected = (spotifyPlaylistContext.rows || []).map(() => shouldCheck);
+  spotifyRenderPlaylistSongs();
 }
 
 async function spotifyReloadPlaylists() {
@@ -9905,15 +10178,15 @@ async function spotifyAddSelectedTracksToPlaylist() {
   const status = document.getElementById('spotifyPlaylistStatus');
   const button = document.getElementById('spotifyPlaylistAddBtn');
   if (!spotifyPlaylistContext) return;
-  if (!(await spotifyEnsurePlaylistScopes())) return;
+  const returnOptions = spotifyPlaylistContext.contextType === 'archive'
+    ? { reopenPlaylistGenreIds: spotifyPlaylistContext.genreIds || [], returnScreen: 'history' }
+    : { reopenPlaylistGenreId: spotifyPlaylistContext.genreId || '' };
+  if (!(await spotifyEnsurePlaylistScopes(returnOptions))) return;
 
   const rows = spotifyPlaylistContext.rows;
-  const checked = [...document.querySelectorAll('[data-spotify-playlist-track]')]
-    .filter(box => box.checked)
-    .map(box => rows[Number(box.dataset.spotifyPlaylistTrack)])
-    .filter(Boolean);
+  const checked = spotifyPlaylistSelectedRows();
   if (!checked.length) {
-    if (status) status.textContent = 'Select at least one visible track.';
+    if (status) status.textContent = 'Select at least one track.';
     return;
   }
 
