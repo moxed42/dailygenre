@@ -9976,15 +9976,19 @@ function spotifyPlaylistSongRows(genre) {
   if (!genre) return [];
   const songs = inflateSongsFromStorage(genre.songs_listened || []);
   const rows = [];
-  const seen = new Set();
 
   const visit = (song, type='direct', parent=null) => {
     if (!song || song.isPending) return;
     const rowType = spotifyPlaylistSongType(song, type);
-    const url = song.spotifyUrl || song.url || (song.spotifyId ? `https://open.spotify.com/track/${song.spotifyId}` : '');
+    const rawUrl = song.spotifyUrl || song.url || (song.spotifyId ? `https://open.spotify.com/track/${song.spotifyId}` : '');
+    const url = normalizeSongUrl(rawUrl);
     const id = spotifyTrackId(url) || spotifyTrackId(song.spotifyId || '');
-    if (id && !seen.has(id.toLowerCase())) {
-      seen.add(id.toLowerCase());
+
+    // Keep every playlist candidate visible, even when it points to a track that
+    // also appears elsewhere in the same genre/backlog selection. The modal is an
+    // editorial checklist, so a Direct row and its Level Up/Add row must both be
+    // visible and independently uncheckable.
+    if (id) {
       rows.push({
         id,
         uri: `spotify:track:${id}`,
@@ -9996,6 +10000,8 @@ function spotifyPlaylistSongRows(genre) {
         type: rowType,
         sourceLabel: rowType === 'levelUp' ? 'Level Up' : (rowType === 'add' ? 'Add' : 'Direct'),
         parentTitle: parent ? songDisplayName(parent) : '',
+        parentType: parent ? spotifyPlaylistSongType(parent) : '',
+        parentGenreName: genre.genre || 'Unknown genre',
         genreId: genre.id != null ? String(genre.id) : '',
         genreName: genre.genre || 'Unknown genre',
         date: dateValue(genre) || ''
@@ -10010,14 +10016,8 @@ function spotifyPlaylistSongRows(genre) {
 
 function spotifyPlaylistSongRowsForGenres(genreList = []) {
   const rows = [];
-  const seen = new Set();
   genreList.filter(Boolean).forEach(genre => {
-    spotifyPlaylistSongRows(genre).forEach(row => {
-      const key = String(row.id || row.uri || row.url || '').toLowerCase();
-      if (!key || seen.has(key)) return;
-      seen.add(key);
-      rows.push(row);
-    });
+    spotifyPlaylistSongRows(genre).forEach(row => rows.push(row));
   });
   return rows;
 }
@@ -10034,11 +10034,12 @@ function spotifyPlaylistCounts(rows = []) {
 
 function spotifyPlaylistCountsText(rows = []) {
   const counts = spotifyPlaylistCounts(rows);
-  const parts = [];
-  if (counts.direct) parts.push(`${counts.direct} direct`);
-  if (counts.levelUp) parts.push(`${counts.levelUp} Level Up${counts.levelUp === 1 ? '' : 's'}`);
-  if (counts.add) parts.push(`${counts.add} Add${counts.add === 1 ? '' : 's'}`);
-  return parts.join(' · ') || 'No Spotify tracks';
+  if (!counts.total) return 'No Spotify tracks';
+  return [
+    `${counts.direct} direct`,
+    `${counts.levelUp} Level Up${counts.levelUp === 1 ? '' : 's'}`,
+    `${counts.add} Add${counts.add === 1 ? '' : 's'}`
+  ].join(' · ');
 }
 
 function spotifyPlaylistTypeKey(rowOrType) {
@@ -10068,9 +10069,10 @@ function spotifyUpdatePlaylistTypeControls() {
     if (!box) return;
     const indexes = rows.map((row, idx) => spotifyPlaylistTypeKey(row) === type ? idx : -1).filter(idx => idx >= 0);
     const checkedCount = indexes.filter(idx => selected[idx] !== false).length;
-    box.disabled = indexes.length === 0;
+    box.disabled = false;
     box.checked = indexes.length > 0 && checkedCount === indexes.length;
-    box.indeterminate = checkedCount > 0 && checkedCount < indexes.length;
+    box.indeterminate = indexes.length > 0 && checkedCount > 0 && checkedCount < indexes.length;
+    box.title = indexes.length ? `${indexes.length} ${type} track${indexes.length === 1 ? '' : 's'} in this checklist` : `No ${type} tracks found in this checklist`;
   });
 }
 
@@ -10278,7 +10280,7 @@ async function spotifyAddSelectedTracksToPlaylist() {
       }
     }
 
-    const uris = checked.map(row => row.uri);
+    const uris = [...new Set(checked.map(row => row.uri).filter(Boolean))];
     for (let i = 0; i < uris.length; i += 100) {
       const chunk = uris.slice(i, i + 100);
       const res = await spotifyApiFetch(`playlists/${encodeURIComponent(playlistId)}/items`, {
@@ -10290,8 +10292,9 @@ async function spotifyAddSelectedTracksToPlaylist() {
     }
 
     const countsText = spotifyPlaylistCountsText(checked);
-    if (status) status.textContent = `Added ${uris.length} track${uris.length === 1 ? '' : 's'} to Spotify (${countsText}).`;
-    showSaveToast(`Added ${uris.length} track${uris.length === 1 ? '' : 's'} to Spotify playlist.`, false);
+    const duplicateNote = checked.length !== uris.length ? ` ${checked.length - uris.length} duplicate checklist entr${checked.length - uris.length === 1 ? 'y was' : 'ies were'} only added once.` : '';
+    if (status) status.textContent = `Added ${uris.length} unique track${uris.length === 1 ? '' : 's'} to Spotify (${countsText}).${duplicateNote}`;
+    showSaveToast(`Added ${uris.length} unique track${uris.length === 1 ? '' : 's'} to Spotify playlist.`, false);
     setTimeout(closeSpotifyPlaylistModal, 900);
   } catch (err) {
     console.error('Spotify add-to-playlist failed', err);
