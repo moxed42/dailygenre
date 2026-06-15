@@ -7829,8 +7829,19 @@ async function prepareAndSaveCurrentGenre(options = {}) {
     }
 
 function spotifyRestoreReturnAfterDataLoad() {
-  const state = spotifyReturnStateAfterCallback || spotifyReadReturnState();
-  if (!state) return;
+  const state = spotifyReturnStateAfterCallback;
+  if (!state) {
+    // Never auto-resume a stored playlist intent during ordinary page load.
+    // Stale stored intents after a canceled/failed Spotify auth can otherwise re-open the
+    // playlist modal, which immediately starts auth again and creates an auth loop.
+    spotifyClearReturnState();
+    return;
+  }
+  if (!spotifySession?.access_token) {
+    spotifyClearReturnState();
+    spotifyReturnStateAfterCallback = null;
+    return;
+  }
 
   let restoredGenre = false;
   if (state.hash && /^#genre=/.test(state.hash)) {
@@ -9451,7 +9462,7 @@ function spotifyBuildReturnState(options = {}) {
   const activeGenreId = currentGenre?.id != null ? String(currentGenre.id) : '';
   const hash = activeScreen === 'listen' && activeGenreId
     ? `#genre=${encodeURIComponent(activeGenreId)}`
-    : '';
+    : (window.location.hash || '');
   return {
     screen: options.returnScreen || activeScreen,
     hash,
@@ -9487,8 +9498,11 @@ function spotifyReadReturnState() {
 }
 
 function spotifyClearReturnState() {
-  try { sessionStorage.removeItem(SPOTIFY_RETURN_STORAGE_KEY); } catch {}
-  try { localStorage.removeItem(SPOTIFY_RETURN_STORAGE_KEY); } catch {}
+  const keys = [SPOTIFY_RETURN_STORAGE_KEY].concat(typeof SPOTIFY_OLD_RETURN_STORAGE_KEYS !== 'undefined' ? SPOTIFY_OLD_RETURN_STORAGE_KEYS : []);
+  keys.forEach(key => {
+    try { sessionStorage.removeItem(key); } catch {}
+    try { localStorage.removeItem(key); } catch {}
+  });
 }
 
 function spotifyCleanCallbackUrl(returnState = null) {
@@ -9549,6 +9563,10 @@ async function spotifyHandleCallback() {
 
   if (error) {
     spotifyCleanCallbackUrl(returnState);
+    clearSpotifyTempValue('spotify-pkce-verifier');
+    clearSpotifyTempValue('spotify-auth-state');
+    spotifyClearReturnState();
+    spotifyReturnStateAfterCallback = null;
     showSaveToast(`Spotify auth failed: ${error}`, true);
     return;
   }
@@ -9561,14 +9579,19 @@ async function spotifyHandleCallback() {
   spotifyCleanCallbackUrl(returnState);
 
   if (!verifier) {
-    showSaveToast('Spotify auth failed: missing PKCE verifier.', true);
+    clearSpotifyTempValue('spotify-auth-state');
+    spotifyClearReturnState();
+    spotifyReturnStateAfterCallback = null;
+    showSaveToast('Spotify auth failed: missing PKCE verifier. Reconnect Spotify once from this page.', true);
     return;
   }
 
   if (expectedState && state !== expectedState) {
     clearSpotifyTempValue('spotify-pkce-verifier');
     clearSpotifyTempValue('spotify-auth-state');
-    showSaveToast('Spotify auth failed: state mismatch.', true);
+    spotifyClearReturnState();
+    spotifyReturnStateAfterCallback = null;
+    showSaveToast('Spotify auth failed: state mismatch. Reconnect Spotify once from this page.', true);
     return;
   }
 
@@ -9606,7 +9629,11 @@ async function spotifyHandleCallback() {
     spotifyStartPolling();
   } catch (err) {
     console.error('Spotify callback failed', err);
-    showSaveToast(`Spotify connection failed: ${err.message}`, true);
+    spotifyReturnStateAfterCallback = null;
+    spotifyClearReturnState();
+    clearSpotifyTempValue('spotify-pkce-verifier');
+    clearSpotifyTempValue('spotify-auth-state');
+    showSaveToast(`Spotify connection failed: ${err.message}. Reconnect Spotify once from this page.`, true);
   }
 }
 
@@ -9828,7 +9855,8 @@ let spotifyPlaylistCache = [];
 let spotifyReturnStateAfterCallback = null;
 let archivePlaylistSelectedGenreIds = new Set();
 
-const SPOTIFY_RETURN_STORAGE_KEY = 'dailygenre.spotifyReturn.v2';
+const SPOTIFY_RETURN_STORAGE_KEY = 'dailygenre.spotifyReturn.v3';
+const SPOTIFY_OLD_RETURN_STORAGE_KEYS = ['dailygenre.spotifyReturn.v1', 'dailygenre.spotifyReturn.v2'];
 
 const SPOTIFY_PLAYLIST_REQUIRED_SCOPES = [
   'playlist-read-private',
@@ -10178,10 +10206,7 @@ async function spotifyAddSelectedTracksToPlaylist() {
   const status = document.getElementById('spotifyPlaylistStatus');
   const button = document.getElementById('spotifyPlaylistAddBtn');
   if (!spotifyPlaylistContext) return;
-  const returnOptions = spotifyPlaylistContext.contextType === 'archive'
-    ? { reopenPlaylistGenreIds: spotifyPlaylistContext.genreIds || [], returnScreen: 'history' }
-    : { reopenPlaylistGenreId: spotifyPlaylistContext.genreId || '' };
-  if (!(await spotifyEnsurePlaylistScopes(returnOptions))) return;
+  if (!(await spotifyEnsurePlaylistScopes())) return;
 
   const rows = spotifyPlaylistContext.rows;
   const checked = spotifyPlaylistSelectedRows();
@@ -10327,6 +10352,11 @@ document.getElementById('spotifyPlaylistModal')?.addEventListener('click', (even
 async function bootApp() {
   const params = spotifySafeTopUrl().searchParams;
   const hasSpotifyCallback = params.has('code') || params.has('error');
+  // Remove stale return intents from older patched builds so they cannot trigger auth loops.
+  (typeof SPOTIFY_OLD_RETURN_STORAGE_KEYS !== 'undefined' ? SPOTIFY_OLD_RETURN_STORAGE_KEYS : []).forEach(key => {
+    try { sessionStorage.removeItem(key); } catch {}
+    try { localStorage.removeItem(key); } catch {}
+  });
 
   loadSpotifySession();
   if (hasSpotifyCallback) {
