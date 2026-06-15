@@ -7856,9 +7856,9 @@ function spotifyRestoreReturnAfterDataLoad() {
     archivePlaylistSelectedGenreIds = new Set(state.reopenPlaylistGenreIds.map(String));
     if (!restoredGenre) switchScreen('history', { force: true });
     renderHistory();
-    setTimeout(() => openArchivePlaylistModal(), 250);
+    showSaveToast('Spotify connected. Click Playlist selected again when you are ready.', false);
   } else if (state.reopenPlaylistGenreId) {
-    setTimeout(() => openSpotifyPlaylistModal(encodeURIComponent(String(state.reopenPlaylistGenreId))), 250);
+    showSaveToast('Spotify connected. Click Playlist again when you are ready.', false);
   }
 
   spotifyClearReturnState();
@@ -9528,7 +9528,29 @@ function spotifyNavigateToAuth(url) {
 
 async function spotifyConnect(options = {}) {
   try {
-    spotifyRememberReturnState(options);
+    const currentUrl = spotifySafeTopUrl();
+    if (currentUrl.searchParams.has('code') || currentUrl.searchParams.has('error')) {
+      showSaveToast('Spotify is finishing authorization. Try again after the page settles.', true);
+      return;
+    }
+
+    const now = Date.now();
+    const lastStarted = Number(spotifyStorageGet(SPOTIFY_AUTH_START_STORAGE_KEY) || 0);
+    if (lastStarted && now - lastStarted < SPOTIFY_AUTH_COOLDOWN_MS) {
+      showSaveToast('Spotify authorization already opened. Finish that Spotify window first.', true);
+      return;
+    }
+    spotifyStorageSet(SPOTIFY_AUTH_START_STORAGE_KEY, String(now));
+
+    // Do not auto-reopen playlist modals after OAuth. If a scope upgrade fails or
+    // Spotify returns without usable playlist permissions, auto-reopening the modal can
+    // immediately launch another auth redirect and trap the browser in a loop.
+    const returnOptions = options.autoReopenPlaylist ? options : {
+      ...options,
+      reopenPlaylistGenreId: '',
+      reopenPlaylistGenreIds: []
+    };
+    spotifyRememberReturnState(returnOptions);
     const verifier = generateSpotifyCodeVerifier();
     const challenge = await generateSpotifyCodeChallenge(verifier);
     const state = generateSpotifyAuthState();
@@ -9549,6 +9571,7 @@ async function spotifyConnect(options = {}) {
 
     spotifyNavigateToAuth(`https://accounts.spotify.com/authorize?${p.toString()}`);
   } catch (err) {
+    spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
     console.error('Spotify auth start failed', err);
     showSaveToast('Spotify auth could not start. Check browser storage/privacy settings.', true);
   }
@@ -9562,6 +9585,7 @@ async function spotifyHandleCallback() {
   const state = url.searchParams.get('state');
 
   if (error) {
+    spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
     spotifyCleanCallbackUrl(returnState);
     clearSpotifyTempValue('spotify-pkce-verifier');
     clearSpotifyTempValue('spotify-auth-state');
@@ -9579,6 +9603,7 @@ async function spotifyHandleCallback() {
   spotifyCleanCallbackUrl(returnState);
 
   if (!verifier) {
+    spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
     clearSpotifyTempValue('spotify-auth-state');
     spotifyClearReturnState();
     spotifyReturnStateAfterCallback = null;
@@ -9587,6 +9612,7 @@ async function spotifyHandleCallback() {
   }
 
   if (expectedState && state !== expectedState) {
+    spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
     clearSpotifyTempValue('spotify-pkce-verifier');
     clearSpotifyTempValue('spotify-auth-state');
     spotifyClearReturnState();
@@ -9620,14 +9646,20 @@ async function spotifyHandleCallback() {
     await spotifySetSession({
       access_token: data.access_token,
       refresh_token: data.refresh_token,
-      expires_in: data.expires_in
+      expires_in: data.expires_in,
+      // Spotify auth-code responses can omit scope in some browser/client flows.
+      // We just requested the full Daily Genre scope set, so store that fallback to
+      // avoid treating the successful callback as still missing playlist scopes.
+      scope: data.scope || SPOTIFY_SCOPES
     });
+    spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
 
     spotifyReturnStateAfterCallback = returnState || null;
     showSaveToast(`Spotify connected as ${spotifySession.displayName || 'you'}!`, false);
     updateSpotifyUI();
     spotifyStartPolling();
   } catch (err) {
+    spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
     console.error('Spotify callback failed', err);
     spotifyReturnStateAfterCallback = null;
     spotifyClearReturnState();
@@ -9680,7 +9712,7 @@ async function spotifySetSession(tokenPayload) {
     access_token: tokenPayload.access_token,
     refresh_token: tokenPayload.refresh_token || spotifySession?.refresh_token || '',
     token_type: tokenPayload.token_type || 'Bearer',
-    scope: String(tokenPayload.scope || spotifySession?.scope || '').trim(),
+    scope: String(tokenPayload.scope || spotifySession?.scope || SPOTIFY_SCOPES).trim(),
     expires_at: Date.now() + Math.max(60, expiresIn - 60) * 1000,
     connected_at: spotifySession?.connected_at || new Date().toISOString()
   };
@@ -9710,6 +9742,7 @@ function spotifyDisconnect() {
   const activeGenreId = currentGenre?.id != null ? String(currentGenre.id) : '';
   spotifySession = null;
   spotifyStorageRemove(SPOTIFY_SESSION_STORAGE_KEY);
+  spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
   if (spotifyPollingInterval) clearInterval(spotifyPollingInterval);
   if (spotifyNowPlayingInterval) clearInterval(spotifyNowPlayingInterval);
   spotifyPollingInterval = null;
@@ -9855,8 +9888,10 @@ let spotifyPlaylistCache = [];
 let spotifyReturnStateAfterCallback = null;
 let archivePlaylistSelectedGenreIds = new Set();
 
-const SPOTIFY_RETURN_STORAGE_KEY = 'dailygenre.spotifyReturn.v3';
-const SPOTIFY_OLD_RETURN_STORAGE_KEYS = ['dailygenre.spotifyReturn.v1', 'dailygenre.spotifyReturn.v2'];
+const SPOTIFY_RETURN_STORAGE_KEY = 'dailygenre.spotifyReturn.v4';
+const SPOTIFY_OLD_RETURN_STORAGE_KEYS = ['dailygenre.spotifyReturn.v1', 'dailygenre.spotifyReturn.v2', 'dailygenre.spotifyReturn.v3'];
+const SPOTIFY_AUTH_START_STORAGE_KEY = 'dailygenre.spotifyAuthStart.v1';
+const SPOTIFY_AUTH_COOLDOWN_MS = 2500;
 
 const SPOTIFY_PLAYLIST_REQUIRED_SCOPES = [
   'playlist-read-private',
@@ -9877,20 +9912,15 @@ async function spotifyEnsurePlaylistScopes(returnOptions = {}) {
   loadSpotifySession();
   if (!spotifySession?.access_token) {
     showSaveToast('Connect Spotify first, then add songs to a playlist.', true);
-    await spotifyConnect({ force: true, ...returnOptions });
+    await spotifyConnect({ force: true, ...returnOptions, reopenPlaylistGenreId: '', reopenPlaylistGenreIds: [] });
     return false;
   }
 
-  const missing = spotifyMissingScopes();
-  if (missing.length) {
-    spotifySession = null;
-    spotifyStorageRemove(SPOTIFY_SESSION_STORAGE_KEY);
-    updateSpotifyUI();
-    showSaveToast('Reconnect Spotify to approve playlist permissions.', true);
-    await spotifyConnect({ force: true, ...returnOptions });
-    return false;
-  }
-
+  // Do not preflight playlist scopes using the stored token's `scope` string.
+  // Some successful Spotify callbacks/refreshes omit or preserve stale scope text,
+  // which made Daily Genre think permissions were still missing and relaunch OAuth.
+  // The real source of truth is the playlist API response; if Spotify returns 403,
+  // we show a recoverable message instead of starting another redirect automatically.
   return true;
 }
 
@@ -9917,9 +9947,7 @@ function spotifyPlaylistApiError(data, res, action='complete that Spotify playli
   const status = Number(res?.status || 0);
   const base = data?.error?.message || data?.error_description || `Could not ${action}${status ? ` (${status})` : ''}.`;
   if (status === 403) {
-    const missing = spotifyMissingScopes(['playlist-modify-private', 'playlist-modify-public']);
-    if (missing.length) return 'Spotify said Forbidden. Reconnect Spotify so Daily Genre can request playlist-create/edit permissions.';
-    return 'Spotify said Forbidden. Choose a playlist you own/collaborate on, or reconnect Spotify to refresh playlist permissions.';
+    return 'Spotify said Forbidden. Reconnect Spotify with playlist permissions, or choose a playlist you own/collaborate on.';
   }
   return base;
 }
@@ -10251,11 +10279,30 @@ async function spotifyAddSelectedTracksToPlaylist() {
     setTimeout(closeSpotifyPlaylistModal, 900);
   } catch (err) {
     console.error('Spotify add-to-playlist failed', err);
-    if (status) status.textContent = `Spotify playlist failed: ${err.message || 'Unknown error'}`;
-    showSaveToast(`Spotify playlist failed: ${err.message || 'Unknown error'}`, true);
+    const message = err.message || 'Unknown error';
+    if (status) {
+      if (/Forbidden/i.test(message)) {
+        status.innerHTML = `${escapeHtml(`Spotify playlist failed: ${message}`)} <button type="button" class="btn-inline" onclick="spotifyReconnectForPlaylistPermissions()">Reconnect Spotify for playlist permissions</button>`;
+      } else {
+        status.textContent = `Spotify playlist failed: ${message}`;
+      }
+    }
+    showSaveToast(`Spotify playlist failed: ${message}`, true);
   } finally {
     if (button) { button.disabled = false; button.textContent = 'Add to Spotify Playlist'; }
   }
+}
+
+
+function spotifyReconnectForPlaylistPermissions() {
+  spotifySession = null;
+  spotifyStorageRemove(SPOTIFY_SESSION_STORAGE_KEY);
+  spotifyStorageRemove(SPOTIFY_AUTH_START_STORAGE_KEY);
+  updateSpotifyUI();
+  const returnOptions = spotifyPlaylistContext?.contextType === 'archive'
+    ? { returnScreen: 'history' }
+    : { returnScreen: spotifyActiveScreenName() };
+  spotifyConnect({ force: true, ...returnOptions, reopenPlaylistGenreId: '', reopenPlaylistGenreIds: [] });
 }
 
 function spotifyRefreshPlayableButtons() {
