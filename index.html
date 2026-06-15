@@ -9352,11 +9352,13 @@ async function loadData() {
 const SPOTIFY_CLIENT_ID = 'aa1010957e674237abf9a3508382174b';
 const SPOTIFY_REDIRECT_URI = `${window.location.origin}${window.location.pathname}`;
 const SPOTIFY_SCOPES = [
+  'user-read-private',
   'user-read-recently-played',
   'user-read-currently-playing',
   'user-read-playback-state',
   'user-modify-playback-state',
   'playlist-read-private',
+  'playlist-read-collaborative',
   'playlist-modify-private',
   'playlist-modify-public'
 ].join(' ');
@@ -9895,6 +9897,7 @@ const SPOTIFY_AUTH_COOLDOWN_MS = 2500;
 
 const SPOTIFY_PLAYLIST_REQUIRED_SCOPES = [
   'playlist-read-private',
+  'playlist-read-collaborative',
   'playlist-modify-private',
   'playlist-modify-public'
 ];
@@ -9945,10 +9948,21 @@ async function spotifyEnsureProfileUserId() {
 
 function spotifyPlaylistApiError(data, res, action='complete that Spotify playlist action') {
   const status = Number(res?.status || 0);
-  const base = data?.error?.message || data?.error_description || `Could not ${action}${status ? ` (${status})` : ''}.`;
+  const rawMessage = data?.error?.message || data?.error_description || data?.message || '';
+  const rawReason = data?.error?.reason || data?.reason || '';
+  const detail = [rawMessage, rawReason].filter(Boolean).join(' / ');
+  const base = detail || `Could not ${action}${status ? ` (HTTP ${status})` : ''}.`;
+
   if (status === 403) {
-    return 'Spotify said Forbidden. Reconnect Spotify with playlist permissions, or choose a playlist you own/collaborate on.';
+    if (/insufficient.*scope|scope/i.test(base)) {
+      return `Spotify said Forbidden: ${base}. Reconnect Spotify and approve playlist permissions: playlist-modify-public and playlist-modify-private.`;
+    }
+    if (/developer dashboard|development mode|not registered|user.*not.*registered|quota/i.test(base)) {
+      return `Spotify said Forbidden: ${base}. This usually means the Spotify app is still in Development Mode and this Spotify account is not added under the app's Users and Access list.`;
+    }
+    return `Spotify said Forbidden: ${base}. Use a playlist you own/collaborate on, or check Spotify app User Management if this app is still in Development Mode.`;
   }
+
   return base;
 }
 
@@ -10216,8 +10230,9 @@ async function spotifyReloadPlaylists() {
 }
 
 async function spotifyCreatePlaylist(name, isPublic=false) {
-  const userId = await spotifyEnsureProfileUserId();
-  const res = await spotifyApiFetch(`users/${encodeURIComponent(userId)}/playlists`, {
+  // Spotify's current Create Playlist endpoint is POST /me/playlists.
+  // The older /users/{user_id}/playlists path can behave inconsistently for PKCE browser apps.
+  const res = await spotifyApiFetch('me/playlists', {
     method:'POST',
     body: JSON.stringify({
       name,
@@ -10227,6 +10242,7 @@ async function spotifyCreatePlaylist(name, isPublic=false) {
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok || !data.id) throw new Error(spotifyPlaylistApiError(data, res, 'create playlist'));
+  try { await spotifyEnsureProfileUserId(); } catch {}
   return data;
 }
 
@@ -10265,12 +10281,12 @@ async function spotifyAddSelectedTracksToPlaylist() {
     const uris = checked.map(row => row.uri);
     for (let i = 0; i < uris.length; i += 100) {
       const chunk = uris.slice(i, i + 100);
-      const res = await spotifyApiFetch(`playlists/${encodeURIComponent(playlistId)}/tracks`, {
+      const res = await spotifyApiFetch(`playlists/${encodeURIComponent(playlistId)}/items`, {
         method:'POST',
         body: JSON.stringify({ uris: chunk })
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(spotifyPlaylistApiError(data, res, 'add tracks'));
+      if (!res.ok) throw new Error(spotifyPlaylistApiError(data, res, 'add items'));
     }
 
     const countsText = spotifyPlaylistCountsText(checked);
