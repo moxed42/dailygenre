@@ -3852,26 +3852,6 @@ body.spotify-player-open { padding-bottom: 116px; }
   color:var(--muted);
   font-weight:800;
 }
-
-.song-source-badge {
-  display:inline-flex;
-  align-items:center;
-  margin-left:6px;
-  padding:2px 7px;
-  border-radius:999px;
-  font-size:.66rem;
-  font-weight:1000;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  vertical-align:middle;
-  border:1px solid rgba(127,82,28,.22);
-  background:rgba(127,82,28,.10);
-  color:var(--muted);
-}
-.song-source-badge.youtube { color:#8b1d16; background:#ffe2df; border-color:rgba(180,40,30,.24); }
-.song-source-badge.web { color:#4a2e80; background:rgba(100,60,180,.12); border-color:rgba(100,60,180,.22); }
-.spotify-playlist-filter-row label.spotify-playlist-type-empty { opacity:.62; }
-
 .archive-playlist-tools {
   display:flex;
   gap:8px;
@@ -3901,7 +3881,27 @@ body.spotify-player-open { padding-bottom: 116px; }
   .spotify-sticky-embed { grid-column:1 / -1; }
 }
 
-  </style>
+  
+
+/* Track source badges for non-Spotify links */
+.song-source-badge {
+  display:inline-flex;
+  align-items:center;
+  margin-left:7px;
+  padding:2px 7px;
+  border-radius:999px;
+  border:1px solid rgba(127,82,28,.22);
+  font-size:.68rem;
+  font-weight:1000;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  vertical-align:middle;
+}
+.song-source-badge.youtube { color:#8b1d16; background:#ffe2df; border-color:rgba(180,40,30,.24); }
+.song-source-badge.web { color:#4a2e80; background:rgba(100,60,180,.12); border-color:rgba(100,60,180,.22); }
+.spotify-playlist-type-empty { opacity:.65; }
+
+</style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -4375,9 +4375,9 @@ body.spotify-player-open { padding-bottom: 116px; }
         </div>
         <div class="spotify-playlist-filter-row" aria-label="Playlist bulk song type controls">
           <span class="small" style="font-weight:900;color:var(--text);">Bulk include:</span>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeDirect" checked onclick="spotifySetPlaylistTypeSelection('direct', this.checked)" /> Direct songs</label>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeLevelUps" checked onclick="spotifySetPlaylistTypeSelection('levelUp', this.checked)" /> Level Ups</label>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeAdds" checked onclick="spotifySetPlaylistTypeSelection('add', this.checked)" /> Adds</label>
+          <label><input type="checkbox" id="spotifyPlaylistIncludeDirect" checked onchange="spotifySetPlaylistTypeSelection('direct', this.checked)" /> Direct songs</label>
+          <label><input type="checkbox" id="spotifyPlaylistIncludeLevelUps" checked onchange="spotifySetPlaylistTypeSelection('levelUp', this.checked)" /> Level Ups</label>
+          <label><input type="checkbox" id="spotifyPlaylistIncludeAdds" checked onchange="spotifySetPlaylistTypeSelection('add', this.checked)" /> Adds</label>
         </div>
         <div id="spotifyPlaylistBreakdown" class="spotify-playlist-breakdown"></div>
         <div id="spotifyPlaylistSongs" style="margin-top:8px;"></div>
@@ -5015,7 +5015,6 @@ body.spotify-player-open { padding-bottom: 116px; }
         .trim();
     }
 
-
     function isYoutubeUrl(url) {
       return /(?:youtube\.com|youtu\.be)/i.test(normalizeSongUrl(url || ''));
     }
@@ -5041,7 +5040,7 @@ body.spotify-player-open { padding-bottom: 116px; }
     function sourceBadgeHtml(source='') {
       const key = String(source || '').toLowerCase();
       if (key === 'youtube') return '<span class="song-source-badge youtube">YouTube</span>';
-      if (key === 'web') return '<span class="song-source-badge web">Web</span>';
+      if (key === 'web' || key === 'other') return '<span class="song-source-badge web">Web</span>';
       return '';
     }
     
@@ -5256,14 +5255,14 @@ body.spotify-player-open { padding-bottom: 116px; }
     }
 
     function isSameFavoriteSong(genre, song) {
-      if (!genre || !song) return false;
-      const favUrl = normalizeSongUrl(genre.favoritesongurl || '');
-      const songUrl = normalizeSongUrl(song.url || song.spotifyUrl || '');
-      if (favUrl && songUrl && favUrl === songUrl) return true;
-      const favTitle = cleanPastedCitationArtifacts(genre.favoritesong || '').toLowerCase();
-      const favArtist = cleanPastedCitationArtifacts(genre.favoriteartist || '').toLowerCase();
-      const songTitle = cleanPastedCitationArtifacts(song.title || '').toLowerCase();
-      const songArtist = cleanPastedCitationArtifacts(song.artist || '').toLowerCase();
+      const favUrl = normalizeSongUrl(genre?.favoritesongurl || '');
+      const songUrl = normalizeSongUrl(song?.url || song?.spotifyUrl || '');
+      if (favUrl || songUrl) return !!favUrl && !!songUrl && favUrl === songUrl;
+
+      const favTitle = cleanPastedCitationArtifacts(genre?.favoritesong || '').toLowerCase();
+      const favArtist = cleanPastedCitationArtifacts(genre?.favoriteartist || '').toLowerCase();
+      const songTitle = cleanPastedCitationArtifacts(song?.title || '').toLowerCase();
+      const songArtist = cleanPastedCitationArtifacts(song?.artist || '').toLowerCase();
       return !!favTitle && !!songTitle && favTitle === songTitle && (!favArtist || !songArtist || favArtist === songArtist);
     }
 
@@ -5317,16 +5316,26 @@ body.spotify-player-open { padding-bottom: 116px; }
         showSaveToast('Could not find that song to mark favorite.', true);
         return;
       }
-      currentGenre.favoritesong = cleanPastedCitationArtifacts(selected.title || '');
-      currentGenre.favoriteartist = cleanPastedCitationArtifacts(selected.artist || '');
-      currentGenre.favoritesongurl = normalizeSongUrl(selected.url || selected.spotifyUrl || '');
-      currentGenre.favoritesongartwork = selected.artwork || '';
+
+      const wasFavorite = isSameFavoriteSong(currentGenre, selected);
+      if (wasFavorite) {
+        currentGenre.favoritesong = '';
+        currentGenre.favoriteartist = '';
+        currentGenre.favoritesongurl = '';
+        currentGenre.favoritesongartwork = '';
+      } else {
+        currentGenre.favoritesong = cleanPastedCitationArtifacts(selected.title || '');
+        currentGenre.favoriteartist = cleanPastedCitationArtifacts(selected.artist || '');
+        currentGenre.favoritesongurl = normalizeSongUrl(selected.url || selected.spotifyUrl || '');
+        currentGenre.favoritesongartwork = selected.artwork || '';
+      }
+
       libraryUpdatesPending = true;
       setUnsavedState(true);
       toggleLibrarySaveButton(true);
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
-      showSaveToast('Favorite track updated — click Save Rating / Favorite to persist it.', false);
+      showSaveToast(wasFavorite ? 'Favorite track cleared — click Save Rating / Favorite to persist it.' : 'Favorite track updated — click Save Rating / Favorite to persist it.', false);
     }
 
     function genreRatingHeroMarkup(genre) {
@@ -5525,7 +5534,7 @@ body.spotify-player-open { padding-bottom: 116px; }
 
     async function updateTrackUrlFromCard(encodedKey, pendingIndex, button) {
       if (!currentGenre) return;
-      const editor = button.closest('.track-card-editor');
+      const editor = button?.closest('.track-card-editor');
       const input = editor?.querySelector('[data-track-url-input]');
       const nextUrl = normalizeSongUrl(input?.value || '');
       if (!/^https?:\/\//i.test(nextUrl)) {
@@ -5533,106 +5542,135 @@ body.spotify-player-open { padding-bottom: 116px; }
         return;
       }
 
-      let target = null;
-      let officialResult = null;
-      const isPendingEdit = Number.isInteger(pendingIndex) && pendingIndex >= 0;
-
-      if (isPendingEdit) {
-        currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
-        target = currentGenre.pending_songs[pendingIndex];
-      } else {
-        syncBulkDraftIntoSongModel();
-        officialResult = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
-        target = officialResult?.song || null;
+      const oldButtonText = button?.textContent || '';
+      if (button) {
+        button.disabled = true;
+        button.classList.add('is-saving');
+        button.textContent = 'Updating…';
       }
 
-      if (!target) {
-        // Fallback: search by decoded key as title string (handles placeholder-URL levelUp children)
-        const decodedKey = decodeURIComponent(encodedKey || '');
-        const allSongs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(s => !s.isPending);
-        for (const parent of allSongs) {
-          if (parent.levelUp && songIdentity(parent.levelUp) === decodedKey) {
-            target = parent.levelUp;
-            break;
-          }
-          if (songIdentity(parent) === decodedKey) {
-            target = parent;
-            break;
+      try {
+        let target = null;
+        const isPendingEdit = Number.isInteger(pendingIndex) && pendingIndex >= 0;
+
+        if (isPendingEdit) {
+          currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+          target = currentGenre.pending_songs[pendingIndex];
+        } else {
+          syncBulkDraftIntoSongModel();
+          const officialResult = findOfficialSongByIdentity(decodeURIComponent(encodedKey || ''));
+          target = officialResult?.song || null;
+        }
+
+        if (!target) {
+          const decodedKey = decodeURIComponent(encodedKey || '');
+          const allSongs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(s => !s.isPending);
+          for (const parent of allSongs) {
+            if (parent.levelUp && songIdentity(parent.levelUp) === decodedKey) {
+              target = parent.levelUp;
+              break;
+            }
+            if (songIdentity(parent) === decodedKey) {
+              target = parent;
+              break;
+            }
           }
         }
-      }
-      if (!target) {
-        showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
-        loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-        return;
-      }
-      
-      const oldUrl = normalizeSongUrl(target.url);
-      const nestedLevelUp = target.levelUp || null;
+        if (!target) {
+          showSaveToast('That song changed in the text editor. Reopen the card and try again.', true);
+          loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+          return;
+        }
 
-      target.url = nextUrl;
-      target.artwork = '';
-      target.releaseDate = '';
-      target.releaseYear = null;
-      target.releaseSource = '';
-
-      if (/spotify\.com\/track\//i.test(nextUrl)) {
-        target.source = 'spotify';
+        const oldUrl = normalizeSongUrl(target.url || target.spotifyUrl || '');
+        const nestedLevelUp = target.levelUp || null;
         const savedReason = target.reason || '';
         const savedScore = target.score;
-        target.title = '';
-        target.artist = '';
-        const resolved = (await resolveSpotifyTitles([{ ...target, levelUp: null }]))[0];
-        if (resolved) {
-          resolved.levelUp = nestedLevelUp;
-          resolved.reason = savedReason;
-          resolved.score = savedScore;
-          Object.assign(target, resolved);
+        const savedReaction = target.reaction;
+        const savedTitle = target.title || '';
+        const savedArtist = target.artist || '';
+
+        target.url = nextUrl;
+        target.artwork = '';
+        target.releaseDate = '';
+        target.releaseYear = null;
+        target.releaseSource = '';
+
+        if (/spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl)) {
+          target.source = 'spotify';
+          target.title = '';
+          target.artist = '';
+          const resolved = (await resolveSpotifyTitles([{ ...target, levelUp: null }]))[0];
+          if (resolved) {
+            resolved.levelUp = nestedLevelUp;
+            resolved.reason = savedReason;
+            resolved.score = savedScore;
+            resolved.reaction = savedReaction;
+            Object.assign(target, resolved);
+          }
+        } else if (isYoutubeUrl(nextUrl)) {
+          target.source = 'youtube';
+          target.spotifyId = '';
+          target.spotifyUrl = '';
+          target.spotifyMetadataFetched = false;
+          target.spotifyMetadataFetchedAt = '';
+          target.album = '';
+          target.artists = [];
+          target.durationMs = null;
+          target.isrc = '';
+          target.title = target.title || savedTitle || 'YouTube track';
+          target.artist = target.artist || savedArtist || '';
+        } else {
+          target.source = 'web';
+          target.spotifyId = '';
+          target.spotifyUrl = '';
+          target.spotifyMetadataFetched = false;
+          target.spotifyMetadataFetchedAt = '';
+          target.album = '';
+          target.artists = [];
+          target.durationMs = null;
+          target.isrc = '';
+          target.title = target.title || savedTitle || 'Track';
+          target.artist = target.artist || savedArtist || '';
         }
-      } else if (isYoutubeUrl(nextUrl)) {
-        target.source = 'youtube';
-        target.spotifyId = '';
-        target.spotifyUrl = '';
-        target.spotifyMetadataFetched = false;
-        target.spotifyMetadataFetchedAt = '';
-        target.album = '';
-        target.artists = [];
-        target.durationMs = null;
-        target.isrc = '';
-      } else {
-        target.source = 'web';
-        target.spotifyId = '';
-        target.spotifyUrl = '';
-        target.spotifyMetadataFetched = false;
-        target.spotifyMetadataFetchedAt = '';
-      }
-      
-      if (!isPendingEdit && normalizeSongUrl(currentGenre.favoritesongurl || '') === oldUrl) {
-        currentGenre.favoritesongurl = nextUrl;
-        currentGenre.favoritesong = target.title || currentGenre.favoritesong;
-        currentGenre.favoriteartist = target.artist || currentGenre.favoriteartist;
-        currentGenre.favoritesongartwork = target.artwork || currentGenre.favoritesongartwork;
-      }
 
-      if (isPendingEdit) {
-        currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
-      } else {
-        const deduped = [];
-        const seen = new Set();
-        inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending).forEach(song => {
-          const keys = songIdentityKeys(song);
-          const duplicate = keys.some(key => seen.has(key));
-          if (duplicate) return;
-          keys.forEach(key => seen.add(key));
-          deduped.push(song);
-        });
-        currentGenre.songs_listened = deduped;
-      }
+        const currentFavUrl = normalizeSongUrl(currentGenre.favoritesongurl || '');
+        if (!isPendingEdit && currentFavUrl && oldUrl && currentFavUrl === oldUrl) {
+          currentGenre.favoritesongurl = nextUrl;
+          currentGenre.favoritesong = target.title || currentGenre.favoritesong;
+          currentGenre.favoriteartist = target.artist || currentGenre.favoriteartist;
+          currentGenre.favoritesongartwork = target.artwork || currentGenre.favoritesongartwork;
+        }
 
-      removeLoggedSongsFromPending(currentGenre);
-      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-      markDirty();
-      showSaveToast('Track URL updated — click Save Changes to keep it.', false);
+        if (isPendingEdit) {
+          currentGenre.pending_songs = normalizePendingSongs(currentGenre.pending_songs || []);
+        } else {
+          const deduped = [];
+          const seen = new Set();
+          inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending).forEach(song => {
+            const keys = songIdentityKeys(song);
+            const duplicate = keys.some(key => seen.has(key));
+            if (duplicate) return;
+            keys.forEach(key => seen.add(key));
+            deduped.push(song);
+          });
+          currentGenre.songs_listened = deduped;
+        }
+
+        removeLoggedSongsFromPending(currentGenre);
+        loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+        markDirty();
+        showSaveToast('Track URL updated — click Save Changes to keep it.', false);
+      } catch (err) {
+        console.error('Track URL update failed', err);
+        showSaveToast(`Track update failed: ${err?.message || err || 'Unknown error'}`, true);
+      } finally {
+        if (button && document.body.contains(button)) {
+          button.disabled = false;
+          button.classList.remove('is-saving');
+          button.textContent = oldButtonText || 'Update Track';
+        }
+      }
     }
 
     function removeTrackFromCard(encodedKey, pendingIndex) {
@@ -5842,7 +5880,7 @@ body.spotify-player-open { padding-bottom: 116px; }
         ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="song-title-link">${titleText}${sourceBadge}<span class="song-link-arrow">↗</span></a>${spPlayBtn(s)}`
         : `<span class="song-title-link">${titleText}${sourceBadge}</span>${spPlayBtn(s)}`;
       const addBadge = (!isChild && s.isAdd)
-        ? `<div class="add-badge"><span class="add-badge-icon">＋</span><span>Add</span></div>`
+        ? `<div class="add-badge"><span class="add-badge-icon">\uFF0B</span><span>Add</span></div>`
         : (!isChild && s.isPromote)
         ? `<div class="promote-badge"><span class="promote-badge-icon">🔼</span><span>Promote</span></div>`
         : '';
@@ -5863,7 +5901,7 @@ body.spotify-player-open { padding-bottom: 116px; }
         : '';
       const canShowTrackTools = options.allowTrackEdit === true || (!s.isPending && options.allowTrackEdit !== false);
       const levelUpHtml = (!isChild && s.levelUp)
-        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">↳</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: canShowTrackTools })}</div>`
+        ? `<div class="alt-take-wrap"><div class="alt-take-label"><span class="alt-take-icon">\u21B3</span><span>Alt Take</span></div>${renderSongEntry(s.levelUp, true, { allowTrackEdit: canShowTrackTools })}</div>`
         : '';
       const favBtn = '';
       const encodedKey = encodeURIComponent(songIdentity(s));
@@ -5880,7 +5918,7 @@ body.spotify-player-open { padding-bottom: 116px; }
               <button type="button" class="song-reaction-btn ${Number(s.reaction) === 3 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 3)" title="I Fuck With This" aria-label="I Fuck With This"><span class="reaction-emoji">👍</span></button>
               <button type="button" class="song-reaction-btn ${Number(s.reaction) === 2 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 2)" title="Meh, It’s Fine" aria-label="Meh, It’s Fine"><span class="reaction-emoji">🤷</span></button>
               <button type="button" class="song-reaction-btn ${Number(s.reaction) === 1 ? 'active' : ''}" onclick="setSongReaction('${encodedKey}', 1)" title="Fuck Off" aria-label="Fuck Off"><span class="reaction-emoji">👎</span></button>
-              <button type="button" class="song-favorite-btn ${isFavorite ? 'active' : ''}" onclick="makeSongFavorite('${encodedKey}')" title="${isFavorite ? 'Favorite track' : 'Make favorite track'}" aria-label="${isFavorite ? 'Favorite track' : 'Make favorite track'}">🏆</button>
+              <button type="button" class="song-favorite-btn ${isFavorite ? 'active' : ''}" onclick="makeSongFavorite('${encodedKey}')" title="${isFavorite ? 'Remove favorite track' : 'Make favorite track'}" aria-label="${isFavorite ? 'Remove favorite track' : 'Make favorite track'}">🏆</button>
               ${reactionStaged ? '<span class="song-reaction-unsaved">Unsaved</span>' : ''}
             </div>
            </div>`
@@ -6334,7 +6372,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           ${renderGenreReactionSummary(genre)}
           <div class="detail-log-section">
             <div class="eyebrow">Logged Songs</div>
-            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false, { allowTrackEdit: true })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
+            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map(song => renderSongEntry(song, false, { allowTrackEdit: detailEditMode })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
             <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: detailEditMode })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
           </div>
         </div>
@@ -10090,10 +10128,6 @@ function spotifyPlaylistSongRows(genre) {
     const url = normalizeSongUrl(rawUrl);
     const id = spotifyTrackId(url) || spotifyTrackId(song.spotifyId || '');
 
-    // Keep every playlist candidate visible, even when it points to a track that
-    // also appears elsewhere in the same genre/backlog selection. The modal is an
-    // editorial checklist, so a Direct row and its Level Up/Add row must both be
-    // visible and independently uncheckable.
     if (id) {
       rows.push({
         id,
