@@ -5752,7 +5752,7 @@ body.spotify-player-open { padding-bottom: 116px; }
     function renderPendingSongNotesPanel(genre = currentGenre) {
       const count = pendingSongNotesForGenre(genre).length;
       if (!count) return '';
-      return `<div class="pending-song-notes-panel"><div><strong>${count} pending song note${count === 1 ? '' : 's'}</strong><div class="small">These are staged locally. Roll them into the song cards, then Save Listening Updates to persist.</div></div><button type="button" class="btn btn-secondary" onclick="rollUpPendingSongNotesForCurrentGenre()">Roll up pending notes</button></div>`;
+      return `<div class="pending-song-notes-panel"><div><strong>${count} pending song note${count === 1 ? '' : 's'}</strong><div class="small">These are staged locally. Save Listening Updates will roll them into the song cards and persist them.</div></div><div class="row" style="justify-content:flex-end;"><button type="button" class="btn btn-secondary" onclick="rollUpPendingSongNotesForCurrentGenre()">Roll up pending notes</button><button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Listening Updates</button></div></div>`;
     }
 
     function savePendingSongNoteFromCard(encodedKey, pendingIndex, path = '', button = null) {
@@ -5787,6 +5787,7 @@ body.spotify-player-open { padding-bottom: 116px; }
         showSaveToast('Pending song note cleared.', false);
       }
       writePendingSongNotesMap(map);
+      markListeningUpdatePending();
       const restore = preserveScrollSnapshot();
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
@@ -5857,6 +5858,46 @@ body.spotify-player-open { padding-bottom: 116px; }
       applyDetailEditMode(detailEditMode);
       restore();
       showSaveToast(`${applied} song note${applied === 1 ? '' : 's'} rolled up — click Save Listening Updates to persist.`, false);
+    }
+
+    function applyPendingSongNotesToCurrentGenreSilently() {
+      if (!currentGenre) return 0;
+      const notes = pendingSongNotesForGenre(currentGenre);
+      if (!notes.length) return 0;
+      const map = readPendingSongNotesMap();
+      let applied = 0;
+      notes.forEach(note => {
+        const target = findSongForPendingNote(note);
+        if (!target?.song) return;
+        target.song.listenerNote = String(note.note || '').trim();
+        if (target.isPending) currentGenre.pending_songs = target.songs;
+        else currentGenre.songs_listened = target.songs;
+        delete map[note.key];
+        applied += 1;
+      });
+      if (applied) {
+        writePendingSongNotesMap(map);
+        libraryUpdatesPending = true;
+        setUnsavedState(true);
+        toggleLibrarySaveButton(true);
+      }
+      return applied;
+    }
+
+    function ensureCurrentGenreIsInLibrary() {
+      if (!currentGenre || !Array.isArray(genres)) return;
+      const idx = genres.findIndex(g => String(g?.id) === String(currentGenre.id));
+      if (idx >= 0 && genres[idx] !== currentGenre) {
+        genres[idx] = currentGenre;
+      }
+    }
+
+    function finalizeListeningUpdatesBeforeSave() {
+      if (currentGenre) {
+        try { syncBulkDraftIntoSongModel(); } catch (error) { console.warn('Could not sync song draft before save', error); }
+        applyPendingSongNotesToCurrentGenreSilently();
+        ensureCurrentGenreIsInLibrary();
+      }
     }
 
     async function refreshGenrePageSpotifyTrack(encodedKey, button, path = '') {
@@ -6282,7 +6323,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       const savedSongNoteHtml = savedSongNote ? `<div class="song-listener-note"><strong>Note:</strong> ${escapeHtml(savedSongNote)}</div>` : '';
       const pendingSongNoteHtml = pendingSongNote ? `<div class="song-pending-note-preview"><strong>Pending note:</strong> ${escapeHtml(pendingSongNote)}</div>` : '';
       const noteEditorHtml = canShowTrackTools
-        ? `<details class="song-note-editor" ${pendingSongNote ? 'open' : ''}><summary>${pendingSongNote ? 'Edit pending note' : 'Add short note'}</summary><div class="song-note-body"><textarea data-song-note-input maxlength="320" placeholder="Short listening note for this song…">${escapeHtml(pendingSongNote)}</textarea><div class="song-note-actions"><button type="button" class="btn btn-secondary" onclick="savePendingSongNoteFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}', this)">Stage Note</button>${pendingSongNote ? `<button type="button" class="btn btn-danger" onclick="clearPendingSongNoteFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}', this)">Clear Pending Note</button>` : ''}</div><div class="track-card-edit-note">Staged locally only. Use “Roll up pending notes,” then Save Listening Updates to persist.</div></div></details>`
+        ? `<details class="song-note-editor" ${pendingSongNote ? 'open' : ''}><summary>${pendingSongNote ? 'Edit pending note' : 'Add short note'}</summary><div class="song-note-body"><textarea data-song-note-input maxlength="320" placeholder="Short listening note for this song…">${escapeHtml(pendingSongNote)}</textarea><div class="song-note-actions"><button type="button" class="btn btn-secondary" onclick="savePendingSongNoteFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}', this)">Stage Note</button>${pendingSongNote ? `<button type="button" class="btn btn-danger" onclick="clearPendingSongNoteFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}', this)">Clear Pending Note</button>` : ''}</div><div class="track-card-edit-note">Staged locally. Save Listening Updates will roll this up and persist it.</div></div></details>`
         : '';
       const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
@@ -6806,6 +6847,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
 
     async function doSaveWithPassword(password) {
+      finalizeListeningUpdatesBeforeSave();
       if (!serverFileSha) await refreshServerFileSha();
       if (!serverFileSha) {
         const error = new Error('No loaded data revision is available. Reload before saving.');
@@ -9646,7 +9688,11 @@ async function loadData() {
     }
 
     async function saveLibraryUpdates() {
-      if (!libraryUpdatesPending) return;
+      finalizeListeningUpdatesBeforeSave();
+      if (!libraryUpdatesPending) {
+        showSaveToast('No listening updates to save.', false);
+        return;
+      }
       if (!appPassword) {
         openPasswordModal('library_save');
         return;
