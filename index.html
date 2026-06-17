@@ -4934,6 +4934,32 @@ body.spotify-player-open { padding-bottom: 116px; }
       return '';
     }
 
+    function getLoadedGenreIdAudit() {
+      const numericIds = genres
+        .map(g => Number(g && g.id))
+        .filter(n => Number.isInteger(n) && n >= 0)
+        .sort((a, b) => a - b);
+      const seen = new Set(numericIds);
+      const minId = numericIds.length ? numericIds[0] : null;
+      const maxId = numericIds.length ? numericIds[numericIds.length - 1] : null;
+      const missingIds = [];
+      if (minId !== null && maxId !== null) {
+        for (let id = minId; id <= maxId; id += 1) {
+          if (!seen.has(id)) missingIds.push(id);
+        }
+      }
+      return {
+        actualRows: genres.length,
+        numericIdRows: numericIds.length,
+        minId,
+        maxId,
+        impliedRowsIfContiguous: minId !== null && maxId !== null ? (maxId - minId + 1) : genres.length,
+        missingIdCount: missingIds.length,
+        missingIds,
+        missingIdPreview: missingIds.slice(0, 160)
+      };
+    }
+
     function getRemainingCountDiagnostics() {
       const total = genres.length;
       const remainingRows = getUnlistened();
@@ -4961,8 +4987,11 @@ body.spotify-player-open { padding-bottom: 116px; }
         acc[bucket] = (acc[bucket] || 0) + 1;
         return acc;
       }, {});
+      const idAudit = getLoadedGenreIdAudit();
+      window.dailyGenreIdAudit = idAudit;
       return {
         total,
+        idAudit,
         remaining: remainingRows.length,
         unavailable,
         listened: listenedRows.length,
@@ -4988,8 +5017,9 @@ body.spotify-player-open { padding-bottom: 116px; }
     function remainingCountMessage(stats) {
       const lines = [
         `${stats.remaining} spin-eligible genres remaining`,
-        `${stats.total} total genres`,
-        `${stats.unavailable} not in spinner`,
+        `${stats.total} actual loaded genre rows`,
+        `ID range: ${stats.idAudit?.minId ?? '?'}–${stats.idAudit?.maxId ?? '?'} (${stats.idAudit?.missingIdCount || 0} numeric ID gaps; max ID is not the same as total rows)`,
+        `${stats.unavailable} loaded rows not in spinner`,
         `  • ${stats.listened} listened by Daily Genre 2026 logic`,
         `    - ${stats.listenedThisYear} dated in 2026`,
         `    - ${stats.listenedBeforeThisYear} explicitly status=listened with no/older date`,
@@ -5021,9 +5051,10 @@ body.spotify-player-open { padding-bottom: 116px; }
         remainingCountMessage(stats),
         '',
         'Why this may look low:',
-        'The spinner now ignores older/pre-2026 date stamps unless the row is explicitly status=listened. If the count is still low, check the zanger/status buckets and excluded samples below.',
+        'The spinner can only include actual loaded genre rows. If the max ID is much higher than the total row count, those are ID gaps or missing JSON objects, not hidden spin candidates.',
+        `Missing numeric IDs in loaded data (${stats.idAudit?.missingIdCount || 0}): ${(stats.idAudit?.missingIdPreview || []).join(', ') || '(none)'}`,
         '',
-        'First excluded samples:',
+        'First excluded loaded-row samples:',
         sampleLines.join('\n') || '(none)'
       ].join('\n');
       alert(msg);
