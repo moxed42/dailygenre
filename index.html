@@ -3071,6 +3071,65 @@
     .listening-actions-panel .spotify-queue-btn { margin-left:auto; }
     .listening-actions-panel .view-rating-zanger { text-transform:none; letter-spacing:0; }
     .listening-actions-panel .view-rating-head .small { margin-top:3px; }
+
+    .floating-listening-save {
+      position: fixed;
+      right: 18px;
+      bottom: 78px;
+      z-index: 2600;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(31,26,20,.96);
+      color: #fff8e8;
+      border: 1px solid rgba(255,224,161,.28);
+      box-shadow: 0 16px 36px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.10);
+      transform: translateY(0);
+    }
+    .floating-listening-save.hidden { display:none !important; }
+    .floating-listening-save .floating-listening-save-copy {
+      display: grid;
+      gap: 1px;
+      line-height: 1.05;
+      font-size: .74rem;
+      color: #ffe0a1;
+      max-width: 150px;
+    }
+    .floating-listening-save .floating-listening-save-copy strong {
+      font-size: .83rem;
+      color: #fff8e8;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .floating-listening-save .btn {
+      padding: 8px 12px;
+      min-height: 0;
+      border-radius: 999px;
+      font-size: .88rem;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(91,53,10,.16), 0 8px 18px rgba(0,0,0,.18);
+    }
+    .inline-listening-save-hint {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      color: var(--muted);
+      font-size:.86rem;
+      font-weight:800;
+    }
+    .save-reactions-btn { display:none !important; }
+    @media (max-width:760px) {
+      .floating-listening-save {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        justify-content: space-between;
+        border-radius: 18px;
+      }
+      .floating-listening-save .floating-listening-save-copy { max-width: 54vw; }
+    }
     .song-favorite-btn {
       display:inline-flex;
       align-items:center;
@@ -4484,6 +4543,10 @@ body.spotify-player-open { padding-bottom: 116px; }
   </div>
 
   <div id="saveToast" class="save-toast" aria-live="polite"></div>
+  <div id="floatingListeningSave" class="floating-listening-save hidden" role="status" aria-live="polite">
+    <div class="floating-listening-save-copy"><strong>Unsaved listening</strong><span>Ratings, notes, flags, or track edits</span></div>
+    <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save</button>
+  </div>
 
   <script>
     const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data.json';
@@ -4825,12 +4888,51 @@ body.spotify-player-open { padding-bottom: 116px; }
       return genre.date_normalized || genre.datenormalized || '';
     }
 
+    function normalizedGenreStatus(genre) {
+      return String(genre?.status || '').trim().toLowerCase();
+    }
+
+    function isGenreZanger(genre) {
+      const status = normalizedGenreStatus(genre);
+      const rating = String(genre?.rating || '').trim().toLowerCase();
+      return status === 'veto' || status === 'zanger' || rating === 'zanger';
+    }
+
+    function isGenreAlreadyListened(genre) {
+      const status = normalizedGenreStatus(genre);
+      return status === 'listened' || !!dateValue(genre) || isGenreZanger(genre);
+    }
+
+    function isGenreRemaining(genre) {
+      const status = normalizedGenreStatus(genre);
+      if (isGenreAlreadyListened(genre)) return false;
+      // Count legacy/imported rows with a blank status as remaining, because they have
+      // not been listened to yet and should still be eligible for Spin.
+      return status === '' || status === 'unlistened';
+    }
+
     function getUnlistened() {
-      return genres.filter(g => (g.status || '').toLowerCase() === 'unlistened');
+      return genres.filter(isGenreRemaining);
+    }
+
+    function getRemainingCountDiagnostics() {
+      const total = genres.length;
+      const listened = genres.filter(g => normalizedGenreStatus(g) === 'listened' || (!!dateValue(g) && !isGenreZanger(g))).length;
+      const zangers = genres.filter(isGenreZanger).length;
+      const blankStatus = genres.filter(g => normalizedGenreStatus(g) === '').length;
+      const legacyOtherStatus = genres.filter(g => {
+        const status = normalizedGenreStatus(g);
+        return status && !['unlistened', 'listened', 'veto', 'zanger'].includes(status);
+      }).length;
+      const remaining = getUnlistened().length;
+      return { total, remaining, listened, zangers, blankStatus, legacyOtherStatus };
     }
 
     function updateRemainingCount() {
-      remainingCount.textContent = `${getUnlistened().length} genres remaining`;
+      const stats = getRemainingCountDiagnostics();
+      remainingCount.textContent = `${stats.remaining} genres remaining`;
+      remainingCount.title = `Total: ${stats.total} · Remaining: ${stats.remaining} · Listened/date-stamped: ${stats.listened} · Zangers: ${stats.zangers} · Blank status counted as remaining: ${stats.blankStatus}${stats.legacyOtherStatus ? ` · Other statuses not counted: ${stats.legacyOtherStatus}` : ''}`;
+      console.debug('[Daily Genre] Remaining count diagnostics', stats);
     }
 
     function genreEmoji(genre) {
@@ -5314,7 +5416,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
       restore();
-      showSaveToast('Reaction selected — click Save Listening Updates to persist it.', false);
+      showSaveToast('Reaction selected — use the floating Save button to persist it.', false);
     }
 
     const GENRE_RATING_LABELS = {
@@ -5356,7 +5458,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       return `<div class="view-rating-panel">
         <div class="view-rating-head">
           <div><div class="eyebrow" style="margin:0;">Genre Rating</div><div class="small">Listening action — available outside Setup Editor.</div></div>
-          ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary btn-tiny save-reactions-btn" onclick="saveLibraryUpdates()">Save Listening Updates</button>' : ''}
+          ${libraryUpdatesPending ? '<span class="inline-listening-save-hint">● Unsaved</span>' : ''}
         </div>
         <div class="view-rating-stars" aria-label="Genre rating controls">
           ${[1,2,3,4,5].map(n => `<button type="button" class="view-rating-star ${active === String(n) ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="${n} stars, ${escapeHtml(genreRatingLabel(n))}">★</button>`).join('')}
@@ -5374,7 +5476,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       return `<div class="view-rating-panel listening-actions-panel">
         <div class="view-rating-head">
           <div><div class="eyebrow" style="margin:0;">Listening Actions</div><div class="small">Use these while/after listening. Setup Editor is only for curation text, song uploads, and song descriptions.</div></div>
-          ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary btn-tiny save-reactions-btn" onclick="saveLibraryUpdates()">Save Listening Updates</button>' : ''}
+          ${libraryUpdatesPending ? '<span class="inline-listening-save-hint">● Unsaved</span>' : ''}
         </div>
         <div class="view-rating-stars" aria-label="Listening action controls">
           <button type="button" class="view-rating-zanger ${contender ? 'active' : ''}" onclick="setMonthlyFlagFromView('contender')" title="Toggle monthly contender">📌 Monthly contender</button>
@@ -5413,7 +5515,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
       restore();
-      showSaveToast('Monthly listening flag updated — click Save Listening Updates to persist it.', false);
+      showSaveToast('Monthly listening flag updated — use the floating Save button to persist it.', false);
     }
 
     function clearMonthlyFlagsFromView() {
@@ -5426,7 +5528,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
       restore();
-      showSaveToast('Monthly flags cleared — click Save Listening Updates to persist it.', false);
+      showSaveToast('Monthly flags cleared — use the floating Save button to persist it.', false);
     }
 
     function enforceMonthlyExclusiveFlags(genre) {
@@ -5467,7 +5569,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       toggleLibrarySaveButton(true);
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
-      showSaveToast('Genre rating updated — click Save Listening Updates to persist it.', false);
+      showSaveToast('Genre rating updated — use the floating Save button to persist it.', false);
     }
 
     function makeSongFavorite(encodedKey) {
@@ -5501,7 +5603,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       toggleLibrarySaveButton(true);
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
-      showSaveToast(wasFavorite ? 'Favorite track cleared — click Save Listening Updates to persist it.' : 'Favorite track updated — click Save Listening Updates to persist it.', false);
+      showSaveToast(wasFavorite ? 'Favorite track cleared — use the floating Save button to persist it.' : 'Favorite track updated — use the floating Save button to persist it.', false);
     }
 
     function genreRatingHeroMarkup(genre) {
@@ -5553,7 +5655,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       return `<div class="track-reaction-summary">
         <div class="track-reaction-summary-head">
           <div class="eyebrow" style="margin:0;">Track Reactions</div>
-          ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary btn-tiny save-reactions-btn" onclick="saveLibraryUpdates()">Save Listening Updates</button>' : ''}
+          ${libraryUpdatesPending ? '<span class="inline-listening-save-hint">● Unsaved</span>' : ''}
         </div>
         <div class="track-reaction-counts">
           <div class="track-reaction-counter"><span class="emoji">👍</span><strong>${counts[3]}</strong><small>I Fuck With This</small></div>
@@ -5752,7 +5854,7 @@ body.spotify-player-open { padding-bottom: 116px; }
     function renderPendingSongNotesPanel(genre = currentGenre) {
       const count = pendingSongNotesForGenre(genre).length;
       if (!count) return '';
-      return `<div class="pending-song-notes-panel"><div><strong>${count} pending song note${count === 1 ? '' : 's'}</strong><div class="small">These are staged locally. Save Listening Updates will roll them into the song cards and persist them.</div></div><div class="row" style="justify-content:flex-end;"><button type="button" class="btn btn-secondary" onclick="rollUpPendingSongNotesForCurrentGenre()">Roll up pending notes</button><button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Listening Updates</button></div></div>`;
+      return `<div class="pending-song-notes-panel"><div><strong>${count} pending song note${count === 1 ? '' : 's'}</strong><div class="small">These are staged locally. The floating Save button will roll them into the song cards and persist them.</div></div><div class="row" style="justify-content:flex-end;"><button type="button" class="btn btn-secondary" onclick="rollUpPendingSongNotesForCurrentGenre()">Roll up pending notes</button></div></div>`;
     }
 
     function savePendingSongNoteFromCard(encodedKey, pendingIndex, path = '', button = null) {
@@ -5857,7 +5959,7 @@ body.spotify-player-open { padding-bottom: 116px; }
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
       restore();
-      showSaveToast(`${applied} song note${applied === 1 ? '' : 's'} rolled up — click Save Listening Updates to persist.`, false);
+      showSaveToast(`${applied} song note${applied === 1 ? '' : 's'} rolled up — click use the floating Save button to persist.`, false);
     }
 
     function applyPendingSongNotesToCurrentGenreSilently() {
@@ -5935,7 +6037,7 @@ body.spotify-player-open { padding-bottom: 116px; }
         applyDetailEditMode(detailEditMode);
         restore();
         markListeningUpdatePending();
-        showSaveToast('Spotify metadata refreshed — click Save Listening Updates to keep it.', false);
+        showSaveToast('Spotify metadata refreshed — use the floating Save button to keep it.', false);
       } catch (err) {
         console.error('Spotify refresh failed', err);
         showSaveToast(`Spotify refresh failed: ${err?.message || err || 'Unknown error'}`, true);
@@ -6065,7 +6167,7 @@ body.spotify-player-open { padding-bottom: 116px; }
           console.warn('Track URL updated but metadata refresh failed:', metadataWarning);
           showSaveToast(`URL saved, but Spotify metadata did not refresh: ${metadataWarning}`, true);
         } else {
-          showSaveToast('Track URL updated — click Save Listening Updates to keep it.', false);
+          showSaveToast('Track URL updated — use the floating Save button to keep it.', false);
         }
       } catch (err) {
         console.error('Track URL update failed', err);
@@ -6091,7 +6193,7 @@ body.spotify-player-open { padding-bottom: 116px; }
         currentGenre.pending_songs = pending;
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
         markListeningUpdatePending();
-        showSaveToast('Pending nomination removed — click Save Listening Updates to keep it.', false);
+        showSaveToast('Pending nomination removed — use the floating Save button to keep it.', false);
         return;
       }
 
@@ -6327,7 +6429,7 @@ body.spotify-player-open { padding-bottom: 116px; }
         : '';
       const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
-        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, or web track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove Track</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, or other web track links. Refresh Spotify updates title, artist, album, artwork, release year, duration, Spotify ID, and ISRC for Spotify tracks. Save Listening Updates to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, or web track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove Track</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, or other web track links. Refresh Spotify updates title, artist, album, artwork, release year, duration, Spotify ID, and ISRC for Spotify tracks. use the floating Save button to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
@@ -6911,8 +7013,12 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         const next = { ...song };
         next.url = normalizeSongUrl(next.url);
 
-        if (next.url && next.url.includes('spotify.com/track/')) {
-          const official = await fetchSpotifyTrackMetadata(next.url);
+        if (next.url && (next.url.includes('spotify.com/track/') || /^spotify:track:/i.test(next.url))) {
+          // Setup Editor saves should hydrate newly pasted Spotify URLs immediately.
+          // Use force refresh when artwork/album/official metadata is missing so a stale cache
+          // from an earlier failed lookup cannot leave the card blank until inline Update Track.
+          const needsFreshSpotify = !next.spotifyMetadataFetched || !next.artwork || !next.album || !next.spotifyId;
+          const official = await fetchSpotifyTrackMetadata(next.url, needsFreshSpotify);
           if (official) {
             applyOfficialSpotifyMetadata(next, official);
           } else {
@@ -9670,6 +9776,8 @@ async function loadData() {
     function toggleLibrarySaveButton(show) {
       const button = document.getElementById('vizSaveLibraryBtn');
       if (button) button.classList.toggle('hidden', !show);
+      const floating = document.getElementById('floatingListeningSave');
+      if (floating) floating.classList.toggle('hidden', !show);
     }
 
     function downloadGenreBackup() {
