@@ -4917,21 +4917,57 @@ body.spotify-player-open { padding-bottom: 116px; }
 
     function getRemainingCountDiagnostics() {
       const total = genres.length;
-      const listened = genres.filter(g => normalizedGenreStatus(g) === 'listened' || (!!dateValue(g) && !isGenreZanger(g))).length;
-      const zangers = genres.filter(isGenreZanger).length;
-      const blankStatus = genres.filter(g => normalizedGenreStatus(g) === '').length;
-      const legacyOtherStatus = genres.filter(g => {
+      const remainingRows = getUnlistened();
+      const zangerRows = genres.filter(isGenreZanger);
+      const listenedRows = genres.filter(g => !isGenreZanger(g) && (normalizedGenreStatus(g) === 'listened' || !!dateValue(g)));
+      const blankStatusRows = genres.filter(g => normalizedGenreStatus(g) === '');
+      const legacyOtherStatusRows = genres.filter(g => {
         const status = normalizedGenreStatus(g);
         return status && !['unlistened', 'listened', 'veto', 'zanger'].includes(status);
-      }).length;
-      const remaining = getUnlistened().length;
-      return { total, remaining, listened, zangers, blankStatus, legacyOtherStatus };
+      });
+      const statusBuckets = genres.reduce((acc, g) => {
+        const status = normalizedGenreStatus(g) || '(blank)';
+        acc[status] = (acc[status] || 0) + 1;
+        return acc;
+      }, {});
+      const listenedThisYear = listenedRows.filter(g => String(dateValue(g)).startsWith('2026-')).length;
+      const listenedBeforeThisYear = listenedRows.length - listenedThisYear;
+      const unavailable = Math.max(0, total - remainingRows.length);
+      return {
+        total,
+        remaining: remainingRows.length,
+        unavailable,
+        listened: listenedRows.length,
+        listenedThisYear,
+        listenedBeforeThisYear,
+        zangers: zangerRows.length,
+        blankStatus: blankStatusRows.length,
+        legacyOtherStatus: legacyOtherStatusRows.length,
+        statusBuckets
+      };
+    }
+
+    function remainingCountMessage(stats) {
+      const lines = [
+        `${stats.remaining} spin-eligible genres remaining`,
+        `${stats.total} total genres`,
+        `${stats.unavailable} not in spinner`,
+        `  • ${stats.listened} listened/date-stamped`,
+        `    - ${stats.listenedThisYear} dated in 2026`,
+        `    - ${stats.listenedBeforeThisYear} dated before 2026 or undated status=listened`,
+        `  • ${stats.zangers} zangers/vetoed`,
+        `  • ${stats.legacyOtherStatus} rows with other status values`,
+        `  • ${stats.blankStatus} blank-status rows counted as remaining`,
+        '',
+        `Status buckets: ${Object.entries(stats.statusBuckets).map(([k,v]) => `${k}: ${v}`).join(' · ')}`
+      ];
+      return lines.join('\n');
     }
 
     function updateRemainingCount() {
       const stats = getRemainingCountDiagnostics();
       remainingCount.textContent = `${stats.remaining} genres remaining`;
-      remainingCount.title = `Total: ${stats.total} · Remaining: ${stats.remaining} · Listened/date-stamped: ${stats.listened} · Zangers: ${stats.zangers} · Blank status counted as remaining: ${stats.blankStatus}${stats.legacyOtherStatus ? ` · Other statuses not counted: ${stats.legacyOtherStatus}` : ''}`;
+      remainingCount.title = remainingCountMessage(stats);
       console.debug('[Daily Genre] Remaining count diagnostics', stats);
     }
 
@@ -8571,6 +8607,13 @@ async function loadData() {
     });
 
     spinBtn.addEventListener('click', spinWheel);
+    if (remainingCount) {
+      remainingCount.style.cursor = 'help';
+      remainingCount.addEventListener('click', () => {
+        const stats = getRemainingCountDiagnostics();
+        alert(remainingCountMessage(stats));
+      });
+    }
     document.getElementById('topCrateDigBtn')?.addEventListener('click', openCrateDig);
     manualToggleBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
 
