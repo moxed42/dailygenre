@@ -8599,23 +8599,55 @@ function spotifyRestoreReturnAfterDataLoad() {
 async function loadData() {
   remainingCount.textContent = 'Loading genres...';
 
+  let workerLoaded = null;
+  let githubLoaded = null;
   let loaded = null;
 
   try {
     const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
     const data = await res.json().catch(() => ({}));
     if (res.ok && data.ok && Array.isArray(data.data)) {
-      loaded = { data: data.data, sha: data.sha || '', source: 'worker' };
+      workerLoaded = { data: data.data, sha: data.sha || '', source: 'worker' };
     } else {
-      console.warn('Production Worker data load did not return the expected shape; falling back to GitHub JSON.', data);
+      console.warn('Production Worker data load did not return the expected shape; checking GitHub JSON.', data);
     }
   } catch (workerError) {
-    console.warn('Production Worker data load failed; falling back to GitHub JSON.', workerError);
+    console.warn('Production Worker data load failed; checking GitHub JSON.', workerError);
   }
 
-  if (!loaded || !loaded.sha) {
-    const fallback = await fetchProductionDataFallback();
-    if (fallback && (!loaded || fallback.sha || !loaded.data)) loaded = fallback;
+  // Always check GitHub too. The Worker can return a valid-but-stale snapshot;
+  // if that happens, the app would otherwise silently miss newly added genres.
+  githubLoaded = await fetchProductionDataFallback();
+
+  function uniqueGenreCount(rows) {
+    return new Set((rows || []).map(g => String(g && g.id != null ? g.id : (g && g.genre) || ''))).size;
+  }
+
+  function maxGenreId(rows) {
+    return (rows || []).reduce((max, g) => {
+      const id = Number(g && g.id);
+      return Number.isFinite(id) ? Math.max(max, id) : max;
+    }, -1);
+  }
+
+  const workerCount = uniqueGenreCount(workerLoaded && workerLoaded.data);
+  const githubCount = uniqueGenreCount(githubLoaded && githubLoaded.data);
+  const workerMaxId = maxGenreId(workerLoaded && workerLoaded.data);
+  const githubMaxId = maxGenreId(githubLoaded && githubLoaded.data);
+
+  if (githubLoaded && githubCount > workerCount) {
+    loaded = githubLoaded;
+    console.warn('[Daily Genre] Worker data appears stale; using newer GitHub data instead.', {
+      workerCount,
+      githubCount,
+      workerMaxId,
+      githubMaxId,
+      workerSha: workerLoaded && workerLoaded.sha,
+      githubSha: githubLoaded.sha
+    });
+    showSaveToast(`Loaded ${githubCount} genres from GitHub; Worker only returned ${workerCount}.`, false);
+  } else {
+    loaded = workerLoaded || githubLoaded;
   }
 
   if (!loaded || !Array.isArray(loaded.data)) {
@@ -8627,6 +8659,18 @@ async function loadData() {
   genres = loaded.data;
   serverFileSha = loaded.sha || '';
   window.genres = genres;
+  window.dailyGenreDataSource = {
+    source: loaded.source,
+    loadedCount: uniqueGenreCount(loaded.data),
+    loadedMaxId: maxGenreId(loaded.data),
+    workerCount,
+    workerMaxId,
+    githubCount,
+    githubMaxId,
+    workerSha: workerLoaded && workerLoaded.sha,
+    githubSha: githubLoaded && githubLoaded.sha
+  };
+  console.info('[Daily Genre] Data source selected', window.dailyGenreDataSource);
 
   genres.forEach(g => {
     if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
