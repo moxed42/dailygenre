@@ -4898,16 +4898,24 @@ body.spotify-player-open { padding-bottom: 116px; }
       return status === 'veto' || status === 'zanger' || rating === 'zanger';
     }
 
+    function isProgramListenedDate(genre) {
+      // Daily Genre 2026 should only treat 2026 listen dates as proof that a genre
+      // has been consumed. Some imported/legacy rows can carry older date_normalized
+      // values that are not actual listening history for this project.
+      return String(dateValue(genre) || '').startsWith('2026-');
+    }
+
     function isGenreAlreadyListened(genre) {
       const status = normalizedGenreStatus(genre);
-      return status === 'listened' || !!dateValue(genre) || isGenreZanger(genre);
+      return status === 'listened' || isProgramListenedDate(genre) || isGenreZanger(genre);
     }
 
     function isGenreRemaining(genre) {
       const status = normalizedGenreStatus(genre);
       if (isGenreAlreadyListened(genre)) return false;
       // Count legacy/imported rows with a blank status as remaining, because they have
-      // not been listened to yet and should still be eligible for Spin.
+      // not been listened to yet and should still be eligible for Spin. Older non-2026
+      // dates are ignored unless the row is explicitly status=listened.
       return status === '' || status === 'unlistened';
     }
 
@@ -4915,11 +4923,24 @@ body.spotify-player-open { padding-bottom: 116px; }
       return genres.filter(isGenreRemaining);
     }
 
+    function remainingExclusionReason(genre) {
+      const status = normalizedGenreStatus(genre);
+      const date = dateValue(genre);
+      if (isGenreZanger(genre)) return 'zanger/veto';
+      if (status === 'listened' && date && !String(date).startsWith('2026-')) return `status=listened with older date (${date})`;
+      if (status === 'listened') return date ? `status=listened (${date})` : 'status=listened with no date';
+      if (date && String(date).startsWith('2026-')) return `listened/date-stamped in 2026 (${date})`;
+      if (status && status !== 'unlistened') return `legacy/other status=${status}`;
+      return '';
+    }
+
     function getRemainingCountDiagnostics() {
       const total = genres.length;
       const remainingRows = getUnlistened();
       const zangerRows = genres.filter(isGenreZanger);
-      const listenedRows = genres.filter(g => !isGenreZanger(g) && (normalizedGenreStatus(g) === 'listened' || !!dateValue(g)));
+      const listenedRows = genres.filter(g => !isGenreZanger(g) && (normalizedGenreStatus(g) === 'listened' || isProgramListenedDate(g)));
+      const olderDateRows = genres.filter(g => !isGenreZanger(g) && dateValue(g) && !isProgramListenedDate(g));
+      const olderDateIgnoredRows = olderDateRows.filter(g => normalizedGenreStatus(g) !== 'listened');
       const blankStatusRows = genres.filter(g => normalizedGenreStatus(g) === '');
       const legacyOtherStatusRows = genres.filter(g => {
         const status = normalizedGenreStatus(g);
@@ -4933,6 +4954,13 @@ body.spotify-player-open { padding-bottom: 116px; }
       const listenedThisYear = listenedRows.filter(g => String(dateValue(g)).startsWith('2026-')).length;
       const listenedBeforeThisYear = listenedRows.length - listenedThisYear;
       const unavailable = Math.max(0, total - remainingRows.length);
+      const excludedRows = genres.filter(g => !isGenreRemaining(g));
+      const exclusionBuckets = excludedRows.reduce((acc, g) => {
+        const reason = remainingExclusionReason(g) || 'unknown exclusion';
+        const bucket = reason.replace(/ \(.+\)$/,'');
+        acc[bucket] = (acc[bucket] || 0) + 1;
+        return acc;
+      }, {});
       return {
         total,
         remaining: remainingRows.length,
@@ -4940,10 +4968,20 @@ body.spotify-player-open { padding-bottom: 116px; }
         listened: listenedRows.length,
         listenedThisYear,
         listenedBeforeThisYear,
+        olderDates: olderDateRows.length,
+        olderDatesIgnored: olderDateIgnoredRows.length,
         zangers: zangerRows.length,
         blankStatus: blankStatusRows.length,
         legacyOtherStatus: legacyOtherStatusRows.length,
-        statusBuckets
+        statusBuckets,
+        exclusionBuckets,
+        excludedSamples: excludedRows.slice(0, 40).map(g => ({
+          title: g.name || g.genre || g.title || g.id || '(untitled)',
+          status: normalizedGenreStatus(g) || '(blank)',
+          date: dateValue(g) || '',
+          rating: g.rating || '',
+          reason: remainingExclusionReason(g) || 'unknown exclusion'
+        }))
       };
     }
 
@@ -4952,13 +4990,15 @@ body.spotify-player-open { padding-bottom: 116px; }
         `${stats.remaining} spin-eligible genres remaining`,
         `${stats.total} total genres`,
         `${stats.unavailable} not in spinner`,
-        `  • ${stats.listened} listened/date-stamped`,
+        `  • ${stats.listened} listened by Daily Genre 2026 logic`,
         `    - ${stats.listenedThisYear} dated in 2026`,
-        `    - ${stats.listenedBeforeThisYear} dated before 2026 or undated status=listened`,
+        `    - ${stats.listenedBeforeThisYear} explicitly status=listened with no/older date`,
+        `  • ${stats.olderDatesIgnored} older/pre-2026 date-stamped rows ignored as listen history`,
         `  • ${stats.zangers} zangers/vetoed`,
         `  • ${stats.legacyOtherStatus} rows with other status values`,
         `  • ${stats.blankStatus} blank-status rows counted as remaining`,
         '',
+        `Exclusion buckets: ${Object.entries(stats.exclusionBuckets || {}).map(([k,v]) => `${k}: ${v}`).join(' · ')}`,
         `Status buckets: ${Object.entries(stats.statusBuckets).map(([k,v]) => `${k}: ${v}`).join(' · ')}`
       ];
       return lines.join('\n');
@@ -4967,8 +5007,27 @@ body.spotify-player-open { padding-bottom: 116px; }
     function updateRemainingCount() {
       const stats = getRemainingCountDiagnostics();
       remainingCount.textContent = `${stats.remaining} genres remaining`;
-      remainingCount.title = remainingCountMessage(stats);
+      remainingCount.title = remainingCountMessage(stats) + '\n\nClick for excluded samples.';
       console.debug('[Daily Genre] Remaining count diagnostics', stats);
+    }
+
+    function showRemainingCountAudit() {
+      const stats = getRemainingCountDiagnostics();
+      const sampleLines = (stats.excludedSamples || []).map((g, idx) => {
+        const bits = [g.reason, g.status ? `status=${g.status}` : '', g.date ? `date=${g.date}` : '', g.rating ? `rating=${g.rating}` : ''].filter(Boolean).join(' · ');
+        return `${idx + 1}. ${g.title} — ${bits}`;
+      });
+      const msg = [
+        remainingCountMessage(stats),
+        '',
+        'Why this may look low:',
+        'The spinner now ignores older/pre-2026 date stamps unless the row is explicitly status=listened. If the count is still low, check the zanger/status buckets and excluded samples below.',
+        '',
+        'First excluded samples:',
+        sampleLines.join('\n') || '(none)'
+      ].join('\n');
+      alert(msg);
+      console.debug('[Daily Genre] Remaining count audit detail', stats);
     }
 
     function genreEmoji(genre) {
@@ -8607,15 +8666,9 @@ async function loadData() {
     });
 
     spinBtn.addEventListener('click', spinWheel);
-    if (remainingCount) {
-      remainingCount.style.cursor = 'help';
-      remainingCount.addEventListener('click', () => {
-        const stats = getRemainingCountDiagnostics();
-        alert(remainingCountMessage(stats));
-      });
-    }
     document.getElementById('topCrateDigBtn')?.addEventListener('click', openCrateDig);
     manualToggleBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
+    remainingCount?.addEventListener('click', showRemainingCountAudit);
 
     const manualSearch2 = document.getElementById('manualSearch2');
     const manualResults2 = document.getElementById('manualResults2');
