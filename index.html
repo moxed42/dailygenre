@@ -5402,12 +5402,6 @@ body.spotify-player-open { padding-bottom: 116px; }
         releaseYear,
         releasePrecision: s?.releasePrecision || '',
         releaseSource: s?.releaseSource || '',
-        explicit: s?.explicit != null ? !!s.explicit : undefined,
-        popularity: s?.popularity != null ? Number(s.popularity) : undefined,
-        trackNumber: s?.trackNumber != null ? Number(s.trackNumber) : undefined,
-        discNumber: s?.discNumber != null ? Number(s.discNumber) : undefined,
-        albumType: s?.albumType || '',
-        albumTotalTracks: s?.albumTotalTracks != null ? Number(s.albumTotalTracks) : undefined,
         reaction,
         isPending: !!s?.isPending,
         pendingFrom: s?.pendingFrom || '',
@@ -5703,11 +5697,10 @@ body.spotify-player-open { padding-bottom: 116px; }
         currentGenre.rating = String(rating);
         currentGenre.status = 'listened';
         selectedRating = String(rating);
-        if (!currentGenre.rank_order) {
-          const sameTierCount = genres.filter(g => String(g.rating) === String(currentGenre.rating) && g.rating !== 'zanger' && g.id !== currentGenre.id).length;
-          currentGenre.rank_order = sameTierCount + 1;
+        if (currentGenre.rank_order == null) {
+          currentGenre.rank_order = nextRankOrderForRating(currentGenre.rating);
         }
-        ensureRankOrderForRating(currentGenre.rating);
+        ensureRankOrderForRating(currentGenre);
       }
       libraryUpdatesPending = true;
       setUnsavedState(true);
@@ -6472,10 +6465,6 @@ body.spotify-player-open { padding-bottom: 116px; }
         delete out.isLevelUp;
         delete out.isAdd;
       }
-      ['explicit','popularity','trackNumber','discNumber','albumTotalTracks'].forEach(key => {
-        if (out[key] == null || Number.isNaN(out[key])) delete out[key];
-      });
-      if (out.albumType === '') delete out.albumType;
       if (out.title === '') delete out.title;
       if (out.reason === '') delete out.reason;
       if (out.listenerNote === '') delete out.listenerNote;
@@ -7473,16 +7462,6 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         .trim();
     }
     
-function normalizePendingTag(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .replace(/[_-]+/g, ' ')
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-} 
-
 function normalizeGenreNameForDedupe(value) {
   return normalizePendingTag(value);
 }
@@ -7532,9 +7511,6 @@ function blockSaveIfDuplicateGenres() {
   return true;
 }
     
-function resolvePendingTargetGenre(tag, sourceGenreId) {
-    
-
     function resolvePendingTargetGenre(tag, sourceGenreId) {
       const wanted = normalizePendingTag(tag);
       if (!wanted) return { target: null, ambiguous: false };
@@ -8795,12 +8771,13 @@ async function loadData() {
     githubSha: githubLoaded && githubLoaded.sha
   };
   console.info('[Daily Genre] Data source selected', window.dailyGenreDataSource);
-  warnDuplicateGenresOnLoad();
 
   genres.forEach(g => {
     if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
     if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
   });
+
+  warnDuplicateGenresOnLoad();
 
   genres.forEach(g => {
     g.songs_listened = inflateSongsFromStorage(g.songs_listened);
@@ -8958,7 +8935,6 @@ async function loadData() {
     }
 
     passwordSubmitBtn.addEventListener('click', async () => {
-      if (passwordSubmitBtn.disabled) return;
       const pw = passwordInput.value.trim();
       if (!pw) {
         passwordNotice.textContent = 'Enter the password.';
@@ -8966,8 +8942,6 @@ async function loadData() {
       }
 
       try {
-        passwordSubmitBtn.disabled = true;
-        passwordSubmitBtn.classList.add('is-saving');
         const completedAction = pendingSaveAction;
         await doSaveWithPassword(pw);
         appPassword = pw;
@@ -9009,9 +8983,6 @@ async function loadData() {
         }
         passwordNotice.textContent = `Save failed: ${e?.message || 'Unknown Worker error.'}`;
         showSaveToast(passwordNotice.textContent, true);
-      } finally {
-        passwordSubmitBtn.disabled = false;
-        passwordSubmitBtn.classList.remove('is-saving');
       }
     });
 
