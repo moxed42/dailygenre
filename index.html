@@ -5402,6 +5402,12 @@ body.spotify-player-open { padding-bottom: 116px; }
         releaseYear,
         releasePrecision: s?.releasePrecision || '',
         releaseSource: s?.releaseSource || '',
+        explicit: s?.explicit != null ? !!s.explicit : undefined,
+        popularity: s?.popularity != null ? Number(s.popularity) : undefined,
+        trackNumber: s?.trackNumber != null ? Number(s.trackNumber) : undefined,
+        discNumber: s?.discNumber != null ? Number(s.discNumber) : undefined,
+        albumType: s?.albumType || '',
+        albumTotalTracks: s?.albumTotalTracks != null ? Number(s.albumTotalTracks) : undefined,
         reaction,
         isPending: !!s?.isPending,
         pendingFrom: s?.pendingFrom || '',
@@ -5501,10 +5507,18 @@ body.spotify-player-open { padding-bottom: 116px; }
           if (prior.promotedFromFit != null) song.promotedFromFit = prior.promotedFromFit;
           if (prior.spotifyId) song.spotifyId = prior.spotifyId;
           if (prior.spotifyUrl) song.spotifyUrl = prior.spotifyUrl;
+          if (prior.artwork) song.artwork = prior.artwork;
+          if (prior.source) song.source = prior.source;
           if (prior.album) song.album = prior.album;
           if (Array.isArray(prior.artists) && prior.artists.length) song.artists = prior.artists;
           if (prior.durationMs != null) song.durationMs = prior.durationMs;
           if (prior.isrc) song.isrc = prior.isrc;
+          if (prior.explicit != null) song.explicit = !!prior.explicit;
+          if (prior.popularity != null) song.popularity = Number(prior.popularity);
+          if (prior.trackNumber != null) song.trackNumber = Number(prior.trackNumber);
+          if (prior.discNumber != null) song.discNumber = Number(prior.discNumber);
+          if (prior.albumType) song.albumType = prior.albumType;
+          if (prior.albumTotalTracks != null) song.albumTotalTracks = Number(prior.albumTotalTracks);
           if (prior.spotifyMetadataFetched) song.spotifyMetadataFetched = true;
           if (prior.spotifyMetadataFetchedAt) song.spotifyMetadataFetchedAt = prior.spotifyMetadataFetchedAt;
           if (prior.eraYear) song.eraYear = prior.eraYear;
@@ -5689,6 +5703,11 @@ body.spotify-player-open { padding-bottom: 116px; }
         currentGenre.rating = String(rating);
         currentGenre.status = 'listened';
         selectedRating = String(rating);
+        if (!currentGenre.rank_order) {
+          const sameTierCount = genres.filter(g => String(g.rating) === String(currentGenre.rating) && g.rating !== 'zanger' && g.id !== currentGenre.id).length;
+          currentGenre.rank_order = sameTierCount + 1;
+        }
+        ensureRankOrderForRating(currentGenre.rating);
       }
       libraryUpdatesPending = true;
       setUnsavedState(true);
@@ -6453,6 +6472,10 @@ body.spotify-player-open { padding-bottom: 116px; }
         delete out.isLevelUp;
         delete out.isAdd;
       }
+      ['explicit','popularity','trackNumber','discNumber','albumTotalTracks'].forEach(key => {
+        if (out[key] == null || Number.isNaN(out[key])) delete out[key];
+      });
+      if (out.albumType === '') delete out.albumType;
       if (out.title === '') delete out.title;
       if (out.reason === '') delete out.reason;
       if (out.listenerNote === '') delete out.listenerNote;
@@ -7074,10 +7097,18 @@ async function prepareAndSaveCurrentGenre(options = {}) {
     }
 
 
-    async function doSaveWithPassword(password) {
-      finalizeListeningUpdatesBeforeSave();
-      if (!serverFileSha) await refreshServerFileSha();
-      if (!serverFileSha) {
+  async function doSaveWithPassword(password) {
+    finalizeListeningUpdatesBeforeSave();
+
+    if (blockSaveIfDuplicateGenres()) {
+      const error = new Error('Duplicate genres detected. Clean the JSON before saving.');
+      error.code = 'DUPLICATE_GENRES';
+      throw error;
+    }
+
+    if (!serverFileSha) await refreshServerFileSha();      
+    
+    if (!serverFileSha) {
         const error = new Error('No loaded data revision is available. Reload before saving.');
         error.code = 'NO_REVISION';
         throw error;
@@ -7441,6 +7472,68 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         .replace(/\s+/g, ' ')
         .trim();
     }
+    
+function normalizePendingTag(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[_-]+/g, ' ')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+} 
+
+function normalizeGenreNameForDedupe(value) {
+  return normalizePendingTag(value);
+}
+
+function findDuplicateGenreGroups(list = genres) {
+  const map = new Map();
+
+  (list || []).forEach(g => {
+    const key = normalizeGenreNameForDedupe(g?.genre || '');
+    if (!key) return;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(g);
+  });
+
+  return [...map.entries()]
+    .filter(([, rows]) => rows.length > 1)
+    .map(([key, rows]) => ({ key, rows }));
+}
+
+function duplicateGenreSummary(groups, limit = 8) {
+  return (groups || []).slice(0, limit).map(group => {
+    const label = group.rows[0]?.genre || group.key;
+    const ids = group.rows.map(g => g.id ?? '?').join(', ');
+    return `${label} (${ids})`;
+  }).join('\n');
+}
+
+function warnDuplicateGenresOnLoad() {
+  const groups = findDuplicateGenreGroups(genres);
+  if (!groups.length) return;
+
+  console.warn('[Daily Genre] Duplicate genres found', groups);
+  showSaveToast(
+    `${groups.length} duplicate genre name${groups.length === 1 ? '' : 's'} found. Clean JSON before routing review items.`,
+    true
+  );
+}
+
+function blockSaveIfDuplicateGenres() {
+  const groups = findDuplicateGenreGroups(genres);
+  if (!groups.length) return false;
+
+  const names = duplicateGenreSummary(groups, 10);
+  alert(`Duplicate genres detected. Save blocked until cleaned:\n\n${names}`);
+  console.warn('[Daily Genre] Save blocked because duplicate genres exist', groups);
+  showSaveToast(`${groups.length} duplicate genre name${groups.length === 1 ? '' : 's'} must be cleaned before saving.`, true);
+  return true;
+}
+    
+function resolvePendingTargetGenre(tag, sourceGenreId) {
+    
 
     function resolvePendingTargetGenre(tag, sourceGenreId) {
       const wanted = normalizePendingTag(tag);
@@ -8702,6 +8795,7 @@ async function loadData() {
     githubSha: githubLoaded && githubLoaded.sha
   };
   console.info('[Daily Genre] Data source selected', window.dailyGenreDataSource);
+  warnDuplicateGenresOnLoad();
 
   genres.forEach(g => {
     if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
@@ -8864,6 +8958,7 @@ async function loadData() {
     }
 
     passwordSubmitBtn.addEventListener('click', async () => {
+      if (passwordSubmitBtn.disabled) return;
       const pw = passwordInput.value.trim();
       if (!pw) {
         passwordNotice.textContent = 'Enter the password.';
@@ -8871,6 +8966,8 @@ async function loadData() {
       }
 
       try {
+        passwordSubmitBtn.disabled = true;
+        passwordSubmitBtn.classList.add('is-saving');
         const completedAction = pendingSaveAction;
         await doSaveWithPassword(pw);
         appPassword = pw;
@@ -8912,6 +9009,9 @@ async function loadData() {
         }
         passwordNotice.textContent = `Save failed: ${e?.message || 'Unknown Worker error.'}`;
         showSaveToast(passwordNotice.textContent, true);
+      } finally {
+        passwordSubmitBtn.disabled = false;
+        passwordSubmitBtn.classList.remove('is-saving');
       }
     });
 
