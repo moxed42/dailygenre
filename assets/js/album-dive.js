@@ -1,14 +1,16 @@
 /* === Album Dive feature === */
     const ALBUM_DIVE_SLOT_DEFS = [
-      ['originator', 'Originator'],
-      ['breakout', 'Breakout'],
-      ['archetype', 'Archetype'],
-      ['consensus', 'Consensus'],
-      ['popular', 'Popular'],
-      ['purist', 'Purist'],
-      ['cult_hit', 'Cult Hit'],
-      ['modern', 'Modern']
-    ];
+  ['breakout', 'Breakout'],
+  ['originator', 'Originator'],
+  ['archetype', 'Archetype'],
+  ['consensus', 'Consensus'],
+  ['popular', 'Popular'],
+  ['purist', 'Purist'],
+  ['cult_hit', 'Cult Hit'],
+  ['modern', 'Modern'],
+  ['revival', 'Revival'],
+  ['wave', 'Wave'],
+];
 
     function defaultAlbumDiveSlot(key, label) {
       return {
