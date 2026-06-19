@@ -146,10 +146,11 @@
               ${dive.status === 'completed' ? '<span class="tag">Dive complete</span>' : '<span class="tag">In progress</span>'}
             </div>
           </div>
-          <div class="album-dive-actions">
-            <button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">Mark Dive Complete</button>
-            <button type="button" class="btn btn-ghost" onclick="clearAlbumDive()">Remove Dive</button>
-          </div>
+        <div class="album-dive-actions">
+  <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Album Dive</button>
+  <button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">Mark Dive Complete</button>
+  <button type="button" class="btn btn-ghost" onclick="clearAlbumDive()">Remove Dive</button>
+</div>
         </div>
         <div class="album-dive-summary">
           <label for="albumDiveSummary">What this dive is testing</label>
@@ -264,10 +265,19 @@
 
     function touchAlbumDive() {
       const dive = normalizeAlbumDive(currentGenre, true);
+      if (!dive) return;
+
       dive.lastWorkedAt = new Date().toISOString();
       if (dive.status === 'not_started') dive.status = 'active';
-      markDirty();
-    }
+
+      if (typeof markListeningUpdatePending === 'function') {
+      markListeningUpdatePending();
+        } else {
+          libraryUpdatesPending = true;
+          setUnsavedState(true);
+          toggleLibrarySaveButton(true);
+          }
+        }
 
     function rerenderAlbumDive() {
       if (!currentGenre) return;
@@ -282,7 +292,7 @@
       dive.enabled = true;
       dive.status = 'active';
       dive.lastWorkedAt = new Date().toISOString();
-      markDirty();
+      touchAlbumDive();
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       showSaveToast('Album Dive started — save changes to keep it.', false);
     }
@@ -291,7 +301,13 @@
       if (!currentGenre) return;
       if (!confirm('Remove the Album Dive from this genre?')) return;
       delete currentGenre.albumDive;
-      markDirty();
+    if (typeof markListeningUpdatePending === 'function') {
+  markListeningUpdatePending();
+} else {
+  libraryUpdatesPending = true;
+  setUnsavedState(true);
+  toggleLibrarySaveButton(true);
+}
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
     }
 
