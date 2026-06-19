@@ -3960,7 +3960,11 @@ async function loadData() {
         passwordNotice.textContent = 'Enter the password.';
         return;
       }
-
+    const oldSubmitText = passwordSubmitBtn.textContent;
+    passwordSubmitBtn.disabled = true;
+    passwordSubmitBtn.classList.add('is-saving');
+    passwordSubmitBtn.textContent = 'Saving…';
+    passwordNotice.textContent = 'Saving to GitHub…';
       try {
         const completedAction = pendingSaveAction;
         await doSaveWithPassword(pw);
@@ -4004,6 +4008,11 @@ async function loadData() {
         passwordNotice.textContent = `Save failed: ${e?.message || 'Unknown Worker error.'}`;
         showSaveToast(passwordNotice.textContent, true);
       }
+        finally {
+        passwordSubmitBtn.disabled = false;
+        passwordSubmitBtn.classList.remove('is-saving');
+        passwordSubmitBtn.textContent = oldSubmitText || 'Save now';
+    }
     });
 
     passwordCancelBtn.addEventListener('click', closePasswordModal);
