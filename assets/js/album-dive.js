@@ -210,6 +210,7 @@
     }
 
     function renderAlbumDiveSlot(slot) {
+      const albumUrl = String(slot.spotifyAlbumUrl || slot.spotifyUrl || '').trim(); 
       const state = slot.listenState || 'not_started';
       const fav = slot.favoriteSong || {};
       const safeKey = escapeHtml(slot.key);
@@ -219,10 +220,14 @@
         ${albumDiveArtHtml(slot)}
         <div class="album-slot-main">
           <div class="album-slot-kicker"><span class="album-slot-label">${escapeHtml(slot.label)}</span><span class="tag">${escapeHtml(state.replaceAll('_', ' '))}</span></div>
-          <div>
-            <div class="album-slot-display-title">${escapeHtml(displayTitle)}</div>
-            ${displaySub ? `<div class="album-slot-display-sub">${escapeHtml(displaySub)}</div>` : ''}
-          </div>
+        <div>
+  ${
+    albumUrl
+      ? `<a class="album-slot-display-title album-slot-link" href="${escapeHtml(albumUrl)}" target="_blank" rel="noopener">${escapeHtml(displayTitle)} <span class="song-link-arrow">↗</span></a>`
+      : `<div class="album-slot-display-title">${escapeHtml(displayTitle)}</div>`
+  }
+  ${displaySub ? `<div class="album-slot-display-sub">${escapeHtml(displaySub)}</div>` : ''}
+</div>
           <div class="album-fetch-row">
             <input type="url" value="${escapeHtml(slot.spotifyAlbumUrl || slot.spotifyUrl || '')}" placeholder="Paste Spotify album URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'spotifyAlbumUrl', this.value)">
             <button type="button" class="btn btn-primary btn-tiny" onclick="fetchAlbumDiveAlbumMetadata('${safeKey}', this)">Fetch Album + Tracks</button>

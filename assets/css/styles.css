@@ -4062,4 +4062,14 @@ body.spotify-player-open { padding-bottom: 116px; }
     .album-dive-verdict-grid { display:grid; grid-template-columns:220px 1fr; gap:12px; align-items:start; }
     .album-slot-card details summary { cursor:pointer; color:var(--muted); font-weight:900; }
     .btn-tiny { padding:8px 11px; border-radius:12px; font-size:.82rem; }
-    @media (max-width:720px) { .album-dive-head, .album-slot-card { display:block; } .album-slot-art { width:100%; height:auto; aspect-ratio:1/1; margin-bottom:12px; } .album-fetch-row, .album-slot-title, .album-slot-meta, .album-slot-minirow, .album-track-select-row, .album-dive-verdict-grid { grid-template-columns:1fr; } }
+    @media (max-width:720px) { .album-dive-head, .album-slot-card { display:block; } .album-slot-art { width:100%; height:auto; aspect-ratio:1/1; margin-bottom:12px; } .album-fetch-row, .album-slot-title, .album-slot-meta, .album-slot-minirow, .album-track-select-row, .album-dive-verdict-grid { grid-template-columns:1fr; } 
+  .album-slot-link {
+  color: var(--text);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.album-slot-link:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}}
