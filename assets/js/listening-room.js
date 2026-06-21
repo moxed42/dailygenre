@@ -324,6 +324,27 @@
     const genreNext = children.find((el) => /^\s*next/i.test(el.textContent || ""));
     const archiveBack = children.find((el) => /back\s+to\s+(archive|library)/i.test(el.textContent || ""));
     const genreNav = [genrePrev, archiveBack, genreNext].filter(Boolean);
+    if (!genreNav.length) {
+      const makeNav = (label, action, className) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `btn btn-secondary ${className || ""}`.trim();
+        btn.textContent = label;
+        btn.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (action === "prev" && typeof openAdjacentGenre === "function") openAdjacentGenre(-1);
+          if (action === "next" && typeof openAdjacentGenre === "function") openAdjacentGenre(1);
+          if (action === "archive" && typeof restoreArchiveUiState === "function") restoreArchiveUiState();
+        });
+        return btn;
+      };
+      genreNav.push(
+        makeNav("← Previous", "prev", "dc-prev-genre-btn"),
+        makeNav("Back to Archive", "archive", "dc-back-archive-btn"),
+        makeNav("Next →", "next", "dc-next-genre-btn"),
+      );
+    }
     const rest = children.filter(
       (el) =>
         el !== listen &&
@@ -354,55 +375,7 @@
       actions.appendChild(navWrap);
     }
 
-    const songCount = activeSongs(currentGenre).length;
-    if (songCount > 1 && !actions.querySelector(".dc-song-nav-action")) {
-      const prev = document.createElement("button");
-      prev.type = "button";
-      prev.className = "dc-song-nav-action dc-song-nav-prev-action";
-      prev.title = "Previous song";
-      prev.setAttribute("aria-label", "Previous song");
-      prev.innerHTML = "‹";
-      prev.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (typeof moveSongFocus === "function") moveSongFocus(-1);
-      });
-      actions.appendChild(prev);
-
-      const next = document.createElement("button");
-      next.type = "button";
-      next.className = "dc-song-nav-action dc-song-nav-next-action";
-      next.title = "Next song";
-      next.setAttribute("aria-label", "Next song");
-      next.innerHTML = "›";
-      next.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (typeof moveSongFocus === "function") moveSongFocus(1);
-      });
-      actions.appendChild(next);
-    }
-
-    if (!actions.querySelector(".dc-copy-discord-action")) {
-      const copy = document.createElement("button");
-      copy.type = "button";
-      copy.className = "dc-copy-discord-action";
-      copy.title = "Copy Discord share block";
-      copy.setAttribute("aria-label", "Copy Discord share block");
-      copy.innerHTML =
-        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="5" y="5" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
-      copy.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        copyCurrentGenreDiscord(copy);
-      });
-      actions.appendChild(copy);
-    }
-
-    // Hide the old Studio/editor action in Listen Mode. The rebuilt page keeps
-    // curation details in the lower drawers and the Review badge; the old
-    // Studio button was flashing the screen without landing reliably.
-    if (edit) edit.remove?.();
+    // Song-to-song navigation belongs inside the Song Queue, not in the genre hero.
 
     if (rest.length) {
       const details = document.createElement("details");
