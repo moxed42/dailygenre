@@ -410,7 +410,7 @@
     </section>`;
   }
 
-  function renderSongDetails(entry) {
+  function renderSongDetails(entry, entries = [], activeFilter = "all") {
     const song = entry.song;
     const encodedKey = encodedSongKey(song);
     const encodedPath = encodeURIComponent(entry.path || "").replace(
@@ -435,13 +435,21 @@
     if (song.isrc) meta.push(`ISRC: ${song.isrc}`);
     if (song.releaseDate) meta.push(`Release: ${song.releaseDate}`);
     if (song.releaseSource) meta.push(`Source: ${song.releaseSource}`);
+    const sequenceCount = (filterSongEntries(entries, activeFilter).length || entries.length || 0);
+    const filterLabel = activeFilter && activeFilter !== "all" ? " in current filter" : "";
+    const navControls = sequenceCount > 1
+      ? `<div class="song-focus-editor-nav" role="group" aria-label="Song editor navigation"><button type="button" class="btn btn-secondary btn-tiny song-focus-editor-prev" onclick="event.preventDefault(); event.stopPropagation(); moveSongFocus(-1)" title="Previous song${filterLabel}">← Previous</button><button type="button" class="btn btn-secondary btn-tiny song-focus-editor-next" onclick="event.preventDefault(); event.stopPropagation(); moveSongFocus(1)" title="Next song${filterLabel}">Next →</button></div>`
+      : "";
     return `<section class="song-focus-details-drawer song-note-editor">
       <div class="song-focus-details-head">
         <div>
           <div class="eyebrow">Song details</div>
           <h3>${html(song.title || "Selected song")}</h3>
         </div>
-        <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
+        <div class="song-focus-details-head-actions">
+          ${navControls}
+          <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
+        </div>
       </div>
       <div class="song-focus-details-grid">
         <div class="song-focus-detail-card song-focus-fit-card">
@@ -461,10 +469,10 @@
           </div>
           <div class="track-card-edit-note">Staged locally. Save Listening Updates will roll this up and persist it.</div>
         </div>
-        <div class="song-focus-detail-card compact song-focus-url-card">
+        <div class="song-focus-detail-card compact song-focus-url-card track-card-editor">
           <h4>Track URL <span class="song-focus-inline-label">no full edit mode needed</span></h4>
           <div class="song-focus-url-row">
-            <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
+            <input data-track-url-input type="text" inputmode="url" autocomplete="off" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
             <button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Update URL</button>
             ${canRefreshSpotify ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Metadata</button>` : ""}
           </div>
@@ -582,6 +590,70 @@
     </section>`;
   }
 
+  function trackUrlInputIsActive() {
+    const active = document.activeElement;
+    return !!active?.matches?.('[data-track-url-input]');
+  }
+
+  function inputSelectionInsert(input, text) {
+    if (!input) return;
+    const value = String(input.value || "");
+    const start = Number.isFinite(input.selectionStart) ? input.selectionStart : value.length;
+    const end = Number.isFinite(input.selectionEnd) ? input.selectionEnd : start;
+    const next = value.slice(0, start) + text + value.slice(end);
+    input.value = next;
+    const pos = start + text.length;
+    try { input.setSelectionRange(pos, pos); } catch {}
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  function protectTrackUrlInput(input) {
+    if (!input || input.__dailyGenreTrackUrlProtected) return;
+    input.__dailyGenreTrackUrlProtected = true;
+    input.setAttribute("autocomplete", "off");
+    input.setAttribute("spellcheck", "false");
+
+    const keepFocus = (event) => {
+      window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
+      event.stopPropagation();
+      try {
+        if (document.activeElement !== input) {
+          setTimeout(() => input.focus({ preventScroll: true }), 0);
+        }
+      } catch {}
+    };
+
+    ["pointerdown", "mousedown", "mouseup", "click", "dblclick", "touchstart"].forEach((type) => {
+      input.addEventListener(type, keepFocus);
+    });
+
+    ["keydown", "keyup", "beforeinput", "input", "select"].forEach((type) => {
+      input.addEventListener(type, (event) => {
+        window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
+        event.stopPropagation();
+      });
+    });
+
+    input.addEventListener("paste", (event) => {
+      window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
+      event.stopPropagation();
+      const text = event.clipboardData?.getData?.("text/plain") || event.clipboardData?.getData?.("text") || "";
+      if (text) {
+        event.preventDefault();
+        inputSelectionInsert(input, text);
+      }
+    });
+  }
+
+  function installTrackUrlInputGuard(root = document) {
+    root.querySelectorAll?.('[data-track-url-input]')?.forEach(protectTrackUrlInput);
+  }
+
+  function shouldSkipSongFocusRenderForEditing() {
+    if (trackUrlInputIsActive()) return true;
+    return Date.now() < Number(window.__dailyGenreTrackUrlEditingUntil || 0);
+  }
+
   function enhanceSongListeningExperience() {
     if (typeof currentGenre === "undefined" || !currentGenre) return;
     const screen = document.getElementById("screen-listen");
@@ -589,6 +661,11 @@
     const section = screen.querySelector(".detail-log-section");
     const activeList = section?.querySelector(".detail-song-list");
     if (!section || !activeList) return;
+    const existingMount = section.querySelector(".song-focus-experience");
+    if (existingMount && shouldSkipSongFocusRenderForEditing()) {
+      installTrackUrlInputGuard(existingMount);
+      return;
+    }
 
     const entries = songListForFocus(currentGenre);
     if (!entries.length) return;
@@ -624,14 +701,17 @@
       mount.className = "song-focus-experience";
       section.insertBefore(mount, activeList);
     }
-    const nextHtml = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
+    const nextHtml = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected, entries, activeFilter) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
     // Avoid replacing the whole queue DOM when nothing meaningful changed.
-    // Replacing identical markup reloads <img> nodes and causes visible album-art flicker
-    // on genres whose identity-track sync or Studio wrappers call this enhancer more than once.
+    // Replacing identical markup reloads <img> nodes and causes visible album-art flicker.
     const nextSignature = String(currentGenre.id ?? currentGenre.genre ?? "") + "::" + selectedKey + "::" + activeFilter + "::" + (queueOpen ? "open" : "closed") + "::" + (detailsOpen ? "details" : "nodetails") + "::" + nextHtml;
-    if (mount.dataset.songFocusSignature === nextSignature) return;
+    if (mount.dataset.songFocusSignature === nextSignature) {
+      installTrackUrlInputGuard(mount);
+      return;
+    }
     mount.dataset.songFocusSignature = nextSignature;
     mount.innerHTML = nextHtml;
+    installTrackUrlInputGuard(mount);
   }
 
   function installNoJumpReactionWrapper() {
@@ -689,8 +769,8 @@
   }
 
   function installSongQueueClickRescue() {
-    if (window.__dailyGenreSongQueueClickRescueV30) return;
-    window.__dailyGenreSongQueueClickRescueV30 = true;
+    if (window.__dailyGenreSongQueueClickRescueV38) return;
+    window.__dailyGenreSongQueueClickRescueV38 = true;
     document.addEventListener(
       "click",
       (event) => {
@@ -742,7 +822,15 @@
     };
   }
 
-  document.addEventListener("DOMContentLoaded", () =>
-    setTimeout(enhanceSongListeningExperience, 0),
-  );
+  document.addEventListener("focusin", (event) => {
+    if (event.target?.matches?.('[data-track-url-input]')) {
+      protectTrackUrlInput(event.target);
+      window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    installTrackUrlInputGuard(document);
+    setTimeout(enhanceSongListeningExperience, 0);
+  });
 })();

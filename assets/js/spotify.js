@@ -14,10 +14,25 @@
       return code === 'broken' || /not found|resource|removed|unavailable|invalid|404|does not exist|doesn't exist|cannot find|provide a valid/.test(text);
     }
 
+    function spotifyTrackId(urlOrId='') {
+      const raw = String(urlOrId || '').trim();
+      const uri = raw.match(/spotify:track:([A-Za-z0-9]{22})/i);
+      if (uri) return uri[1];
+      const web = raw.match(/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?track\/([A-Za-z0-9]{22})/i);
+      if (web) return web[1];
+      const bare = raw.match(/^[A-Za-z0-9]{22}$/);
+      return bare ? bare[0] : '';
+    }
+
+    function spotifyCanonicalTrackUrl(urlOrId='') {
+      const id = spotifyTrackId(normalizeSongUrl(urlOrId || '') || urlOrId);
+      return id ? `https://open.spotify.com/track/${id}` : (normalizeSongUrl(urlOrId || '') || String(urlOrId || '').trim());
+    }
+
     async function fetchSpotifyTrackResult(urlOrId, force=false) {
       const trackRef = String(urlOrId || '').trim();
       if (!trackRef) return { ok:false, code:'broken', error:'No Spotify track URL saved.' };
-      const cacheKey = normalizeSongUrl(trackRef) || trackRef;
+      const cacheKey = spotifyCanonicalTrackUrl(trackRef);
       if (!force && spotifyOfficialCache.has(cacheKey)) return spotifyOfficialCache.get(cacheKey);
 
       const request = fetch(`${WORKER_URL}spotify/track?url=${encodeURIComponent(cacheKey)}`, { cache: 'no-store' })
@@ -74,12 +89,12 @@
 
     const spotifyOembedCache = new Map();
 
-    async function fetchSpotifyOembed(url) {
-      const trackUrl = normalizeSongUrl(url || '');
+    async function fetchSpotifyOembed(url, force=false) {
+      const trackUrl = (typeof spotifyCanonicalTrackUrl === 'function') ? spotifyCanonicalTrackUrl(url || '') : normalizeSongUrl(url || '');
       if (!/https?:\/\/open\.spotify\.com\/track\//i.test(trackUrl)) return null;
-      if (spotifyOembedCache.has(trackUrl)) return spotifyOembedCache.get(trackUrl);
+      if (!force && spotifyOembedCache.has(trackUrl)) return spotifyOembedCache.get(trackUrl);
 
-      const request = fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(trackUrl)}`)
+      const request = fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(trackUrl)}`, { cache: 'no-store' })
         .then(async response => {
           if (!response.ok) throw new Error(`Spotify oEmbed failed (${response.status})`);
           return response.json();

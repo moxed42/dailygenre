@@ -7202,3 +7202,43 @@ body.dc-listen-mode .dc-primary-songs.detail-log-section > .eyebrow {
   z-index: 5 !important;
   pointer-events: auto !important;
 }
+
+
+/* === v39: song editor previous/next controls === */
+#screen-listen .song-focus-details-head-actions,
+#dc-songs .song-focus-details-head-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#screen-listen .song-focus-editor-nav,
+#dc-songs .song-focus-editor-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 248, 229, 0.72);
+  border: 1px solid rgba(127, 82, 28, 0.12);
+}
+
+#screen-listen .song-focus-editor-nav .btn,
+#dc-songs .song-focus-editor-nav .btn {
+  min-height: 30px;
+  padding-inline: 10px;
+}
+
+@media (max-width: 720px) {
+  #screen-listen .song-focus-details-head,
+  #dc-songs .song-focus-details-head {
+    align-items: stretch;
+  }
+
+  #screen-listen .song-focus-details-head-actions,
+  #dc-songs .song-focus-details-head-actions {
+    justify-content: flex-start;
+  }
+}
