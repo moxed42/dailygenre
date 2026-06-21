@@ -5,7 +5,7 @@
 (function dailyGenreLibraryPolishPerformanceRescue() {
   'use strict';
 
-  const VERSION = 'today-dig-performance-v8';
+  const VERSION = 'detail-player-rank-fixes-v17';
   let installed = false;
   let enhanceQueued = false;
 
@@ -170,13 +170,58 @@
     return safeText(title && title.textContent).trim();
   }
 
+  function setDetailEditMode(next, focusEditor = false) {
+    try {
+      // app.js keeps detailEditMode as a page-global. Touch it directly so
+      // listened genres with existing songs can still reveal the existing editor.
+      detailEditMode = !!next;
+    } catch (_) {
+      try { window.detailEditMode = !!next; } catch (__) {}
+    }
+    try {
+      if (typeof window.applyDetailEditMode === 'function') window.applyDetailEditMode(!!focusEditor);
+      else if (typeof applyDetailEditMode === 'function') applyDetailEditMode(!!focusEditor);
+    } catch (_) {}
+  }
+
+  function ensureEditorCloseButton(panel) {
+    if (!panel || panel.querySelector('[data-dg-close-song-editor]')) return;
+    const head = panel.querySelector('.form-section') || panel.firstElementChild || panel;
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'btn btn-secondary dg-close-song-editor-btn';
+    close.setAttribute('data-dg-close-song-editor', '');
+    close.setAttribute('aria-label', 'Close song editor');
+    close.title = 'Close song editor';
+    close.textContent = 'Close editor';
+    if (head.classList && head.classList.contains('form-section')) {
+      head.classList.add('dg-editor-head-with-close');
+      head.appendChild(close);
+    } else {
+      panel.insertBefore(close, panel.firstChild);
+    }
+  }
+
   function revealEditorPanel() {
     const panel = $('#listenEditPanel');
     if (!panel) return null;
-    panel.classList.remove('hidden', 'collapsed', 'studio-section-collapsed', 'dc-editor-collapsed');
+    setDetailEditMode(true, true);
+    panel.classList.remove('hidden', 'collapsed', 'is-hidden', 'studio-section-collapsed', 'dc-editor-collapsed');
+    panel.classList.add('is-editing');
     panel.removeAttribute('hidden');
     panel.style.display = '';
+    ensureEditorCloseButton(panel);
     return panel;
+  }
+
+  function closeSongEditor() {
+    const panel = $('#listenEditPanel');
+    setDetailEditMode(false, false);
+    if (panel) {
+      panel.classList.add('is-hidden');
+      panel.classList.remove('is-editing');
+    }
+    toast('Song editor closed. Unsaved edits are still on the page until you save or reload.');
   }
 
   function openSongEditor() {
@@ -186,14 +231,15 @@
     const target = textarea || panel;
 
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(() => {
+      const focusTextarea = () => {
         if (textarea) {
           textarea.focus({ preventScroll: true });
           const len = textarea.value.length;
           try { textarea.setSelectionRange(len, len); } catch (_) {}
         }
-      }, 220);
+      };
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      [80, 220, 520].forEach((delay) => setTimeout(focusTextarea, delay));
       toast('Add songs in the existing Songs listened editor, then use Save Changes.');
       return true;
     }
@@ -272,6 +318,9 @@
     style.textContent = `
       .dg-add-songs-inline-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 12px; }
       .dg-add-songs-btn { white-space: nowrap; }
+      .dg-editor-head-with-close { position: relative; padding-right: 148px; }
+      .dg-close-song-editor-btn { position: absolute; right: 0; top: 0; padding: 7px 12px !important; font-size: .82rem !important; border-radius: 999px !important; }
+      @media (max-width: 680px) { .dg-editor-head-with-close { padding-right: 0; padding-top: 42px; } .dg-close-song-editor-btn { left: 0; right: auto; } }
       .dg-song-editor-callout {
         display: flex;
         justify-content: space-between;
@@ -302,6 +351,15 @@
       event.stopPropagation();
       if (event.stopImmediatePropagation) event.stopImmediatePropagation();
       openTodayOrRecent();
+      return;
+    }
+
+    const closeEditor = event.target.closest('[data-dg-close-song-editor]');
+    if (closeEditor) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      closeSongEditor();
       return;
     }
 
@@ -339,6 +397,7 @@
     window.DailyGenreDigHotfix = {
       version: VERSION,
       openSongEditor,
+      closeSongEditor,
       enhance: enhanceDigPage,
     };
 
