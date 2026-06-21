@@ -5,10 +5,13 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.0.0";
+  const VERSION = "genre-identity-v23-random-no-jump";
   let lastListenGenre = null;
   let selectedGenreId = "";
+  let lastStudioRandomCleanupId = "";
   let applying = false;
+  const identityArtworkTried = new Set();
+  let identityArtworkHydrationQueued = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -47,6 +50,23 @@
   function linkUrl(value) {
     const url = String(value || "").trim();
     return /^https?:\/\//i.test(url) ? url : "";
+  }
+
+  function trackArtwork(track) {
+    return linkUrl(
+      track?.artwork ||
+        track?.albumArt ||
+        track?.album_art ||
+        track?.image ||
+        track?.imageUrl ||
+        track?.cover ||
+        track?.coverUrl ||
+        "",
+    );
+  }
+
+  function trackSpotifyUrl(track) {
+    return linkUrl(track?.spotifyUrl || track?.url || track?.spotify_url || "");
   }
 
   function aliasList(genre) {
@@ -253,7 +273,7 @@
   }
 
   function identityTrackCard(track, kind, extra = "") {
-    const url = linkUrl(track?.spotifyUrl || track?.url || track?.spotify_url);
+    const url = trackSpotifyUrl(track);
     const title = String(track?.title || track?.name || "").trim();
     const artist = String(track?.artist || "").trim();
     const label = [artist, title].filter(Boolean).join(" — ") || title || kind;
@@ -261,14 +281,15 @@
     const mediaTitle = String(track?.mediaTitle || track?.media || "").trim();
     const mediaType = String(track?.mediaType || "").trim();
     const icon = kind === "Seminal track" ? "✦" : "▣";
+    const art = trackArtwork(track);
     const copy =
       kind === "Seminal track"
-        ? "Canonical anchor"
+        ? ["Canonical anchor", track?.album ? `from ${track.album}` : ""].filter(Boolean).join(" · ")
         : [mediaTitle ? `from ${mediaTitle}` : "Media touchstone", mediaType]
             .filter(Boolean)
             .join(" · ");
-    return `<article class="genre-identity-track-card ${kind === "Seminal track" ? "is-seminal" : "is-media"}">
-      <div class="genre-identity-track-icon" aria-hidden="true">${esc(icon)}</div>
+    return `<article class="genre-identity-track-card ${kind === "Seminal track" ? "is-seminal" : "is-media"} ${art ? "has-artwork" : ""}">
+      <div class="genre-identity-track-icon" aria-hidden="true">${art ? `<img src="${esc(art)}" alt="" loading="lazy">` : esc(icon)}</div>
       <div class="genre-identity-track-main">
         <div class="genre-identity-track-kicker">${esc(kind)}</div>
         <strong>${url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} ↗</a>` : esc(label)}</strong>
@@ -276,6 +297,73 @@
         ${reason ? `<em>${esc(reason)}</em>` : ""}
       </div>
     </article>`;
+  }
+
+  function identityTracksForHydration(genre) {
+    const tracks = [];
+    const sem = getSeminal(genre);
+    if (sem?.spotifyUrl || sem?.url || sem?.spotify_url) tracks.push(sem);
+    getMedia(genre).forEach((m) => {
+      if (m?.spotifyUrl || m?.url || m?.spotify_url) tracks.push(m);
+    });
+    return tracks;
+  }
+
+  async function hydrateIdentityArtwork(genre) {
+    if (!genre || typeof window.fetchSpotifyTrackMetadata !== "function") return;
+    let changed = false;
+    for (const track of identityTracksForHydration(genre)) {
+      if (trackArtwork(track)) continue;
+      const url = trackSpotifyUrl(track);
+      if (!url || identityArtworkTried.has(url)) continue;
+      identityArtworkTried.add(url);
+      try {
+        const meta = await window.fetchSpotifyTrackMetadata(url);
+        if (!meta) continue;
+        if (meta.artwork && !trackArtwork(track)) {
+          track.artwork = meta.artwork;
+          changed = true;
+        }
+        if (meta.album && !track.album) {
+          track.album = meta.album;
+          changed = true;
+        }
+        if (meta.spotifyId && !track.spotifyId) {
+          track.spotifyId = meta.spotifyId;
+          changed = true;
+        }
+        if (meta.spotifyUrl && !track.spotifyUrl) {
+          track.spotifyUrl = meta.spotifyUrl;
+          track.url = meta.spotifyUrl;
+          changed = true;
+        }
+        if (meta.title && !track.title) {
+          track.title = meta.title;
+          changed = true;
+        }
+        if (meta.artist && !track.artist) {
+          track.artist = meta.artist;
+          changed = true;
+        }
+      } catch (err) {
+        console.warn("[Daily Genre] Identity artwork lookup failed", err);
+      }
+    }
+    if (changed) {
+      markDirty();
+      injectDnaCard(genre);
+      refreshStudioEditor();
+      toast("Fetched Spotify artwork for Genre DNA. Save Library Updates to persist.");
+    }
+  }
+
+  function queueIdentityArtworkHydration(genre) {
+    if (!genre || identityArtworkHydrationQueued) return;
+    identityArtworkHydrationQueued = true;
+    setTimeout(() => {
+      identityArtworkHydrationQueued = false;
+      hydrateIdentityArtwork(genre);
+    }, 120);
   }
 
   function injectHeroAliases(genre) {
@@ -330,6 +418,7 @@
     }
     if (existing) {
       existing.outerHTML = html;
+      queueIdentityArtworkHydration(g);
       return;
     }
 
@@ -345,9 +434,11 @@
       );
       if (consoleAnchor) {
         consoleAnchor.insertAdjacentHTML("afterend", html);
+        queueIdentityArtworkHydration(g);
         return;
       }
       consoleWrap.insertAdjacentHTML("afterbegin", html);
+      queueIdentityArtworkHydration(g);
       return;
     }
 
@@ -357,6 +448,7 @@
     );
     if (anchor) anchor.insertAdjacentHTML("beforebegin", html);
     else $(".detail-hero", root)?.insertAdjacentHTML("beforeend", html);
+    queueIdentityArtworkHydration(g);
   }
 
   function renderIdentityEditor() {
@@ -377,7 +469,7 @@
     return `<section class="genre-identity-editor studio-collapsible-section studio-section-collapsed" id="genreIdentityWorkbench" aria-label="Genre Identity Editor" data-studio-collapsible="1">
       <div class="studio-lane-head genre-identity-editor-head">
         <div><div class="eyebrow">Genre Identity</div><h3>Aliases, seminal track, and media touchstones</h3><p>These fields make search smarter and give each genre a compact cultural/canonical context.</p><div class="genre-identity-status-line">${esc(identityStatus(g))}</div></div>
-        <div class="genre-identity-head-actions"><button type="button" class="btn btn-secondary btn-tiny" onclick="DailyGenreIdentity.openGenre(${JSON.stringify(String(g.id ?? ""))})">Open genre</button><button type="button" class="studio-collapse-btn" aria-expanded="false"><span aria-hidden="true">＋</span><strong>Expand</strong></button></div>
+        <div class="genre-identity-head-actions"><button type="button" class="btn btn-secondary btn-tiny" onclick="DailyGenreIdentity.openGenre(${JSON.stringify(String(g.id ?? ""))})">Open genre</button><button type="button" class="btn btn-secondary btn-tiny studio-random-song-cleanup-btn" data-studio-random-song-cleanup onclick="DailyGenreIdentity.openRandomStudioCleanup(event)" title="Load another random already-listened genre into this Genre Identity editor">Random cleanup</button><button type="button" class="studio-collapse-btn" aria-expanded="false"><span aria-hidden="true">＋</span><strong>Expand</strong></button></div>
       </div>
       <div class="genre-identity-picker">
         <label><span>Genre</span><input id="genreIdentityPick" type="search" list="genreIdentityDatalist" value="${esc(label || "")}" placeholder="Type a genre or alias…" autocomplete="off"></label>
@@ -587,6 +679,7 @@
       title: parsed.seminal.title || "",
       spotifyUrl: parsed.seminal.spotifyUrl || parsed.seminal.url || "",
       reason: parsed.seminal.reason || "",
+      artwork: parsed.seminal.artwork || parsed.seminal.albumArt || "",
     };
     if (sem.spotifyUrl) sem.url = sem.spotifyUrl;
     id.seminalTrack = sem;
@@ -600,6 +693,7 @@
         spotifyUrl: m.spotifyUrl || m.url || "",
         url: m.spotifyUrl || m.url || "",
         reason: m.reason || "",
+        artwork: m.artwork || m.albumArt || "",
       }))
       .filter(
         (m) =>
@@ -653,16 +747,30 @@
     );
     setAliases(g, aliases);
     const id = identity(g);
+    const previousSem = getSeminal(g);
+    const previousMedia = getMedia(g);
     const sem = {
       artist: String($("#genreSeminalArtist")?.value || "").trim(),
       title: String($("#genreSeminalTitle")?.value || "").trim(),
       spotifyUrl: String($("#genreSeminalUrl")?.value || "").trim(),
       reason: String($("#genreSeminalReason")?.value || "").trim(),
+      artwork: previousSem.artwork || previousSem.albumArt || "",
+      album: previousSem.album || "",
+      spotifyId: previousSem.spotifyId || "",
     };
     if (sem.spotifyUrl) sem.url = sem.spotifyUrl;
     id.seminalTrack = sem;
     g.seminal_song = sem;
-    id.mediaTouchstones = readMediaRows(form);
+    const priorByUrl = new Map(previousMedia.map((m) => [trackSpotifyUrl(m), m]).filter(([url]) => !!url));
+    id.mediaTouchstones = readMediaRows(form).map((m) => {
+      const prior = priorByUrl.get(trackSpotifyUrl(m)) || {};
+      return {
+        ...m,
+        artwork: m.artwork || prior.artwork || prior.albumArt || "",
+        album: m.album || prior.album || "",
+        spotifyId: m.spotifyId || prior.spotifyId || "",
+      };
+    });
     g.media_touchstones = id.mediaTouchstones;
     markDirty();
     injectDnaCard();
@@ -1142,10 +1250,92 @@
     }
   }
 
+
+  function officialSongCountForStudioCleanup(genre) {
+    try {
+      const raw = Array.isArray(genre?.songs_listened) ? genre.songs_listened : [];
+      const inflated = typeof window.inflateSongsFromStorage === "function" ? window.inflateSongsFromStorage(raw) : raw;
+      return inflated.filter((song) => song && !song.isPending).length;
+    } catch (_) {
+      return Array.isArray(genre?.songs_listened) ? genre.songs_listened.length : 0;
+    }
+  }
+
+  function isLoggedForStudioCleanup(genre) {
+    const status = String(genre?.status || "").toLowerCase();
+    return status === "listened" || status === "veto" || !!genre?.date_normalized || !!genre?.date_raw;
+  }
+
+  function expandStudioIdentitySection(scroll = true) {
+    const workbench = $("#genreIdentityWorkbench");
+    if (!workbench) return;
+    workbench.classList.remove("studio-section-collapsed");
+    workbench.classList.remove("is-collapsed");
+    const btn = workbench.querySelector(".studio-collapse-btn");
+    if (btn) {
+      btn.setAttribute("aria-expanded", "true");
+      btn.innerHTML = '<span aria-hidden="true">−</span><strong>Collapse</strong>';
+    }
+    if (scroll) workbench.scrollIntoView?.({ behavior: "smooth", block: "start" });
+  }
+
+  function openRandomStudioCleanup(ev) {
+    try {
+      ev?.preventDefault?.();
+      ev?.stopPropagation?.();
+    } catch (_) {}
+
+    const clickedInsideWorkbench = !!ev?.target?.closest?.("#genreIdentityWorkbench");
+    const reviewScreen = $("#screen-review");
+    const alreadyInStudio = !!reviewScreen?.classList?.contains("active");
+    const preserveScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+
+    const all = genres();
+    const currentFormId = String($("#genreIdentityWorkbench .genre-identity-form")?.dataset?.genreId || selectedGenreId || "");
+    const avoid = new Set([currentFormId, lastStudioRandomCleanupId].filter(Boolean).map(String));
+    let pool = all
+      .filter((genre) => isLoggedForStudioCleanup(genre) && officialSongCountForStudioCleanup(genre) > 0)
+      .filter((genre) => !avoid.has(String(genre.id ?? "")));
+    if (!pool.length) {
+      pool = all
+        .filter((genre) => isLoggedForStudioCleanup(genre) && officialSongCountForStudioCleanup(genre) > 0)
+        .filter((genre) => String(genre.id ?? "") !== currentFormId);
+    }
+    if (!pool.length) pool = all.filter((genre) => isLoggedForStudioCleanup(genre) && officialSongCountForStudioCleanup(genre) > 0);
+    if (!pool.length) {
+      toast("No listened genres with logged songs are available for cleanup yet.", true);
+      expandStudioIdentitySection(!clickedInsideWorkbench);
+      return false;
+    }
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    selectedGenreId = String(pick.id ?? "");
+    lastStudioRandomCleanupId = selectedGenreId;
+
+    // If the button was clicked from inside Studio/Genre Identity, do not call
+    // switchScreen() or scrollIntoView(); both can yank the viewport back to the
+    // top of Studio. Just swap the selected cleanup target in place.
+    if (!alreadyInStudio && typeof switchScreen === "function") switchScreen("review");
+
+    setTimeout(() => {
+      injectStudioEditor();
+      refreshStudioEditor();
+      installEditorEvents($("#genreIdentityWorkbench"));
+      expandStudioIdentitySection(!clickedInsideWorkbench);
+      const pickInput = $("#genreIdentityPick");
+      if (pickInput && pick.genre) pickInput.value = pick.genre;
+      if (clickedInsideWorkbench && typeof window !== "undefined") {
+        window.requestAnimationFrame?.(() => window.scrollTo({ top: preserveScrollY, left: 0, behavior: "auto" }));
+      }
+      toast(`Random identity cleanup pick: ${pick.genre || "listened genre"}.`);
+    }, 40);
+    return true;
+  }
+
   window.DailyGenreIdentity = {
     version: VERSION,
     aliases: aliasList,
     searchText,
+    openRandomStudioCleanup: openRandomStudioCleanup,
     openStudio(id) {
       selectedGenreId = String(id || selectedGenreId || "");
       if (typeof switchScreen === "function") switchScreen("review");
@@ -1154,14 +1344,7 @@
         refreshStudioEditor();
         const workbench = $("#genreIdentityWorkbench");
         if (workbench) {
-          workbench.classList.remove("studio-section-collapsed");
-          const btn = workbench.querySelector(".studio-collapse-btn");
-          if (btn) {
-            btn.setAttribute("aria-expanded", "true");
-            btn.innerHTML =
-              '<span aria-hidden="true">−</span><strong>Collapse</strong>';
-          }
-          workbench.scrollIntoView({ behavior: "smooth", block: "start" });
+          expandStudioIdentitySection(true);
         }
       }, 80);
     },

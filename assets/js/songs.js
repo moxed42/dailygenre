@@ -257,6 +257,17 @@
     enhanceSongListeningExperience();
   }
 
+  function setSongFocusFromQueue(key) {
+    try {
+      if (typeof currentGenre !== "undefined" && currentGenre) {
+        localStorage.setItem(genreFocusStorageKey(currentGenre), key || "");
+        localStorage.setItem(genreDetailsStorageKey(currentGenre), "1");
+        localStorage.setItem(genreQueueOpenStorageKey(currentGenre), "1");
+      }
+    } catch {}
+    enhanceSongListeningExperience();
+  }
+
   function moveSongFocus(delta) {
     if (typeof currentGenre === "undefined" || !currentGenre) return;
     const entries = songListForFocus(currentGenre);
@@ -492,7 +503,7 @@
           <div class="eyebrow">Song queue</div>
           <div class="small">${reactedCount}/${entries.length} reacted · ${favoriteCount} favorite${activeFilter !== "all" ? ` · ${visibleEntries.length} shown` : ""}</div>
         </div>
-        <button type="button" class="song-focus-queue-toggle" onclick="setSongQueueOpen(${queueOpen ? "false" : "true"})">${queueOpen ? "Collapse queue" : "Show queue"}</button>
+        <button type="button" class="song-focus-queue-toggle" onclick="setSongQueueOpen(${queueOpen ? "false" : "true"})">${queueOpen ? "Collapse queue" : "Show/edit queue"}</button>
       </div>
       ${
         queueOpen
@@ -589,7 +600,7 @@
       mount.className = "song-focus-experience";
       section.insertBefore(mount, activeList);
     }
-    mount.innerHTML = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
+    mount.innerHTML = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}${detailsOpen ? renderSongDetails(selected) : ""}`;
   }
 
   function installNoJumpReactionWrapper() {
@@ -636,7 +647,7 @@
     };
   }
 
-  window.setSongFocus = setSelectedSongKey;
+  window.setSongFocus = setSongFocusFromQueue;
   window.setSongFocusDetailsOpen = setSongDetailsOpen;
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
