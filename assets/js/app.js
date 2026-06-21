@@ -989,11 +989,15 @@
     }
 
     function genreRatingHeroMarkup(genre) {
-      if (!genre || !genre.rating) return '<span class="tag">Unrated</span>';
-      if (String(genre.rating) === 'zanger') return '<span class="genre-zanger-badge">✕ Zanger</span>';
-      const n = Number(genre.rating);
-      const stars = `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
-      return `<span class="genre-star-rating" title="${escapeHtml(genreRatingLabel(genre.rating))}" aria-label="${escapeHtml(`${stars} ${genreRatingLabel(genre.rating)}`)}">${stars}</span>`;
+      const active = String(genre?.rating || '');
+      if (active === 'zanger') return '<span class="genre-zanger-badge">✕ Zanger</span>';
+      return `<div class="genre-hero-rating-controls" aria-label="Genre rating controls">
+        ${[1,2,3,4,5].map(n => {
+          const filled = Number(active) >= n;
+          const isActive = active === String(n);
+          return `<button type="button" class="genre-hero-star ${filled ? 'filled' : ''} ${isActive ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="Set genre rating to ${n} stars">${filled ? '★' : '☆'}</button>`;
+        }).join('')}
+      </div>`;
     }
 
     function genreRatingDisplay(genre) {
@@ -2054,6 +2058,13 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
     async function markCurrentGenreListened() {
       if (!currentGenre) return;
+      // A new daily pick should start as unrated. Ratings are the listening reaction,
+      // so selecting today's genre should not inherit or imply a star value.
+      if (!dateValue(currentGenre)) {
+        currentGenre.rating = '';
+        selectedRating = '';
+        currentGenre.rank_order = null;
+      }
       await prepareAndSaveCurrentGenre({ markListened: true });
     }
 

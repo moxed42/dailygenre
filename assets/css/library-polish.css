@@ -6758,3 +6758,158 @@ body.dc-listen-mode .dc-primary-songs.detail-log-section > .eyebrow {
     text-wrap: pretty !important;
   }
 }
+
+
+/* === Detail polish v19: smaller green Spotify controls + random cleanup button === */
+.sp-play-btn,
+.song-focus-mini-btn {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  margin-left: 6px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #1DB954 !important;
+  color: #06130a !important;
+  font-size: 0.64rem !important;
+  line-height: 1 !important;
+  font-weight: 1000 !important;
+  vertical-align: middle !important;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.24) !important;
+}
+
+.sp-play-btn:hover,
+.song-focus-mini-btn:hover {
+  background: #1ed760 !important;
+  transform: translateY(-1px);
+}
+
+.sp-play-btn:focus-visible,
+.song-focus-mini-btn:focus-visible {
+  outline: 3px solid rgba(29, 185, 84, 0.35) !important;
+  outline-offset: 2px !important;
+}
+
+.song-focus-control-row {
+  gap: 7px !important;
+}
+
+.song-focus-control-row .song-focus-mini-btn {
+  flex: 0 0 auto !important;
+}
+
+.dg-song-editor-callout-actions,
+.dg-add-songs-inline-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+.dg-random-cleanup-btn {
+  white-space: nowrap !important;
+}
+
+@media (max-width: 680px) {
+  .dg-song-editor-callout-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* === v20: unify song queue and selected song editor === */
+#screen-listen .song-original-list-hidden,
+#dc-songs .song-original-list-hidden {
+  display: none !important;
+}
+
+#screen-listen .song-focus-experience,
+#dc-songs .song-focus-experience {
+  display: grid;
+  gap: 12px;
+}
+
+#screen-listen .song-focus-queue-card + .song-focus-details-drawer,
+#dc-songs .song-focus-queue-card + .song-focus-details-drawer {
+  margin-top: 0 !important;
+  border-top-width: 3px !important;
+  border-top-color: color-mix(in srgb, var(--accent, #d98d25) 60%, var(--border, #b98e55)) !important;
+}
+
+#screen-listen .song-focus-details-drawer .eyebrow::after,
+#dc-songs .song-focus-details-drawer .eyebrow::after {
+  content: " · selected from queue";
+  opacity: 0.72;
+}
+
+#screen-listen .song-focus-row,
+#dc-songs .song-focus-row {
+  cursor: pointer;
+}
+
+#screen-listen .song-focus-row.active,
+#dc-songs .song-focus-row.active {
+  box-shadow:
+    inset 4px 0 0 var(--accent, #d98d25),
+    0 8px 20px rgba(55, 30, 8, 0.08) !important;
+}
+
+.dg-hero-random-cleanup-btn,
+.dg-random-cleanup-btn {
+  display: none !important;
+}
+
+
+/* === v25: clickable genre header rating + single Add Songs location === */
+.genre-hero-rating-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  padding: 2px 0;
+}
+.genre-hero-star {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 224, 161, 0.42);
+  font-size: clamp(2.1rem, 4.2vw, 3.25rem);
+  line-height: 0.92;
+  font-weight: 1000;
+  cursor: pointer;
+  padding: 0 1px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.16);
+  transition: transform .12s ease, color .12s ease, filter .12s ease;
+}
+.genre-hero-star.filled,
+.genre-hero-star:hover,
+.genre-hero-star:focus-visible,
+.genre-hero-star:hover ~ .genre-hero-star {
+  color: #eba029;
+}
+.genre-hero-star:hover,
+.genre-hero-star:focus-visible {
+  transform: translateY(-1px) scale(1.03);
+  filter: drop-shadow(0 0 10px rgba(235, 160, 41, .24));
+  outline: none;
+}
+.detail-record-card .genre-star-rating {
+  display: none !important;
+}
+.dg-add-songs-inline-wrap,
+.dg-hero-add-songs-btn {
+  display: none !important;
+}
+.dg-song-editor-callout {
+  margin-top: 14px;
+}
+@media (max-width: 720px) {
+  .genre-hero-rating-controls { gap: 2px; }
+  .genre-hero-star { font-size: 2.05rem; }
+}

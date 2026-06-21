@@ -5,7 +5,7 @@
 (function dailyGenreLibraryPolishPerformanceRescue() {
   'use strict';
 
-  const VERSION = 'detail-player-rank-fixes-v17';
+  const VERSION = 'queue-studio-v20';
   let installed = false;
   let enhanceQueued = false;
 
@@ -224,6 +224,41 @@
     toast('Song editor closed. Unsaved edits are still on the page until you save or reload.');
   }
 
+
+  function officialSongCount(genre) {
+    try {
+      const raw = Array.isArray(genre?.songs_listened) ? genre.songs_listened : [];
+      const inflated = typeof window.inflateSongsFromStorage === 'function'
+        ? window.inflateSongsFromStorage(raw)
+        : raw;
+      return inflated.filter((song) => song && !song.isPending).length;
+    } catch (_) {
+      return Array.isArray(genre?.songs_listened) ? genre.songs_listened.length : 0;
+    }
+  }
+
+  function openRandomSongCleanupGenre() {
+    const currentId = (() => {
+      try { return String(window.currentGenre?.id ?? ''); } catch (_) { return ''; }
+    })();
+    const pool = genres()
+      .filter((genre) => isLogged(genre) && officialSongCount(genre) > 0)
+      .filter((genre) => genres().length <= 1 || String(genre.id ?? '') !== currentId);
+    if (!pool.length) {
+      toast('No listened genres with logged songs are available for cleanup yet.', true);
+      return false;
+    }
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    const opened = openGenre(pick, `Random cleanup pick: ${pick.genre || 'listened genre'}.`);
+    if (opened) {
+      setTimeout(() => {
+        const addBtn = document.querySelector('[data-dg-open-song-editor]');
+        if (addBtn) addBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 260);
+    }
+    return opened;
+  }
+
   function openSongEditor() {
     if (typeof window.switchScreen === 'function') window.switchScreen('listen', { force: true, preserveScroll: true });
     const panel = revealEditorPanel();
@@ -252,6 +287,10 @@
     return `<button type="button" class="btn btn-primary dg-add-songs-btn ${extraClass}" data-dg-open-song-editor>+ Add songs</button>`;
   }
 
+  function randomCleanupButtonHtml(extraClass = '') {
+    return `<button type="button" class="btn btn-secondary dg-random-cleanup-btn ${extraClass}" data-dg-random-song-cleanup title="Open a random listened genre with logged songs for cleanup">Random cleanup</button>`;
+  }
+
   function enhanceDigPage() {
     enhanceQueued = false;
     normalizeTopNavLabels();
@@ -263,15 +302,8 @@
     const isDetailActive = listenScreen.classList.contains('active') || !!currentGenreName();
     if (!isDetailActive) return;
 
-    // Add a compact hero/action button near the genre details.
-    if (!details.querySelector('[data-dg-open-song-editor]')) {
-      const target = details.querySelector('.detail-record-actions, .song-room-actions, .row, .genre-identity-head-actions') || details;
-      const wrap = document.createElement('div');
-      wrap.className = 'dg-add-songs-inline-wrap';
-      wrap.innerHTML = buttonHtml('dg-hero-add-songs-btn');
-      if (target === details) details.prepend(wrap);
-      else target.appendChild(wrap);
-    }
+    // Add songs is intentionally offered once in the song editor callout.
+    details.querySelectorAll('.dg-add-songs-inline-wrap').forEach((el) => el.remove());
 
     // Add a visible callout above the listening/carousel area when possible.
     const songArea = details.querySelector('#dc-songs, .song-listening-room, .song-focus-shell, .song-focus-card, .song-carousel, .song-focus-queue');
@@ -284,7 +316,7 @@
           <strong>Add or edit songs</strong>
           <span>${name ? `Paste Spotify URLs for ${escapeHtml(name)} in the existing setup editor.` : 'Paste Spotify URLs in the existing setup editor.'}</span>
         </div>
-        ${buttonHtml('')}
+        <div class="dg-song-editor-callout-actions">${buttonHtml('')}</div>
       `;
       songArea.parentNode.insertBefore(callout, songArea);
     }
@@ -362,6 +394,7 @@
       closeSongEditor();
       return;
     }
+
 
     const addSongs = event.target.closest('[data-dg-open-song-editor]');
     if (addSongs) {
