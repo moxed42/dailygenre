@@ -320,8 +320,16 @@
     const edit = children.find((el) =>
       /edit|setup|curation|studio/i.test(el.textContent || ""),
     );
+    const genrePrev = children.find((el) => /previous/i.test(el.textContent || ""));
+    const genreNext = children.find((el) => /^\s*next/i.test(el.textContent || ""));
+    const archiveBack = children.find((el) => /back\s+to\s+(archive|library)/i.test(el.textContent || ""));
+    const genreNav = [genrePrev, archiveBack, genreNext].filter(Boolean);
     const rest = children.filter(
-      (el) => el !== listen && el !== playlist && el !== edit,
+      (el) =>
+        el !== listen &&
+        el !== playlist &&
+        el !== edit &&
+        !genreNav.includes(el),
     );
 
     actions.innerHTML = "";
@@ -335,6 +343,15 @@
     if (playlist) {
       playlist.classList.add("dc-secondary-action");
       actions.appendChild(playlist);
+    }
+    if (genreNav.length) {
+      const navWrap = document.createElement("div");
+      navWrap.className = "dc-genre-nav-actions";
+      genreNav.forEach((el) => {
+        el.classList.add("dc-genre-nav-action");
+        navWrap.appendChild(el);
+      });
+      actions.appendChild(navWrap);
     }
 
     const songCount = activeSongs(currentGenre).length;
