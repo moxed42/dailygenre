@@ -6673,3 +6673,88 @@ body.dc-listen-mode .dc-primary-songs > .small {
     right: auto;
   }
 }
+
+
+/* === Detail polish v18: calmer empty song state + matching carousel Spotify play ===
+   CSS-only follow-up to v17. Keeps carousel/save/rank JS untouched. */
+#screen-listen .detail-log-section > .small,
+body.dc-listen-mode #dc-songs.dc-primary-songs > .small,
+body.dc-listen-mode .dc-primary-songs.detail-log-section > .small {
+  display: grid !important;
+  align-items: center !important;
+  width: calc(100% - 32px) !important;
+  max-width: calc(100% - 32px) !important;
+  min-height: 64px !important;
+  margin: 12px 16px 16px !important;
+  padding: 14px 16px !important;
+  border-radius: 18px !important;
+  border: 1px dashed color-mix(in srgb, var(--border, #b98e55) 68%, transparent) !important;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface, #f3e4c8) 82%, white),
+    color-mix(in srgb, var(--surface-2, #ead0a0) 48%, white)
+  ) !important;
+  color: color-mix(in srgb, var(--muted, #735a3c) 86%, var(--text, #22160d)) !important;
+  font-size: clamp(0.94rem, 1.35vw, 1.05rem) !important;
+  font-weight: 780 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.015em !important;
+  overflow: visible !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  text-wrap: balance !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+body.dc-listen-mode #dc-songs.dc-primary-songs > .eyebrow,
+body.dc-listen-mode .dc-primary-songs.detail-log-section > .eyebrow {
+  padding-bottom: 0 !important;
+}
+
+.song-focus-mini-btn {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  margin-left: 8px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 1px solid color-mix(in srgb, var(--accent, #d98d25) 55%, transparent) !important;
+  background: linear-gradient(180deg, #fff1ba, #d98d25) !important;
+  color: #22160d !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    inset 0 -4px 0 rgba(91, 53, 10, 0.14),
+    0 7px 16px rgba(38, 18, 8, 0.18) !important;
+  font-size: 0.72rem !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+}
+
+.song-focus-mini-btn:hover {
+  background: linear-gradient(180deg, #fff7d8, #e7a740) !important;
+  transform: translateY(-1px);
+}
+
+.song-focus-mini-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent, #d98d25) 38%, transparent) !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 640px) {
+  #screen-listen .detail-log-section > .small,
+  body.dc-listen-mode #dc-songs.dc-primary-songs > .small,
+  body.dc-listen-mode .dc-primary-songs.detail-log-section > .small {
+    width: calc(100% - 24px) !important;
+    max-width: calc(100% - 24px) !important;
+    margin: 10px 12px 14px !important;
+    padding: 12px 13px !important;
+    min-height: 58px !important;
+    font-size: 0.94rem !important;
+    text-wrap: pretty !important;
+  }
+}
