@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "genre-identity-v24-identity-tracks-in-queue";
+  const VERSION = "genre-identity-v28-sync-no-false-dirty";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let lastStudioRandomCleanupId = "";
@@ -314,6 +314,13 @@
     }) || null;
   }
 
+  function identityValueEqual(a, b) {
+    if (Array.isArray(a) || Array.isArray(b) || (a && typeof a === "object") || (b && typeof b === "object")) {
+      try { return JSON.stringify(a ?? null) === JSON.stringify(b ?? null); } catch (_) {}
+    }
+    return a === b;
+  }
+
   function identitySongPayload(genre, entry, prior = {}) {
     const track = entry.track || {};
     const url = trackSpotifyUrl(track);
@@ -361,7 +368,7 @@
       if (existing) {
         const merged = identitySongPayload(genre, entry, existing);
         Object.keys(merged).forEach((key) => {
-          if (existing[key] !== merged[key]) {
+          if (!identityValueEqual(existing[key], merged[key])) {
             existing[key] = merged[key];
             changed = true;
           }
@@ -1544,9 +1551,18 @@
           mount.innerHTML = `<div class="panel"><h2>${esc(g.genre || "Genre")}</h2><p class="small">Open Genre Detail was not available. Try opening this genre from Library.</p></div>`;
       } catch (_) {}
     },
+    syncIdentityTracksToSongQueue,
     apply: function () {
       injectStudioEditor();
-      try { const g = currentGenre(); if (g) syncIdentityTracksToSongQueue(g, true); } catch (_) {}
+      try {
+        const g = currentGenre();
+        if (g) {
+          const changed = syncIdentityTracksToSongQueue(g, true);
+          if (!changed && typeof window.resetListenDirtySnapshot === "function" && document.getElementById("screen-listen")?.classList.contains("active")) {
+            window.resetListenDirtySnapshot();
+          }
+        }
+      } catch (_) {}
       injectDnaCard();
       patchManualSpinSearch();
       patchStatsFocusAliases();

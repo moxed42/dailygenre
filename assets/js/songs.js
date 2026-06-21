@@ -310,6 +310,20 @@
     enhanceSongListeningExperience();
   }
 
+  function openSongEditorFromQueue(key) {
+    try {
+      if (typeof currentGenre !== "undefined" && currentGenre) {
+        localStorage.setItem(genreFocusStorageKey(currentGenre), key || "");
+        localStorage.setItem(genreDetailsStorageKey(currentGenre), "1");
+      }
+    } catch {}
+    enhanceSongListeningExperience();
+    requestAnimationFrame(() => {
+      const drawer = document.querySelector(".song-focus-details-drawer");
+      if (drawer) drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
+
   function isSongDetailsOpen(genre) {
     try {
       return localStorage.getItem(genreDetailsStorageKey(genre)) === "1";
@@ -530,6 +544,7 @@
                   const href = spotifyHref(song);
                   const hasHref = /^https?:\/\//i.test(href);
                   const safeKeyAttr = html(key).replace(/'/g, "&#39;");
+                  const encodedKeyAttr = encodeURIComponent(key);
                   const titleMarkup = hasHref
                     ? `<a class="song-focus-row-title" href="${html(href)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${html(title)} <span class="song-link-arrow">↗</span></a>`
                     : `<span class="song-focus-row-title">${html(title)}</span>`;
@@ -545,7 +560,7 @@
                     !selected &&
                     entry.parentKey &&
                     entry.parentKey === selectedKey;
-                  return `<div role="button" tabindex="0" class="song-focus-row ${selected ? "active" : ""} ${parentSelected ? "parent-active" : ""} ${entry.isChild ? "levelup-child" : ""} ${song.isIdentityTrack ? `identity-track ${song.identityType === "seminal" ? "identity-seminal" : "identity-popular"}` : ""} ${Number(song.reaction) ? "reacted" : ""}" onclick="setSongFocus('${safeKeyAttr}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); setSongFocus('${safeKeyAttr}'); }">
+                  return `<div role="button" tabindex="0" data-song-focus-key="${html(encodedKeyAttr)}" class="song-focus-row ${selected ? "active" : ""} ${parentSelected ? "parent-active" : ""} ${entry.isChild ? "levelup-child" : ""} ${song.isIdentityTrack ? `identity-track ${song.identityType === "seminal" ? "identity-seminal" : "identity-popular"}` : ""} ${Number(song.reaction) ? "reacted" : ""}" onclick="setSongFocus('${safeKeyAttr}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); setSongFocus('${safeKeyAttr}'); }">
             ${art ? `<img class="song-focus-row-art" src="${html(art)}" alt="${html(title)} artwork" loading="lazy">` : '<span class="song-focus-row-art placeholder">♪</span>'}
             <span class="song-focus-row-main">
               <span class="song-focus-row-title-line">${titleMarkup}${selected ? '<span class="song-focus-now-badge">Now Listening</span>' : ""}</span>
@@ -554,6 +569,7 @@
               ${childReason}
             </span>
             <span class="song-focus-row-badge-wrap">${songTypeBadge(entry)}</span>
+            <button type="button" class="song-focus-edit-btn" data-song-focus-edit="${html(encodedKeyAttr)}" onclick="event.preventDefault(); event.stopPropagation(); openSongEditorFromQueue('${safeKeyAttr}');" title="Edit URL / refresh metadata" aria-label="Edit URL and refresh metadata">✎</button>
             ${renderReactionButtons(song, "queue")}
           </div>`;
                 })
@@ -608,7 +624,14 @@
       mount.className = "song-focus-experience";
       section.insertBefore(mount, activeList);
     }
-    mount.innerHTML = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
+    const nextHtml = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
+    // Avoid replacing the whole queue DOM when nothing meaningful changed.
+    // Replacing identical markup reloads <img> nodes and causes visible album-art flicker
+    // on genres whose identity-track sync or Studio wrappers call this enhancer more than once.
+    const nextSignature = String(currentGenre.id ?? currentGenre.genre ?? "") + "::" + selectedKey + "::" + activeFilter + "::" + (queueOpen ? "open" : "closed") + "::" + (detailsOpen ? "details" : "nodetails") + "::" + nextHtml;
+    if (mount.dataset.songFocusSignature === nextSignature) return;
+    mount.dataset.songFocusSignature = nextSignature;
+    mount.innerHTML = nextHtml;
   }
 
   function installNoJumpReactionWrapper() {
@@ -655,13 +678,58 @@
     };
   }
 
+
+  function decodeSongQueueKey(value) {
+    if (!value) return "";
+    try {
+      return decodeURIComponent(String(value));
+    } catch {
+      return String(value);
+    }
+  }
+
+  function installSongQueueClickRescue() {
+    if (window.__dailyGenreSongQueueClickRescueV30) return;
+    window.__dailyGenreSongQueueClickRescueV30 = true;
+    document.addEventListener(
+      "click",
+      (event) => {
+        const edit = event.target?.closest?.(".song-focus-edit-btn[data-song-focus-edit]");
+        if (edit) {
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation?.();
+          const key = decodeSongQueueKey(edit.getAttribute("data-song-focus-edit"));
+          openSongEditorFromQueue(key);
+          return;
+        }
+
+        const row = event.target?.closest?.(".song-focus-row[data-song-focus-key]");
+        if (!row) return;
+        if (
+          event.target?.closest?.(
+            "button, a, input, textarea, select, label, .song-focus-actions, .song-focus-edit-btn",
+          )
+        ) {
+          return;
+        }
+        event.preventDefault();
+        const key = decodeSongQueueKey(row.getAttribute("data-song-focus-key"));
+        setSelectedSongKey(key);
+      },
+      true,
+    );
+  }
+
   window.setSongFocus = setSelectedSongKey;
   window.setSongFocusDetailsOpen = setSongDetailsOpen;
+  window.openSongEditorFromQueue = openSongEditorFromQueue;
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
   window.moveSongFocus = moveSongFocus;
   window.enhanceSongListeningExperience = enhanceSongListeningExperience;
   installNoJumpReactionWrapper();
+  installSongQueueClickRescue();
 
   const originalLoadListenScreen =
     typeof loadListenScreen === "function" ? loadListenScreen : null;

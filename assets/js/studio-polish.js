@@ -5,11 +5,66 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.0.0";
+  const VERSION = "studio-polish-v32-inbox-paste-guard";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  function isEditableStudioTarget(target) {
+    const el = target?.closest?.(
+      'input, textarea, select, option, [contenteditable="true"], .inbox-card, .studio-genre-typeahead-wrap',
+    );
+    return Boolean(el);
+  }
+
+  let inboxPasteGuardUntil = 0;
+
+  function armInboxPasteGuard(duration = 900) {
+    inboxPasteGuardUntil = Math.max(inboxPasteGuardUntil, Date.now() + duration);
+  }
+
+  function isInboxPasteGuardActive() {
+    return Date.now() < inboxPasteGuardUntil;
+  }
+
+  function isReviewActive() {
+    return document.getElementById("screen-review")?.classList.contains("active");
+  }
+
+  function isStudioTextEntryActive() {
+    return isReviewActive() && isEditableStudioTarget(document.activeElement);
+  }
+
+  function captureInboxDraft() {
+    const input = document.getElementById("inboxSongInput");
+    const select = document.getElementById("inboxGenreSelect");
+    if (!input && !select) return null;
+    return {
+      activeId: document.activeElement?.id || "",
+      value: input?.value || "",
+      selectionStart:
+        typeof input?.selectionStart === "number" ? input.selectionStart : null,
+      selectionEnd:
+        typeof input?.selectionEnd === "number" ? input.selectionEnd : null,
+      genreValue: select?.value || "",
+    };
+  }
+
+  function restoreInboxDraft(draft) {
+    if (!draft) return;
+    const input = document.getElementById("inboxSongInput");
+    const select = document.getElementById("inboxGenreSelect");
+    if (input && draft.value && !input.value) input.value = draft.value;
+    if (select && draft.genreValue) select.value = draft.genreValue;
+    if (input && draft.activeId === "inboxSongInput") {
+      try {
+        input.focus({ preventScroll: true });
+        if (draft.selectionStart !== null && draft.selectionEnd !== null)
+          input.setSelectionRange(draft.selectionStart, draft.selectionEnd);
+      } catch (_) {}
+    }
+  }
 
   function esc(value) {
     if (typeof window.escapeHtml === "function")
@@ -789,8 +844,25 @@
     if (typeof original !== "function" || original.__studioWrapped)
       return false;
     function wrappedRenderReview() {
+      // Do not rebuild Studio while the Song Inbox/editor is actively receiving keyboard paste.
+      // Ctrl/Cmd+V fires before the textarea value changes; replacing the textarea in that
+      // window makes the paste appear as a flash and then disappear. Context-menu paste did
+      // not hit this path, which is why it worked before.
+      if (isStudioTextEntryActive() || isInboxPasteGuardActive()) {
+        const draft = captureInboxDraft();
+        apply();
+        restoreInboxDraft(draft);
+        return null;
+      }
+      const draft = captureInboxDraft();
+      const mount = document.getElementById("reviewContent");
+      if (mount) mount.classList.add("studio-rendering");
       const result = original.apply(this, arguments);
-      setTimeout(apply, 0);
+      apply();
+      restoreInboxDraft(draft);
+      if (mount) {
+        requestAnimationFrame(() => mount.classList.remove("studio-rendering"));
+      }
       return result;
     }
     wrappedRenderReview.__studioWrapped = true;
@@ -805,8 +877,54 @@
     document.addEventListener(
       "click",
       (ev) => {
-        if (ev.target.closest('[data-screen="review"], #screen-review'))
-          setTimeout(apply, 50);
+        const reviewTab = ev.target.closest?.('[data-screen="review"]');
+        if (reviewTab) {
+          const mount = document.getElementById("reviewContent");
+          if (mount) mount.classList.add("studio-rendering");
+          setTimeout(() => {
+            if (isStudioTextEntryActive() || isInboxPasteGuardActive()) return;
+            apply();
+            requestAnimationFrame(() => mount?.classList.remove("studio-rendering"));
+          }, 0);
+          return;
+        }
+        // Avoid re-applying Studio wrappers while a text field is being clicked/focused.
+        // Replacing the Song Inbox textarea during the paste event caused the flash/lost paste bug.
+        if (ev.target.closest?.("#screen-review") && isEditableStudioTarget(ev.target)) {
+          armInboxPasteGuard(500);
+          return;
+        }
+      },
+      true,
+    );
+
+    document.addEventListener(
+      "keydown",
+      (ev) => {
+        if (!ev.target?.closest?.("#screen-review")) return;
+        if (!isEditableStudioTarget(ev.target)) return;
+        const key = String(ev.key || "").toLowerCase();
+        if ((ev.metaKey || ev.ctrlKey) && (key === "v" || key === "x" || key === "a")) {
+          armInboxPasteGuard(1200);
+        }
+      },
+      true,
+    );
+
+    document.addEventListener(
+      "paste",
+      (ev) => {
+        if (ev.target?.closest?.("#screen-review") && isEditableStudioTarget(ev.target))
+          armInboxPasteGuard(1200);
+      },
+      true,
+    );
+
+    document.addEventListener(
+      "input",
+      (ev) => {
+        if (ev.target?.closest?.("#screen-review") && isEditableStudioTarget(ev.target))
+          armInboxPasteGuard(350);
       },
       true,
     );
