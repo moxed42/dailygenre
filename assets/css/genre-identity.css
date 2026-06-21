@@ -1,0 +1,476 @@
+/* Daily Genre Identity v1 */
+.genre-identity-editor,
+.genre-identity-dna {
+  border: 1px solid rgba(190, 146, 79, 0.42);
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 230, 0.96),
+    rgba(237, 211, 166, 0.9)
+  );
+  box-shadow:
+    0 18px 42px rgba(55, 30, 8, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.genre-identity-editor {
+  margin: 14px 0;
+  padding: 18px;
+}
+
+.genre-identity-editor-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.genre-identity-picker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.genre-identity-picker label,
+.genre-identity-form label {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.genre-identity-picker label > span,
+.genre-identity-form label > span,
+.genre-identity-section-title {
+  color: var(--muted, #735a3c);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.genre-identity-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.genre-identity-full,
+.genre-identity-section-title,
+.genre-identity-actions {
+  grid-column: 1 / -1;
+}
+
+.genre-identity-form input,
+.genre-identity-form textarea,
+.genre-identity-form select,
+.genre-identity-picker input {
+  background: rgba(255, 253, 244, 0.88);
+  border-color: rgba(153, 102, 37, 0.28);
+  border-radius: 14px;
+}
+
+.genre-identity-form small {
+  color: var(--muted, #735a3c);
+  font-weight: 600;
+}
+
+.genre-identity-media-list {
+  display: grid;
+  gap: 10px;
+}
+
+.genre-media-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(153, 102, 37, 0.22);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.genre-media-row legend {
+  padding: 0 8px;
+  color: var(--accent-dark, #7a4714);
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.genre-remove-media {
+  justify-self: start;
+}
+
+.genre-identity-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.genre-identity-dna {
+  padding: 14px;
+  margin: 14px 0;
+}
+
+.genre-identity-dna-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.genre-identity-dna h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: -0.04em;
+}
+
+.genre-identity-dna-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.genre-identity-dna-box {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  border: 1px solid rgba(153, 102, 37, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.32);
+  padding: 12px;
+}
+
+.genre-identity-dna-box span {
+  color: var(--muted, #735a3c);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.genre-identity-dna-box strong {
+  color: var(--text, #22160d);
+  font-size: 0.94rem;
+  line-height: 1.18;
+}
+
+.genre-identity-dna-box a {
+  color: var(--accent-dark, #7a4714);
+  text-decoration: none;
+}
+
+.genre-identity-dna-box a:hover {
+  text-decoration: underline;
+}
+
+.genre-identity-dna-box em,
+.genre-identity-dna-box small {
+  color: var(--muted, #735a3c);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.genre-identity-dna-box em {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-style: italic;
+}
+
+@media (max-width: 780px) {
+  .genre-identity-picker,
+  .genre-identity-form,
+  .genre-media-row,
+  .genre-identity-dna-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .genre-identity-editor-head,
+  .genre-identity-dna-head {
+    display: grid;
+  }
+}
+
+/* === Genre Identity v2: clearer promotion on Dig page === */
+.genre-identity-alias-line {
+  margin: -2px 0 8px;
+  color: rgba(255, 245, 223, 0.76);
+  font-size: clamp(0.86rem, 1.4vw, 1rem);
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.genre-identity-alias-line em {
+  color: rgba(255, 245, 223, 0.92);
+}
+
+.genre-identity-alias-line span {
+  font-style: normal;
+  color: var(--accent-soft, #ffe0a1);
+  font-weight: 800;
+}
+
+.genre-identity-status-line {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(153, 102, 37, 0.2);
+  color: var(--accent-dark, #7a4714);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.genre-identity-dna-head p {
+  margin: 4px 0 0;
+}
+
+.genre-identity-alias-card {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(153, 102, 37, 0.18);
+}
+
+.genre-identity-alias-card span,
+.genre-identity-track-kicker {
+  color: var(--muted, #735a3c);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.genre-identity-alias-card strong {
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.genre-identity-track-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.genre-identity-track-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 242, 0.7),
+    rgba(248, 226, 184, 0.68)
+  );
+  border: 1px solid rgba(153, 102, 37, 0.22);
+}
+
+.genre-identity-track-card.is-seminal {
+  border-color: rgba(217, 141, 37, 0.5);
+  box-shadow: inset 4px 0 0 rgba(217, 141, 37, 0.72);
+}
+
+.genre-identity-track-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft, #ffe0a1);
+  color: var(--accent-dark, #7a4714);
+  font-weight: 950;
+  border: 1px solid rgba(153, 102, 37, 0.24);
+}
+
+.genre-identity-track-main {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.genre-identity-track-main strong {
+  font-size: 0.98rem;
+  line-height: 1.15;
+}
+
+.genre-identity-track-main a {
+  color: var(--text, #22160d);
+  text-decoration: none;
+}
+
+.genre-identity-track-main a:hover {
+  color: var(--accent-dark, #7a4714);
+  text-decoration: underline;
+}
+
+.genre-identity-track-main small,
+.genre-identity-track-main em {
+  color: var(--muted, #735a3c);
+  line-height: 1.3;
+}
+
+.genre-identity-track-main em {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 760px) {
+  .genre-identity-track-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.genre-identity-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.genre-identity-editor.studio-section-collapsed
+  > :not(.genre-identity-editor-head) {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .genre-identity-head-actions {
+    justify-content: flex-start;
+  }
+}
+
+/* === Genre Identity v3 / UX audit: robust Dig-page presentation === */
+.discovery-console > .genre-identity-dna {
+  margin: 2px 0 10px !important;
+}
+
+.detail-record-card .genre-identity-alias-line,
+.discovery-console .detail-record-card .genre-identity-alias-line {
+  color: color-mix(
+    in srgb,
+    var(--muted, #735a3c) 78%,
+    var(--text, #22160d)
+  ) !important;
+}
+
+.detail-record-card .genre-identity-alias-line em,
+.discovery-console .detail-record-card .genre-identity-alias-line em {
+  color: color-mix(
+    in srgb,
+    var(--text, #22160d) 86%,
+    var(--accent, #b7791f)
+  ) !important;
+}
+
+.genre-identity-dna {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.genre-identity-dna-head .btn,
+.genre-identity-dna-head button {
+  white-space: nowrap;
+}
+
+.genre-identity-track-main strong,
+.genre-identity-track-main small,
+.genre-identity-track-main em,
+.genre-identity-alias-card strong {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 680px) {
+  .genre-identity-dna,
+  .genre-identity-editor {
+    border-radius: 18px;
+    padding: 12px;
+  }
+
+  .genre-identity-dna-head {
+    gap: 8px;
+  }
+
+  .genre-identity-dna-head .btn,
+  .genre-identity-dna-head button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .genre-identity-track-card {
+    grid-template-columns: 28px minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .genre-identity-track-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* === Genre Identity v4: structured block import === */
+.genre-identity-import {
+  grid-column: 1 / -1;
+  border: 1px solid rgba(127, 82, 28, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 248, 229, 0.58);
+  padding: 10px 12px;
+}
+
+.genre-identity-import summary {
+  cursor: pointer;
+  font-weight: 950;
+  color: var(--text, #22160d);
+}
+
+.genre-identity-import textarea {
+  margin-top: 10px;
+  width: 100%;
+  min-height: 170px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.83rem;
+  line-height: 1.42;
+}
+
+.genre-identity-import-actions {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.genre-identity-import small {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted, #735a3c);
+  font-weight: 700;
+}
+
+@media (max-width: 680px) {
+  .genre-identity-import-actions .btn {
+    width: 100%;
+  }
+}
