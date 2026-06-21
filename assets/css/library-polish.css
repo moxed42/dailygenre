@@ -3411,59 +3411,39 @@
   scroll-margin-top: 42px;
 }
 
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-card-label,
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .dg-viz-info,
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  canvas,
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .small,
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-chart-hint {
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-card-label,
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .dg-viz-info,
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown canvas,
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .small,
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-chart-hint {
   grid-column: 1;
 }
 
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-local-drilldown:not(:empty) {
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-local-drilldown:not(:empty) {
   grid-column: 2;
   grid-row: 1 / span 8;
   margin-top: 0 !important;
   min-width: 0;
 }
 
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-drilldown.is-active {
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-drilldown.is-active {
   margin-top: 0 !important;
   max-height: 460px;
   overflow: hidden;
 }
 
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-drilldown-list {
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-drilldown-list {
   grid-template-columns: 1fr !important;
   max-height: 330px !important;
   overflow: auto !important;
 }
 
-#screen-viz.dg-stats-polished
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-card-label::after {
+#screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-card-label::after {
   content: "" !important;
 }
 
 #screen-viz.dg-stats-polished .viz-drill-actions button:empty,
-#screen-viz.dg-stats-polished
-  .viz-drill-actions
-  button[onclick*="window.open"] {
+#screen-viz.dg-stats-polished .viz-drill-actions button[onclick*="window.open"] {
   display: none !important;
 }
 
@@ -3511,36 +3491,25 @@
   align-items: start !important;
 }
 
-#screen-viz.dg-stats-polished
-  #vizViewAlltime
-  .viz-card:has(#vizMetadataQueueAll),
-#screen-viz.dg-stats-polished
-  #vizViewMonthly
-  .viz-card:has(#vizMetadataQueueMonthly) {
+#screen-viz.dg-stats-polished #vizViewAlltime .viz-card:has(#vizMetadataQueueAll),
+#screen-viz.dg-stats-polished #vizViewMonthly .viz-card:has(#vizMetadataQueueMonthly) {
   display: none !important;
 }
 
 @media (max-width: 980px) {
-  #screen-viz.dg-stats-polished
-    .viz-card-decades.viz-card-with-local-drilldown {
+  #screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown {
     grid-column: 1 / -1 !important;
     grid-template-columns: 1fr;
   }
 
-  #screen-viz.dg-stats-polished
-    .viz-card-decades.viz-card-with-local-drilldown
-    .viz-local-drilldown:not(:empty) {
+  #screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-local-drilldown:not(:empty) {
     grid-column: 1;
     grid-row: auto;
     margin-top: 12px !important;
   }
 
-  #screen-viz.dg-stats-polished
-    .viz-card-decades.viz-card-with-local-drilldown
-    .viz-drilldown.is-active,
-  #screen-viz.dg-stats-polished
-    .viz-card-decades.viz-card-with-local-drilldown
-    .viz-drilldown-list {
+  #screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-drilldown.is-active,
+  #screen-viz.dg-stats-polished .viz-card-decades.viz-card-with-local-drilldown .viz-drilldown-list {
     max-height: none !important;
     overflow: visible !important;
   }
@@ -3574,17 +3543,13 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.44) !important;
 }
 
-#screen-viz.dg-stats-v34
-  .viz-spotlight-card.dg-viz-compact-note
-  .viz-spotlight-label {
+#screen-viz.dg-stats-v34 .viz-spotlight-card.dg-viz-compact-note .viz-spotlight-label {
   font-size: 0 !important;
   margin: 0 !important;
   line-height: 1 !important;
 }
 
-#screen-viz.dg-stats-v34
-  .viz-spotlight-card.dg-viz-compact-note
-  .viz-spotlight-label::before {
+#screen-viz.dg-stats-v34 .viz-spotlight-card.dg-viz-compact-note .viz-spotlight-label::before {
   content: "ⓘ";
   display: inline-grid;
   place-items: center;
@@ -3598,21 +3563,15 @@
   font-weight: 950;
 }
 
-#screen-viz.dg-stats-v34
-  .viz-spotlight-card.dg-viz-compact-note
-  .viz-spotlight-title {
+#screen-viz.dg-stats-v34 .viz-spotlight-card.dg-viz-compact-note .viz-spotlight-title {
   margin: 0 !important;
   font-size: 0.9rem !important;
   line-height: 1.2 !important;
   letter-spacing: -0.02em !important;
 }
 
-#screen-viz.dg-stats-v34
-  .viz-spotlight-card.dg-viz-compact-note
-  .viz-spotlight-copy,
-#screen-viz.dg-stats-v34
-  .viz-spotlight-card.dg-viz-compact-note
-  > .dg-viz-info {
+#screen-viz.dg-stats-v34 .viz-spotlight-card.dg-viz-compact-note .viz-spotlight-copy,
+#screen-viz.dg-stats-v34 .viz-spotlight-card.dg-viz-compact-note > .dg-viz-info {
   display: none !important;
 }
 
@@ -3685,45 +3644,29 @@
 }
 
 @media (min-width: 780px) {
-  #screen-viz.dg-stats-v34
-    .viz-secondary-grid
-    .viz-card-decades.viz-card-with-local-drilldown {
+  #screen-viz.dg-stats-v34 .viz-secondary-grid .viz-card-decades.viz-card-with-local-drilldown {
     grid-column: span 5 !important;
   }
-  #screen-viz.dg-stats-v34
-    .viz-deep-grid
-    .viz-card-decades.viz-card-with-local-drilldown {
+  #screen-viz.dg-stats-v34 .viz-deep-grid .viz-card-decades.viz-card-with-local-drilldown {
     grid-column: span 5 !important;
   }
-  #screen-viz.dg-stats-v34
-    .viz-secondary-grid
-    .viz-card-contenders.viz-card-with-local-drilldown {
+  #screen-viz.dg-stats-v34 .viz-secondary-grid .viz-card-contenders.viz-card-with-local-drilldown {
     grid-column: span 6 !important;
   }
-  #screen-viz.dg-stats-v34
-    .viz-deep-grid
-    .viz-card-contenders.viz-card-with-local-drilldown {
+  #screen-viz.dg-stats-v34 .viz-deep-grid .viz-card-contenders.viz-card-with-local-drilldown {
     grid-column: span 7 !important;
   }
 }
 
-#screen-viz.dg-stats-v34
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-card-label,
-#screen-viz.dg-stats-v34
-  .viz-card-decades.viz-card-with-local-drilldown
-  .dg-viz-info,
+#screen-viz.dg-stats-v34 .viz-card-decades.viz-card-with-local-drilldown .viz-card-label,
+#screen-viz.dg-stats-v34 .viz-card-decades.viz-card-with-local-drilldown .dg-viz-info,
 #screen-viz.dg-stats-v34 .viz-card-decades.viz-card-with-local-drilldown canvas,
 #screen-viz.dg-stats-v34 .viz-card-decades.viz-card-with-local-drilldown .small,
-#screen-viz.dg-stats-v34
-  .viz-card-decades.viz-card-with-local-drilldown
-  .viz-chart-hint {
+#screen-viz.dg-stats-v34 .viz-card-decades.viz-card-with-local-drilldown .viz-chart-hint {
   grid-column: auto !important;
 }
 
-#screen-viz.dg-stats-v34
-  .viz-card.viz-card-with-local-drilldown
-  .viz-card-label::after {
+#screen-viz.dg-stats-v34 .viz-card.viz-card-with-local-drilldown .viz-card-label::after {
   content: "" !important;
 }
 
@@ -3809,12 +3752,8 @@
 }
 
 @keyframes dgVizPulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(217, 141, 37, 0.34);
-  }
-  100% {
-    box-shadow: 0 0 0 9px rgba(217, 141, 37, 0);
-  }
+  0% { box-shadow: 0 0 0 0 rgba(217, 141, 37, 0.34); }
+  100% { box-shadow: 0 0 0 9px rgba(217, 141, 37, 0); }
 }
 
 #screen-viz.dg-stats-v34 .viz-highlights-grid {
@@ -3835,9 +3774,7 @@
 
 @media (max-width: 1119px) {
   #screen-viz.dg-stats-v34 .viz-card-decades .viz-local-drilldown:not(:empty),
-  #screen-viz.dg-stats-v34
-    .viz-card-contenders
-    .viz-local-drilldown:not(:empty) {
+  #screen-viz.dg-stats-v34 .viz-card-contenders .viz-local-drilldown:not(:empty) {
     position: static !important;
     width: auto !important;
     max-height: none !important;
@@ -3864,6 +3801,7 @@
   }
 }
 
+
 /* === Stats / Wrapped-style insight layer v3.5 === */
 #screen-viz.dg-stats-v35 .viz-hero {
   grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr) !important;
@@ -3880,15 +3818,9 @@
   gap: 8px !important;
 }
 
-#screen-viz.dg-stats-v35
-  .viz-spotlight-card.dg-viz-compact-note
-  .viz-spotlight-label,
-#screen-viz.dg-stats-v35
-  .viz-spotlight-card.dg-viz-compact-note
-  .viz-spotlight-title,
-#screen-viz.dg-stats-v35
-  .viz-spotlight-card.dg-viz-compact-note
-  .viz-spotlight-copy {
+#screen-viz.dg-stats-v35 .viz-spotlight-card.dg-viz-compact-note .viz-spotlight-label,
+#screen-viz.dg-stats-v35 .viz-spotlight-card.dg-viz-compact-note .viz-spotlight-title,
+#screen-viz.dg-stats-v35 .viz-spotlight-card.dg-viz-compact-note .viz-spotlight-copy {
   display: none !important;
 }
 
@@ -3909,16 +3841,10 @@
   margin: 14px 0 18px;
   padding: 18px;
   border-radius: 24px;
-  background: linear-gradient(
-    135deg,
-    rgba(58, 32, 16, 0.97),
-    rgba(104, 70, 30, 0.94)
-  );
+  background: linear-gradient(135deg, rgba(58, 32, 16, 0.97), rgba(104, 70, 30, 0.94));
   border: 1px solid rgba(255, 224, 161, 0.24);
   color: #fff3dc;
-  box-shadow:
-    0 20px 44px rgba(39, 21, 7, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 44px rgba(39, 21, 7, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
   gap: 16px;
@@ -4032,9 +3958,7 @@
   padding: 0 !important;
 }
 
-#screen-viz.dg-stats-v35
-  #vizDrilldownPanel.dg-stats-inspector
-  .viz-drilldown.is-active {
+#screen-viz.dg-stats-v35 #vizDrilldownPanel.dg-stats-inspector .viz-drilldown.is-active {
   display: grid !important;
   grid-template-columns: minmax(220px, 0.4fr) minmax(0, 1fr) !important;
   gap: 12px !important;
@@ -4042,17 +3966,13 @@
   overflow: visible !important;
 }
 
-#screen-viz.dg-stats-v35
-  #vizDrilldownPanel.dg-stats-inspector
-  .viz-drilldown-head {
+#screen-viz.dg-stats-v35 #vizDrilldownPanel.dg-stats-inspector .viz-drilldown-head {
   align-content: start !important;
   border-right: 1px solid rgba(115, 90, 60, 0.18);
   padding-right: 10px !important;
 }
 
-#screen-viz.dg-stats-v35
-  #vizDrilldownPanel.dg-stats-inspector
-  .viz-drilldown-list {
+#screen-viz.dg-stats-v35 #vizDrilldownPanel.dg-stats-inspector .viz-drilldown-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 8px;
@@ -4061,9 +3981,7 @@
   padding-right: 4px;
 }
 
-#screen-viz.dg-stats-v35
-  #vizDrilldownPanel.dg-stats-inspector
-  .viz-drill-row.viz-record-row {
+#screen-viz.dg-stats-v35 #vizDrilldownPanel.dg-stats-inspector .viz-drill-row.viz-record-row {
   grid-template-columns: 42px minmax(0, 1fr) auto !important;
 }
 
@@ -4100,15 +4018,11 @@
     justify-content: flex-start;
   }
 
-  #screen-viz.dg-stats-v35
-    #vizDrilldownPanel.dg-stats-inspector
-    .viz-drilldown.is-active {
+  #screen-viz.dg-stats-v35 #vizDrilldownPanel.dg-stats-inspector .viz-drilldown.is-active {
     grid-template-columns: 1fr !important;
   }
 
-  #screen-viz.dg-stats-v35
-    #vizDrilldownPanel.dg-stats-inspector
-    .viz-drilldown-head {
+  #screen-viz.dg-stats-v35 #vizDrilldownPanel.dg-stats-inspector .viz-drilldown-head {
     border-right: 0;
     border-bottom: 1px solid rgba(115, 90, 60, 0.18);
     padding: 0 0 10px !important;
@@ -4121,6 +4035,7 @@
     flex-direction: column !important;
   }
 }
+
 
 /* === Stats polish v3.6: clearer tips, readable drill chips, chart-copy buttons === */
 #screen-viz.dg-stats-v36 .dg-viz-info {
@@ -4233,9 +4148,7 @@
   color: #2a170d;
 }
 
-#screen-viz.dg-stats-v36.dg-stats-empty-focus-month
-  #vizViewMonthly
-  .viz-secondary-grid {
+#screen-viz.dg-stats-v36.dg-stats-empty-focus-month #vizViewMonthly .viz-secondary-grid {
   display: none !important;
 }
 
@@ -4331,6 +4244,7 @@
   }
 }
 
+
 /* === Genre Page Level-Up Reason v3.8 ===
    Keep the curation explanation visible on nested Level Up rows without making
    ordinary queue rows noisy. */
@@ -4347,11 +4261,7 @@
 
 .song-focus-row.levelup-child .song-focus-row-reason::before {
   content: "Why: ";
-  color: color-mix(
-    in srgb,
-    var(--accent-dark, #7a4714) 80%,
-    var(--text, #22160d)
-  );
+  color: color-mix(in srgb, var(--accent-dark, #7a4714) 80%, var(--text, #22160d));
   font-weight: 950;
 }
 
@@ -4391,16 +4301,12 @@ body.dc-listen-mode .dc-hero-actions .dc-song-nav-action {
   place-items: center !important;
   border-radius: 999px !important;
   border: 1px solid rgba(255, 245, 223, 0.24) !important;
-  background: linear-gradient(
-    180deg,
-    rgba(70, 43, 25, 0.94),
-    rgba(40, 24, 15, 0.96)
-  ) !important;
+  background: linear-gradient(180deg, rgba(70,43,25,.94), rgba(40,24,15,.96)) !important;
   color: #fff1c8 !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 -4px 0 rgba(0, 0, 0, 0.18),
-    0 9px 18px rgba(0, 0, 0, 0.2) !important;
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 -4px 0 rgba(0,0,0,.18),
+    0 9px 18px rgba(0,0,0,.20) !important;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-size: 1.5rem !important;
   font-weight: 950 !important;
@@ -4503,6 +4409,7 @@ body.dc-listen-mode .dc-hero-actions .dc-song-nav-action:hover {
   color: #24170f !important;
 }
 
+
 /* === UX Audit v1: final utility-button/icon normalization ================
    Keeps Library copy/select controls and Dig prev/next controls looking like
    controls even after other add-ons inject glyph wrappers. */
@@ -4539,23 +4446,10 @@ body.dc-listen-mode .dc-hero-actions .dc-song-nav-action:hover {
   opacity: 1 !important;
 }
 
-#screen-history .archive-actions #archiveCopyBtn::before {
-  content: "⧉" !important;
-}
-#screen-history .archive-actions #archiveSelectAllBtn::before {
-  content: "☑" !important;
-}
-#screen-history .archive-actions #archiveClearSelectionBtn::before {
-  content: "☐" !important;
-}
-#screen-history
-  .archive-actions
-  .archive-playlist-tools
-  > button:not(#archiveCopyBtn):not(#archiveSelectAllBtn):not(
-    #archiveClearSelectionBtn
-  )::before {
-  content: "♪" !important;
-}
+#screen-history .archive-actions #archiveCopyBtn::before { content: "⧉" !important; }
+#screen-history .archive-actions #archiveSelectAllBtn::before { content: "☑" !important; }
+#screen-history .archive-actions #archiveClearSelectionBtn::before { content: "☐" !important; }
+#screen-history .archive-actions .archive-playlist-tools > button:not(#archiveCopyBtn):not(#archiveSelectAllBtn):not(#archiveClearSelectionBtn)::before { content: "♪" !important; }
 
 #screen-history .archive-actions #archiveCopyBtn > *,
 #screen-history .archive-actions #archiveSelectAllBtn > *,
@@ -4595,9 +4489,7 @@ body.dc-listen-mode .dc-hero-actions .dc-song-nav-action:hover {
 
 /* === Final staging polish v1: Library buttons, Dig copy button, queue spacing, lazy cards === */
 #screen-history .archive-actions #archiveCopyBtn.dg-final-icon-btn,
-#screen-history
-  .archive-actions
-  #archivePlaylistToggleVisibleBtn.dg-final-icon-btn,
+#screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-final-icon-btn,
 #screen-history .archive-actions #archivePlaylistSelectedBtn.dg-final-icon-btn {
   position: relative !important;
   width: 44px !important;
@@ -4651,12 +4543,8 @@ body.dc-listen-mode .dc-hero-actions .dc-song-nav-action:hover {
 
 /* Disable earlier pseudo-icon overrides for the three final SVG buttons. */
 #screen-history .archive-actions #archiveCopyBtn.dg-final-icon-btn::before,
-#screen-history
-  .archive-actions
-  #archivePlaylistToggleVisibleBtn.dg-final-icon-btn::before,
-#screen-history
-  .archive-actions
-  #archivePlaylistSelectedBtn.dg-final-icon-btn::before {
+#screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-final-icon-btn::before,
+#screen-history .archive-actions #archivePlaylistSelectedBtn.dg-final-icon-btn::before {
   content: none !important;
   display: none !important;
 }
@@ -4689,11 +4577,7 @@ body.dg-library-switching #historyList .archive-card {
   place-items: center !important;
   border-radius: 999px !important;
   border: 1px solid rgba(255, 245, 223, 0.24) !important;
-  background: linear-gradient(
-    180deg,
-    rgba(70, 43, 25, 0.94),
-    rgba(40, 24, 15, 0.96)
-  ) !important;
+  background: linear-gradient(180deg, rgba(70, 43, 25, 0.94), rgba(40, 24, 15, 0.96)) !important;
   color: #fff1c8 !important;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
@@ -4729,12 +4613,8 @@ body.dg-library-switching #historyList .archive-card {
 
 @media (max-width: 680px) {
   #screen-history .archive-actions #archiveCopyBtn.dg-final-icon-btn,
-  #screen-history
-    .archive-actions
-    #archivePlaylistToggleVisibleBtn.dg-final-icon-btn,
-  #screen-history
-    .archive-actions
-    #archivePlaylistSelectedBtn.dg-final-icon-btn {
+  #screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-final-icon-btn,
+  #screen-history .archive-actions #archivePlaylistSelectedBtn.dg-final-icon-btn {
     flex: 0 0 44px !important;
   }
 
@@ -4765,13 +4645,7 @@ body.dg-library-switching #historyList .archive-card {
 
 /* === Final staging polish v1: movable/collapsible floating save bar === */
 .floating-listening-save {
-  transition:
-    transform 160ms ease,
-    opacity 160ms ease,
-    right 160ms ease,
-    left 160ms ease,
-    top 160ms ease,
-    bottom 160ms ease;
+  transition: transform 160ms ease, opacity 160ms ease, right 160ms ease, left 160ms ease, top 160ms ease, bottom 160ms ease;
 }
 
 .floating-listening-save.is-left {
@@ -4845,6 +4719,7 @@ body.dg-library-switching #historyList .archive-card {
   }
 }
 
+
 /* === Critical UX Hotfix v2: Library icon certainty + queue text breathing room ===
    Manager note: the previous staging bundle injected SVG children, but older rules
    still hid those children with higher-specificity !important selectors. This block
@@ -4895,12 +4770,7 @@ body.dg-library-switching #historyList .archive-card {
   margin: 0 !important;
   padding: 0 !important;
   text-indent: 0 !important;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 21px !important;
   font-weight: 1000 !important;
   line-height: 1 !important;
@@ -4951,10 +4821,7 @@ body.dg-library-switching #historyList .archive-card {
 
 #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-art,
 #dc-songs .song-focus-queue .song-focus-row-art,
-#screen-listen.listen-experience-mode
-  .song-focus-queue
-  .song-focus-row
-  img.song-focus-row-art,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row img.song-focus-row-art,
 #dc-songs .song-focus-queue .song-focus-row img.song-focus-row-art {
   width: 50px !important;
   height: 50px !important;
@@ -4972,9 +4839,7 @@ body.dg-library-switching #historyList .archive-card {
   padding-left: 2px !important;
 }
 
-#screen-listen.listen-experience-mode
-  .song-focus-queue
-  .song-focus-row-title-line,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-title-line,
 #dc-songs .song-focus-queue .song-focus-row-title-line {
   min-width: 0 !important;
   max-width: 100% !important;
@@ -4988,9 +4853,7 @@ body.dg-library-switching #historyList .archive-card {
 
 #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-sub,
 #dc-songs .song-focus-queue .song-focus-row-sub,
-#screen-listen.listen-experience-mode
-  .song-focus-queue
-  .song-focus-row-relation,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-relation,
 #dc-songs .song-focus-queue .song-focus-row-relation,
 #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-reason,
 #dc-songs .song-focus-queue .song-focus-row-reason {
@@ -5005,17 +4868,13 @@ body.dg-library-switching #historyList .archive-card {
     column-gap: 16px !important;
   }
 
-  #screen-listen.listen-experience-mode
-    .song-focus-queue
-    .song-focus-row-badge-wrap,
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-badge-wrap,
   #dc-songs .song-focus-queue .song-focus-row-badge-wrap {
     grid-column: 3 !important;
     grid-row: 1 !important;
   }
 
-  #screen-listen.listen-experience-mode
-    .song-focus-queue
-    .song-focus-actions.queue,
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue,
   #dc-songs .song-focus-queue .song-focus-actions.queue {
     grid-column: 2 / -1 !important;
   }
@@ -5031,10 +4890,7 @@ body.dg-library-switching #historyList .archive-card {
 
   #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-art,
   #dc-songs .song-focus-queue .song-focus-row-art,
-  #screen-listen.listen-experience-mode
-    .song-focus-queue
-    .song-focus-row
-    img.song-focus-row-art,
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row img.song-focus-row-art,
   #dc-songs .song-focus-queue .song-focus-row img.song-focus-row-art {
     width: 46px !important;
     height: 46px !important;
@@ -5043,18 +4899,14 @@ body.dg-library-switching #historyList .archive-card {
     flex-basis: 46px !important;
   }
 
-  #screen-listen.listen-experience-mode
-    .song-focus-queue
-    .song-focus-row-badge-wrap,
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-badge-wrap,
   #dc-songs .song-focus-queue .song-focus-row-badge-wrap {
     grid-column: 2 !important;
     grid-row: auto !important;
     justify-self: start !important;
   }
 
-  #screen-listen.listen-experience-mode
-    .song-focus-queue
-    .song-focus-actions.queue,
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue,
   #dc-songs .song-focus-queue .song-focus-actions.queue {
     grid-column: 1 / -1 !important;
   }
@@ -5068,14 +4920,13 @@ body.dg-library-switching #historyList .archive-card {
 }
 
 #screen-listen.listen-experience-mode .album-focus-carousel .album-focus-meta,
-#screen-listen.listen-experience-mode
-  .album-focus-carousel
-  .album-focus-rationale,
+#screen-listen.listen-experience-mode .album-focus-carousel .album-focus-rationale,
 #dc-albums .album-focus-carousel .album-focus-meta,
 #dc-albums .album-focus-carousel .album-focus-rationale {
   max-width: 100% !important;
   overflow-wrap: anywhere !important;
 }
+
 
 /* === Critical UX Hotfix v3: end-of-file verified icon + carousel spacing layer ===
    This is intentionally the final Library/Dig visual layer. It does not depend on
@@ -5293,9 +5144,7 @@ body.dg-library-switching #historyList .archive-card {
 /* === Library Polish v6: real SVG icon buttons + safe song hero breathing room ===
    This is intentionally last. It does not depend on CSS masks or pseudo icons. */
 #screen-history .archive-actions #archiveCopyBtn.dg-v6-icon-btn,
-#screen-history
-  .archive-actions
-  #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn,
+#screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn,
 #screen-history .archive-actions #archivePlaylistSelectedBtn.dg-v6-icon-btn {
   position: relative !important;
   box-sizing: border-box !important;
@@ -5317,18 +5166,9 @@ body.dg-library-switching #historyList .archive-card {
   white-space: nowrap !important;
 }
 
-#screen-history
-  .archive-actions
-  #archiveCopyBtn.dg-v6-icon-btn
-  > .dg-v6-icon-inner,
-#screen-history
-  .archive-actions
-  #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn
-  > .dg-v6-icon-inner,
-#screen-history
-  .archive-actions
-  #archivePlaylistSelectedBtn.dg-v6-icon-btn
-  > .dg-v6-icon-inner {
+#screen-history .archive-actions #archiveCopyBtn.dg-v6-icon-btn > .dg-v6-icon-inner,
+#screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn > .dg-v6-icon-inner,
+#screen-history .archive-actions #archivePlaylistSelectedBtn.dg-v6-icon-btn > .dg-v6-icon-inner {
   position: absolute !important;
   inset: 0 !important;
   display: grid !important;
@@ -5343,28 +5183,13 @@ body.dg-library-switching #historyList .archive-card {
   z-index: 2 !important;
 }
 
-#screen-history
-  .archive-actions
-  #archivePlaylistSelectedBtn.dg-v6-icon-btn
-  > .dg-v6-icon-inner {
+#screen-history .archive-actions #archivePlaylistSelectedBtn.dg-v6-icon-btn > .dg-v6-icon-inner {
   color: #24170f !important;
 }
 
-#screen-history
-  .archive-actions
-  #archiveCopyBtn.dg-v6-icon-btn
-  > .dg-v6-icon-inner
-  svg,
-#screen-history
-  .archive-actions
-  #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn
-  > .dg-v6-icon-inner
-  svg,
-#screen-history
-  .archive-actions
-  #archivePlaylistSelectedBtn.dg-v6-icon-btn
-  > .dg-v6-icon-inner
-  svg {
+#screen-history .archive-actions #archiveCopyBtn.dg-v6-icon-btn > .dg-v6-icon-inner svg,
+#screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn > .dg-v6-icon-inner svg,
+#screen-history .archive-actions #archivePlaylistSelectedBtn.dg-v6-icon-btn > .dg-v6-icon-inner svg {
   display: block !important;
   width: 23px !important;
   height: 23px !important;
@@ -5380,18 +5205,9 @@ body.dg-library-switching #historyList .archive-card {
   filter: none !important;
 }
 
-#screen-history
-  .archive-actions
-  #archiveCopyBtn.dg-v6-icon-btn
-  > .dg-v6-icon-label,
-#screen-history
-  .archive-actions
-  #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn
-  > .dg-v6-icon-label,
-#screen-history
-  .archive-actions
-  #archivePlaylistSelectedBtn.dg-v6-icon-btn
-  > .dg-v6-icon-label {
+#screen-history .archive-actions #archiveCopyBtn.dg-v6-icon-btn > .dg-v6-icon-label,
+#screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn > .dg-v6-icon-label,
+#screen-history .archive-actions #archivePlaylistSelectedBtn.dg-v6-icon-btn > .dg-v6-icon-label {
   position: absolute !important;
   width: 1px !important;
   height: 1px !important;
@@ -5402,12 +5218,8 @@ body.dg-library-switching #historyList .archive-card {
 }
 
 #screen-history .archive-actions #archiveCopyBtn.dg-v6-icon-btn::before,
-#screen-history
-  .archive-actions
-  #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn::before,
-#screen-history
-  .archive-actions
-  #archivePlaylistSelectedBtn.dg-v6-icon-btn::before {
+#screen-history .archive-actions #archivePlaylistToggleVisibleBtn.dg-v6-icon-btn::before,
+#screen-history .archive-actions #archivePlaylistSelectedBtn.dg-v6-icon-btn::before {
   content: none !important;
   display: none !important;
 }
@@ -5499,5 +5311,266 @@ body.dg-library-switching #historyList .archive-card {
   .song-focus-title {
     max-width: 100% !important;
     font-size: clamp(2rem, 10vw, 3.2rem) !important;
+  }
+}
+
+
+/* === Stability Hotfix v7: restore song carousel dependencies after core styles were intentionally restored ===
+   Root cause: the staging branch restored assets/css/styles.css for safety, but the song carousel
+   nav/collapsed queue cover-strip styles lived there. Without those styles, the < / > controls
+   rendered as raw browser buttons and collapsed queue cover art expanded at full image size.
+   This block duplicates only the missing dependency styles into the add-on layer. It does not
+   touch carousel JavaScript, song ordering, album carousel behavior, or data mutation logic. */
+#screen-listen.listen-experience-mode .song-focus-player,
+#dc-songs .song-focus-player {
+  position: relative !important;
+  padding-inline: clamp(22px, 4vw, 54px) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-nav,
+#dc-songs .song-focus-nav {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 8 !important;
+  width: 42px !important;
+  min-width: 42px !important;
+  max-width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(127, 82, 28, 0.18) !important;
+  background: rgba(255, 252, 241, 0.86) !important;
+  color: #3a2414 !important;
+  box-shadow:
+    0 12px 28px rgba(63, 35, 12, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.52) !important;
+  cursor: pointer !important;
+  font-size: 2rem !important;
+  font-weight: 900 !important;
+  line-height: 0.8 !important;
+  display: grid !important;
+  place-items: center !important;
+  opacity: 0.76 !important;
+  text-indent: 0 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    background 160ms ease !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-nav:hover,
+#dc-songs .song-focus-nav:hover,
+#screen-listen.listen-experience-mode .song-focus-nav:focus-visible,
+#dc-songs .song-focus-nav:focus-visible {
+  opacity: 1 !important;
+  background: #fffaf0 !important;
+  transform: translateY(-50%) scale(1.04) !important;
+  outline: none !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-nav-prev,
+#dc-songs .song-focus-nav-prev {
+  left: 10px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-nav-next,
+#dc-songs .song-focus-nav-next {
+  right: 10px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue-card.collapsed,
+#dc-songs .song-focus-queue-card.collapsed {
+  padding: 14px 16px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue-card.collapsed .song-focus-section-head,
+#dc-songs .song-focus-queue-card.collapsed .song-focus-section-head {
+  margin-bottom: 10px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue-toggle,
+#dc-songs .song-focus-queue-toggle {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 1px solid rgba(127, 82, 28, 0.16) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 252, 241, 0.86) !important;
+  color: #5c3a18 !important;
+  cursor: pointer !important;
+  font-size: 0.82rem !important;
+  font-weight: 950 !important;
+  padding: 8px 12px !important;
+  white-space: nowrap !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  line-height: 1.1 !important;
+  text-indent: 0 !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue-toggle:hover,
+#dc-songs .song-focus-queue-toggle:hover {
+  transform: translateY(-1px) !important;
+  background: #fff8e9 !important;
+  border-color: rgba(217, 141, 37, 0.34) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue-collapsed,
+#dc-songs .song-focus-queue-collapsed {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 10px !important;
+  border-radius: 20px !important;
+  background: rgba(255, 248, 229, 0.42) !important;
+  border: 1px solid rgba(127, 82, 28, 0.1) !important;
+  overflow: hidden !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue-summary-title,
+#dc-songs .song-focus-queue-summary-title {
+  color: var(--text, #24170f) !important;
+  font-size: 0.95rem !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.01em !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue-summary-sub,
+#dc-songs .song-focus-queue-summary-sub {
+  margin-top: 3px !important;
+  color: var(--muted, #735a3c) !important;
+  font-size: 0.82rem !important;
+  font-weight: 750 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-cover-strip,
+#dc-songs .song-focus-cover-strip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  max-width: 360px !important;
+  overflow: hidden !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-cover-peek,
+#dc-songs .song-focus-cover-peek {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 38px !important;
+  min-width: 38px !important;
+  max-width: 38px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(44, 26, 16, 0.16) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.42) !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  flex: 0 0 38px !important;
+  box-shadow: 0 8px 16px rgba(63, 35, 12, 0.08) !important;
+  display: inline-grid !important;
+  place-items: center !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-cover-peek:hover,
+#dc-songs .song-focus-cover-peek:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(217, 141, 37, 0.42) !important;
+  box-shadow: 0 12px 22px rgba(63, 35, 12, 0.14) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-cover-peek.levelup,
+#dc-songs .song-focus-cover-peek.levelup {
+  box-shadow:
+    0 0 0 2px rgba(100, 60, 180, 0.16),
+    0 8px 16px rgba(63, 35, 12, 0.08) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-cover-peek img,
+#dc-songs .song-focus-cover-peek img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-cover-peek span,
+#dc-songs .song-focus-cover-peek span {
+  width: 100% !important;
+  height: 100% !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #ffe0a1 !important;
+  background: #2c1a10 !important;
+  font-weight: 950 !important;
+  font-size: 0.9rem !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-cover-more,
+#dc-songs .song-focus-cover-more {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 38px !important;
+  height: 38px !important;
+  border-radius: 999px !important;
+  background: rgba(51, 32, 19, 0.1) !important;
+  color: var(--muted, #735a3c) !important;
+  font-size: 0.75rem !important;
+  font-weight: 950 !important;
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 900px) {
+  #screen-listen.listen-experience-mode .song-focus-nav,
+  #dc-songs .song-focus-nav {
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    font-size: 1.7rem !important;
+  }
+
+  #screen-listen.listen-experience-mode .song-focus-nav-prev,
+  #dc-songs .song-focus-nav-prev {
+    left: 7px !important;
+  }
+
+  #screen-listen.listen-experience-mode .song-focus-nav-next,
+  #dc-songs .song-focus-nav-next {
+    right: 7px !important;
+  }
+
+  #screen-listen.listen-experience-mode .song-focus-queue-collapsed,
+  #dc-songs .song-focus-queue-collapsed {
+    grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+  }
+
+  #screen-listen.listen-experience-mode .song-focus-cover-strip,
+  #dc-songs .song-focus-cover-strip {
+    max-width: 100% !important;
+  }
+
+  #screen-listen.listen-experience-mode .song-focus-queue-collapsed .song-focus-queue-toggle,
+  #dc-songs .song-focus-queue-collapsed .song-focus-queue-toggle {
+    justify-self: start !important;
   }
 }
