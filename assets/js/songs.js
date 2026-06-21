@@ -31,7 +31,13 @@
       out.push({
         song,
         path: `song:${index}`,
-        label: song.isAdd ? "Add" : song.isPromote ? "Promote" : "Canon",
+        label: song.isIdentityTrack
+          ? (song.identityType === "seminal" ? "Seminal" : "Popular")
+          : song.isAdd
+            ? "Add"
+            : song.isPromote
+              ? "Promote"
+              : "Canon",
         isChild: false,
       });
       if (song.levelUp) {
@@ -86,6 +92,10 @@
   function songTypeBadge(entry) {
     if (entry.label === "Level Up")
       return '<span class="song-focus-badge level">Level Up</span>';
+    if (entry.label === "Seminal")
+      return '<span class="song-focus-badge identity seminal">Seminal</span>';
+    if (entry.label === "Popular")
+      return '<span class="song-focus-badge identity popular">Popular</span>';
     if (entry.label === "Add")
       return '<span class="song-focus-badge add">Add</span>';
     if (entry.song?.score != null)
@@ -142,6 +152,7 @@
       "all",
       "unrated",
       "favorites",
+      "identity",
       "levelups",
       "adds",
       "fit5",
@@ -171,6 +182,8 @@
       return entries.filter((entry) => !entry.song?.reaction);
     if (selected === "favorites")
       return entries.filter((entry) => isFavoriteEntry(entry));
+    if (selected === "identity")
+      return entries.filter((entry) => entry.song?.isIdentityTrack);
     if (selected === "levelups")
       return entries.filter(
         (entry) => entry.label === "Level Up" || entry.song?.isLevelUp,
@@ -201,6 +214,11 @@
         "favorites",
         "Favorites",
         entries.filter((entry) => isFavoriteEntry(entry)).length,
+      ],
+      [
+        "identity",
+        "Identity",
+        entries.filter((entry) => entry.song?.isIdentityTrack).length,
       ],
       [
         "levelups",
@@ -252,17 +270,6 @@
     try {
       if (typeof currentGenre !== "undefined" && currentGenre) {
         localStorage.setItem(genreFocusStorageKey(currentGenre), key || "");
-      }
-    } catch {}
-    enhanceSongListeningExperience();
-  }
-
-  function setSongFocusFromQueue(key) {
-    try {
-      if (typeof currentGenre !== "undefined" && currentGenre) {
-        localStorage.setItem(genreFocusStorageKey(currentGenre), key || "");
-        localStorage.setItem(genreDetailsStorageKey(currentGenre), "1");
-        localStorage.setItem(genreQueueOpenStorageKey(currentGenre), "1");
       }
     } catch {}
     enhanceSongListeningExperience();
@@ -362,8 +369,9 @@
     const readMore = "";
     const filterLabel =
       activeFilter && activeFilter !== "all" ? ` in current filter` : "";
-    const relation =
-      entry.isChild && entry.parentSong
+    const relation = entry.song?.isIdentityTrack
+      ? `<div class="song-focus-relation-hero">${entry.song.identityType === "seminal" ? "✦ Seminal identity anchor" : "▣ Popular / media identity anchor"}</div>`
+      : entry.isChild && entry.parentSong
         ? `<div class="song-focus-relation-hero">↳ Level up from ${html(entry.parentSong.title || "previous pick")}</div>`
         : "";
     const sequenceCount =
@@ -503,7 +511,7 @@
           <div class="eyebrow">Song queue</div>
           <div class="small">${reactedCount}/${entries.length} reacted · ${favoriteCount} favorite${activeFilter !== "all" ? ` · ${visibleEntries.length} shown` : ""}</div>
         </div>
-        <button type="button" class="song-focus-queue-toggle" onclick="setSongQueueOpen(${queueOpen ? "false" : "true"})">${queueOpen ? "Collapse queue" : "Show/edit queue"}</button>
+        <button type="button" class="song-focus-queue-toggle" onclick="setSongQueueOpen(${queueOpen ? "false" : "true"})">${queueOpen ? "Collapse queue" : "Show queue"}</button>
       </div>
       ${
         queueOpen
@@ -537,7 +545,7 @@
                     !selected &&
                     entry.parentKey &&
                     entry.parentKey === selectedKey;
-                  return `<div role="button" tabindex="0" class="song-focus-row ${selected ? "active" : ""} ${parentSelected ? "parent-active" : ""} ${entry.isChild ? "levelup-child" : ""} ${Number(song.reaction) ? "reacted" : ""}" onclick="setSongFocus('${safeKeyAttr}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); setSongFocus('${safeKeyAttr}'); }">
+                  return `<div role="button" tabindex="0" class="song-focus-row ${selected ? "active" : ""} ${parentSelected ? "parent-active" : ""} ${entry.isChild ? "levelup-child" : ""} ${song.isIdentityTrack ? `identity-track ${song.identityType === "seminal" ? "identity-seminal" : "identity-popular"}` : ""} ${Number(song.reaction) ? "reacted" : ""}" onclick="setSongFocus('${safeKeyAttr}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); setSongFocus('${safeKeyAttr}'); }">
             ${art ? `<img class="song-focus-row-art" src="${html(art)}" alt="${html(title)} artwork" loading="lazy">` : '<span class="song-focus-row-art placeholder">♪</span>'}
             <span class="song-focus-row-main">
               <span class="song-focus-row-title-line">${titleMarkup}${selected ? '<span class="song-focus-now-badge">Now Listening</span>' : ""}</span>
@@ -600,7 +608,7 @@
       mount.className = "song-focus-experience";
       section.insertBefore(mount, activeList);
     }
-    mount.innerHTML = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}${detailsOpen ? renderSongDetails(selected) : ""}`;
+    mount.innerHTML = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
   }
 
   function installNoJumpReactionWrapper() {
@@ -647,7 +655,7 @@
     };
   }
 
-  window.setSongFocus = setSongFocusFromQueue;
+  window.setSongFocus = setSelectedSongKey;
   window.setSongFocusDetailsOpen = setSongDetailsOpen;
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
