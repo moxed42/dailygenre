@@ -3656,9 +3656,31 @@ function blockSaveIfDuplicateGenres() {
       return new TextDecoder().decode(bytes);
     }
 
+    function fetchJsonWithTimeout(url, options = {}, timeoutMs = 4500) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+      return fetch(url, { ...options, signal: controller.signal })
+        .finally(() => window.clearTimeout(timer));
+    }
+
+    async function fetchLocalGenreData() {
+      const localUrls = ['./genres_data.json', 'genres_data.json'];
+      for (const url of localUrls) {
+        try {
+          const res = await fetchJsonWithTimeout(url, { cache: 'no-store' }, 2500);
+          if (!res.ok) continue;
+          const parsed = await res.json().catch(() => null);
+          if (Array.isArray(parsed)) return { data: parsed, sha: '', source: 'local-json', url };
+        } catch (localError) {
+          console.warn('[Daily Genre] Local JSON data load failed for', url, localError);
+        }
+      }
+      return null;
+    }
+
     async function fetchProductionDataFallback() {
       try {
-        const apiRes = await fetch(DATA_API_URL, { cache: 'no-store' });
+        const apiRes = await fetchJsonWithTimeout(DATA_API_URL, { cache: 'no-store' }, 5000);
         const meta = await apiRes.json().catch(() => ({}));
         if (apiRes.ok && meta && meta.content) {
           const parsed = JSON.parse(decodeBase64Utf8(meta.content));
@@ -3669,7 +3691,7 @@ function blockSaveIfDuplicateGenres() {
       }
 
       try {
-        const rawRes = await fetch(DATA_URL, { cache: 'no-store' });
+        const rawRes = await fetchJsonWithTimeout(DATA_URL, { cache: 'no-store' }, 5000);
         const parsed = await rawRes.json().catch(() => null);
         if (rawRes.ok && Array.isArray(parsed)) return { data: parsed, sha: '', source: 'raw-json' };
       } catch (rawError) {
@@ -3717,27 +3739,12 @@ function spotifyRestoreReturnAfterDataLoad() {
 }
 
 async function loadData() {
+  const loadStartedAt = (window.performance && performance.now) ? performance.now() : Date.now();
   remainingCount.textContent = 'Loading genres...';
 
+  let localLoaded = null;
   let workerLoaded = null;
   let githubLoaded = null;
-  let loaded = null;
-
-  try {
-    const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
-    const data = await res.json().catch(() => ({}));
-    if (res.ok && data.ok && Array.isArray(data.data)) {
-      workerLoaded = { data: data.data, sha: data.sha || '', source: 'worker' };
-    } else {
-      console.warn('Production Worker data load did not return the expected shape; checking GitHub JSON.', data);
-    }
-  } catch (workerError) {
-    console.warn('Production Worker data load failed; checking GitHub JSON.', workerError);
-  }
-
-  // Always check GitHub too. The Worker can return a valid-but-stale snapshot;
-  // if that happens, the app would otherwise silently miss newly added genres.
-  githubLoaded = await fetchProductionDataFallback();
 
   function uniqueGenreCount(rows) {
     return new Set((rows || []).map(g => String(g && g.id != null ? g.id : (g && g.genre) || ''))).size;
@@ -3750,77 +3757,142 @@ async function loadData() {
     }, -1);
   }
 
-  const workerCount = uniqueGenreCount(workerLoaded && workerLoaded.data);
-  const githubCount = uniqueGenreCount(githubLoaded && githubLoaded.data);
-  const workerMaxId = maxGenreId(workerLoaded && workerLoaded.data);
-  const githubMaxId = maxGenreId(githubLoaded && githubLoaded.data);
-
-  if (githubLoaded && githubCount > workerCount) {
-    loaded = githubLoaded;
-    console.warn('[Daily Genre] Worker data appears stale; using newer GitHub data instead.', {
-      workerCount,
-      githubCount,
-      workerMaxId,
-      githubMaxId,
+  function publishLoadedData(selected, meta = {}) {
+    genres = selected.data;
+    serverFileSha = selected.sha || '';
+    window.genres = genres;
+    window.dailyGenreDataSource = {
+      source: selected.source,
+      loadedCount: uniqueGenreCount(selected.data),
+      loadedMaxId: maxGenreId(selected.data),
+      localCount: uniqueGenreCount(localLoaded && localLoaded.data),
+      localMaxId: maxGenreId(localLoaded && localLoaded.data),
+      localUrl: localLoaded && localLoaded.url,
+      workerCount: uniqueGenreCount(workerLoaded && workerLoaded.data),
+      workerMaxId: maxGenreId(workerLoaded && workerLoaded.data),
+      githubCount: uniqueGenreCount(githubLoaded && githubLoaded.data),
+      githubMaxId: maxGenreId(githubLoaded && githubLoaded.data),
       workerSha: workerLoaded && workerLoaded.sha,
-      githubSha: githubLoaded.sha
+      githubSha: githubLoaded && githubLoaded.sha,
+      bootMode: 'fast-first-paint',
+      ...meta
+    };
+
+    // Cheap shape guard only. Full song inflation/pending repair is deferred so
+    // the spinner and count render before heavier library work starts.
+    genres.forEach(g => {
+      if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
+      if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
     });
-    showSaveToast(`Loaded ${githubCount} genres from GitHub; Worker only returned ${workerCount}.`, false);
-  } else {
-    loaded = workerLoaded || githubLoaded;
+
+    updateRemainingCount();
+    buildSpinnerPool();
+    populateMonthFilter();
+
+    console.info('[Daily Genre] Data source selected', window.dailyGenreDataSource);
+
+    const finishHeavyStartupWork = () => {
+      const heavyStartedAt = (window.performance && performance.now) ? performance.now() : Date.now();
+      try {
+        warnDuplicateGenresOnLoad();
+
+        genres.forEach(g => {
+          g.songs_listened = inflateSongsFromStorage(g.songs_listened || []);
+          g.pending_songs = normalizePendingSongs(g.pending_songs || []);
+          removeLoggedSongsFromPending(g);
+        });
+
+        // Pending-source repair is useful but not required to paint the app.
+        repairExistingPendingSources();
+
+        renderHistory();
+        renderRankings();
+
+        const hashMatch = location.hash.match(/^#genre=(.+)$/);
+        if (hashMatch) {
+          const id = decodeURIComponent(hashMatch[1]);
+          const genre = genres.find(g => String(g.id) === String(id));
+          if (genre) openGenreDetail(genre, false);
+        }
+        spotifyRestoreReturnAfterDataLoad();
+      } catch (err) {
+        console.error('[Daily Genre] Deferred startup work failed:', err);
+        showSaveToast(`Startup cleanup failed: ${err?.message || 'unknown error'}`, true);
+      } finally {
+        const now = (window.performance && performance.now) ? performance.now() : Date.now();
+        window.dailyGenreDataSource = {
+          ...(window.dailyGenreDataSource || {}),
+          startupHeavyMs: Math.round(now - heavyStartedAt),
+          startupTotalMs: Math.round(now - loadStartedAt),
+          startupHydrated: true
+        };
+        window.dispatchEvent(new CustomEvent('dailygenre:data-ready', { detail: window.dailyGenreDataSource }));
+      }
+    };
+
+    const scheduleHeavyWork = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(finishHeavyStartupWork, { timeout: 1500 });
+      } else {
+        window.setTimeout(finishHeavyStartupWork, 80);
+      }
+    };
+
+    // Let the browser paint the spinner/count first, then hydrate the archive/ranks.
+    window.requestAnimationFrame(() => window.setTimeout(scheduleHeavyWork, 0));
+
+    if (!serverFileSha && selected.source === 'local-json') {
+      refreshServerFileSha().catch(error => {
+        console.warn('[Daily Genre] Could not refresh save revision after local JSON load.', error);
+      });
+    }
   }
 
-  if (!loaded || !Array.isArray(loaded.data)) {
-    remainingCount.textContent = 'Could not load production data.';
-    showSaveToast('Could not load production data from the Worker or GitHub JSON.', true);
-    return;
+  try {
+    localLoaded = await fetchLocalGenreData();
+    if (localLoaded && Array.isArray(localLoaded.data)) {
+      publishLoadedData(localLoaded, { localFirst: true });
+      return;
+    }
+
+    const workerLoadPromise = (async () => {
+      try {
+        const res = await fetchJsonWithTimeout(WORKER_URL, { method: 'GET', cache: 'no-store' }, 3000);
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok && Array.isArray(data.data)) {
+          return { data: data.data, sha: data.sha || '', source: 'worker' };
+        }
+        console.warn('Production Worker data load did not return the expected shape; checking GitHub JSON.', data);
+      } catch (workerError) {
+        console.warn('Production Worker data load failed or timed out; checking GitHub JSON.', workerError);
+      }
+      return null;
+    })();
+
+    const githubLoadPromise = fetchProductionDataFallback();
+    [workerLoaded, githubLoaded] = await Promise.all([workerLoadPromise, githubLoadPromise]);
+
+    const workerCount = uniqueGenreCount(workerLoaded && workerLoaded.data);
+    const githubCount = uniqueGenreCount(githubLoaded && githubLoaded.data);
+    if (githubLoaded && githubCount > workerCount) {
+      publishLoadedData(githubLoaded, { localFirst: false });
+      return;
+    }
+
+    const selected = workerLoaded || githubLoaded;
+    if (selected && Array.isArray(selected.data)) {
+      publishLoadedData(selected, { localFirst: false });
+      return;
+    }
+  } catch (err) {
+    console.error('[Daily Genre] Data load failed:', err);
   }
 
-  genres = loaded.data;
-  serverFileSha = loaded.sha || '';
-  window.genres = genres;
-  window.dailyGenreDataSource = {
-    source: loaded.source,
-    loadedCount: uniqueGenreCount(loaded.data),
-    loadedMaxId: maxGenreId(loaded.data),
-    workerCount,
-    workerMaxId,
-    githubCount,
-    githubMaxId,
-    workerSha: workerLoaded && workerLoaded.sha,
-    githubSha: githubLoaded && githubLoaded.sha
-  };
-  console.info('[Daily Genre] Data source selected', window.dailyGenreDataSource);
-
-  genres.forEach(g => {
-    if (!Array.isArray(g.songs_listened)) g.songs_listened = g.songs_listened ? [].concat(g.songs_listened) : [];
-    if (!Array.isArray(g.pending_songs)) g.pending_songs = g.pending_songs ? [].concat(g.pending_songs) : [];
-  });
-
-  warnDuplicateGenresOnLoad();
-
-  genres.forEach(g => {
-    g.songs_listened = inflateSongsFromStorage(g.songs_listened);
-    g.pending_songs = normalizePendingSongs(g.pending_songs);
-    removeLoggedSongsFromPending(g);
-  });
-
-  repairExistingPendingSources();
-
-  updateRemainingCount();
-  buildSpinnerPool();
-  populateMonthFilter();
-  renderHistory();
-  renderRankings();
-
-  const hashMatch = location.hash.match(/^#genre=(.+)$/);
-  if (hashMatch) {
-    const id = decodeURIComponent(hashMatch[1]);
-    const genre = genres.find(g => String(g.id) === String(id));
-    if (genre) openGenreDetail(genre, false);
-  }
-  spotifyRestoreReturnAfterDataLoad();
+  remainingCount.textContent = 'Could not load production data.';
+  showSaveToast('Could not load genre data from local JSON, Worker, or GitHub JSON.', true);
 }
+
+
     window.addEventListener('beforeunload', (event) => {
       if (!hasUnsavedChanges) return;
       event.preventDefault();
