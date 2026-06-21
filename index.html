@@ -1,524 +1,1026 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Genre</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
-  <link rel="stylesheet" href="./assets/css/styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
-</head>
-<body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand-wrap">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div class="brand-text">
-          <h1>Daily Genre</h1>
-          <p>Spin something unexpected, log what you heard, keep the ranking alive.</p>
-        </div>
-      </div>
-      <div class="top-actions">
-        <div class="pill" id="remainingCount">Loading genres...</div>
-        <button id="spotifyConnectBtn" class="spotify-connect-btn" onclick="spotifyConnect()">Connect Spotify</button>
-      </div>
-    </header>
-
-    <nav class="tabs">
-      <button class="tab-btn active" data-screen="spin">Spin</button>
-      <button class="tab-btn" data-screen="history">Archive</button>
-      <button class="tab-btn tab-action-btn" id="topCrateDigBtn" type="button">Crate Dig</button>
-      <button class="tab-btn" data-screen="viz">Visuals</button>
-      <button class="tab-btn" data-screen="review">Review</button>
-      <button class="tab-btn" data-screen="ranking">Ranking</button>
-    </nav>
-
-    <section class="screen active" id="screen-spin">
-
-            <div class="card" style="margin-top:20px;">
-        <div class="spinner-shell">
-          <div class="spinner-window">
-            <div class="spinner-marker"></div>
-            <div class="spinner-track" id="spinnerTrack"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Genre</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <link rel="stylesheet" href="./assets/css/core-loader.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/css/library-polish.css?v=stability6"
+    />
+    <link rel="stylesheet" href="./assets/css/studio-polish.css?v=final1" />
+    <link rel="stylesheet" href="./assets/css/ranks-polish.css?v=final1" />
+    <link rel="stylesheet" href="./assets/css/genre-identity.css?v=final1" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-text">
+            <h1>Daily Genre</h1>
+            <p>
+              Spin something unexpected, log what you heard, keep the ranking
+              alive.
+            </p>
           </div>
         </div>
-
-        <div class="spin-actions">
-          <button class="btn btn-primary" id="spinBtn">SPIN</button>
-          <button class="btn btn-secondary" id="manualToggleBtn">Toggle manual picker</button>
+        <div class="top-actions">
+          <div class="pill" id="remainingCount">Loading genres...</div>
+          <button
+            id="spotifyConnectBtn"
+            class="spotify-connect-btn"
+            onclick="spotifyConnect()"
+          >
+            Connect Spotify
+          </button>
         </div>
+      </header>
 
-        <div class="panel hidden" id="manualPanel" style="margin-top:18px;">
-          <label for="manualSearch2">Search here too</label>
-          <input id="manualSearch2" type="text" placeholder="Search genre names..." />
-          <div class="list" id="manualResults2" style="margin-top:12px;"></div>
+      <nav class="tabs">
+        <button class="tab-btn active" data-screen="spin">Spin</button>
+        <button class="tab-btn" data-screen="history">Archive</button>
+        <button
+          class="tab-btn tab-action-btn"
+          id="topCrateDigBtn"
+          type="button"
+        >
+          Crate Dig
+        </button>
+        <button class="tab-btn" data-screen="viz">Visuals</button>
+        <button class="tab-btn" data-screen="review">Review</button>
+        <button class="tab-btn" data-screen="ranking">Ranking</button>
+      </nav>
+
+      <section class="screen active" id="screen-spin">
+        <div class="card" style="margin-top: 20px">
+          <div class="spinner-shell">
+            <div class="spinner-window">
+              <div class="spinner-marker"></div>
+              <div class="spinner-track" id="spinnerTrack"></div>
+            </div>
+          </div>
+
+          <div class="spin-actions">
+            <button class="btn btn-primary" id="spinBtn">SPIN</button>
+            <button class="btn btn-secondary" id="manualToggleBtn">
+              Toggle manual picker
+            </button>
+          </div>
+
+          <div class="panel hidden" id="manualPanel" style="margin-top: 18px">
+            <label for="manualSearch2">Search here too</label>
+            <input
+              id="manualSearch2"
+              type="text"
+              placeholder="Search genre names..."
+            />
+            <div
+              class="list"
+              id="manualResults2"
+              style="margin-top: 12px"
+            ></div>
+          </div>
+
+          <div class="panel result-card" id="spinResult"></div>
         </div>
+      </section>
 
-        <div class="panel result-card" id="spinResult"></div>
-      </div>
-    </section>
-
-    <section class="screen screen-detail" id="screen-listen">
-      <div class="listen-grid">
-        <div class="panel" style="min-width:0;overflow:hidden;">
-          <div id="listenDetails">
-            <div class="empty-log-state">
-              <div class="eyebrow">Genre Detail</div>
-              <h2 style="margin:0 0 8px; letter-spacing:-.055em;">No genre loaded</h2>
-              <p class="small">Spin a random genre, open one from Archive, or click a genre in Ranking to view and edit its full record.</p>
-              <div class="row" style="margin-top:14px;">
-                <button class="btn btn-primary" onclick="switchScreen('spin')">Go to Spin</button>
+      <section class="screen screen-detail" id="screen-listen">
+        <div class="listen-grid">
+          <div class="panel" style="min-width: 0; overflow: hidden">
+            <div id="listenDetails">
+              <div class="empty-log-state">
+                <div class="eyebrow">Genre Detail</div>
+                <h2 style="margin: 0 0 8px; letter-spacing: -0.055em">
+                  No genre loaded
+                </h2>
+                <p class="small">
+                  Spin a random genre, open one from Archive, or click a genre
+                  in Ranking to view and edit its full record.
+                </p>
+                <div class="row" style="margin-top: 14px">
+                  <button
+                    class="btn btn-primary"
+                    onclick="switchScreen('spin')"
+                  >
+                    Go to Spin
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="panel stack detail-edit-panel" id="listenEditPanel">
-          <div class="form-section"><div class="eyebrow" style="margin:0 0 6px;">Setup / Curation Editor</div><div class="small">Use this before the listen for song uploads, curation text, song-fit reasons, and detailed setup. Listening actions live on the song cards and Listening Actions panel.</div></div>
-          <div class="form-section share-section collapsed" id="shareSection">
-            <button type="button" class="section-toggle" id="shareToggle"><strong>Discord share block</strong><span class="small">Show / hide</span></button>
-            <div class="share-body" style="margin-top:12px;">
-              <label style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
-                <input type="checkbox" id="includeSongsToggle" style="width:auto;" />
-                Include suggested songs in Discord block
+          <div class="panel stack detail-edit-panel" id="listenEditPanel">
+            <div class="form-section">
+              <div class="eyebrow" style="margin: 0 0 6px">
+                Setup / Curation Editor
+              </div>
+              <div class="small">
+                Use this before the listen for song uploads, curation text,
+                song-fit reasons, and detailed setup. Listening actions live on
+                the song cards and Listening Actions panel.
+              </div>
+            </div>
+            <div class="form-section share-section collapsed" id="shareSection">
+              <button type="button" class="section-toggle" id="shareToggle">
+                <strong>Discord share block</strong
+                ><span class="small">Show / hide</span>
+              </button>
+              <div class="share-body" style="margin-top: 12px">
+                <label
+                  style="
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    margin-bottom: 10px;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    id="includeSongsToggle"
+                    style="width: auto"
+                  />
+                  Include suggested songs in Discord block
+                </label>
+                <label for="discordBlock">Discord text</label>
+                <textarea id="discordBlock" readonly></textarea>
+                <div class="row" style="margin-top: 12px">
+                  <button class="btn btn-secondary" id="copyDiscordBtn">
+                    Copy block
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label>Rating</label>
+              <div class="stars" id="ratingStars"></div>
+              <div class="row" style="margin-top: 10px">
+                <button class="btn btn-danger btn-compact" id="zangerBtn">
+                  Zanger / Veto
+                </button>
+                <span class="small" id="ratingStatus">No rating selected</span>
+              </div>
+            </div>
+
+            <div>
+              <label for="favoriteSongUrl">Favorite song — Spotify URL</label>
+              <input
+                id="favoriteSongUrl"
+                type="url"
+                placeholder="https://open.spotify.com/track/..."
+              />
+              <div
+                class="small"
+                style="margin-top: 8px"
+                id="favoriteSongFetchStatus"
+              ></div>
+              <div style="margin-top: 10px">
+                <label
+                  for="favoriteSong"
+                  style="
+                    font-weight: 500;
+                    color: var(--muted);
+                    font-size: 0.92rem;
+                    margin-bottom: 6px;
+                  "
+                  >Track title (auto-filled from URL, or type manually)</label
+                >
+                <input
+                  id="favoriteSong"
+                  type="text"
+                  placeholder="Paste URL above to auto-fill…"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="songsListenedBulk"
+                >Songs listened — one per line</label
+              >
+              <div
+                class="small"
+                style="margin-bottom: 8px; color: var(--muted)"
+              >
+                Simple: paste a URL &bull; With detail:
+                <code>URL | 1-5 | reason it fits or doesn't</code>
+              </div>
+              <textarea
+                id="songsListenedBulk"
+                style="
+                  min-height: 130px;
+                  font-size: 0.88rem;
+                  font-family: monospace;
+                "
+                placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title"
+              ></textarea>
+              <div class="small" style="margin-top: 8px">
+                These are stored on the genre as an array so you can later
+                reverse-engineer what you actually listened to.
+              </div>
+            </div>
+
+            <div>
+              <label style="display: flex; gap: 10px; align-items: center">
+                <input
+                  type="checkbox"
+                  id="monthlyContender"
+                  style="width: auto"
+                />
+                Mark as monthly contender
               </label>
-              <label for="discordBlock">Discord text</label>
-              <textarea id="discordBlock" readonly></textarea>
-              <div class="row" style="margin-top:12px;">
-                <button class="btn btn-secondary" id="copyDiscordBtn">Copy block</button>
+            </div>
+
+            <div class="row" style="gap: 14px; align-items: flex-start">
+              <label
+                style="
+                  display: flex;
+                  gap: 10px;
+                  align-items: center;
+                  flex: 1;
+                  min-width: 200px;
+                "
+              >
+                <input type="checkbox" id="monthFavorite" style="width: auto" />
+                Mark as month favorite
+              </label>
+              <label
+                style="
+                  display: flex;
+                  gap: 10px;
+                  align-items: center;
+                  flex: 1;
+                  min-width: 200px;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="monthLeastFavorite"
+                  style="width: auto"
+                />
+                Mark as month least favorite
+              </label>
+            </div>
+
+            <div>
+              <label for="notes">Notes</label>
+              <textarea
+                id="notes"
+                placeholder="Quick reactions, standout artists, context..."
+              ></textarea>
+            </div>
+
+            <div class="editor-save-actions">
+              <div class="row">
+                <button class="btn btn-primary" id="saveBtn">
+                  Save Changes
+                </button>
+                <button class="btn btn-secondary" id="markListenedBtn">
+                  Mark as Listened Today
+                </button>
+                <button class="btn btn-danger hidden" id="unlistenBtn">
+                  Undo Listen / Remove Date
+                </button>
+              </div>
+              <div class="small save-behavior-note">
+                Setup save keeps uploaded songs, song descriptions, and setup
+                notes. Listening actions can be saved from the genre page
+                without opening this editor.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-history">
+        <div class="panel archive-panel">
+          <div class="archive-topline">
+            <div>
+              <div class="eyebrow">Archive</div>
+              <h2 class="archive-title">Listening archive</h2>
+              <p class="small archive-subtitle">
+                Search everything you have logged, review a month, find Alt
+                Takes, or jump back in to edit a genre.
+              </p>
+            </div>
+            <div class="archive-actions">
+              <button class="btn btn-secondary" id="archiveCopyBtn">
+                Copy current view
+              </button>
+              <div class="archive-playlist-tools">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="archivePlaylistToggleVisibleBtn"
+                >
+                  Select visible for playlist
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="archivePlaylistSelectedBtn"
+                >
+                  ＋ Playlist selected
+                </button>
               </div>
             </div>
           </div>
 
-          <div>
-            <label>Rating</label>
-            <div class="stars" id="ratingStars"></div>
-            <div class="row" style="margin-top:10px;">
-              <button class="btn btn-danger btn-compact" id="zangerBtn">Zanger / Veto</button>
-              <span class="small" id="ratingStatus">No rating selected</span>
-            </div>
+          <div class="archive-view-tabs" aria-label="Archive views">
+            <button class="archive-view-btn active" data-archive-view="all">
+              All
+            </button>
+            <button class="archive-view-btn" data-archive-view="monthly">
+              This Month
+            </button>
+            <button class="archive-view-btn" data-archive-view="contenders">
+              Contenders
+            </button>
+            <button class="archive-view-btn" data-archive-view="zangers">
+              Zangers
+            </button>
+            <button class="archive-view-btn" data-archive-view="alttakes">
+              Alt Takes
+            </button>
+            <button class="archive-view-btn" data-archive-view="pending">
+              Pending
+            </button>
           </div>
 
-          <div>
-            <label for="favoriteSongUrl">Favorite song — Spotify URL</label>
-            <input id="favoriteSongUrl" type="url" placeholder="https://open.spotify.com/track/..." />
-            <div class="small" style="margin-top:8px;" id="favoriteSongFetchStatus"></div>
-            <div style="margin-top:10px;">
-              <label for="favoriteSong" style="font-weight:500; color:var(--muted); font-size:.92rem; margin-bottom:6px;">Track title (auto-filled from URL, or type manually)</label>
-              <input id="favoriteSong" type="text" placeholder="Paste URL above to auto-fill…" />
-            </div>
+          <div class="archive-filters">
+            <input
+              id="archiveSearchInput"
+              type="search"
+              placeholder="Search genres, songs, notes, artists..."
+            />
+            <select id="historyMonthFilter">
+              <option value="">All months</option>
+            </select>
+            <select id="historyRatingFilter">
+              <option value="">All ratings</option>
+              <option value="1">1★ Get This Off My Turntable</option>
+              <option value="2">2★ Respectfully, Nah</option>
+              <option value="3">3★ Glad I Heard It</option>
+              <option value="4">4★ Hell Yeah, Run It Back</option>
+              <option value="5">5★ Inject This Into My Veins</option>
+              <option value="zanger">Zanger</option>
+            </select>
+            <select id="archiveFlagFilter">
+              <option value="">Any flags</option>
+              <option value="contender">Monthly contender</option>
+              <option value="alt">Has Alt Take</option>
+              <option value="pending">Has Pending</option>
+              <option value="songs">Has song log</option>
+              <option value="favorite">Has favorite song</option>
+              <option value="missing-songs">Missing song log</option>
+              <option value="missing-favorite">Missing favorite song</option>
+              <option value="notes">Has notes</option>
+              <option value="unranked">Songs logged, no rank yet</option>
+              <option value="zanger">Zanger</option>
+            </select>
+            <select id="archiveSortFilter">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="rating-desc">Rating high to low</option>
+              <option value="rating-asc">Rating low to high</option>
+              <option value="genre">Genre A–Z</option>
+              <option value="rank">Rank order</option>
+            </select>
           </div>
 
-          <div>
-            <label for="songsListenedBulk">Songs listened — one per line</label>
-<div class="small" style="margin-bottom:8px;color:var(--muted);">Simple: paste a URL &bull; With detail: <code>URL | 1-5 | reason it fits or doesn't</code></div>
-<textarea id="songsListenedBulk" style="min-height:130px;font-size:.88rem;font-family:monospace;"
-  placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title"></textarea>
-            <div class="small" style="margin-top:8px;">These are stored on the genre as an array so you can later reverse-engineer what you actually listened to.</div>
-          </div>
-
-          <div>
-            <label style="display:flex; gap:10px; align-items:center;">
-              <input type="checkbox" id="monthlyContender" style="width:auto;" />
-              Mark as monthly contender
-            </label>
-          </div>
-
-          <div class="row" style="gap:14px; align-items:flex-start;">
-            <label style="display:flex; gap:10px; align-items:center; flex:1; min-width:200px;">
-              <input type="checkbox" id="monthFavorite" style="width:auto;" />
-              Mark as month favorite
-            </label>
-            <label style="display:flex; gap:10px; align-items:center; flex:1; min-width:200px;">
-              <input type="checkbox" id="monthLeastFavorite" style="width:auto;" />
-              Mark as month least favorite
-            </label>
-          </div>
-
-          <div>
-            <label for="notes">Notes</label>
-            <textarea id="notes" placeholder="Quick reactions, standout artists, context..."></textarea>
-          </div>
-
-          <div class="editor-save-actions">
-            <div class="row">
-              <button class="btn btn-primary" id="saveBtn">Save Changes</button>
-              <button class="btn btn-secondary" id="markListenedBtn">Mark as Listened Today</button>
-              <button class="btn btn-danger hidden" id="unlistenBtn">Undo Listen / Remove Date</button>
-            </div>
-            <div class="small save-behavior-note">Setup save keeps uploaded songs, song descriptions, and setup notes. Listening actions can be saved from the genre page without opening this editor.</div>
-          </div>
+          <div class="archive-summary" id="archiveSummary"></div>
+          <div class="list archive-list" id="historyList"></div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="screen" id="screen-history">
-      <div class="panel archive-panel">
-        <div class="archive-topline">
-          <div>
-            <div class="eyebrow">Archive</div>
-            <h2 class="archive-title">Listening archive</h2>
-            <p class="small archive-subtitle">Search everything you have logged, review a month, find Alt Takes, or jump back in to edit a genre.</p>
-          </div>
-          <div class="archive-actions">
-            <button class="btn btn-secondary" id="archiveCopyBtn">Copy current view</button>
-            <div class="archive-playlist-tools">
-              <button type="button" class="btn btn-secondary" id="archivePlaylistToggleVisibleBtn">Select visible for playlist</button>
-              <button type="button" class="btn btn-primary" id="archivePlaylistSelectedBtn">＋ Playlist selected</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="archive-view-tabs" aria-label="Archive views">
-          <button class="archive-view-btn active" data-archive-view="all">All</button>
-          <button class="archive-view-btn" data-archive-view="monthly">This Month</button>
-          <button class="archive-view-btn" data-archive-view="contenders">Contenders</button>
-          <button class="archive-view-btn" data-archive-view="zangers">Zangers</button>
-          <button class="archive-view-btn" data-archive-view="alttakes">Alt Takes</button>
-          <button class="archive-view-btn" data-archive-view="pending">Pending</button>
-        </div>
-
-        <div class="archive-filters">
-          <input id="archiveSearchInput" type="search" placeholder="Search genres, songs, notes, artists..." />
-          <select id="historyMonthFilter">
-            <option value="">All months</option>
-          </select>
-          <select id="historyRatingFilter">
-            <option value="">All ratings</option>
-            <option value="1">1★ Get This Off My Turntable</option>
-            <option value="2">2★ Respectfully, Nah</option>
-            <option value="3">3★ Glad I Heard It</option>
-            <option value="4">4★ Hell Yeah, Run It Back</option>
-            <option value="5">5★ Inject This Into My Veins</option>
-            <option value="zanger">Zanger</option>
-          </select>
-          <select id="archiveFlagFilter">
-            <option value="">Any flags</option>
-            <option value="contender">Monthly contender</option>
-            <option value="alt">Has Alt Take</option>
-            <option value="pending">Has Pending</option>
-            <option value="songs">Has song log</option>
-            <option value="favorite">Has favorite song</option>
-            <option value="missing-songs">Missing song log</option>
-            <option value="missing-favorite">Missing favorite song</option>
-            <option value="notes">Has notes</option>
-            <option value="unranked">Songs logged, no rank yet</option>
-            <option value="zanger">Zanger</option>
-          </select>
-          <select id="archiveSortFilter">
-            <option value="newest">Newest first</option>
-            <option value="oldest">Oldest first</option>
-            <option value="rating-desc">Rating high to low</option>
-            <option value="rating-asc">Rating low to high</option>
-            <option value="genre">Genre A–Z</option>
-            <option value="rank">Rank order</option>
-          </select>
-        </div>
-
-        <div class="archive-summary" id="archiveSummary"></div>
-        <div class="list archive-list" id="historyList"></div>
-      </div>
-    </section>
-
-    <section class="screen" id="screen-viz">
-      <div class="panel viz-panel">
-        <div class="viz-shell">
-          <div class="viz-hero">
-            <div class="viz-hero-card">
-              <div>
-                <div class="viz-hero-eyebrow">Now spinning</div>
-                <h2 class="viz-hero-title">Your listening room.</h2>
-                <p class="viz-hero-copy">Explore the genres you loved, the songs you put back in rotation, and the tracks that bridge more than one style.</p>
-              <div id="spotifyNowPlaying"></div>
-              </div>
-              <div class="viz-kpi-row" id="vizKpiMonthly"></div>
-            </div>
-            <div class="viz-side-stack">
-              <div class="viz-mode-bar">
-                <div class="viz-mode-btns">
-                  <button class="viz-mode-btn active" data-viz-mode="monthly">Monthly</button>
-                  <button class="viz-mode-btn" data-viz-mode="alltime">All Time</button>
-                </div>
-                <select id="vizMonthSelect" class="viz-month-sel"></select>
-                <button class="btn btn-ghost" id="vizRefreshBtn" onclick="refreshVisualMetadata()" style="padding:6px 12px;font-size:.82rem;">↺ Refresh Next 5 Spotify Tracks</button>
-                <button class="btn btn-primary hidden" id="vizSaveLibraryBtn" onclick="saveLibraryUpdates()" style="padding:6px 12px;font-size:.82rem;">Save Library Updates</button>
-                <button class="btn btn-ghost" id="vizBackupBtn" onclick="downloadGenreBackup()" style="padding:6px 12px;font-size:.82rem;">↓ Backup JSON</button>
-                <div class="small viz-refresh-status" id="vizRefreshStatus"></div>
-              </div>
-              <div class="viz-spotlight-card">
-                <div class="viz-spotlight-label">Listening note</div>
-                <h3 class="viz-spotlight-title">Theme fit is not a review score.</h3>
-                <p class="viz-spotlight-copy">Song fit only appears when it reveals genre crossover. Your new record reactions capture whether a track actually hit for you.</p>
-              </div>
-            </div>
-          </div>
-
-          <div id="vizFilterMount" class="viz-filter-mount"></div>
-          <div id="vizFocusBanner"></div>
-          <div id="vizGenreDossier"></div>
-          <div id="vizDrilldownPanel" class="viz-drilldown-panel" aria-live="polite"></div>
-
-          <div id="vizViewMonthly" class="viz-dashboard">
-            <div class="viz-section">
-              <div class="viz-section-header">
+      <section class="screen" id="screen-viz">
+        <div class="panel viz-panel">
+          <div class="viz-shell">
+            <div class="viz-hero">
+              <div class="viz-hero-card">
                 <div>
-                  <h3 class="viz-section-title">Monthly breakdown</h3>
-                  <p class="viz-section-copy">Genre ratings, personal song reactions, and crossover discoveries for the selected month.</p>
+                  <div class="viz-hero-eyebrow">Now spinning</div>
+                  <h2 class="viz-hero-title">Your listening room.</h2>
+                  <p class="viz-hero-copy">
+                    Explore the genres you loved, the songs you put back in
+                    rotation, and the tracks that bridge more than one style.
+                  </p>
+                  <div id="spotifyNowPlaying"></div>
+                </div>
+                <div class="viz-kpi-row" id="vizKpiMonthly"></div>
+              </div>
+              <div class="viz-side-stack">
+                <div class="viz-mode-bar">
+                  <div class="viz-mode-btns">
+                    <button class="viz-mode-btn active" data-viz-mode="monthly">
+                      Monthly
+                    </button>
+                    <button class="viz-mode-btn" data-viz-mode="alltime">
+                      All Time
+                    </button>
+                  </div>
+                  <select id="vizMonthSelect" class="viz-month-sel"></select>
+                  <button
+                    class="btn btn-ghost"
+                    id="vizRefreshBtn"
+                    onclick="refreshVisualMetadata()"
+                    style="padding: 6px 12px; font-size: 0.82rem"
+                  >
+                    ↺ Refresh Next 5 Spotify Tracks
+                  </button>
+                  <button
+                    class="btn btn-primary hidden"
+                    id="vizSaveLibraryBtn"
+                    onclick="saveLibraryUpdates()"
+                    style="padding: 6px 12px; font-size: 0.82rem"
+                  >
+                    Save Library Updates
+                  </button>
+                  <button
+                    class="btn btn-ghost"
+                    id="vizBackupBtn"
+                    onclick="downloadGenreBackup()"
+                    style="padding: 6px 12px; font-size: 0.82rem"
+                  >
+                    ↓ Backup JSON
+                  </button>
+                  <div
+                    class="small viz-refresh-status"
+                    id="vizRefreshStatus"
+                  ></div>
+                </div>
+                <div class="viz-spotlight-card">
+                  <div class="viz-spotlight-label">Listening note</div>
+                  <h3 class="viz-spotlight-title">
+                    Theme fit is not a review score.
+                  </h3>
+                  <p class="viz-spotlight-copy">
+                    Song fit only appears when it reveals genre crossover. Your
+                    new record reactions capture whether a track actually hit
+                    for you.
+                  </p>
                 </div>
               </div>
-              <div class="viz-secondary-grid">
-                <div class="viz-card viz-card-ratings">
-                  <div class="viz-card-label">Genre Ratings</div>
-                  <div id="vizRatingsContent"></div>
-                </div>
-                <div class="viz-card viz-card-donut">
-                  <div class="viz-card-label">Genre Categories</div>
-                  <div class="viz-donut-wrap">
-                    <div class="viz-chart-ring"><canvas id="vizCatDonut" height="180"></canvas></div>
-                    <div class="viz-donut-legend" id="vizCatLegend"></div>
+            </div>
+
+            <div id="vizFilterMount" class="viz-filter-mount"></div>
+            <div id="vizFocusBanner"></div>
+            <div id="vizGenreDossier"></div>
+            <div
+              id="vizDrilldownPanel"
+              class="viz-drilldown-panel"
+              aria-live="polite"
+            ></div>
+
+            <div id="vizViewMonthly" class="viz-dashboard">
+              <div class="viz-section">
+                <div class="viz-section-header">
+                  <div>
+                    <h3 class="viz-section-title">Monthly breakdown</h3>
+                    <p class="viz-section-copy">
+                      Genre ratings, personal song reactions, and crossover
+                      discoveries for the selected month.
+                    </p>
                   </div>
                 </div>
-                <div class="viz-card viz-card-decades">
-                  <div class="viz-card-label">Song Release Decades</div>
-                  <p class="viz-card-copy">Based on release-year metadata for the songs logged this month, not on the genre name.</p>
-                  <canvas id="vizDecadesBar" height="160"></canvas>
-                  <div class="viz-chart-hint">Click a decade bar to show the tracks behind it.</div>
-                  <div class="small viz-decade-note" id="vizDecadesNoteMonthly"></div>
-                  <div id="vizDecadeDrilldownMonthly" class="viz-local-drilldown" aria-live="polite"></div>
-                </div>
-                <div class="viz-card viz-card-highlights">
-                  <div class="viz-card-label">Highlights</div>
-                  <div class="viz-highlights-grid" id="vizHighlightsMonthly"></div>
-                </div>
-                <div class="viz-card viz-card-artists">
-                  <div class="viz-card-label">Artist Discovery</div>
-                  <div class="viz-artists-row" id="vizArtistsMonthly"></div>
-                </div>
-                <div class="viz-card viz-card-contenders viz-card-spins">
-                  <div class="viz-card-label">Songs in Rotation</div>
-                  <p class="viz-card-copy">Your reaction counts overall and by genre, separate from theme fit.</p>
-                  <div id="vizSongReactionsMonthly"></div>
-                  <div id="vizReactionDrilldownMonthly" class="viz-local-drilldown" aria-live="polite"></div>
-                </div>
-                <div class="viz-card viz-card-crossovers">
-                  <div class="viz-card-label">Genre Crossovers</div>
-                  <p class="viz-card-copy">Songs with a strong theme fit (4–5) in more than one logged genre.</p>
-                  <div id="vizCrossoversMonthly"></div>
-                </div>
-                <div class="viz-card viz-card-highlights">
-                  <div class="viz-card-label">Needs Attention</div>
-                  <p class="viz-card-copy">Maintenance across your whole library, not only this month.</p>
-                  <div id="vizNeedsAttentionMonthly"></div>
-                </div>
-                <div class="viz-card viz-card-crossovers">
-                  <div class="viz-card-label">Unrated Songs Queue</div>
-                  <p class="viz-card-copy">Rate songs quickly here, then save library updates above.</p>
-                  <div id="vizUnratedSongsMonthly"></div>
-                </div>
-                <div class="viz-card viz-card-crossovers viz-card-metadata">
-                  <div class="viz-card-label">Missing Metadata Queue</div>
-                  <p class="viz-card-copy">Find tracks still missing Spotify details, correct broken URLs, or refresh one track at a time.</p>
-                  <div id="vizMetadataQueueMonthly"></div>
+                <div class="viz-secondary-grid">
+                  <div class="viz-card viz-card-ratings">
+                    <div class="viz-card-label">Genre Ratings</div>
+                    <div id="vizRatingsContent"></div>
+                  </div>
+                  <div class="viz-card viz-card-donut">
+                    <div class="viz-card-label">Genre Categories</div>
+                    <div class="viz-donut-wrap">
+                      <div class="viz-chart-ring">
+                        <canvas id="vizCatDonut" height="180"></canvas>
+                      </div>
+                      <div class="viz-donut-legend" id="vizCatLegend"></div>
+                    </div>
+                  </div>
+                  <div class="viz-card viz-card-decades">
+                    <div class="viz-card-label">Song Release Decades</div>
+                    <p class="viz-card-copy">
+                      Based on release-year metadata for the songs logged this
+                      month, not on the genre name.
+                    </p>
+                    <canvas id="vizDecadesBar" height="160"></canvas>
+                    <div class="viz-chart-hint">
+                      Click a decade bar to show the tracks behind it.
+                    </div>
+                    <div
+                      class="small viz-decade-note"
+                      id="vizDecadesNoteMonthly"
+                    ></div>
+                    <div
+                      id="vizDecadeDrilldownMonthly"
+                      class="viz-local-drilldown"
+                      aria-live="polite"
+                    ></div>
+                  </div>
+                  <div class="viz-card viz-card-highlights">
+                    <div class="viz-card-label">Highlights</div>
+                    <div
+                      class="viz-highlights-grid"
+                      id="vizHighlightsMonthly"
+                    ></div>
+                  </div>
+                  <div class="viz-card viz-card-artists">
+                    <div class="viz-card-label">Artist Discovery</div>
+                    <div class="viz-artists-row" id="vizArtistsMonthly"></div>
+                  </div>
+                  <div class="viz-card viz-card-contenders viz-card-spins">
+                    <div class="viz-card-label">Songs in Rotation</div>
+                    <p class="viz-card-copy">
+                      Your reaction counts overall and by genre, separate from
+                      theme fit.
+                    </p>
+                    <div id="vizSongReactionsMonthly"></div>
+                    <div
+                      id="vizReactionDrilldownMonthly"
+                      class="viz-local-drilldown"
+                      aria-live="polite"
+                    ></div>
+                  </div>
+                  <div class="viz-card viz-card-crossovers">
+                    <div class="viz-card-label">Genre Crossovers</div>
+                    <p class="viz-card-copy">
+                      Songs with a strong theme fit (4–5) in more than one
+                      logged genre.
+                    </p>
+                    <div id="vizCrossoversMonthly"></div>
+                  </div>
+                  <div class="viz-card viz-card-highlights">
+                    <div class="viz-card-label">Needs Attention</div>
+                    <p class="viz-card-copy">
+                      Maintenance across your whole library, not only this
+                      month.
+                    </p>
+                    <div id="vizNeedsAttentionMonthly"></div>
+                  </div>
+                  <div class="viz-card viz-card-crossovers">
+                    <div class="viz-card-label">Unrated Songs Queue</div>
+                    <p class="viz-card-copy">
+                      Rate songs quickly here, then save library updates above.
+                    </p>
+                    <div id="vizUnratedSongsMonthly"></div>
+                  </div>
+                  <div class="viz-card viz-card-crossovers viz-card-metadata">
+                    <div class="viz-card-label">Missing Metadata Queue</div>
+                    <p class="viz-card-copy">
+                      Find tracks still missing Spotify details, correct broken
+                      URLs, or refresh one track at a time.
+                    </p>
+                    <div id="vizMetadataQueueMonthly"></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div id="vizViewAlltime" class="viz-dashboard" style="display:none;">
-            <div class="viz-hero-card" style="padding:18px 20px; background:linear-gradient(135deg, rgba(183,121,31,.08), rgba(255,255,255,.94));">
-              <div>
-                <div class="viz-hero-eyebrow">All-time snapshot</div>
-                <h3 class="viz-hero-title" style="font-size:clamp(1.1rem,1.8vw,1.5rem);">Longer-term patterns across your archive.</h3>
-                <p class="viz-hero-copy">Genre patterns, listening reactions, and recurring crossover tracks across the complete archive.</p>
-              </div>
-              <div class="viz-kpi-row" id="vizKpiAlltime"></div>
-            </div>
-            <div class="viz-section">
-              <div class="viz-section-header">
+            <div
+              id="vizViewAlltime"
+              class="viz-dashboard"
+              style="display: none"
+            >
+              <div
+                class="viz-hero-card"
+                style="
+                  padding: 18px 20px;
+                  background: linear-gradient(
+                    135deg,
+                    rgba(183, 121, 31, 0.08),
+                    rgba(255, 255, 255, 0.94)
+                  );
+                "
+              >
                 <div>
-                  <h3 class="viz-section-title">All-time breakdown</h3>
-                  <p class="viz-section-copy">Broader trend cards and charts laid out in a more balanced grid.</p>
+                  <div class="viz-hero-eyebrow">All-time snapshot</div>
+                  <h3
+                    class="viz-hero-title"
+                    style="font-size: clamp(1.1rem, 1.8vw, 1.5rem)"
+                  >
+                    Longer-term patterns across your archive.
+                  </h3>
+                  <p class="viz-hero-copy">
+                    Genre patterns, listening reactions, and recurring crossover
+                    tracks across the complete archive.
+                  </p>
                 </div>
+                <div class="viz-kpi-row" id="vizKpiAlltime"></div>
               </div>
-              <div class="viz-deep-grid">
-                <div class="viz-card" style="grid-column:1/-1">
-                <div class="viz-card-label">Most Replayed Tracks</div>
-                <p class="viz-card-copy">Songs you actually keep coming back to — tracked live from Spotify.</p>
-                <div id="vizMostReplayed"><div class="viz-empty">Connect Spotify above to start tracking play counts.</div></div>
-</div>
-                <div class="viz-card viz-card-donut">
-                  <div class="viz-card-label">All-Time Rating Mix</div>
-                  <div class="viz-donut-wrap">
-                    <div class="viz-chart-ring"><canvas id="vizRatingsDonut" height="180"></canvas></div>
-                    <div class="viz-donut-legend" id="vizRatingsLegend"></div>
+              <div class="viz-section">
+                <div class="viz-section-header">
+                  <div>
+                    <h3 class="viz-section-title">All-time breakdown</h3>
+                    <p class="viz-section-copy">
+                      Broader trend cards and charts laid out in a more balanced
+                      grid.
+                    </p>
                   </div>
                 </div>
-                <div class="viz-card viz-card-donut">
-                  <div class="viz-card-label">Genre Categories</div>
-                  <div class="viz-donut-wrap">
-                    <div class="viz-chart-ring"><canvas id="vizCatDonutAll" height="180"></canvas></div>
-                    <div class="viz-donut-legend" id="vizCatLegendAll"></div>
+                <div class="viz-deep-grid">
+                  <div class="viz-card" style="grid-column: 1/-1">
+                    <div class="viz-card-label">Most Replayed Tracks</div>
+                    <p class="viz-card-copy">
+                      Songs you actually keep coming back to — tracked live from
+                      Spotify.
+                    </p>
+                    <div id="vizMostReplayed">
+                      <div class="viz-empty">
+                        Connect Spotify above to start tracking play counts.
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="viz-card viz-card-highlights">
-                  <div class="viz-card-label">Listening Maintenance</div>
-                  <p class="viz-card-copy">Items that need attention across your library.</p>
-                  <div id="vizNeedsAttentionAll"></div>
-                </div>
-                <div class="viz-card viz-card-decades">
-                  <div class="viz-card-label">Song Release Decades (All Time)</div>
-                  <p class="viz-card-copy">Calculated from stored song release years after metadata refresh.</p>
-                  <canvas id="vizDecadesBarAll" height="160"></canvas>
-                  <div class="viz-chart-hint">Click a decade bar to show the tracks behind it.</div>
-                  <div class="small viz-decade-note" id="vizDecadesNoteAll"></div>
-                  <div id="vizDecadeDrilldownAll" class="viz-local-drilldown" aria-live="polite"></div>
-                </div>
-                <div class="viz-card viz-card-contenders viz-card-spins">
-                  <div class="viz-card-label">Personal Song Reactions</div>
-                  <p class="viz-card-copy">Reaction counts across every listened genre, with an unrated queue.</p>
-                  <div id="vizSongReactionsAll"></div>
-                  <div id="vizReactionDrilldownAll" class="viz-local-drilldown" aria-live="polite"></div>
-                </div>
-                <div class="viz-card viz-card-crossovers">
-                  <div class="viz-card-label">Genre Crossovers</div>
-                  <p class="viz-card-copy">Strong-fit recordings showing up across multiple genres.</p>
-                  <div id="vizCrossoversAll"></div>
-                </div>
-                <div class="viz-card viz-card-crossovers">
-                  <div class="viz-card-label">Unrated Songs Queue</div>
-                  <p class="viz-card-copy">Rate unreviewed songs without opening each genre.</p>
-                  <div id="vizUnratedSongsAll"></div>
-                </div>
-                <div class="viz-card viz-card-crossovers viz-card-metadata">
-                  <div class="viz-card-label">Missing Metadata Queue</div>
-                  <p class="viz-card-copy">Tracks missing official Spotify metadata, grouped by what can be fixed.</p>
-                  <div id="vizMetadataQueueAll"></div>
-                </div>
-                <div class="viz-card">
-                  <div class="viz-card-label">Most Songs Logged (Top 15)</div>
-                  <canvas id="vizSongsDepth" height="220"></canvas>
+                  <div class="viz-card viz-card-donut">
+                    <div class="viz-card-label">All-Time Rating Mix</div>
+                    <div class="viz-donut-wrap">
+                      <div class="viz-chart-ring">
+                        <canvas id="vizRatingsDonut" height="180"></canvas>
+                      </div>
+                      <div class="viz-donut-legend" id="vizRatingsLegend"></div>
+                    </div>
+                  </div>
+                  <div class="viz-card viz-card-donut">
+                    <div class="viz-card-label">Genre Categories</div>
+                    <div class="viz-donut-wrap">
+                      <div class="viz-chart-ring">
+                        <canvas id="vizCatDonutAll" height="180"></canvas>
+                      </div>
+                      <div class="viz-donut-legend" id="vizCatLegendAll"></div>
+                    </div>
+                  </div>
+                  <div class="viz-card viz-card-highlights">
+                    <div class="viz-card-label">Listening Maintenance</div>
+                    <p class="viz-card-copy">
+                      Items that need attention across your library.
+                    </p>
+                    <div id="vizNeedsAttentionAll"></div>
+                  </div>
+                  <div class="viz-card viz-card-decades">
+                    <div class="viz-card-label">
+                      Song Release Decades (All Time)
+                    </div>
+                    <p class="viz-card-copy">
+                      Calculated from stored song release years after metadata
+                      refresh.
+                    </p>
+                    <canvas id="vizDecadesBarAll" height="160"></canvas>
+                    <div class="viz-chart-hint">
+                      Click a decade bar to show the tracks behind it.
+                    </div>
+                    <div
+                      class="small viz-decade-note"
+                      id="vizDecadesNoteAll"
+                    ></div>
+                    <div
+                      id="vizDecadeDrilldownAll"
+                      class="viz-local-drilldown"
+                      aria-live="polite"
+                    ></div>
+                  </div>
+                  <div class="viz-card viz-card-contenders viz-card-spins">
+                    <div class="viz-card-label">Personal Song Reactions</div>
+                    <p class="viz-card-copy">
+                      Reaction counts across every listened genre, with an
+                      unrated queue.
+                    </p>
+                    <div id="vizSongReactionsAll"></div>
+                    <div
+                      id="vizReactionDrilldownAll"
+                      class="viz-local-drilldown"
+                      aria-live="polite"
+                    ></div>
+                  </div>
+                  <div class="viz-card viz-card-crossovers">
+                    <div class="viz-card-label">Genre Crossovers</div>
+                    <p class="viz-card-copy">
+                      Strong-fit recordings showing up across multiple genres.
+                    </p>
+                    <div id="vizCrossoversAll"></div>
+                  </div>
+                  <div class="viz-card viz-card-crossovers">
+                    <div class="viz-card-label">Unrated Songs Queue</div>
+                    <p class="viz-card-copy">
+                      Rate unreviewed songs without opening each genre.
+                    </p>
+                    <div id="vizUnratedSongsAll"></div>
+                  </div>
+                  <div class="viz-card viz-card-crossovers viz-card-metadata">
+                    <div class="viz-card-label">Missing Metadata Queue</div>
+                    <p class="viz-card-copy">
+                      Tracks missing official Spotify metadata, grouped by what
+                      can be fixed.
+                    </p>
+                    <div id="vizMetadataQueueAll"></div>
+                  </div>
+                  <div class="viz-card">
+                    <div class="viz-card-label">Most Songs Logged (Top 15)</div>
+                    <canvas id="vizSongsDepth" height="220"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-
-    <section class="screen" id="screen-review">
-      <div class="panel review-panel">
-        <div class="review-hero">
-          <div>
-            <div class="eyebrow">Review / Library Cleanup</div>
-            <h2 class="review-title">Fix the messy cross-genre stuff.</h2>
-            <p class="review-copy">Pending nomination routing, ambiguous @tags, broken links, and other library cleanup tasks live here so individual genre pages can stay focused on listening and editing.</p>
+      <section class="screen" id="screen-review">
+        <div class="panel review-panel">
+          <div class="review-hero">
+            <div>
+              <div class="eyebrow">Review / Library Cleanup</div>
+              <h2 class="review-title">Fix the messy cross-genre stuff.</h2>
+              <p class="review-copy">
+                Pending nomination routing, ambiguous @tags, broken links, and
+                other library cleanup tasks live here so individual genre pages
+                can stay focused on listening and editing.
+              </p>
+            </div>
+            <div class="review-actions">
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="runPendingTagCleanupFromReview()"
+              >
+                Run pending tag cleanup
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="renderReview()"
+              >
+                Refresh review
+              </button>
+            </div>
           </div>
-          <div class="review-actions">
-            <button type="button" class="btn btn-primary" onclick="runPendingTagCleanupFromReview()">Run pending tag cleanup</button>
-            <button type="button" class="btn btn-secondary" onclick="renderReview()">Refresh review</button>
+          <div id="reviewContent"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-ranking">
+        <div class="panel">
+          <div class="eyebrow">Relative ranking</div>
+          <h2 style="margin: 0 0 8px; letter-spacing: -0.04em">
+            Within each star tier
+          </h2>
+          <p class="small" style="margin-bottom: 14px">
+            This preserves your “top of the 4★ list beats bottom of the 4★ list”
+            system by storing a `rank_order` per genre. Zangers are excluded
+            from ranking.
+          </p>
+          <div id="rankConfirmPanel" class="confirm-list hidden"></div>
+          <div id="rankingWrap"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="passwordModal">
+      <div class="modal">
+        <h3>Save changes</h3>
+        <p>Enter the app password to save changes through Cloudflare.</p>
+        <input id="passwordInput" type="password" placeholder="App password" />
+        <div class="row" style="margin-top: 14px">
+          <button class="btn btn-primary" id="passwordSubmitBtn">
+            Save now
+          </button>
+          <button class="btn btn-secondary" id="passwordCancelBtn">
+            Cancel
+          </button>
+        </div>
+        <div class="notice" id="passwordNotice"></div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="spotifyPlaylistModal">
+      <div
+        class="modal"
+        style="width: min(680px, 100%); max-height: 88vh; overflow: auto"
+      >
+        <h3>Add this genre to Spotify</h3>
+        <p id="spotifyPlaylistIntro">
+          Choose a playlist target, then add the Spotify tracks from this genre.
+        </p>
+
+        <div class="form-section" style="margin: 14px 0">
+          <label for="spotifyPlaylistSelect">Existing playlist</label>
+          <div class="spotify-playlist-target-grid">
+            <select id="spotifyPlaylistSelect">
+              <option value="">Loading playlists…</option>
+            </select>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="spotifyReloadPlaylists()"
+            >
+              Refresh
+            </button>
+          </div>
+          <div class="small" style="margin-top: 8px">
+            Or create a new playlist below.
           </div>
         </div>
-        <div id="reviewContent"></div>
-      </div>
-    </section>
 
-<section class="screen" id="screen-ranking">
-      <div class="panel">
-        <div class="eyebrow">Relative ranking</div>
-        <h2 style="margin:0 0 8px; letter-spacing:-.04em;">Within each star tier</h2>
-        <p class="small" style="margin-bottom:14px;">This preserves your “top of the 4★ list beats bottom of the 4★ list” system by storing a `rank_order` per genre. Zangers are excluded from ranking.</p>
-        <div id="rankConfirmPanel" class="confirm-list hidden"></div>
-        <div id="rankingWrap"></div>
-      </div>
-    </section>
-  </div>
-
-  <div class="modal-backdrop" id="passwordModal">
-    <div class="modal">
-      <h3>Save changes</h3>
-      <p>Enter the app password to save changes through Cloudflare.</p>
-      <input id="passwordInput" type="password" placeholder="App password" />
-      <div class="row" style="margin-top:14px;">
-        <button class="btn btn-primary" id="passwordSubmitBtn">Save now</button>
-        <button class="btn btn-secondary" id="passwordCancelBtn">Cancel</button>
-      </div>
-      <div class="notice" id="passwordNotice"></div>
-    </div>
-  </div>
-
-
-  <div class="modal-backdrop" id="spotifyPlaylistModal">
-    <div class="modal" style="width:min(680px,100%); max-height:88vh; overflow:auto;">
-      <h3>Add this genre to Spotify</h3>
-      <p id="spotifyPlaylistIntro">Choose a playlist target, then add the Spotify tracks from this genre.</p>
-
-      <div class="form-section" style="margin:14px 0;">
-        <label for="spotifyPlaylistSelect">Existing playlist</label>
-        <div class="spotify-playlist-target-grid">
-          <select id="spotifyPlaylistSelect">
-            <option value="">Loading playlists…</option>
-          </select>
-          <button type="button" class="btn btn-secondary" onclick="spotifyReloadPlaylists()">Refresh</button>
+        <div class="form-section" style="margin: 14px 0">
+          <label for="spotifyPlaylistName">New playlist name</label>
+          <input
+            id="spotifyPlaylistName"
+            type="text"
+            placeholder="Daily Genre — Playlist name"
+          />
+          <label
+            style="
+              display: flex;
+              gap: 10px;
+              align-items: center;
+              margin-top: 10px;
+              font-weight: 700;
+            "
+          >
+            <input
+              type="checkbox"
+              id="spotifyPlaylistPublic"
+              style="width: auto"
+            />
+            Public playlist
+          </label>
         </div>
-        <div class="small" style="margin-top:8px;">Or create a new playlist below.</div>
-      </div>
 
-      <div class="form-section" style="margin:14px 0;">
-        <label for="spotifyPlaylistName">New playlist name</label>
-        <input id="spotifyPlaylistName" type="text" placeholder="Daily Genre — Playlist name" />
-        <label style="display:flex; gap:10px; align-items:center; margin-top:10px; font-weight:700;">
-          <input type="checkbox" id="spotifyPlaylistPublic" style="width:auto;" />
-          Public playlist
-        </label>
-      </div>
-
-      <div class="form-section" style="margin:14px 0;">
-        <div class="row" style="justify-content:space-between; align-items:center;">
-          <strong>Tracks to add</strong>
-          <button type="button" class="btn btn-ghost" style="padding:7px 11px;" onclick="spotifyTogglePlaylistSelections()">Toggle all</button>
+        <div class="form-section" style="margin: 14px 0">
+          <div
+            class="row"
+            style="justify-content: space-between; align-items: center"
+          >
+            <strong>Tracks to add</strong>
+            <button
+              type="button"
+              class="btn btn-ghost"
+              style="padding: 7px 11px"
+              onclick="spotifyTogglePlaylistSelections()"
+            >
+              Toggle all
+            </button>
+          </div>
+          <div
+            class="spotify-playlist-filter-row"
+            aria-label="Playlist bulk song type controls"
+          >
+            <span class="small" style="font-weight: 900; color: var(--text)"
+              >Bulk include:</span
+            >
+            <label
+              ><input
+                type="checkbox"
+                id="spotifyPlaylistIncludeDirect"
+                checked
+                onchange="
+                  spotifySetPlaylistTypeSelection('direct', this.checked)
+                "
+              />
+              Direct songs</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                id="spotifyPlaylistIncludeLevelUps"
+                checked
+                onchange="
+                  spotifySetPlaylistTypeSelection('levelUp', this.checked)
+                "
+              />
+              Level Ups</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                id="spotifyPlaylistIncludeAdds"
+                checked
+                onchange="spotifySetPlaylistTypeSelection('add', this.checked)"
+              />
+              Adds</label
+            >
+          </div>
+          <div
+            id="spotifyPlaylistBreakdown"
+            class="spotify-playlist-breakdown"
+          ></div>
+          <div id="spotifyPlaylistSongs" style="margin-top: 8px"></div>
         </div>
-        <div class="spotify-playlist-filter-row" aria-label="Playlist bulk song type controls">
-          <span class="small" style="font-weight:900;color:var(--text);">Bulk include:</span>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeDirect" checked onchange="spotifySetPlaylistTypeSelection('direct', this.checked)" /> Direct songs</label>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeLevelUps" checked onchange="spotifySetPlaylistTypeSelection('levelUp', this.checked)" /> Level Ups</label>
-          <label><input type="checkbox" id="spotifyPlaylistIncludeAdds" checked onchange="spotifySetPlaylistTypeSelection('add', this.checked)" /> Adds</label>
+
+        <div class="row" style="margin-top: 14px">
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="spotifyPlaylistAddBtn"
+            onclick="spotifyAddSelectedTracksToPlaylist()"
+          >
+            Add to Spotify Playlist
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeSpotifyPlaylistModal()"
+          >
+            Cancel
+          </button>
         </div>
-        <div id="spotifyPlaylistBreakdown" class="spotify-playlist-breakdown"></div>
-        <div id="spotifyPlaylistSongs" style="margin-top:8px;"></div>
+        <div
+          class="notice spotify-playlist-status"
+          id="spotifyPlaylistStatus"
+        ></div>
       </div>
+    </div>
 
-      <div class="row" style="margin-top:14px;">
-        <button type="button" class="btn btn-primary" id="spotifyPlaylistAddBtn" onclick="spotifyAddSelectedTracksToPlaylist()">Add to Spotify Playlist</button>
-        <button type="button" class="btn btn-secondary" onclick="closeSpotifyPlaylistModal()">Cancel</button>
+    <div
+      id="spotifyStickyPlayer"
+      aria-live="polite"
+      aria-label="Spotify mini player"
+    >
+      <img id="spotifyStickyArt" class="spotify-sticky-art" alt="" />
+      <div class="spotify-sticky-meta">
+        <div class="spotify-sticky-label">Spotify mini player</div>
+        <div id="spotifyStickyTitle" class="spotify-sticky-title">
+          Spotify track
+        </div>
+        <div id="spotifyStickyArtist" class="spotify-sticky-artist"></div>
       </div>
-      <div class="notice spotify-playlist-status" id="spotifyPlaylistStatus"></div>
+      <div id="spotifyStickyEmbed" class="spotify-sticky-embed"></div>
+      <button
+        type="button"
+        class="spotify-sticky-close"
+        onclick="stickyPlayerClose()"
+        aria-label="Close Spotify player"
+      >
+        ×
+      </button>
     </div>
-  </div>
 
-  <div id="spotifyStickyPlayer" aria-live="polite" aria-label="Spotify mini player">
-    <img id="spotifyStickyArt" class="spotify-sticky-art" alt="" />
-    <div class="spotify-sticky-meta">
-      <div class="spotify-sticky-label">Spotify mini player</div>
-      <div id="spotifyStickyTitle" class="spotify-sticky-title">Spotify track</div>
-      <div id="spotifyStickyArtist" class="spotify-sticky-artist"></div>
+    <div id="saveToast" class="save-toast" aria-live="polite"></div>
+    <div
+      id="floatingListeningSave"
+      class="floating-listening-save hidden"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="floating-listening-save-copy">
+        <strong>Unsaved listening</strong
+        ><span>Ratings, notes, flags, or track edits</span>
+      </div>
+      <div
+        class="floating-listening-save-controls"
+        aria-label="Save bar controls"
+      >
+        <button
+          type="button"
+          class="floating-save-tool floating-save-move"
+          data-floating-save-move
+          title="Move save bar"
+          aria-label="Move save bar"
+        >
+          ↕
+        </button>
+        <button
+          type="button"
+          class="floating-save-tool floating-save-close"
+          data-floating-save-collapse
+          title="Collapse save bar"
+          aria-label="Collapse save bar"
+        >
+          ×
+        </button>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary floating-save-submit"
+        onclick="saveLibraryUpdates()"
+      >
+        Save
+      </button>
     </div>
-    <div id="spotifyStickyEmbed" class="spotify-sticky-embed"></div>
-    <button type="button" class="spotify-sticky-close" onclick="stickyPlayerClose()" aria-label="Close Spotify player">×</button>
-  </div>
 
-  <div id="saveToast" class="save-toast" aria-live="polite"></div>
-  <div id="floatingListeningSave" class="floating-listening-save hidden" role="status" aria-live="polite">
-    <div class="floating-listening-save-copy"><strong>Unsaved listening</strong><span>Ratings, notes, flags, or track edits</span></div>
-    <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save</button>
-  </div>
-
-<script src="./assets/js/config.js"></script>
-<script src="./assets/js/utils.js"></script>
-<script src="./assets/js/spotify.js"></script>
-<script src="./assets/js/album-dive.js"></script>
-<script src="./assets/js/app.js"></script>
-<script src="./assets/js/visuals.js"></script>
-</body>
+    <script src="./assets/js/config.js"></script>
+    <script src="./assets/js/utils.js"></script>
+    <script src="./assets/js/genre-data.js"></script>
+    <script src="./assets/js/spotify.js"></script>
+    <script src="./assets/js/album-dive.js?v=final1"></script>
+    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/studio-polish.js?v=final1"></script>
+    <script src="./assets/js/songs.js?v=final1"></script>
+    <script src="./assets/js/listening-room.js"></script>
+    <script src="./assets/js/library-polish.js?v=stability6"></script>
+    <script src="./assets/js/visuals.js?v=final1"></script>
+    <script src="./assets/js/ranks-polish.js?v=stability6"></script>
+    <script src="./assets/js/genre-identity.js?v=stability6"></script>
+  </body>
 </html>
