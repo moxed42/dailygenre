@@ -6913,3 +6913,292 @@ body.dc-listen-mode .dc-primary-songs.detail-log-section > .eyebrow {
   .genre-hero-rating-controls { gap: 2px; }
   .genre-hero-star { font-size: 2.05rem; }
 }
+
+
+/* === v26: left-to-right header star hover + queue edit affordance === */
+.genre-hero-rating-controls .genre-hero-star:hover,
+.genre-hero-rating-controls .genre-hero-star:focus-visible,
+.genre-hero-rating-controls .genre-hero-star:hover ~ .genre-hero-star {
+  color: rgba(255, 224, 161, 0.42) !important;
+}
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="1"]:hover) .genre-hero-star:nth-child(-n+1),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="1"]:focus-visible) .genre-hero-star:nth-child(-n+1),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="2"]:hover) .genre-hero-star:nth-child(-n+2),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="2"]:focus-visible) .genre-hero-star:nth-child(-n+2),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="3"]:hover) .genre-hero-star:nth-child(-n+3),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="3"]:focus-visible) .genre-hero-star:nth-child(-n+3),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="4"]:hover) .genre-hero-star:nth-child(-n+4),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="4"]:focus-visible) .genre-hero-star:nth-child(-n+4),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="5"]:hover) .genre-hero-star:nth-child(-n+5),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="5"]:focus-visible) .genre-hero-star:nth-child(-n+5),
+.genre-hero-star.filled {
+  color: #eba029 !important;
+}
+.genre-hero-rating-controls:has(.genre-hero-star:hover) .genre-hero-star.filled:not(:hover) {
+  color: rgba(255, 224, 161, 0.42) !important;
+}
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="1"]:hover) .genre-hero-star:nth-child(-n+1),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="2"]:hover) .genre-hero-star:nth-child(-n+2),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="3"]:hover) .genre-hero-star:nth-child(-n+3),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="4"]:hover) .genre-hero-star:nth-child(-n+4),
+.genre-hero-rating-controls:has(.genre-hero-star[data-rating="5"]:hover) .genre-hero-star:nth-child(-n+5) {
+  filter: drop-shadow(0 0 10px rgba(235, 160, 41, .24));
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+#dc-songs .song-focus-queue .song-focus-row {
+  grid-template-columns: 52px minmax(0, 1fr) auto auto auto !important;
+}
+.song-focus-edit-btn {
+  appearance: none;
+  width: 31px;
+  height: 31px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(127, 82, 28, .2);
+  background: rgba(255, 252, 241, .68);
+  color: var(--accent-dark, #7a4714);
+  font-size: .9rem;
+  font-weight: 1000;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+.song-focus-edit-btn:hover,
+.song-focus-edit-btn:focus-visible {
+  background: var(--accent-soft, #ffe0a1);
+  border-color: rgba(217, 141, 37, .48);
+  color: var(--text, #22160d);
+  outline: none;
+  transform: translateY(-1px);
+}
+@media (max-width: 900px) {
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+  #dc-songs .song-focus-queue .song-focus-row {
+    grid-template-columns: 52px minmax(0, 1fr) auto auto !important;
+  }
+  .song-focus-edit-btn {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+  }
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue,
+  #dc-songs .song-focus-queue .song-focus-actions.queue {
+    grid-column: 2 / -1 !important;
+  }
+}
+@media (max-width: 620px) {
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+  #dc-songs .song-focus-queue .song-focus-row {
+    grid-template-columns: 48px minmax(0, 1fr) auto !important;
+  }
+  .song-focus-edit-btn {
+    grid-column: 2 !important;
+    grid-row: auto !important;
+    justify-self: start !important;
+  }
+}
+
+
+/* === Song Inbox v27: Discord intake routing === */
+.dg-inbox-input-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px) !important;
+  gap: 10px !important;
+  align-items: stretch !important;
+  margin-top: 12px !important;
+}
+
+.dg-inbox-input-row textarea#inboxSongInput {
+  min-height: 112px !important;
+  resize: vertical !important;
+  border-radius: 18px !important;
+}
+
+.dg-inbox-controls {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.dg-inbox-label {
+  margin: 0 !important;
+  color: var(--muted, #735a3c);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dg-inbox-controls select,
+.dg-inbox-controls .btn {
+  width: 100%;
+}
+
+.dg-inbox-help {
+  margin-top: 8px;
+}
+
+.inbox-result.ok {
+  color: var(--success, #2f6b3b);
+  font-weight: 850;
+}
+
+.inbox-result.err {
+  color: var(--danger, #9b3428);
+  font-weight: 850;
+}
+
+@media (max-width: 760px) {
+  .dg-inbox-input-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === v28: hero/nav, Studio paint, and queue-save polish ================== */
+#reviewContent.studio-rendering {
+  visibility: hidden;
+}
+#screen-review .review-panel {
+  min-height: 520px;
+}
+.dc-hero-actions .dc-song-nav-action {
+  display: none !important;
+}
+.dc-hero-actions .dc-genre-nav-actions .dc-genre-nav-action {
+  display: inline-flex !important;
+}
+.song-focus-queue-card.is-updating,
+.song-focus-experience.is-updating {
+  opacity: 0.98;
+}
+
+/* === v29: stabilize Song Queue hover controls ===
+   Prevent row hover from shifting layout and keep queue reaction controls from
+   repeatedly collapsing/expanding under the pointer. */
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+#dc-songs .song-focus-queue .song-focus-row {
+  transform: none !important;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease !important;
+  will-change: auto !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:hover,
+#dc-songs .song-focus-queue .song-focus-row:hover,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:focus-within,
+#dc-songs .song-focus-queue .song-focus-row:focus-within {
+  transform: none !important;
+  background: rgba(255, 248, 229, 0.72) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue,
+#dc-songs .song-focus-queue .song-focus-actions.queue {
+  min-width: max-content !important;
+  justify-self: end !important;
+  opacity: 1 !important;
+}
+
+/* Keep non-active queue reactions in the flow. Earlier CSS collapsed them to
+   width:0 until hover, which made the row jump/flicker as the pointer moved. */
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue .song-focus-reaction,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue .song-focus-trophy,
+#dc-songs .song-focus-queue .song-focus-actions.queue .song-focus-reaction,
+#dc-songs .song-focus-queue .song-focus-actions.queue .song-focus-trophy {
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-width: 1px !important;
+  opacity: 0.86 !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  transform: none !important;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    opacity 120ms ease !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue .song-focus-reaction:hover,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue .song-focus-trophy:hover,
+#dc-songs .song-focus-queue .song-focus-actions.queue .song-focus-reaction:hover,
+#dc-songs .song-focus-queue .song-focus-actions.queue .song-focus-trophy:hover {
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue .song-focus-reaction.active,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-actions.queue .song-focus-trophy.active,
+#dc-songs .song-focus-queue .song-focus-actions.queue .song-focus-reaction.active,
+#dc-songs .song-focus-queue .song-focus-actions.queue .song-focus-trophy.active {
+  opacity: 1 !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-edit-btn,
+#dc-songs .song-focus-queue .song-focus-edit-btn,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-edit-btn:hover,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-edit-btn:focus-visible,
+#dc-songs .song-focus-queue .song-focus-edit-btn:hover,
+#dc-songs .song-focus-queue .song-focus-edit-btn:focus-visible {
+  transform: none !important;
+}
+
+/* === v30: queue click/edit rescue + stable selected background ============
+   Keep row selection and edit controls clickable without reintroducing hover
+   layout shifts. Selected rows use a stable background so clicking a row does
+   not visually flicker between hover/focus/active states. */
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+#dc-songs .song-focus-queue .song-focus-row {
+  transform: none !important;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    opacity 120ms ease !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:hover,
+#dc-songs .song-focus-queue .song-focus-row:hover,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:focus,
+#dc-songs .song-focus-queue .song-focus-row:focus,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:focus-visible,
+#dc-songs .song-focus-queue .song-focus-row:focus-visible,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:focus-within,
+#dc-songs .song-focus-queue .song-focus-row:focus-within {
+  transform: none !important;
+  outline: none !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:not(.active):hover,
+#dc-songs .song-focus-queue .song-focus-row:not(.active):hover,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row:not(.active):focus-within,
+#dc-songs .song-focus-queue .song-focus-row:not(.active):focus-within {
+  background: rgba(255, 248, 229, 0.72) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row.active,
+#dc-songs .song-focus-queue .song-focus-row.active,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row.active:hover,
+#dc-songs .song-focus-queue .song-focus-row.active:hover,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row.active:focus,
+#dc-songs .song-focus-queue .song-focus-row.active:focus,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row.active:focus-within,
+#dc-songs .song-focus-queue .song-focus-row.active:focus-within {
+  background: rgba(255, 230, 171, 0.72) !important;
+  border-color: rgba(217, 141, 37, 0.48) !important;
+  box-shadow:
+    inset 4px 0 0 var(--accent, #d98d25),
+    0 8px 20px rgba(55, 30, 8, 0.08) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-edit-btn,
+#dc-songs .song-focus-queue .song-focus-edit-btn {
+  position: relative !important;
+  z-index: 5 !important;
+  pointer-events: auto !important;
+}

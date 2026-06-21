@@ -25,11 +25,7 @@
         pendingSongs: pendingSongsForStorage(currentGenre.pending_songs || []),
         contender: !!document.getElementById('monthlyContender')?.checked,
         favorite: !!document.getElementById('monthFavorite')?.checked,
-        least: !!document.getElementById('monthLeastFavorite')?.checked,
-        pendingSongs: normalizePendingSongs(currentGenre.pending_songs || []).map(song => ({
-          key: songIdentity(song),
-          pendingFrom: song.pendingFrom || ''
-        }))
+        least: !!document.getElementById('monthLeastFavorite')?.checked
       });
     }
 
@@ -44,6 +40,12 @@
     function markDirty() {
       refreshDirtyFromSnapshot();
     }
+
+    function resetListenDirtySnapshot() {
+      lastSavedListenSnapshot = buildListenSnapshot();
+      setUnsavedState(false);
+    }
+    window.resetListenDirtySnapshot = resetListenDirtySnapshot;
 
     function screenTitle(name) {
       const labels = {
@@ -995,7 +997,7 @@
         ${[1,2,3,4,5].map(n => {
           const filled = Number(active) >= n;
           const isActive = active === String(n);
-          return `<button type="button" class="genre-hero-star ${filled ? 'filled' : ''} ${isActive ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="Set genre rating to ${n} stars">${filled ? '★' : '☆'}</button>`;
+          return `<button type="button" class="genre-hero-star ${filled ? 'filled' : ''} ${isActive ? 'active' : ''}" data-rating="${n}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="Set genre rating to ${n} stars">${filled ? '★' : '☆'}</button>`;
         }).join('')}
       </div>`;
     }
@@ -2033,8 +2035,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         renderHistory();
         renderRankings();
         loadListenScreen(currentGenre, { preserveDirty: false });
-        lastSavedListenSnapshot = buildListenSnapshot();
-        setUnsavedState(false);
+        resetListenDirtySnapshot();
         showSaveToast(markListened ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
       } catch (e) {
         if (e && (e.code === 'STALE_DATA' || e.code === 'NO_REVISION')) {
@@ -2167,6 +2168,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       }
       const official = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(s => !s.isPending);
       const key = songIdentity(song);
+      let promotedKey = '';
       if (!official.some(existing => songIdentity(existing) === key)) {
         const promoted = {
           ...song,
@@ -2179,12 +2181,23 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         delete promoted.pendingFrom;
         delete promoted.originFit;
         delete promoted.nominatedFit;
+        promotedKey = songIdentity(promoted);
         official.push(promoted);
       }
       pending.splice(index, 1);
       currentGenre.songs_listened = official;
       currentGenre.pending_songs = pending;
-      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      try {
+        if (promotedKey && typeof setSongFocus === 'function') {
+          const queueKey = `dailyGenreSongFocusKey:${currentGenre?.id || currentGenre?.genre || 'unknown'}`;
+          const openKey = `dailyGenreSongQueueOpen:${currentGenre?.id || currentGenre?.genre || 'unknown'}`;
+          localStorage.setItem(queueKey, promotedKey);
+          localStorage.setItem(openKey, '1');
+        }
+      } catch {}
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true, noJump: true });
+      if (typeof enhanceSongListeningExperience === 'function') setTimeout(enhanceSongListeningExperience, 0);
+      showSaveToast('Promoted song added to this genre queue. Save Library Updates to persist it.', false);
       markDirty();
     }
     
@@ -2229,6 +2242,13 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       document.getElementById('notes').value = genre.notes || '';
       genre.songs_listened = inflateSongsFromStorage(genre.songs_listened || []);
       genre.pending_songs = normalizePendingSongs(genre.pending_songs || []);
+      if (window.DailyGenreIdentity && typeof window.DailyGenreIdentity.syncIdentityTracksToSongQueue === 'function') {
+        try {
+          window.DailyGenreIdentity.syncIdentityTracksToSongQueue(genre, false);
+        } catch (err) {
+          console.warn('[Daily Genre] Could not sync identity tracks before render', err);
+        }
+      }
       document.getElementById('songsListenedBulk').value = buildSongsBulkEditorText(genre);
       document.getElementById('includeSongsToggle').checked = false;
 
@@ -2257,9 +2277,6 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 ${genre.monthfavorite ? '<span class="tag">★ Month favorite</span>' : ''}
                 ${genre.monthleastfavorite ? '<span class="tag tag-warn">Month least favorite</span>' : ''}
               </div>              <div class="detail-actions">
-                <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(-1)">← Previous</button>
-                <button type="button" class="btn btn-secondary" onclick="restoreArchiveUiState()">Back to Archive</button>
-                <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(1)">Next →</button>
                 <button type="button" class="btn btn-secondary edit-mode-toggle" onclick="toggleDetailEditMode()">${detailEditMode ? 'Hide Setup Editor' : 'Edit Setup / Curation'}</button>
                 <button type="button" class="spotify-queue-btn" onclick="openSpotifyPlaylistModal('${encodeURIComponent(String(genre.id || ''))}')">＋ Playlist</button>
                 ${!listenedDate
@@ -2304,8 +2321,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       if (unlistenBtn) unlistenBtn.classList.toggle('hidden', !listenedDate);
       applyDetailEditMode(false);
       if (!preserveDirty) {
-        lastSavedListenSnapshot = buildListenSnapshot();
-        setUnsavedState(false);
+        resetListenDirtySnapshot();
       }
 
       // Existing saved artwork/metadata is displayed here. Missing metadata is enriched
@@ -2864,26 +2880,33 @@ function blockSaveIfDuplicateGenres() {
     }
 
       function renderSongInboxCard() {
-      const unassigned = songInbox.filter(s => !s._routed);
+      const genreOptions = (genres||[])
+        .filter(g=>g&&g.genre)
+        .sort((a,b)=>String(a.genre).localeCompare(String(b.genre)))
+        .map(g=>`<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre)}</option>`)
+        .join('');
+      const unassigned = songInbox
+        .map((song, actualIndex) => ({ song, actualIndex }))
+        .filter(row => !row.song?._routed);
       const unassignedHtml = unassigned.length ? `
         <div style="margin-top:14px;">
-          <div class="eyebrow" style="margin-bottom:8px;">Unassigned (${unassigned.length})</div>
+          <div class="eyebrow" style="margin-bottom:8px;">Unknown / unassigned inbox (${unassigned.length})</div>
           <div class="inbox-unassigned-list">
-            ${unassigned.map((song, idx) => {
-              const selectId = `inbox-route-${idx}`;
+            ${unassigned.map(({ song, actualIndex }) => {
+              const selectId = `inbox-route-${actualIndex}`;
               const label = (song.artist ? `${song.artist} — ` : '') + (song.title || song.url || 'Unknown');
               return `<div class="inbox-unassigned-row">
                 <div>
                   <div class="inbox-unassigned-title">${escapeHtml(label)}</div>
-                  <div class="inbox-unassigned-meta">${song.guessNote ? escapeHtml(song.guessNote) : 'No genre guessed'}</div>
+                  <div class="inbox-unassigned-meta">${song.guessNote ? escapeHtml(song.guessNote) : 'Unknown genre — choose a target genre when ready.'}</div>
                 </div>
                 <div class="inbox-move-row">
                   <select id="${selectId}" aria-label="Route to genre">
                     <option value="">Choose genre…</option>
-                    ${(genres||[]).filter(g=>g&&g.genre).sort((a,b)=>String(a.genre).localeCompare(String(b.genre))).map(g=>`<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre)}</option>`).join('')}
+                    ${genreOptions}
                   </select>
-                  <button type="button" class="btn btn-primary" style="white-space:nowrap;" onclick="routeInboxSong(${idx}, '${selectId}')">Route</button>
-                  <button type="button" class="btn btn-danger" onclick="dismissInboxSong(${idx})">✕</button>
+                  <button type="button" class="btn btn-primary" style="white-space:nowrap;" onclick="routeInboxSong(${actualIndex}, '${selectId}')">Route</button>
+                  <button type="button" class="btn btn-danger" onclick="dismissInboxSong(${actualIndex})">✕</button>
                 </div>
               </div>`;
             }).join('')}
@@ -2894,33 +2917,46 @@ function blockSaveIfDuplicateGenres() {
         <div class="review-card-head">
           <div>
             <h3>Song Inbox</h3>
-            <p class="small" style="margin:6px 0 0;">Paste a Spotify URL or type Artist — Title. We'll try to guess the right genre and route it to pending.</p>
+            <p class="small" style="margin:6px 0 0;">Paste one Spotify URL, many Spotify URLs, or one Artist — Title per line. Choose a genre to send them straight to that genre’s pending queue, or leave genre blank to hold them as Unknown.</p>
           </div>
         </div>
-        <div class="inbox-input-row">
-          <input type="text" id="inboxSongInput" placeholder="https://open.spotify.com/track/… or Artist — Title" onkeydown="if(event.key==='Enter')addToSongInbox()">
-          <button type="button" class="btn btn-primary" onclick="addToSongInbox()">Add to Inbox</button>
+        <div class="inbox-input-row dg-inbox-input-row">
+          <textarea id="inboxSongInput" rows="4" placeholder="https://open.spotify.com/track/…&#10;https://open.spotify.com/track/…&#10;Artist — Title"></textarea>
+          <div class="dg-inbox-controls">
+            <label for="inboxGenreSelect" class="dg-inbox-label">Optional target genre</label>
+            <select id="inboxGenreSelect" aria-label="Optional target genre">
+              <option value="">Unknown / unassigned</option>
+              ${genreOptions}
+            </select>
+            <button type="button" class="btn btn-primary" onclick="addToSongInbox()">Add to Inbox</button>
+          </div>
         </div>
+        <div class="small dg-inbox-help">Discord flow: paste the recommendation(s), optionally pick the mentioned genre, then save library updates after routing.</div>
         <div class="inbox-result" id="inboxResult"></div>
         ${unassignedHtml}
       </div>`;
     }
 
-    async function addToSongInbox() {
-      const input = document.getElementById('inboxSongInput');
-      const resultEl = document.getElementById('inboxResult');
-      if (!input || !resultEl) return;
-      const raw = input.value.trim();
-      if (!raw) return;
+    function parseSongInboxEntries(raw) {
+      const text = String(raw || '').trim();
+      if (!text) return [];
+      const spotifyUrls = [];
+      const spotifyRegex = /https?:\/\/open\.spotify\.com\/track\/[A-Za-z0-9]+(?:\?[^\s,;)]*)?/gi;
+      let match;
+      while ((match = spotifyRegex.exec(text))) spotifyUrls.push(match[0]);
+      if (spotifyUrls.length) return Array.from(new Set(spotifyUrls.map(u => u.trim()).filter(Boolean)));
+      return text
+        .split(/\n+|;+/)
+        .map(part => part.trim())
+        .filter(Boolean);
+    }
 
-      resultEl.className = 'inbox-result';
-      resultEl.textContent = 'Looking up track…';
-
+    async function resolveSongInboxEntry(entry) {
+      const raw = String(entry || '').trim();
       let song = { url: '', title: '', artist: '', artwork: '', spotifyId: '', guessNote: '' };
       const spotifyMatch = raw.match(/spotify\.com\/track\/([a-z0-9]+)/i);
 
       if (spotifyMatch) {
-        // Fetch via existing worker
         const track = await fetchSpotifyTrackMetadata(raw);
         if (track) {
           song.url = track.spotifyUrl || raw;
@@ -2936,7 +2972,6 @@ function blockSaveIfDuplicateGenres() {
         } else {
           song.url = raw;
           song.source = 'spotify';
-          // Try oembed fallback
           const oembed = await fetchSpotifyOembed(raw);
           if (oembed) {
             song.title = oembed.title || '';
@@ -2945,14 +2980,12 @@ function blockSaveIfDuplicateGenres() {
           }
         }
       } else {
-        // Text input: try iTunes search
         song.source = 'manual';
         const dashMatch = raw.match(/^(.+?)\s*[—–-]\s*(.+)$/);
         const artist = dashMatch ? dashMatch[1].trim() : '';
         const title = dashMatch ? dashMatch[2].trim() : raw;
         song.title = title;
         song.artist = artist;
-        // Try iTunes to confirm / get artwork
         try {
           const term = encodeURIComponent(artist ? `${artist} ${title}` : title);
           const resp = await fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=5&term=${term}`);
@@ -2970,42 +3003,88 @@ function blockSaveIfDuplicateGenres() {
         } catch(e) {}
       }
 
-      if (!song.title && !song.url) {
+      if (!song.title && !song.url) return null;
+      return song;
+    }
+
+    function songInboxPendingPayload(song) {
+      return {
+        ...song,
+        score: null,
+        reason: '',
+        isPending: true,
+        pendingFrom: 'Song Inbox',
+        originFit: null,
+        nominatedFit: null,
+        isLevelUp: false,
+        isAdd: false,
+        levelUp: null
+      };
+    }
+
+    async function addToSongInbox() {
+      const input = document.getElementById('inboxSongInput');
+      const genreSelect = document.getElementById('inboxGenreSelect');
+      const resultEl = document.getElementById('inboxResult');
+      if (!input || !resultEl) return;
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      const entries = parseSongInboxEntries(raw);
+      if (!entries.length) return;
+      const target = genreSelect?.value ? (genres || []).find(g => String(g.id) === String(genreSelect.value)) : null;
+
+      resultEl.className = 'inbox-result';
+      resultEl.textContent = entries.length === 1 ? 'Looking up track…' : `Looking up ${entries.length} tracks…`;
+
+      const resolved = [];
+      const failed = [];
+      for (const entry of entries) {
+        try {
+          const song = await resolveSongInboxEntry(entry);
+          if (song) resolved.push(song);
+          else failed.push(entry);
+        } catch (err) {
+          console.warn('[Daily Genre] Song inbox lookup failed', err);
+          failed.push(entry);
+        }
+      }
+
+      if (!resolved.length) {
         resultEl.className = 'inbox-result err';
-        resultEl.textContent = 'Could not find that track. Try a Spotify URL.';
+        resultEl.textContent = 'Could not find any tracks. Try Spotify track URLs, one per line.';
         return;
       }
 
-      // Guess genre using artist name fuzzy match against genre list
-      const guessResult = guessGenreForSong(song);
-      song.guessNote = guessResult.note;
-
-      if (guessResult.target) {
-        // Auto-route to guessed genre's pending queue
-        const added = queuePendingNomination(guessResult.target, 'Song Inbox', {
-          ...song,
-          score: null,
-          reason: '',
-          isPending: true,
-          pendingFrom: 'Song Inbox',
-          originFit: null,
-          nominatedFit: null,
-          isLevelUp: false,
-          isAdd: false,
-          levelUp: null
+      if (target) {
+        let added = 0;
+        let duplicates = 0;
+        resolved.forEach(song => {
+          const didAdd = queuePendingNomination(target, 'Song Inbox', songInboxPendingPayload(song));
+          if (didAdd) added += 1;
+          else duplicates += 1;
         });
         setUnsavedState(true);
         libraryUpdatesPending = true;
         toggleLibrarySaveButton(true);
         input.value = '';
         resultEl.className = 'inbox-result ok';
-        resultEl.textContent = `✓ Routed "${song.artist ? song.artist + ' — ' : ''}${song.title}" to pending in ${guessResult.target.genre}. ${guessResult.note}`;
+        const skipped = duplicates ? ` ${duplicates} duplicate${duplicates === 1 ? '' : 's'} already existed.` : '';
+        const failedText = failed.length ? ` ${failed.length} lookup${failed.length === 1 ? '' : 's'} failed.` : '';
+        const msg = `✓ Routed ${added} song${added === 1 ? '' : 's'} to ${target.genre} pending.${skipped}${failedText} Save Library Updates to persist.`;
+        resultEl.textContent = msg;
+        showSaveToast(msg);
       } else {
-        // Can't guess — add to unassigned inbox
-        songInbox.push(song);
+        resolved.forEach(song => {
+          song.guessNote = 'Unknown genre — choose a target genre when ready.';
+          songInbox.push(song);
+        });
         input.value = '';
         resultEl.className = 'inbox-result';
-        resultEl.textContent = `Added "${song.artist ? song.artist + ' — ' : ''}${song.title}" to unassigned inbox. ${song.guessNote}`;
+        const failedText = failed.length ? ` ${failed.length} lookup${failed.length === 1 ? '' : 's'} failed.` : '';
+        const msg = `Added ${resolved.length} song${resolved.length === 1 ? '' : 's'} to Unknown / unassigned inbox.${failedText}`;
+        resultEl.textContent = msg;
+        showSaveToast(msg);
       }
 
       renderReview();
@@ -4019,8 +4098,7 @@ async function loadData() {
           showSaveToast('Library updates saved.', false);
         } else {
           loadListenScreen(currentGenre, { preserveDirty: false });
-          lastSavedListenSnapshot = buildListenSnapshot();
-          setUnsavedState(false);
+          resetListenDirtySnapshot();
           showSaveToast(pendingSaveAction === 'mark_listened' ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
         }
         pendingSaveAction = null;
