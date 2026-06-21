@@ -882,3 +882,86 @@
 
   window.DailyGenreRanksTierV6 = { moveTier };
 })();
+
+
+/* === Ranks Polish v7: reliable within-tier ↑/↓ reordering =================
+   The prior direct handler could show a success toast even when equal/missing
+   rank_order values left the sorted list visually unchanged. This delegated
+   capture handler performs an explicit remove/insert/re-number pass. */
+(function () {
+  "use strict";
+
+  function source() {
+    try {
+      if (Array.isArray(genres)) return genres;
+    } catch (_) {}
+    return Array.isArray(window.genres) ? window.genres : [];
+  }
+
+  function rankable(g, rating) {
+    return (
+      g &&
+      String(g.rating) === String(rating) &&
+      String(g.rating || "").toLowerCase() !== "zanger"
+    );
+  }
+
+  function tierItems(list, rating) {
+    return list
+      .filter((g) => rankable(g, rating))
+      .sort(
+        (a, b) =>
+          (Number(a.rank_order) || 9999) - (Number(b.rank_order) || 9999) ||
+          String(a.genre || "").localeCompare(String(b.genre || "")),
+      );
+  }
+
+  function markDirty(message) {
+    try { libraryUpdatesPending = true; } catch (_) {}
+    try { if (typeof window.toggleLibrarySaveButton === "function") window.toggleLibrarySaveButton(true); } catch (_) {}
+    try { if (typeof window.renderFloatingListeningSave === "function") window.renderFloatingListeningSave(); } catch (_) {}
+    try {
+      if (typeof window.showSaveToast === "function") window.showSaveToast(message, false);
+    } catch (_) {}
+  }
+
+  function moveWithinTier(id, direction) {
+    const list = source();
+    const item = list.find((g) => String(g.id) === String(id));
+    if (!item || !item.rating || String(item.rating).toLowerCase() === "zanger") return false;
+
+    const rating = String(item.rating);
+    const items = tierItems(list, rating);
+    const from = items.findIndex((g) => String(g.id) === String(item.id));
+    if (from < 0) return false;
+    const to = direction === "up" ? from - 1 : from + 1;
+    if (to < 0 || to >= items.length) return false;
+
+    const [moved] = items.splice(from, 1);
+    items.splice(to, 0, moved);
+    items.forEach((g, idx) => {
+      g.rank_order = idx + 1;
+    });
+
+    try { window.genres = list; } catch (_) {}
+    markDirty(`Moved ${item.genre || "genre"} ${direction}. Save Library Updates to persist.`);
+    try { if (typeof window.renderRankings === "function") window.renderRankings(); } catch (_) {}
+    setTimeout(() => { try { if (typeof window.renderRankings === "function") window.renderRankings(); } catch (_) {} }, 0);
+    return true;
+  }
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      const btn = event.target.closest?.("[data-rank-move]");
+      if (!btn) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation?.();
+      moveWithinTier(btn.dataset.rankId, btn.dataset.rankMove);
+    },
+    true,
+  );
+
+  window.DailyGenreRanksOrderV7 = { moveWithinTier };
+})();
