@@ -70,6 +70,7 @@
       song.artists = Array.isArray(track.artists) ? track.artists.filter(Boolean) : (song.artists || []);
       song.album = track.album || song.album || '';
       song.artwork = track.artwork || song.artwork || '';
+      song.albumArt = track.artwork || song.albumArt || song.artwork || '';
       song.releaseDate = track.releaseDate || song.releaseDate || '';
       song.releaseYear = track.releaseYear || song.releaseYear || null;
       song.releasePrecision = track.releasePrecision || song.releasePrecision || '';

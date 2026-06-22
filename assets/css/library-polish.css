@@ -7242,3 +7242,82 @@ body.dc-listen-mode .dc-primary-songs.detail-log-section > .eyebrow {
     justify-content: flex-start;
   }
 }
+
+/* === v42: queue URL dedupe + compact delete controls ===================== */
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+#dc-songs .song-focus-queue .song-focus-row {
+  grid-template-columns: 52px minmax(0, 1fr) auto auto auto auto !important;
+}
+.song-focus-delete-btn {
+  appearance: none;
+  width: 31px;
+  height: 31px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(168, 63, 39, .22);
+  background: rgba(255, 244, 238, .72);
+  color: #8a2d18;
+  font-size: .86rem;
+  font-weight: 1000;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+.song-focus-delete-btn:hover,
+.song-focus-delete-btn:focus-visible {
+  background: rgba(255, 220, 207, .92);
+  border-color: rgba(168, 63, 39, .42);
+  color: #4f1408;
+  outline: none;
+  transform: none !important;
+}
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-delete-btn,
+#dc-songs .song-focus-queue .song-focus-delete-btn,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-delete-btn:hover,
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-delete-btn:focus-visible,
+#dc-songs .song-focus-queue .song-focus-delete-btn:hover,
+#dc-songs .song-focus-queue .song-focus-delete-btn:focus-visible {
+  transform: none !important;
+}
+@media (max-width: 900px) {
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+  #dc-songs .song-focus-queue .song-focus-row {
+    grid-template-columns: 44px minmax(0, 1fr) auto auto !important;
+  }
+  .song-focus-delete-btn { width: 28px; height: 28px; font-size: .78rem; }
+}
+
+
+/* === v42: compact queue URL editor cleanup ============================== */
+#screen-listen.listen-experience-mode .song-focus-url-row,
+#dc-songs .song-focus-url-row {
+  grid-template-columns: minmax(220px, 1fr) auto auto auto !important;
+}
+#screen-listen.listen-experience-mode .song-focus-url-card .song-focus-inline-label,
+#dc-songs .song-focus-url-card .song-focus-inline-label,
+#screen-listen.listen-experience-mode .song-focus-url-card .song-focus-helper,
+#dc-songs .song-focus-url-card .song-focus-helper {
+  display: none !important;
+}
+.song-focus-url-delete-btn {
+  width: 42px;
+  height: 42px;
+  align-self: center;
+  justify-self: start;
+}
+#screen-listen.listen-experience-mode .song-focus-url-row .song-focus-url-delete-btn,
+#dc-songs .song-focus-url-row .song-focus-url-delete-btn {
+  padding: 0 !important;
+  min-width: 42px;
+}
+@media (max-width: 900px) {
+  #screen-listen.listen-experience-mode .song-focus-url-row,
+  #dc-songs .song-focus-url-row {
+    grid-template-columns: 1fr !important;
+  }
+  .song-focus-url-delete-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
