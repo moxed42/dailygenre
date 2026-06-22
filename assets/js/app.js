@@ -546,11 +546,36 @@
     }
 
     function normalizeSongUrl(url) {
-      return String(url || '')
+      let value = String(url || '')
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
         .replace(/^(?:🔼\s*)?LEVEL\s*UP:\s*/i, '')
         .replace(/^(?:🔼\s*)?ADD:\s*/i, '')
         .replace(/^(?:🔼\s*)?PROMOTE:\s*/i, '')
         .trim();
+
+      if (!value) return '';
+
+      // Let pasted Discord/Markdown/notes work in URL fields, e.g.
+      // [Track](https://open.spotify.com/track/abc?si=...), <url>, or
+      // "Artist — Title https://open.spotify.com/track/abc".
+      const markdownHref = value.match(/\]\((https?:\/\/[^\s)]+)\)/i);
+      if (markdownHref) value = markdownHref[1];
+      value = value.replace(/^<|>$/g, '').trim();
+
+      const spotifyUri = value.match(/spotify:track:([A-Za-z0-9]{22})/i);
+      if (spotifyUri) return `https://open.spotify.com/track/${spotifyUri[1]}`;
+
+      const spotifyTrack = value.match(/https?:\/\/(?:open\.)?spotify\.com\/(?:intl-[a-z]{2}\/)?track\/([A-Za-z0-9]{22})(?:[?#][^\s]*)?/i);
+      if (spotifyTrack) return `https://open.spotify.com/track/${spotifyTrack[1]}`;
+
+      const rawSpotifyId = value.match(/^([A-Za-z0-9]{22})$/);
+      if (rawSpotifyId) return `https://open.spotify.com/track/${rawSpotifyId[1]}`;
+
+      const firstUrl = value.match(/https?:\/\/[^\s<>]+/i);
+      if (firstUrl) return firstUrl[0].replace(/[),.;]+$/g, '');
+
+      return value;
     }
 
     function isYoutubeUrl(url) {
@@ -973,11 +998,19 @@
     }
 
     function genreRatingHeroMarkup(genre) {
-      if (!genre || !genre.rating) return '<span class="tag">Unrated</span>';
-      if (String(genre.rating) === 'zanger') return '<span class="genre-zanger-badge">✕ Zanger</span>';
-      const n = Number(genre.rating);
-      const stars = `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
-      return `<span class="genre-star-rating" title="${escapeHtml(genreRatingLabel(genre.rating))}" aria-label="${escapeHtml(`${stars} ${genreRatingLabel(genre.rating)}`)}">${stars}</span>`;
+      const active = String(genre?.rating || '');
+      const label = active ? genreRatingLabel(active) : 'Unrated';
+      const activeNumber = /^\d+$/.test(active) ? Number(active) : 0;
+      const starButtons = [1, 2, 3, 4, 5].map(n => {
+        const isActive = activeNumber >= n;
+        return `<button type="button" class="genre-header-star ${isActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="Set genre rating to ${n} stars, ${escapeHtml(genreRatingLabel(n))}">${isActive ? '★' : '☆'}</button>`;
+      }).join('');
+      const zangerActive = active === 'zanger';
+      return `<span class="genre-header-rating" role="group" aria-label="Genre rating: ${escapeHtml(label)}">
+        <span class="genre-header-rating-label">${escapeHtml(label)}</span>
+        <span class="genre-header-stars">${starButtons}</span>
+        <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">✕</button>
+      </span>`;
     }
 
     function genreRatingDisplay(genre) {
@@ -1108,6 +1141,14 @@
       });
     }
 
+    function syncSongsBulkEditorFromModel() {
+      const textarea = document.getElementById('songsListenedBulk');
+      if (!textarea || !currentGenre) return;
+      textarea.value = buildSongsBulkEditorText(currentGenre);
+      window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;
+      window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;
+    }
+
     function findOfficialSongByIdentity(key) {
       const songs = inflateSongsFromStorage(currentGenre?.songs_listened || []).filter(song => !song.isPending);
       currentGenre.songs_listened = songs;
@@ -1177,6 +1218,290 @@
       }
       return null;
     }
+
+
+    function looseSongTextKey(song) {
+      const clean = value => String(value || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return `${clean(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(' ') : ''))}|${clean(song?.title || '')}`;
+    }
+
+    function queueDuplicateTextKey(song) {
+      const clean = value => String(value || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/\b(feat|ft|remix|remastered|version|explicit|clean)\b/g, ' ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .replace(/\b(the|a|an|el|la|los|las|le|les|un|una)\b/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return `${clean(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(' ') : ''))}|${clean(song?.title || '')}`;
+    }
+
+    function canonicalQueueUrlKey(url='') {
+      const value = normalizeSongUrl(url || '');
+      return value ? value.toLowerCase() : '';
+    }
+
+    function queueSongMergeWeight(song) {
+      if (!song) return 0;
+      let weight = 0;
+      if (song.artwork || song.albumArt) weight += 16;
+      if (song.spotifyMetadataFetched) weight += 8;
+      if (song.spotifyId) weight += 8;
+      if (song.album) weight += 4;
+      if (song.releaseYear || song.releaseDate) weight += 3;
+      if (song.durationMs) weight += 2;
+      if (song.isrc) weight += 2;
+      if (song.reaction) weight += 1;
+      if (song.reason) weight += 1;
+      return weight;
+    }
+
+    function mergeSongObjectsInPlace(primary, duplicate) {
+      if (!primary || !duplicate || primary === duplicate) return primary;
+      const fields = ['url','spotifyUrl','spotifyId','title','artist','album','artwork','albumArt','releaseDate','releasePrecision','releaseSource','isrc','source','reason','listenerNote','songNote','spotifyMetadataFetchedAt'];
+      fields.forEach(key => {
+        if ((primary[key] == null || primary[key] === '') && duplicate[key] != null && duplicate[key] !== '') primary[key] = duplicate[key];
+      });
+      if (!Array.isArray(primary.artists) || !primary.artists.length) primary.artists = Array.isArray(duplicate.artists) ? duplicate.artists.slice() : primary.artists;
+      ['releaseYear','durationMs','score','reaction','popularity','trackNumber','discNumber','albumTotalTracks'].forEach(key => {
+        if ((primary[key] == null || primary[key] === '') && duplicate[key] != null && duplicate[key] !== '') primary[key] = duplicate[key];
+      });
+      if (!primary.spotifyMetadataFetched && duplicate.spotifyMetadataFetched) primary.spotifyMetadataFetched = true;
+      if (!primary.levelUp && duplicate.levelUp) primary.levelUp = duplicate.levelUp;
+      if (!primary.artwork && primary.albumArt) primary.artwork = primary.albumArt;
+      if (!primary.albumArt && primary.artwork) primary.albumArt = primary.artwork;
+      return primary;
+    }
+
+    function dedupeQueueSongsPreservingTarget(songs, target, match = {}) {
+      const list = inflateSongsFromStorage(songs || []).filter(song => song && !song.isPending);
+      if (!target) return list;
+      const targetUrl = canonicalQueueUrlKey(target.url || target.spotifyUrl || match.newUrl || '');
+      const oldUrl = canonicalQueueUrlKey(match.oldUrl || '');
+      const targetSpotifyId = String(target.spotifyId || match.newSpotifyId || '').trim().toLowerCase();
+      const oldSpotifyId = String(match.oldSpotifyId || '').trim().toLowerCase();
+      const oldIdentity = String(match.oldIdentity || '').trim().toLowerCase();
+      const targetIdentity = String(songIdentity(target) || '').trim().toLowerCase();
+      const targetText = queueDuplicateTextKey(target);
+      const oldText = String(match.oldTextKey || '').trim();
+      const newText = String(match.newTextKey || '').trim() || targetText;
+      const forceTextDedupe = !!match.forceTextDedupe;
+      const maybeDuplicate = song => {
+        if (!song || song === target) return false;
+        const songUrl = canonicalQueueUrlKey(song.url || song.spotifyUrl || '');
+        const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
+        const songIdentityValue = String(songIdentity(song) || '').trim().toLowerCase();
+        const songText = queueDuplicateTextKey(song);
+        if (targetUrl && songUrl && songUrl === targetUrl) return true;
+        if (oldUrl && songUrl && songUrl === oldUrl) return true;
+        if (targetSpotifyId && songSpotifyId && songSpotifyId === targetSpotifyId) return true;
+        if (oldSpotifyId && songSpotifyId && songSpotifyId === oldSpotifyId) return true;
+        if (oldIdentity && songIdentityValue && songIdentityValue === oldIdentity) return true;
+        if (targetIdentity && songIdentityValue && songIdentityValue === targetIdentity) return true;
+        // URL replacement should collapse the pre-metadata text row (ex: “El Pistolón”)
+        // into the Spotify-normalized metadata row (ex: “Pistolon”). Accents/articles
+        // are normalized by queueDuplicateTextKey, so this catches the common case where
+        // Spotify uses a slightly different title than the manually-entered line.
+        if (forceTextDedupe && songText && (songText === targetText || songText === oldText || songText === newText)) return true;
+        // Default path stays conservative: only text-dedupe if one side also has a Spotify URL/ID signal.
+        if (targetText && songText && songText === targetText && (songUrl || songSpotifyId || targetUrl || targetSpotifyId)) return true;
+        if (oldText && songText === oldText && (songUrl || songSpotifyId || targetUrl || targetSpotifyId)) return true;
+        if (newText && songText === newText && (songUrl || songSpotifyId || targetUrl || targetSpotifyId)) return true;
+        return false;
+      };
+      // If a duplicate already has richer metadata than the edited row, merge it into the edited row first.
+      list.forEach(song => {
+        if (maybeDuplicate(song) && queueSongMergeWeight(song) > queueSongMergeWeight(target)) mergeSongObjectsInPlace(target, song);
+      });
+      const out = [];
+      let targetInserted = false;
+      list.forEach(song => {
+        if (song === target) {
+          if (!targetInserted) { out.push(target); targetInserted = true; }
+          return;
+        }
+        if (maybeDuplicate(song)) {
+          mergeSongObjectsInPlace(target, song);
+          if (!targetInserted) { out.push(target); targetInserted = true; }
+          return;
+        }
+        out.push(song);
+      });
+      if (!targetInserted) out.push(target);
+      return out;
+    }
+
+    function queueTextSimilarity(a = '', b = '') {
+      const tokens = value => String(value || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .split(/\s+/)
+        .filter(Boolean)
+        .filter(token => !['the','a','an','el','la','los','las','le','les','un','una','feat','ft'].includes(token));
+      const left = tokens(a);
+      const right = tokens(b);
+      if (!left.length && !right.length) return 1;
+      if (!left.length || !right.length) return 0;
+      const rightSet = new Set(right);
+      const overlap = left.filter(token => rightSet.has(token)).length;
+      return overlap / Math.max(left.length, right.length);
+    }
+
+    function queueMetadataLooksClose(oldSong, newSong) {
+      if (!oldSong || !newSong) return false;
+      const titleScore = queueTextSimilarity(oldSong.title || '', newSong.title || '');
+      const artistScore = queueTextSimilarity(oldSong.artist || (Array.isArray(oldSong.artists) ? oldSong.artists.join(' ') : ''), newSong.artist || (Array.isArray(newSong.artists) ? newSong.artists.join(' ') : ''));
+      if (!String(oldSong.title || '').trim() && !String(oldSong.artist || '').trim()) return true;
+      return titleScore >= 0.45 && (artistScore >= 0.35 || !String(oldSong.artist || '').trim() || !String(newSong.artist || '').trim());
+    }
+
+    function confirmQueueUrlOverwrite(oldSong, newSong) {
+      const oldLabel = `${oldSong?.artist ? `${oldSong.artist} — ` : ''}${oldSong?.title || 'this queue row'}`;
+      const newLabel = `${newSong?.artist ? `${newSong.artist} — ` : ''}${newSong?.title || 'the Spotify track'}`;
+      const closeEnough = queueMetadataLooksClose(oldSong, newSong);
+      if (closeEnough) return true;
+      return window.confirm(`This Spotify result does not look like a close match.
+
+Current queue row: ${oldLabel}
+Spotify result: ${newLabel}
+
+Overwrite the selected queue row anyway? This will replace its title, artist, artwork, and Spotify metadata without creating a new row.`);
+    }
+
+    function forceOverwriteQueueTarget(songs, target, match = {}) {
+      const list = inflateSongsFromStorage(songs || []).filter(song => song && !song.isPending);
+      if (!target) return list;
+      const targetIndex = Number.isInteger(match.index) ? match.index : list.indexOf(target);
+      const targetUrl = canonicalQueueUrlKey(target.url || target.spotifyUrl || match.newUrl || '');
+      const oldUrl = canonicalQueueUrlKey(match.oldUrl || '');
+      const targetSpotifyId = String(target.spotifyId || match.newSpotifyId || '').trim().toLowerCase();
+      const oldSpotifyId = String(match.oldSpotifyId || '').trim().toLowerCase();
+      const oldIdentity = String(match.oldIdentity || '').trim().toLowerCase();
+      const targetIdentity = String(songIdentity(target) || '').trim().toLowerCase();
+      const oldText = String(match.oldTextKey || '').trim();
+      const newText = String(match.newTextKey || queueDuplicateTextKey(target)).trim();
+      const out = [];
+      let inserted = false;
+      list.forEach((song, index) => {
+        if (!song) return;
+        const isSelected = song === target || index === targetIndex;
+        if (isSelected) {
+          if (!inserted) { out.push(target); inserted = true; }
+          return;
+        }
+        const songUrl = canonicalQueueUrlKey(song.url || song.spotifyUrl || '');
+        const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
+        const songIdentityValue = String(songIdentity(song) || '').trim().toLowerCase();
+        const songText = queueDuplicateTextKey(song);
+        const duplicateByUrl = (targetUrl && songUrl === targetUrl) || (oldUrl && songUrl === oldUrl);
+        const duplicateBySpotify = (targetSpotifyId && songSpotifyId === targetSpotifyId) || (oldSpotifyId && songSpotifyId === oldSpotifyId);
+        const duplicateByIdentity = (targetIdentity && songIdentityValue === targetIdentity) || (oldIdentity && songIdentityValue === oldIdentity);
+        const duplicateByText = !!(songText && (songText === oldText || songText === newText) && queueMetadataLooksClose(song, target));
+        if (duplicateByUrl || duplicateBySpotify || duplicateByIdentity || duplicateByText) {
+          mergeSongObjectsInPlace(target, song);
+          if (!inserted && index < targetIndex) { out.push(target); inserted = true; }
+          return;
+        }
+        out.push(song);
+      });
+      if (!inserted) out.push(target);
+      return out;
+    }
+
+    function repairQueueAfterAuthoritativeUrlOverwrite(songs, target, match = {}) {
+      const list = inflateSongsFromStorage(songs || []).filter(song => song && !song.isPending);
+      if (!target) return list;
+      const targetUrl = canonicalQueueUrlKey(target.url || target.spotifyUrl || match.newUrl || '');
+      const oldUrl = canonicalQueueUrlKey(match.oldUrl || '');
+      const targetSpotifyId = String(target.spotifyId || match.newSpotifyId || '').trim().toLowerCase();
+      const oldSpotifyId = String(match.oldSpotifyId || '').trim().toLowerCase();
+      const oldIdentity = String(match.oldIdentity || '').trim().toLowerCase();
+      const targetIdentity = String(songIdentity(target) || '').trim().toLowerCase();
+      const oldText = String(match.oldTextKey || '').trim();
+      const newText = String(match.newTextKey || queueDuplicateTextKey(target)).trim();
+      const looksLikeSameManualSong = song => {
+        if (!song || song === target) return false;
+        const songUrl = canonicalQueueUrlKey(song.url || song.spotifyUrl || '');
+        const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
+        const songIdentityValue = String(songIdentity(song) || '').trim().toLowerCase();
+        const songText = queueDuplicateTextKey(song);
+        if (targetUrl && songUrl && songUrl === targetUrl) return true;
+        if (oldUrl && songUrl && songUrl === oldUrl) return true;
+        if (targetSpotifyId && songSpotifyId && songSpotifyId === targetSpotifyId) return true;
+        if (oldSpotifyId && songSpotifyId && songSpotifyId === oldSpotifyId) return true;
+        if (oldIdentity && songIdentityValue && songIdentityValue === oldIdentity) return true;
+        if (targetIdentity && songIdentityValue && songIdentityValue === targetIdentity) return true;
+        if (songText && (songText === oldText || songText === newText)) return true;
+        if (queueMetadataLooksClose(song, target)) return true;
+        return false;
+      };
+      const out = [];
+      let inserted = false;
+      list.forEach(song => {
+        if (song === target) {
+          if (!inserted) { out.push(target); inserted = true; }
+          return;
+        }
+        if (looksLikeSameManualSong(song)) {
+          // The explicitly edited row wins. Only backfill user-owned fields from a duplicate.
+          if (target.reaction == null && song.reaction != null) target.reaction = song.reaction;
+          if (!target.reason && song.reason) target.reason = song.reason;
+          if (!target.listenerNote && (song.listenerNote || song.songNote)) target.listenerNote = song.listenerNote || song.songNote;
+          if (!inserted) { out.push(target); inserted = true; }
+          return;
+        }
+        out.push(song);
+      });
+      if (!inserted) out.push(target);
+      return out;
+    }
+
+    function dedupeSongsAfterTrackUrlUpdate(songs, target, oldUrl, oldIdentity, oldSpotifyId) {
+      if (!Array.isArray(songs) || !target) return songs || [];
+      const canonicalOldUrl = normalizeSongUrl(oldUrl || '').toLowerCase();
+      const oldKeys = new Set([
+        String(oldIdentity || '').toLowerCase(),
+        canonicalOldUrl ? `url:${canonicalOldUrl}` : '',
+        oldSpotifyId ? `spotify:${String(oldSpotifyId).toLowerCase()}` : ''
+      ].filter(Boolean));
+      const targetIdentity = songIdentity(target);
+      const targetKeys = new Set(songIdentityKeys(target).map(k => String(k || '').toLowerCase()));
+      const targetTextKey = looseSongTextKey(target);
+      let keptTarget = false;
+      const deduped = [];
+      songs.forEach(song => {
+        if (!song || song.isPending) return;
+        if (song === target) {
+          if (!keptTarget) {
+            deduped.push(song);
+            keptTarget = true;
+          }
+          return;
+        }
+        const songId = songIdentity(song);
+        const songKeys = songIdentityKeys(song).map(k => String(k || '').toLowerCase());
+        const songUrl = normalizeSongUrl(song.url || song.spotifyUrl || '').toLowerCase();
+        const matchesOldUrl = !!canonicalOldUrl && songUrl === canonicalOldUrl;
+        const matchesOldIdentity = songKeys.some(k => oldKeys.has(k)) || (!!songId && oldKeys.has(String(songId).toLowerCase()));
+        const matchesNewIdentity = !!targetIdentity && (String(songId || '').toLowerCase() === String(targetIdentity).toLowerCase() || songKeys.some(k => targetKeys.has(k)));
+        const matchesSameTextAndOld = targetTextKey && targetTextKey === looseSongTextKey(song) && (matchesOldUrl || matchesOldIdentity);
+        if (matchesOldUrl || matchesOldIdentity || matchesNewIdentity || matchesSameTextAndOld) {
+          return;
+        }
+        deduped.push(song);
+      });
+      if (!keptTarget) deduped.push(target);
+      return deduped;
+    }
+
+
 
 
     function readPendingSongNotesMap() {
@@ -1368,6 +1693,44 @@
       }
     }
 
+    async function applySpotifyOembedFallback(song, url, options = {}) {
+      if (!song || !url || typeof fetchSpotifyOembed !== 'function') return false;
+      const canonical = (typeof spotifyCanonicalTrackUrl === 'function') ? spotifyCanonicalTrackUrl(url) : normalizeSongUrl(url);
+      if (!/open\.spotify\.com\/track\//i.test(canonical || '')) return false;
+      const embed = await fetchSpotifyOembed(canonical, true);
+      if (!embed) return false;
+      let changed = false;
+      const title = String(embed.title || '').trim();
+      const artwork = String(embed.thumbnail_url || '').trim();
+      if (artwork && (options.forceArtwork || song.artwork !== artwork || song.albumArt !== artwork)) {
+        song.artwork = artwork;
+        song.albumArt = artwork;
+        changed = true;
+      }
+      if (title && (options.forceTitle || !song.title || song.title === 'Track' || song.title === 'Spotify track' || song.title === 'Linked track')) {
+        song.title = title;
+        changed = true;
+      }
+      if (canonical && song.url !== canonical) {
+        song.url = canonical;
+        changed = true;
+      }
+      if (canonical && song.spotifyUrl !== canonical) {
+        song.spotifyUrl = canonical;
+        changed = true;
+      }
+      const spotifyId = (typeof spotifyTrackId === 'function') ? spotifyTrackId(canonical) : '';
+      if (spotifyId && song.spotifyId !== spotifyId) {
+        song.spotifyId = spotifyId;
+        changed = true;
+      }
+      song.source = 'spotify';
+      song.spotifyMetadataFetched = false;
+      song.spotifyMetadataFetchedAt = '';
+      return changed || !!artwork;
+    }
+
+
     async function refreshGenrePageSpotifyTrack(encodedKey, button, path = '') {
       if (!currentGenre) return;
       syncBulkDraftIntoSongModel();
@@ -1418,11 +1781,22 @@
 
     async function updateTrackUrlFromCard(encodedKey, pendingIndex, button, path = '') {
       if (!currentGenre) return;
-      const editor = button?.closest('.track-card-editor');
-      const input = editor?.querySelector('[data-track-url-input]');
-      const nextUrl = normalizeSongUrl(input?.value || '');
+      // The inline detail editor and the focused Song Queue details drawer use
+      // different containers. Look upward first, then fall back to the nearest
+      // URL input in the focused details region so queue edits do not read blank.
+      const editor = button?.closest('.track-card-editor, .song-focus-url-card, .song-focus-details-drawer, .song-focus-details-grid');
+      const activeInput = document.activeElement?.matches?.('[data-track-url-input]') ? document.activeElement : null;
+      const input = editor?.querySelector('[data-track-url-input]')
+        || button?.parentElement?.querySelector?.('[data-track-url-input]')
+        || activeInput
+        || null;
+      let nextUrl = normalizeSongUrl(input?.value || '');
+      if ((/spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl)) && typeof spotifyCanonicalTrackUrl === 'function') {
+        nextUrl = spotifyCanonicalTrackUrl(nextUrl);
+      }
+      if (input && nextUrl) input.value = nextUrl;
       if (!/^https?:\/\//i.test(nextUrl) && !/^spotify:track:/i.test(nextUrl)) {
-        alert('Paste a valid Spotify, YouTube, or web track URL.');
+        showSaveToast('Please provide a valid Spotify track URL or web track link.', true);
         return;
       }
 
@@ -1435,7 +1809,11 @@
 
       try {
         const isPendingEdit = Number.isInteger(pendingIndex) && pendingIndex >= 0;
-        if (!isPendingEdit) syncBulkDraftIntoSongModel();
+        const isQueueDrawerEdit = !isPendingEdit && (String(path || '').startsWith('song:') || !!button?.closest?.('.song-focus-details-drawer'));
+        // Queue drawer URL edits already point at a concrete song path. Do not reparse the
+        // hidden bulk textarea first; if that textarea is stale, reparsing can resurrect the
+        // old URL as a duplicate row before we update the selected item.
+        if (!isPendingEdit && !isQueueDrawerEdit) syncBulkDraftIntoSongModel();
         const result = findEditableSongTarget(encodedKey, pendingIndex, path);
         const target = result?.song || null;
 
@@ -1446,15 +1824,21 @@
         }
 
         const oldUrl = normalizeSongUrl(target.url || target.spotifyUrl || '');
+        const oldIdentity = songIdentity(target);
+        const oldSpotifyId = String(target.spotifyId || '').trim();
         const nestedLevelUp = target.levelUp || null;
         const savedReason = target.reason || '';
         const savedScore = target.score;
         const savedReaction = target.reaction;
         const savedTitle = target.title || '';
         const savedArtist = target.artist || '';
+        const oldTextKey = queueDuplicateTextKey({ title: savedTitle, artist: savedArtist });
+        const beforeOverwrite = { ...target, title: savedTitle, artist: savedArtist, url: oldUrl, spotifyId: oldSpotifyId };
+        let proposedMetadataSong = null;
 
         target.url = nextUrl;
         target.artwork = '';
+        target.albumArt = '';
         target.releaseDate = '';
         target.releaseYear = null;
         target.releaseSource = '';
@@ -1463,20 +1847,53 @@
         let metadataWarning = '';
 
         if (isSpotifyTrack) {
-          target.source = 'spotify';
-          target.spotifyUrl = /^spotify:track:/i.test(nextUrl)
+          proposedMetadataSong = { ...target, title: savedTitle, artist: savedArtist };
+          proposedMetadataSong.source = 'spotify';
+          proposedMetadataSong.spotifyUrl = /^spotify:track:/i.test(nextUrl)
             ? `https://open.spotify.com/track/${spotifyTrackId(nextUrl)}`
             : nextUrl;
-          target.spotifyId = spotifyTrackId(nextUrl) || target.spotifyId || '';
-          target.title = savedTitle;
-          target.artist = savedArtist;
+          proposedMetadataSong.spotifyId = spotifyTrackId(nextUrl) || proposedMetadataSong.spotifyId || '';
 
           const refreshed = await fetchSpotifyTrackResult(nextUrl, true);
           if (refreshed.ok) {
-            applyOfficialSpotifyMetadata(target, refreshed.track);
+            applyOfficialSpotifyMetadata(proposedMetadataSong, refreshed.track);
+            if (!proposedMetadataSong.artwork) {
+              const usedEmbedFallback = await applySpotifyOembedFallback(proposedMetadataSong, nextUrl, { forceArtwork: true });
+              if (usedEmbedFallback) metadataWarning = 'Spotify metadata refreshed, and artwork was filled from Spotify embed.';
+            }
           } else {
-            metadataWarning = refreshed.error || 'Spotify metadata could not be refreshed.';
+            const usedEmbedFallback = await applySpotifyOembedFallback(proposedMetadataSong, nextUrl, { forceArtwork: true, forceTitle: true });
+            if (usedEmbedFallback) {
+              metadataWarning = 'Spotify API lookup failed, but artwork was recovered from Spotify embed.';
+            } else {
+              metadataWarning = refreshed.error || 'Spotify metadata could not be refreshed.';
+            }
             if (refreshed.code === 'rate_limited') beginSpotifyPause(refreshed.retryAfterSeconds || 30);
+          }
+
+          if (!confirmQueueUrlOverwrite(beforeOverwrite, proposedMetadataSong)) {
+            target.url = oldUrl;
+            target.spotifyUrl = beforeOverwrite.spotifyUrl || '';
+            target.spotifyId = oldSpotifyId || '';
+            target.title = savedTitle;
+            target.artist = savedArtist;
+            target.artwork = beforeOverwrite.artwork || '';
+            target.albumArt = beforeOverwrite.albumArt || target.artwork || '';
+            showSaveToast('URL update cancelled. No queue rows were changed.', false);
+            return;
+          }
+
+          Object.assign(target, proposedMetadataSong);
+          target.url = proposedMetadataSong.spotifyUrl || nextUrl;
+          target.spotifyUrl = proposedMetadataSong.spotifyUrl || nextUrl;
+          if (target.artwork && !target.albumArt) target.albumArt = target.artwork;
+          if (target.albumArt && !target.artwork) target.artwork = target.albumArt;
+          try {
+            if (window.DailyGenreIdentity && typeof window.DailyGenreIdentity.updateTrackFromQueueOverwrite === 'function') {
+              window.DailyGenreIdentity.updateTrackFromQueueOverwrite(currentGenre, beforeOverwrite, target);
+            }
+          } catch (identityError) {
+            console.warn('Could not sync queue URL overwrite back to Genre DNA', identityError);
           }
         } else if (isYoutubeUrl(nextUrl)) {
           target.source = 'youtube';
@@ -1519,8 +1936,43 @@
 
         if (result?.isPending) {
           currentGenre.pending_songs = result.songs;
-        } else if (result?.songs) {
-          currentGenre.songs_listened = result.songs;
+        } else {
+          // Always de-dupe against the live queue, not just the array returned by the finder.
+          // The focused queue editor can outlive/re-render the hidden bulk editor, and using
+          // only result.songs allowed stale rows to survive or be reintroduced.
+          currentGenre.songs_listened = isQueueDrawerEdit
+            ? forceOverwriteQueueTarget(result?.songs || currentGenre.songs_listened || [], target, {
+                index: result.index,
+                oldUrl,
+                oldIdentity,
+                oldSpotifyId,
+                newUrl: target.url || nextUrl,
+                newSpotifyId: target.spotifyId || '',
+                oldTextKey,
+                newTextKey: queueDuplicateTextKey(target)
+              })
+            : dedupeQueueSongsPreservingTarget(currentGenre.songs_listened || result?.songs || [], target, {
+                oldUrl,
+                oldIdentity,
+                oldSpotifyId,
+                newUrl: target.url || nextUrl,
+                newSpotifyId: target.spotifyId || '',
+                oldTextKey,
+                newTextKey: queueDuplicateTextKey(target),
+                forceTextDedupe: false
+              });
+          currentGenre.songs_listened = repairQueueAfterAuthoritativeUrlOverwrite(currentGenre.songs_listened, target, {
+            oldUrl,
+            oldIdentity,
+            oldSpotifyId,
+            oldTextKey,
+            newUrl: target.url || nextUrl,
+            newSpotifyId: target.spotifyId || '',
+            newTextKey: queueDuplicateTextKey(target)
+          });
+          syncSongsBulkEditorFromModel();
+          window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;
+          window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;
         }
 
         removeLoggedSongsFromPending(currentGenre);
@@ -1528,12 +1980,24 @@
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
         applyDetailEditMode(detailEditMode);
         restore();
+        try {
+          const nextKey = typeof songIdentity === 'function' ? songIdentity(target) : '';
+          if (nextKey && typeof window.openSongEditorFromQueue === 'function') {
+            setTimeout(() => window.openSongEditorFromQueue(nextKey), 0);
+          } else if (typeof window.enhanceSongListeningExperience === 'function') {
+            setTimeout(() => window.enhanceSongListeningExperience(), 0);
+          }
+        } catch (_) {}
         markListeningUpdatePending();
         if (metadataWarning) {
-          console.warn('Track URL updated but metadata refresh failed:', metadataWarning);
-          showSaveToast(`URL saved, but Spotify metadata did not refresh: ${metadataWarning}`, true);
+          console.warn('Track URL updated with metadata warning:', metadataWarning);
+          const recovered = /recovered from Spotify embed/i.test(metadataWarning);
+          showSaveToast(recovered
+            ? 'URL saved and artwork recovered from Spotify embed — use Save to keep it.'
+            : `URL saved, but Spotify metadata did not refresh: ${metadataWarning}`,
+            !recovered);
         } else {
-          showSaveToast('Track URL updated — use the floating Save button to keep it.', false);
+          showSaveToast('Queue row overwritten with Spotify metadata — use the floating Save button to keep it.', false);
         }
       } catch (err) {
         console.error('Track URL update failed', err);
@@ -5118,6 +5582,35 @@ async function loadData() {
       if (button) button.classList.toggle('hidden', !show);
       const floating = document.getElementById('floatingListeningSave');
       if (floating) floating.classList.toggle('hidden', !show);
+      if (!show) setLibrarySaveBusy(false);
+    }
+
+    function setLibrarySaveBusy(isSaving) {
+      const floating = document.getElementById('floatingListeningSave');
+      if (floating) {
+        floating.classList.toggle('is-saving', !!isSaving);
+        floating.setAttribute('aria-busy', isSaving ? 'true' : 'false');
+      }
+
+      const buttons = Array.from(document.querySelectorAll('button[onclick="saveLibraryUpdates()"]'));
+      buttons.forEach((button) => {
+        if (!button) return;
+        if (!button.dataset.saveIdleText) button.dataset.saveIdleText = button.textContent || 'Save';
+        button.disabled = !!isSaving;
+        button.setAttribute('aria-busy', isSaving ? 'true' : 'false');
+
+        const idleText = button.dataset.saveIdleText || 'Save';
+        if (isSaving) {
+          if (button.classList.contains('floating-save-submit')) {
+            button.textContent = 'Saving…';
+          } else if (/save/i.test(idleText)) {
+            button.textContent = idleText.replace(/save(?: library updates| cleanup| rank changes| album dive)?/i, 'Saving…');
+          }
+        } else {
+          button.textContent = idleText;
+          button.removeAttribute('aria-busy');
+        }
+      });
     }
 
     function downloadGenreBackup() {
@@ -5138,13 +5631,16 @@ async function loadData() {
     async function saveLibraryUpdates() {
       finalizeListeningUpdatesBeforeSave();
       if (!libraryUpdatesPending) {
+        setLibrarySaveBusy(false);
         showSaveToast('No listening updates to save.', false);
         return;
       }
       if (!appPassword) {
+        setLibrarySaveBusy(false);
         openPasswordModal('library_save');
         return;
       }
+      setLibrarySaveBusy(true);
       try {
         await doSaveWithPassword(appPassword);
         libraryUpdatesPending = false;
@@ -5174,6 +5670,8 @@ async function loadData() {
           return;
         }
         showSaveToast(`Library save failed: ${e?.message || 'Unknown Worker error.'}`, true);
+      } finally {
+        setLibrarySaveBusy(false);
       }
     }
 
