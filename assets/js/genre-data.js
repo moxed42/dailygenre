@@ -11,7 +11,7 @@
 (function dailyGenreCoreLoaderProtection() {
   "use strict";
 
-  const CORE_VERSION = "core-loader-protection-v1";
+  const CORE_VERSION = "core-loader-protection-v58";
   const state = {
     version: CORE_VERSION,
     startedAt: new Date().toISOString(),
@@ -310,13 +310,18 @@
   });
 
   // Give app.js enough time to boot and fetch data. This is diagnostic only;
-  // it does not control the loader or mutate app state.
+  // it does not control the loader or mutate app state. Production data can now
+  // take several seconds, so do a quiet early check and only show the modal
+  // after a longer grace period.
   window.addEventListener("load", () => {
     clearTimeout(state.healthTimer);
-    state.healthTimer = setTimeout(
-      () =>
-        runHealthCheck({ showOnFailure: true, source: "window-load-delay" }),
-      3600,
-    );
+    state.healthTimer = setTimeout(() => {
+      const first = runHealthCheck({ showOnFailure: false, source: "window-load-delay-soft" });
+      if (first && first.ok) return;
+      state.healthTimer = setTimeout(
+        () => runHealthCheck({ showOnFailure: true, source: "window-load-delay-final" }),
+        12000,
+      );
+    }, 8000);
   });
 })();

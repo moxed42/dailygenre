@@ -515,3 +515,200 @@
   font-style: normal !important;
   font-weight: 800 !important;
 }
+
+/* === Genre Identity v55: smaller high-contrast alias line === */
+.detail-record-card .genre-identity-alias-line,
+.discovery-console .detail-record-card .genre-identity-alias-line {
+  margin: 2px 0 8px !important;
+  max-width: 100% !important;
+  color: rgba(255, 251, 241, 0.88) !important;
+  font-size: clamp(0.74rem, 1.1vw, 0.88rem) !important;
+  line-height: 1.22 !important;
+  font-style: italic !important;
+  font-weight: 450 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.72) !important;
+}
+.detail-record-card .genre-identity-alias-line em,
+.discovery-console .detail-record-card .genre-identity-alias-line em {
+  color: rgba(255, 251, 241, 0.92) !important;
+  font-size: inherit !important;
+  font-style: italic !important;
+  font-weight: 450 !important;
+}
+.detail-record-card .genre-identity-alias-line span,
+.discovery-console .detail-record-card .genre-identity-alias-line span {
+  color: rgba(255, 239, 199, 0.9) !important;
+  font-size: 0.72em !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+}
+
+
+/* === v56: manual picker + alias contrast + mobile hardening === */
+.detail-record-card .genre-identity-alias-line,
+.discovery-console .detail-record-card .genre-identity-alias-line {
+  font-size: clamp(0.82rem, 1.35vw, 0.95rem) !important;
+  line-height: 1.22 !important;
+  max-width: min(52ch, 100%) !important;
+  color: rgba(255, 241, 211, 0.74) !important;
+  font-weight: 600 !important;
+  font-style: italic !important;
+  overflow-wrap: anywhere !important;
+}
+.detail-record-card .genre-identity-alias-line em,
+.discovery-console .detail-record-card .genre-identity-alias-line em {
+  color: rgba(255, 241, 211, 0.78) !important;
+  font-weight: 600 !important;
+  font-style: italic !important;
+}
+.detail-record-card .genre-identity-alias-line span,
+.discovery-console .detail-record-card .genre-identity-alias-line span {
+  color: rgba(255, 224, 161, 0.82) !important;
+  font-weight: 800 !important;
+}
+
+#manualResults2,
+#manualResults2.dc-manual-results-polished {
+  display: grid !important;
+  gap: 8px !important;
+}
+#manualResults2 button.list-item,
+#manualResults2 .dc-manual-result-card {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 100% !important;
+  display: grid !important;
+  gap: 4px !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  border: 1px solid rgba(244, 203, 128, 0.48) !important;
+  border-radius: 16px !important;
+  padding: 10px 12px !important;
+  background: linear-gradient(180deg, rgba(255,248,229,.98), rgba(234,210,169,.94)) !important;
+  color: var(--text, #22160d) !important;
+  box-shadow: 0 10px 24px rgba(38, 22, 10, 0.10), inset 0 1px 0 rgba(255,255,255,.52) !important;
+  font: inherit !important;
+  white-space: normal !important;
+}
+#manualResults2 button.list-item:hover,
+#manualResults2 button.list-item:focus-visible,
+#manualResults2 .dc-manual-result-card:hover,
+#manualResults2 .dc-manual-result-card:focus-visible {
+  transform: translateY(-1px) !important;
+  border-color: rgba(217, 141, 37, 0.58) !important;
+  outline: none !important;
+}
+#manualResults2 button.list-item strong,
+#manualResults2 .dc-manual-result-card strong {
+  color: var(--text, #22160d) !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.03em !important;
+}
+#manualResults2 button.list-item .small,
+#manualResults2 .dc-manual-result-card .small {
+  color: var(--muted, #735a3c) !important;
+  font-size: 0.82rem !important;
+}
+
+.floating-listening-save.is-saving .floating-save-submit,
+#saveBtn.is-saving,
+#vizSaveLibraryBtn.is-saving,
+button[aria-busy="true"] {
+  opacity: 0.76 !important;
+  cursor: wait !important;
+}
+
+@media (max-width: 640px) {
+  .app {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    padding-inline: 10px !important;
+  }
+  .screen-detail .listen-grid,
+  .listen-grid,
+  .detail-hero,
+  .detail-record-card,
+  .detail-edit-panel,
+  #listenDetails,
+  #listenEditPanel,
+  .song-focus-section,
+  .song-focus-player,
+  .song-focus-details-drawer,
+  .song-focus-queue-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+  .detail-record-card {
+    grid-template-columns: 1fr !important;
+    padding: 18px 16px !important;
+  }
+  .detail-record-card .genre-art {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  .detail-record-card h2,
+  .song-focus-title {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+  .detail-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .detail-actions .btn,
+  .detail-actions button,
+  .detail-actions a {
+    min-width: 0 !important;
+    width: 100% !important;
+    white-space: normal !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding-inline: 10px !important;
+  }
+  .detail-actions .spotify-play-btn,
+  .detail-actions .spotify-mini-play,
+  .detail-actions .btn.spotify-play-btn {
+    aspect-ratio: 1 / 1 !important;
+  }
+  input,
+  textarea,
+  select,
+  .song-focus-url-row input,
+  .genre-identity-import textarea {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+  .row,
+  .editor-save-actions .row,
+  .track-card-edit-actions,
+  .song-focus-url-row,
+  .genre-identity-import-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+  .row .btn,
+  .editor-save-actions .btn,
+  .track-card-edit-actions .btn,
+  .song-focus-url-row .btn,
+  .genre-identity-import-actions .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+  .floating-listening-save {
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    width: auto !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+}
+
+/* Daily Genre v65 cache-bust marker */

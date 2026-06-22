@@ -3935,23 +3935,25 @@ function blockSaveIfDuplicateGenres() {
       if (flag === 'unranked') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0 && !g.rank_order && g.rating !== 'zanger');
 
       if (query) {
-        items = items.filter(g => [
-          g.genre,
-          categoryLine(g),
-          g.notes,
-          g.favoritesong,
-          g.favoritesongurl,
-          songSearchText(g)
-        ].join(' ').toLowerCase().includes(query));
+        const normalizedQuery = normalizeGenreSearchText(query);
+        items = items
+          .map(g => ({ g, rank: genreSearchRank(g, query), blob: normalizeGenreSearchText(genreSearchBlob(g)) }))
+          .filter(row => row.rank < 9 || row.blob.includes(normalizedQuery))
+          .sort((a, b) => a.rank - b.rank || String(a.g.genre || '').localeCompare(String(b.g.genre || '')))
+          .map(row => row.g);
       }
 
       const byGenre = (a,b) => String(a.genre || '').localeCompare(String(b.genre || ''));
-      if (sort === 'oldest') items.sort((a,b) => (dateValue(a) || '').localeCompare(dateValue(b) || '') || byGenre(a,b));
-      else if (sort === 'rating-desc') items.sort((a,b) => numericRating(b) - numericRating(a) || byGenre(a,b));
-      else if (sort === 'rating-asc') items.sort((a,b) => numericRating(a) - numericRating(b) || byGenre(a,b));
-      else if (sort === 'genre') items.sort(byGenre);
-      else if (sort === 'rank') items.sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || numericRating(b) - numericRating(a) || byGenre(a,b));
-      else items.sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || byGenre(a,b));
+      // When searching, relevance must stay primary. Otherwise an exact hit like
+      // "funk" can get buried under date/rating/archive sort behind "free funk".
+      if (!query) {
+        if (sort === 'oldest') items.sort((a,b) => (dateValue(a) || '').localeCompare(dateValue(b) || '') || byGenre(a,b));
+        else if (sort === 'rating-desc') items.sort((a,b) => numericRating(b) - numericRating(a) || byGenre(a,b));
+        else if (sort === 'rating-asc') items.sort((a,b) => numericRating(a) - numericRating(b) || byGenre(a,b));
+        else if (sort === 'genre') items.sort(byGenre);
+        else if (sort === 'rank') items.sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || numericRating(b) - numericRating(a) || byGenre(a,b));
+        else items.sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || byGenre(a,b));
+      }
 
       archiveCurrentItems = items;
       archiveCurrentLabel = label;
@@ -4095,29 +4097,114 @@ function blockSaveIfDuplicateGenres() {
       }
     }
 
+    function genreAliasListForSearch(genre) {
+      const values = [];
+      const push = (value) => {
+        if (Array.isArray(value)) value.forEach(push);
+        else if (value && typeof value === 'object') Object.values(value).forEach(push);
+        else if (value != null) String(value).split(/[\n;,|]+/).forEach(part => {
+          const clean = part.trim();
+          if (clean) values.push(clean);
+        });
+      };
+      push(genre?.aliases);
+      push(genre?.synonyms);
+      push(genre?.aka);
+      push(genre?.alsoKnownAs);
+      push(genre?.also_known_as);
+
+      // Small curated search bridges for common alternate spellings/names that
+      // are not always present in the source JSON yet. Keep these search-only so
+      // they do not rewrite the visible genre identity fields.
+      const canonical = normalizeGenreSearchText(genre?.genre || '');
+      if (canonical === 'hokkien pop') {
+        push(['tai-pop', 'tai pop', 'taipop', 'taiwanese pop', 'taiwanese hokkien pop', 'taiwanese language pop']);
+      }
+
+      return [...new Set(values)];
+    }
+
+    function normalizeGenreSearchText(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function genreSearchBlob(genre) {
+      return [
+        genre?.genre,
+        categoryLine(genre),
+        genre?.notes,
+        genre?.favoritesong,
+        genre?.favoritesongurl,
+        songSearchText(genre),
+        genreAliasListForSearch(genre).join(' ')
+      ].join(' ');
+    }
+
+    function genreSearchRank(genre, query) {
+      const rawQ = String(query || '').trim();
+      const q = normalizeGenreSearchText(rawQ);
+      if (!q) return 999;
+      const name = normalizeGenreSearchText(genre?.genre || '');
+      const aliases = genreAliasListForSearch(genre).map(normalizeGenreSearchText).filter(Boolean);
+      const path = normalizeGenreSearchText(categoryLine(genre));
+      if (name === q) return 0;
+      if (aliases.includes(q)) return 1;
+      // For one-word searches like "funk", keep the exact genre above
+      // compound names like "free funk" even when the archive has another sort selected.
+      if (name.split(' ').includes(q)) return 2;
+      if (aliases.some(a => a.split(' ').includes(q))) return 3;
+      if (name.startsWith(q)) return 4;
+      if (aliases.some(a => a.startsWith(q))) return 5;
+      if (name.includes(q)) return 6;
+      if (aliases.some(a => a.includes(q))) return 7;
+      if (path.includes(q)) return 8;
+      return 9;
+    }
+
     function searchGenresInto(inputEl, resultsEl) {
-      const q = inputEl.value.trim().toLowerCase();
+      if (!resultsEl) return;
+      const rawQ = inputEl.value.trim();
+      const q = normalizeGenreSearchText(rawQ);
       if (!q) {
         resultsEl.innerHTML = '';
         return;
       }
 
-      const matches = genres
-        .filter(g => (g.genre || '').toLowerCase().includes(q))
+      const matches = (genres || [])
+        .map(g => ({ g, rank: genreSearchRank(g, rawQ), blob: normalizeGenreSearchText(genreSearchBlob(g)) }))
+        .filter(row => row.rank < 9 || row.blob.includes(q))
+        .sort((a, b) => a.rank - b.rank || String(a.g.genre || '').localeCompare(String(b.g.genre || '')))
         .slice(0, 12);
 
-      resultsEl.innerHTML = matches.map(g => `
-        <button class="list-item" data-id="${g.id}" style="text-align:left; cursor:pointer;">
+      resultsEl.innerHTML = matches.map(({ g }) => {
+        const aliasHit = genreAliasListForSearch(g).find(alias => normalizeGenreSearchText(alias).includes(q));
+        return `
+        <div class="list-item dc-manual-result-card" data-id="${g.id}" role="button" tabindex="0">
           <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-          <div class="small" style="margin-top:6px;">${escapeHtml(categoryLine(g))}</div>
-        </button>
-      `).join('');
+          <div class="small">${escapeHtml(categoryLine(g))}${aliasHit ? ` · ${escapeHtml(aliasHit)}` : ''}</div>
+        </div>
+      `;
+      }).join('');
 
       [...resultsEl.querySelectorAll('[data-id]')].forEach(btn => {
-        btn.onclick = () => {
+        const openPicked = () => {
           const picked = genres.find(g => String(g.id) === btn.dataset.id);
           if (!picked) return;
           openGenreDetail(picked, true);
+        };
+        btn.onclick = openPicked;
+        btn.onkeydown = (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openPicked();
+          }
         };
       });
     }
@@ -4401,17 +4488,11 @@ async function loadData() {
       await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
     });
     document.getElementById('saveBtn').addEventListener('click', async () => {
-      const btn = document.getElementById('saveBtn');
-      const old = btn.textContent;
-      btn.disabled = true;
-      btn.classList.add('is-saving');
-      btn.textContent = 'Saving...';
+      if (typeof setLibrarySaveBusy === 'function') setLibrarySaveBusy(true);
       try {
         await prepareAndSaveCurrentGenre();
       } finally {
-        btn.disabled = false;
-        btn.classList.remove('is-saving');
-        btn.textContent = old;
+        if (typeof setLibrarySaveBusy === 'function') setLibrarySaveBusy(false);
       }
     });
     document.getElementById('markListenedBtn')?.addEventListener('click', markCurrentGenreListened);
@@ -5592,20 +5673,22 @@ async function loadData() {
         floating.setAttribute('aria-busy', isSaving ? 'true' : 'false');
       }
 
-      const buttons = Array.from(document.querySelectorAll('button[onclick="saveLibraryUpdates()"]'));
+      const buttons = Array.from(document.querySelectorAll([
+        '#saveBtn',
+        '#vizSaveLibraryBtn',
+        '.floating-save-submit',
+        'button[onclick*="saveLibraryUpdates"]'
+      ].join(',')));
       buttons.forEach((button) => {
         if (!button) return;
         if (!button.dataset.saveIdleText) button.dataset.saveIdleText = button.textContent || 'Save';
         button.disabled = !!isSaving;
+        button.classList.toggle('is-saving', !!isSaving);
         button.setAttribute('aria-busy', isSaving ? 'true' : 'false');
 
         const idleText = button.dataset.saveIdleText || 'Save';
         if (isSaving) {
-          if (button.classList.contains('floating-save-submit')) {
-            button.textContent = 'Saving…';
-          } else if (/save/i.test(idleText)) {
-            button.textContent = idleText.replace(/save(?: library updates| cleanup| rank changes| album dive)?/i, 'Saving…');
-          }
+          button.textContent = 'Saving…';
         } else {
           button.textContent = idleText;
           button.removeAttribute('aria-busy');

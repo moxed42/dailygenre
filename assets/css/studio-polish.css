@@ -923,3 +923,245 @@
     flex: 1 1 140px;
   }
 }
+
+/* === Studio mobile hardening v59: prevent narrow-screen overflow === */
+@media (max-width: 640px) {
+  html,
+  body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .app,
+  .screen,
+  #screen-review,
+  #screen-review > .panel,
+  .studio-workbench,
+  .studio-workbench * {
+    box-sizing: border-box !important;
+  }
+
+  #screen-review > .panel,
+  .studio-workbench,
+  .studio-workbench-hero,
+  .studio-toolbar,
+  .studio-lane,
+  .studio-native-card,
+  .studio-workbench .inbox-card,
+  #genreIdentityWorkbench,
+  .genre-identity-editor {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  #screen-review > .panel {
+    padding: 10px !important;
+    border-radius: 20px !important;
+  }
+
+  .studio-workbench {
+    gap: 12px !important;
+  }
+
+  .studio-workbench-hero,
+  .studio-toolbar,
+  .studio-lane,
+  .studio-native-card,
+  .studio-workbench .inbox-card,
+  #genreIdentityWorkbench {
+    padding: 12px !important;
+    border-radius: 18px !important;
+  }
+
+  .studio-workbench-hero,
+  .studio-toolbar,
+  .studio-lane-head,
+  .review-card-head,
+  .genre-identity-editor-head,
+  #genreIdentityWorkbench .genre-identity-editor-head {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  .studio-workbench-copy,
+  .studio-workbench-copy > *,
+  .studio-lane-head > *,
+  .review-card-head > *,
+  .genre-identity-editor-head > *,
+  .studio-native-card > *,
+  .studio-workbench .inbox-card > * {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .studio-workbench-copy h2 {
+    max-width: 100% !important;
+    font-size: clamp(1.32rem, 12vw, 2rem) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.06em !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .studio-workbench-copy p,
+  .studio-lane-head p,
+  .studio-lane-copy,
+  .studio-lane-sample {
+    max-width: 100% !important;
+    font-size: 0.82rem !important;
+    line-height: 1.28 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .studio-save-state {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    white-space: normal !important;
+    border-radius: 16px !important;
+  }
+
+  .studio-lane-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 9px !important;
+  }
+
+  .studio-lane-card {
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 11px !important;
+    border-radius: 17px !important;
+    overflow: hidden !important;
+  }
+
+  .studio-lane-card strong {
+    font-size: 1.75rem !important;
+    line-height: 0.98 !important;
+  }
+
+  .studio-lane-title,
+  .studio-lane-card strong,
+  .studio-lane-kicker,
+  .studio-lane-copy,
+  .studio-lane-sample,
+  .studio-lane-head h3,
+  .studio-native-card h3,
+  .inbox-card h3 {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .studio-lane-head h3,
+  .studio-native-card h3,
+  .inbox-card h3 {
+    font-size: clamp(1.08rem, 8vw, 1.35rem) !important;
+    line-height: 1 !important;
+  }
+
+  .studio-lane-counts,
+  .studio-action-strip,
+  .genre-identity-head-actions,
+  #genreIdentityWorkbench .genre-identity-head-actions {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 7px !important;
+    justify-content: stretch !important;
+  }
+
+  .studio-lane-counts span,
+  .studio-action-strip .btn,
+  .genre-identity-head-actions .btn,
+  #genreIdentityWorkbench .genre-identity-head-actions .btn,
+  .studio-collapse-btn,
+  #studioExpandAllBtn,
+  #studioRefreshBtn {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    white-space: normal !important;
+  }
+
+  .studio-toolbar,
+  .studio-search-wrap,
+  .studio-filter-wrap,
+  .studio-search-wrap input,
+  .studio-filter-wrap select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .studio-mini-row,
+  .studio-workbench .review-row,
+  .studio-workbench .inbox-unassigned-row,
+  #reviewPendingQueueCard .review-row[data-review-pending-row] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .studio-mini-actions,
+  .studio-workbench .review-move,
+  .studio-workbench .inbox-move-row {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 7px !important;
+    justify-content: stretch !important;
+  }
+
+  .studio-mini-actions .btn,
+  .studio-workbench .review-move .btn,
+  .studio-workbench .inbox-move-row .btn,
+  .studio-workbench .inbox-move-row select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+
+  .studio-thumb {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 9px !important;
+  }
+
+  .studio-mini-main,
+  .studio-mini-title,
+  .review-track-title,
+  .inbox-unassigned-title,
+  .studio-mini-meta,
+  .studio-workbench .review-meta,
+  .inbox-unassigned-meta {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .studio-mini-title,
+  .review-track-title,
+  .inbox-unassigned-title {
+    white-space: normal !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Daily Genre v65 cache-bust marker */

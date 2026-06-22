@@ -639,19 +639,11 @@
   }
 
   function installMobileJumpNav() {
-    if (!listenScreenActive() || inBuildMode()) {
-      document.querySelector(".dc-mobile-jump-nav")?.remove();
-      return;
-    }
-    if (document.querySelector(".dc-mobile-jump-nav")) return;
-    const nav = document.createElement("nav");
-    nav.className = "dc-mobile-jump-nav";
-    nav.innerHTML = `
-      <a href="#dc-songs">Songs</a>
-      <a href="#dc-albums">Albums</a>
-      <a href="#dc-liner-notes">Notes</a>
-    `;
-    document.body.appendChild(nav);
+    // v60: the Songs / Albums / Notes mobile floater was visually noisy and did
+    // not provide a reliable benefit in normal or mobile layouts. Keep the
+    // function as a safe no-op so older route hooks can call it, but always
+    // remove any existing instance.
+    document.querySelector(".dc-mobile-jump-nav")?.remove();
   }
 
   function installRouteAwareness() {
@@ -773,6 +765,56 @@
     );
   }
 
+  function collectGenreSearchAliases(g) {
+    const values = [];
+    const push = (value) => {
+      if (Array.isArray(value)) value.forEach(push);
+      else if (value && typeof value === "object") Object.values(value).forEach(push);
+      else if (value != null) {
+        String(value)
+          .split(/[\n;,|]+/g)
+          .map((part) => part.trim())
+          .filter(Boolean)
+          .forEach((part) => values.push(part));
+      }
+    };
+
+    push(g?.aliases);
+    push(g?.synonyms);
+    push(g?.aka);
+    push(g?.alsoKnownAs);
+    push(g?.also_known_as);
+
+    const canonical = normalizeSearchText(g?.genre || "");
+    if (canonical === "hokkien pop") {
+      push([
+        "Tai-pop",
+        "Tai pop",
+        "Taipop",
+        "Taiwanese pop",
+        "Taiwanese Hokkien pop",
+        "Taiwanese-language pop",
+        "Taiwanese language pop",
+        "Tâi-gí pop",
+      ]);
+    }
+
+    return [...new Set(values.map((item) => String(item || "").trim()).filter(Boolean))];
+  }
+
+  function aliasHitForQuery(g, rawQuery) {
+    const q = normalizeSearchText(rawQuery);
+    const cq = compactSearchText(rawQuery);
+    if (!q) return "";
+    return (
+      collectGenreSearchAliases(g).find((alias) => {
+        const na = normalizeSearchText(alias);
+        const ca = compactSearchText(alias);
+        return na === q || ca === cq || na.includes(q) || ca.includes(cq);
+      }) || ""
+    );
+  }
+
   function escapeHtmlLocal(value) {
     if (typeof escapeHtml === "function") return escapeHtml(value);
     return String(value ?? "").replace(
@@ -782,10 +824,18 @@
   }
 
   async function loadGenreRows() {
+    if (Array.isArray(window.genres) && window.genres.length) {
+      STATE.genres = window.genres;
+      return STATE.genres;
+    }
     if (Array.isArray(STATE.genres)) return STATE.genres;
     if (STATE.fetchStarted) {
       for (let i = 0; i < 40; i += 1) {
         await new Promise((resolve) => setTimeout(resolve, 50));
+        if (Array.isArray(window.genres) && window.genres.length) {
+          STATE.genres = window.genres;
+          return STATE.genres;
+        }
         if (Array.isArray(STATE.genres)) return STATE.genres;
       }
     }
@@ -816,22 +866,39 @@
     const name = normalizeSearchText(g?.genre || "");
     const cname = compactSearchText(g?.genre || "");
     const category = normalizeSearchText(categoryLineForGenre(g));
+    const aliases = collectGenreSearchAliases(g).map((alias) => ({
+      alias,
+      norm: normalizeSearchText(alias),
+      compact: compactSearchText(alias),
+    }));
     if (!q) return 9999;
+
     if (name === q || cname === cq) return 0;
+    if (aliases.some((a) => a.norm === q || a.compact === cq)) return 1;
+
     if (name.startsWith(q) || cname.startsWith(cq))
       return 10 + Math.max(0, name.length - q.length) / 100;
+    if (aliases.some((a) => a.norm.startsWith(q) || a.compact.startsWith(cq)))
+      return 12;
+
     if (name.split(" ").some((part) => part.startsWith(q)))
       return 20 + name.indexOf(q) / 100;
+    if (aliases.some((a) => a.norm.split(" ").some((part) => part.startsWith(q))))
+      return 24;
+
     if (name.includes(q) || cname.includes(cq))
       return 40 + name.indexOf(q) / 100;
+    if (aliases.some((a) => a.norm.includes(q) || a.compact.includes(cq)))
+      return 44;
+
     if (category.startsWith(q)) return 60;
     if (category.includes(q)) return 80;
     const words = q.split(" ").filter(Boolean);
-    if (
-      words.length > 1 &&
-      words.every((word) => name.includes(word) || category.includes(word))
-    )
-      return 90;
+    if (words.length > 1) {
+      const aliasText = aliases.map((a) => a.norm).join(" ");
+      if (words.every((word) => name.includes(word) || category.includes(word) || aliasText.includes(word)))
+        return 90;
+    }
     return 9999;
   }
 
@@ -915,7 +982,7 @@
             <div class="manual-result-row ${String(g.id) === String(selectedId) ? "selected" : ""}" role="listitem">
               <button class="manual-result-main" type="button" data-spin-polish-id="${escapeHtmlLocal(g.id)}">
                 <span class="manual-result-name">${escapeHtmlLocal(g.genre || "Unknown")}</span>
-                <span class="manual-result-path">${escapeHtmlLocal(categoryLineForGenre(g))}</span>
+                <span class="manual-result-path">${escapeHtmlLocal(categoryLineForGenre(g))}${aliasHitForQuery(g, query) ? ` · ${escapeHtmlLocal(aliasHitForQuery(g, query))}` : ""}</span>
               </button>
               <button class="manual-result-info" type="button" data-spin-preview-button-id="${escapeHtmlLocal(g.id)}" title="Preview genre" aria-label="Preview ${escapeHtmlLocal(g.genre || "genre")}">♪</button>
             </div>
@@ -1185,3 +1252,5 @@
     document.addEventListener("DOMContentLoaded", bootSpinPolish);
   else bootSpinPolish();
 })();
+
+/* Daily Genre v65 cache-bust marker */
