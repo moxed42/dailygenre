@@ -1215,20 +1215,25 @@
       if (byPath?.song) return byPath;
 
       const key = decodeInlineSongKey(encodedKey);
-      const byIdentity = findOfficialSongByIdentity(key);
-      if (byIdentity?.song) return byIdentity;
+      const meaningfulKey = meaningfulSongIdentityKey(key);
+      if (meaningfulKey) {
+        const byIdentity = findOfficialSongByIdentity(key);
+        if (byIdentity?.song) return byIdentity;
+      }
 
       // Last-resort fallback for malformed/old curation rows: compare against common identity variants
       // without reparsing the editor again. This avoids silent failures on bad ALT TAKE / LEVEL UP rows.
       const songs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
       currentGenre.songs_listened = songs;
-      for (let index = 0; index < songs.length; index += 1) {
-        const parent = songs[index];
-        if (songIdentity(parent) === key || songIdentityKeys(parent).includes(String(key || '').toLowerCase())) {
-          return { song: parent, parent: null, index, songs };
-        }
-        if (parent.levelUp && (songIdentity(parent.levelUp) === key || songIdentityKeys(parent.levelUp).includes(String(key || '').toLowerCase()))) {
-          return { song: parent.levelUp, parent, index, songs };
+      if (meaningfulKey) {
+        for (let index = 0; index < songs.length; index += 1) {
+          const parent = songs[index];
+          if (meaningfulSongIdentityKey(songIdentity(parent)) === meaningfulKey || songIdentityKeys(parent).map(meaningfulSongIdentityKey).includes(meaningfulKey)) {
+            return { song: parent, parent: null, index, songs };
+          }
+          if (parent.levelUp && (meaningfulSongIdentityKey(songIdentity(parent.levelUp)) === meaningfulKey || songIdentityKeys(parent.levelUp).map(meaningfulSongIdentityKey).includes(meaningfulKey))) {
+            return { song: parent.levelUp, parent, index, songs };
+          }
         }
       }
       return null;
@@ -1255,6 +1260,22 @@
         .replace(/\s+/g, ' ')
         .trim();
       return `${clean(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(' ') : ''))}|${clean(song?.title || '')}`;
+    }
+
+    function meaningfulQueueTextKey(key = '') {
+      const value = String(key || '').trim();
+      if (!value || value === '|') return '';
+      const [artist = '', title = ''] = value.split('|');
+      // A blank/blank key means multiple placeholder rows would look identical.
+      // Do not use it for duplicate repair or URL overwrites.
+      return (artist.trim() || title.trim()) ? value : '';
+    }
+
+    function meaningfulSongIdentityKey(key = '') {
+      const value = String(key || '').trim().toLowerCase();
+      if (!value) return '';
+      if (value === 'meta:|' || /^meta:\s*\|\s*$/.test(value)) return '';
+      return value;
     }
 
     function canonicalQueueUrlKey(url='') {
@@ -1301,18 +1322,18 @@
       const oldUrl = canonicalQueueUrlKey(match.oldUrl || '');
       const targetSpotifyId = String(target.spotifyId || match.newSpotifyId || '').trim().toLowerCase();
       const oldSpotifyId = String(match.oldSpotifyId || '').trim().toLowerCase();
-      const oldIdentity = String(match.oldIdentity || '').trim().toLowerCase();
-      const targetIdentity = String(songIdentity(target) || '').trim().toLowerCase();
-      const targetText = queueDuplicateTextKey(target);
-      const oldText = String(match.oldTextKey || '').trim();
-      const newText = String(match.newTextKey || '').trim() || targetText;
+      const oldIdentity = meaningfulSongIdentityKey(match.oldIdentity || '');
+      const targetIdentity = meaningfulSongIdentityKey(songIdentity(target) || '');
+      const targetText = meaningfulQueueTextKey(queueDuplicateTextKey(target));
+      const oldText = meaningfulQueueTextKey(match.oldTextKey || '');
+      const newText = meaningfulQueueTextKey(match.newTextKey || '') || meaningfulQueueTextKey(targetText);
       const forceTextDedupe = !!match.forceTextDedupe;
       const maybeDuplicate = song => {
         if (!song || song === target) return false;
         const songUrl = canonicalQueueUrlKey(song.url || song.spotifyUrl || '');
         const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
-        const songIdentityValue = String(songIdentity(song) || '').trim().toLowerCase();
-        const songText = queueDuplicateTextKey(song);
+        const songIdentityValue = meaningfulSongIdentityKey(songIdentity(song) || '');
+        const songText = meaningfulQueueTextKey(queueDuplicateTextKey(song));
         if (targetUrl && songUrl && songUrl === targetUrl) return true;
         if (oldUrl && songUrl && songUrl === oldUrl) return true;
         if (targetSpotifyId && songSpotifyId && songSpotifyId === targetSpotifyId) return true;
@@ -1398,10 +1419,10 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const oldUrl = canonicalQueueUrlKey(match.oldUrl || '');
       const targetSpotifyId = String(target.spotifyId || match.newSpotifyId || '').trim().toLowerCase();
       const oldSpotifyId = String(match.oldSpotifyId || '').trim().toLowerCase();
-      const oldIdentity = String(match.oldIdentity || '').trim().toLowerCase();
-      const targetIdentity = String(songIdentity(target) || '').trim().toLowerCase();
-      const oldText = String(match.oldTextKey || '').trim();
-      const newText = String(match.newTextKey || queueDuplicateTextKey(target)).trim();
+      const oldIdentity = meaningfulSongIdentityKey(match.oldIdentity || '');
+      const targetIdentity = meaningfulSongIdentityKey(songIdentity(target) || '');
+      const oldText = meaningfulQueueTextKey(match.oldTextKey || '');
+      const newText = meaningfulQueueTextKey(match.newTextKey || queueDuplicateTextKey(target));
       const out = [];
       let inserted = false;
       list.forEach((song, index) => {
@@ -1413,8 +1434,8 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         }
         const songUrl = canonicalQueueUrlKey(song.url || song.spotifyUrl || '');
         const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
-        const songIdentityValue = String(songIdentity(song) || '').trim().toLowerCase();
-        const songText = queueDuplicateTextKey(song);
+        const songIdentityValue = meaningfulSongIdentityKey(songIdentity(song) || '');
+        const songText = meaningfulQueueTextKey(queueDuplicateTextKey(song));
         const duplicateByUrl = (targetUrl && songUrl === targetUrl) || (oldUrl && songUrl === oldUrl);
         const duplicateBySpotify = (targetSpotifyId && songSpotifyId === targetSpotifyId) || (oldSpotifyId && songSpotifyId === oldSpotifyId);
         const duplicateByIdentity = (targetIdentity && songIdentityValue === targetIdentity) || (oldIdentity && songIdentityValue === oldIdentity);
@@ -1437,16 +1458,16 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const oldUrl = canonicalQueueUrlKey(match.oldUrl || '');
       const targetSpotifyId = String(target.spotifyId || match.newSpotifyId || '').trim().toLowerCase();
       const oldSpotifyId = String(match.oldSpotifyId || '').trim().toLowerCase();
-      const oldIdentity = String(match.oldIdentity || '').trim().toLowerCase();
-      const targetIdentity = String(songIdentity(target) || '').trim().toLowerCase();
-      const oldText = String(match.oldTextKey || '').trim();
-      const newText = String(match.newTextKey || queueDuplicateTextKey(target)).trim();
+      const oldIdentity = meaningfulSongIdentityKey(match.oldIdentity || '');
+      const targetIdentity = meaningfulSongIdentityKey(songIdentity(target) || '');
+      const oldText = meaningfulQueueTextKey(match.oldTextKey || '');
+      const newText = meaningfulQueueTextKey(match.newTextKey || queueDuplicateTextKey(target));
       const looksLikeSameManualSong = song => {
         if (!song || song === target) return false;
         const songUrl = canonicalQueueUrlKey(song.url || song.spotifyUrl || '');
         const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
-        const songIdentityValue = String(songIdentity(song) || '').trim().toLowerCase();
-        const songText = queueDuplicateTextKey(song);
+        const songIdentityValue = meaningfulSongIdentityKey(songIdentity(song) || '');
+        const songText = meaningfulQueueTextKey(queueDuplicateTextKey(song));
         if (targetUrl && songUrl && songUrl === targetUrl) return true;
         if (oldUrl && songUrl && songUrl === oldUrl) return true;
         if (targetSpotifyId && songSpotifyId && songSpotifyId === targetSpotifyId) return true;
