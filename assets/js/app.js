@@ -1124,12 +1124,27 @@
       }).join('\n');
     }
     
-    function syncBulkDraftIntoSongModel() {
+    function queueModelIsAuthoritative() {
+      return !!window.__dailyGenreQueueModelAuthoritativeUntil && Date.now() < Number(window.__dailyGenreQueueModelAuthoritativeUntil || 0);
+    }
+
+    function syncBulkDraftIntoSongModel(options = {}) {
       if (!currentGenre) return;
       const textarea = document.getElementById('songsListenedBulk');
       if (!textarea) return;
       const expected = buildSongsBulkEditorText(currentGenre);
       if (textarea.value === expected) return;
+
+      // Inline queue actions (URL overwrite, Spotify refresh, remove/move) update
+      // currentGenre.songs_listened directly, then repaint the hidden bulk textarea.
+      // During that short authoritative window, do not let an older textarea snapshot
+      // overwrite the live model on save. This was causing multi-row URL edits to
+      // persist only the most recent row, or to wipe a prior corrected URL.
+      if (!options.force && queueModelIsAuthoritative()) {
+        textarea.value = expected;
+        return;
+      }
+
       const previous = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
       const merged = mergeSongMetadata(parseSongLinks(textarea.value), previous);
       const seenKeys = new Set();
@@ -1439,7 +1454,6 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         if (oldIdentity && songIdentityValue && songIdentityValue === oldIdentity) return true;
         if (targetIdentity && songIdentityValue && songIdentityValue === targetIdentity) return true;
         if (songText && (songText === oldText || songText === newText)) return true;
-        if (queueMetadataLooksClose(song, target)) return true;
         return false;
       };
       const out = [];
@@ -2416,11 +2430,18 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       currentGenre.notes = document.getElementById('notes').value.trim();
 
       const previousOfficial = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
-      const parsedOfficial = mergeSongMetadata(
-        normalizeSongsListened(parseSongLinks(document.getElementById('songsListenedBulk').value)),
-        previousOfficial
-      );
-      const resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
+      let resolvedOfficial = previousOfficial;
+      if (queueModelIsAuthoritative()) {
+        // A recent inline queue edit is the source of truth. Do not reparse a stale
+        // bulk textarea during setup/save, or earlier URL corrections can disappear.
+        syncSongsBulkEditorFromModel();
+      } else {
+        const parsedOfficial = mergeSongMetadata(
+          normalizeSongsListened(parseSongLinks(document.getElementById('songsListenedBulk').value)),
+          previousOfficial
+        );
+        resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
+      }
       currentGenre.songs_listened = resolvedOfficial;
       currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
       removeLoggedSongsFromPending(currentGenre);
