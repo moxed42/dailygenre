@@ -31,13 +31,7 @@
       out.push({
         song,
         path: `song:${index}`,
-        label: song.isIdentityTrack
-          ? (song.identityType === "seminal" ? "Seminal" : "Media")
-          : song.isAdd
-            ? "Add"
-            : song.isPromote
-              ? "Promote"
-              : "Canon",
+        label: song.isAdd ? "Add" : song.isPromote ? "Promote" : "Canon",
         isChild: false,
       });
       if (song.levelUp) {
@@ -92,10 +86,6 @@
   function songTypeBadge(entry) {
     if (entry.label === "Level Up")
       return '<span class="song-focus-badge level">Level Up</span>';
-    if (entry.label === "Seminal")
-      return '<span class="song-focus-badge identity seminal">Seminal</span>';
-    if (entry.label === "Media")
-      return '<span class="song-focus-badge identity popular">Media</span>';
     if (entry.label === "Add")
       return '<span class="song-focus-badge add">Add</span>';
     if (entry.song?.score != null)
@@ -152,7 +142,6 @@
       "all",
       "unrated",
       "favorites",
-      "identity",
       "levelups",
       "adds",
       "fit5",
@@ -182,8 +171,6 @@
       return entries.filter((entry) => !entry.song?.reaction);
     if (selected === "favorites")
       return entries.filter((entry) => isFavoriteEntry(entry));
-    if (selected === "identity")
-      return entries.filter((entry) => entry.song?.isIdentityTrack);
     if (selected === "levelups")
       return entries.filter(
         (entry) => entry.label === "Level Up" || entry.song?.isLevelUp,
@@ -214,11 +201,6 @@
         "favorites",
         "Favorites",
         entries.filter((entry) => isFavoriteEntry(entry)).length,
-      ],
-      [
-        "identity",
-        "Identity",
-        entries.filter((entry) => entry.song?.isIdentityTrack).length,
       ],
       [
         "levelups",
@@ -310,20 +292,6 @@
     enhanceSongListeningExperience();
   }
 
-  function openSongEditorFromQueue(key) {
-    try {
-      if (typeof currentGenre !== "undefined" && currentGenre) {
-        localStorage.setItem(genreFocusStorageKey(currentGenre), key || "");
-        localStorage.setItem(genreDetailsStorageKey(currentGenre), "1");
-      }
-    } catch {}
-    enhanceSongListeningExperience();
-    requestAnimationFrame(() => {
-      const drawer = document.querySelector(".song-focus-details-drawer");
-      if (drawer) drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    });
-  }
-
   function isSongDetailsOpen(genre) {
     try {
       return localStorage.getItem(genreDetailsStorageKey(genre)) === "1";
@@ -383,9 +351,8 @@
     const readMore = "";
     const filterLabel =
       activeFilter && activeFilter !== "all" ? ` in current filter` : "";
-    const relation = entry.song?.isIdentityTrack
-      ? `<div class="song-focus-relation-hero">${entry.song.identityType === "seminal" ? "✦ Seminal identity anchor" : "▣ Media identity anchor"}</div>`
-      : entry.isChild && entry.parentSong
+    const relation =
+      entry.isChild && entry.parentSong
         ? `<div class="song-focus-relation-hero">↳ Level up from ${html(entry.parentSong.title || "previous pick")}</div>`
         : "";
     const sequenceCount =
@@ -410,7 +377,7 @@
     </section>`;
   }
 
-  function renderSongDetails(entry, entries = [], activeFilter = "all") {
+  function renderSongDetails(entry) {
     const song = entry.song;
     const encodedKey = encodedSongKey(song);
     const encodedPath = encodeURIComponent(entry.path || "").replace(
@@ -435,21 +402,13 @@
     if (song.isrc) meta.push(`ISRC: ${song.isrc}`);
     if (song.releaseDate) meta.push(`Release: ${song.releaseDate}`);
     if (song.releaseSource) meta.push(`Source: ${song.releaseSource}`);
-    const sequenceCount = (filterSongEntries(entries, activeFilter).length || entries.length || 0);
-    const filterLabel = activeFilter && activeFilter !== "all" ? " in current filter" : "";
-    const navControls = sequenceCount > 1
-      ? `<div class="song-focus-editor-nav" role="group" aria-label="Song editor navigation"><button type="button" class="btn btn-secondary btn-tiny song-focus-editor-prev" onclick="event.preventDefault(); event.stopPropagation(); moveSongFocus(-1)" title="Previous song${filterLabel}">← Previous</button><button type="button" class="btn btn-secondary btn-tiny song-focus-editor-next" onclick="event.preventDefault(); event.stopPropagation(); moveSongFocus(1)" title="Next song${filterLabel}">Next →</button></div>`
-      : "";
     return `<section class="song-focus-details-drawer song-note-editor">
       <div class="song-focus-details-head">
         <div>
           <div class="eyebrow">Song details</div>
           <h3>${html(song.title || "Selected song")}</h3>
         </div>
-        <div class="song-focus-details-head-actions">
-          ${navControls}
-          <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
-        </div>
+        <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
       </div>
       <div class="song-focus-details-grid">
         <div class="song-focus-detail-card song-focus-fit-card">
@@ -469,14 +428,14 @@
           </div>
           <div class="track-card-edit-note">Staged locally. Save Listening Updates will roll this up and persist it.</div>
         </div>
-        <div class="song-focus-detail-card compact song-focus-url-card track-card-editor">
-          <h4>Track URL</h4>
+        <div class="song-focus-detail-card compact song-focus-url-card">
+          <h4>Track URL <span class="song-focus-inline-label">no full edit mode needed</span></h4>
           <div class="song-focus-url-row">
-            <input data-track-url-input type="text" inputmode="url" autocomplete="off" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
+            <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
             <button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Update URL</button>
             ${canRefreshSpotify ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Metadata</button>` : ""}
-            <button type="button" class="song-focus-delete-btn song-focus-url-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); deleteTrackFromQueue('${encodedKey}', '${encodedPath}')" title="Delete queue entry" aria-label="Delete queue entry">🗑</button>
           </div>
+          <p class="song-focus-helper">Paste a corrected Spotify track URL here without switching to Build / Edit mode. Use Refresh Metadata after updating when the new link is a Spotify track.</p>
         </div>
         <div class="song-focus-detail-card compact song-focus-meta-card">
           <h4>Metadata</h4>
@@ -552,7 +511,6 @@
                   const href = spotifyHref(song);
                   const hasHref = /^https?:\/\//i.test(href);
                   const safeKeyAttr = html(key).replace(/'/g, "&#39;");
-                  const encodedKeyAttr = encodeURIComponent(key);
                   const titleMarkup = hasHref
                     ? `<a class="song-focus-row-title" href="${html(href)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${html(title)} <span class="song-link-arrow">↗</span></a>`
                     : `<span class="song-focus-row-title">${html(title)}</span>`;
@@ -568,7 +526,7 @@
                     !selected &&
                     entry.parentKey &&
                     entry.parentKey === selectedKey;
-                  return `<div role="button" tabindex="0" data-song-focus-key="${html(encodedKeyAttr)}" class="song-focus-row ${selected ? "active" : ""} ${parentSelected ? "parent-active" : ""} ${entry.isChild ? "levelup-child" : ""} ${song.isIdentityTrack ? `identity-track ${song.identityType === "seminal" ? "identity-seminal" : "identity-popular"}` : ""} ${Number(song.reaction) ? "reacted" : ""}" onclick="setSongFocus('${safeKeyAttr}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); setSongFocus('${safeKeyAttr}'); }">
+                  return `<div role="button" tabindex="0" class="song-focus-row ${selected ? "active" : ""} ${parentSelected ? "parent-active" : ""} ${entry.isChild ? "levelup-child" : ""} ${Number(song.reaction) ? "reacted" : ""}" onclick="setSongFocus('${safeKeyAttr}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); setSongFocus('${safeKeyAttr}'); }">
             ${art ? `<img class="song-focus-row-art" src="${html(art)}" alt="${html(title)} artwork" loading="lazy">` : '<span class="song-focus-row-art placeholder">♪</span>'}
             <span class="song-focus-row-main">
               <span class="song-focus-row-title-line">${titleMarkup}${selected ? '<span class="song-focus-now-badge">Now Listening</span>' : ""}</span>
@@ -577,8 +535,6 @@
               ${childReason}
             </span>
             <span class="song-focus-row-badge-wrap">${songTypeBadge(entry)}</span>
-            <button type="button" class="song-focus-edit-btn" data-song-focus-edit="${html(encodedKeyAttr)}" onclick="event.preventDefault(); event.stopPropagation(); openSongEditorFromQueue('${safeKeyAttr}');" title="Edit URL / refresh metadata" aria-label="Edit URL and refresh metadata">✎</button>
-            <button type="button" class="song-focus-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); deleteTrackFromQueue('${safeKeyAttr}', '${html(entry.path || '').replace(/'/g, '&#39;')}');" title="Delete queue entry" aria-label="Delete queue entry">🗑</button>
             ${renderReactionButtons(song, "queue")}
           </div>`;
                 })
@@ -591,70 +547,6 @@
     </section>`;
   }
 
-  function trackUrlInputIsActive() {
-    const active = document.activeElement;
-    return !!active?.matches?.('[data-track-url-input]');
-  }
-
-  function inputSelectionInsert(input, text) {
-    if (!input) return;
-    const value = String(input.value || "");
-    const start = Number.isFinite(input.selectionStart) ? input.selectionStart : value.length;
-    const end = Number.isFinite(input.selectionEnd) ? input.selectionEnd : start;
-    const next = value.slice(0, start) + text + value.slice(end);
-    input.value = next;
-    const pos = start + text.length;
-    try { input.setSelectionRange(pos, pos); } catch {}
-    input.dispatchEvent(new Event("input", { bubbles: true }));
-  }
-
-  function protectTrackUrlInput(input) {
-    if (!input || input.__dailyGenreTrackUrlProtected) return;
-    input.__dailyGenreTrackUrlProtected = true;
-    input.setAttribute("autocomplete", "off");
-    input.setAttribute("spellcheck", "false");
-
-    const keepFocus = (event) => {
-      window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
-      event.stopPropagation();
-      try {
-        if (document.activeElement !== input) {
-          setTimeout(() => input.focus({ preventScroll: true }), 0);
-        }
-      } catch {}
-    };
-
-    ["pointerdown", "mousedown", "mouseup", "click", "dblclick", "touchstart"].forEach((type) => {
-      input.addEventListener(type, keepFocus);
-    });
-
-    ["keydown", "keyup", "beforeinput", "input", "select"].forEach((type) => {
-      input.addEventListener(type, (event) => {
-        window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
-        event.stopPropagation();
-      });
-    });
-
-    input.addEventListener("paste", (event) => {
-      window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
-      event.stopPropagation();
-      const text = event.clipboardData?.getData?.("text/plain") || event.clipboardData?.getData?.("text") || "";
-      if (text) {
-        event.preventDefault();
-        inputSelectionInsert(input, text);
-      }
-    });
-  }
-
-  function installTrackUrlInputGuard(root = document) {
-    root.querySelectorAll?.('[data-track-url-input]')?.forEach(protectTrackUrlInput);
-  }
-
-  function shouldSkipSongFocusRenderForEditing() {
-    if (trackUrlInputIsActive()) return true;
-    return Date.now() < Number(window.__dailyGenreTrackUrlEditingUntil || 0);
-  }
-
   function enhanceSongListeningExperience() {
     if (typeof currentGenre === "undefined" || !currentGenre) return;
     const screen = document.getElementById("screen-listen");
@@ -662,11 +554,6 @@
     const section = screen.querySelector(".detail-log-section");
     const activeList = section?.querySelector(".detail-song-list");
     if (!section || !activeList) return;
-    const existingMount = section.querySelector(".song-focus-experience");
-    if (existingMount && shouldSkipSongFocusRenderForEditing()) {
-      installTrackUrlInputGuard(existingMount);
-      return;
-    }
 
     const entries = songListForFocus(currentGenre);
     if (!entries.length) return;
@@ -689,12 +576,20 @@
     const detailsOpen = isSongDetailsOpen(currentGenre);
     const queueOpen = isSongQueueOpen(currentGenre);
 
+    screen.classList.add("listen-experience-mode");
     section.classList.add("song-focus-section");
     const heading = Array.from(section.children).find((el) =>
       el.classList?.contains("eyebrow"),
     );
     if (heading) heading.textContent = "Song Listening";
-    activeList.classList.add("song-original-list-hidden");
+
+    // The focused queue replaces the legacy logged-song list. Keep the legacy
+    // DOM present for older edit/save helpers, but remove it visually so the
+    // same songs are not shown twice under the queue.
+    section.querySelectorAll(":scope > .detail-song-list").forEach((list) => {
+      list.classList.add("song-original-list-hidden");
+      list.setAttribute("aria-hidden", "true");
+    });
 
     let mount = section.querySelector(".song-focus-experience");
     if (!mount) {
@@ -702,17 +597,7 @@
       mount.className = "song-focus-experience";
       section.insertBefore(mount, activeList);
     }
-    const nextHtml = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected, entries, activeFilter) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
-    // Avoid replacing the whole queue DOM when nothing meaningful changed.
-    // Replacing identical markup reloads <img> nodes and causes visible album-art flicker.
-    const nextSignature = String(currentGenre.id ?? currentGenre.genre ?? "") + "::" + selectedKey + "::" + activeFilter + "::" + (queueOpen ? "open" : "closed") + "::" + (detailsOpen ? "details" : "nodetails") + "::" + nextHtml;
-    if (mount.dataset.songFocusSignature === nextSignature) {
-      installTrackUrlInputGuard(mount);
-      return;
-    }
-    mount.dataset.songFocusSignature = nextSignature;
-    mount.innerHTML = nextHtml;
-    installTrackUrlInputGuard(mount);
+    mount.innerHTML = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
   }
 
   function installNoJumpReactionWrapper() {
@@ -759,58 +644,13 @@
     };
   }
 
-
-  function decodeSongQueueKey(value) {
-    if (!value) return "";
-    try {
-      return decodeURIComponent(String(value));
-    } catch {
-      return String(value);
-    }
-  }
-
-  function installSongQueueClickRescue() {
-    if (window.__dailyGenreSongQueueClickRescueV38) return;
-    window.__dailyGenreSongQueueClickRescueV38 = true;
-    document.addEventListener(
-      "click",
-      (event) => {
-        const edit = event.target?.closest?.(".song-focus-edit-btn[data-song-focus-edit]");
-        if (edit) {
-          event.preventDefault();
-          event.stopPropagation();
-          event.stopImmediatePropagation?.();
-          const key = decodeSongQueueKey(edit.getAttribute("data-song-focus-edit"));
-          openSongEditorFromQueue(key);
-          return;
-        }
-
-        const row = event.target?.closest?.(".song-focus-row[data-song-focus-key]");
-        if (!row) return;
-        if (
-          event.target?.closest?.(
-            "button, a, input, textarea, select, label, .song-focus-actions, .song-focus-edit-btn",
-          )
-        ) {
-          return;
-        }
-        event.preventDefault();
-        const key = decodeSongQueueKey(row.getAttribute("data-song-focus-key"));
-        setSelectedSongKey(key);
-      },
-      true,
-    );
-  }
-
   window.setSongFocus = setSelectedSongKey;
   window.setSongFocusDetailsOpen = setSongDetailsOpen;
-  window.openSongEditorFromQueue = openSongEditorFromQueue;
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
   window.moveSongFocus = moveSongFocus;
   window.enhanceSongListeningExperience = enhanceSongListeningExperience;
   installNoJumpReactionWrapper();
-  installSongQueueClickRescue();
 
   const originalLoadListenScreen =
     typeof loadListenScreen === "function" ? loadListenScreen : null;
@@ -823,15 +663,7 @@
     };
   }
 
-  document.addEventListener("focusin", (event) => {
-    if (event.target?.matches?.('[data-track-url-input]')) {
-      protectTrackUrlInput(event.target);
-      window.__dailyGenreTrackUrlEditingUntil = Date.now() + 2500;
-    }
-  });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    installTrackUrlInputGuard(document);
-    setTimeout(enhanceSongListeningExperience, 0);
-  });
+  document.addEventListener("DOMContentLoaded", () =>
+    setTimeout(enhanceSongListeningExperience, 0),
+  );
 })();
