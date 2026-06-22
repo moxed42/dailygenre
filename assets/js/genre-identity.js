@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "genre-identity-v28-sync-no-false-dirty";
+  const VERSION = "genre-identity-v46-identity-source-url-sync";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let lastStudioRandomCleanupId = "";
@@ -278,6 +278,42 @@
     return `name:${norm([track?.artist, track?.title || track?.name].filter(Boolean).join("::"))}`;
   }
 
+  function identityLooseText(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\b(the|a|an|el|la|los|las|le|les|un|una|feat|ft)\b/g, " ")
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function identityQueueTextKey(track) {
+    const artist = track?.artist || (Array.isArray(track?.artists) ? track.artists.join(" ") : "");
+    const title = track?.title || track?.name || "";
+    return `${identityLooseText(artist)}|${identityLooseText(title)}`;
+  }
+
+  function identityTextLooksClose(a, b) {
+    const titleA = identityLooseText(a?.title || a?.name || "");
+    const titleB = identityLooseText(b?.title || b?.name || "");
+    const artistA = identityLooseText(a?.artist || (Array.isArray(a?.artists) ? a.artists.join(" ") : ""));
+    const artistB = identityLooseText(b?.artist || (Array.isArray(b?.artists) ? b.artists.join(" ") : ""));
+    if (!titleA || !titleB) return false;
+    const titleClose = titleA === titleB || titleA.includes(titleB) || titleB.includes(titleA);
+    const artistClose = !artistA || !artistB || artistA === artistB || artistA.includes(artistB) || artistB.includes(artistA);
+    return titleClose && artistClose;
+  }
+
+  function spotifyIdFromTrackLike(track) {
+    const explicit = String(track?.spotifyId || "").trim();
+    if (explicit) return explicit.toLowerCase();
+    const url = trackSpotifyUrl(track);
+    const match = String(url || "").match(/spotify\.com\/track\/([a-z0-9]+)/i) || String(url || "").match(/^spotify:track:([a-z0-9]+)/i);
+    return match ? match[1].toLowerCase() : "";
+  }
+
   function identityEntries(genre) {
     if (!genre) return [];
     const out = [];
@@ -307,10 +343,14 @@
 
   function findQueuedIdentitySong(genre, entry, songs = queueSongs(genre)) {
     const target = identityTrackId(entry.track);
+    const targetSpotifyId = spotifyIdFromTrackLike(entry.track);
     return (songs || []).find((song) => {
       if (!song || song.isPending) return false;
       if (song.isIdentityTrack && String(song.identityType || "") === entry.type && Number(song.identityIndex ?? -1) === Number(entry.index ?? -1)) return true;
-      return identityTrackId(song) === target;
+      if (identityTrackId(song) === target) return true;
+      const songSpotifyId = spotifyIdFromTrackLike(song);
+      if (targetSpotifyId && songSpotifyId && targetSpotifyId === songSpotifyId) return true;
+      return identityTextLooksClose(song, entry.track);
     }) || null;
   }
 
@@ -349,7 +389,7 @@
       identityType: entry.type,
       identityIndex: entry.index,
       identityLabel: entry.label,
-      score: prior.score ?? track.score ?? "",
+      score: (prior.score != null && prior.score !== "") ? prior.score : ((track.score != null && track.score !== "") ? track.score : 5),
     };
     if (track.reaction != null && payload.reaction == null) payload.reaction = track.reaction;
     if (prior.reaction != null && track.reaction == null) track.reaction = prior.reaction;
@@ -382,6 +422,74 @@
     else genre.songs_listened = songs;
     if (changed && mark) markDirty();
     return changed;
+  }
+
+  function findIdentityEntryForQueueSong(genre, song) {
+    const entries = identityEntries(genre);
+    if (!song) return null;
+    if (song.isIdentityTrack) {
+      const flagged = entries.find((entry) => String(entry.type) === String(song.identityType || "") && Number(entry.index ?? -1) === Number(song.identityIndex ?? -1));
+      if (flagged) return flagged;
+    }
+    const songId = identityTrackId(song);
+    const songSpotifyId = spotifyIdFromTrackLike(song);
+    return entries.find((entry) => {
+      if (identityTrackId(entry.track) === songId) return true;
+      const entrySpotifyId = spotifyIdFromTrackLike(entry.track);
+      if (songSpotifyId && entrySpotifyId && songSpotifyId === entrySpotifyId) return true;
+      return identityTextLooksClose(song, entry.track);
+    }) || null;
+  }
+
+  function updateTrackFromQueueOverwrite(genre, beforeSong, updatedSong) {
+    if (!genre || !updatedSong) return false;
+    ensureIdentity(genre);
+    const entry = findIdentityEntryForQueueSong(genre, beforeSong) || findIdentityEntryForQueueSong(genre, updatedSong);
+    if (!entry || !entry.track) return false;
+    const track = entry.track;
+    const keepReason = track.reason || beforeSong?.reason || updatedSong.reason || "";
+    const keepMediaTitle = track.mediaTitle || track.media || "";
+    const keepMediaType = track.mediaType || "";
+    Object.assign(track, {
+      title: updatedSong.title || track.title || track.name || "",
+      name: updatedSong.title || track.name || track.title || "",
+      artist: updatedSong.artist || (Array.isArray(updatedSong.artists) ? updatedSong.artists.join(", ") : track.artist || ""),
+      spotifyUrl: updatedSong.spotifyUrl || updatedSong.url || track.spotifyUrl || track.url || "",
+      url: updatedSong.spotifyUrl || updatedSong.url || track.url || track.spotifyUrl || "",
+      artwork: updatedSong.artwork || updatedSong.albumArt || track.artwork || track.albumArt || "",
+      albumArt: updatedSong.albumArt || updatedSong.artwork || track.albumArt || track.artwork || "",
+      album: updatedSong.album || track.album || "",
+      artists: Array.isArray(updatedSong.artists) && updatedSong.artists.length ? updatedSong.artists.slice() : (updatedSong.artist ? [updatedSong.artist] : track.artists || []),
+      spotifyId: updatedSong.spotifyId || track.spotifyId || "",
+      durationMs: updatedSong.durationMs ?? track.durationMs ?? null,
+      isrc: updatedSong.isrc || track.isrc || "",
+      releaseDate: updatedSong.releaseDate || track.releaseDate || "",
+      releaseYear: updatedSong.releaseYear ?? track.releaseYear ?? null,
+      releasePrecision: updatedSong.releasePrecision || track.releasePrecision || "",
+      releaseSource: updatedSong.releaseSource || track.releaseSource || "",
+      score: (track.score != null && track.score !== "") ? track.score : 5,
+      reason: keepReason,
+    });
+    if (entry.type === "popular") {
+      track.mediaTitle = keepMediaTitle;
+      track.media = keepMediaTitle;
+      track.mediaType = keepMediaType;
+    }
+    if (entry.type === "seminal") {
+      genre.identity.seminalTrack = track;
+      genre.seminal_song = track;
+    } else if (entry.index >= 0) {
+      genre.identity.mediaTouchstones[entry.index] = track;
+      genre.media_touchstones = genre.identity.mediaTouchstones;
+    }
+    try {
+      updatedSong.isIdentityTrack = true;
+      updatedSong.identityType = entry.type;
+      updatedSong.identityIndex = entry.index;
+      updatedSong.identityLabel = entry.label;
+      if (updatedSong.score == null || updatedSong.score === "") updatedSong.score = 5;
+    } catch (_) {}
+    return true;
   }
 
   function reactionForIdentityTrack(genre, entry) {
@@ -1512,6 +1620,7 @@
       toast(next ? "Identity track rated — use the floating Save button to persist it." : "Identity track rating cleared — use the floating Save button to persist it.");
     },
     syncIdentityTracksToSongQueue,
+    updateTrackFromQueueOverwrite,
     openStudio(id) {
       selectedGenreId = String(id || selectedGenreId || "");
       if (typeof switchScreen === "function") switchScreen("review");
@@ -1552,6 +1661,7 @@
       } catch (_) {}
     },
     syncIdentityTracksToSongQueue,
+    updateTrackFromQueueOverwrite,
     apply: function () {
       injectStudioEditor();
       try {

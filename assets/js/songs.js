@@ -32,7 +32,7 @@
         song,
         path: `song:${index}`,
         label: song.isIdentityTrack
-          ? (song.identityType === "seminal" ? "Seminal" : "Popular")
+          ? (song.identityType === "seminal" ? "Seminal" : "Media")
           : song.isAdd
             ? "Add"
             : song.isPromote
@@ -94,8 +94,8 @@
       return '<span class="song-focus-badge level">Level Up</span>';
     if (entry.label === "Seminal")
       return '<span class="song-focus-badge identity seminal">Seminal</span>';
-    if (entry.label === "Popular")
-      return '<span class="song-focus-badge identity popular">Popular</span>';
+    if (entry.label === "Media")
+      return '<span class="song-focus-badge identity popular">Media</span>';
     if (entry.label === "Add")
       return '<span class="song-focus-badge add">Add</span>';
     if (entry.song?.score != null)
@@ -384,7 +384,7 @@
     const filterLabel =
       activeFilter && activeFilter !== "all" ? ` in current filter` : "";
     const relation = entry.song?.isIdentityTrack
-      ? `<div class="song-focus-relation-hero">${entry.song.identityType === "seminal" ? "✦ Seminal identity anchor" : "▣ Popular / media identity anchor"}</div>`
+      ? `<div class="song-focus-relation-hero">${entry.song.identityType === "seminal" ? "✦ Seminal identity anchor" : "▣ Media identity anchor"}</div>`
       : entry.isChild && entry.parentSong
         ? `<div class="song-focus-relation-hero">↳ Level up from ${html(entry.parentSong.title || "previous pick")}</div>`
         : "";
@@ -470,13 +470,13 @@
           <div class="track-card-edit-note">Staged locally. Save Listening Updates will roll this up and persist it.</div>
         </div>
         <div class="song-focus-detail-card compact song-focus-url-card track-card-editor">
-          <h4>Track URL <span class="song-focus-inline-label">no full edit mode needed</span></h4>
+          <h4>Track URL</h4>
           <div class="song-focus-url-row">
             <input data-track-url-input type="text" inputmode="url" autocomplete="off" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
             <button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Update URL</button>
             ${canRefreshSpotify ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Metadata</button>` : ""}
+            <button type="button" class="song-focus-delete-btn song-focus-url-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); deleteTrackFromQueue('${encodedKey}', '${encodedPath}')" title="Delete queue entry" aria-label="Delete queue entry">🗑</button>
           </div>
-          <p class="song-focus-helper">Paste a corrected Spotify track URL here without switching to Build / Edit mode. Use Refresh Metadata after updating when the new link is a Spotify track.</p>
         </div>
         <div class="song-focus-detail-card compact song-focus-meta-card">
           <h4>Metadata</h4>
@@ -578,6 +578,7 @@
             </span>
             <span class="song-focus-row-badge-wrap">${songTypeBadge(entry)}</span>
             <button type="button" class="song-focus-edit-btn" data-song-focus-edit="${html(encodedKeyAttr)}" onclick="event.preventDefault(); event.stopPropagation(); openSongEditorFromQueue('${safeKeyAttr}');" title="Edit URL / refresh metadata" aria-label="Edit URL and refresh metadata">✎</button>
+            <button type="button" class="song-focus-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); deleteTrackFromQueue('${safeKeyAttr}', '${html(entry.path || '').replace(/'/g, '&#39;')}');" title="Delete queue entry" aria-label="Delete queue entry">🗑</button>
             ${renderReactionButtons(song, "queue")}
           </div>`;
                 })
