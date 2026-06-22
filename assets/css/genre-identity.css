@@ -475,111 +475,43 @@
   }
 }
 
-/* === Genre Identity v24: identity tracks are playable/rateable queue anchors === */
-.genre-identity-track-card.has-artwork {
-  grid-template-columns: 52px minmax(0, 1fr);
+
+/* === Genre Identity v52: readable detail-page AKA alias line === */
+.detail-record-card .genre-identity-alias-line,
+.discovery-console .detail-record-card .genre-identity-alias-line {
+  color: rgba(255, 245, 223, 0.74) !important;
+  font-weight: 800 !important;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.45) !important;
+}
+.detail-record-card .genre-identity-alias-line em,
+.discovery-console .detail-record-card .genre-identity-alias-line em {
+  color: #ffe0a1 !important;
+  font-weight: 950 !important;
+}
+.detail-record-card .genre-identity-alias-line span,
+.discovery-console .detail-record-card .genre-identity-alias-line span {
+  color: #ffd27c !important;
+  font-weight: 950 !important;
 }
 
-.genre-identity-track-card.has-artwork .genre-identity-track-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: rgba(34, 22, 13, 0.12);
+/* === Genre Identity v54: softer, higher-contrast alias line === */
+.detail-record-card .genre-identity-alias-line,
+.discovery-console .detail-record-card .genre-identity-alias-line {
+  color: rgba(255, 248, 232, 0.9) !important;
+  font-style: italic !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.6) !important;
 }
-
-.genre-identity-track-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.detail-record-card .genre-identity-alias-line em,
+.discovery-console .detail-record-card .genre-identity-alias-line em {
+  color: rgba(255, 248, 232, 0.94) !important;
+  font-style: italic !important;
+  font-weight: 500 !important;
 }
-
-.genre-identity-track-control-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
-
-.genre-identity-track-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px;
-  border-radius: 999px;
-  background: rgba(61, 36, 18, 0.08);
-  border: 1px solid rgba(120, 74, 27, 0.14);
-}
-
-.genre-identity-reaction,
-.genre-identity-mini-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  border: 1px solid rgba(120, 74, 27, 0.18);
-  display: inline-grid;
-  place-items: center;
-  cursor: pointer;
-  font-size: 0.88rem;
-  line-height: 1;
-  background: rgba(255, 252, 241, 0.64);
-  color: var(--text, #22160d);
-  box-shadow: none;
-}
-
-.genre-identity-reaction:hover,
-.genre-identity-reaction:focus-visible,
-.genre-identity-mini-btn:hover,
-.genre-identity-mini-btn:focus-visible {
-  outline: none;
-  transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--accent, #d98d25) 50%, transparent);
-}
-
-.genre-identity-reaction.active {
-  background: var(--accent-soft, #ffe0a1);
-  border-color: color-mix(in srgb, var(--accent, #d98d25) 58%, transparent);
-  box-shadow: 0 0 0 2px rgba(217, 141, 37, 0.12);
-}
-
-.genre-identity-mini-btn {
-  color: #fff;
-  background: #1db954;
-  border-color: rgba(13, 101, 45, 0.36);
-  font-size: 0.78rem;
-  box-shadow: 0 6px 14px rgba(16, 105, 48, 0.16);
-}
-
-@media (max-width: 680px) {
-  .genre-identity-track-card.has-artwork {
-    grid-template-columns: 44px minmax(0, 1fr);
-  }
-
-  .genre-identity-track-card.has-artwork .genre-identity-track-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-  }
-}
-
-.song-focus-badge.identity.seminal {
-  background: color-mix(in srgb, var(--accent-soft, #ffe0a1) 84%, white) !important;
-  color: var(--accent-dark, #7a4714) !important;
-  border-color: color-mix(in srgb, var(--accent, #d98d25) 52%, transparent) !important;
-}
-
-.song-focus-badge.identity.popular {
-  background: rgba(100, 60, 180, 0.12) !important;
-  color: #4a2e80 !important;
-  border-color: rgba(100, 60, 180, 0.26) !important;
-}
-
-.song-focus-row.identity-track {
-  border-left: 4px solid color-mix(in srgb, var(--accent, #d98d25) 58%, transparent);
-}
-
-.song-focus-row.identity-popular {
-  border-left-color: rgba(100, 60, 180, 0.42);
+.detail-record-card .genre-identity-alias-line span,
+.discovery-console .detail-record-card .genre-identity-alias-line span {
+  color: rgba(255, 232, 180, 0.94) !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
 }
