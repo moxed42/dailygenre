@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.1-alias-contrast";
+  const VERSION = "4.2.4-identity-queue-typed";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
@@ -84,6 +84,25 @@
     ];
   }
 
+  function implicitAliasList(genre) {
+    const name = norm(genre?.genre || "");
+    if (name === "hokkien pop") {
+      return [
+        "tai-pop",
+        "tai pop",
+        "taipop",
+        "taiwanese pop",
+        "taiwanese hokkien pop",
+        "taiwanese language pop",
+      ];
+    }
+    return [];
+  }
+
+  function searchAliasList(genre) {
+    return [...new Set([...aliasList(genre), ...implicitAliasList(genre)])];
+  }
+
   function setAliases(genre, aliases) {
     const clean = [
       ...new Set(
@@ -151,7 +170,7 @@
         genre?.category_path,
         genre?.subcategory,
         genre?.subsubcategory,
-        ...aliasList(genre),
+        ...searchAliasList(genre),
         sem.title,
         sem.artist,
         ...media.flatMap((m) => [
@@ -285,11 +304,14 @@
         : [mediaTitle ? `from ${mediaTitle}` : "Media touchstone", mediaType]
             .filter(Boolean)
             .join(" · ");
+    const play = url && typeof spPlayBtn === "function"
+      ? spPlayBtn({ url, spotifyUrl: url, title, artist, artwork: track?.artwork || track?.image || "" })
+      : "";
     return `<article class="genre-identity-track-card ${kind === "Seminal track" ? "is-seminal" : "is-media"}">
       <div class="genre-identity-track-icon" aria-hidden="true">${esc(icon)}</div>
       <div class="genre-identity-track-main">
         <div class="genre-identity-track-kicker">${esc(kind)}</div>
-        <strong>${url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} ↗</a>` : esc(label)}</strong>
+        <strong>${url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} ↗</a>` : esc(label)}${play}</strong>
         ${copy ? `<small>${esc(copy)}</small>` : ""}
         ${reason ? `<em>${esc(reason)}</em>` : ""}
       </div>
@@ -336,6 +358,40 @@
     return `${identityLooseText(artist)}|${identityLooseText(title)}`;
   }
 
+  function identitySongHasUsefulData(song) {
+    if (!song) return false;
+    const title = identityLooseText(song.title || song.name || "");
+    const artist = identityLooseText(song.artist || (Array.isArray(song.artists) ? song.artists.join(" ") : ""));
+    return Boolean(title || artist || song.spotifyId || song.spotifyUrl || song.spotify_url || song.url);
+  }
+
+  function parsedIdentityTrack(track) {
+    const out = { ...(track || {}) };
+    let title = String(out.title || out.name || "").trim();
+    let artist = String(out.artist || (Array.isArray(out.artists) ? out.artists.join(", ") : "")).trim();
+    if (!artist && title) {
+      const parts = title.split(/\s+[—–-]\s+/).map((part) => part.trim()).filter(Boolean);
+      if (parts.length >= 2) {
+        artist = parts.shift();
+        title = parts.join(" — ");
+      }
+    }
+    out.title = title || out.title || out.name || "";
+    out.name = out.name || out.title;
+    out.artist = artist || out.artist || "";
+    if (!Array.isArray(out.artists) && artist) out.artists = [artist];
+    return out;
+  }
+
+  function clearIdentityStamp(song) {
+    if (!song) return song;
+    delete song.isIdentityTrack;
+    delete song.identityType;
+    delete song.identityIndex;
+    delete song.identityLabel;
+    return song;
+  }
+
   function identityTextLooksClose(a, b) {
     const titleA = identityLooseText(a?.title || a?.name || "");
     const titleB = identityLooseText(b?.title || b?.name || "");
@@ -358,13 +414,14 @@
   function identityEntries(genre) {
     if (!genre) return [];
     const out = [];
-    const sem = getSeminal(genre);
+    const sem = parsedIdentityTrack(getSeminal(genre));
     if (sem?.title || sem?.artist || sem?.spotifyUrl || sem?.url) {
       out.push({ track: sem, type: "seminal", index: -1, label: "Seminal track" });
     }
-    getMedia(genre).forEach((track, index) => {
+    getMedia(genre).forEach((rawTrack, index) => {
+      const track = parsedIdentityTrack(rawTrack);
       if (track?.title || track?.artist || track?.spotifyUrl || track?.url || track?.spotify_url) {
-        out.push({ track, type: "popular", index, label: "Popular track" });
+        out.push({ track, type: "media", index, label: "Media track" });
       }
     });
     return out;
@@ -382,16 +439,61 @@
     }
   }
 
-  function findQueuedIdentitySong(genre, entry, songs = queueSongs(genre)) {
+  function hasIdentityComparableData(song, track) {
+    if (!song || !track) return false;
+    if (spotifyIdFromTrackLike(song) || spotifyIdFromTrackLike(track)) return true;
+    const songId = identityTrackId(song);
+    const trackId = identityTrackId(track);
+    if ((songId && !songId.startsWith("name:")) || (trackId && !trackId.startsWith("name:"))) return true;
+    const songTitle = identityLooseText(song?.title || song?.name || "");
+    const trackTitle = identityLooseText(track?.title || track?.name || "");
+    return Boolean(songTitle || trackTitle);
+  }
+
+  function identityEntryContentMatchesSong(song, entry) {
+    if (!song || song.isPending || !entry?.track) return false;
+    const songText = identitySongDuplicateKey(song);
+    const entryText = identitySongDuplicateKey(entry.track);
+    if (songText && entryText && songText === entryText) return true;
+
+    const songTitle = identityLooseText(song?.title || song?.name || "");
+    const entryTitle = identityLooseText(entry.track?.title || entry.track?.name || "");
+    const songArtist = identityLooseText(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
+    const entryArtist = identityLooseText(entry.track?.artist || (Array.isArray(entry.track?.artists) ? entry.track.artists.join(" ") : ""));
+    const hasBothTitles = Boolean(songTitle && entryTitle);
+    const titleClose = hasBothTitles && (songTitle === entryTitle || songTitle.includes(entryTitle) || entryTitle.includes(songTitle));
+    const hasBothArtists = Boolean(songArtist && entryArtist);
+    const artistClose = !hasBothArtists || songArtist === entryArtist || songArtist.includes(entryArtist) || entryArtist.includes(songArtist);
+
+    // v67: visible title/artist is authoritative when present. This prevents a stale
+    // copied Spotify URL or old identityType flag from turning a media row into a
+    // seminal row. Covers are still allowed because different artists do not match.
+    if (hasBothTitles && !titleClose) return false;
+    if (hasBothTitles && titleClose && !artistClose) return false;
+    if (hasBothTitles && titleClose && artistClose) return true;
+
     const target = identityTrackId(entry.track);
+    const songId = identityTrackId(song);
+    if (target && songId && !target.startsWith("name:") && target === songId) return true;
     const targetSpotifyId = spotifyIdFromTrackLike(entry.track);
+    const songSpotifyId = spotifyIdFromTrackLike(song);
+    if (targetSpotifyId && songSpotifyId && targetSpotifyId === songSpotifyId) return true;
+    return false;
+  }
+
+  function identityStoredFlagMatchesEntry(song, entry) {
+    const type = String(song?.identityType || "");
+    return Boolean(
+      song?.isIdentityTrack &&
+      (type === entry.type || (type === "popular" && entry.type === "media")) &&
+      Number(song.identityIndex ?? -1) === Number(entry.index ?? -1)
+    );
+  }
+
+  function findQueuedIdentitySong(genre, entry, songs = queueSongs(genre)) {
     return (songs || []).find((song) => {
-      if (!song || song.isPending) return false;
-      if (song.isIdentityTrack && String(song.identityType || "") === entry.type && Number(song.identityIndex ?? -1) === Number(entry.index ?? -1)) return true;
-      if (identityTrackId(song) === target) return true;
-      const songSpotifyId = spotifyIdFromTrackLike(song);
-      if (targetSpotifyId && songSpotifyId && targetSpotifyId === songSpotifyId) return true;
-      return identityTextLooksClose(song, entry.track);
+      if (identityEntryContentMatchesSong(song, entry)) return true;
+      return !identitySongHasUsefulData(song) && identityStoredFlagMatchesEntry(song, entry);
     }) || null;
   }
 
@@ -437,30 +539,85 @@
     return payload;
   }
 
-  function syncIdentityTracksToSongQueue(genre, mark = false) {
-    if (!genre) return false;
-    const entries = identityEntries(genre).filter((entry) => entry.track && (identityTrackId(entry.track) !== "name:"));
-    if (!entries.length) return false;
-    const songs = queueSongs(genre);
-    let changed = false;
-    const prepend = [];
-    entries.forEach((entry) => {
-      const existing = findQueuedIdentitySong(genre, entry, songs);
-      if (existing) {
-        const merged = identitySongPayload(genre, entry, existing);
-        Object.keys(merged).forEach((key) => {
-          if (!identityValueEqual(existing[key], merged[key])) {
-            existing[key] = merged[key];
-            changed = true;
-          }
-        });
-      } else {
-        prepend.push(identitySongPayload(genre, entry));
-        changed = true;
+  function identitySongDuplicateKey(song) {
+    const textKey = identityQueueTextKey(song);
+    return textKey && textKey !== "|" ? textKey : "";
+  }
+
+  function identitySongValueIsBlank(value) {
+    if (value == null || value === "") return true;
+    if (Array.isArray(value)) return value.length === 0;
+    return false;
+  }
+
+  function mergeQueueSongPreservingExisting(target, source) {
+    if (!target || !source || target === source) return target;
+    Object.keys(source).forEach((key) => {
+      if (key === "levelUp") {
+        if (!target.levelUp && source.levelUp) target.levelUp = source.levelUp;
+        return;
+      }
+      if (identitySongValueIsBlank(target[key]) && !identitySongValueIsBlank(source[key])) {
+        target[key] = source[key];
       }
     });
-    if (prepend.length) genre.songs_listened = [...prepend, ...songs];
-    else genre.songs_listened = songs;
+    return target;
+  }
+
+  function queueSongMatchesIdentityEntry(song, entry) {
+    if (identityEntryContentMatchesSong(song, entry)) return true;
+    return !identitySongHasUsefulData(song) && identityStoredFlagMatchesEntry(song, entry);
+  }
+
+  function syncIdentityTracksToSongQueue(genre, mark = false) {
+    if (!genre) return false;
+    const beforeSnapshot = (() => {
+      try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ""; }
+    })();
+    const entries = identityEntries(genre).filter((entry) => entry.track && (identityTrackId(entry.track) !== "name:"));
+    const songs = queueSongs(genre);
+    const remaining = songs.slice();
+    const pinned = [];
+
+    entries.forEach((entry) => {
+      const matches = [];
+      for (let i = remaining.length - 1; i >= 0; i -= 1) {
+        const song = remaining[i];
+        if (queueSongMatchesIdentityEntry(song, entry)) {
+          matches.unshift(song);
+          remaining.splice(i, 1);
+        }
+      }
+      const prior = matches.shift() || {};
+      matches.forEach((dupe) => mergeQueueSongPreservingExisting(prior, dupe));
+      const payload = identitySongPayload(genre, entry, prior);
+      payload.isIdentityTrack = true;
+      payload.identityType = entry.type;
+      payload.identityIndex = entry.index;
+      payload.identityLabel = entry.label;
+      pinned.push(payload);
+    });
+
+    const seen = new Map();
+    const dedupedRemaining = [];
+    remaining.forEach((song) => {
+      // v64: repair old bad stamps. If a row no longer matches current identity anchors,
+      // do not let stale isIdentityTrack/identityType keep rendering as Seminal/Media.
+      if (!entries.some((entry) => identityEntryContentMatchesSong(song, entry))) clearIdentityStamp(song);
+      const key = identitySongDuplicateKey(song);
+      if (key && seen.has(key)) {
+        mergeQueueSongPreservingExisting(seen.get(key), song);
+        return;
+      }
+      if (key) seen.set(key, song);
+      dedupedRemaining.push(song);
+    });
+
+    genre.songs_listened = [...pinned, ...dedupedRemaining];
+    const afterSnapshot = (() => {
+      try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ""; }
+    })();
+    const changed = beforeSnapshot !== afterSnapshot;
     if (changed && mark) markDirty();
     return changed;
   }
@@ -468,18 +625,12 @@
   function findIdentityEntryForQueueSong(genre, song) {
     const entries = identityEntries(genre);
     if (!song) return null;
-    if (song.isIdentityTrack) {
-      const flagged = entries.find((entry) => String(entry.type) === String(song.identityType || "") && Number(entry.index ?? -1) === Number(song.identityIndex ?? -1));
-      if (flagged) return flagged;
+    const contentMatch = entries.find((entry) => identityEntryContentMatchesSong(song, entry));
+    if (contentMatch) return contentMatch;
+    if (!identitySongHasUsefulData(song) && song.isIdentityTrack) {
+      return entries.find((entry) => identityStoredFlagMatchesEntry(song, entry)) || null;
     }
-    const songId = identityTrackId(song);
-    const songSpotifyId = spotifyIdFromTrackLike(song);
-    return entries.find((entry) => {
-      if (identityTrackId(entry.track) === songId) return true;
-      const entrySpotifyId = spotifyIdFromTrackLike(entry.track);
-      if (songSpotifyId && entrySpotifyId && songSpotifyId === entrySpotifyId) return true;
-      return identityTextLooksClose(song, entry.track);
-    }) || null;
+    return null;
   }
 
   function updateTrackFromQueueOverwrite(genre, beforeSong, updatedSong) {
@@ -511,7 +662,7 @@
       score: (track.score != null && track.score !== "") ? track.score : 5,
       reason: keepReason,
     });
-    if (entry.type === "popular") {
+    if (entry.type === "media") {
       track.mediaTitle = keepMediaTitle;
       track.media = keepMediaTitle;
       track.mediaType = keepMediaType;
@@ -544,7 +695,6 @@
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
         <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
-        <button type="button" class="btn btn-secondary btn-tiny" onclick="DailyGenreIdentity.openStudio(${JSON.stringify(String(genre.id ?? ""))})">Edit identity</button>
       </div>
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">
@@ -851,6 +1001,7 @@
           m.reason,
       );
     g.media_touchstones = id.mediaTouchstones;
+    syncIdentityTracksToSongQueue(g, false);
     selectedGenreId = String(g.id ?? selectedGenreId);
     markDirty();
     refreshStudioEditor();
@@ -904,6 +1055,7 @@
     g.seminal_song = sem;
     id.mediaTouchstones = readMediaRows(form);
     g.media_touchstones = id.mediaTouchstones;
+    syncIdentityTracksToSongQueue(g, false);
     markDirty();
     injectDnaCard();
     toast(
@@ -1084,7 +1236,7 @@
       const matches = genres()
         .map((g) => {
           const name = norm(g.genre || "");
-          const aliases = aliasList(g).map(norm);
+          const aliases = searchAliasList(g).map(norm);
           const exactAlias = aliases.includes(nq);
           let score = 9;
           if (name === nq) score = 0;
@@ -1106,9 +1258,9 @@
       if (!matches.length) return original.apply(this, arguments);
       resultsEl.innerHTML = matches
         .map(({ g, score }) => {
-          const aliases = aliasList(g);
+          const aliases = searchAliasList(g);
           const aliasHit = aliases.find((a) => norm(a).includes(nq));
-          return `<button class="list-item" data-id="${esc(String(g.id ?? ""))}" style="text-align:left; cursor:pointer;"><strong>${esc(g.genre || "Unknown")}</strong><div class="small" style="margin-top:6px;">${esc(typeof categoryLine === "function" ? categoryLine(g) : g.category_path || g.subcategory || "")}${aliasHit ? ` · aka ${esc(aliasHit)}` : ""}</div></button>`;
+          return `<button type="button" class="list-item dc-manual-result-card" data-id="${esc(String(g.id ?? ""))}"><strong>${esc(g.genre || "Unknown")}</strong><div class="small" style="margin-top:6px;">${esc(typeof categoryLine === "function" ? categoryLine(g) : g.category_path || g.subcategory || "")}${aliasHit ? ` · ${esc(aliasHit)}` : ""}</div></button>`;
         })
         .join("");
       $$("[data-id]", resultsEl).forEach((btn) => {
@@ -1133,7 +1285,7 @@
       const wrapped = function () {
         return original.apply(this, arguments).map((c) => {
           const g = findGenre(c.id);
-          const aliasText = aliasList(g).join(" ");
+          const aliasText = searchAliasList(g).join(" ");
           return {
             ...c,
             search: norm(
@@ -1485,3 +1637,5 @@
     document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();
+
+/* Daily Genre v65 cache-bust marker */

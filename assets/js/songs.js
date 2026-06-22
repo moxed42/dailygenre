@@ -20,7 +20,182 @@
       : String(value == null ? "" : value);
   }
 
+  function looseSongText(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\b(the|a|an|feat|ft)\b/g, " ")
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function displayedSongDuplicateKey(song) {
+    const title = looseSongText(song?.title || song?.name || "");
+    const artist = looseSongText(
+      song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""),
+    );
+    return title ? `${artist}|${title}` : "";
+  }
+
+  function songHasUsefulIdentityData(song) {
+    if (!song) return false;
+    const title = looseSongText(song.title || song.name || "");
+    const artist = looseSongText(song.artist || (Array.isArray(song.artists) ? song.artists.join(" ") : ""));
+    return Boolean(title || artist || song.spotifyId || song.spotifyUrl || song.spotify_url || song.url);
+  }
+
+  function parsedIdentityTrack(track) {
+    const out = { ...(track || {}) };
+    let title = String(out.title || out.name || "").trim();
+    let artist = String(out.artist || (Array.isArray(out.artists) ? out.artists.join(", ") : "")).trim();
+    // Identity blocks are often entered as "Artist — Title" in a title/name field.
+    // Split that only when there is no explicit artist, so covers remain distinct.
+    if (!artist && title) {
+      const parts = title.split(/\s+[—–-]\s+/).map((part) => part.trim()).filter(Boolean);
+      if (parts.length >= 2) {
+        artist = parts.shift();
+        title = parts.join(" — ");
+      }
+    }
+    out.title = title || out.title || out.name || "";
+    out.name = out.name || out.title;
+    out.artist = artist || out.artist || "";
+    if (!Array.isArray(out.artists) && artist) out.artists = [artist];
+    return out;
+  }
+
+  function clearStaleIdentityStamp(song) {
+    if (!song) return song;
+    if (!song.__dgIdentityMatched) {
+      delete song.isIdentityTrack;
+      delete song.identityType;
+      delete song.identityIndex;
+      delete song.identityLabel;
+    }
+    delete song.__dgIdentityMatched;
+    return song;
+  }
+
+  function identityTrackUrl(song) {
+    return safeCall(
+      () => normalizeSongUrl(song?.spotifyUrl || song?.url || song?.spotify_url || ""),
+      String(song?.spotifyUrl || song?.url || song?.spotify_url || "").trim(),
+    );
+  }
+
+  function identityTrackSpotifyId(song) {
+    const explicit = String(song?.spotifyId || "").trim().toLowerCase();
+    if (explicit) return explicit;
+    const url = identityTrackUrl(song);
+    const match = String(url || "").match(/spotify\.com\/track\/([a-z0-9]+)/i) || String(url || "").match(/^spotify:track:([a-z0-9]+)/i);
+    return match ? match[1].toLowerCase() : "";
+  }
+
+  function identityTrackEntriesForGenre(genre) {
+    if (!genre) return [];
+    const id = genre.identity && typeof genre.identity === "object" ? genre.identity : {};
+    const sem = parsedIdentityTrack({ ...(genre.seminal_song && typeof genre.seminal_song === "object" ? genre.seminal_song : {}), ...(id.seminalTrack && typeof id.seminalTrack === "object" ? id.seminalTrack : {}) });
+    const mediaFlat = Array.isArray(genre.media_touchstones) ? genre.media_touchstones : [];
+    const mediaId = Array.isArray(id.mediaTouchstones) ? id.mediaTouchstones : [];
+    const media = mediaId.length ? mediaId : mediaFlat;
+    const entries = [];
+    if (sem.title || sem.name || sem.artist || sem.spotifyUrl || sem.url || sem.spotify_url) {
+      entries.push({ type: "seminal", index: -1, label: "Seminal", track: sem, order: 0 });
+    }
+    (Array.isArray(media) ? media : []).forEach((rawTrack, index) => {
+      const track = parsedIdentityTrack(rawTrack);
+      if (track && typeof track === "object" && (track.title || track.name || track.artist || track.spotifyUrl || track.url || track.spotify_url)) {
+        entries.push({ type: "media", index, label: "Media", track, order: 1 + index });
+      }
+    });
+    return entries;
+  }
+
+  function hasIdentityComparableData(song, track) {
+    if (!song || !track) return false;
+    if (identityTrackSpotifyId(song) || identityTrackSpotifyId(track)) return true;
+    if (identityTrackUrl(song) || identityTrackUrl(track)) return true;
+    const songTitle = looseSongText(song?.title || song?.name || "");
+    const entryTitle = looseSongText(track?.title || track?.name || "");
+    return Boolean(songTitle || entryTitle);
+  }
+
+  function identityMatchScore(song, entry) {
+    if (!song || !entry?.track) return 0;
+    const songKeyText = displayedSongDuplicateKey(song);
+    const entryKeyText = displayedSongDuplicateKey(entry.track);
+    if (songKeyText && entryKeyText && songKeyText === entryKeyText) return 120;
+
+    const songTitle = looseSongText(song?.title || song?.name || "");
+    const entryTitle = looseSongText(entry.track?.title || entry.track?.name || "");
+    const songArtist = looseSongText(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
+    const entryArtist = looseSongText(entry.track?.artist || (Array.isArray(entry.track?.artists) ? entry.track.artists.join(" ") : ""));
+    const hasBothTitles = Boolean(songTitle && entryTitle);
+    const titleClose = hasBothTitles && (songTitle === entryTitle || songTitle.includes(entryTitle) || entryTitle.includes(songTitle));
+    const hasBothArtists = Boolean(songArtist && entryArtist);
+    const artistClose = !hasBothArtists || songArtist === entryArtist || songArtist.includes(entryArtist) || entryArtist.includes(songArtist);
+
+    // v67: title/artist wins over stale URL/identity stamps. If a queue row has useful
+    // text and it clearly does not describe this identity anchor, do not match it by an
+    // old copied Spotify URL or identityType. This is what keeps Wonderwall from being
+    // rendered as the Seminal track when its stored row has stale metadata.
+    if (hasBothTitles && !titleClose) return 0;
+    if (hasBothTitles && titleClose && !artistClose) return 0;
+    if (hasBothTitles && titleClose && artistClose) return songTitle === entryTitle ? 110 : 70;
+
+    const songSpotify = identityTrackSpotifyId(song);
+    const entrySpotify = identityTrackSpotifyId(entry.track);
+    if (songSpotify && entrySpotify && songSpotify === entrySpotify) return 100;
+    const songUrl = identityTrackUrl(song);
+    const entryUrl = identityTrackUrl(entry.track);
+    if (songUrl && entryUrl && songUrl === entryUrl) return 90;
+
+    // Last-resort legacy fallback: only use stale stored flags when the row has no URL/title/artist data.
+    if (!songHasUsefulIdentityData(song)) {
+      const songType = String(song.identityType || "").toLowerCase();
+      if (song.isIdentityTrack && (songType === entry.type || (songType === "popular" && entry.type === "media")) && Number(song.identityIndex ?? -999) === Number(entry.index ?? -999)) return 10;
+    }
+    return 0;
+  }
+
+  function songMatchesIdentityEntry(song, entry) {
+    return identityMatchScore(song, entry) > 0;
+  }
+
+  function identityEntryForSong(song, genre) {
+    const entries = identityTrackEntriesForGenre(genre || (typeof currentGenre !== "undefined" ? currentGenre : null));
+    let best = null;
+    let bestScore = 0;
+    entries.forEach((entry) => {
+      const score = identityMatchScore(song, entry);
+      if (score > bestScore || (score === bestScore && best && identityEntryOrder(entry) < identityEntryOrder(best))) {
+        best = entry;
+        bestScore = score;
+      }
+    });
+    return bestScore > 0 ? best : null;
+  }
+
+  function stampSongAsIdentity(song, entry) {
+    if (!song || !entry) return song;
+    song.isIdentityTrack = true;
+    song.identityType = entry.type;
+    song.identityIndex = entry.index;
+    song.identityLabel = entry.label;
+    song.__dgIdentityMatched = true;
+    return song;
+  }
+
+  function identityEntryOrder(entry) {
+    if (!entry) return 9999;
+    return entry.type === "seminal" ? 0 : 100 + Math.max(0, Number(entry.index) || 0);
+  }
+
   function songListForFocus(genre) {
+    safeCall(() => window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(genre, false), false);
+    const identityEntries = identityTrackEntriesForGenre(genre);
     const rawSongs = safeCall(
       () => inflateSongsFromStorage(genre?.songs_listened || []),
       genre?.songs_listened || [],
@@ -28,13 +203,20 @@
     const out = [];
     (rawSongs || []).forEach((song, index) => {
       if (!song || song.isPending) return;
+      const identityEntry = identityEntryForSong(song, genre);
+      if (identityEntry) stampSongAsIdentity(song, identityEntry);
+      else clearStaleIdentityStamp(song);
       out.push({
         song,
         path: `song:${index}`,
         label: song.isAdd ? "Add" : song.isPromote ? "Promote" : "Canon",
         isChild: false,
+        identityEntry,
       });
       if (song.levelUp) {
+        const childIdentityEntry = identityEntryForSong(song.levelUp, genre);
+        if (childIdentityEntry) stampSongAsIdentity(song.levelUp, childIdentityEntry);
+        else clearStaleIdentityStamp(song.levelUp);
         out.push({
           song: song.levelUp,
           path: `song:${index}.levelUp`,
@@ -42,10 +224,26 @@
           isChild: true,
           parentSong: song,
           parentKey: songKey(song),
+          identityEntry: childIdentityEntry,
         });
       }
     });
-    return out;
+    const seen = new Set();
+    const deduped = out.filter((entry) => {
+      const key = displayedSongDuplicateKey(entry.song);
+      if (!key) return true;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    return deduped.sort((a, b) => {
+      const aEntry = a.identityEntry || identityEntryForSong(a.song, genre);
+      const bEntry = b.identityEntry || identityEntryForSong(b.song, genre);
+      const aOrder = identityEntryOrder(aEntry);
+      const bOrder = identityEntryOrder(bEntry);
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      return 0;
+    });
   }
 
   function songKey(song) {
@@ -84,6 +282,22 @@
   }
 
   function songTypeBadge(entry) {
+    const matchedIdentity = entry.identityEntry || identityEntryForSong(entry.song);
+    if (matchedIdentity) {
+      stampSongAsIdentity(entry.song, matchedIdentity);
+      if (matchedIdentity.type === "seminal")
+        return '<span class="song-focus-badge seminal">Seminal</span>';
+      if (matchedIdentity.type === "media")
+        return '<span class="song-focus-badge media">Media</span>';
+    }
+    const identityType = String(entry.song?.identityType || "").toLowerCase();
+    if (!songHasUsefulIdentityData(entry.song) && (entry.song?.isIdentityTrack || identityType)) {
+      if (identityType === "seminal")
+        return '<span class="song-focus-badge seminal">Seminal</span>';
+      if (identityType === "media" || identityType === "popular")
+        return '<span class="song-focus-badge media">Media</span>';
+      return `<span class="song-focus-badge identity">${html(entry.song?.identityLabel || "Anchor")}</span>`;
+    }
     if (entry.label === "Level Up")
       return '<span class="song-focus-badge level">Level Up</span>';
     if (entry.label === "Add")
@@ -346,7 +560,7 @@
     const miniArtwork = encodeURIComponent(art || "");
     const miniUrl = encodeURIComponent(href || "");
     const miniButton = hasHref
-      ? `<button type="button" class="song-focus-mini-btn" onclick="event.preventDefault(); event.stopPropagation(); if (typeof stickyPlayerOpen === 'function') stickyPlayerOpen('${miniUrl}', '${miniTitle}', '${miniArtist}', '${miniArtwork}');" title="Open mini player" aria-label="Open Spotify mini player">▶</button>`
+      ? `<button type="button" class="song-focus-mini-btn spotify-mini-play" onclick="event.preventDefault(); event.stopPropagation(); if (typeof stickyPlayerOpen === 'function') stickyPlayerOpen('${miniUrl}', '${miniTitle}', '${miniArtist}', '${miniArtwork}');" title="Open mini player" aria-label="Open Spotify mini player">▶</button>`
       : "";
     const readMore = "";
     const filterLabel =
@@ -514,6 +728,13 @@
                   const titleMarkup = hasHref
                     ? `<a class="song-focus-row-title" href="${html(href)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${html(title)} <span class="song-link-arrow">↗</span></a>`
                     : `<span class="song-focus-row-title">${html(title)}</span>`;
+                  const rowMiniTitle = encodeURIComponent(title || "Spotify track");
+                  const rowMiniArtist = encodeURIComponent(song.artist || (Array.isArray(song.artists) ? song.artists.join(", ") : ""));
+                  const rowMiniArtwork = encodeURIComponent(art || "");
+                  const rowMiniUrl = encodeURIComponent(href || "");
+                  const rowMiniButton = hasHref
+                    ? `<button type="button" class="song-focus-row-play spotify-mini-play" onclick="event.preventDefault(); event.stopPropagation(); if (typeof stickyPlayerOpen === 'function') stickyPlayerOpen('${rowMiniUrl}', '${rowMiniTitle}', '${rowMiniArtist}', '${rowMiniArtwork}');" title="Open mini player" aria-label="Open Spotify mini player">▶</button>`
+                    : "";
                   const childRelation =
                     entry.isChild && entry.parentSong
                       ? `<span class="song-focus-row-relation">↳ Level up from ${html(entry.parentSong.title || "previous pick")}</span>`
@@ -529,7 +750,7 @@
                   return `<div role="button" tabindex="0" class="song-focus-row ${selected ? "active" : ""} ${parentSelected ? "parent-active" : ""} ${entry.isChild ? "levelup-child" : ""} ${Number(song.reaction) ? "reacted" : ""}" onclick="setSongFocus('${safeKeyAttr}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); setSongFocus('${safeKeyAttr}'); }">
             ${art ? `<img class="song-focus-row-art" src="${html(art)}" alt="${html(title)} artwork" loading="lazy">` : '<span class="song-focus-row-art placeholder">♪</span>'}
             <span class="song-focus-row-main">
-              <span class="song-focus-row-title-line">${titleMarkup}${selected ? '<span class="song-focus-now-badge">Now Listening</span>' : ""}</span>
+              <span class="song-focus-row-title-line">${rowMiniButton}${titleMarkup}${selected ? '<span class="song-focus-now-badge">Now Listening</span>' : ""}</span>
               ${subline ? `<span class="song-focus-row-sub">${html(subline)}</span>` : ""}
               ${childRelation}
               ${childReason}
@@ -667,3 +888,5 @@
     setTimeout(enhanceSongListeningExperience, 0),
   );
 })();
+
+/* Daily Genre v65 cache-bust marker */
