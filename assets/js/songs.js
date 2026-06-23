@@ -43,7 +43,7 @@
     if (!song) return false;
     const title = looseSongText(song.title || song.name || "");
     const artist = looseSongText(song.artist || (Array.isArray(song.artists) ? song.artists.join(" ") : ""));
-    return Boolean(title || artist || song.spotifyId || song.spotifyUrl || song.spotify_url || song.url);
+    return Boolean(title || artist || song.spotifyId || identityTrackUrl(song));
   }
 
   function parsedIdentityTrack(track) {
@@ -78,11 +78,18 @@
     return song;
   }
 
+  function identityUrlLooksPlaceholder(url = "") {
+    const value = String(url || "").trim();
+    if (!value) return false;
+    return /^https?:\/\/(?:www\.)?(?:url\.com|example\.com|example\.org)(?:\/)?$/i.test(value);
+  }
+
   function identityTrackUrl(song) {
-    return safeCall(
+    const url = safeCall(
       () => normalizeSongUrl(song?.spotifyUrl || song?.url || song?.spotify_url || ""),
       String(song?.spotifyUrl || song?.url || song?.spotify_url || "").trim(),
     );
+    return identityUrlLooksPlaceholder(url) ? "" : url;
   }
 
   function identityTrackSpotifyId(song) {

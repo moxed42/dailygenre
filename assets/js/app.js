@@ -671,15 +671,21 @@
     });
   }
 
+    function songUrlLooksPlaceholder(url = '') {
+      const value = String(url || '').trim();
+      if (!value) return false;
+      return /^https?:\/\/(?:www\.)?(?:url\.com|example\.com|example\.org)(?:\/)?$/i.test(value);
+    }
+
     function songIdentity(song) {
       const isrc = String(song?.isrc || '').trim().toLowerCase();
       if (isrc) return `isrc:${isrc}`;
       const spotifyId = String(song?.spotifyId || '').trim().toLowerCase();
       if (spotifyId) return `spotify:${spotifyId}`;
-      const normalizedUrl = normalizeSongUrl(song?.url || '').trim().toLowerCase();
+      const normalizedUrl = normalizeSongUrl(song?.url || song?.spotifyUrl || '').trim().toLowerCase();
       const spotifyTrack = normalizedUrl.match(/spotify\.com\/track\/([a-z0-9]+)/i);
       if (spotifyTrack) return `spotify:${spotifyTrack[1].toLowerCase()}`;
-      if (normalizedUrl) return `url:${normalizedUrl}`;
+      if (normalizedUrl && !songUrlLooksPlaceholder(normalizedUrl)) return `url:${normalizedUrl}`;
       return `meta:${String(song?.artist || '').trim().toLowerCase()}|${String(song?.title || '').trim().toLowerCase()}`;
     }
 
@@ -705,7 +711,7 @@
       const normalizedUrl = normalizeSongUrl(song?.url || song?.spotifyUrl || '').trim().toLowerCase();
       const spotifyTrack = normalizedUrl.match(/spotify\.com\/track\/([a-z0-9]+)/i);
       if (spotifyTrack) add(`spotify:${spotifyTrack[1].toLowerCase()}`);
-      const isPlaceholderUrl = /^https?:\/\/url\.com\/?$/i.test(normalizedUrl);
+      const isPlaceholderUrl = songUrlLooksPlaceholder(normalizedUrl);
       if (normalizedUrl && !isPlaceholderUrl) add(`url:${normalizedUrl}`);
       
       const title = String(song?.title || '').trim().toLowerCase();
@@ -1280,7 +1286,8 @@
 
     function canonicalQueueUrlKey(url='') {
       const value = normalizeSongUrl(url || '');
-      return value ? value.toLowerCase() : '';
+      if (!value || songUrlLooksPlaceholder(value)) return '';
+      return value.toLowerCase();
     }
 
     function queueSongMergeWeight(song) {
@@ -1313,6 +1320,118 @@
       if (!primary.artwork && primary.albumArt) primary.artwork = primary.albumArt;
       if (!primary.albumArt && primary.artwork) primary.albumArt = primary.artwork;
       return primary;
+    }
+
+    function clonePlainObject(value) {
+      if (!value || typeof value !== 'object') return null;
+      try { return JSON.parse(JSON.stringify(value)); }
+      catch (_) { return { ...value }; }
+    }
+
+    function identityEditKeyFromSong(song) {
+      if (!song || !song.isIdentityTrack) return '';
+      const type = String(song.identityType || '').toLowerCase();
+      if (!type) return '';
+      const normalizedType = type === 'popular' ? 'media' : type;
+      if (normalizedType !== 'seminal' && normalizedType !== 'media') return '';
+      const index = normalizedType === 'seminal' ? -1 : Number(song.identityIndex ?? -1);
+      return `identity:${normalizedType}:${Number.isFinite(index) ? index : -1}`;
+    }
+
+    function identityEditKeyFromAnchor(type, index) {
+      const normalizedType = String(type || '').toLowerCase() === 'popular' ? 'media' : String(type || '').toLowerCase();
+      if (normalizedType !== 'seminal' && normalizedType !== 'media') return '';
+      const normalizedIndex = normalizedType === 'seminal' ? -1 : Number(index ?? -1);
+      return `identity:${normalizedType}:${Number.isFinite(normalizedIndex) ? normalizedIndex : -1}`;
+    }
+
+    function snapshotIdentityQueueState(genre) {
+      const snapshot = { songsByIdentityKey: {}, anchorsByIdentityKey: {} };
+      if (!genre) return snapshot;
+      try {
+        inflateSongsFromStorage(genre.songs_listened || []).filter(song => song && !song.isPending).forEach(song => {
+          const key = identityEditKeyFromSong(song);
+          if (key) snapshot.songsByIdentityKey[key] = clonePlainObject(song);
+        });
+      } catch (_) {}
+      try {
+        const sem = (genre.identity && genre.identity.seminalTrack) || genre.seminal_song || null;
+        if (sem && typeof sem === 'object') snapshot.anchorsByIdentityKey[identityEditKeyFromAnchor('seminal', -1)] = clonePlainObject(sem);
+        const media = (genre.identity && Array.isArray(genre.identity.mediaTouchstones) && genre.identity.mediaTouchstones.length)
+          ? genre.identity.mediaTouchstones
+          : (Array.isArray(genre.media_touchstones) ? genre.media_touchstones : []);
+        media.forEach((track, index) => {
+          if (track && typeof track === 'object') snapshot.anchorsByIdentityKey[identityEditKeyFromAnchor('media', index)] = clonePlainObject(track);
+        });
+      } catch (_) {}
+      return snapshot;
+    }
+
+    function identitySnapshotHasUsefulTrackData(track) {
+      return !!(track && typeof track === 'object' && (
+        track.spotifyId || track.spotifyUrl || track.url || track.artwork || track.albumArt ||
+        track.album || track.releaseDate || track.releaseYear || track.durationMs || track.isrc ||
+        track.title || track.name || track.artist
+      ));
+    }
+
+    function restoreUneditedIdentityQueueState(genre, snapshot, editedSong) {
+      if (!genre || !snapshot) return;
+      const editedKey = identityEditKeyFromSong(editedSong);
+      const restoreFields = ['url','spotifyUrl','spotifyId','title','name','artist','album','artwork','albumArt','releaseDate','releaseYear','releasePrecision','releaseSource','durationMs','isrc','source','artists','spotifyMetadataFetched','spotifyMetadataFetchedAt','mediaTitle','media','mediaType'];
+      const copyFields = (target, source) => {
+        if (!target || !source || !identitySnapshotHasUsefulTrackData(source)) return;
+        restoreFields.forEach(key => {
+          if (source[key] !== undefined) {
+            target[key] = Array.isArray(source[key]) ? source[key].slice() : source[key];
+          }
+        });
+        if (source.artwork && !target.albumArt) target.albumArt = source.artwork;
+        if (source.albumArt && !target.artwork) target.artwork = source.albumArt;
+      };
+
+      try {
+        const semKey = identityEditKeyFromAnchor('seminal', -1);
+        if (editedKey !== semKey && snapshot.anchorsByIdentityKey?.[semKey]) {
+          if (!genre.identity || typeof genre.identity !== 'object') genre.identity = {};
+          if (!genre.identity.seminalTrack || typeof genre.identity.seminalTrack !== 'object') genre.identity.seminalTrack = {};
+          copyFields(genre.identity.seminalTrack, snapshot.anchorsByIdentityKey[semKey]);
+          if (!genre.seminal_song || typeof genre.seminal_song !== 'object') genre.seminal_song = {};
+          copyFields(genre.seminal_song, snapshot.anchorsByIdentityKey[semKey]);
+        }
+        const mediaSnapshotKeys = Object.keys(snapshot.anchorsByIdentityKey || {}).filter(key => key.startsWith('identity:media:'));
+        if (mediaSnapshotKeys.length) {
+          if (!genre.identity || typeof genre.identity !== 'object') genre.identity = {};
+          if (!Array.isArray(genre.identity.mediaTouchstones)) genre.identity.mediaTouchstones = [];
+          if (!Array.isArray(genre.media_touchstones)) genre.media_touchstones = genre.identity.mediaTouchstones;
+          mediaSnapshotKeys.forEach(key => {
+            if (key === editedKey) return;
+            const index = Number(key.split(':').pop());
+            if (!Number.isInteger(index) || index < 0) return;
+            if (!genre.identity.mediaTouchstones[index] || typeof genre.identity.mediaTouchstones[index] !== 'object') genre.identity.mediaTouchstones[index] = {};
+            copyFields(genre.identity.mediaTouchstones[index], snapshot.anchorsByIdentityKey[key]);
+            genre.media_touchstones = genre.identity.mediaTouchstones;
+          });
+        }
+      } catch (err) {
+        console.warn('Could not preserve unedited identity anchors after URL edit', err);
+      }
+
+      try {
+        const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(song => song && !song.isPending);
+        let changed = false;
+        songs.forEach(song => {
+          const key = identityEditKeyFromSong(song);
+          if (!key || key === editedKey) return;
+          const saved = snapshot.songsByIdentityKey?.[key];
+          if (!saved) return;
+          copyFields(song, saved);
+          changed = true;
+        });
+        if (changed) genre.songs_listened = songs;
+      } catch (err) {
+        console.warn('Could not preserve unedited identity queue rows after URL edit', err);
+      }
     }
 
     function dedupeQueueSongsPreservingTarget(songs, target, match = {}) {
@@ -1869,6 +1988,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         const savedArtist = target.artist || '';
         const oldTextKey = queueDuplicateTextKey({ title: savedTitle, artist: savedArtist });
         const beforeOverwrite = { ...target, title: savedTitle, artist: savedArtist, url: oldUrl, spotifyId: oldSpotifyId };
+        const identityQueueSnapshotBeforeEdit = snapshotIdentityQueueState(currentGenre);
         let proposedMetadataSong = null;
 
         target.url = nextUrl;
@@ -2005,6 +2125,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             newSpotifyId: target.spotifyId || '',
             newTextKey: queueDuplicateTextKey(target)
           });
+          restoreUneditedIdentityQueueState(currentGenre, identityQueueSnapshotBeforeEdit, target);
           syncSongsBulkEditorFromModel();
           window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;
           window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;

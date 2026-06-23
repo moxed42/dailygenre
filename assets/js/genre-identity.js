@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.4-identity-queue-typed";
+  const VERSION = "4.2.5-identity-placeholder-safe";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
@@ -62,8 +62,19 @@
     );
   }
 
+  function identityUrlLooksPlaceholder(url) {
+    const value = String(url || "").trim();
+    if (!value) return false;
+    return /^https?:\/\/(?:www\.)?(?:url\.com|example\.com|example\.org)(?:\/)?$/i.test(value);
+  }
+
+  function identityUsableTrackUrl(track) {
+    const url = linkUrl(track?.spotifyUrl || track?.url || track?.spotify_url || "");
+    return identityUrlLooksPlaceholder(url) ? "" : url;
+  }
+
   function trackSpotifyUrl(track) {
-    return linkUrl(track?.spotifyUrl || track?.url || track?.spotify_url || "");
+    return identityUsableTrackUrl(track);
   }
 
 
@@ -506,34 +517,54 @@
 
   function identitySongPayload(genre, entry, prior = {}) {
     const track = entry.track || {};
-    const url = trackSpotifyUrl(track);
-    const artist = String(track.artist || (Array.isArray(track.artists) ? track.artists.join(", ") : "")).trim();
-    const title = String(track.title || track.name || "").trim();
+    const trackUrl = identityUsableTrackUrl(track);
+    const priorUrl = identityUsableTrackUrl(prior);
+    const url = priorUrl || trackUrl || "";
+    const trackArtist = String(track.artist || (Array.isArray(track.artists) ? track.artists.join(", ") : "")).trim();
+    const priorArtist = String(prior.artist || (Array.isArray(prior.artists) ? prior.artists.join(", ") : "")).trim();
+    const trackTitle = String(track.title || track.name || "").trim();
+    const priorTitle = String(prior.title || prior.name || "").trim();
     const reason = String(track.reason || prior.reason || "").trim();
+
+    // The queue row is the live, user-edited state. Genre DNA anchors can be stale
+    // placeholders while the user is updating Seminal/Media URLs one by one. Prefer
+    // richer queue metadata over anchor metadata so a later identity sync does not
+    // revert an earlier unsaved Spotify lookup.
     const payload = {
       ...prior,
-      url: url || prior.url || prior.spotifyUrl || "",
-      spotifyUrl: url || prior.spotifyUrl || prior.url || "",
-      title: title || prior.title || entry.label,
-      artist: artist || prior.artist || "",
-      artwork: trackArtwork(track) || prior.artwork || prior.albumArt || "",
-      album: track.album || prior.album || "",
-      artists: Array.isArray(track.artists) && track.artists.length ? track.artists : (artist ? [artist] : prior.artists || []),
-      spotifyId: track.spotifyId || prior.spotifyId || "",
-      durationMs: track.durationMs ?? prior.durationMs ?? null,
-      isrc: track.isrc || prior.isrc || "",
-      releaseDate: track.releaseDate || prior.releaseDate || "",
-      releaseYear: track.releaseYear ?? prior.releaseYear ?? null,
-      releasePrecision: track.releasePrecision || prior.releasePrecision || "",
-      releaseSource: track.releaseSource || prior.releaseSource || "",
+      url: url || "",
+      spotifyUrl: url || "",
+      title: priorTitle || trackTitle || entry.label,
+      name: prior.name || priorTitle || track.name || trackTitle || entry.label,
+      artist: priorArtist || trackArtist || "",
+      artwork: prior.artwork || prior.albumArt || trackArtwork(track) || "",
+      albumArt: prior.albumArt || prior.artwork || trackArtwork(track) || "",
+      album: prior.album || track.album || "",
+      artists: Array.isArray(prior.artists) && prior.artists.length
+        ? prior.artists.slice()
+        : (Array.isArray(track.artists) && track.artists.length ? track.artists.slice() : ((priorArtist || trackArtist) ? [priorArtist || trackArtist] : [])),
+      spotifyId: prior.spotifyId || track.spotifyId || "",
+      durationMs: prior.durationMs ?? track.durationMs ?? null,
+      isrc: prior.isrc || track.isrc || "",
+      releaseDate: prior.releaseDate || track.releaseDate || "",
+      releaseYear: prior.releaseYear ?? track.releaseYear ?? null,
+      releasePrecision: prior.releasePrecision || track.releasePrecision || "",
+      releaseSource: prior.releaseSource || track.releaseSource || "",
+      spotifyMetadataFetched: prior.spotifyMetadataFetched || track.spotifyMetadataFetched || false,
+      spotifyMetadataFetchedAt: prior.spotifyMetadataFetchedAt || track.spotifyMetadataFetchedAt || "",
       reason,
-      source: "genre_identity",
+      source: prior.source || track.source || "genre_identity",
       isIdentityTrack: true,
       identityType: entry.type,
       identityIndex: entry.index,
       identityLabel: entry.label,
       score: (prior.score != null && prior.score !== "") ? prior.score : ((track.score != null && track.score !== "") ? track.score : 5),
     };
+    if (!payload.artwork && payload.albumArt) payload.artwork = payload.albumArt;
+    if (!payload.albumArt && payload.artwork) payload.albumArt = payload.artwork;
+    if (track.mediaTitle && !payload.mediaTitle) payload.mediaTitle = track.mediaTitle;
+    if (track.media && !payload.media) payload.media = track.media;
+    if (track.mediaType && !payload.mediaType) payload.mediaType = track.mediaType;
     if (track.reaction != null && payload.reaction == null) payload.reaction = track.reaction;
     if (prior.reaction != null && track.reaction == null) track.reaction = prior.reaction;
     return payload;
