@@ -2095,36 +2095,48 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           // Always de-dupe against the live queue, not just the array returned by the finder.
           // The focused queue editor can outlive/re-render the hidden bulk editor, and using
           // only result.songs allowed stale rows to survive or be reintroduced.
-          currentGenre.songs_listened = isQueueDrawerEdit
-            ? forceOverwriteQueueTarget(result?.songs || currentGenre.songs_listened || [], target, {
-                index: result.index,
-                oldUrl,
-                oldIdentity,
-                oldSpotifyId,
-                newUrl: target.url || nextUrl,
-                newSpotifyId: target.spotifyId || '',
-                oldTextKey,
-                newTextKey: queueDuplicateTextKey(target)
-              })
-            : dedupeQueueSongsPreservingTarget(currentGenre.songs_listened || result?.songs || [], target, {
-                oldUrl,
-                oldIdentity,
-                oldSpotifyId,
-                newUrl: target.url || nextUrl,
-                newSpotifyId: target.spotifyId || '',
-                oldTextKey,
-                newTextKey: queueDuplicateTextKey(target),
-                forceTextDedupe: false
-              });
-          currentGenre.songs_listened = repairQueueAfterAuthoritativeUrlOverwrite(currentGenre.songs_listened, target, {
-            oldUrl,
-            oldIdentity,
-            oldSpotifyId,
-            oldTextKey,
-            newUrl: target.url || nextUrl,
-            newSpotifyId: target.spotifyId || '',
-            newTextKey: queueDuplicateTextKey(target)
-          });
+          const isNestedLevelUpEdit = !!(result?.parent && result.parent.levelUp === target);
+          if (isNestedLevelUpEdit) {
+            // v72: a Level Up lives inside its parent song object, but the queue array only
+            // contains the parent. The v69/v71 overwrite repair treated the child target as
+            // if it were a top-level row and used the parent index, which promoted the Level
+            // Up into its own row and broke the parent/child relationship. For nested edits,
+            // the authoritative mutation is already result.parent.levelUp = target, so keep
+            // the parent array intact and skip top-level duplicate repair.
+            result.parent.levelUp = target;
+            currentGenre.songs_listened = result?.songs || currentGenre.songs_listened || [];
+          } else {
+            currentGenre.songs_listened = isQueueDrawerEdit
+              ? forceOverwriteQueueTarget(result?.songs || currentGenre.songs_listened || [], target, {
+                  index: result.index,
+                  oldUrl,
+                  oldIdentity,
+                  oldSpotifyId,
+                  newUrl: target.url || nextUrl,
+                  newSpotifyId: target.spotifyId || '',
+                  oldTextKey,
+                  newTextKey: queueDuplicateTextKey(target)
+                })
+              : dedupeQueueSongsPreservingTarget(currentGenre.songs_listened || result?.songs || [], target, {
+                  oldUrl,
+                  oldIdentity,
+                  oldSpotifyId,
+                  newUrl: target.url || nextUrl,
+                  newSpotifyId: target.spotifyId || '',
+                  oldTextKey,
+                  newTextKey: queueDuplicateTextKey(target),
+                  forceTextDedupe: false
+                });
+            currentGenre.songs_listened = repairQueueAfterAuthoritativeUrlOverwrite(currentGenre.songs_listened, target, {
+              oldUrl,
+              oldIdentity,
+              oldSpotifyId,
+              oldTextKey,
+              newUrl: target.url || nextUrl,
+              newSpotifyId: target.spotifyId || '',
+              newTextKey: queueDuplicateTextKey(target)
+            });
+          }
           restoreUneditedIdentityQueueState(currentGenre, identityQueueSnapshotBeforeEdit, target);
           syncSongsBulkEditorFromModel();
           window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;

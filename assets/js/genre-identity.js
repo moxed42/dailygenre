@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.5-identity-placeholder-safe";
+  const VERSION = "4.2.6-identity-placeholder-safe";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
