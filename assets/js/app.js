@@ -424,8 +424,10 @@
         .replace(/contentReference\[[^\]]*\]\{[^}]*\}/g, '')
         .replace(/:oaicite\[[^\]]*\]\{[^}]*\}/g, '')
         .replace(/oaicite\[[^\]]*\]\{[^}]*\}/g, '')
+        .replace(/\[(?:web|file):\s*[^\]]+\]/gi, '')
         .replace(/\s+↗\s*$/g, '')
-        .replace(/\s{2,}/g, ' ')
+        .replace(/[ \t]{2,}/g, ' ')
+        .replace(/\s+([.,;:!?])/g, '$1')
         .trim();
     }
 
@@ -1090,7 +1092,10 @@
           const group = songs.filter(song => value ? Number(song.reaction) === value : ![1,2,3].includes(Number(song.reaction)));
           if (!group.length) return;
           text += `\n\n${reactionEmoji(value)} ${reactionLabel(value)}\n`;
-          text += group.map(song => `• ${(song.artist ? `${song.artist} — ` : '')}${song.title || 'Untitled track'}`).join('\n');
+          text += group.map(song => {
+            const base = `${song.artist ? `${song.artist} — ` : ''}${song.title || 'Untitled track'}`;
+            return `• ${isSameFavoriteSong(currentGenre, song) ? '🏆 ' : ''}${base}${isSameFavoriteSong(currentGenre, song) ? ' — FAVORITE' : ''}`;
+          }).join('\n');
         });
       }
       return text;

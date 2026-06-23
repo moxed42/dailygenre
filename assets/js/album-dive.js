@@ -12,6 +12,29 @@ const ALBUM_DIVE_SLOT_DEFS = [
   ["wave", "Wave"],
 ];
 
+function albumDiveCleanPastedRefs(value = "") {
+  const cleaner = typeof cleanPastedCitationArtifacts === "function" ? cleanPastedCitationArtifacts : null;
+  const cleaned = cleaner ? cleaner(value) : String(value || "");
+  return cleaned
+    .replace(/\[(?:web|file):\s*[^\]]+\]/gi, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\s+([.,;:!?])/g, "$1")
+    .trim();
+}
+
+function albumDiveJsonImportMarkup(id = "albumDiveJsonImport") {
+  return `<div class="album-dive-json-import">
+    <div class="album-dive-json-head">
+      <div>
+        <label for="${id}">Paste structured Album Dive JSON</label>
+        <p class="small">Drop in the full album list; it will fill Breakout, Originator, Archetype, Consensus, etc. Manual slot editing still works below.</p>
+      </div>
+      <button type="button" class="btn btn-primary btn-tiny" onclick="importAlbumDiveJson('${id}')">Import JSON</button>
+    </div>
+    <textarea id="${id}" rows="8" placeholder='[{"type":"Breakout","album":"...","artist":"...","spotify_url":"https://open.spotify.com/album/...","year":1991,"reason":"..."}]'></textarea>
+  </div>`;
+}
+
 function defaultAlbumDiveSlot(key, label) {
   return {
     key,
@@ -644,7 +667,7 @@ function renderAlbumDivePanel(genre) {
   const dive = normalizeAlbumDive(genre, false);
   const eligible = albumDiveEligible(genre);
   if (!dive) {
-    return `<div class="panel album-dive-panel"><div class="album-dive-head"><div><div class="eyebrow">Album Dive</div><h3 class="album-dive-title">Deepen this genre through records</h3><p class="small">Paste Spotify album URLs, fetch cover art and track lists, choose a favorite song from each album, and promote favorites back into the main song log.</p></div><div class="album-dive-actions"><button type="button" class="btn btn-primary" onclick="startAlbumDive()">${escapeHtml(albumDiveCtaText(genre))}</button></div></div>${eligible ? "" : '<div class="album-dive-empty small">Tip: this works best after you rate a genre 3, 4, or 5 stars, but you can start a dive any time.</div>'}</div>`;
+    return `<div class="panel album-dive-panel"><div class="album-dive-head"><div><div class="eyebrow">Album Dive</div><h3 class="album-dive-title">Deepen this genre through records</h3><p class="small">Paste structured album JSON or Spotify album URLs, fetch cover art and track lists, choose a favorite song from each album, and promote favorites back into the main song log.</p></div><div class="album-dive-actions"><button type="button" class="btn btn-primary" onclick="startAlbumDive()">${escapeHtml(albumDiveCtaText(genre))}</button></div></div>${albumDiveJsonImportMarkup('albumDiveJsonImportStart')}${eligible ? "" : '<div class="album-dive-empty small">Tip: this works best after you rate a genre 3, 4, or 5 stars, but you can start a dive any time.</div>'}</div>`;
   }
   const progress = albumDiveProgress(dive);
   const listenMode = albumDiveIsListenMode();
@@ -673,6 +696,7 @@ function renderAlbumDivePanel(genre) {
           <label for="albumDiveSummary">What this dive is testing</label>
           <textarea id="albumDiveSummary" placeholder="Example: Jazz rap fuses MC-driven boom-bap with jazz harmony, samples, and instrumentation." oninput="updateAlbumDiveRootField('summary', this.value)">${escapeHtml(dive.summary || "")}</textarea>
         </div>
+        ${listenMode ? "" : albumDiveJsonImportMarkup('albumDiveJsonImport')}
         ${listenMode ? renderAlbumDiveFocusPanel(dive) : `<div class="album-dive-grid">${dive.slots.map(renderAlbumDiveSlot).join("")}</div>`}
         <div class="album-dive-verdict">
           <div class="album-dive-verdict-grid">
@@ -859,6 +883,112 @@ function renderAlbumDiveSlot(slot) {
           </div>
         </div>
       </div>`;
+}
+
+
+function albumDiveSlotKeyFromType(type = "", used = new Set()) {
+  const cleaned = String(type || "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  const direct = {
+    breakout: "breakout",
+    originator: "originator",
+    proto: "originator",
+    archetype: "archetype",
+    consensus: "consensus",
+    popular: "popular",
+    mainstream: "popular",
+    purist: "purist",
+    cult: "cult_hit",
+    cult_hit: "cult_hit",
+    cult_classic: "cult_hit",
+    modern: "modern",
+    revival: "revival",
+    newcomer: "revival",
+    revival_newcomer: "revival",
+    wave: "wave",
+  };
+  let key = direct[cleaned] || (cleaned.includes("cult") ? "cult_hit" : "");
+  if (!key && cleaned.includes("revival")) key = "revival";
+  if (!key && cleaned.includes("newcomer")) key = "revival";
+  if (!key && cleaned.includes("popular")) key = "popular";
+  if (!key && cleaned.includes("modern")) key = "modern";
+  if (key && !used.has(key)) return key;
+  if ((key === "revival" || cleaned.includes("revival") || cleaned.includes("newcomer")) && !used.has("wave")) return "wave";
+  const open = ALBUM_DIVE_SLOT_DEFS.find(([candidate]) => !used.has(candidate));
+  return open ? open[0] : key || "wave";
+}
+
+function normalizedAlbumDiveImportRows(raw) {
+  const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+  const rows = Array.isArray(parsed)
+    ? parsed
+    : Array.isArray(parsed?.albums)
+      ? parsed.albums
+      : Array.isArray(parsed?.albumDive)
+        ? parsed.albumDive
+        : Array.isArray(parsed?.slots)
+          ? parsed.slots
+          : [];
+  if (!rows.length) throw new Error("JSON must be an array or include an albums/slots array.");
+  return rows.filter((row) => row && typeof row === "object");
+}
+
+function importAlbumDiveJson(inputId = "albumDiveJsonImport") {
+  if (!currentGenre) return;
+  const input = document.getElementById(inputId);
+  const raw = input?.value || "";
+  if (!raw.trim()) {
+    showSaveToast("Paste album JSON first.", true);
+    return;
+  }
+  let rows = [];
+  try {
+    rows = normalizedAlbumDiveImportRows(raw);
+  } catch (err) {
+    showSaveToast(`Album JSON import failed: ${err?.message || "Invalid JSON"}`, true);
+    return;
+  }
+  const dive = normalizeAlbumDive(currentGenre, true);
+  dive.enabled = true;
+  dive.status = dive.status === "not_started" ? "active" : dive.status;
+  const used = new Set();
+  let imported = 0;
+  rows.forEach((row) => {
+    const key = albumDiveSlotKeyFromType(row.type || row.category || row.slot || row.label, used);
+    const slot = dive.slots.find((item) => item.key === key);
+    if (!slot) return;
+    used.add(key);
+    const spotifyUrl = String(row.spotify_url || row.spotifyAlbumUrl || row.spotifyUrl || row.url || "").trim();
+    slot.album = albumDiveCleanPastedRefs(row.album || row.title || row.name || slot.album || "");
+    slot.artist = albumDiveCleanPastedRefs(row.artist || row.album_artist || row.albumArtist || slot.artist || "");
+    slot.year = row.year ? Number(row.year) || slot.year || null : slot.year || null;
+    slot.releaseDate = albumDiveCleanPastedRefs(row.release_date || row.releaseDate || slot.releaseDate || "");
+    slot.rationale = albumDiveCleanPastedRefs(row.reason || row.rationale || row.description || slot.rationale || "");
+    slot.notes = albumDiveCleanPastedRefs(row.notes || slot.notes || "");
+    slot.spotifyAlbumUrl = spotifyUrl || slot.spotifyAlbumUrl || slot.spotifyUrl || "";
+    slot.spotifyUrl = spotifyUrl || slot.spotifyUrl || slot.spotifyAlbumUrl || "";
+    slot.spotifyAlbumId = spotifyIdFromUrl(slot.spotifyAlbumUrl || slot.spotifyUrl, "album") || slot.spotifyAlbumId || "";
+    slot.albumArt = row.albumArt || row.album_art || row.artwork || row.cover || slot.albumArt || "";
+    slot.manualAlbumArt = row.manualAlbumArt || row.manual_album_art || slot.manualAlbumArt || "";
+    if (row.favorite_song || row.favoriteSong) {
+      const favRaw = row.favorite_song || row.favoriteSong || {};
+      slot.favoriteSong = { ...defaultAlbumDiveSlot(slot.key, slot.label).favoriteSong, ...(slot.favoriteSong || {}) };
+      if (typeof favRaw === "string") slot.favoriteSong.title = albumDiveCleanPastedRefs(favRaw);
+      else {
+        slot.favoriteSong.title = albumDiveCleanPastedRefs(favRaw.title || favRaw.name || slot.favoriteSong.title || "");
+        slot.favoriteSong.artist = albumDiveCleanPastedRefs(favRaw.artist || slot.favoriteSong.artist || slot.artist || "");
+        slot.favoriteSong.spotifyTrackUrl = String(favRaw.spotify_url || favRaw.spotifyTrackUrl || favRaw.spotifyUrl || favRaw.url || slot.favoriteSong.spotifyTrackUrl || "").trim();
+        slot.favoriteSong.note = albumDiveCleanPastedRefs(favRaw.reason || favRaw.note || slot.favoriteSong.note || "");
+      }
+    }
+    imported += 1;
+  });
+  touchAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
+  showSaveToast(`Imported ${imported} album${imported === 1 ? "" : "s"} into Album Dive — fetch Spotify metadata next, then save.`, false);
 }
 
 function getAlbumDiveSlot(slotKey) {

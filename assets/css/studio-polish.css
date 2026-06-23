@@ -1165,3 +1165,34 @@
 }
 
 /* Daily Genre v65 cache-bust marker */
+
+/* v77 Album Dive JSON import */
+.album-dive-json-import {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 14px;
+  margin: 14px 0 18px;
+  background: rgba(0,0,0,0.16);
+}
+.album-dive-json-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.album-dive-json-head label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.album-dive-json-import textarea {
+  width: 100%;
+  min-height: 160px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+}
+@media (max-width: 720px) {
+  .album-dive-json-head { flex-direction: column; }
+  .album-dive-json-head .btn { width: 100%; }
+}
