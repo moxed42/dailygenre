@@ -7816,3 +7816,100 @@ body.dc-listen-mode .sp-play-btn {
 }
 
 /* Daily Genre v67 identity text-first matching cache marker */
+
+/* v78 Album Dive carousel polish */
+.album-focus-readmore {
+  align-self: flex-start;
+  appearance: none;
+  border: 1px solid rgba(127, 82, 28, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 248, 230, 0.9);
+  color: #6e4316;
+  font-size: 0.82rem;
+  font-weight: 950;
+  letter-spacing: 0.01em;
+  padding: 8px 14px;
+  box-shadow: 0 8px 18px rgba(55, 35, 10, 0.08);
+  cursor: pointer;
+}
+.album-focus-readmore:hover,
+.album-focus-readmore:focus-visible {
+  background: #332013;
+  color: #ffe0a1;
+  transform: translateY(-1px);
+}
+.album-slot-clear-btn {
+  color: #8b2f1f;
+  border-color: rgba(139, 47, 31, 0.24);
+  background: rgba(255, 246, 238, 0.78);
+}
+.album-slot-clear-btn:hover,
+.album-slot-clear-btn:focus-visible {
+  color: #fff7ed;
+  background: #8b2f1f;
+}
+.album-focus-actions .album-slot-clear-btn {
+  margin-left: auto;
+}
+@media (max-width: 760px) {
+  .album-focus-actions .album-slot-clear-btn {
+    margin-left: 0;
+  }
+}
+
+
+/* v80 Album Dive listening-flow polish */
+.album-focus-trophy {
+  appearance: none !important;
+  min-width: 42px !important;
+  min-height: 38px !important;
+  padding: 8px 12px !important;
+  border-radius: 14px !important;
+  border: 2px solid rgba(50, 30, 16, 0.18) !important;
+  background: linear-gradient(180deg, rgba(255, 250, 235, 0.96), rgba(255, 235, 183, 0.92)) !important;
+  color: #4b2a13 !important;
+  box-shadow: 0 8px 18px rgba(55, 35, 10, 0.12), inset 0 1px 0 rgba(255,255,255,0.75) !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+}
+.album-focus-trophy:hover,
+.album-focus-trophy:focus-visible {
+  transform: translateY(-1px) !important;
+  border-color: rgba(219, 153, 42, 0.55) !important;
+  box-shadow: 0 12px 24px rgba(55, 35, 10, 0.18), 0 0 0 3px rgba(230, 171, 62, 0.18) !important;
+}
+.album-focus-trophy.active {
+  background: linear-gradient(180deg, #f4bb43, #c87a18) !important;
+  border-color: rgba(84, 48, 15, 0.72) !important;
+  color: #2b1608 !important;
+}
+.album-focus-tracks > details:not([open]) {
+  background: rgba(255, 252, 241, 0.6) !important;
+}
+.album-focus-tracks > details > summary::after {
+  content: "Show tracks";
+  float: right;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #7b5a37;
+  background: rgba(255,255,255,0.54);
+  border: 1px solid rgba(127,82,28,0.16);
+  border-radius: 999px;
+  padding: 4px 9px;
+  margin-left: 10px;
+}
+.album-focus-tracks > details[open] > summary::after {
+  content: "Hide tracks";
+}
+.album-focus-detail-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+}
+.album-slot-favorite textarea[placeholder*="Why this song won"],
+.album-focus-favorite-editor textarea[placeholder*="Why this song won"] {
+  display: none !important;
+}

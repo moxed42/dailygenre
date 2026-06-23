@@ -132,9 +132,20 @@ function normalizeAlbumDive(genre, create = false) {
   if (!genre.albumDive && !create) return null;
   const existing = genre.albumDive || {};
   const existingSlots = Array.isArray(existing.slots) ? existing.slots : [];
+  const slotDefKeys = new Set(ALBUM_DIVE_SLOT_DEFS.map(([key]) => key));
+  const deletedKeys = new Set(
+    Array.isArray(existing.deletedSlotKeys) ? existing.deletedSlotKeys : [],
+  );
   const byKey = Object.fromEntries(
     existingSlots.map((slot) => [slot?.key, slot]),
   );
+  const slots = ALBUM_DIVE_SLOT_DEFS.flatMap(([key, label]) => {
+    const rawSlot = byKey[key];
+    const hasSavedContent = albumDiveSlotHasContent(rawSlot);
+    if (deletedKeys.has(key) && !hasSavedContent) return [];
+    if (hasSavedContent) deletedKeys.delete(key);
+    return [normalizeAlbumDiveSlot(rawSlot, key, label)];
+  });
   const normalized = {
     enabled: existing.enabled !== false,
     mode: existing.mode || "canon",
@@ -142,9 +153,8 @@ function normalizeAlbumDive(genre, create = false) {
     summary: existing.summary || "",
     verdict: existing.verdict || "",
     verdictImpact: existing.verdictImpact || "",
-    slots: ALBUM_DIVE_SLOT_DEFS.map(([key, label]) =>
-      normalizeAlbumDiveSlot(byKey[key], key, label),
-    ),
+    slots,
+    deletedSlotKeys: [...deletedKeys].filter((key) => slotDefKeys.has(key)),
     completedAt: existing.completedAt || "",
     lastWorkedAt: existing.lastWorkedAt || "",
   };
@@ -598,12 +608,11 @@ function renderAlbumDiveFocusPanel(dive) {
               <h4 class="album-focus-title">${albumUrl ? `<a href="${escapeHtml(albumUrl)}" target="_blank" rel="noopener">${escapeHtml(displayTitle)} <span class="song-link-arrow">↗</span></a>` : escapeHtml(displayTitle)}</h4>
               ${displaySub ? `<div class="album-focus-sub">${escapeHtml(displaySub)}</div>` : ""}
               ${slot.rationale ? `<p class="album-focus-rationale">${escapeHtml(slot.rationale)}</p>` : ""}
-              ${slot.rationale ? `<button type="button" class="album-focus-readmore" onclick="toggleAlbumDiveFocusDetails('${safeKey}', true)">Read full context</button>` : ""}
               <div class="album-focus-actions">
                 <div class="album-focus-rating"><span>Album</span><div class="album-stars album-stars-compact">${ratingButtons}</div></div>
                 <button type="button" class="album-focus-trophy ${slot.favoriteAlbum ? "active" : ""}" onclick="setAlbumDiveFavoriteAlbum('${safeKey}')" title="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}" aria-label="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}">🏆</button>
-                ${albumUrl ? `<a class="btn btn-secondary btn-tiny" href="${escapeHtml(albumUrl)}" target="_blank" rel="noopener">Open Spotify</a>` : ""}
-                <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}')">Details</button>
+                <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}')">Controls & favorite</button>
+                <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}')">Delete entry</button>
               </div>
               ${favoriteLabel ? `<div class="album-focus-favorite"><strong>Favorite:</strong> ${escapeHtml(favoriteLabel)}</div>` : ""}
               ${slot.notes ? `<div class="album-focus-note">${escapeHtml(slot.notes)}</div>` : ""}
@@ -613,14 +622,8 @@ function renderAlbumDiveFocusPanel(dive) {
           <button type="button" class="album-focus-nav album-focus-next" onclick="setAlbumDiveFocusRelative(1)" aria-label="Next Album Dive slot">›</button>
         </div>
         <details class="album-focus-detail-drawer" id="album-focus-details-${safeKey}">
-          <summary>Album details, notes, and favorite track</summary>
+          <summary>Controls & favorite track</summary>
           <div class="album-focus-detail-grid">
-            <section class="album-focus-detail-section album-focus-context-section">
-              <h5>Why this album fits</h5>
-              <p class="album-focus-full-rationale">${slot.rationale ? escapeHtml(slot.rationale) : "No album context added yet."}</p>
-              <label>Update context</label>
-              <textarea placeholder="Why this album fits this slot" oninput="updateAlbumDiveSlotField('${safeKey}', 'rationale', this.value)">${escapeHtml(slot.rationale || "")}</textarea>
-            </section>
             <section class="album-focus-detail-section">
               <h5>Listening state</h5>
               <div class="album-slot-meta album-focus-state-editor">${listenStateSelect}<div class="album-stars">${ratingButtons}</div></div>
@@ -631,7 +634,6 @@ function renderAlbumDiveFocusPanel(dive) {
               <h5>Favorite song from this album</h5>
               <div class="album-slot-favorite album-focus-favorite-editor">
                 ${renderAlbumDiveFavoritePicker(slot, safeKey)}
-                <textarea placeholder="Why this song won the album" oninput="updateAlbumDiveFavoriteField('${safeKey}', 'note', this.value)">${escapeHtml(fav.note || "")}</textarea>
                 <div class="album-fav-actions">
                   ${fav.spotifyTrackUrl ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="fetchAlbumDiveFavoriteMetadata('${safeKey}', this)">Refresh Track Info</button>` : ""}
                   <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add Favorite to Song Log</button>
@@ -643,7 +645,7 @@ function renderAlbumDiveFocusPanel(dive) {
           ${manualMetadataDetails}
         </details>
         <div class="album-focus-tracks">
-          <details open>
+          <details>
             <summary><span>Track reactions</span><small>from ${escapeHtml(displayTitle)}${trackSummary}</small></summary>
             ${renderAlbumDiveTrackReactionRows(slot, safeKey)}
           </details>
@@ -691,10 +693,6 @@ function renderAlbumDivePanel(genre) {
             <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
             <button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>
           </div>
-        </div>
-        <div class="album-dive-summary">
-          <label for="albumDiveSummary">What this dive is testing</label>
-          <textarea id="albumDiveSummary" placeholder="Example: Jazz rap fuses MC-driven boom-bap with jazz harmony, samples, and instrumentation." oninput="updateAlbumDiveRootField('summary', this.value)">${escapeHtml(dive.summary || "")}</textarea>
         </div>
         ${listenMode ? "" : albumDiveJsonImportMarkup('albumDiveJsonImport')}
         ${listenMode ? renderAlbumDiveFocusPanel(dive) : `<div class="album-dive-grid">${dive.slots.map(renderAlbumDiveSlot).join("")}</div>`}
@@ -822,7 +820,6 @@ function renderAlbumDiveSlot(slot) {
   const favoriteBlock = `<div class="album-slot-favorite">
             <h4>Favorite song from this album</h4>
             ${renderAlbumDiveFavoritePicker(slot, safeKey)}
-            <textarea placeholder="Why this song won the album" oninput="updateAlbumDiveFavoriteField('${safeKey}', 'note', this.value)">${escapeHtml(fav.note || "")}</textarea>
             <div class="album-fav-actions">
               ${fav.spotifyTrackUrl ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="fetchAlbumDiveFavoriteMetadata('${safeKey}', this)">Refresh Track Info</button>` : ""}
               <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add Favorite to Song Log</button>
@@ -851,14 +848,12 @@ function renderAlbumDiveSlot(slot) {
             <div class="album-listen-favorite"><strong>Favorite:</strong> ${escapeHtml(favoriteLabel)}</div>
             ${notePreview ? `<div class="album-listen-note-preview">${escapeHtml(notePreview)}</div>` : ""}
             <details class="album-listen-expand">
-              <summary>Notes / Favorite / Edit</summary>
+              <summary>Album controls / Favorite / Edit</summary>
               <div class="album-listen-expand-body">
                 <div class="album-slot-meta">
                   ${listenStateSelect}
                   <div class="album-stars" aria-label="Album rating">${ratingButtons}</div>
                 </div>
-                <label>Why this album fits this slot</label>
-                <textarea placeholder="Why this album fits this slot" oninput="updateAlbumDiveSlotField('${safeKey}', 'rationale', this.value)">${escapeHtml(slot.rationale || "")}</textarea>
                 ${favoriteBlock}
                 <label>Album notes</label>
                 <textarea placeholder="Album notes / standout tracks / alternate picks" oninput="updateAlbumDiveSlotField('${safeKey}', 'notes', this.value)">${escapeHtml(slot.notes || "")}</textarea>
@@ -871,12 +866,12 @@ function renderAlbumDiveSlot(slot) {
             <div class="album-fetch-row">
               <input type="url" value="${escapeHtml(slot.spotifyAlbumUrl || slot.spotifyUrl || "")}" placeholder="Paste Spotify album URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'spotifyAlbumUrl', this.value)">
               <button type="button" class="btn btn-primary btn-tiny" onclick="fetchAlbumDiveAlbumMetadata('${safeKey}', this)">Fetch Album + Tracks</button>
+              <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}')">Delete entry</button>
             </div>
             <div class="album-slot-meta">
               ${listenStateSelect}
               <div class="album-stars" aria-label="Album rating">${ratingButtons}</div>
             </div>
-            <textarea placeholder="Why this album fits this slot" oninput="updateAlbumDiveSlotField('${safeKey}', 'rationale', this.value)">${escapeHtml(slot.rationale || "")}</textarea>
             ${favoriteBlock}
             ${manualMetadataDetails}
             <textarea placeholder="Album notes / standout tracks / alternate picks" oninput="updateAlbumDiveSlotField('${safeKey}', 'notes', this.value)">${escapeHtml(slot.notes || "")}</textarea>
@@ -954,12 +949,24 @@ function importAlbumDiveJson(inputId = "albumDiveJsonImport") {
   const dive = normalizeAlbumDive(currentGenre, true);
   dive.enabled = true;
   dive.status = dive.status === "not_started" ? "active" : dive.status;
+  if (!Array.isArray(dive.deletedSlotKeys)) dive.deletedSlotKeys = [];
   const used = new Set();
   let imported = 0;
   rows.forEach((row) => {
     const key = albumDiveSlotKeyFromType(row.type || row.category || row.slot || row.label, used);
-    const slot = dive.slots.find((item) => item.key === key);
-    if (!slot) return;
+    let slot = dive.slots.find((item) => item.key === key);
+    if (!slot) {
+      const def = ALBUM_DIVE_SLOT_DEFS.find(([candidate]) => candidate === key);
+      if (!def) return;
+      slot = defaultAlbumDiveSlot(def[0], def[1]);
+      dive.slots.push(slot);
+    }
+    dive.deletedSlotKeys = dive.deletedSlotKeys.filter((deletedKey) => deletedKey !== key);
+    dive.slots.sort((a, b) => {
+      const aIndex = ALBUM_DIVE_SLOT_DEFS.findIndex(([candidate]) => candidate === a.key);
+      const bIndex = ALBUM_DIVE_SLOT_DEFS.findIndex(([candidate]) => candidate === b.key);
+      return (aIndex < 0 ? 999 : aIndex) - (bIndex < 0 ? 999 : bIndex);
+    });
     used.add(key);
     const spotifyUrl = String(row.spotify_url || row.spotifyAlbumUrl || row.spotifyUrl || row.url || "").trim();
     slot.album = albumDiveCleanPastedRefs(row.album || row.title || row.name || slot.album || "");
@@ -993,7 +1000,21 @@ function importAlbumDiveJson(inputId = "albumDiveJsonImport") {
 
 function getAlbumDiveSlot(slotKey) {
   const dive = normalizeAlbumDive(currentGenre, true);
-  return dive?.slots?.find((slot) => slot.key === slotKey) || null;
+  const existing = dive?.slots?.find((slot) => slot.key === slotKey);
+  if (existing) return existing;
+  const def = ALBUM_DIVE_SLOT_DEFS.find(([key]) => key === slotKey);
+  if (!def) return null;
+  if (Array.isArray(dive.deletedSlotKeys)) {
+    dive.deletedSlotKeys = dive.deletedSlotKeys.filter((key) => key !== slotKey);
+  }
+  const slot = defaultAlbumDiveSlot(def[0], def[1]);
+  dive.slots.push(slot);
+  dive.slots.sort((a, b) => {
+    const aIndex = ALBUM_DIVE_SLOT_DEFS.findIndex(([key]) => key === a.key);
+    const bIndex = ALBUM_DIVE_SLOT_DEFS.findIndex(([key]) => key === b.key);
+    return (aIndex < 0 ? 999 : aIndex) - (bIndex < 0 ? 999 : bIndex);
+  });
+  return slot;
 }
 
 function touchAlbumDive() {
@@ -1051,6 +1072,29 @@ function startAlbumDive() {
     skipSpotifyHydration: true,
   });
   showSaveToast("Album Dive started — save changes to keep it.", false);
+}
+
+function clearAlbumDiveSlot(slotKey) {
+  const dive = normalizeAlbumDive(currentGenre, true);
+  if (!dive || !Array.isArray(dive.slots)) return;
+  const index = dive.slots.findIndex((slot) => slot.key === slotKey);
+  if (index < 0) return;
+  const slot = dive.slots[index];
+  const label = slot?.label || slotKey;
+  if (!confirm(`Delete the ${label} album entry? This removes this album from the dive.`)) return;
+  dive.slots.splice(index, 1);
+  if (!Array.isArray(dive.deletedSlotKeys)) dive.deletedSlotKeys = [];
+  if (!dive.deletedSlotKeys.includes(slotKey)) dive.deletedSlotKeys.push(slotKey);
+  try {
+    if (localStorage.getItem(albumDiveStorageKey()) === slotKey) {
+      const next = dive.slots[Math.min(index, dive.slots.length - 1)] || dive.slots[0];
+      localStorage.setItem(albumDiveStorageKey(), next?.key || "");
+    }
+  } catch {}
+  dive.lastWorkedAt = new Date().toISOString();
+  touchAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
+  showSaveToast(`${label} album entry deleted — save changes to keep it.`, false);
 }
 
 function clearAlbumDive() {
