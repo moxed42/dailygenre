@@ -1375,9 +1375,13 @@
       ));
     }
 
-    function restoreUneditedIdentityQueueState(genre, snapshot, editedSong) {
+    function restoreUneditedIdentityQueueState(genre, snapshot, editedSong, editedIdentityKeyOverride = '') {
       if (!genre || !snapshot) return;
-      const editedKey = identityEditKeyFromSong(editedSong);
+      // v75: for identity placeholder backfills, the edited row may be transformed
+      // from a stamped placeholder into new Spotify metadata during the overwrite.
+      // Keep the pre-edit identity slot as the edited slot so restore logic does not
+      // accidentally restore that same Seminal/Media anchor from the pre-edit snapshot.
+      const editedKey = editedIdentityKeyOverride || identityEditKeyFromSong(editedSong);
       const restoreFields = ['url','spotifyUrl','spotifyId','title','name','artist','album','artwork','albumArt','releaseDate','releaseYear','releasePrecision','releaseSource','durationMs','isrc','source','artists','spotifyMetadataFetched','spotifyMetadataFetchedAt','mediaTitle','media','mediaType'];
       const copyFields = (target, source) => {
         if (!target || !source || !identitySnapshotHasUsefulTrackData(source)) return;
@@ -1530,6 +1534,30 @@ Spotify result: ${newLabel}
 Overwrite the selected queue row anyway? This will replace its title, artist, artwork, and Spotify metadata without creating a new row.`);
     }
 
+    function replaceQueueTargetAtSelectedIndex(songs, target, match = {}) {
+      const list = inflateSongsFromStorage(songs || []).filter(song => song && !song.isPending);
+      const targetIndex = Number.isInteger(match.index) ? match.index : list.indexOf(target);
+      if (!target || !Number.isInteger(targetIndex) || targetIndex < 0) return list;
+      const out = [];
+      let inserted = false;
+      list.forEach((song, index) => {
+        if (!song) return;
+        if (index === targetIndex) {
+          out.push(target);
+          inserted = true;
+          return;
+        }
+        // If the edited object also appears elsewhere after a stale re-render/reinflate,
+        // keep only the explicit selected slot. This is especially important for confirmed
+        // Spotify mismatches, where title/artist text intentionally no longer matches the
+        // original row and loose dedupe must not decide row identity.
+        if (song === target) return;
+        out.push(song);
+      });
+      if (!inserted) out.push(target);
+      return out;
+    }
+
     function forceOverwriteQueueTarget(songs, target, match = {}) {
       const list = inflateSongsFromStorage(songs || []).filter(song => song && !song.isPending);
       if (!target) return list;
@@ -1542,6 +1570,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const targetIdentity = meaningfulSongIdentityKey(songIdentity(target) || '');
       const oldText = meaningfulQueueTextKey(match.oldTextKey || '');
       const newText = meaningfulQueueTextKey(match.newTextKey || queueDuplicateTextKey(target));
+      const skipLooseTextDedupe = !!match.confirmedMetadataMismatch;
       const out = [];
       let inserted = false;
       list.forEach((song, index) => {
@@ -1558,7 +1587,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         const duplicateByUrl = (targetUrl && songUrl === targetUrl) || (oldUrl && songUrl === oldUrl);
         const duplicateBySpotify = (targetSpotifyId && songSpotifyId === targetSpotifyId) || (oldSpotifyId && songSpotifyId === oldSpotifyId);
         const duplicateByIdentity = (targetIdentity && songIdentityValue === targetIdentity) || (oldIdentity && songIdentityValue === oldIdentity);
-        const duplicateByText = !!(songText && (songText === oldText || songText === newText) && queueMetadataLooksClose(song, target));
+        const duplicateByText = !skipLooseTextDedupe && !!(songText && (songText === oldText || songText === newText) && queueMetadataLooksClose(song, target));
         if (duplicateByUrl || duplicateBySpotify || duplicateByIdentity || duplicateByText) {
           mergeSongObjectsInPlace(target, song);
           if (!inserted && index < targetIndex) { out.push(target); inserted = true; }
@@ -1581,6 +1610,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const targetIdentity = meaningfulSongIdentityKey(songIdentity(target) || '');
       const oldText = meaningfulQueueTextKey(match.oldTextKey || '');
       const newText = meaningfulQueueTextKey(match.newTextKey || queueDuplicateTextKey(target));
+      const skipLooseTextDedupe = !!match.confirmedMetadataMismatch;
       const looksLikeSameManualSong = song => {
         if (!song || song === target) return false;
         const songUrl = canonicalQueueUrlKey(song.url || song.spotifyUrl || '');
@@ -1593,7 +1623,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         if (oldSpotifyId && songSpotifyId && songSpotifyId === oldSpotifyId) return true;
         if (oldIdentity && songIdentityValue && songIdentityValue === oldIdentity) return true;
         if (targetIdentity && songIdentityValue && songIdentityValue === targetIdentity) return true;
-        if (songText && (songText === oldText || songText === newText)) return true;
+        if (!skipLooseTextDedupe && songText && (songText === oldText || songText === newText)) return true;
         return false;
       };
       const out = [];
@@ -1989,20 +2019,27 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         const oldTextKey = queueDuplicateTextKey({ title: savedTitle, artist: savedArtist });
         const beforeOverwrite = { ...target, title: savedTitle, artist: savedArtist, url: oldUrl, spotifyId: oldSpotifyId };
         const identityQueueSnapshotBeforeEdit = snapshotIdentityQueueState(currentGenre);
+        const editedIdentityKeyBeforeOverwrite = identityEditKeyFromSong(target);
         let proposedMetadataSong = null;
-
-        target.url = nextUrl;
-        target.artwork = '';
-        target.albumArt = '';
-        target.releaseDate = '';
-        target.releaseYear = null;
-        target.releaseSource = '';
+        let confirmedMetadataMismatch = false;
 
         const isSpotifyTrack = /spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl);
         let metadataWarning = '';
 
         if (isSpotifyTrack) {
+          // v73: Build the Spotify overwrite in an isolated candidate first. Previously
+          // we wrote the new URL to the live row and cleared artwork before showing the
+          // mismatch-confirmation dialog. If that dialog was triggered, downstream queue
+          // reconciliation could see the half-mutated row and then restore/re-render the
+          // old row even after the user confirmed. The live row is now untouched until
+          // the confirmation is accepted.
           proposedMetadataSong = { ...target, title: savedTitle, artist: savedArtist };
+          proposedMetadataSong.url = nextUrl;
+          proposedMetadataSong.artwork = '';
+          proposedMetadataSong.albumArt = '';
+          proposedMetadataSong.releaseDate = '';
+          proposedMetadataSong.releaseYear = null;
+          proposedMetadataSong.releaseSource = '';
           proposedMetadataSong.source = 'spotify';
           proposedMetadataSong.spotifyUrl = /^spotify:track:/i.test(nextUrl)
             ? `https://open.spotify.com/track/${spotifyTrackId(nextUrl)}`
@@ -2026,17 +2063,12 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             if (refreshed.code === 'rate_limited') beginSpotifyPause(refreshed.retryAfterSeconds || 30);
           }
 
-          if (!confirmQueueUrlOverwrite(beforeOverwrite, proposedMetadataSong)) {
-            target.url = oldUrl;
-            target.spotifyUrl = beforeOverwrite.spotifyUrl || '';
-            target.spotifyId = oldSpotifyId || '';
-            target.title = savedTitle;
-            target.artist = savedArtist;
-            target.artwork = beforeOverwrite.artwork || '';
-            target.albumArt = beforeOverwrite.albumArt || target.artwork || '';
+          const closeEnough = queueMetadataLooksClose(beforeOverwrite, proposedMetadataSong);
+          if (!closeEnough && !confirmQueueUrlOverwrite(beforeOverwrite, proposedMetadataSong)) {
             showSaveToast('URL update cancelled. No queue rows were changed.', false);
             return;
           }
+          confirmedMetadataMismatch = !closeEnough;
 
           Object.assign(target, proposedMetadataSong);
           target.url = proposedMetadataSong.spotifyUrl || nextUrl;
@@ -2051,6 +2083,12 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             console.warn('Could not sync queue URL overwrite back to Genre DNA', identityError);
           }
         } else if (isYoutubeUrl(nextUrl)) {
+          target.url = nextUrl;
+          target.artwork = '';
+          target.albumArt = '';
+          target.releaseDate = '';
+          target.releaseYear = null;
+          target.releaseSource = '';
           target.source = 'youtube';
           target.spotifyId = '';
           target.spotifyUrl = '';
@@ -2063,6 +2101,12 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           target.title = savedTitle || target.title || 'YouTube track';
           target.artist = savedArtist || target.artist || '';
         } else {
+          target.url = nextUrl;
+          target.artwork = '';
+          target.albumArt = '';
+          target.releaseDate = '';
+          target.releaseYear = null;
+          target.releaseSource = '';
           target.source = 'web';
           target.spotifyId = '';
           target.spotifyUrl = '';
@@ -2106,38 +2150,51 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             result.parent.levelUp = target;
             currentGenre.songs_listened = result?.songs || currentGenre.songs_listened || [];
           } else {
-            currentGenre.songs_listened = isQueueDrawerEdit
-              ? forceOverwriteQueueTarget(result?.songs || currentGenre.songs_listened || [], target, {
-                  index: result.index,
-                  oldUrl,
-                  oldIdentity,
-                  oldSpotifyId,
-                  newUrl: target.url || nextUrl,
-                  newSpotifyId: target.spotifyId || '',
-                  oldTextKey,
-                  newTextKey: queueDuplicateTextKey(target)
-                })
-              : dedupeQueueSongsPreservingTarget(currentGenre.songs_listened || result?.songs || [], target, {
-                  oldUrl,
-                  oldIdentity,
-                  oldSpotifyId,
-                  newUrl: target.url || nextUrl,
-                  newSpotifyId: target.spotifyId || '',
-                  oldTextKey,
-                  newTextKey: queueDuplicateTextKey(target),
-                  forceTextDedupe: false
-                });
-            currentGenre.songs_listened = repairQueueAfterAuthoritativeUrlOverwrite(currentGenre.songs_listened, target, {
-              oldUrl,
-              oldIdentity,
-              oldSpotifyId,
-              oldTextKey,
-              newUrl: target.url || nextUrl,
-              newSpotifyId: target.spotifyId || '',
-              newTextKey: queueDuplicateTextKey(target)
-            });
+            if (confirmedMetadataMismatch && Number.isInteger(result?.index) && result.index >= 0) {
+              // v74/v75: confirmed mismatches are intentional replacements of the selected row,
+              // not normal duplicate/merge candidates. The old row text is supposed to differ
+              // from the new Spotify metadata, so identity/text repair can append the updated
+              // object while leaving the original row behind. Replace the concrete path/index
+              // first, then only run conservative URL/Spotify/identity cleanup.
+              currentGenre.songs_listened = replaceQueueTargetAtSelectedIndex(result?.songs || currentGenre.songs_listened || [], target, {
+                index: result.index
+              });
+            } else {
+              currentGenre.songs_listened = isQueueDrawerEdit
+                ? forceOverwriteQueueTarget(result?.songs || currentGenre.songs_listened || [], target, {
+                    index: result.index,
+                    oldUrl,
+                    oldIdentity,
+                    oldSpotifyId,
+                    newUrl: target.url || nextUrl,
+                    newSpotifyId: target.spotifyId || '',
+                    oldTextKey,
+                    newTextKey: queueDuplicateTextKey(target),
+                    confirmedMetadataMismatch
+                  })
+                : dedupeQueueSongsPreservingTarget(currentGenre.songs_listened || result?.songs || [], target, {
+                    oldUrl,
+                    oldIdentity,
+                    oldSpotifyId,
+                    newUrl: target.url || nextUrl,
+                    newSpotifyId: target.spotifyId || '',
+                    oldTextKey,
+                    newTextKey: queueDuplicateTextKey(target),
+                    forceTextDedupe: false
+                  });
+              currentGenre.songs_listened = repairQueueAfterAuthoritativeUrlOverwrite(currentGenre.songs_listened, target, {
+                oldUrl,
+                oldIdentity,
+                oldSpotifyId,
+                oldTextKey,
+                newUrl: target.url || nextUrl,
+                newSpotifyId: target.spotifyId || '',
+                newTextKey: queueDuplicateTextKey(target),
+                confirmedMetadataMismatch
+              });
+            }
           }
-          restoreUneditedIdentityQueueState(currentGenre, identityQueueSnapshotBeforeEdit, target);
+          restoreUneditedIdentityQueueState(currentGenre, identityQueueSnapshotBeforeEdit, target, editedIdentityKeyBeforeOverwrite);
           syncSongsBulkEditorFromModel();
           window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;
           window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;

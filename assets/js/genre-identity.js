@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.6-identity-placeholder-safe";
+  const VERSION = "4.2.8-identity-placeholder-anchor-sync";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
@@ -595,9 +595,29 @@
     return target;
   }
 
+  function identityTrackIsPlaceholderish(track) {
+    if (!track || typeof track !== "object") return true;
+    const url = String(track.spotifyUrl || track.url || track.spotify_url || "").trim();
+    const title = identityLooseText(track.title || track.name || "");
+    const artist = identityLooseText(track.artist || (Array.isArray(track.artists) ? track.artists.join(" ") : ""));
+    return Boolean(
+      (!spotifyIdFromTrackLike(track)) &&
+      (!trackArtwork(track)) &&
+      (!track.album) &&
+      (identityUrlLooksPlaceholder(url) || (!url && !title && !artist) || title === "seminal track" || title === "media track")
+    );
+  }
+
   function queueSongMatchesIdentityEntry(song, entry) {
     if (identityEntryContentMatchesSong(song, entry)) return true;
-    return !identitySongHasUsefulData(song) && identityStoredFlagMatchesEntry(song, entry);
+    const storedSlotMatch = identityStoredFlagMatchesEntry(song, entry);
+    if (!storedSlotMatch) return false;
+    // Placeholder Seminal/Media anchors are intentionally backfilled from the visible
+    // queue row. Trust the explicit identity slot in that narrow case; otherwise a
+    // confirmed Spotify mismatch can update the row but fail to hydrate the stale
+    // url.com anchor, and the next sync rebuilds the placeholder over the new art.
+    if (identityTrackIsPlaceholderish(entry.track) && (spotifyIdFromTrackLike(song) || identityTrackUrl(song) || trackArtwork(song))) return true;
+    return !identitySongHasUsefulData(song);
   }
 
   function syncIdentityTracksToSongQueue(genre, mark = false) {
@@ -658,7 +678,12 @@
     if (!song) return null;
     const contentMatch = entries.find((entry) => identityEntryContentMatchesSong(song, entry));
     if (contentMatch) return contentMatch;
-    if (!identitySongHasUsefulData(song) && song.isIdentityTrack) {
+    // v75: identity rows can have useful-looking placeholder data, especially
+    // `https://url.com` while backfilling Seminal/Media tracks. Do not require
+    // the row to be blank before trusting its stored identity slot; otherwise a
+    // confirmed Spotify mismatch can fail to update the anchor and then re-sync
+    // the stale placeholder back over the edited row.
+    if (song.isIdentityTrack) {
       return entries.find((entry) => identityStoredFlagMatchesEntry(song, entry)) || null;
     }
     return null;
@@ -666,7 +691,7 @@
 
   function updateTrackFromQueueOverwrite(genre, beforeSong, updatedSong) {
     if (!genre || !updatedSong) return false;
-    ensureIdentity(genre);
+    identity(genre);
     const entry = findIdentityEntryForQueueSong(genre, beforeSong) || findIdentityEntryForQueueSong(genre, updatedSong);
     if (!entry || !entry.track) return false;
     const track = entry.track;
