@@ -943,6 +943,17 @@ function importAlbumDiveJson(inputId = "albumDiveJsonImport") {
   try {
     rows = normalizedAlbumDiveImportRows(raw);
   } catch (err) {
+    const identityApi = window.DailyGenreIdentity;
+    if (identityApi && typeof identityApi.looksLikeIdentityBlock === "function" && identityApi.looksLikeIdentityBlock(raw)) {
+      const applied = typeof identityApi.importStructuredIdentityBlock === "function"
+        ? identityApi.importStructuredIdentityBlock(raw, { genreFallback: currentGenre?.genre || "" })
+        : false;
+      if (applied) {
+        if (input) input.value = "";
+        showSaveToast("That was a Genre Identity block, so I imported it into Genre Identity instead of Album Dive.", false);
+        return;
+      }
+    }
     showSaveToast(`Album JSON import failed: ${err?.message || "Invalid JSON"}`, true);
     return;
   }

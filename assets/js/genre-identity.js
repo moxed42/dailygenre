@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.8-identity-placeholder-anchor-sync";
+  const VERSION = "4.3.0-identity-block-import-v83";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
@@ -114,10 +114,24 @@
     return [...new Set([...aliasList(genre), ...implicitAliasList(genre)])];
   }
 
+  function stripIdentityReferences(value) {
+    return String(value || "")
+      .replace(/\s*\[(?:web|file):\d+\]\s*/gi, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+  }
+
+  function cleanAliasValue(value) {
+    return stripIdentityReferences(value)
+      .replace(/_/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+  }
+
   function setAliases(genre, aliases) {
     const clean = [
       ...new Set(
-        (aliases || []).map((x) => String(x || "").trim()).filter(Boolean),
+        (aliases || []).map(cleanAliasValue).filter(Boolean),
       ),
     ];
     genre.aliases = clean;
@@ -877,7 +891,7 @@
   }
 
   function cleanIdentityBlockValue(value) {
-    const raw = String(value || "").trim();
+    const raw = stripIdentityReferences(value);
     return /^none$/i.test(raw) ? "" : raw;
   }
 
@@ -944,6 +958,13 @@
       if (key === "ALIASES") {
         commitMedia();
         section = "aliases";
+        if (value) {
+          value
+            .split(/[,;|]/g)
+            .map(cleanAliasValue)
+            .filter(Boolean)
+            .forEach((alias) => parsed.aliases.push(alias));
+        }
         return;
       }
       if (key === "SEMINAL_TRACK") {
@@ -959,7 +980,7 @@
       }
 
       if (section === "aliases" && !header) {
-        const alias = cleanIdentityBlockValue(line);
+        const alias = cleanAliasValue(line);
         if (alias) parsed.aliases.push(alias);
         return;
       }
@@ -974,9 +995,33 @@
     });
     commitMedia();
     parsed.aliases = [
-      ...new Set(parsed.aliases.map((a) => a.trim()).filter(Boolean)),
+      ...new Set(parsed.aliases.map(cleanAliasValue).filter(Boolean)),
     ];
     return parsed;
+  }
+
+  function looksLikeIdentityBlock(text) {
+    const raw = String(text || "").trim();
+    if (!raw) return false;
+    return /(^|\n)\s*(GENRE|ALIASES|SEMINAL[_\s-]*TRACK|MEDIA[_\s-]*TOUCHSTONE)\s*:/i.test(raw);
+  }
+
+  function importStructuredIdentityBlock(text, options = {}) {
+    const parsed = parseIdentityBlock(text);
+    if (options.genreFallback && !parsed.genre) parsed.genre = options.genreFallback;
+    if (
+      !parsed.genre &&
+      !parsed.aliases.length &&
+      !parsed.seminal.title &&
+      !parsed.seminal.artist &&
+      !parsed.seminal.spotifyUrl &&
+      !parsed.mediaTouchstones.length
+    ) {
+      toast("Paste a structured identity block first.", true);
+      return false;
+    }
+    const ok = applyIdentityBlockDirect(parsed);
+    return ok !== false;
   }
 
   function fillIdentityFormFromParsed(parsed, allowSwitch = true) {
@@ -1141,13 +1186,7 @@
     else panel.appendChild(section);
     section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => {
       const text = section.querySelector("#detailGenreIdentityBlock")?.value || "";
-      const parsed = parseIdentityBlock(text);
-      if (!parsed.genre) parsed.genre = g.genre || "";
-      if (!parsed.genre && !parsed.aliases.length && !parsed.seminal.title && !parsed.mediaTouchstones.length) {
-        toast("Paste a structured identity block first.", true);
-        return;
-      }
-      const ok = applyIdentityBlockDirect(parsed);
+      const ok = importStructuredIdentityBlock(text, { genreFallback: g.genre || "" });
       if (ok) {
         section.querySelector("#detailGenreIdentityBlock").value = "";
         setTimeout(() => injectDetailIdentityImport(g), 80);
@@ -1194,8 +1233,7 @@
     });
     $("#genreIdentityApplyBlockBtn", root)?.addEventListener("click", () => {
       const text = $("#genreIdentityBlockImport", root)?.value || "";
-      const parsed = parseIdentityBlock(text);
-      applyIdentityBlockDirect(parsed);
+      importStructuredIdentityBlock(text);
     });
     $("#genreAddMediaBtn", root)?.addEventListener("click", () => {
       const list = $("#genreMediaRows", root);
@@ -1630,6 +1668,9 @@
     version: VERSION,
     aliases: aliasList,
     searchText,
+    looksLikeIdentityBlock,
+    parseIdentityBlock,
+    importStructuredIdentityBlock,
     injectDetailIdentityImport,
     syncIdentityTracksToSongQueue,
     updateTrackFromQueueOverwrite,
