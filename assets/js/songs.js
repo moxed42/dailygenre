@@ -653,10 +653,9 @@
           <h4>Track URL <span class="song-focus-inline-label">no full edit mode needed</span></h4>
           <div class="song-focus-url-row">
             <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
-            <button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Update URL</button>
-            ${canRefreshSpotify ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Metadata</button>` : ""}
+            <button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply URL / Refresh</button>
           </div>
-          <p class="song-focus-helper">Paste a corrected Spotify track URL here without switching to Build / Edit mode. Use Refresh Metadata after updating when the new link is a Spotify track.</p>
+          <p class="song-focus-helper">Paste or correct a Spotify track URL here. Applying the URL also refreshes Spotify artwork and metadata.</p>
         </div>
         <div class="song-focus-detail-card compact song-focus-meta-card">
           <h4>Metadata</h4>

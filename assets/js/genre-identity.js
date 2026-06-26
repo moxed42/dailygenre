@@ -849,7 +849,7 @@
         <textarea id="genreIdentityBlockImport" rows="8" placeholder="GENRE: synth pop&#10;&#10;ALIASES:&#10;synth-pop&#10;&#10;SEMINAL_TRACK:&#10;ARTIST: Gary Numan&#10;TITLE: Cars&#10;SPOTIFY_URL: https://open.spotify.com/track/...&#10;REASON: Short reason&#10;&#10;MEDIA_TOUCHSTONE:&#10;ARTIST: a-ha&#10;TITLE: Take On Me&#10;MEDIA_TITLE: MTV music video&#10;MEDIA_TYPE: tv&#10;SPOTIFY_URL: https://open.spotify.com/track/...&#10;REASON: Short reason"></textarea>
         <div class="genre-identity-import-actions">
           <button type="button" class="btn btn-secondary btn-tiny" id="genreIdentityParseBlockBtn">Parse into form</button>
-          <button type="button" class="btn btn-primary btn-tiny" id="genreIdentityApplyBlockBtn">Apply block directly</button>
+          <button type="button" class="btn btn-primary btn-tiny" id="genreIdentityApplyBlockBtn">Apply & Save block</button>
         </div>
         <small>“None” values are ignored. GENRE can be a canonical name or alias.</small>
       </details>
@@ -866,7 +866,7 @@
         </div>
         <div class="genre-identity-actions genre-identity-full">
           <button type="button" class="btn btn-secondary" id="genreAddMediaBtn">+ Add media touchstone</button>
-          <button type="button" class="btn btn-primary" id="genreIdentityApplyBtn">Apply identity fields</button>
+          <button type="button" class="btn btn-primary" id="genreIdentityApplyBtn">Apply & Save identity fields</button>
         </div>
       </div>
     </section>`;
@@ -1006,7 +1006,7 @@
     return /(^|\n)\s*(GENRE|ALIASES|SEMINAL[_\s-]*TRACK|MEDIA[_\s-]*TOUCHSTONE)\s*:/i.test(raw);
   }
 
-  function importStructuredIdentityBlock(text, options = {}) {
+  async function importStructuredIdentityBlock(text, options = {}) {
     const parsed = parseIdentityBlock(text);
     if (options.genreFallback && !parsed.genre) parsed.genre = options.genreFallback;
     if (
@@ -1060,7 +1060,7 @@
     return true;
   }
 
-  function applyIdentityBlockDirect(parsed) {
+  async function applyIdentityBlockDirect(parsed) {
     if (!parsed) return toast("Paste a structured identity block first.", true);
     const g =
       (parsed.genre && bestGenreMatch(parsed.genre)) ||
@@ -1107,11 +1107,25 @@
     markDirty();
     refreshStudioEditor();
     setTimeout(() => injectDnaCard(g), 60);
-    toast(
-      `Imported identity block for ${g.genre || parsed.genre || "genre"}. Save Library Updates to persist.`,
-      false,
-    );
+    await persistIdentityApplyNow(`Imported and saved identity block for ${g.genre || parsed.genre || "genre"}.`);
     return true;
+  }
+
+
+  async function persistIdentityApplyNow(message = '') {
+    try {
+      if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
+      if (typeof saveLibraryUpdates === "function") {
+        await saveLibraryUpdates();
+        if (message) toast(message, false);
+      } else {
+        markDirty();
+        if (message) toast(message, false);
+      }
+    } catch (error) {
+      console.warn("Could not save identity update", error);
+      toast(`Identity applied, but save failed: ${error?.message || error || "Unknown error"}`, true);
+    }
   }
 
   function readMediaRows(root) {
@@ -1135,7 +1149,7 @@
       );
   }
 
-  function saveEditor() {
+  async function saveEditor() {
     const form = $(".genre-identity-form");
     if (!form) return;
     const g = findGenre(form.dataset.genreId);
@@ -1159,10 +1173,7 @@
     syncIdentityTracksToSongQueue(g, false);
     markDirty();
     injectDnaCard();
-    toast(
-      `Updated identity for ${g.genre || "genre"}. Save Library Updates to persist.`,
-      false,
-    );
+    await persistIdentityApplyNow(`Updated and saved identity for ${g.genre || "genre"}.`);
   }
 
 
@@ -1179,14 +1190,14 @@
       <label for="detailGenreIdentityBlock">Paste structured identity block</label>
       <textarea id="detailGenreIdentityBlock" rows="5" placeholder="GENRE: ${esc(g.genre || "")}&#10;ALIASES: ...&#10;SEMINAL TRACK: Artist — Title | Spotify URL | reason&#10;MEDIA TOUCHSTONE: Artist — Title | Media | Spotify URL | why it matters"></textarea>
       <div class="row" style="margin-top:10px;">
-        <button type="button" class="btn btn-secondary" id="detailGenreIdentityApplyBtn">Apply identity block</button>
+        <button type="button" class="btn btn-secondary" id="detailGenreIdentityApplyBtn">Apply & Save identity block</button>
       </div>`;
     const songBulk = document.getElementById("songsListenedBulk")?.closest("div");
     if (songBulk && songBulk.parentNode === panel) songBulk.insertAdjacentElement("afterend", section);
     else panel.appendChild(section);
-    section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => {
+    section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", async () => {
       const text = section.querySelector("#detailGenreIdentityBlock")?.value || "";
-      const ok = importStructuredIdentityBlock(text, { genreFallback: g.genre || "" });
+      const ok = await importStructuredIdentityBlock(text, { genreFallback: g.genre || "" });
       if (ok) {
         section.querySelector("#detailGenreIdentityBlock").value = "";
         setTimeout(() => injectDetailIdentityImport(g), 80);
@@ -1231,9 +1242,9 @@
         false,
       );
     });
-    $("#genreIdentityApplyBlockBtn", root)?.addEventListener("click", () => {
+    $("#genreIdentityApplyBlockBtn", root)?.addEventListener("click", async () => {
       const text = $("#genreIdentityBlockImport", root)?.value || "";
-      importStructuredIdentityBlock(text);
+      await importStructuredIdentityBlock(text);
     });
     $("#genreAddMediaBtn", root)?.addEventListener("click", () => {
       const list = $("#genreMediaRows", root);

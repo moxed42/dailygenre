@@ -888,6 +888,30 @@
       setUnsavedState(true);
       toggleLibrarySaveButton(true);
     }
+    window.markListeningUpdatePending = markListeningUpdatePending;
+
+    async function applySongsBulkAndSave(button = null) {
+      if (!currentGenre) {
+        showSaveToast('Open a genre before applying songs.', true);
+        return;
+      }
+      const oldText = button?.textContent || '';
+      if (button) {
+        button.disabled = true;
+        button.classList.add('is-saving');
+        button.textContent = 'Applying…';
+      }
+      try {
+        await prepareAndSaveCurrentGenre();
+      } finally {
+        if (button && document.body.contains(button)) {
+          button.disabled = false;
+          button.classList.remove('is-saving');
+          button.textContent = oldText || 'Apply & Save Songs';
+        }
+      }
+    }
+    window.applySongsBulkAndSave = applySongsBulkAndSave;
 
     function setMonthlyFlagFromView(flag) {
       if (!currentGenre) return;
@@ -1146,6 +1170,11 @@
       const expected = buildSongsBulkEditorText(currentGenre);
       if (textarea.value === expected) return;
 
+      // v85: the songs bulk editor and Genre Identity editor share the same side panel.
+      // Applying/saving songs must never blank existing identity aliases, anchors, or
+      // Seminal/Media queue rows just because the song textarea does not include them.
+      const identitySnapshot = snapshotGenreIdentityData(currentGenre);
+
       // Inline queue actions (URL overwrite, Spotify refresh, remove/move) update
       // currentGenre.songs_listened directly, then repaint the hidden bulk textarea.
       // During that short authoritative window, do not let an older textarea snapshot
@@ -1153,6 +1182,7 @@
       // persist only the most recent row, or to wipe a prior corrected URL.
       if (!options.force && queueModelIsAuthoritative()) {
         textarea.value = expected;
+        restoreGenreIdentityData(currentGenre, identitySnapshot);
         return;
       }
 
@@ -1165,6 +1195,16 @@
         seenKeys.add(k);
         return true;
       });
+      restoreGenreIdentityData(currentGenre, identitySnapshot);
+      syncBulkDraftEditorFromPreservedModel();
+    }
+
+    function syncBulkDraftEditorFromPreservedModel() {
+      const textarea = document.getElementById('songsListenedBulk');
+      if (!textarea || !currentGenre) return;
+      try {
+        textarea.value = buildSongsBulkEditorText(currentGenre);
+      } catch (_) {}
     }
 
     function syncSongsBulkEditorFromModel() {
@@ -1331,6 +1371,44 @@
       if (!value || typeof value !== 'object') return null;
       try { return JSON.parse(JSON.stringify(value)); }
       catch (_) { return { ...value }; }
+    }
+
+    function snapshotGenreIdentityData(genre) {
+      if (!genre || typeof genre !== 'object') return null;
+      return {
+        identity: clonePlainObject(genre.identity),
+        seminal_song: clonePlainObject(genre.seminal_song),
+        media_touchstones: Array.isArray(genre.media_touchstones) ? clonePlainObject(genre.media_touchstones) : null,
+        aliases: Array.isArray(genre.aliases) ? genre.aliases.slice() : null,
+        synonyms: Array.isArray(genre.synonyms) ? genre.synonyms.slice() : null,
+      };
+    }
+
+    function identitySnapshotHasContent(snapshot) {
+      if (!snapshot) return false;
+      if (snapshot.identity && Object.keys(snapshot.identity).length) return true;
+      if (snapshot.seminal_song && Object.keys(snapshot.seminal_song).length) return true;
+      if (Array.isArray(snapshot.media_touchstones) && snapshot.media_touchstones.length) return true;
+      if (Array.isArray(snapshot.aliases) && snapshot.aliases.length) return true;
+      if (Array.isArray(snapshot.synonyms) && snapshot.synonyms.length) return true;
+      return false;
+    }
+
+    function restoreGenreIdentityData(genre, snapshot) {
+      if (!genre || !identitySnapshotHasContent(snapshot)) return;
+      if (snapshot.identity) genre.identity = clonePlainObject(snapshot.identity) || {};
+      if (snapshot.seminal_song) genre.seminal_song = clonePlainObject(snapshot.seminal_song) || {};
+      if (Array.isArray(snapshot.media_touchstones)) genre.media_touchstones = clonePlainObject(snapshot.media_touchstones) || [];
+      if (Array.isArray(snapshot.aliases)) genre.aliases = snapshot.aliases.slice();
+      if (Array.isArray(snapshot.synonyms)) genre.synonyms = snapshot.synonyms.slice();
+      if (genre.identity && Array.isArray(genre.identity.mediaTouchstones)) {
+        genre.media_touchstones = genre.identity.mediaTouchstones;
+      }
+      try {
+        window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(genre, false);
+      } catch (error) {
+        console.warn('Could not re-sync preserved identity tracks after song apply/save', error);
+      }
     }
 
     function identityEditKeyFromSong(song) {
@@ -1950,8 +2028,15 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         applyOfficialSpotifyMetadata(result.song, refreshed.track);
         currentGenre.songs_listened = result.songs;
         spotifyMetadataFailures.delete(stagedReactionKey(currentGenre.id, songIdentity(result.song)));
+        const updatedFocusKey = songIdentity(target);
+        try {
+          if (updatedFocusKey && typeof setSongFocus === 'function') setSongFocus(updatedFocusKey);
+        } catch {}
         const restore = preserveScrollSnapshot();
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+        try {
+          if (updatedFocusKey && typeof setSongFocus === 'function') setSongFocus(updatedFocusKey);
+        } catch {}
         applyDetailEditMode(detailEditMode);
         restore();
         markListeningUpdatePending();
@@ -2617,6 +2702,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         alert('Choose a genre first.');
         return;
       }
+      const identitySnapshot = snapshotGenreIdentityData(currentGenre);
       const markListened = !!options.markListened;
       const alreadyListened = !!dateValue(currentGenre);
 
@@ -2659,6 +2745,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       }
       currentGenre.songs_listened = resolvedOfficial;
+      restoreGenreIdentityData(currentGenre, identitySnapshot);
       currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
       removeLoggedSongsFromPending(currentGenre);
       processPendingNominationsForGenre(currentGenre);
