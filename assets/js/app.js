@@ -3714,6 +3714,77 @@ function blockSaveIfDuplicateGenres() {
       return song;
     }
 
+    function studioSongRowsForRouting(raw) {
+      const parsed = parseSongLinks(raw || []);
+      const rows = [];
+      const visit = (song, parent = null) => {
+        if (!song) return;
+        rows.push({ song, parent });
+        if (song.levelUp) visit(song.levelUp, song);
+      };
+      (parsed || []).forEach(song => visit(song));
+      return rows;
+    }
+
+    function studioPendingPayload(song) {
+      const out = {
+        url: normalizeSongUrl(song.url || song.spotifyUrl || ''),
+        score: song.score != null && song.score !== '' ? Number(song.score) : null,
+        reason: song.reason || '',
+        title: song.title || '',
+        artist: song.artist || '',
+        artwork: song.artwork || song.albumArt || '',
+        albumArt: song.albumArt || song.artwork || '',
+        source: song.source || songUrlSource(song.url || song.spotifyUrl || ''),
+        spotifyId: song.spotifyId || '',
+        spotifyUrl: song.spotifyUrl || song.url || '',
+        album: song.album || '',
+        artists: Array.isArray(song.artists) ? song.artists.slice() : [],
+        durationMs: song.durationMs || null,
+        isrc: song.isrc || '',
+        releaseDate: song.releaseDate || '',
+        releaseYear: song.releaseYear || null,
+        releasePrecision: song.releasePrecision || '',
+        releaseSource: song.releaseSource || '',
+        spotifyMetadataFetched: !!song.spotifyMetadataFetched,
+        spotifyMetadataFetchedAt: song.spotifyMetadataFetchedAt || '',
+        added: song.added || new Date().toISOString().slice(0,10)
+      };
+      return out;
+    }
+
+    async function hydrateStudioPendingPayload(song) {
+      const out = studioPendingPayload(song);
+      const url = normalizeSongUrl(out.spotifyUrl || out.url || '');
+      if (!url || !/spotify\.com\/track\/[A-Za-z0-9]{22}|spotify:track:[A-Za-z0-9]{22}/i.test(url)) return out;
+      try {
+        const track = await fetchSpotifyTrackMetadata(url, true);
+        if (track) {
+          out.url = track.spotifyUrl || url;
+          out.spotifyUrl = track.spotifyUrl || out.url;
+          out.spotifyId = track.spotifyId || out.spotifyId;
+          out.title = track.title || out.title;
+          out.artist = track.artist || out.artist;
+          out.artwork = track.artwork || track.albumArt || out.artwork;
+          out.albumArt = track.albumArt || track.artwork || out.albumArt || out.artwork;
+          out.album = track.album || out.album;
+          out.artists = Array.isArray(track.artists) && track.artists.length ? track.artists.slice() : out.artists;
+          out.durationMs = track.durationMs || out.durationMs;
+          out.isrc = track.isrc || out.isrc;
+          out.releaseDate = track.releaseDate || out.releaseDate;
+          out.releaseYear = track.releaseYear || out.releaseYear;
+          out.releasePrecision = track.releasePrecision || out.releasePrecision;
+          out.releaseSource = track.releaseSource || out.releaseSource || 'Spotify';
+          out.spotifyMetadataFetched = true;
+          out.spotifyMetadataFetchedAt = new Date().toISOString();
+          out.source = 'spotify';
+        }
+      } catch (error) {
+        console.warn('Studio import Spotify hydration failed', error);
+      }
+      return out;
+    }
+
     function addInboxSongToPending(target, song, sourceLabel = 'Song Inbox') {
       return queuePendingNomination(target, sourceLabel, {
         ...song,
@@ -3760,17 +3831,94 @@ function blockSaveIfDuplicateGenres() {
         <div class="review-card-head">
           <div>
             <h3>Song Inbox</h3>
-            <p class="small" style="margin:6px 0 0;">Paste one song or many. Choose a genre to route directly to that genre’s pending queue, or leave it blank for Unknown / unassigned.</p>
+            <p class="small" style="margin:6px 0 0;">Paste one song or many. Use <strong>Add to Inbox</strong> for plain URLs/manual songs, or <strong>Import Studio @tags</strong> for Studio blocks: only score 1–3 rows with @genre tags are routed, and score 4–5 rows are ignored.</p>
           </div>
         </div>
         <div class="inbox-bulk-grid">
           <label class="inbox-bulk-text"><span class="sr-only">Songs</span><textarea id="inboxSongInput" rows="5" placeholder="https://open.spotify.com/track/…&#10;Artist — Title&#10;Another Spotify URL"></textarea></label>
           <label class="inbox-target-genre"><span>Optional genre</span><select id="inboxTargetGenre"><option value="">Unknown / unassigned</option>${inboxGenreOptionsHtml()}</select></label>
-          <button type="button" class="btn btn-primary" onclick="addToSongInbox()">Add to Inbox</button>
+          <div class="inbox-action-stack" style="display:flex; flex-direction:column; gap:8px;">
+            <button type="button" class="btn btn-primary" onclick="addToSongInbox()">Add to Inbox</button>
+            <button type="button" class="btn btn-secondary" onclick="importStudioTaggedSongs()">Import Studio @tags</button>
+          </div>
         </div>
         <div class="inbox-result" id="inboxResult"></div>
         ${unassignedHtml}
       </div>`;
+    }
+
+    async function importStudioTaggedSongs() {
+      const input = document.getElementById('inboxSongInput');
+      const resultEl = document.getElementById('inboxResult');
+      const sourceSelect = document.getElementById('inboxTargetGenre');
+      if (!input || !resultEl) return;
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      const sourceGenre = sourceSelect?.value ? (genres || []).find(g => String(g.id) === String(sourceSelect.value)) : null;
+      if (sourceSelect?.value && !sourceGenre) {
+        resultEl.className = 'inbox-result err';
+        resultEl.textContent = 'Selected source genre was not found.';
+        return;
+      }
+
+      const rows = studioSongRowsForRouting(raw);
+      const eligible = rows
+        .map(row => row.song)
+        .filter(song => song && song._pendingGenreTag && song.score != null && Number(song.score) >= 1 && Number(song.score) <= 3);
+      const ignoredHighFit = rows.filter(row => row.song && row.song.score != null && Number(row.song.score) >= 4).length;
+      const ignoredNoTag = rows.filter(row => row.song && row.song.score != null && Number(row.song.score) <= 3 && !row.song._pendingGenreTag).length;
+
+      if (!eligible.length) {
+        resultEl.className = 'inbox-result err';
+        resultEl.textContent = 'No score 1–3 rows with @genre tags were found.';
+        showSaveToast('No routable Studio @tag songs found.', true);
+        return;
+      }
+
+      resultEl.className = 'inbox-result';
+      resultEl.textContent = `Routing ${eligible.length} low-fit @tag song${eligible.length === 1 ? '' : 's'}…`;
+
+      const routed = [];
+      const unresolved = [];
+      const duplicates = [];
+      for (const song of eligible) {
+        const resolution = resolvePendingTargetGenre(song._pendingGenreTag, sourceGenre?.id || '');
+        if (!resolution.target) {
+          unresolved.push(song);
+          continue;
+        }
+        const payload = await hydrateStudioPendingPayload(song);
+        const added = queuePendingNomination(
+          resolution.target,
+          sourceGenre?.genre || 'Studio Import',
+          payload
+        );
+        if (added) routed.push({ song, target: resolution.target });
+        else duplicates.push({ song, target: resolution.target });
+      }
+
+      if (routed.length || duplicates.length) {
+        setUnsavedState(true);
+        libraryUpdatesPending = true;
+        toggleLibrarySaveButton(true);
+        input.value = '';
+      }
+
+      const byTarget = new Map();
+      routed.forEach(item => byTarget.set(item.target.genre, (byTarget.get(item.target.genre) || 0) + 1));
+      const routedSummary = [...byTarget.entries()].map(([name, count]) => `${count} → ${name}`).join(', ');
+      const parts = [];
+      if (routed.length) parts.push(`✓ Routed ${routed.length}: ${routedSummary}.`);
+      if (duplicates.length) parts.push(`${duplicates.length} duplicate/existing song${duplicates.length === 1 ? '' : 's'} skipped.`);
+      if (unresolved.length) parts.push(`${unresolved.length} unresolved @tag${unresolved.length === 1 ? '' : 's'}.`);
+      if (ignoredHighFit) parts.push(`${ignoredHighFit} score 4–5 row${ignoredHighFit === 1 ? '' : 's'} ignored.`);
+      if (ignoredNoTag) parts.push(`${ignoredNoTag} low-score row${ignoredNoTag === 1 ? '' : 's'} lacked @tag.`);
+      const message = parts.join(' ');
+      resultEl.className = unresolved.length && !routed.length ? 'inbox-result err' : 'inbox-result ok';
+      resultEl.textContent = message || 'No changes.';
+      showSaveToast(message || 'No Studio import changes.', unresolved.length && !routed.length);
+      renderReview();
     }
 
     async function addToSongInbox() {
