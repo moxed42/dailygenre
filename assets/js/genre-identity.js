@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.3.0-identity-block-import-v83";
+  const VERSION = "4.4.0-identity-overwrite-v87";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
@@ -850,6 +850,7 @@
         <div class="genre-identity-import-actions">
           <button type="button" class="btn btn-secondary btn-tiny" id="genreIdentityParseBlockBtn">Parse into form</button>
           <button type="button" class="btn btn-primary btn-tiny" id="genreIdentityApplyBlockBtn">Apply & Save block</button>
+          <button type="button" class="btn btn-secondary btn-tiny" id="genreIdentityOverwriteBlockBtn">Overwrite & Save block</button>
         </div>
         <small>“None” values are ignored. GENRE can be a canonical name or alias.</small>
       </details>
@@ -867,6 +868,7 @@
         <div class="genre-identity-actions genre-identity-full">
           <button type="button" class="btn btn-secondary" id="genreAddMediaBtn">+ Add media touchstone</button>
           <button type="button" class="btn btn-primary" id="genreIdentityApplyBtn">Apply & Save identity fields</button>
+          <button type="button" class="btn btn-secondary" id="genreIdentityOverwriteBtn">Overwrite & Save identity fields</button>
         </div>
       </div>
     </section>`;
@@ -1020,7 +1022,7 @@
       toast("Paste a structured identity block first.", true);
       return false;
     }
-    const ok = applyIdentityBlockDirect(parsed);
+    const ok = applyIdentityBlockDirect(parsed, { overwrite: !!options.overwrite });
     return ok !== false;
   }
 
@@ -1060,7 +1062,37 @@
     return true;
   }
 
-  async function applyIdentityBlockDirect(parsed) {
+  function identityTrackMergeKey(track) {
+    const url = identityUsableTrackUrl(track || '').toLowerCase();
+    if (url) return `url:${url}`;
+    const artist = identityLooseText(track?.artist || (Array.isArray(track?.artists) ? track.artists.join(' ') : ''));
+    const title = identityLooseText(track?.title || track?.name || '');
+    return title ? `name:${artist}|${title}` : '';
+  }
+
+  function mergeIdentityTrack(existing = {}, incoming = {}) {
+    const out = { ...(existing || {}) };
+    Object.entries(incoming || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && String(value).trim() !== '') out[key] = value;
+    });
+    if (out.spotifyUrl && !out.url) out.url = out.spotifyUrl;
+    if (out.url && !out.spotifyUrl) out.spotifyUrl = out.url;
+    return out;
+  }
+
+  function mergeMediaTouchstones(existing = [], incoming = []) {
+    const out = (Array.isArray(existing) ? existing : []).map(m => ({ ...(m || {}) }));
+    (Array.isArray(incoming) ? incoming : []).forEach(raw => {
+      const item = { ...(raw || {}) };
+      const key = identityTrackMergeKey(item);
+      const idx = key ? out.findIndex(m => identityTrackMergeKey(m) === key) : -1;
+      if (idx >= 0) out[idx] = mergeIdentityTrack(out[idx], item);
+      else if (item.title || item.artist || item.mediaTitle || item.mediaType || item.spotifyUrl || item.url || item.reason) out.push(item);
+    });
+    return out.filter(m => m && (m.title || m.artist || m.mediaTitle || m.mediaType || m.spotifyUrl || m.url || m.reason));
+  }
+
+  async function applyIdentityBlockDirect(parsed, options = {}) {
     if (!parsed) return toast("Paste a structured identity block first.", true);
     const g =
       (parsed.genre && bestGenreMatch(parsed.genre)) ||
@@ -1071,7 +1103,9 @@
         "Could not match the GENRE line to an existing genre.",
         true,
       );
-    setAliases(g, parsed.aliases || []);
+    const overwrite = !!options.overwrite;
+    const existingAliases = aliasList(g);
+    setAliases(g, overwrite ? (parsed.aliases || []) : [...existingAliases, ...(parsed.aliases || [])]);
     const id = identity(g);
     const sem = {
       artist: parsed.seminal.artist || "",
@@ -1080,9 +1114,13 @@
       reason: parsed.seminal.reason || "",
     };
     if (sem.spotifyUrl) sem.url = sem.spotifyUrl;
-    id.seminalTrack = sem;
-    g.seminal_song = sem;
-    id.mediaTouchstones = (parsed.mediaTouchstones || [])
+    const hasIncomingSeminal = !!(sem.artist || sem.title || sem.spotifyUrl || sem.reason);
+    if (overwrite || hasIncomingSeminal) {
+      const nextSem = overwrite ? sem : mergeIdentityTrack(id.seminalTrack || g.seminal_song || {}, sem);
+      id.seminalTrack = nextSem;
+      g.seminal_song = nextSem;
+    }
+    const incomingMedia = (parsed.mediaTouchstones || [])
       .map((m) => ({
         artist: m.artist || "",
         title: m.title || "",
@@ -1101,6 +1139,7 @@
           m.spotifyUrl ||
           m.reason,
       );
+    id.mediaTouchstones = overwrite ? incomingMedia : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], incomingMedia);
     g.media_touchstones = id.mediaTouchstones;
     syncIdentityTracksToSongQueue(g, false);
     selectedGenreId = String(g.id ?? selectedGenreId);
@@ -1149,15 +1188,16 @@
       );
   }
 
-  async function saveEditor() {
+  async function saveEditor(options = {}) {
     const form = $(".genre-identity-form");
     if (!form) return;
     const g = findGenre(form.dataset.genreId);
     if (!g) return toast("Could not find selected genre.", true);
+    const overwrite = !!options.overwrite;
     const aliases = String($("#genreIdentityAliases")?.value || "").split(
       /[\n,;|]/g,
     );
-    setAliases(g, aliases);
+    setAliases(g, overwrite ? aliases : [...aliasList(g), ...aliases]);
     const id = identity(g);
     const sem = {
       artist: String($("#genreSeminalArtist")?.value || "").trim(),
@@ -1166,9 +1206,14 @@
       reason: String($("#genreSeminalReason")?.value || "").trim(),
     };
     if (sem.spotifyUrl) sem.url = sem.spotifyUrl;
-    id.seminalTrack = sem;
-    g.seminal_song = sem;
-    id.mediaTouchstones = readMediaRows(form);
+    const hasSem = !!(sem.artist || sem.title || sem.spotifyUrl || sem.reason);
+    if (overwrite || hasSem) {
+      const nextSem = overwrite ? sem : mergeIdentityTrack(id.seminalTrack || g.seminal_song || {}, sem);
+      id.seminalTrack = nextSem;
+      g.seminal_song = nextSem;
+    }
+    const mediaRows = readMediaRows(form);
+    id.mediaTouchstones = overwrite ? mediaRows : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], mediaRows);
     g.media_touchstones = id.mediaTouchstones;
     syncIdentityTracksToSongQueue(g, false);
     markDirty();
@@ -1191,18 +1236,21 @@
       <textarea id="detailGenreIdentityBlock" rows="5" placeholder="GENRE: ${esc(g.genre || "")}&#10;ALIASES: ...&#10;SEMINAL TRACK: Artist — Title | Spotify URL | reason&#10;MEDIA TOUCHSTONE: Artist — Title | Media | Spotify URL | why it matters"></textarea>
       <div class="row" style="margin-top:10px;">
         <button type="button" class="btn btn-secondary" id="detailGenreIdentityApplyBtn">Apply & Save identity block</button>
+        <button type="button" class="btn btn-secondary" id="detailGenreIdentityOverwriteBtn">Overwrite & Save identity block</button>
       </div>`;
     const songBulk = document.getElementById("songsListenedBulk")?.closest("div");
     if (songBulk && songBulk.parentNode === panel) songBulk.insertAdjacentElement("afterend", section);
     else panel.appendChild(section);
-    section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", async () => {
+    const runDetailIdentityImport = async (overwrite = false) => {
       const text = section.querySelector("#detailGenreIdentityBlock")?.value || "";
-      const ok = await importStructuredIdentityBlock(text, { genreFallback: g.genre || "" });
+      const ok = await importStructuredIdentityBlock(text, { genreFallback: g.genre || "", overwrite });
       if (ok) {
         section.querySelector("#detailGenreIdentityBlock").value = "";
         setTimeout(() => injectDetailIdentityImport(g), 80);
       }
-    });
+    };
+    section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => runDetailIdentityImport(false));
+    section.querySelector("#detailGenreIdentityOverwriteBtn")?.addEventListener("click", () => runDetailIdentityImport(true));
   }
 
   function installEditorEvents(root = document) {
@@ -1223,7 +1271,8 @@
         $("#genreIdentityFocusBtn", root)?.click();
       }
     });
-    $("#genreIdentityApplyBtn", root)?.addEventListener("click", saveEditor);
+    $("#genreIdentityApplyBtn", root)?.addEventListener("click", () => saveEditor({ overwrite: false }));
+    $("#genreIdentityOverwriteBtn", root)?.addEventListener("click", () => saveEditor({ overwrite: true }));
     $("#genreIdentityParseBlockBtn", root)?.addEventListener("click", () => {
       const text = $("#genreIdentityBlockImport", root)?.value || "";
       const parsed = parseIdentityBlock(text);
@@ -1244,7 +1293,11 @@
     });
     $("#genreIdentityApplyBlockBtn", root)?.addEventListener("click", async () => {
       const text = $("#genreIdentityBlockImport", root)?.value || "";
-      await importStructuredIdentityBlock(text);
+      await importStructuredIdentityBlock(text, { overwrite: false });
+    });
+    $("#genreIdentityOverwriteBlockBtn", root)?.addEventListener("click", async () => {
+      const text = $("#genreIdentityBlockImport", root)?.value || "";
+      await importStructuredIdentityBlock(text, { overwrite: true });
     });
     $("#genreAddMediaBtn", root)?.addEventListener("click", () => {
       const list = $("#genreMediaRows", root);

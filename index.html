@@ -227,7 +227,8 @@
               ></textarea>
               <div class="row" style="margin-top: 10px; gap: 10px; align-items: center;">
                 <button type="button" class="btn btn-primary btn-tiny" onclick="applySongsBulkAndSave(this)">Apply &amp; Save Songs</button>
-                <span class="small" style="color: var(--muted);">Parses this song block and saves the genre immediately.</span>
+                <button type="button" class="btn btn-secondary btn-tiny" onclick="overwriteSongsBulkAndSave(this)">Overwrite &amp; Save Songs</button>
+                <span class="small" style="color: var(--muted);">Apply merges with existing songs. Overwrite replaces this genre’s song list only; Genre Identity stays intact.</span>
               </div>
               <div class="small" style="margin-top: 8px">
                 These are stored on the genre as an array so you can later

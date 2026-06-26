@@ -503,9 +503,9 @@
         if (!displayLabel && !url && first && !isScore(first)) displayLabel = first;
         if (isPlaceholderUrl(url)) url = '';
 
-        const genreTagMatch = reason.match(/@([\w\s-]+?)(\s*\||$)/);
-        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].trim().toLowerCase() : '';
-        const cleanReason = pendingGenreTag ? reason.replace(/@[\w\s-]+?(\s*\||$)/, '$1').trim() : reason;
+        const genreTagMatch = reason.match(/@([A-Za-z0-9_'&/\-\s]+?)(?=\s*\||$)/);
+        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].replace(/_/g, ' ').trim().toLowerCase() : '';
+        const cleanReason = pendingGenreTag ? reason.replace(/@([A-Za-z0-9_'&/\-\s]+?)(?=\s*\||$)/, '').replace(/\s+\|\s*$/,'').trim() : reason;
         const label = normalizeSongArtistAndTitle(displayLabel || '', '');
 
         const song = {
@@ -890,28 +890,30 @@
     }
     window.markListeningUpdatePending = markListeningUpdatePending;
 
-    async function applySongsBulkAndSave(button = null) {
+    async function applySongsBulkAndSave(button = null, options = {}) {
       if (!currentGenre) {
         showSaveToast('Open a genre before applying songs.', true);
         return;
       }
+      const overwriteSongs = !!options.overwriteSongs;
       const oldText = button?.textContent || '';
       if (button) {
         button.disabled = true;
         button.classList.add('is-saving');
-        button.textContent = 'Applying…';
+        button.textContent = overwriteSongs ? 'Overwriting…' : 'Applying…';
       }
       try {
-        await prepareAndSaveCurrentGenre();
+        await prepareAndSaveCurrentGenre({ overwriteSongs });
       } finally {
         if (button && document.body.contains(button)) {
           button.disabled = false;
           button.classList.remove('is-saving');
-          button.textContent = oldText || 'Apply & Save Songs';
+          button.textContent = oldText || (overwriteSongs ? 'Overwrite & Save Songs' : 'Apply & Save Songs');
         }
       }
     }
     window.applySongsBulkAndSave = applySongsBulkAndSave;
+    window.overwriteSongsBulkAndSave = (button = null) => applySongsBulkAndSave(button, { overwriteSongs: true });
 
     function setMonthlyFlagFromView(flag) {
       if (!currentGenre) return;
@@ -2733,19 +2735,22 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
       const previousOfficial = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
       let resolvedOfficial = previousOfficial;
-      if (queueModelIsAuthoritative()) {
+      if (queueModelIsAuthoritative() && !options.overwriteSongs) {
         // A recent inline queue edit is the source of truth. Do not reparse a stale
         // bulk textarea during setup/save, or earlier URL corrections can disappear.
         syncSongsBulkEditorFromModel();
       } else {
-        const parsedOfficial = mergeSongMetadata(
-          normalizeSongsListened(parseSongLinks(document.getElementById('songsListenedBulk').value)),
-          previousOfficial
-        );
+        const parsedFromBulk = normalizeSongsListened(parseSongLinks(document.getElementById('songsListenedBulk').value));
+        const parsedOfficial = options.overwriteSongs
+          ? parsedFromBulk
+          : mergeSongMetadata(parsedFromBulk, previousOfficial);
         resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       }
       currentGenre.songs_listened = resolvedOfficial;
       restoreGenreIdentityData(currentGenre, identitySnapshot);
+      if (options.overwriteSongs) {
+        try { window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(currentGenre, false); } catch (_) {}
+      }
       currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
       removeLoggedSongsFromPending(currentGenre);
       processPendingNominationsForGenre(currentGenre);
@@ -3835,7 +3840,7 @@ function blockSaveIfDuplicateGenres() {
           </div>
         </div>
         <div class="inbox-bulk-grid">
-          <label class="inbox-bulk-text"><span class="sr-only">Songs</span><textarea id="inboxSongInput" rows="5" placeholder="https://open.spotify.com/track/…&#10;Artist — Title&#10;Another Spotify URL"></textarea></label>
+          <label class="inbox-bulk-text"><span class="sr-only">Songs</span><textarea id="inboxSongInput" rows="5" placeholder="https://open.spotify.com/track/…&#10;Artist — Title&#10;Artist — Title | 1 | @folk_rock&#10;I've Just Seen A Face (Across the Universe) | 1 | @folk_rock"></textarea></label>
           <label class="inbox-target-genre"><span>Optional genre</span><select id="inboxTargetGenre"><option value="">Unknown / unassigned</option>${inboxGenreOptionsHtml()}</select></label>
           <div class="inbox-action-stack" style="display:flex; flex-direction:column; gap:8px;">
             <button type="button" class="btn btn-primary" onclick="addToSongInbox()">Add to Inbox</button>
