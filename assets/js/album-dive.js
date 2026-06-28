@@ -416,19 +416,24 @@ function albumDivePreserveViewport(callback) {
   const active = document.activeElement;
   const root = document.documentElement;
   const body = document.body;
+  const panel = document.getElementById("albumDivePanel");
+  const previousMinHeight = panel?.style?.minHeight || "";
+  if (panel) panel.style.minHeight = `${Math.max(panel.offsetHeight || 0, 1)}px`;
+  if (active && typeof active.blur === "function") {
+    try { active.blur(); } catch {}
+  }
   root?.classList?.add("dg-album-dive-scroll-lock");
   body?.classList?.add("dg-album-dive-scroll-lock");
   const restore = () => albumDiveInstantScrollTo(scrollX, scrollY);
   const release = () => {
+    const latestPanel = document.getElementById("albumDivePanel");
+    if (latestPanel) latestPanel.style.minHeight = previousMinHeight;
     root?.classList?.remove("dg-album-dive-scroll-lock");
     body?.classList?.remove("dg-album-dive-scroll-lock");
   };
   try {
     callback?.();
   } finally {
-    if (active && typeof active.blur === "function") {
-      try { active.blur(); } catch {}
-    }
     restore();
     requestAnimationFrame(() => {
       restore();
@@ -517,8 +522,9 @@ function albumDiveSlotReaction(slot = {}) {
 }
 
 function albumDiveReactionButtons(slotKey, currentValue, compact = false) {
-  return `<div class="album-reaction-buttons ${compact ? "compact" : ""}" aria-label="Album reaction">
-    ${[3, 2, 1].map((value) => `<button type="button" class="album-reaction-btn ${Number(currentValue) === value ? "active" : ""}" onclick="setAlbumDiveSlotReaction('${escapeHtml(slotKey)}', ${value})" title="${albumDiveReactionLabel(value)}" aria-label="${albumDiveReactionLabel(value)}"><span>${albumDiveReactionEmoji(value)}</span><small>${albumDiveReactionLabel(value)}</small></button>`).join("")}
+  const safeKey = escapeHtml(slotKey);
+  return `<div class="album-reaction-buttons ${compact ? "compact" : ""}" aria-label="Album reaction" data-album-slot-key="${safeKey}">
+    ${[3, 2, 1].map((value) => `<button type="button" class="album-reaction-btn ${Number(currentValue) === value ? "active" : ""}" data-album-slot-key="${safeKey}" data-album-reaction="${value}" onclick="setAlbumDiveSlotReaction('${safeKey}', ${value}, event)" title="${albumDiveReactionLabel(value)}" aria-label="${albumDiveReactionLabel(value)}"><span>${albumDiveReactionEmoji(value)}</span><small>${albumDiveReactionLabel(value)}</small></button>`).join("")}
   </div>`;
 }
 
@@ -574,18 +580,21 @@ function albumDiveTrackReactionSummary(slot) {
 }
 
 function albumDiveTrackReactionButtons(slotKey, track, compact = false) {
+  const safeKey = escapeHtml(slotKey);
   const trackValue = escapeHtml(albumDiveTrackOptionValue(track));
-  return `<div class="album-track-reactions ${compact ? "compact" : ""}" aria-label="Track reaction for ${escapeHtml(track.title || "album track")}">
-        ${[3, 2, 1].map((value) => `<button type="button" class="album-track-reaction-btn ${Number(track.reaction) === value ? "active" : ""}" onclick="setAlbumDiveTrackReaction('${escapeHtml(slotKey)}', '${trackValue}', ${value})" title="${albumDiveReactionLabel(value)}" aria-label="${albumDiveReactionLabel(value)}">${albumDiveReactionEmoji(value)}</button>`).join("")}
+  return `<div class="album-track-reactions ${compact ? "compact" : ""}" aria-label="Track reaction for ${escapeHtml(track.title || "album track")}" data-album-slot-key="${safeKey}" data-track-value="${trackValue}">
+        ${[3, 2, 1].map((value) => `<button type="button" class="album-track-reaction-btn ${Number(track.reaction) === value ? "active" : ""}" data-album-slot-key="${safeKey}" data-track-value="${trackValue}" data-track-reaction="${value}" onclick="setAlbumDiveTrackReaction('${safeKey}', '${trackValue}', ${value}, event)" title="${albumDiveReactionLabel(value)}" aria-label="${albumDiveReactionLabel(value)}">${albumDiveReactionEmoji(value)}</button>`).join("")}
       </div>`;
 }
 
 function albumDiveTrackTopButton(slotKey, slot, track) {
   const value = albumDiveTrackOptionValue(track);
+  const safeKey = escapeHtml(slotKey);
+  const safeValue = escapeHtml(value);
   const selected = new Set(albumDiveTopTrackValues(slot));
   const candidates = [value, track.spotifyTrackId, track.spotifyTrackUrl, track.itunesTrackId, track.itunesTrackUrl, track.title].filter(Boolean).map(String);
   const active = candidates.some((candidate) => selected.has(candidate));
-  return `<button type="button" class="album-track-top-btn ${active ? "active" : ""}" onclick="toggleAlbumDiveTopTrack('${escapeHtml(slotKey)}', '${escapeHtml(value)}', undefined, event)" title="${active ? "Remove top song" : "Mark as top song"}" aria-label="${active ? "Remove top song" : "Mark as top song"}">${active ? "★ Top" : "☆ Top"}</button>`;
+  return `<button type="button" class="album-track-top-btn ${active ? "active" : ""}" data-album-slot-key="${safeKey}" data-track-value="${safeValue}" onclick="toggleAlbumDiveTopTrack('${safeKey}', '${safeValue}', undefined, event)" title="${active ? "Remove top song" : "Mark as top song"}" aria-label="${active ? "Remove top song" : "Mark as top song"}">${active ? "★ Top" : "☆ Top"}</button>`;
 }
 
 function renderAlbumDiveTrackReactionRows(slot, safeKey) {
@@ -678,7 +687,7 @@ function renderAlbumDiveFocusRail(dive, selectedKey) {
             const isSampled = slot.listenState === "sampled";
             const reaction = albumDiveSlotReaction(slot);
             const hasRating = Number(reaction) > 0;
-            return `<button type="button" role="listitem" class="album-rail-card ${isActive ? "active" : ""} ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${hasRating ? "has-rating" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}')" title="${escapeHtml(label)}">
+            return `<button type="button" role="listitem" class="album-rail-card ${isActive ? "active" : ""} ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${hasRating ? "has-rating" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" data-album-slot-key="${escapeHtml(slot.key)}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}')" title="${escapeHtml(label)}">
             ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(label)} cover" loading="lazy">` : '<span class="album-rail-placeholder"></span>'}
             <span>${escapeHtml(slot.label)}</span>
             <em class="album-rail-status-dot" aria-hidden="true"></em>
@@ -757,7 +766,7 @@ function renderAlbumDiveFocusPanel(dive) {
                 <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}', event)">Details</button>
                 <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}', event)">Delete entry</button>
               </div>
-              ${favoriteLabel ? `<div class="album-focus-favorite"><strong>Top songs:</strong> ${escapeHtml(favoriteLabel)}</div>` : ""}
+              <div class="album-focus-favorite album-focus-favorite-summary ${favoriteLabel ? "" : "empty"}"><strong>Top songs:</strong> <span>${escapeHtml(favoriteLabel || "No top songs picked")}</span></div>
             </div>
           </div>
           ${renderAlbumDiveSidePeek(nextSlot, "Next")}
@@ -815,7 +824,7 @@ function renderAlbumDiveQueue(dive) {
       const meta = [slot.label, slot.artist, slot.year || (slot.releaseDate ? String(slot.releaseDate).slice(0, 4) : "")].filter(Boolean).join(" · ");
       const top = albumDiveTopTrackSummary(slot);
       const reaction = albumDiveSlotReaction(slot);
-      return `<button type="button" class="album-dive-queue-row ${slot.key === selectedKey ? "active" : ""}" onclick="selectAlbumDiveQueueSlot('${escapeHtml(slot.key)}', event)">
+      return `<button type="button" class="album-dive-queue-row ${slot.key === selectedKey ? "active" : ""}" data-album-slot-key="${escapeHtml(slot.key)}" onclick="selectAlbumDiveQueueSlot('${escapeHtml(slot.key)}', event)">
         ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(title)} cover" loading="lazy">` : '<span class="album-queue-art-empty" aria-hidden="true"></span>'}
         <span class="album-dive-queue-main">
           <strong>${escapeHtml(title)}</strong>
@@ -1088,7 +1097,7 @@ function renderAlbumDiveFavoritePicker(slot, safeKey) {
       track.trackNumber ? `#${track.trackNumber}` : "",
     ].filter(Boolean).join(" ");
     return `<label class="album-top-track-check ${isSelected ? "active" : ""}">
-      <input type="checkbox" ${isSelected ? "checked" : ""} onchange="toggleAlbumDiveTopTrack('${safeKey}', '${escapeHtml(value)}', this.checked, event)">
+      <input type="checkbox" data-album-slot-key="${safeKey}" data-track-value="${escapeHtml(value)}" ${isSelected ? "checked" : ""} onchange="toggleAlbumDiveTopTrack('${safeKey}', '${escapeHtml(value)}', this.checked, event)">
       <span>${escapeHtml(`${prefix ? `${prefix} — ` : ""}${track.title}${track.artist ? ` — ${track.artist}` : ""}`)}</span>
     </label>`;
   }).join("");
@@ -1502,6 +1511,86 @@ function updateAlbumDiveFavoriteField(slotKey, field, value) {
   touchAlbumDive();
 }
 
+
+function albumDiveCssEscape(value) {
+  const raw = String(value || "");
+  if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(raw);
+  return raw.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function albumDiveRefreshSlotReactionInPlace(slotKey) {
+  const slot = getAlbumDiveSlot(slotKey);
+  if (!slot) return;
+  const reaction = albumDiveSlotReaction(slot);
+  const selectorKey = albumDiveCssEscape(slotKey);
+  document.querySelectorAll(`.album-reaction-btn[data-album-slot-key="${selectorKey}"]`).forEach((btn) => {
+    const active = Number(btn.dataset.albumReaction) === Number(reaction);
+    btn.classList.toggle("active", !!active);
+  });
+  document.querySelectorAll(`.album-dive-queue-row[data-album-slot-key="${selectorKey}"] .album-dive-queue-status`).forEach((node) => {
+    node.textContent = reaction ? albumDiveReactionEmoji(reaction) : "—";
+  });
+  document.querySelectorAll(`.album-rail-card[data-album-slot-key="${selectorKey}"]`).forEach((node) => {
+    node.classList.toggle("has-rating", !!reaction);
+    let badge = node.querySelector("strong");
+    if (reaction) {
+      if (!badge) {
+        badge = document.createElement("strong");
+        node.appendChild(badge);
+      }
+      badge.textContent = albumDiveReactionEmoji(reaction);
+    } else if (badge) {
+      badge.remove();
+    }
+  });
+}
+
+function albumDiveRefreshTrackReactionInPlace(slotKey, trackValue, reaction) {
+  const selectorKey = albumDiveCssEscape(slotKey);
+  const selectorTrack = albumDiveCssEscape(trackValue);
+  document.querySelectorAll(`.album-track-reaction-btn[data-album-slot-key="${selectorKey}"][data-track-value="${selectorTrack}"]`).forEach((btn) => {
+    btn.classList.toggle("active", Number(btn.dataset.trackReaction) === Number(reaction));
+  });
+}
+
+function albumDiveRefreshTopTracksInPlace(slotKey, trackValue) {
+  const slot = getAlbumDiveSlot(slotKey);
+  if (!slot) return;
+  const selectorKey = albumDiveCssEscape(slotKey);
+  const selected = new Set(albumDiveTopTrackValues(slot));
+  const topSummary = albumDiveTopTrackSummary(slot);
+  document.querySelectorAll(`.album-track-top-btn[data-album-slot-key="${selectorKey}"]`).forEach((btn) => {
+    const value = btn.dataset.trackValue || "";
+    const active = selected.has(value);
+    btn.classList.toggle("active", active);
+    btn.textContent = active ? "★ Top" : "☆ Top";
+    btn.title = active ? "Remove top song" : "Mark as top song";
+    btn.setAttribute("aria-label", btn.title);
+  });
+  document.querySelectorAll(`input[type="checkbox"][data-album-slot-key="${selectorKey}"]`).forEach((input) => {
+    const value = input.dataset.trackValue || "";
+    input.checked = selected.has(value);
+    input.closest?.(".album-top-track-check")?.classList.toggle("active", input.checked);
+  });
+  document.querySelectorAll(".album-focus-favorite-summary span").forEach((node) => {
+    node.textContent = topSummary;
+  });
+  document.querySelectorAll(`.album-dive-queue-row[data-album-slot-key="${selectorKey}"] em`).forEach((node) => {
+    node.textContent = topSummary;
+  });
+}
+
+function albumDiveRefreshFavoriteAlbumInPlace(slotKey) {
+  const dive = normalizeAlbumDive(currentGenre, false);
+  const selected = (dive?.slots || []).find((slot) => slot.key === slotKey);
+  const active = !!selected?.favoriteAlbum;
+  document.querySelectorAll(".album-focus-trophy").forEach((btn) => {
+    btn.classList.toggle("active", active);
+    btn.title = active ? "Remove favorite album" : "Mark as favorite album";
+    btn.setAttribute("aria-label", btn.title);
+  });
+}
+
 function setAlbumDiveSlotRating(slotKey, rating) {
   const reaction = albumDiveReactionFromLegacyRating(rating);
   setAlbumDiveSlotReaction(slotKey, reaction);
@@ -1515,7 +1604,7 @@ function setAlbumDiveSlotReaction(slotKey, value, event) {
   slot.albumReaction = Number(slot.albumReaction) === reaction ? null : reaction;
   slot.rating = null;
   touchAlbumDive();
-  rerenderAlbumDive({ preserveScroll: true });
+  albumDiveRefreshSlotReactionInPlace(slotKey);
 }
 
 function setAlbumDiveFavoriteAlbum(slotKey, event) {
@@ -1530,7 +1619,7 @@ function setAlbumDiveFavoriteAlbum(slotKey, event) {
   });
   slot.favoriteAlbum = next;
   touchAlbumDive();
-  rerenderAlbumDive({ preserveScroll: true });
+  albumDiveRefreshFavoriteAlbumInPlace(slotKey);
 }
 
 
@@ -1861,7 +1950,7 @@ function setAlbumDiveTrackReaction(slotKey, trackValue, value, event) {
   const reaction = [1, 2, 3].includes(Number(value)) ? Number(value) : null;
   track.reaction = Number(track.reaction) === reaction ? null : reaction;
   touchAlbumDive();
-  rerenderAlbumDive({ preserveScroll: true });
+  albumDiveRefreshTrackReactionInPlace(slotKey, cleanValue, track.reaction);
 }
 
 function syncAlbumDiveFavoriteToFirstTopTrack(slot) {
@@ -1904,7 +1993,7 @@ function toggleAlbumDiveTopTrack(slotKey, trackValue, forceValue, event) {
   slot.topTracks = [...current];
   if (slot.topTracks.length) syncAlbumDiveFavoriteToFirstTopTrack(slot);
   touchAlbumDive();
-  rerenderAlbumDive({ preserveScroll: true });
+  albumDiveRefreshTopTracksInPlace(slotKey, canonical);
 }
 
 function setAlbumDiveFavoriteFromTrack(slotKey, value) {
