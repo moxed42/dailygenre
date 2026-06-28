@@ -484,6 +484,16 @@ function setAlbumDiveFocusSlot(slotKey, options = {}) {
   try {
     localStorage.setItem(albumDiveStorageKey(), slotKey || "");
   } catch {}
+
+  // In listening mode, changing the focused album should feel like moving a
+  // carousel, not like rebuilding the whole Album Dive section. Replacing only
+  // the focused view prevents the browser from jumping down to the queue and
+  // then snapping back up.
+  if (albumDiveIsListenMode() && document.querySelector(".album-focus-view")) {
+    albumDiveReplaceFocusViewInPlace({ preserveScroll: !!options.preserveScroll });
+    return;
+  }
+
   rerenderAlbumDive({ preserveScroll: true });
 }
 
@@ -648,7 +658,7 @@ function setAlbumDiveFocusRelative(direction, event) {
   if (!dive?.slots?.length) return;
   const currentKey = getAlbumDiveFocusSlotKey(dive);
   const next = albumDiveAdjacentSlot(dive, currentKey, Number(direction) || 0);
-  if (next?.key) setAlbumDiveFocusSlot(next.key, { event });
+  if (next?.key) setAlbumDiveFocusSlot(next.key, { event, preserveScroll: true });
 }
 
 function renderAlbumDiveSidePeek(slot, sideLabel) {
@@ -661,7 +671,7 @@ function renderAlbumDiveSidePeek(slot, sideLabel) {
   const state = slot.listenState || "not_started";
   const isFinished = state === "finished" || state === "completed";
   const isSampled = state === "sampled";
-  return `<button type="button" class="album-focus-peek ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}')" title="${escapeHtml(sideLabel)}: ${escapeHtml(title)}">
+  return `<button type="button" class="album-focus-peek ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}', { event })" title="${escapeHtml(sideLabel)}: ${escapeHtml(title)}">
         <span class="album-focus-peek-direction">${escapeHtml(sideLabel)}</span>
         ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(title)} cover" loading="lazy">` : '<span class="album-rail-placeholder"></span>'}
         ${slot.favoriteAlbum ? '<span class="album-favorite-marker" title="Favorite album">🏆</span>' : ""}
@@ -687,7 +697,7 @@ function renderAlbumDiveFocusRail(dive, selectedKey) {
             const isSampled = slot.listenState === "sampled";
             const reaction = albumDiveSlotReaction(slot);
             const hasRating = Number(reaction) > 0;
-            return `<button type="button" role="listitem" class="album-rail-card ${isActive ? "active" : ""} ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${hasRating ? "has-rating" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" data-album-slot-key="${escapeHtml(slot.key)}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}')" title="${escapeHtml(label)}">
+            return `<button type="button" role="listitem" class="album-rail-card ${isActive ? "active" : ""} ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${hasRating ? "has-rating" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" data-album-slot-key="${escapeHtml(slot.key)}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}', { event })" title="${escapeHtml(label)}">
             ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(label)} cover" loading="lazy">` : '<span class="album-rail-placeholder"></span>'}
             <span>${escapeHtml(slot.label)}</span>
             <em class="album-rail-status-dot" aria-hidden="true"></em>
@@ -746,7 +756,7 @@ function renderAlbumDiveFocusPanel(dive) {
           <input type="url" value="${escapeHtml(slot.manualAlbumArt || "")}" placeholder="Manual album art URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'manualAlbumArt', this.value)">
         </div>
       </details>`;
-  return `<div class="album-focus-view">
+  return `<div class="album-focus-view" data-album-focus-key="${safeKey}">
         <div class="album-focus-carousel" aria-label="Focused Album Dive carousel">
           <button type="button" class="album-focus-nav album-focus-prev" onclick="setAlbumDiveFocusRelative(-1, event)" aria-label="Previous Album Dive slot">‹</button>
           ${renderAlbumDiveSidePeek(prevSlot, "Previous")}
@@ -863,12 +873,10 @@ function selectAlbumDiveQueueSlot(slotKey, event) {
     event.preventDefault();
     event.stopPropagation();
   }
-  albumDivePreserveViewport(() => {
-    setAlbumDiveFocusSlot(slotKey, { preserveQueue: true });
-    albumDiveQueueOpen = true;
-    const panel = document.getElementById("albumDivePanel");
-    if (panel && panel.open) albumDivePanelOpen = true;
-  });
+  albumDiveQueueOpen = true;
+  const panel = document.getElementById("albumDivePanel");
+  if (panel && panel.open) albumDivePanelOpen = true;
+  setAlbumDiveFocusSlot(slotKey, { event, preserveQueue: true, preserveScroll: true });
 }
 
 function toggleAlbumDiveFocusDetails(slotKey, eventOrForceOpen = false, maybeForceOpen = false) {
@@ -1516,6 +1524,43 @@ function albumDiveCssEscape(value) {
   const raw = String(value || "");
   if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(raw);
   return raw.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function albumDiveRefreshQueueActiveInPlace(slotKey) {
+  const selectorKey = albumDiveCssEscape(slotKey || "");
+  document.querySelectorAll(".album-dive-queue-row").forEach((row) => {
+    row.classList.toggle("active", row.dataset.albumSlotKey === String(slotKey || ""));
+  });
+  document.querySelectorAll(".album-rail-card").forEach((row) => {
+    row.classList.toggle("active", row.dataset.albumSlotKey === String(slotKey || ""));
+  });
+}
+
+function albumDiveReplaceFocusViewInPlace(options = {}) {
+  const work = () => {
+    const dive = normalizeAlbumDive(currentGenre, false);
+    const oldView = document.querySelector(".album-focus-view");
+    if (!dive || !oldView) return false;
+    const currentKey = getAlbumDiveFocusSlotKey(dive);
+    const currentHeight = Math.max(oldView.offsetHeight || 0, 1);
+    oldView.style.minHeight = `${currentHeight}px`;
+    const template = document.createElement("template");
+    template.innerHTML = renderAlbumDiveFocusPanel(dive).trim();
+    const nextView = template.content.firstElementChild;
+    if (!nextView) return false;
+    nextView.style.minHeight = `${currentHeight}px`;
+    oldView.replaceWith(nextView);
+    albumDiveRefreshQueueActiveInPlace(currentKey);
+    requestAnimationFrame(() => {
+      const latest = document.querySelector(".album-focus-view");
+      if (latest) latest.style.minHeight = "";
+      hydrateAlbumDiveAmbient();
+    });
+    return true;
+  };
+
+  if (options.preserveScroll) albumDivePreserveViewport(work);
+  else work();
 }
 
 function albumDiveRefreshSlotReactionInPlace(slotKey) {

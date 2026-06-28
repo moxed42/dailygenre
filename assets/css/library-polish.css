@@ -9029,3 +9029,25 @@ body.dg-album-dive-scroll-lock *,
 .album-focus-tracks summary small {
   margin-left: 4px !important;
 }
+
+
+/* === Album Dive v106: in-place focus navigation, no queue jump === */
+.album-focus-view {
+  overflow-anchor: none !important;
+  contain: layout paint;
+}
+.album-focus-carousel,
+.album-focus-tracks,
+.album-focus-rail,
+.album-dive-queue-panel {
+  overflow-anchor: none !important;
+}
+.album-focus-tracks > details > summary {
+  gap: 12px !important;
+}
+.album-focus-tracks > details > summary span {
+  margin-right: 6px !important;
+}
+.album-focus-tracks > details > summary small::before {
+  content: "· ";
+}
