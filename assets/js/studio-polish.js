@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v33-inline-repair";
+  const VERSION = "studio-polish-v34-deduped-repair";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -121,6 +121,85 @@
         song?.title,
       ].join(" "),
     );
+  }
+
+
+  function repairDisplayKey(song) {
+    const title = norm(song?.title || song?.name || "");
+    const artist = norm(
+      song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""),
+    );
+    if (title && artist) return `artist-title:${artist}::${title}`;
+    const id = norm(song?.spotifyId || "");
+    if (id) return `spotify:${id}`;
+    const url = norm(song?.spotifyUrl || song?.url || "");
+    if (url) return `url:${url}`;
+    return norm(songTitle(song));
+  }
+
+  function consolidateRepairRows(rows) {
+    const groups = new Map();
+    rows.forEach((row) => {
+      if (!row?.song || !row?.genre) return;
+      const displayKey = repairDisplayKey(row.song) || songKey(row.song);
+      if (!displayKey) return;
+      const group = groups.get(displayKey) || {
+        ...row,
+        problemSet: new Set(),
+        targetMap: new Map(),
+        priority: row.priority || 0,
+      };
+      group.priority = Math.max(group.priority || 0, row.priority || 0);
+      if ((row.priority || 0) >= (group.primaryPriority || -1)) {
+        group.primaryPriority = row.priority || 0;
+        group.genre = row.genre;
+        group.song = row.song;
+        group.type = row.type;
+      }
+      const problemLabel =
+        row.type === "missingArt"
+          ? "art"
+          : row.type === "missingYear"
+            ? "year"
+            : row.type === "missingMeta"
+              ? "metadata"
+              : row.problem || "repair";
+      group.problemSet.add(problemLabel);
+      const targetKey = `${String(row.genre?.id ?? "")}::${songKey(row.song)}`;
+      if (!group.targetMap.has(targetKey)) {
+        group.targetMap.set(targetKey, {
+          genreId: String(row.genre?.id ?? ""),
+          key: songKey(row.song),
+          genreName: row.genre?.genre || "Unknown genre",
+        });
+      }
+      groups.set(displayKey, group);
+    });
+    return Array.from(groups.values()).map((group) => {
+      const problems = Array.from(group.problemSet).sort((a, b) => {
+        const order = { art: 0, year: 1, metadata: 2 };
+        return (order[a] ?? 9) - (order[b] ?? 9) || String(a).localeCompare(String(b));
+      });
+      return {
+        ...group,
+        problem: problems.length ? `Missing ${problems.join(" + ")}` : group.problem,
+        repairProblems: problems,
+        targets: Array.from(group.targetMap.values()).filter((x) => x.genreId && x.key),
+        targetCount: group.targetMap.size,
+      };
+    });
+  }
+
+  function topRepairRows(limit = 10) {
+    return consolidateRepairRows(
+      stats()
+        .rows.filter((r) => ["missingArt", "missingYear", "missingMeta"].includes(r.type))
+        .sort(
+          (a, b) =>
+            b.priority - a.priority ||
+            String(songTitle(a.song)).localeCompare(songTitle(b.song)),
+        ),
+    ).slice(0, limit);
   }
 
   function spotifyUrl(song) {
@@ -426,14 +505,24 @@
         const inputId = `studioRepairUrl_${String(row.genre?.id ?? "").replace(/[^a-zA-Z0-9_-]/g, "")}_${idx}`;
         const key = songKey(row.song);
         const currentUrl = row.song?.spotifyUrl || row.song?.url || "";
-        const inlineRepair = isRepair
-          ? `<form class="studio-inline-track-edit" onsubmit="event.preventDefault(); typeof updateMetadataTrackUrlFromQueue === 'function' ? updateMetadataTrackUrlFromQueue('${encodeURIComponent(String(row.genre?.id ?? ""))}', '${encodeURIComponent(String(key || ""))}', '${esc(inputId)}', this.querySelector('button[type=submit]'), 'review') : null"><label for="${esc(inputId)}">Spotify URL</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}"><button type="submit" class="btn btn-primary btn-tiny">Update</button></div></form>`
+        const groupTargets = isRepair && Array.isArray(row.targets) && row.targets.length
+          ? row.targets
+          : [{ genreId: String(row.genre?.id ?? ""), key: String(key || ""), genreName }];
+        const encodedTargets = encodeURIComponent(JSON.stringify(groupTargets));
+        const copyChip = isRepair && row.targetCount > 1
+          ? `<span class="studio-repair-copy-chip">${esc(String(row.targetCount))} copies</span>`
           : "";
-        return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
+        const problemChips = isRepair && Array.isArray(row.repairProblems) && row.repairProblems.length
+          ? row.repairProblems.map((kind) => `<span>missing ${esc(kind)}</span>`).join("")
+          : `<span>${esc(problem)}</span>`;
+        const inlineRepair = isRepair
+          ? `<form class="studio-inline-track-edit" onsubmit="event.preventDefault(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this.querySelector('button[type=submit]')) : (typeof updateMetadataTrackUrlFromQueue === 'function' ? updateMetadataTrackUrlFromQueue('${encodeURIComponent(String(row.genre?.id ?? ""))}', '${encodeURIComponent(String(key || ""))}', '${esc(inputId)}', this.querySelector('button[type=submit]'), 'review') : null)"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}"><button type="submit" class="btn btn-primary btn-tiny">${row.targetCount > 1 ? "Update copies" : "Update"}</button></div></form>`
+          : "";
+        return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
           <div class="studio-mini-main">
             <div class="studio-mini-title">${href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(songTitle(row.song))}</a>` : esc(songTitle(row.song))}</div>
-            <div class="studio-mini-meta"><span>${esc(problem)}</span><span>${esc(genreName)}</span>${fit ? `<span>fit ${esc(fit)}/5</span>` : ""}${row.song?.pendingFrom ? `<span>from ${esc(row.song.pendingFrom)}</span>` : ""}</div>
+            <div class="studio-mini-meta">${copyChip}${problemChips}<span>${esc(genreName)}</span>${fit ? `<span>fit ${esc(fit)}/5</span>` : ""}${row.song?.pendingFrom ? `<span>from ${esc(row.song.pendingFrom)}</span>` : ""}</div>
             ${inlineRepair}
           </div>
           <div class="studio-mini-actions">
@@ -445,11 +534,7 @@
   }
 
   function renderRepairLane(s) {
-    const rows = [
-      ...topRows("missingArt", 4),
-      ...topRows("missingYear", 3),
-      ...topRows("missingMeta", 3),
-    ].slice(0, 10);
+    const rows = topRepairRows(10);
     return `<section class="studio-lane" id="studio-repair-lane" data-studio-lane="repair">
       <div class="studio-lane-head">
         <div><div class="eyebrow">Repair Bay</div><h3>Metadata and artwork cleanup</h3><p>Prioritize high-fit, liked, and visible songs first so Library, Stats, and carousels stay trustworthy.</p></div>
@@ -877,6 +962,73 @@
     window.renderReview = wrappedRenderReview;
     return true;
   }
+
+  async function updateStudioRepairGroupUrlFromQueue(encodedTargetsJson, inputId, button) {
+    let targets = [];
+    try {
+      targets = JSON.parse(decodeURIComponent(String(encodedTargetsJson || "[]")));
+    } catch (_) {
+      targets = [];
+    }
+    const unique = [];
+    const seen = new Set();
+    targets.forEach((target) => {
+      const genreId = String(target?.genreId ?? "");
+      const key = String(target?.key ?? "");
+      const id = `${genreId}::${key}`;
+      if (!genreId || !key || seen.has(id)) return;
+      seen.add(id);
+      unique.push({ genreId, key });
+    });
+    if (!unique.length || typeof window.updateMetadataTrackUrlFromQueue !== "function") {
+      toast("Could not find matching repair rows. Refresh Studio and try again.", true);
+      return;
+    }
+
+    const originalText = button?.textContent || "Update";
+    const setBusy = (copy) => {
+      if (!button) return;
+      button.disabled = true;
+      button.classList.add("is-saving");
+      button.textContent = copy;
+    };
+    const clearBusy = () => {
+      if (!button || !document.body.contains(button)) return;
+      button.disabled = false;
+      button.classList.remove("is-saving");
+      button.textContent = originalText;
+    };
+
+    let updated = 0;
+    try {
+      setBusy(unique.length > 1 ? `Updating 1/${unique.length}…` : "Updating…");
+      for (let idx = 0; idx < unique.length; idx += 1) {
+        const target = unique[idx];
+        if (idx > 0) setBusy(`Updating ${idx + 1}/${unique.length}…`);
+        await window.updateMetadataTrackUrlFromQueue(
+          encodeURIComponent(target.genreId),
+          encodeURIComponent(target.key),
+          inputId,
+          idx === 0 ? button : null,
+          "review",
+        );
+        updated += 1;
+      }
+      const rowEl = button?.closest?.(".studio-mini-row-repair");
+      const metaEl = rowEl?.querySelector?.(".studio-mini-meta");
+      if (metaEl) {
+        const existing = metaEl.querySelector(".studio-inline-group-updated-chip");
+        const label = `updated ${updated} ${updated === 1 ? "copy" : "copies"} · save pending`;
+        if (existing) existing.textContent = label;
+        else metaEl.insertAdjacentHTML("afterbegin", `<span class="studio-inline-group-updated-chip">${esc(label)}</span>`);
+      }
+      if (updated > 1) toast(`Updated ${updated} matching copies — Save cleanup to persist.`, false);
+    } finally {
+      clearBusy();
+    }
+  }
+
+  window.updateStudioRepairGroupUrlFromQueue = updateStudioRepairGroupUrlFromQueue;
 
   function boot() {
     wrapRenderReview();

@@ -1272,3 +1272,19 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+
+/* === Studio v94: dedupe grouped artwork/metadata repair rows === */
+.studio-repair-copy-chip,
+.studio-inline-group-updated-chip {
+  color: color-mix(in srgb, var(--success, #496b3b) 82%, var(--text, #22160d)) !important;
+  background: color-mix(in srgb, var(--success-soft, #dce8c8) 86%, white) !important;
+  border-color: color-mix(in srgb, var(--success, #496b3b) 32%, transparent) !important;
+}
+
+.studio-mini-row-repair-grouped .studio-inline-track-edit label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
