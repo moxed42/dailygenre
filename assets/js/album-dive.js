@@ -49,6 +49,11 @@ function defaultAlbumDiveSlot(key, label) {
     spotifyAlbumUrl: "",
     spotifyAlbumId: "",
     spotifyUrl: "",
+    itunesAlbumUrl: "",
+    appleAlbumUrl: "",
+    itunesCollectionId: "",
+    albumProviderUrl: "",
+    metadataSource: "",
     albumArt: "",
     manualAlbumArt: "",
     tracks: [],
@@ -60,6 +65,9 @@ function defaultAlbumDiveSlot(key, label) {
       artist: "",
       spotifyTrackUrl: "",
       spotifyTrackId: "",
+      itunesTrackUrl: "",
+      itunesTrackId: "",
+      previewUrl: "",
       albumArt: "",
       durationMs: null,
       trackNumber: null,
@@ -86,7 +94,10 @@ function normalizeAlbumDiveTrack(raw = {}) {
     spotifyTrackUrl:
       raw.spotifyTrackUrl || raw.spotifyUrl || raw.external_urls?.spotify || "",
     spotifyTrackId: raw.spotifyTrackId || raw.spotifyId || raw.id || "",
-    durationMs: Number(raw.durationMs || raw.duration_ms || 0) || null,
+    itunesTrackUrl: raw.itunesTrackUrl || raw.appleTrackUrl || raw.trackViewUrl || "",
+    itunesTrackId: raw.itunesTrackId || raw.appleTrackId || raw.trackId || "",
+    previewUrl: raw.previewUrl || raw.preview_url || "",
+    durationMs: Number(raw.durationMs || raw.duration_ms || raw.trackTimeMillis || 0) || null,
     trackNumber: Number(raw.trackNumber || raw.track_number || 0) || null,
     discNumber: Number(raw.discNumber || raw.disc_number || 0) || null,
     reaction: [1, 2, 3].includes(Number(raw.reaction))
@@ -105,6 +116,10 @@ function normalizeAlbumDiveSlot(raw, key, label) {
   slot.rating = slot.rating ? Number(slot.rating) : null;
   slot.favoriteAlbum = Boolean(slot.favoriteAlbum);
   slot.totalTracks = slot.totalTracks ? Number(slot.totalTracks) : null;
+  slot.itunesCollectionId = String(slot.itunesCollectionId || slot.appleCollectionId || slot.collectionId || "");
+  slot.itunesAlbumUrl = slot.itunesAlbumUrl || slot.appleAlbumUrl || slot.collectionViewUrl || "";
+  slot.albumProviderUrl = slot.albumProviderUrl || slot.spotifyAlbumUrl || slot.spotifyUrl || slot.itunesAlbumUrl || slot.appleAlbumUrl || "";
+  slot.metadataSource = slot.metadataSource || (slot.spotifyAlbumId || slot.spotifyAlbumUrl || slot.spotifyUrl ? "spotify" : slot.itunesCollectionId || slot.itunesAlbumUrl || slot.appleAlbumUrl ? "itunes" : "");
   slot.favoriteSong = { ...base.favoriteSong, ...(slot.favoriteSong || {}) };
   slot.favoriteSong.durationMs = slot.favoriteSong.durationMs
     ? Number(slot.favoriteSong.durationMs)
@@ -176,7 +191,7 @@ function albumDiveProgress(dive) {
   const sampled = slots.filter((slot) => slot.listenState === "sampled").length;
   const fetched = slots.filter(
     (slot) =>
-      slot.spotifyAlbumId || slot.albumArt || (slot.tracks || []).length,
+      slot.spotifyAlbumId || slot.itunesCollectionId || slot.albumArt || (slot.tracks || []).length,
   ).length;
   return {
     finished,
@@ -385,6 +400,9 @@ function albumDiveSlotHasContent(slot) {
     slot?.manualAlbumArt ||
     slot?.spotifyAlbumUrl ||
     slot?.spotifyUrl ||
+    slot?.itunesAlbumUrl ||
+    slot?.appleAlbumUrl ||
+    slot?.albumProviderUrl ||
     slot?.notes ||
     slot?.rationale ||
     fav.title ||
@@ -552,8 +570,8 @@ function renderAlbumDiveFocusPanel(dive) {
   const safeKey = escapeHtml(slot.key);
   const state = slot.listenState || "not_started";
   const fav = slot.favoriteSong || {};
-  const albumUrl = String(slot.spotifyAlbumUrl || slot.spotifyUrl || "").trim();
-  const displayTitle = slot.album || "Paste a Spotify album URL";
+  const albumUrl = albumDiveSlotCanonicalUrl(slot);
+  const displayTitle = slot.album || "Paste a Spotify or Apple/iTunes album URL";
   const displaySub = [
     slot.artist,
     slot.year || (slot.releaseDate ? String(slot.releaseDate).slice(0, 4) : ""),
@@ -757,6 +775,8 @@ function albumDiveTrackOptionValue(track) {
   return (
     track.spotifyTrackId ||
     track.spotifyTrackUrl ||
+    track.itunesTrackId ||
+    track.itunesTrackUrl ||
     `${track.discNumber || 1}:${track.trackNumber || ""}:${track.title}`
   );
 }
@@ -764,14 +784,14 @@ function albumDiveTrackOptionValue(track) {
 function renderAlbumDiveFavoritePicker(slot, safeKey) {
   const fav = slot.favoriteSong || {};
   const tracks = Array.isArray(slot.tracks) ? slot.tracks : [];
-  const selected = fav.spotifyTrackId || fav.spotifyTrackUrl || "";
+  const selected = fav.spotifyTrackId || fav.spotifyTrackUrl || fav.itunesTrackId || fav.itunesTrackUrl || "";
   if (!tracks.length) {
-    return `<div class="small">Fetch the Spotify album first to choose from its real track list.</div>
+    return `<div class="small">Fetch the Spotify or Apple/iTunes album first to choose from its real track list.</div>
           <div class="album-slot-minirow">
             <input type="text" value="${escapeHtml(fav.title || "")}" placeholder="Favorite song title" oninput="updateAlbumDiveFavoriteField('${safeKey}', 'title', this.value)">
             <input type="text" value="${escapeHtml(fav.artist || "")}" placeholder="Artist" oninput="updateAlbumDiveFavoriteField('${safeKey}', 'artist', this.value)">
           </div>
-          <input type="url" value="${escapeHtml(fav.spotifyTrackUrl || "")}" placeholder="Spotify track URL for favorite song" onchange="updateAlbumDiveFavoriteField('${safeKey}', 'spotifyTrackUrl', this.value)">`;
+          <input type="url" value="${escapeHtml(fav.spotifyTrackUrl || fav.itunesTrackUrl || "")}" placeholder="Spotify or Apple/iTunes track URL for favorite song" onchange="updateAlbumDiveFavoriteField('${safeKey}', this.value.includes('apple.com') || this.value.includes('itunes.apple.com') ? 'itunesTrackUrl' : 'spotifyTrackUrl', this.value)">`;
   }
   return `<div class="album-track-select-row">
         <select onchange="setAlbumDiveFavoriteFromTrack('${safeKey}', this.value)">
@@ -783,6 +803,8 @@ function renderAlbumDiveFavoritePicker(slot, safeKey) {
                 selected &&
                 (selected === track.spotifyTrackId ||
                   selected === track.spotifyTrackUrl ||
+                  selected === track.itunesTrackId ||
+                  selected === track.itunesTrackUrl ||
                   selected === value);
               const prefix = [
                 track.discNumber && track.discNumber > 1
@@ -796,17 +818,17 @@ function renderAlbumDiveFavoritePicker(slot, safeKey) {
             })
             .join("")}
         </select>
-        ${fav.spotifyTrackUrl ? `<a class="btn btn-secondary btn-tiny" href="${escapeHtml(fav.spotifyTrackUrl)}" target="_blank" rel="noopener">Open</a>` : ""}
+        ${fav.spotifyTrackUrl || fav.itunesTrackUrl ? `<a class="btn btn-secondary btn-tiny" href="${escapeHtml(fav.spotifyTrackUrl || fav.itunesTrackUrl)}" target="_blank" rel="noopener">Open</a>` : ""}
       </div>
       ${fav.title ? `<div class="small"><strong>Favorite:</strong> ${escapeHtml(fav.artist ? `${fav.artist} — ${fav.title}` : fav.title)}</div>` : ""}`;
 }
 
 function renderAlbumDiveSlot(slot) {
-  const albumUrl = String(slot.spotifyAlbumUrl || slot.spotifyUrl || "").trim();
+  const albumUrl = albumDiveSlotCanonicalUrl(slot);
   const state = slot.listenState || "not_started";
   const fav = slot.favoriteSong || {};
   const safeKey = escapeHtml(slot.key);
-  const displayTitle = slot.album || "Paste a Spotify album URL";
+  const displayTitle = slot.album || "Paste a Spotify or Apple/iTunes album URL";
   const displaySub = [
     slot.artist,
     slot.year || (slot.releaseDate ? String(slot.releaseDate).slice(0, 4) : ""),
@@ -903,11 +925,12 @@ function renderAlbumDiveSlot(slot) {
           </div>
 
           <div class="album-build-controls">
-            <div class="album-fetch-row">
-              <input type="url" value="${escapeHtml(slot.spotifyAlbumUrl || slot.spotifyUrl || "")}" placeholder="Paste Spotify album URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'spotifyAlbumUrl', this.value)">
+            <div class="album-fetch-row album-provider-row">
+              <input type="url" value="${escapeHtml(albumDiveSlotInputUrl(slot))}" placeholder="Paste Spotify, Apple Music, or iTunes album URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'albumProviderUrl', this.value)">
               <button type="button" class="btn btn-primary btn-tiny" onclick="fetchAlbumDiveAlbumMetadata('${safeKey}', this)">Fetch Album + Tracks</button>
               <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}')">Delete entry</button>
             </div>
+            <div class="album-source-line small"><span class="album-source-chip ${albumDiveSourceClass(slot)}">${escapeHtml(albumDiveSourceLabel(slot))}</span>${slot.primaryGenreName ? ` <span>${escapeHtml(slot.primaryGenreName)}</span>` : ""}</div>
             <div class="album-slot-meta">
               ${listenStateSelect}
               <div class="album-stars" aria-label="Album rating">${ratingButtons}</div>
@@ -1019,16 +1042,26 @@ function importAlbumDiveJson(inputId = "albumDiveJsonImport") {
       return (aIndex < 0 ? 999 : aIndex) - (bIndex < 0 ? 999 : bIndex);
     });
     used.add(key);
-    const spotifyUrl = String(row.spotify_url || row.spotifyAlbumUrl || row.spotifyUrl || row.url || "").trim();
+    const spotifyUrl = String(row.spotify_url || row.spotifyAlbumUrl || row.spotifyUrl || "").trim();
+    const appleUrl = String(row.itunes_url || row.itunesAlbumUrl || row.apple_url || row.appleAlbumUrl || row.collectionViewUrl || "").trim();
+    const providerUrl = String(row.url || spotifyUrl || appleUrl || "").trim();
     slot.album = albumDiveCleanPastedRefs(row.album || row.title || row.name || slot.album || "");
     slot.artist = albumDiveCleanPastedRefs(row.artist || row.album_artist || row.albumArtist || slot.artist || "");
     slot.year = row.year ? Number(row.year) || slot.year || null : slot.year || null;
     slot.releaseDate = albumDiveCleanPastedRefs(row.release_date || row.releaseDate || slot.releaseDate || "");
     slot.rationale = albumDiveCleanPastedRefs(row.reason || row.rationale || row.description || slot.rationale || "");
     slot.notes = albumDiveCleanPastedRefs(row.notes || slot.notes || "");
-    slot.spotifyAlbumUrl = spotifyUrl || slot.spotifyAlbumUrl || slot.spotifyUrl || "";
-    slot.spotifyUrl = spotifyUrl || slot.spotifyUrl || slot.spotifyAlbumUrl || "";
-    slot.spotifyAlbumId = spotifyIdFromUrl(slot.spotifyAlbumUrl || slot.spotifyUrl, "album") || slot.spotifyAlbumId || "";
+    if (spotifyUrl) {
+      slot.spotifyAlbumUrl = spotifyUrl || slot.spotifyAlbumUrl || slot.spotifyUrl || "";
+      slot.spotifyUrl = spotifyUrl || slot.spotifyUrl || slot.spotifyAlbumUrl || "";
+      slot.spotifyAlbumId = spotifyIdFromUrl(slot.spotifyAlbumUrl || slot.spotifyUrl, "album") || slot.spotifyAlbumId || "";
+      slot.metadataSource = "spotify";
+    }
+    if (appleUrl || (providerUrl && albumDiveIsAppleAlbumUrl(providerUrl))) {
+      albumDiveApplyProviderUrl(slot, appleUrl || providerUrl);
+    } else if (providerUrl && !spotifyUrl) {
+      albumDiveApplyProviderUrl(slot, providerUrl);
+    }
     slot.albumArt = row.albumArt || row.album_art || row.artwork || row.cover || slot.albumArt || "";
     slot.manualAlbumArt = row.manualAlbumArt || row.manual_album_art || slot.manualAlbumArt || "";
     if (row.favorite_song || row.favoriteSong) {
@@ -1038,7 +1071,8 @@ function importAlbumDiveJson(inputId = "albumDiveJsonImport") {
       else {
         slot.favoriteSong.title = albumDiveCleanPastedRefs(favRaw.title || favRaw.name || slot.favoriteSong.title || "");
         slot.favoriteSong.artist = albumDiveCleanPastedRefs(favRaw.artist || slot.favoriteSong.artist || slot.artist || "");
-        slot.favoriteSong.spotifyTrackUrl = String(favRaw.spotify_url || favRaw.spotifyTrackUrl || favRaw.spotifyUrl || favRaw.url || slot.favoriteSong.spotifyTrackUrl || "").trim();
+        slot.favoriteSong.spotifyTrackUrl = String(favRaw.spotify_url || favRaw.spotifyTrackUrl || favRaw.spotifyUrl || slot.favoriteSong.spotifyTrackUrl || "").trim();
+        slot.favoriteSong.itunesTrackUrl = String(favRaw.itunes_url || favRaw.itunesTrackUrl || favRaw.apple_url || favRaw.trackViewUrl || favRaw.url || slot.favoriteSong.itunesTrackUrl || "").trim();
         slot.favoriteSong.note = albumDiveCleanPastedRefs(favRaw.reason || favRaw.note || slot.favoriteSong.note || "");
       }
     }
@@ -1183,7 +1217,13 @@ function updateAlbumDiveRootField(field, value) {
 function updateAlbumDiveSlotField(slotKey, field, value) {
   const slot = getAlbumDiveSlot(slotKey);
   if (!slot) return;
-  slot[field] = field === "year" ? (value ? Number(value) : null) : value;
+  if (field === "albumProviderUrl") {
+    albumDiveApplyProviderUrl(slot, value);
+  } else {
+    slot[field] = field === "year" ? (value ? Number(value) : null) : value;
+    if ((field === "spotifyAlbumUrl" || field === "spotifyUrl") && value) albumDiveApplyProviderUrl(slot, value);
+    if ((field === "itunesAlbumUrl" || field === "appleAlbumUrl") && value) albumDiveApplyProviderUrl(slot, value);
+  }
   if (field === "manualAlbumArt" && value && !slot.albumArt)
     slot.albumArt = value;
   touchAlbumDive();
@@ -1219,6 +1259,136 @@ function setAlbumDiveFavoriteAlbum(slotKey) {
   slot.favoriteAlbum = next;
   touchAlbumDive();
   rerenderAlbumDive();
+}
+
+
+function albumDiveIsAppleAlbumUrl(url = "") {
+  return /(?:music\.apple\.com|itunes\.apple\.com|geo\.music\.apple\.com)\//i.test(String(url || ""));
+}
+
+function albumDiveAppleCollectionIdFromUrl(url = "") {
+  const value = String(url || "").trim();
+  if (!value) return "";
+  const collectionParam = value.match(/[?&](?:collectionId|albumId)=(\d+)/i);
+  if (collectionParam) return collectionParam[1];
+  const albumPath = value.match(/\/album\/(?:[^/?#]+\/)?(\d+)(?:[/?#]|$)/i);
+  if (albumPath) return albumPath[1];
+  const idMatch = value.match(/(?:^|[^a-z])id(\d{5,})(?:[^0-9]|$)/i);
+  if (idMatch) return idMatch[1];
+  return "";
+}
+
+function albumDiveBestAppleArtwork(url = "", size = 1000) {
+  const value = String(url || "").trim();
+  if (!value) return "";
+  return value
+    .replace(/\/\d+x\d+bb\.(jpg|png|webp)(\?.*)?$/i, `/${size}x${size}bb.$1$2`)
+    .replace(/\/\d+x\d+[^/]*\.(jpg|png|webp)(\?.*)?$/i, `/${size}x${size}bb.$1$2`);
+}
+
+function albumDiveSlotInputUrl(slot = {}) {
+  return String(
+    slot.albumProviderUrl ||
+      slot.spotifyAlbumUrl ||
+      slot.spotifyUrl ||
+      slot.itunesAlbumUrl ||
+      slot.appleAlbumUrl ||
+      "",
+  ).trim();
+}
+
+function albumDiveSlotCanonicalUrl(slot = {}) {
+  return String(
+    slot.spotifyAlbumUrl ||
+      slot.spotifyUrl ||
+      slot.itunesAlbumUrl ||
+      slot.appleAlbumUrl ||
+      slot.albumProviderUrl ||
+      "",
+  ).trim();
+}
+
+function albumDiveSourceLabel(slot = {}) {
+  if (slot.metadataSource === "itunes" || slot.itunesCollectionId || slot.itunesAlbumUrl || slot.appleAlbumUrl) return "Apple/iTunes";
+  if (slot.metadataSource === "spotify" || slot.spotifyAlbumId || slot.spotifyAlbumUrl || slot.spotifyUrl) return "Spotify";
+  return "Manual";
+}
+
+function albumDiveSourceClass(slot = {}) {
+  if (slot.metadataSource === "itunes" || slot.itunesCollectionId || slot.itunesAlbumUrl || slot.appleAlbumUrl) return "itunes";
+  if (slot.metadataSource === "spotify" || slot.spotifyAlbumId || slot.spotifyAlbumUrl || slot.spotifyUrl) return "spotify";
+  return "manual";
+}
+
+function albumDiveApplyProviderUrl(slot, value = "") {
+  const url = String(value || "").trim();
+  slot.albumProviderUrl = url;
+  if (!url) return;
+  if (spotifyIdFromUrl(url, "album")) {
+    slot.spotifyAlbumUrl = url;
+    slot.spotifyUrl = url;
+    slot.spotifyAlbumId = spotifyIdFromUrl(url, "album") || slot.spotifyAlbumId || "";
+    slot.metadataSource = "spotify";
+    return;
+  }
+  if (albumDiveIsAppleAlbumUrl(url) || albumDiveAppleCollectionIdFromUrl(url)) {
+    slot.itunesAlbumUrl = url;
+    slot.appleAlbumUrl = url;
+    slot.itunesCollectionId = albumDiveAppleCollectionIdFromUrl(url) || slot.itunesCollectionId || "";
+    slot.metadataSource = "itunes";
+  }
+}
+
+function albumDiveAppleTrackToDiveTrack(item = {}, albumArtist = "") {
+  return normalizeAlbumDiveTrack({
+    title: item.trackName || item.collectionName || "",
+    artist: item.artistName || albumArtist || "",
+    artists: item.artistName ? [item.artistName] : [],
+    itunesTrackUrl: item.trackViewUrl || "",
+    itunesTrackId: item.trackId || "",
+    previewUrl: item.previewUrl || "",
+    durationMs: item.trackTimeMillis || null,
+    trackNumber: item.trackNumber || null,
+    discNumber: item.discNumber || null,
+  });
+}
+
+async function fetchAlbumDiveItunesAlbumMetadata(slot) {
+  const inputUrl = albumDiveSlotInputUrl(slot);
+  const collectionId = slot.itunesCollectionId || albumDiveAppleCollectionIdFromUrl(inputUrl);
+  if (!collectionId) throw new Error("Paste an Apple Music or iTunes album URL with an album ID.");
+  const lookupUrl = `https://itunes.apple.com/lookup?id=${encodeURIComponent(collectionId)}&entity=song&limit=200`;
+  const response = await fetch(lookupUrl, { headers: { Accept: "application/json" } });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(`Apple/iTunes lookup failed (${response.status}).`);
+  const results = Array.isArray(data.results) ? data.results : [];
+  const collection =
+    results.find((item) => item.wrapperType === "collection" || item.collectionType === "Album") ||
+    results.find((item) => item.collectionId && String(item.collectionId) === String(collectionId));
+  if (!collection) throw new Error("No Apple/iTunes album metadata found for that URL.");
+  const albumArtist = collection.artistName || slot.artist || "";
+  slot.itunesCollectionId = String(collection.collectionId || collectionId || "");
+  slot.itunesAlbumUrl = collection.collectionViewUrl || inputUrl || slot.itunesAlbumUrl || "";
+  slot.appleAlbumUrl = slot.itunesAlbumUrl;
+  slot.albumProviderUrl = slot.itunesAlbumUrl || inputUrl || slot.albumProviderUrl || "";
+  slot.metadataSource = "itunes";
+  slot.album = collection.collectionName || slot.album || "";
+  slot.artist = albumArtist || slot.artist || "";
+  slot.releaseDate = collection.releaseDate || slot.releaseDate || "";
+  slot.year = collection.releaseDate ? Number(String(collection.releaseDate).slice(0, 4)) || slot.year || null : slot.year || null;
+  slot.albumArt = albumDiveBestAppleArtwork(collection.artworkUrl100 || collection.artworkUrl60 || slot.albumArt || "");
+  slot.albumType = collection.collectionType || slot.albumType || "album";
+  slot.primaryGenreName = collection.primaryGenreName || slot.primaryGenreName || "";
+  slot.totalTracks = Number(collection.trackCount || slot.totalTracks || 0) || null;
+  const tracks = results
+    .filter((item) => item.wrapperType === "track" && item.kind === "song")
+    .map((item) => albumDiveAppleTrackToDiveTrack(item, albumArtist))
+    .filter((track) => track.title || track.itunesTrackId || track.itunesTrackUrl);
+  if (tracks.length) {
+    slot.tracks = tracks;
+    slot.totalTracks = slot.totalTracks || tracks.length;
+  }
+  return slot;
 }
 
 function spotifyIdFromUrl(url = "", type = "album") {
@@ -1299,65 +1469,79 @@ async function fetchAlbumDiveAlbumMetadata(slotKey, button) {
       button.disabled = true;
       button.textContent = "Fetching…";
     }
-    const albumId = spotifyIdFromUrl(
-      slot.spotifyAlbumUrl || slot.spotifyUrl,
-      "album",
-    );
+    const providerUrl = albumDiveSlotInputUrl(slot);
+    if (providerUrl) albumDiveApplyProviderUrl(slot, providerUrl);
+    const shouldUseApple =
+      albumDiveIsAppleAlbumUrl(providerUrl) ||
+      (!spotifyIdFromUrl(providerUrl || slot.spotifyAlbumUrl || slot.spotifyUrl, "album") &&
+        (slot.itunesCollectionId || slot.itunesAlbumUrl || slot.appleAlbumUrl));
     let updated = false;
-    if (albumId && spotifySession?.access_token) {
-      const response = await spotifyApiFetch(
-        `albums/${encodeURIComponent(albumId)}`,
+    if (shouldUseApple) {
+      await fetchAlbumDiveItunesAlbumMetadata(slot);
+      updated = true;
+    } else {
+      const albumId = spotifyIdFromUrl(
+        slot.spotifyAlbumUrl || slot.spotifyUrl || providerUrl,
+        "album",
       );
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok)
-        throw new Error(
-          data?.error?.message ||
-            data?.error ||
-            `Spotify album lookup failed (${response.status}).`,
+      if (albumId && spotifySession?.access_token) {
+        const response = await spotifyApiFetch(
+          `albums/${encodeURIComponent(albumId)}`,
         );
-      if (data?.id) {
-        const albumArtist = (data.artists || [])
-          .map((a) => a.name)
-          .filter(Boolean)
-          .join(", ");
-        slot.spotifyAlbumId = data.id;
-        slot.spotifyAlbumUrl =
-          data.external_urls?.spotify ||
-          slot.spotifyAlbumUrl ||
-          slot.spotifyUrl;
-        slot.spotifyUrl =
-          data.external_urls?.spotify ||
-          slot.spotifyUrl ||
-          slot.spotifyAlbumUrl;
-        slot.album = data.name || slot.album;
-        slot.artist = albumArtist || slot.artist;
-        slot.releaseDate = data.release_date || slot.releaseDate || "";
-        slot.year = data.release_date
-          ? Number(String(data.release_date).slice(0, 4)) || slot.year
-          : slot.year;
-        slot.albumArt =
-          data.images?.[1]?.url || data.images?.[0]?.url || slot.albumArt;
-        slot.albumType = data.album_type || slot.albumType || "";
-        slot.totalTracks =
-          Number(data.total_tracks || data.tracks?.total || 0) ||
-          slot.totalTracks ||
-          null;
-        slot.tracks = await fetchAllSpotifyAlbumTracks(
-          data.id,
-          data.tracks,
-          albumArtist,
-        );
-        updated = true;
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok)
+          throw new Error(
+            data?.error?.message ||
+              data?.error ||
+              `Spotify album lookup failed (${response.status}).`,
+          );
+        if (data?.id) {
+          const albumArtist = (data.artists || [])
+            .map((a) => a.name)
+            .filter(Boolean)
+            .join(", ");
+          slot.spotifyAlbumId = data.id;
+          slot.spotifyAlbumUrl =
+            data.external_urls?.spotify ||
+            slot.spotifyAlbumUrl ||
+            slot.spotifyUrl;
+          slot.spotifyUrl =
+            data.external_urls?.spotify ||
+            slot.spotifyUrl ||
+            slot.spotifyAlbumUrl;
+          slot.albumProviderUrl = slot.spotifyAlbumUrl || slot.spotifyUrl || slot.albumProviderUrl || "";
+          slot.metadataSource = "spotify";
+          slot.album = data.name || slot.album;
+          slot.artist = albumArtist || slot.artist;
+          slot.releaseDate = data.release_date || slot.releaseDate || "";
+          slot.year = data.release_date
+            ? Number(String(data.release_date).slice(0, 4)) || slot.year
+            : slot.year;
+          slot.albumArt =
+            data.images?.[1]?.url || data.images?.[0]?.url || slot.albumArt;
+          slot.albumType = data.album_type || slot.albumType || "";
+          slot.totalTracks =
+            Number(data.total_tracks || data.tracks?.total || 0) ||
+            slot.totalTracks ||
+            null;
+          slot.tracks = await fetchAllSpotifyAlbumTracks(
+            data.id,
+            data.tracks,
+            albumArtist,
+          );
+          updated = true;
+        }
       }
-    }
-    if (!updated && slot.spotifyAlbumUrl) {
-      const oembed = await fetchSpotifyAlbumOembed(slot.spotifyAlbumUrl);
-      if (oembed) {
-        slot.albumArt = oembed.thumbnail_url || slot.albumArt;
-        if (!slot.album && oembed.title) slot.album = oembed.title;
-        if (!slot.artist && oembed.author_name)
-          slot.artist = oembed.author_name;
-        updated = true;
+      if (!updated && slot.spotifyAlbumUrl) {
+        const oembed = await fetchSpotifyAlbumOembed(slot.spotifyAlbumUrl);
+        if (oembed) {
+          slot.albumArt = oembed.thumbnail_url || slot.albumArt;
+          if (!slot.album && oembed.title) slot.album = oembed.title;
+          if (!slot.artist && oembed.author_name)
+            slot.artist = oembed.author_name;
+          slot.metadataSource = slot.metadataSource || "spotify";
+          updated = true;
+        }
       }
     }
     if (!updated && slot.manualAlbumArt) {
@@ -1368,8 +1552,8 @@ async function fetchAlbumDiveAlbumMetadata(slotKey, button) {
     rerenderAlbumDive();
     showSaveToast(
       updated
-        ? `Album metadata updated${slot.tracks?.length ? ` with ${slot.tracks.length} tracks` : ""} — save changes to keep it.`
-        : "No album metadata found. Connect Spotify or try a manual art URL.",
+        ? `${albumDiveSourceLabel(slot)} album metadata updated${slot.tracks?.length ? ` with ${slot.tracks.length} tracks` : ""} — save changes to keep it.`
+        : "No album metadata found. Try Spotify, Apple/iTunes, or a manual art URL.",
       !updated,
     );
   } catch (err) {
@@ -1414,6 +1598,8 @@ function setAlbumDiveFavoriteFromTrack(slotKey, value) {
       value &&
       (value === t.spotifyTrackId ||
         value === t.spotifyTrackUrl ||
+        value === t.itunesTrackId ||
+        value === t.itunesTrackUrl ||
         value === albumDiveTrackOptionValue(t)),
   );
   if (!track) return;
@@ -1424,6 +1610,9 @@ function setAlbumDiveFavoriteFromTrack(slotKey, value) {
   slot.favoriteSong.artist = track.artist || slot.artist || "";
   slot.favoriteSong.spotifyTrackUrl = track.spotifyTrackUrl || "";
   slot.favoriteSong.spotifyTrackId = track.spotifyTrackId || "";
+  slot.favoriteSong.itunesTrackUrl = track.itunesTrackUrl || "";
+  slot.favoriteSong.itunesTrackId = track.itunesTrackId || "";
+  slot.favoriteSong.previewUrl = track.previewUrl || "";
   slot.favoriteSong.albumArt = slot.albumArt || slot.manualAlbumArt || "";
   slot.favoriteSong.durationMs = track.durationMs || null;
   slot.favoriteSong.trackNumber = track.trackNumber || null;
@@ -1504,23 +1693,26 @@ function promoteAlbumDiveFavorite(slotKey) {
   if (!currentGenre) return;
   const slot = getAlbumDiveSlot(slotKey);
   const fav = slot?.favoriteSong || {};
-  if (!slot || (!fav.title && !fav.spotifyTrackUrl)) {
-    alert("Add a favorite song title or Spotify track URL first.");
+  if (!slot || (!fav.title && !fav.spotifyTrackUrl && !fav.itunesTrackUrl)) {
+    alert("Add a favorite song title or Spotify/Apple track URL first.");
     return;
   }
   const official = inflateSongsFromStorage(
     currentGenre.songs_listened || [],
   ).filter((s) => !s.isPending);
+  const favoriteUrl = fav.spotifyTrackUrl || fav.itunesTrackUrl || "";
   const song = {
-    url: normalizeSongUrl(fav.spotifyTrackUrl || ""),
+    url: normalizeSongUrl(favoriteUrl || ""),
     spotifyUrl: normalizeSongUrl(fav.spotifyTrackUrl || ""),
     spotifyId:
       fav.spotifyTrackId || spotifyTrackId(fav.spotifyTrackUrl || "") || "",
+    itunesUrl: fav.itunesTrackUrl || "",
+    itunesTrackId: fav.itunesTrackId || "",
     title: fav.title || "Album Dive favorite",
     artist: fav.artist || slot.artist || "",
     score: slot.rating || numericRating(currentGenre) || null,
     reason: `Album Dive favorite from ${slot.label}: ${[slot.artist, slot.album].filter(Boolean).join(" — ")}`,
-    source: "album_dive",
+    source: fav.spotifyTrackUrl ? "album_dive" : "itunes_album_dive",
     album: slot.album || "",
     artwork: fav.albumArt || slot.albumArt || slot.manualAlbumArt || "",
     releaseDate: slot.releaseDate || "",
