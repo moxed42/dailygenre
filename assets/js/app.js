@@ -2509,7 +2509,66 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       });
     }
 
+    const inlineMetadataRepairPatches = new Map();
+
+    function clonePlainObject(value) {
+      try { return JSON.parse(JSON.stringify(value || {})); }
+      catch (_) { return { ...(value || {}) }; }
+    }
+
+    function inlineMetadataRepairPatchKey(genreId, key) {
+      return `${String(genreId ?? '')}::${String(key || '')}`;
+    }
+
+    function stageInlineMetadataRepairPatch(genreId, originalKey, song) {
+      if (!genreId || !song) return;
+      const nextSong = clonePlainObject(song);
+      inlineMetadataRepairPatches.set(inlineMetadataRepairPatchKey(genreId, originalKey), {
+        genreId: String(genreId),
+        originalKey: String(originalKey || ''),
+        nextKey: songIdentity(nextSong),
+        spotifyId: nextSong.spotifyId || spotifyTrackId(nextSong.spotifyUrl || nextSong.url || '') || '',
+        spotifyUrl: nextSong.spotifyUrl || nextSong.url || '',
+        song: nextSong
+      });
+    }
+
+    function inlineRepairPatchMatchesSong(song, patch) {
+      if (!song || !patch) return false;
+      if (patch.originalKey && songsIdentityMatch(song, patch.originalKey)) return true;
+      if (patch.nextKey && songsIdentityMatch(song, patch.nextKey)) return true;
+      const songSpotifyId = song.spotifyId || spotifyTrackId(song.spotifyUrl || song.url || '') || '';
+      if (patch.spotifyId && songSpotifyId && String(patch.spotifyId) === String(songSpotifyId)) return true;
+      const songUrl = normalizeSongUrl(song.spotifyUrl || song.url || '');
+      const patchUrl = normalizeSongUrl(patch.spotifyUrl || patch.song?.spotifyUrl || patch.song?.url || '');
+      if (songUrl && patchUrl && songUrl === patchUrl) return true;
+      return false;
+    }
+
+    function applyInlineMetadataRepairPatchesToLibrary() {
+      if (!inlineMetadataRepairPatches.size || !Array.isArray(genres)) return 0;
+      let applied = 0;
+      inlineMetadataRepairPatches.forEach((patch) => {
+        const genre = genres.find(g => String(g?.id) === String(patch.genreId));
+        if (!genre || !Array.isArray(genre.songs_listened)) return;
+        const songs = inflateSongsFromStorage(genre.songs_listened || []);
+        let changed = false;
+        eachSongInLog(songs, song => {
+          if (!inlineRepairPatchMatchesSong(song, patch)) return;
+          Object.assign(song, clonePlainObject(patch.song));
+          changed = true;
+          applied += 1;
+        });
+        if (changed) {
+          genre.songs_listened = songs;
+          if (currentGenre && String(currentGenre.id) === String(genre.id)) currentGenre = genre;
+        }
+      });
+      return applied;
+    }
+
     function genresForSave() {
+      applyInlineMetadataRepairPatchesToLibrary();
       return genres.map(g => {
         const out = { ...g };
         if (Array.isArray(out.songs_listened)) out.songs_listened = flattenSongsForStorage(out.songs_listened);
@@ -3110,6 +3169,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
   async function doSaveWithPassword(password) {
     finalizeListeningUpdatesBeforeSave();
+    applyInlineMetadataRepairPatchesToLibrary();
 
     if (blockSaveIfDuplicateGenres()) {
       const error = new Error('Duplicate genres detected. Clean the JSON before saving.');
@@ -5964,6 +6024,7 @@ async function loadData() {
         Object.assign(target.song, candidate);
         if (target.song.albumArt && !target.song.artwork) target.song.artwork = target.song.albumArt;
         if (target.song.artwork && !target.song.albumArt) target.song.albumArt = target.song.artwork;
+        stageInlineMetadataRepairPatch(genreId, key, target.song);
         target.genre.songs_listened = target.songs;
         try { removeLoggedSongsFromPending(target.genre); } catch (_) {}
         if (currentGenre && String(currentGenre.id) === String(target.genre.id)) {
@@ -6387,6 +6448,7 @@ async function loadData() {
         await doSaveWithPassword(appPassword);
         libraryUpdatesPending = false;
         stagedQueueReactionKeys.clear();
+        inlineMetadataRepairPatches.clear();
         toggleLibrarySaveButton(false);
         setUnsavedState(false);
         { const restore = preserveScrollSnapshot(); renderVisuals(); restore(); }

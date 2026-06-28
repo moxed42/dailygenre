@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v34-deduped-repair";
+  const VERSION = "studio-polish-v35-inline-batch-save";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
