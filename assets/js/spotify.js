@@ -1025,7 +1025,9 @@ function spotifyRenderPlaylistSongs() {
   songMount.innerHTML = rows.map((row, idx) => {
     const typeClass = row.type === 'levelUp' ? 'levelup' : (row.type === 'add' ? 'add' : 'direct');
     const isChecked = selected[idx] !== false;
-    const parentMeta = row.parentTitle ? ` <span class="spotify-playlist-relation-meta">· Level Up from: ${escapeHtml(row.parentTitle)}</span>` : '';
+    const parentMeta = row.parentTitle
+      ? ` <span class="spotify-playlist-relation-meta">· ${row.parentType === 'albumDive' ? 'Album' : 'Level Up from'}: ${escapeHtml(row.parentTitle)}${row.trackPosition ? ` · ${escapeHtml(row.trackPosition)}` : ''}</span>`
+      : '';
     const genreMeta = row.genreName ? `<span class="spotify-playlist-genre-meta">${escapeHtml(row.genreName)}</span>${row.date ? ` · ${escapeHtml(row.date)}` : ''} · ` : '';
     return `
       <label class="spotify-playlist-row ${isChecked ? '' : 'is-unselected'}">

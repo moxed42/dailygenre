@@ -51,14 +51,12 @@
 
   function dateValueSafe(genre) {
     if (!genre) return '';
+    // Match the core app's canonical listen-date rules. Do not let stray
+    // legacy date/date_raw values keep a reset genre attached to Today.
     if (typeof window.dateValue === 'function') return safeText(window.dateValue(genre)).slice(0, 10);
     return safeText(
       genre.date_normalized ||
       genre.datenormalized ||
-      genre.listenedDate ||
-      genre.listened_date ||
-      genre.date ||
-      genre.date_raw ||
       ''
     ).slice(0, 10);
   }
