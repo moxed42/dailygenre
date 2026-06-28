@@ -1,4 +1,7 @@
 /* === Album Dive feature === */
+let albumDivePanelOpen = false;
+let albumDiveQueueOpen = false;
+
 const ALBUM_DIVE_SLOT_DEFS = [
   ["breakout", "Breakout"],
   ["originator", "Originator"],
@@ -428,7 +431,10 @@ function getAlbumDiveFocusSlotKey(dive) {
   return (slots.find(albumDiveSlotHasContent) || slots[0]).key;
 }
 
-function setAlbumDiveFocusSlot(slotKey) {
+function setAlbumDiveFocusSlot(slotKey, options = {}) {
+  const panel = document.getElementById("albumDivePanel");
+  if (panel) albumDivePanelOpen = !!panel.open;
+  if (options.preserveQueue) albumDiveQueueOpen = true;
   try {
     localStorage.setItem(albumDiveStorageKey(), slotKey || "");
   } catch {}
@@ -706,7 +712,7 @@ function renderAlbumDiveFocusPanel(dive) {
               <div class="album-focus-actions">
                 <div class="album-focus-rating"><span>Album</span>${reactionButtons}</div>
                 <button type="button" class="album-focus-trophy ${slot.favoriteAlbum ? "active" : ""}" onclick="setAlbumDiveFavoriteAlbum('${safeKey}')" title="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}" aria-label="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}">🏆</button>
-                <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}')">Controls & favorite</button>
+                <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}')">Details</button>
                 <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}')">Delete entry</button>
               </div>
               ${favoriteLabel ? `<div class="album-focus-favorite"><strong>Top songs:</strong> ${escapeHtml(favoriteLabel)}</div>` : ""}
@@ -716,7 +722,7 @@ function renderAlbumDiveFocusPanel(dive) {
           <button type="button" class="album-focus-nav album-focus-next" onclick="setAlbumDiveFocusRelative(1)" aria-label="Next Album Dive slot">›</button>
         </div>
         <details class="album-focus-detail-drawer" id="album-focus-details-${safeKey}">
-          <summary>Controls & favorite track</summary>
+          <summary>Album controls and top songs</summary>
           <div class="album-focus-detail-grid">
             <section class="album-focus-detail-section">
               <h5>Listening state</h5>
@@ -757,6 +763,7 @@ function albumDiveSlotQueueState(slot = {}) {
 }
 
 function renderAlbumDiveQueue(dive) {
+  const selectedKey = getAlbumDiveFocusSlotKey(dive);
   const slots = (dive?.slots || []).filter(albumDiveSlotHasContent);
   if (!slots.length) return `<div class="album-dive-queue-empty small">No albums queued yet. Add Spotify, Apple/iTunes, or manual album entries first.</div>`;
   return `<div class="album-dive-queue-list">
@@ -766,7 +773,7 @@ function renderAlbumDiveQueue(dive) {
       const meta = [slot.label, slot.artist, slot.year || (slot.releaseDate ? String(slot.releaseDate).slice(0, 4) : "")].filter(Boolean).join(" · ");
       const top = albumDiveTopTrackSummary(slot);
       const reaction = albumDiveSlotReaction(slot);
-      return `<button type="button" class="album-dive-queue-row" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}'); setAlbumDiveEditorMode(false); const panel=document.getElementById('albumDivePanel'); if(panel) panel.open=true;">
+      return `<button type="button" class="album-dive-queue-row ${slot.key === selectedKey ? "active" : ""}" onclick="selectAlbumDiveQueueSlot('${escapeHtml(slot.key)}', event)">
         ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(title)} cover" loading="lazy">` : '<span class="album-queue-art-empty" aria-hidden="true"></span>'}
         <span class="album-dive-queue-main">
           <strong>${escapeHtml(title)}</strong>
@@ -779,14 +786,39 @@ function renderAlbumDiveQueue(dive) {
   </div>`;
 }
 
+function albumDiveRememberPanelState(panel) {
+  albumDivePanelOpen = !!panel?.open;
+}
+
+function albumDiveStopSummaryButton(event) {
+  if (!event) return;
+  event.preventDefault();
+  event.stopPropagation();
+}
+
 function toggleAlbumDiveQueue(event) {
+  albumDiveStopSummaryButton(event);
+  albumDiveQueueOpen = !albumDiveQueueOpen;
+  const panel = document.getElementById("albumDiveQueuePanel");
+  const btn = document.querySelector(".album-dive-queue-toggle");
+  if (panel) {
+    panel.classList.toggle("hidden", !albumDiveQueueOpen);
+    if (albumDiveQueueOpen) {
+      requestAnimationFrame(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+    }
+  }
+  if (btn) btn.textContent = albumDiveQueueOpen ? "Hide queue" : "Show queue";
+}
+
+function selectAlbumDiveQueueSlot(slotKey, event) {
   if (event) {
     event.preventDefault();
     event.stopPropagation();
   }
-  const panel = document.getElementById("albumDiveQueuePanel");
-  if (!panel) return;
-  panel.classList.toggle("hidden");
+  setAlbumDiveFocusSlot(slotKey, { preserveQueue: true });
+  albumDiveQueueOpen = true;
+  const panel = document.getElementById("albumDivePanel");
+  if (panel && panel.open) albumDivePanelOpen = true;
 }
 
 function toggleAlbumDiveFocusDetails(slotKey, forceOpen = false) {
@@ -834,20 +866,26 @@ function renderAlbumDivePanel(genre) {
 
   const progress = albumDiveProgress(dive);
   const listenMode = albumDiveIsListenMode();
-  const shouldOpen = !!albumDiveEditorMode;
+  const shouldOpen = !!albumDiveEditorMode || !!albumDivePanelOpen;
   if (listenMode) setTimeout(hydrateAlbumDiveAmbient, 0);
-  return `<details class="panel album-dive-panel album-dive-collapsible ${listenMode ? "album-dive-focus-panel" : ""}" id="albumDivePanel" ${shouldOpen ? "open" : ""}>
+  const queueButtonLabel = albumDiveQueueOpen ? "Hide queue" : "Show queue";
+  const summaryStatus = [
+    `${progress.fetched}/${progress.total} fetched`,
+    `${progress.finished}/${progress.total} finished`,
+    progress.sampled ? `${progress.sampled} sampled` : "",
+    dive.status === "completed" ? "complete" : "in progress",
+  ].filter(Boolean).join(" · ");
+  return `<details class="panel album-dive-panel album-dive-collapsible ${listenMode ? "album-dive-focus-panel" : ""}" id="albumDivePanel" ${shouldOpen ? "open" : ""} ontoggle="albumDiveRememberPanelState(this)">
         <summary class="album-dive-collapsed-head">
           <span class="album-dive-summary-main">
             <span class="eyebrow">Album Dive</span>
             <strong>Canonical album shelf</strong>
             <small>${progress.fetched}/${progress.total} fetched · ${progress.finished}/${progress.total} finished${progress.sampled ? ` · ${progress.sampled} sampled` : ""}</small>
           </span>
-          <span class="album-dive-summary-actions">
-            <span class="tag">${escapeHtml(dive.mode || "canon")} dive</span>
-            <span class="tag">${dive.status === "completed" ? "Complete" : "In progress"}</span>
-            <button type="button" class="btn btn-secondary btn-tiny album-dive-queue-toggle" onclick="toggleAlbumDiveQueue(event)">Show queue</button>
-            <span class="album-dive-expand-cue" aria-hidden="true">Details</span>
+          <span class="album-dive-summary-actions album-dive-summary-actions-clean">
+            <span class="album-dive-summary-stat">${escapeHtml(summaryStatus)}</span>
+            <button type="button" class="btn btn-secondary btn-tiny album-dive-queue-toggle" onpointerdown="albumDiveStopSummaryButton(event)" onclick="toggleAlbumDiveQueue(event)">${queueButtonLabel}</button>
+            <span class="album-dive-expand-cue" aria-hidden="true">${shouldOpen ? "Close" : "Open"}</span>
           </span>
         </summary>
         <div class="album-dive-collapsed-body">
@@ -855,20 +893,13 @@ function renderAlbumDivePanel(genre) {
             <div>
               <div class="eyebrow">Album Dive</div>
               <h3 class="album-dive-title">Canonical album shelf</h3>
-              <div class="status-row">
-                <span class="tag">${escapeHtml(dive.mode || "canon")} dive</span>
-                <span class="tag">${progress.fetched}/${progress.total} fetched</span>
-                <span class="tag">${progress.finished}/${progress.total} finished</span>
-                ${progress.sampled ? `<span class="tag">${progress.sampled} sampled</span>` : ""}
-                ${dive.status === "completed" ? '<span class="tag">Dive complete</span>' : '<span class="tag">In progress</span>'}
-              </div>
+              <p class="small album-dive-progress-line">${escapeHtml(summaryStatus)}${listenMode ? "" : ` · ${escapeHtml(dive.mode || "canon")} dive`}</p>
             </div>
-            <div class="album-dive-actions">
+            <div class="album-dive-actions album-dive-actions-clean">
               <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
               <button type="button" class="btn btn-secondary" onclick="openAlbumDiveSpotifyPlaylistModal()">＋ Playlist Albums</button>
-              <button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">${listenMode ? "Finish Dive" : "Mark Dive Complete"}</button>
               <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
-              <button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>
+              ${listenMode ? "" : `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">Mark Complete</button><button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>`}
             </div>
           </div>
           ${listenMode ? "" : albumDiveJsonImportMarkup('albumDiveJsonImport')}
@@ -886,7 +917,7 @@ function renderAlbumDivePanel(genre) {
           </div>
         </div>
       </details>
-      <div id="albumDiveQueuePanel" class="panel album-dive-queue-panel hidden">
+      <div id="albumDiveQueuePanel" class="panel album-dive-queue-panel ${albumDiveQueueOpen ? "" : "hidden"}">
         <div class="album-dive-queue-head"><strong>Album queue</strong><span class="small">Tap an album to jump into its details.</span></div>
         ${renderAlbumDiveQueue(dive)}
       </div>`
@@ -1322,8 +1353,12 @@ function rerenderAlbumDive(options = {}) {
     window.scrollTo(scrollX, scrollY);
   };
   const panel = document.getElementById("albumDivePanel");
+  const queuePanel = document.getElementById("albumDiveQueuePanel");
+  if (panel) albumDivePanelOpen = !!panel.open;
+  if (queuePanel) albumDiveQueueOpen = !queuePanel.classList.contains("hidden");
   if (panel) {
-    panel.outerHTML = renderAlbumDivePanel(currentGenre);
+    const nextMarkup = renderAlbumDivePanel(currentGenre);
+    panel.outerHTML = nextMarkup;
     requestAnimationFrame(() => {
       hydrateAlbumDiveAmbient();
       restoreScroll();

@@ -8896,3 +8896,85 @@ body.dc-listen-mode .dc-desktop-genre-nav {
     justify-content: flex-start;
   }
 }
+
+
+/* === Album Dive v102: steadier queue + calmer listening controls === */
+.album-dive-summary-actions-clean {
+  align-items: center !important;
+}
+.album-dive-summary-stat {
+  color: var(--muted, #735a3c);
+  font-weight: 900;
+  font-size: 0.86rem;
+  line-height: 1.2;
+}
+.album-dive-progress-line {
+  margin: 6px 0 0;
+  font-weight: 850;
+}
+.album-dive-actions-clean {
+  align-items: center;
+}
+.album-dive-focus-panel .album-dive-head {
+  gap: 14px;
+}
+.album-dive-focus-panel .album-dive-actions-clean .btn {
+  white-space: nowrap;
+}
+.album-dive-focus-panel .album-focus-actions {
+  gap: 9px !important;
+  align-items: center !important;
+}
+.album-dive-focus-panel .album-focus-details-button {
+  min-width: 0 !important;
+}
+.album-dive-queue-panel {
+  scroll-margin-top: 14px;
+}
+.album-dive-queue-row.is-active,
+.album-dive-queue-row.active {
+  border-color: color-mix(in srgb, var(--accent, #d98d25) 62%, transparent);
+  background: color-mix(in srgb, var(--accent-soft, #ffe0a1) 28%, rgba(255,252,241,.7));
+}
+@media (max-width: 760px) {
+  .album-dive-summary-actions-clean {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    width: 100%;
+  }
+  .album-dive-summary-stat {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .album-dive-summary-actions-clean .album-dive-queue-toggle,
+  .album-dive-summary-actions-clean .album-dive-expand-cue {
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  .album-dive-focus-panel .album-dive-head {
+    display: grid !important;
+  }
+  .album-dive-actions-clean {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px !important;
+  }
+  .album-dive-actions-clean .btn {
+    width: 100%;
+    padding-inline: 10px !important;
+  }
+  .album-focus-actions .album-focus-rating {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 520px) {
+  .album-dive-summary-actions-clean {
+    grid-template-columns: 1fr;
+    align-items: stretch !important;
+  }
+  .album-dive-summary-stat {
+    white-space: normal;
+  }
+}
