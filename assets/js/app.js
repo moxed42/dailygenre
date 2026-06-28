@@ -5974,16 +5974,54 @@ async function loadData() {
         setUnsavedState(true);
         toggleLibrarySaveButton(true);
 
-        const restore = preserveScrollSnapshot();
-        try {
-          if (document.activeElement?.closest?.('#screen-review')) document.activeElement.blur();
-        } catch (_) {}
-        if (document.getElementById('screen-review')?.classList.contains('active') && typeof renderReview === 'function') {
-          renderReview();
-        } else if (String(mountId || '').startsWith('viz') && typeof renderVisuals === 'function') {
-          renderVisuals();
+        const isStudioInlineRepair = String(mountId || '') === 'review';
+        if (isStudioInlineRepair) {
+          // Studio Repair Bay should not collapse or drop the just-fixed row after
+          // an inline URL repair. Keep the row visible until the user refreshes,
+          // changes filters, or manually collapses/reopens the section.
+          const rowEl = button?.closest?.('.studio-mini-row-repair');
+          if (rowEl) {
+            rowEl.classList.add('studio-inline-updated');
+            const currentHref = target.song.spotifyUrl || target.song.url || nextUrl;
+            const currentTitle = target.song.title || target.song.name || target.song.track || currentHref || 'Updated Spotify track';
+            const currentArtist = target.song.artist || (Array.isArray(target.song.artists) ? target.song.artists.join(', ') : '') || '';
+            const currentAlbum = target.song.album || '';
+            const currentYear = target.song.releaseYear || target.song.eraYear || '';
+            const thumb = rowEl.querySelector('.studio-thumb, .studio-thumb-empty');
+            if (thumb && (target.song.artwork || target.song.albumArt)) {
+              thumb.outerHTML = `<img class="studio-thumb" src="${escapeHtml(target.song.artwork || target.song.albumArt)}" alt="" loading="lazy">`;
+            }
+            const titleEl = rowEl.querySelector('.studio-mini-title');
+            if (titleEl) {
+              titleEl.innerHTML = currentHref
+                ? `<a href="${escapeHtml(currentHref)}" target="_blank" rel="noopener">${escapeHtml(currentTitle)}</a>`
+                : escapeHtml(currentTitle);
+            }
+            const metaEl = rowEl.querySelector('.studio-mini-meta');
+            if (metaEl && !metaEl.querySelector('.studio-inline-updated-chip')) {
+              metaEl.insertAdjacentHTML('afterbegin', '<span class="studio-inline-updated-chip">updated · save pending</span>');
+            }
+            if (metaEl) {
+              const detailParts = [currentArtist, currentAlbum, currentYear].filter(Boolean).join(' · ');
+              if (detailParts && !metaEl.querySelector('.studio-inline-track-detail')) {
+                metaEl.insertAdjacentHTML('beforeend', `<span class="studio-inline-track-detail">${escapeHtml(detailParts)}</span>`);
+              }
+            }
+            const urlInput = rowEl.querySelector('.studio-inline-track-edit input');
+            if (urlInput) urlInput.value = currentHref || nextUrl;
+          }
+        } else {
+          const restore = preserveScrollSnapshot();
+          try {
+            if (document.activeElement?.closest?.('#screen-review')) document.activeElement.blur();
+          } catch (_) {}
+          if (document.getElementById('screen-review')?.classList.contains('active') && typeof renderReview === 'function') {
+            renderReview();
+          } else if (String(mountId || '').startsWith('viz') && typeof renderVisuals === 'function') {
+            renderVisuals();
+          }
+          restore();
         }
-        restore();
         showSaveToast(metadataWarning
           ? `URL updated; ${metadataWarning} Save Library Updates to persist.`
           : 'URL updated with Spotify metadata — Save Library Updates to persist.',

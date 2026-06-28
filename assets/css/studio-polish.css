@@ -1252,3 +1252,23 @@
     max-width: 100% !important;
   }
 }
+
+
+/* === Studio v93: keep inline repair rows stable after URL updates === */
+.studio-mini-row.studio-inline-updated {
+  border-color: color-mix(in srgb, var(--success, #496b3b) 42%, var(--border, #b98e55));
+  background: linear-gradient(180deg, rgba(244, 251, 235, 0.72), rgba(255, 252, 241, 0.6));
+}
+
+.studio-inline-updated-chip {
+  color: color-mix(in srgb, var(--success, #496b3b) 82%, var(--text, #22160d)) !important;
+  background: color-mix(in srgb, var(--success-soft, #dce8c8) 86%, white) !important;
+  border-color: color-mix(in srgb, var(--success, #496b3b) 32%, transparent) !important;
+}
+
+.studio-inline-track-detail {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
