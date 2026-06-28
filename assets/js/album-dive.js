@@ -59,7 +59,9 @@ function defaultAlbumDiveSlot(key, label) {
     tracks: [],
     listenState: "not_started",
     rating: null,
+    albumReaction: null,
     favoriteAlbum: false,
+    topTracks: [],
     favoriteSong: {
       title: "",
       artist: "",
@@ -114,6 +116,7 @@ function normalizeAlbumDiveSlot(raw, key, label) {
   slot.label = slot.label || label;
   slot.year = slot.year ? Number(slot.year) : null;
   slot.rating = slot.rating ? Number(slot.rating) : null;
+  slot.albumReaction = albumDiveSlotReaction(slot);
   slot.favoriteAlbum = Boolean(slot.favoriteAlbum);
   slot.totalTracks = slot.totalTracks ? Number(slot.totalTracks) : null;
   slot.itunesCollectionId = String(slot.itunesCollectionId || slot.appleCollectionId || slot.collectionId || "");
@@ -135,6 +138,11 @@ function normalizeAlbumDiveSlot(raw, key, label) {
         .map(normalizeAlbumDiveTrack)
         .filter((t) => t.title || t.spotifyTrackId || t.spotifyTrackUrl)
     : [];
+  slot.topTracks = Array.isArray(slot.topTracks) ? slot.topTracks : [];
+  if (!slot.topTracks.length && slot.favoriteSong?.title) {
+    const favValue = slot.favoriteSong.spotifyTrackId || slot.favoriteSong.spotifyTrackUrl || slot.favoriteSong.itunesTrackId || slot.favoriteSong.itunesTrackUrl || slot.favoriteSong.title;
+    if (favValue) slot.topTracks = [String(favValue)];
+  }
   slot.standoutTracks = Array.isArray(slot.standoutTracks)
     ? slot.standoutTracks
     : [];
@@ -167,7 +175,7 @@ function normalizeAlbumDive(genre, create = false) {
     status: existing.status || "not_started",
     summary: existing.summary || "",
     verdict: existing.verdict || "",
-    verdictImpact: existing.verdictImpact || "",
+    verdictImpact: ({ reinforced: "better", complicated: "no_change", weakened: "worse" }[existing.verdictImpact] || existing.verdictImpact || ""),
     slots,
     deletedSlotKeys: [...deletedKeys].filter((key) => slotDefKeys.has(key)),
     completedAt: existing.completedAt || "",
@@ -447,6 +455,67 @@ function albumDiveReactionLabel(value) {
         : "Unrated";
 }
 
+function albumDiveReactionFromLegacyRating(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0) return null;
+  if (n >= 4) return 3;
+  if (n >= 2) return 2;
+  return 1;
+}
+
+function albumDiveSlotReaction(slot = {}) {
+  const direct = Number(slot.albumReaction ?? slot.reaction);
+  if ([1, 2, 3].includes(direct)) return direct;
+  return albumDiveReactionFromLegacyRating(slot.rating);
+}
+
+function albumDiveReactionButtons(slotKey, currentValue, compact = false) {
+  return `<div class="album-reaction-buttons ${compact ? "compact" : ""}" aria-label="Album reaction">
+    ${[3, 2, 1].map((value) => `<button type="button" class="album-reaction-btn ${Number(currentValue) === value ? "active" : ""}" onclick="setAlbumDiveSlotReaction('${escapeHtml(slotKey)}', ${value})" title="${albumDiveReactionLabel(value)}" aria-label="${albumDiveReactionLabel(value)}"><span>${albumDiveReactionEmoji(value)}</span><small>${albumDiveReactionLabel(value)}</small></button>`).join("")}
+  </div>`;
+}
+
+function albumDiveTopTrackValues(slot = {}) {
+  const values = new Set();
+  if (Array.isArray(slot.topTracks)) {
+    slot.topTracks.forEach((item) => {
+      if (typeof item === "string") values.add(item);
+      else {
+        const value = item?.value || item?.spotifyTrackId || item?.spotifyTrackUrl || item?.itunesTrackId || item?.itunesTrackUrl || item?.title || "";
+        if (value) values.add(String(value));
+      }
+    });
+  }
+  if (!values.size && slot.favoriteSong?.title) {
+    const fav = slot.favoriteSong;
+    const value = fav.spotifyTrackId || fav.spotifyTrackUrl || fav.itunesTrackId || fav.itunesTrackUrl || fav.title;
+    if (value) values.add(String(value));
+  }
+  return [...values];
+}
+
+function albumDiveTopTracks(slot = {}) {
+  const selected = new Set(albumDiveTopTrackValues(slot));
+  const tracks = Array.isArray(slot.tracks) ? slot.tracks : [];
+  return tracks.filter((track) => {
+    const candidates = [
+      albumDiveTrackOptionValue(track),
+      track.spotifyTrackId,
+      track.spotifyTrackUrl,
+      track.itunesTrackId,
+      track.itunesTrackUrl,
+      track.title,
+    ].filter(Boolean).map(String);
+    return candidates.some((value) => selected.has(value));
+  });
+}
+
+function albumDiveTopTrackSummary(slot = {}) {
+  const tracks = albumDiveTopTracks(slot);
+  if (!tracks.length) return "No top songs picked";
+  return tracks.map((track) => track.artist && track.artist !== slot.artist ? `${track.artist} — ${track.title}` : track.title).filter(Boolean).join(" · ");
+}
+
 function albumDiveTrackReactionSummary(slot) {
   const counts = { 3: 0, 2: 0, 1: 0 };
   (slot?.tracks || []).forEach((track) => {
@@ -464,31 +533,44 @@ function albumDiveTrackReactionButtons(slotKey, track, compact = false) {
       </div>`;
 }
 
+function albumDiveTrackTopButton(slotKey, slot, track) {
+  const value = albumDiveTrackOptionValue(track);
+  const selected = new Set(albumDiveTopTrackValues(slot));
+  const candidates = [value, track.spotifyTrackId, track.spotifyTrackUrl, track.itunesTrackId, track.itunesTrackUrl, track.title].filter(Boolean).map(String);
+  const active = candidates.some((candidate) => selected.has(candidate));
+  return `<button type="button" class="album-track-top-btn ${active ? "active" : ""}" onclick="toggleAlbumDiveTopTrack('${escapeHtml(slotKey)}', '${escapeHtml(value)}')" title="${active ? "Remove top song" : "Mark as top song"}" aria-label="${active ? "Remove top song" : "Mark as top song"}">${active ? "★ Top" : "☆ Top"}</button>`;
+}
+
 function renderAlbumDiveTrackReactionRows(slot, safeKey) {
   const tracks = Array.isArray(slot.tracks) ? slot.tracks : [];
   if (!tracks.length)
-    return `<div class="album-focus-empty small">Fetch this album first to rate individual tracks.</div>`;
-  return `<div class="album-track-reaction-list">
+    return `<div class="album-focus-empty small">Fetch this album first to review its track list.</div>`;
+  return `<div class="album-track-reaction-list album-track-queue-list">
         ${tracks
           .map((track) => {
             const meta = [
+              track.discNumber && track.discNumber > 1 ? `D${track.discNumber}` : "",
               track.trackNumber ? `#${track.trackNumber}` : "",
               track.durationMs ? formatTrackDuration(track.durationMs) : "",
             ]
               .filter(Boolean)
               .join(" · ");
-            const href = track.spotifyTrackUrl || "";
+            const href = track.spotifyTrackUrl || track.itunesTrackUrl || "";
             return `<div class="album-track-reaction-row">
             <div class="album-track-reaction-main">
               <div class="album-track-title">${href ? `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(track.title || "Untitled track")} <span class="song-link-arrow">↗</span></a>` : escapeHtml(track.title || "Untitled track")}</div>
               <div class="album-track-meta">${escapeHtml([track.artist && track.artist !== slot.artist ? track.artist : "", meta].filter(Boolean).join(" · "))}</div>
             </div>
-            ${albumDiveTrackReactionButtons(safeKey, track)}
+            <div class="album-track-row-actions">
+              ${albumDiveTrackTopButton(safeKey, slot, track)}
+              ${albumDiveTrackReactionButtons(safeKey, track, true)}
+            </div>
           </div>`;
           })
           .join("")}
       </div>`;
 }
+
 
 function albumDiveSlotIndex(dive, selectedKey) {
   const slots = dive?.slots || [];
@@ -546,13 +628,14 @@ function renderAlbumDiveFocusRail(dive, selectedKey) {
               slot.listenState === "finished" ||
               slot.listenState === "completed";
             const isSampled = slot.listenState === "sampled";
-            const hasRating = Number(slot.rating) > 0;
+            const reaction = albumDiveSlotReaction(slot);
+            const hasRating = Number(reaction) > 0;
             return `<button type="button" role="listitem" class="album-rail-card ${isActive ? "active" : ""} ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${hasRating ? "has-rating" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}')" title="${escapeHtml(label)}">
             ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(label)} cover" loading="lazy">` : '<span class="album-rail-placeholder"></span>'}
             <span>${escapeHtml(slot.label)}</span>
             <em class="album-rail-status-dot" aria-hidden="true"></em>
             ${slot.favoriteAlbum ? '<span class="album-rail-trophy" title="Favorite album">🏆</span>' : ""}
-            ${hasRating ? `<strong>${slot.rating}</strong>` : ""}
+            ${hasRating ? `<strong>${albumDiveReactionEmoji(reaction)}</strong>` : ""}
           </button>`;
           })
           .join("")}
@@ -579,15 +662,9 @@ function renderAlbumDiveFocusPanel(dive) {
   ]
     .filter(Boolean)
     .join(" · ");
-  const ratingButtons = [1, 2, 3, 4, 5]
-    .map(
-      (n) =>
-        `<button type="button" class="album-star-btn ${Number(slot.rating) === n ? "active" : ""}" onclick="setAlbumDiveSlotRating('${safeKey}', ${n})" title="${n} star album rating">${n}</button>`,
-    )
-    .join("");
-  const favoriteLabel = fav.title
-    ? `${fav.artist ? `${fav.artist} — ` : ""}${fav.title}`
-    : "";
+  const albumReaction = albumDiveSlotReaction(slot);
+  const reactionButtons = albumDiveReactionButtons(safeKey, albumReaction, true);
+  const favoriteLabel = albumDiveTopTrackSummary(slot);
   const listenStateSelect = `<select onchange="updateAlbumDiveSlotField('${safeKey}', 'listenState', this.value)">
         ${[
           ["not_started", "Not started"],
@@ -627,13 +704,12 @@ function renderAlbumDiveFocusPanel(dive) {
               ${displaySub ? `<div class="album-focus-sub">${escapeHtml(displaySub)}</div>` : ""}
               ${slot.rationale ? `<p class="album-focus-rationale">${escapeHtml(slot.rationale)}</p>` : ""}
               <div class="album-focus-actions">
-                <div class="album-focus-rating"><span>Album</span><div class="album-stars album-stars-compact">${ratingButtons}</div></div>
+                <div class="album-focus-rating"><span>Album</span>${reactionButtons}</div>
                 <button type="button" class="album-focus-trophy ${slot.favoriteAlbum ? "active" : ""}" onclick="setAlbumDiveFavoriteAlbum('${safeKey}')" title="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}" aria-label="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}">🏆</button>
                 <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}')">Controls & favorite</button>
                 <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}')">Delete entry</button>
               </div>
-              ${favoriteLabel ? `<div class="album-focus-favorite"><strong>Favorite:</strong> ${escapeHtml(favoriteLabel)}</div>` : ""}
-              ${slot.notes ? `<div class="album-focus-note">${escapeHtml(slot.notes)}</div>` : ""}
+              ${favoriteLabel ? `<div class="album-focus-favorite"><strong>Top songs:</strong> ${escapeHtml(favoriteLabel)}</div>` : ""}
             </div>
           </div>
           ${renderAlbumDiveSidePeek(nextSlot, "Next")}
@@ -644,17 +720,15 @@ function renderAlbumDiveFocusPanel(dive) {
           <div class="album-focus-detail-grid">
             <section class="album-focus-detail-section">
               <h5>Listening state</h5>
-              <div class="album-slot-meta album-focus-state-editor">${listenStateSelect}<div class="album-stars">${ratingButtons}</div></div>
-              <label>Album notes</label>
-              <textarea placeholder="Album notes / standout tracks / alternate picks" oninput="updateAlbumDiveSlotField('${safeKey}', 'notes', this.value)">${escapeHtml(slot.notes || "")}</textarea>
+              <div class="album-slot-meta album-focus-state-editor">${listenStateSelect}${reactionButtons}</div>
             </section>
             <section class="album-focus-detail-section">
-              <h5>Favorite song from this album</h5>
+              <h5>Top songs from this album</h5>
               <div class="album-slot-favorite album-focus-favorite-editor">
                 ${renderAlbumDiveFavoritePicker(slot, safeKey)}
                 <div class="album-fav-actions">
                   ${fav.spotifyTrackUrl ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="fetchAlbumDiveFavoriteMetadata('${safeKey}', this)">Refresh Track Info</button>` : ""}
-                  <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add Favorite to Song Log</button>
+                  <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add First Top Song to Song Log</button>
                   ${fav.promotedToSongLog ? '<span class="tag">Promoted</span>' : ""}
                 </div>
               </div>
@@ -664,12 +738,55 @@ function renderAlbumDiveFocusPanel(dive) {
         </details>
         <div class="album-focus-tracks">
           <details>
-            <summary><span>Track reactions</span><small>from ${escapeHtml(displayTitle)}${trackSummary}</small></summary>
+            <summary><span>Track queue</span><small>from ${escapeHtml(displayTitle)}${trackSummary}</small></summary>
             ${renderAlbumDiveTrackReactionRows(slot, safeKey)}
           </details>
         </div>
         ${renderAlbumDiveFocusRail(dive, selectedKey)}
       </div>`;
+}
+
+function albumDiveSlotQueueState(slot = {}) {
+  const reaction = albumDiveSlotReaction(slot);
+  const state = slot.listenState || "not_started";
+  return [
+    state && state !== "not_started" ? state.replaceAll("_", " ") : "queued",
+    reaction ? albumDiveReactionEmoji(reaction) : "unrated",
+    albumDiveTopTracks(slot).length ? `${albumDiveTopTracks(slot).length} top` : "no top songs",
+  ].filter(Boolean).join(" · ");
+}
+
+function renderAlbumDiveQueue(dive) {
+  const slots = (dive?.slots || []).filter(albumDiveSlotHasContent);
+  if (!slots.length) return `<div class="album-dive-queue-empty small">No albums queued yet. Add Spotify, Apple/iTunes, or manual album entries first.</div>`;
+  return `<div class="album-dive-queue-list">
+    ${slots.map((slot, index) => {
+      const art = albumDiveArtUrl(slot);
+      const title = slot.album || slot.label || `Album ${index + 1}`;
+      const meta = [slot.label, slot.artist, slot.year || (slot.releaseDate ? String(slot.releaseDate).slice(0, 4) : "")].filter(Boolean).join(" · ");
+      const top = albumDiveTopTrackSummary(slot);
+      const reaction = albumDiveSlotReaction(slot);
+      return `<button type="button" class="album-dive-queue-row" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}'); setAlbumDiveEditorMode(false); const panel=document.getElementById('albumDivePanel'); if(panel) panel.open=true;">
+        ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(title)} cover" loading="lazy">` : '<span class="album-queue-art-empty" aria-hidden="true"></span>'}
+        <span class="album-dive-queue-main">
+          <strong>${escapeHtml(title)}</strong>
+          ${meta ? `<small>${escapeHtml(meta)}</small>` : ""}
+          <em>${escapeHtml(top)}</em>
+        </span>
+        <span class="album-dive-queue-status">${reaction ? albumDiveReactionEmoji(reaction) : "—"}</span>
+      </button>`;
+    }).join("")}
+  </div>`;
+}
+
+function toggleAlbumDiveQueue(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const panel = document.getElementById("albumDiveQueuePanel");
+  if (!panel) return;
+  panel.classList.toggle("hidden");
 }
 
 function toggleAlbumDiveFocusDetails(slotKey, forceOpen = false) {
@@ -729,7 +846,8 @@ function renderAlbumDivePanel(genre) {
           <span class="album-dive-summary-actions">
             <span class="tag">${escapeHtml(dive.mode || "canon")} dive</span>
             <span class="tag">${dive.status === "completed" ? "Complete" : "In progress"}</span>
-            <span class="album-dive-expand-cue" aria-hidden="true">Open</span>
+            <button type="button" class="btn btn-secondary btn-tiny album-dive-queue-toggle" onclick="toggleAlbumDiveQueue(event)">Show queue</button>
+            <span class="album-dive-expand-cue" aria-hidden="true">Details</span>
           </span>
         </summary>
         <div class="album-dive-collapsed-body">
@@ -747,6 +865,7 @@ function renderAlbumDivePanel(genre) {
             </div>
             <div class="album-dive-actions">
               <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
+              <button type="button" class="btn btn-secondary" onclick="openAlbumDiveSpotifyPlaylistModal()">＋ Playlist Albums</button>
               <button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">${listenMode ? "Finish Dive" : "Mark Dive Complete"}</button>
               <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
               <button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>
@@ -754,23 +873,118 @@ function renderAlbumDivePanel(genre) {
           </div>
           ${listenMode ? "" : albumDiveJsonImportMarkup('albumDiveJsonImport')}
           ${listenMode ? renderAlbumDiveFocusPanel(dive) : `<div class="album-dive-grid">${dive.slots.map(renderAlbumDiveSlot).join("")}</div>`}
-          <div class="album-dive-verdict">
-            <div class="album-dive-verdict-grid">
-              <div>
-                <label for="albumDiveVerdictImpact">Verdict impact</label>
-                <select id="albumDiveVerdictImpact" onchange="updateAlbumDiveRootField('verdictImpact', this.value)">
-                  ${["", "reinforced", "complicated", "weakened"].map((value) => `<option value="${value}" ${String(dive.verdictImpact || "") === value ? "selected" : ""}>${value ? value[0].toUpperCase() + value.slice(1) : "Choose…"}</option>`).join("")}
-                </select>
-              </div>
-              <div>
-                <label for="albumDiveVerdict">Final dive verdict</label>
-                <textarea id="albumDiveVerdict" placeholder="Did the album dive strengthen, complicate, or weaken your original rating?" oninput="updateAlbumDiveRootField('verdict', this.value)">${escapeHtml(dive.verdict || "")}</textarea>
-              </div>
-            </div>
+          <div class="album-dive-verdict album-dive-impact-only">
+            <label for="albumDiveVerdictImpact">After the album dive, this genre feels…</label>
+            <select id="albumDiveVerdictImpact" onchange="updateAlbumDiveRootField('verdictImpact', this.value)">
+              ${[
+                ["", "Choose…"],
+                ["better", "Made me like the genre better"],
+                ["no_change", "No change"],
+                ["worse", "Made me like the genre worse"],
+              ].map(([value, label]) => `<option value="${value}" ${String(dive.verdictImpact || "") === value ? "selected" : ""}>${label}</option>`).join("")}
+            </select>
           </div>
         </div>
-      </details>`;
+      </details>
+      <div id="albumDiveQueuePanel" class="panel album-dive-queue-panel hidden">
+        <div class="album-dive-queue-head"><strong>Album queue</strong><span class="small">Tap an album to jump into its details.</span></div>
+        ${renderAlbumDiveQueue(dive)}
+      </div>`
 }
+function albumDiveSpotifyTrackRows(genre = currentGenre) {
+  const dive = normalizeAlbumDive(genre, false);
+  const result = { rows: [], skipped: 0, albumCount: 0, totalTracks: 0 };
+  if (!genre || !dive || !Array.isArray(dive.slots)) return result;
+  const seen = new Set();
+  const slots = dive.slots.filter(albumDiveSlotHasContent);
+  result.albumCount = slots.length;
+  slots.forEach((slot, slotIndex) => {
+    const tracks = Array.isArray(slot.tracks) ? slot.tracks.slice() : [];
+    tracks.sort((a, b) => {
+      const disc = Number(a.discNumber || 1) - Number(b.discNumber || 1);
+      if (disc) return disc;
+      const track = Number(a.trackNumber || 0) - Number(b.trackNumber || 0);
+      if (track) return track;
+      return String(a.title || '').localeCompare(String(b.title || ''));
+    });
+    tracks.forEach((track, trackIndex) => {
+      result.totalTracks += 1;
+      const rawUrl = track.spotifyTrackUrl || track.spotifyUrl || (track.spotifyTrackId ? `https://open.spotify.com/track/${track.spotifyTrackId}` : '');
+      const id = typeof spotifyTrackId === 'function'
+        ? (spotifyTrackId(rawUrl) || spotifyTrackId(track.spotifyTrackId || ''))
+        : (track.spotifyTrackId || '');
+      if (!id) {
+        result.skipped += 1;
+        return;
+      }
+      const key = `spotify:track:${id}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      const albumPrefix = slot.album ? `${slot.album}` : (slot.label || `Album ${slotIndex + 1}`);
+      const position = [track.discNumber && Number(track.discNumber) > 1 ? `D${track.discNumber}` : '', track.trackNumber ? `#${track.trackNumber}` : '']
+        .filter(Boolean)
+        .join(' ');
+      result.rows.push({
+        id,
+        uri: key,
+        url: rawUrl || `https://open.spotify.com/track/${id}`,
+        title: track.title || 'Spotify track',
+        artist: track.artist || (Array.isArray(track.artists) ? track.artists.join(', ') : '') || slot.artist || '',
+        artwork: slot.albumArt || slot.manualAlbumArt || '',
+        score: null,
+        type: 'direct',
+        sourceLabel: 'Album Dive',
+        parentTitle: albumPrefix,
+        parentType: 'albumDive',
+        parentGenreName: genre.genre || 'Unknown genre',
+        genreId: genre.id != null ? String(genre.id) : '',
+        genreName: genre.genre || 'Unknown genre',
+        date: dateValue(genre) || '',
+        platform: 'spotify',
+        albumDiveSlot: slot.key || '',
+        albumDiveLabel: slot.label || '',
+        albumTitle: slot.album || '',
+        trackPosition: position,
+        playlistOrder: `${String(slotIndex).padStart(2, '0')}-${String(track.discNumber || 1).padStart(2, '0')}-${String(track.trackNumber || trackIndex + 1).padStart(3, '0')}`
+      });
+    });
+  });
+  result.rows.sort((a, b) => String(a.playlistOrder || '').localeCompare(String(b.playlistOrder || '')));
+  return result;
+}
+
+async function openAlbumDiveSpotifyPlaylistModal() {
+  if (!currentGenre) return;
+  if (typeof spotifyEnsurePlaylistScopes === 'function') {
+    const ok = await spotifyEnsurePlaylistScopes({ returnScreen: 'listen' });
+    if (!ok) return;
+  }
+  const { rows, skipped, albumCount, totalTracks } = albumDiveSpotifyTrackRows(currentGenre);
+  if (!rows.length) {
+    const skippedCopy = totalTracks
+      ? ` Found ${totalTracks} album track${totalTracks === 1 ? '' : 's'}, but none have Spotify track URLs. Apple/iTunes-only albums cannot be added to Spotify playlists unless you map their tracks to Spotify.`
+      : ' Fetch album tracklists first, then try again.';
+    showSaveToast(`No Spotify tracks found in Album Dive.${skippedCopy}`, true);
+    return;
+  }
+  if (typeof spotifyOpenPlaylistModalWithRows !== 'function') {
+    showSaveToast('Spotify playlist tools are not loaded yet.', true);
+    return;
+  }
+  spotifyOpenPlaylistModalWithRows({
+    rows,
+    sourceName: `${currentGenre.genre || 'Genre'} Album Dive`,
+    playlistName: `Daily Genre — ${currentGenre.genre || 'Genre'} Album Dive`,
+    contextType: 'albumDive',
+    genreId: currentGenre.id != null ? String(currentGenre.id) : ''
+  });
+  if (skipped) {
+    setTimeout(() => showSaveToast(`Album Dive playlist opened with ${rows.length} Spotify track${rows.length === 1 ? '' : 's'}. Skipped ${skipped} Apple/iTunes/manual track${skipped === 1 ? '' : 's'} without Spotify URLs.`, false), 120);
+  } else {
+    setTimeout(() => showSaveToast(`Album Dive playlist opened with ${rows.length} Spotify track${rows.length === 1 ? '' : 's'} from ${albumCount} album${albumCount === 1 ? '' : 's'}.`, false), 120);
+  }
+}
+
 function albumDiveTrackOptionValue(track) {
   return (
     track.spotifyTrackId ||
@@ -782,46 +996,37 @@ function albumDiveTrackOptionValue(track) {
 }
 
 function renderAlbumDiveFavoritePicker(slot, safeKey) {
-  const fav = slot.favoriteSong || {};
   const tracks = Array.isArray(slot.tracks) ? slot.tracks : [];
-  const selected = fav.spotifyTrackId || fav.spotifyTrackUrl || fav.itunesTrackId || fav.itunesTrackUrl || "";
+  const selected = new Set(albumDiveTopTrackValues(slot));
   if (!tracks.length) {
-    return `<div class="small">Fetch the Spotify or Apple/iTunes album first to choose from its real track list.</div>
+    const fav = slot.favoriteSong || {};
+    return `<div class="small">Fetch the Spotify or Apple/iTunes album first to choose top songs from its real track list.</div>
           <div class="album-slot-minirow">
-            <input type="text" value="${escapeHtml(fav.title || "")}" placeholder="Favorite song title" oninput="updateAlbumDiveFavoriteField('${safeKey}', 'title', this.value)">
+            <input type="text" value="${escapeHtml(fav.title || "")}" placeholder="Top song title" oninput="updateAlbumDiveFavoriteField('${safeKey}', 'title', this.value)">
             <input type="text" value="${escapeHtml(fav.artist || "")}" placeholder="Artist" oninput="updateAlbumDiveFavoriteField('${safeKey}', 'artist', this.value)">
           </div>
-          <input type="url" value="${escapeHtml(fav.spotifyTrackUrl || fav.itunesTrackUrl || "")}" placeholder="Spotify or Apple/iTunes track URL for favorite song" onchange="updateAlbumDiveFavoriteField('${safeKey}', this.value.includes('apple.com') || this.value.includes('itunes.apple.com') ? 'itunesTrackUrl' : 'spotifyTrackUrl', this.value)">`;
+          <input type="url" value="${escapeHtml(fav.spotifyTrackUrl || fav.itunesTrackUrl || "")}" placeholder="Spotify or Apple/iTunes track URL for top song" onchange="updateAlbumDiveFavoriteField('${safeKey}', this.value.includes('apple.com') || this.value.includes('itunes.apple.com') ? 'itunesTrackUrl' : 'spotifyTrackUrl', this.value)">`;
   }
-  return `<div class="album-track-select-row">
-        <select onchange="setAlbumDiveFavoriteFromTrack('${safeKey}', this.value)">
-          <option value="">Choose favorite from ${tracks.length} track${tracks.length === 1 ? "" : "s"}…</option>
-          ${tracks
-            .map((track) => {
-              const value = albumDiveTrackOptionValue(track);
-              const isSelected =
-                selected &&
-                (selected === track.spotifyTrackId ||
-                  selected === track.spotifyTrackUrl ||
-                  selected === track.itunesTrackId ||
-                  selected === track.itunesTrackUrl ||
-                  selected === value);
-              const prefix = [
-                track.discNumber && track.discNumber > 1
-                  ? `D${track.discNumber}`
-                  : "",
-                track.trackNumber ? `#${track.trackNumber}` : "",
-              ]
-                .filter(Boolean)
-                .join(" ");
-              return `<option value="${escapeHtml(value)}" ${isSelected ? "selected" : ""}>${escapeHtml(`${prefix ? `${prefix} — ` : ""}${track.title}${track.artist ? ` — ${track.artist}` : ""}`)}</option>`;
-            })
-            .join("")}
-        </select>
-        ${fav.spotifyTrackUrl || fav.itunesTrackUrl ? `<a class="btn btn-secondary btn-tiny" href="${escapeHtml(fav.spotifyTrackUrl || fav.itunesTrackUrl)}" target="_blank" rel="noopener">Open</a>` : ""}
-      </div>
-      ${fav.title ? `<div class="small"><strong>Favorite:</strong> ${escapeHtml(fav.artist ? `${fav.artist} — ${fav.title}` : fav.title)}</div>` : ""}`;
+  const rows = tracks.map((track) => {
+    const value = albumDiveTrackOptionValue(track);
+    const candidates = [value, track.spotifyTrackId, track.spotifyTrackUrl, track.itunesTrackId, track.itunesTrackUrl, track.title].filter(Boolean).map(String);
+    const isSelected = candidates.some((candidate) => selected.has(candidate));
+    const prefix = [
+      track.discNumber && track.discNumber > 1 ? `D${track.discNumber}` : "",
+      track.trackNumber ? `#${track.trackNumber}` : "",
+    ].filter(Boolean).join(" ");
+    return `<label class="album-top-track-check ${isSelected ? "active" : ""}">
+      <input type="checkbox" ${isSelected ? "checked" : ""} onchange="toggleAlbumDiveTopTrack('${safeKey}', '${escapeHtml(value)}', this.checked)">
+      <span>${escapeHtml(`${prefix ? `${prefix} — ` : ""}${track.title}${track.artist ? ` — ${track.artist}` : ""}`)}</span>
+    </label>`;
+  }).join("");
+  const topSummary = albumDiveTopTrackSummary(slot);
+  return `<div class="album-top-track-picker">
+      <div class="small"><strong>Top songs:</strong> ${escapeHtml(topSummary)}</div>
+      <div class="album-top-track-list">${rows}</div>
+    </div>`;
 }
+
 
 function renderAlbumDiveSlot(slot) {
   const albumUrl = albumDiveSlotCanonicalUrl(slot);
@@ -846,16 +1051,9 @@ function renderAlbumDiveSlot(slot) {
     slot.rationale ||
     fav.title
   );
-  const favoriteLabel = fav.title
-    ? `${fav.artist ? `${fav.artist} — ` : ""}${fav.title}`
-    : "—";
-  const notePreview = slot.notes || fav.note || "";
-  const ratingButtons = [1, 2, 3, 4, 5]
-    .map(
-      (n) =>
-        `<button type="button" class="album-star-btn ${Number(slot.rating) === n ? "active" : ""}" onclick="setAlbumDiveSlotRating('${safeKey}', ${n})" title="${n} star album rating">${n}</button>`,
-    )
-    .join("");
+  const favoriteLabel = albumDiveTopTrackSummary(slot);
+  const albumReaction = albumDiveSlotReaction(slot);
+  const reactionButtons = albumDiveReactionButtons(safeKey, albumReaction, true);
   const listenStateSelect = `<select onchange="updateAlbumDiveSlotField('${safeKey}', 'listenState', this.value)">
               ${[
                 ["not_started", "Not started"],
@@ -880,11 +1078,11 @@ function renderAlbumDiveSlot(slot) {
             </div>
           </details>`;
   const favoriteBlock = `<div class="album-slot-favorite">
-            <h4>Favorite song from this album</h4>
+            <h4>Top songs from this album</h4>
             ${renderAlbumDiveFavoritePicker(slot, safeKey)}
             <div class="album-fav-actions">
               ${fav.spotifyTrackUrl ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="fetchAlbumDiveFavoriteMetadata('${safeKey}', this)">Refresh Track Info</button>` : ""}
-              <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add Favorite to Song Log</button>
+              <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add First Top Song to Song Log</button>
               ${fav.promotedToSongLog ? '<span class="tag">Promoted</span>' : ""}
             </div>
           </div>`;
@@ -905,20 +1103,17 @@ function renderAlbumDiveSlot(slot) {
           <div class="album-listen-quick">
             <div class="album-listen-minirow">
               <span class="album-listen-state">${escapeHtml(state.replaceAll("_", " "))}</span>
-              <div class="album-stars album-stars-compact" aria-label="Album rating">${ratingButtons}</div>
+              ${reactionButtons}
             </div>
-            <div class="album-listen-favorite"><strong>Favorite:</strong> ${escapeHtml(favoriteLabel)}</div>
-            ${notePreview ? `<div class="album-listen-note-preview">${escapeHtml(notePreview)}</div>` : ""}
+            <div class="album-listen-favorite"><strong>Top songs:</strong> ${escapeHtml(favoriteLabel)}</div>
             <details class="album-listen-expand">
               <summary>Album controls / Favorite / Edit</summary>
               <div class="album-listen-expand-body">
                 <div class="album-slot-meta">
                   ${listenStateSelect}
-                  <div class="album-stars" aria-label="Album rating">${ratingButtons}</div>
+                  ${reactionButtons}
                 </div>
                 ${favoriteBlock}
-                <label>Album notes</label>
-                <textarea placeholder="Album notes / standout tracks / alternate picks" oninput="updateAlbumDiveSlotField('${safeKey}', 'notes', this.value)">${escapeHtml(slot.notes || "")}</textarea>
                 ${manualMetadataDetails}
               </div>
             </details>
@@ -933,11 +1128,10 @@ function renderAlbumDiveSlot(slot) {
             <div class="album-source-line small"><span class="album-source-chip ${albumDiveSourceClass(slot)}">${escapeHtml(albumDiveSourceLabel(slot))}</span>${slot.primaryGenreName ? ` <span>${escapeHtml(slot.primaryGenreName)}</span>` : ""}</div>
             <div class="album-slot-meta">
               ${listenStateSelect}
-              <div class="album-stars" aria-label="Album rating">${ratingButtons}</div>
+              ${reactionButtons}
             </div>
             ${favoriteBlock}
             ${manualMetadataDetails}
-            <textarea placeholder="Album notes / standout tracks / alternate picks" oninput="updateAlbumDiveSlotField('${safeKey}', 'notes', this.value)">${escapeHtml(slot.notes || "")}</textarea>
           </div>
         </div>
       </div>`;
@@ -1240,11 +1434,18 @@ function updateAlbumDiveFavoriteField(slotKey, field, value) {
 }
 
 function setAlbumDiveSlotRating(slotKey, rating) {
+  const reaction = albumDiveReactionFromLegacyRating(rating);
+  setAlbumDiveSlotReaction(slotKey, reaction);
+}
+
+function setAlbumDiveSlotReaction(slotKey, value) {
   const slot = getAlbumDiveSlot(slotKey);
   if (!slot) return;
-  slot.rating = Number(slot.rating) === Number(rating) ? null : Number(rating);
+  const reaction = [1, 2, 3].includes(Number(value)) ? Number(value) : null;
+  slot.albumReaction = Number(slot.albumReaction) === reaction ? null : reaction;
+  slot.rating = null;
   touchAlbumDive();
-  rerenderAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
 }
 
 function setAlbumDiveFavoriteAlbum(slotKey) {
@@ -1580,6 +1781,8 @@ function setAlbumDiveTrackReaction(slotKey, trackValue, value) {
       cleanValue &&
       (cleanValue === item.spotifyTrackId ||
         cleanValue === item.spotifyTrackUrl ||
+        cleanValue === item.itunesTrackId ||
+        cleanValue === item.itunesTrackUrl ||
         cleanValue === albumDiveTrackOptionValue(item)),
   );
   if (!track) return;
@@ -1587,6 +1790,48 @@ function setAlbumDiveTrackReaction(slotKey, trackValue, value) {
   track.reaction = Number(track.reaction) === reaction ? null : reaction;
   touchAlbumDive();
   rerenderAlbumDive();
+}
+
+function syncAlbumDiveFavoriteToFirstTopTrack(slot) {
+  const first = albumDiveTopTracks(slot)[0];
+  if (!first) return;
+  slot.favoriteSong = slot.favoriteSong || defaultAlbumDiveSlot(slot.key, slot.label).favoriteSong;
+  slot.favoriteSong.title = first.title || "";
+  slot.favoriteSong.artist = first.artist || slot.artist || "";
+  slot.favoriteSong.spotifyTrackUrl = first.spotifyTrackUrl || "";
+  slot.favoriteSong.spotifyTrackId = first.spotifyTrackId || "";
+  slot.favoriteSong.itunesTrackUrl = first.itunesTrackUrl || "";
+  slot.favoriteSong.itunesTrackId = first.itunesTrackId || "";
+  slot.favoriteSong.previewUrl = first.previewUrl || "";
+  slot.favoriteSong.albumArt = slot.albumArt || slot.manualAlbumArt || "";
+  slot.favoriteSong.durationMs = first.durationMs || null;
+  slot.favoriteSong.trackNumber = first.trackNumber || null;
+  slot.favoriteSong.discNumber = first.discNumber || null;
+  slot.favoriteSong.promotedToSongLog = false;
+}
+
+function toggleAlbumDiveTopTrack(slotKey, trackValue, forceValue) {
+  const slot = getAlbumDiveSlot(slotKey);
+  if (!slot) return;
+  const cleanValue = String(trackValue || "");
+  if (!cleanValue) return;
+  const tracks = Array.isArray(slot.tracks) ? slot.tracks : [];
+  const track = tracks.find((item) => cleanValue && (
+    cleanValue === item.spotifyTrackId ||
+    cleanValue === item.spotifyTrackUrl ||
+    cleanValue === item.itunesTrackId ||
+    cleanValue === item.itunesTrackUrl ||
+    cleanValue === albumDiveTrackOptionValue(item)
+  ));
+  const canonical = track ? albumDiveTrackOptionValue(track) : cleanValue;
+  const current = new Set(albumDiveTopTrackValues(slot));
+  const shouldAdd = typeof forceValue === "boolean" ? forceValue : !current.has(canonical);
+  if (shouldAdd) current.add(canonical);
+  else current.delete(canonical);
+  slot.topTracks = [...current];
+  if (slot.topTracks.length) syncAlbumDiveFavoriteToFirstTopTrack(slot);
+  touchAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
 }
 
 function setAlbumDiveFavoriteFromTrack(slotKey, value) {
@@ -1603,6 +1848,9 @@ function setAlbumDiveFavoriteFromTrack(slotKey, value) {
         value === albumDiveTrackOptionValue(t)),
   );
   if (!track) return;
+  const selected = new Set(albumDiveTopTrackValues(slot));
+  selected.add(albumDiveTrackOptionValue(track));
+  slot.topTracks = [...selected];
   slot.favoriteSong =
     slot.favoriteSong ||
     defaultAlbumDiveSlot(slot.key, slot.label).favoriteSong;
