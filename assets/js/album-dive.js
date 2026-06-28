@@ -402,11 +402,27 @@ function albumDiveStorageKey() {
   return `dailyGenreAlbumDiveFocusSlot:${id}`;
 }
 
+function albumDiveInstantScrollTo(x, y) {
+  try {
+    window.scrollTo({ left: x, top: y, behavior: "instant" });
+  } catch {
+    window.scrollTo(x, y);
+  }
+}
+
 function albumDivePreserveViewport(callback) {
   const scrollX = window.scrollX || window.pageXOffset || 0;
   const scrollY = window.scrollY || window.pageYOffset || 0;
   const active = document.activeElement;
-  const restore = () => window.scrollTo(scrollX, scrollY);
+  const root = document.documentElement;
+  const body = document.body;
+  root?.classList?.add("dg-album-dive-scroll-lock");
+  body?.classList?.add("dg-album-dive-scroll-lock");
+  const restore = () => albumDiveInstantScrollTo(scrollX, scrollY);
+  const release = () => {
+    root?.classList?.remove("dg-album-dive-scroll-lock");
+    body?.classList?.remove("dg-album-dive-scroll-lock");
+  };
   try {
     callback?.();
   } finally {
@@ -414,9 +430,15 @@ function albumDivePreserveViewport(callback) {
       try { active.blur(); } catch {}
     }
     restore();
-    requestAnimationFrame(restore);
+    requestAnimationFrame(() => {
+      restore();
+      requestAnimationFrame(restore);
+    });
     setTimeout(restore, 0);
-    setTimeout(restore, 60);
+    setTimeout(restore, 40);
+    setTimeout(restore, 120);
+    setTimeout(restore, 260);
+    setTimeout(() => { restore(); release(); }, 520);
   }
 }
 
@@ -450,6 +472,7 @@ function getAlbumDiveFocusSlotKey(dive) {
 }
 
 function setAlbumDiveFocusSlot(slotKey, options = {}) {
+  if (options.event) { options.event.preventDefault?.(); options.event.stopPropagation?.(); }
   const panel = document.getElementById("albumDivePanel");
   if (panel) albumDivePanelOpen = !!panel.open;
   if (options.preserveQueue) albumDiveQueueOpen = true;
@@ -562,7 +585,7 @@ function albumDiveTrackTopButton(slotKey, slot, track) {
   const selected = new Set(albumDiveTopTrackValues(slot));
   const candidates = [value, track.spotifyTrackId, track.spotifyTrackUrl, track.itunesTrackId, track.itunesTrackUrl, track.title].filter(Boolean).map(String);
   const active = candidates.some((candidate) => selected.has(candidate));
-  return `<button type="button" class="album-track-top-btn ${active ? "active" : ""}" onclick="toggleAlbumDiveTopTrack('${escapeHtml(slotKey)}', '${escapeHtml(value)}')" title="${active ? "Remove top song" : "Mark as top song"}" aria-label="${active ? "Remove top song" : "Mark as top song"}">${active ? "★ Top" : "☆ Top"}</button>`;
+  return `<button type="button" class="album-track-top-btn ${active ? "active" : ""}" onclick="toggleAlbumDiveTopTrack('${escapeHtml(slotKey)}', '${escapeHtml(value)}', undefined, event)" title="${active ? "Remove top song" : "Mark as top song"}" aria-label="${active ? "Remove top song" : "Mark as top song"}">${active ? "★ Top" : "☆ Top"}</button>`;
 }
 
 function renderAlbumDiveTrackReactionRows(slot, safeKey) {
@@ -610,12 +633,13 @@ function albumDiveAdjacentSlot(dive, selectedKey, direction) {
   return slots[nextIndex] || null;
 }
 
-function setAlbumDiveFocusRelative(direction) {
+function setAlbumDiveFocusRelative(direction, event) {
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   const dive = normalizeAlbumDive(currentGenre, false);
   if (!dive?.slots?.length) return;
   const currentKey = getAlbumDiveFocusSlotKey(dive);
   const next = albumDiveAdjacentSlot(dive, currentKey, Number(direction) || 0);
-  if (next?.key) setAlbumDiveFocusSlot(next.key);
+  if (next?.key) setAlbumDiveFocusSlot(next.key, { event });
 }
 
 function renderAlbumDiveSidePeek(slot, sideLabel) {
@@ -715,7 +739,7 @@ function renderAlbumDiveFocusPanel(dive) {
       </details>`;
   return `<div class="album-focus-view">
         <div class="album-focus-carousel" aria-label="Focused Album Dive carousel">
-          <button type="button" class="album-focus-nav album-focus-prev" onclick="setAlbumDiveFocusRelative(-1)" aria-label="Previous Album Dive slot">‹</button>
+          <button type="button" class="album-focus-nav album-focus-prev" onclick="setAlbumDiveFocusRelative(-1, event)" aria-label="Previous Album Dive slot">‹</button>
           ${renderAlbumDiveSidePeek(prevSlot, "Previous")}
           <div class="album-focus-hero">
             <div class="album-focus-art-wrap">${albumDiveArtHtml(slot)}</div>
@@ -729,15 +753,15 @@ function renderAlbumDiveFocusPanel(dive) {
               ${slot.rationale ? `<p class="album-focus-rationale">${escapeHtml(slot.rationale)}</p>` : ""}
               <div class="album-focus-actions">
                 <div class="album-focus-rating"><span>Album</span>${reactionButtons}</div>
-                <button type="button" class="album-focus-trophy ${slot.favoriteAlbum ? "active" : ""}" onclick="setAlbumDiveFavoriteAlbum('${safeKey}')" title="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}" aria-label="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}">🏆</button>
-                <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}')">Details</button>
-                <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}')">Delete entry</button>
+                <button type="button" class="album-focus-trophy ${slot.favoriteAlbum ? "active" : ""}" onclick="setAlbumDiveFavoriteAlbum('${safeKey}', event)" title="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}" aria-label="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}">🏆</button>
+                <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}', event)">Details</button>
+                <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}', event)">Delete entry</button>
               </div>
               ${favoriteLabel ? `<div class="album-focus-favorite"><strong>Top songs:</strong> ${escapeHtml(favoriteLabel)}</div>` : ""}
             </div>
           </div>
           ${renderAlbumDiveSidePeek(nextSlot, "Next")}
-          <button type="button" class="album-focus-nav album-focus-next" onclick="setAlbumDiveFocusRelative(1)" aria-label="Next Album Dive slot">›</button>
+          <button type="button" class="album-focus-nav album-focus-next" onclick="setAlbumDiveFocusRelative(1, event)" aria-label="Next Album Dive slot">›</button>
         </div>
         <details class="album-focus-detail-drawer" id="album-focus-details-${safeKey}">
           <summary>Album controls and top songs</summary>
@@ -838,7 +862,10 @@ function selectAlbumDiveQueueSlot(slotKey, event) {
   });
 }
 
-function toggleAlbumDiveFocusDetails(slotKey, forceOpen = false) {
+function toggleAlbumDiveFocusDetails(slotKey, eventOrForceOpen = false, maybeForceOpen = false) {
+  const event = eventOrForceOpen && typeof eventOrForceOpen === "object" ? eventOrForceOpen : null;
+  const forceOpen = event ? !!maybeForceOpen : !!eventOrForceOpen;
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   albumDivePreserveViewport(() => {
     const drawer = document.getElementById(`album-focus-details-${slotKey}`);
     if (!drawer) return;
@@ -1061,7 +1088,7 @@ function renderAlbumDiveFavoritePicker(slot, safeKey) {
       track.trackNumber ? `#${track.trackNumber}` : "",
     ].filter(Boolean).join(" ");
     return `<label class="album-top-track-check ${isSelected ? "active" : ""}">
-      <input type="checkbox" ${isSelected ? "checked" : ""} onchange="toggleAlbumDiveTopTrack('${safeKey}', '${escapeHtml(value)}', this.checked)">
+      <input type="checkbox" ${isSelected ? "checked" : ""} onchange="toggleAlbumDiveTopTrack('${safeKey}', '${escapeHtml(value)}', this.checked, event)">
       <span>${escapeHtml(`${prefix ? `${prefix} — ` : ""}${track.title}${track.artist ? ` — ${track.artist}` : ""}`)}</span>
     </label>`;
   }).join("");
@@ -1168,7 +1195,7 @@ function renderAlbumDiveSlot(slot) {
             <div class="album-fetch-row album-provider-row">
               <input type="url" value="${escapeHtml(albumDiveSlotInputUrl(slot))}" placeholder="Paste Spotify, Apple Music, or iTunes album URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'albumProviderUrl', this.value)">
               <button type="button" class="btn btn-primary btn-tiny" onclick="fetchAlbumDiveAlbumMetadata('${safeKey}', this)">Fetch Album + Tracks</button>
-              <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}')">Delete entry</button>
+              <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}', event)">Delete entry</button>
             </div>
             <div class="album-source-line small"><span class="album-source-chip ${albumDiveSourceClass(slot)}">${escapeHtml(albumDiveSourceLabel(slot))}</span>${slot.primaryGenreName ? ` <span>${escapeHtml(slot.primaryGenreName)}</span>` : ""}</div>
             <div class="album-slot-meta">
@@ -1359,32 +1386,24 @@ function touchAlbumDive() {
 
 function rerenderAlbumDive(options = {}) {
   if (!currentGenre) return;
-  const shouldPreserve = !!options.preserveScroll;
-  const scrollX = window.scrollX || window.pageXOffset || 0;
-  const scrollY = window.scrollY || window.pageYOffset || 0;
-  const restoreScroll = () => {
-    if (!shouldPreserve) return;
-    window.scrollTo(scrollX, scrollY);
+  const renderWork = () => {
+    const panel = document.getElementById("albumDivePanel");
+    const queuePanel = document.getElementById("albumDiveQueuePanel");
+    if (panel) albumDivePanelOpen = !!panel.open;
+    if (queuePanel) albumDiveQueueOpen = !queuePanel.classList.contains("hidden");
+    if (panel) {
+      panel.outerHTML = renderAlbumDivePanel(currentGenre);
+      requestAnimationFrame(hydrateAlbumDiveAmbient);
+    } else {
+      loadListenScreen(currentGenre, {
+        preserveDirty: true,
+        skipSpotifyHydration: true,
+      });
+      requestAnimationFrame(hydrateAlbumDiveAmbient);
+    }
   };
-  const panel = document.getElementById("albumDivePanel");
-  const queuePanel = document.getElementById("albumDiveQueuePanel");
-  if (panel) albumDivePanelOpen = !!panel.open;
-  if (queuePanel) albumDiveQueueOpen = !queuePanel.classList.contains("hidden");
-  if (panel) {
-    const nextMarkup = renderAlbumDivePanel(currentGenre);
-    panel.outerHTML = nextMarkup;
-    requestAnimationFrame(() => {
-      hydrateAlbumDiveAmbient();
-      restoreScroll();
-    });
-    setTimeout(restoreScroll, 0);
-  } else {
-    loadListenScreen(currentGenre, {
-      preserveDirty: true,
-      skipSpotifyHydration: true,
-    });
-    requestAnimationFrame(restoreScroll);
-  }
+  if (options.preserveScroll) albumDivePreserveViewport(renderWork);
+  else renderWork();
 }
 
 function startAlbumDive() {
@@ -1402,7 +1421,8 @@ function startAlbumDive() {
   showSaveToast("Album Dive started — save changes to keep it.", false);
 }
 
-function clearAlbumDiveSlot(slotKey) {
+function clearAlbumDiveSlot(slotKey, event) {
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   const dive = normalizeAlbumDive(currentGenre, true);
   if (!dive || !Array.isArray(dive.slots)) return;
   const index = dive.slots.findIndex((slot) => slot.key === slotKey);
@@ -1487,7 +1507,8 @@ function setAlbumDiveSlotRating(slotKey, rating) {
   setAlbumDiveSlotReaction(slotKey, reaction);
 }
 
-function setAlbumDiveSlotReaction(slotKey, value) {
+function setAlbumDiveSlotReaction(slotKey, value, event) {
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   const slot = getAlbumDiveSlot(slotKey);
   if (!slot) return;
   const reaction = [1, 2, 3].includes(Number(value)) ? Number(value) : null;
@@ -1497,7 +1518,8 @@ function setAlbumDiveSlotReaction(slotKey, value) {
   rerenderAlbumDive({ preserveScroll: true });
 }
 
-function setAlbumDiveFavoriteAlbum(slotKey) {
+function setAlbumDiveFavoriteAlbum(slotKey, event) {
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   const dive = normalizeAlbumDive(currentGenre, true);
   if (!dive?.slots?.length) return;
   const slot = dive.slots.find((item) => item.key === slotKey);
@@ -1820,7 +1842,8 @@ async function fetchAlbumDiveAlbumMetadata(slotKey, button) {
   }
 }
 
-function setAlbumDiveTrackReaction(slotKey, trackValue, value) {
+function setAlbumDiveTrackReaction(slotKey, trackValue, value, event) {
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   const slot = getAlbumDiveSlot(slotKey);
   if (!slot) return;
   const cleanValue = String(trackValue || "");
@@ -1859,7 +1882,8 @@ function syncAlbumDiveFavoriteToFirstTopTrack(slot) {
   slot.favoriteSong.promotedToSongLog = false;
 }
 
-function toggleAlbumDiveTopTrack(slotKey, trackValue, forceValue) {
+function toggleAlbumDiveTopTrack(slotKey, trackValue, forceValue, event) {
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   const slot = getAlbumDiveSlot(slotKey);
   if (!slot) return;
   const cleanValue = String(trackValue || "");

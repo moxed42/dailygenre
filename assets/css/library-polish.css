@@ -9003,3 +9003,29 @@ body.dc-listen-mode .dc-desktop-genre-nav {
 .album-dive-queue-panel {
   scroll-margin-top: 18px;
 }
+
+/* === Album Dive v104: prevent viewport jumps during queue/rating edits === */
+html.dg-album-dive-scroll-lock,
+body.dg-album-dive-scroll-lock {
+  scroll-behavior: auto !important;
+  overflow-anchor: none !important;
+}
+
+html.dg-album-dive-scroll-lock *,
+body.dg-album-dive-scroll-lock *,
+#albumDivePanel,
+#albumDivePanel *,
+.album-focus-view,
+.album-focus-view *,
+.album-dive-queue-panel,
+.album-dive-queue-panel * {
+  overflow-anchor: none !important;
+}
+
+.album-focus-tracks summary {
+  gap: 10px !important;
+}
+
+.album-focus-tracks summary small {
+  margin-left: 4px !important;
+}
