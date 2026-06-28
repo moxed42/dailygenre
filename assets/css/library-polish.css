@@ -8978,3 +8978,28 @@ body.dc-listen-mode .dc-desktop-genre-nav {
     white-space: normal;
   }
 }
+
+
+/* === Album Dive v103: no jumpy queue interactions + clearer track queue header === */
+.album-focus-tracks > details > summary {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  gap: 6px 10px !important;
+}
+
+.album-focus-tracks > details > summary span,
+.album-focus-tracks > details > summary small {
+  display: inline-flex !important;
+  min-width: 0 !important;
+}
+
+.album-focus-tracks > details > summary small {
+  letter-spacing: 0.04em !important;
+  opacity: 0.72 !important;
+  text-transform: uppercase !important;
+}
+
+.album-dive-queue-panel {
+  scroll-margin-top: 18px;
+}

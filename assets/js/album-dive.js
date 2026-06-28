@@ -402,6 +402,24 @@ function albumDiveStorageKey() {
   return `dailyGenreAlbumDiveFocusSlot:${id}`;
 }
 
+function albumDivePreserveViewport(callback) {
+  const scrollX = window.scrollX || window.pageXOffset || 0;
+  const scrollY = window.scrollY || window.pageYOffset || 0;
+  const active = document.activeElement;
+  const restore = () => window.scrollTo(scrollX, scrollY);
+  try {
+    callback?.();
+  } finally {
+    if (active && typeof active.blur === "function") {
+      try { active.blur(); } catch {}
+    }
+    restore();
+    requestAnimationFrame(restore);
+    setTimeout(restore, 0);
+    setTimeout(restore, 60);
+  }
+}
+
 function albumDiveSlotHasContent(slot) {
   const fav = slot?.favoriteSong || {};
   return !!(
@@ -798,16 +816,13 @@ function albumDiveStopSummaryButton(event) {
 
 function toggleAlbumDiveQueue(event) {
   albumDiveStopSummaryButton(event);
-  albumDiveQueueOpen = !albumDiveQueueOpen;
-  const panel = document.getElementById("albumDiveQueuePanel");
-  const btn = document.querySelector(".album-dive-queue-toggle");
-  if (panel) {
-    panel.classList.toggle("hidden", !albumDiveQueueOpen);
-    if (albumDiveQueueOpen) {
-      requestAnimationFrame(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }));
-    }
-  }
-  if (btn) btn.textContent = albumDiveQueueOpen ? "Hide queue" : "Show queue";
+  albumDivePreserveViewport(() => {
+    albumDiveQueueOpen = !albumDiveQueueOpen;
+    const panel = document.getElementById("albumDiveQueuePanel");
+    const btn = document.querySelector(".album-dive-queue-toggle");
+    if (panel) panel.classList.toggle("hidden", !albumDiveQueueOpen);
+    if (btn) btn.textContent = albumDiveQueueOpen ? "Hide queue" : "Show queue";
+  });
 }
 
 function selectAlbumDiveQueueSlot(slotKey, event) {
@@ -815,21 +830,20 @@ function selectAlbumDiveQueueSlot(slotKey, event) {
     event.preventDefault();
     event.stopPropagation();
   }
-  setAlbumDiveFocusSlot(slotKey, { preserveQueue: true });
-  albumDiveQueueOpen = true;
-  const panel = document.getElementById("albumDivePanel");
-  if (panel && panel.open) albumDivePanelOpen = true;
+  albumDivePreserveViewport(() => {
+    setAlbumDiveFocusSlot(slotKey, { preserveQueue: true });
+    albumDiveQueueOpen = true;
+    const panel = document.getElementById("albumDivePanel");
+    if (panel && panel.open) albumDivePanelOpen = true;
+  });
 }
 
 function toggleAlbumDiveFocusDetails(slotKey, forceOpen = false) {
-  const drawer = document.getElementById(`album-focus-details-${slotKey}`);
-  if (!drawer) return;
-  drawer.open = forceOpen ? true : !drawer.open;
-  if (drawer.open) {
-    requestAnimationFrame(() =>
-      drawer.scrollIntoView({ behavior: "smooth", block: "nearest" }),
-    );
-  }
+  albumDivePreserveViewport(() => {
+    const drawer = document.getElementById(`album-focus-details-${slotKey}`);
+    if (!drawer) return;
+    drawer.open = forceOpen ? true : !drawer.open;
+  });
 }
 
 function renderAlbumDivePanel(genre) {
@@ -1433,7 +1447,7 @@ function markAlbumDiveComplete() {
   dive.status = "completed";
   dive.completedAt = new Date().toISOString();
   touchAlbumDive();
-  rerenderAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
 }
 
 function updateAlbumDiveRootField(field, value) {
@@ -1494,7 +1508,7 @@ function setAlbumDiveFavoriteAlbum(slotKey) {
   });
   slot.favoriteAlbum = next;
   touchAlbumDive();
-  rerenderAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
 }
 
 
@@ -1785,7 +1799,7 @@ async function fetchAlbumDiveAlbumMetadata(slotKey, button) {
       updated = true;
     }
     touchAlbumDive();
-    rerenderAlbumDive();
+    rerenderAlbumDive({ preserveScroll: true });
     showSaveToast(
       updated
         ? `${albumDiveSourceLabel(slot)} album metadata updated${slot.tracks?.length ? ` with ${slot.tracks.length} tracks` : ""} — save changes to keep it.`
@@ -1824,7 +1838,7 @@ function setAlbumDiveTrackReaction(slotKey, trackValue, value) {
   const reaction = [1, 2, 3].includes(Number(value)) ? Number(value) : null;
   track.reaction = Number(track.reaction) === reaction ? null : reaction;
   touchAlbumDive();
-  rerenderAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
 }
 
 function syncAlbumDiveFavoriteToFirstTopTrack(slot) {
@@ -1902,7 +1916,7 @@ function setAlbumDiveFavoriteFromTrack(slotKey, value) {
   slot.favoriteSong.discNumber = track.discNumber || null;
   slot.favoriteSong.promotedToSongLog = false;
   touchAlbumDive();
-  rerenderAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
 }
 
 async function fetchAlbumDiveFavoriteMetadata(slotKey, button) {
@@ -1928,7 +1942,7 @@ async function fetchAlbumDiveFavoriteMetadata(slotKey, button) {
       fav.albumArt = track.artwork || fav.albumArt || slot.albumArt || "";
       if (!slot.albumArt && track.artwork) slot.albumArt = track.artwork;
       touchAlbumDive();
-      rerenderAlbumDive();
+      rerenderAlbumDive({ preserveScroll: true });
       showSaveToast(
         "Favorite song metadata updated — save changes to keep it.",
         false,
@@ -1947,7 +1961,7 @@ async function fetchAlbumDiveFavoriteMetadata(slotKey, button) {
       if (!slot.albumArt && fallback.thumbnail_url)
         slot.albumArt = fallback.thumbnail_url;
       touchAlbumDive();
-      rerenderAlbumDive();
+      rerenderAlbumDive({ preserveScroll: true });
       showSaveToast(
         "Favorite song metadata updated from Spotify preview — save changes to keep it.",
         false,
