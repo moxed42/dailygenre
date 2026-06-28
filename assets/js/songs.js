@@ -521,6 +521,87 @@
     }
   }
 
+
+  function decodeFocusPath(encodedPath = "") {
+    try {
+      return decodeURIComponent(String(encodedPath || ""));
+    } catch {
+      return String(encodedPath || "");
+    }
+  }
+
+  function clearFavoriteIfDeleted(song) {
+    if (typeof currentGenre === "undefined" || !currentGenre || !song) return;
+    const sameFavorite = safeCall(() => isSameFavoriteSong(currentGenre, song), false);
+    const deletedUrl = safeCall(() => normalizeSongUrl(song.spotifyUrl || song.url || ""), song.spotifyUrl || song.url || "");
+    const favoriteUrl = safeCall(() => normalizeSongUrl(currentGenre.favoritesongurl || currentGenre.favorite_song_url || ""), currentGenre.favoritesongurl || currentGenre.favorite_song_url || "");
+    if (!sameFavorite && (!deletedUrl || deletedUrl !== favoriteUrl)) return;
+    currentGenre.favoritesong = "";
+    currentGenre.favoritesongurl = "";
+    currentGenre.favorite_song = "";
+    currentGenre.favorite_song_url = "";
+    currentGenre.favoriteartist = "";
+    currentGenre.favoritesongartwork = "";
+  }
+
+  function deleteSongFromDetails(encodedKey, encodedPath = "", button = null) {
+    if (typeof currentGenre === "undefined" || !currentGenre) return;
+    const path = decodeFocusPath(encodedPath);
+    if (!window.confirm("Delete this song from this genre? This will not move it to Pending.")) return;
+
+    const previousText = button?.textContent || "";
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Deleting…";
+    }
+
+    try {
+      if (typeof syncBulkDraftIntoSongModel === "function") syncBulkDraftIntoSongModel();
+      const result = typeof findEditableSongTarget === "function"
+        ? findEditableSongTarget(encodedKey, -1, path)
+        : null;
+      if (!result?.song || !Array.isArray(result.songs)) {
+        if (typeof showSaveToast === "function") showSaveToast("That song changed. Reopen details and try again.", true);
+        return;
+      }
+
+      const deletedSong = result.song;
+      if (result.parent) {
+        result.parent.levelUp = null;
+      } else if (Number.isInteger(result.index) && result.index >= 0) {
+        result.songs.splice(result.index, 1);
+      } else {
+        if (typeof showSaveToast === "function") showSaveToast("Could not locate that song for deletion.", true);
+        return;
+      }
+
+      currentGenre.songs_listened = result.songs;
+      clearFavoriteIfDeleted(deletedSong);
+      if (typeof syncSongsBulkEditorFromModel === "function") syncSongsBulkEditorFromModel();
+      window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;
+      window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;
+
+      const nextEntries = songListForFocus(currentGenre);
+      try {
+        if (nextEntries.length) localStorage.setItem(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
+        else localStorage.removeItem(genreFocusStorageKey(currentGenre));
+      } catch {}
+      if (!nextEntries.length) setSongDetailsOpen(false);
+
+      if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
+      enhanceSongListeningExperience();
+      if (typeof showSaveToast === "function") showSaveToast("Song deleted — use Save Listening Updates to keep it.", false);
+    } catch (error) {
+      console.error("Could not delete song from details", error);
+      if (typeof showSaveToast === "function") showSaveToast(`Could not delete song: ${error?.message || error || "Unknown error"}`, true);
+    } finally {
+      if (button && document.body.contains(button)) {
+        button.disabled = false;
+        button.textContent = previousText || "Delete song";
+      }
+    }
+  }
+
   function renderReactionButtons(song, extraClass = "") {
     const encodedKey = encodedSongKey(song);
     const isFavorite = safeCall(
@@ -660,6 +741,11 @@
         <div class="song-focus-detail-card compact song-focus-meta-card">
           <h4>Metadata</h4>
           <p>${meta.length ? html(meta.join(" · ")) : "No extra metadata available."}</p>
+        </div>
+        <div class="song-focus-detail-card compact song-focus-delete-card">
+          <h4>Delete song</h4>
+          <p>Remove this song from the genre entirely. This is staged locally until you save Listening Updates.</p>
+          <button type="button" class="btn btn-danger" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Delete song</button>
         </div>
       </div>
     </section>`;
@@ -873,6 +959,7 @@
 
   window.setSongFocus = setSelectedSongKey;
   window.setSongFocusDetailsOpen = setSongDetailsOpen;
+  window.deleteSongFromDetails = deleteSongFromDetails;
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
   window.moveSongFocus = moveSongFocus;
