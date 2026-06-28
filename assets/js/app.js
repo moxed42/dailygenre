@@ -5876,6 +5876,131 @@ async function loadData() {
       showSaveToast('Use Edit track URL on the song card, then click Save Changes.', false);
     }
 
+    async function updateMetadataTrackUrlFromQueue(encodedGenreId, encodedKey, inputId, button, mountId = '') {
+      const genreId = decodeURIComponent(String(encodedGenreId || ''));
+      const key = decodeURIComponent(String(encodedKey || ''));
+      const input = document.getElementById(inputId);
+      let nextUrl = normalizeSongUrl(input?.value || '');
+      if ((/spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl)) && typeof spotifyCanonicalTrackUrl === 'function') {
+        nextUrl = spotifyCanonicalTrackUrl(nextUrl);
+      }
+      if (input && nextUrl) input.value = nextUrl;
+      if (!validSpotifyTrackUrl(nextUrl)) {
+        showSaveToast('Paste a valid Spotify track URL for inline repair.', true);
+        return;
+      }
+      if (Date.now() < spotifyRefreshPausedUntil) {
+        const wait = Math.ceil((spotifyRefreshPausedUntil - Date.now()) / 1000);
+        showSaveToast(`Spotify asked us to pause. Try again in ${wait} seconds.`, true);
+        return;
+      }
+
+      const target = findSongForMetadataAction(genreId, key);
+      if (!target?.song) {
+        showSaveToast('Could not find that track in its genre. Refresh Studio and try again.', true);
+        return;
+      }
+
+      const oldButtonText = button?.textContent || '';
+      if (button) {
+        button.disabled = true;
+        button.classList.add('is-saving');
+        button.textContent = 'Updating…';
+      }
+
+      try {
+        const before = {
+          ...target.song,
+          artists: Array.isArray(target.song.artists) ? target.song.artists.slice() : target.song.artists
+        };
+        const candidate = {
+          ...target.song,
+          artists: Array.isArray(target.song.artists) ? target.song.artists.slice() : []
+        };
+        candidate.url = nextUrl;
+        candidate.spotifyUrl = /^spotify:track:/i.test(nextUrl)
+          ? `https://open.spotify.com/track/${spotifyTrackId(nextUrl)}`
+          : nextUrl;
+        candidate.spotifyId = spotifyTrackId(nextUrl) || '';
+        candidate.source = 'spotify';
+        candidate.artwork = '';
+        candidate.albumArt = '';
+        candidate.album = '';
+        candidate.durationMs = null;
+        candidate.isrc = '';
+        candidate.releaseDate = '';
+        candidate.releaseYear = null;
+        candidate.releasePrecision = '';
+        candidate.releaseSource = '';
+        candidate.spotifyMetadataFetched = false;
+        candidate.spotifyMetadataFetchedAt = '';
+
+        let metadataWarning = '';
+        const refreshed = await fetchSpotifyTrackResult(nextUrl, true);
+        if (refreshed.ok) {
+          applyOfficialSpotifyMetadata(candidate, refreshed.track);
+          if (!candidate.artwork) {
+            const usedEmbedFallback = await applySpotifyOembedFallback(candidate, nextUrl, { forceArtwork: true, forceTitle: true });
+            if (usedEmbedFallback) metadataWarning = 'Artwork was filled from Spotify embed.';
+          }
+        } else {
+          const usedEmbedFallback = await applySpotifyOembedFallback(candidate, nextUrl, { forceArtwork: true, forceTitle: true });
+          if (usedEmbedFallback) {
+            metadataWarning = 'Spotify API lookup failed, but artwork/title were recovered from Spotify embed.';
+          } else {
+            metadataWarning = refreshed.error || 'Spotify metadata could not be refreshed.';
+          }
+          if (refreshed.code === 'rate_limited') beginSpotifyPause(refreshed.retryAfterSeconds || 30);
+        }
+
+        if (typeof queueMetadataLooksClose === 'function' && typeof confirmQueueUrlOverwrite === 'function') {
+          const closeEnough = queueMetadataLooksClose(before, candidate);
+          if (!closeEnough && !confirmQueueUrlOverwrite(before, candidate)) {
+            showSaveToast('Inline URL update cancelled. No queue rows were changed.', false);
+            return;
+          }
+        }
+
+        Object.assign(target.song, candidate);
+        if (target.song.albumArt && !target.song.artwork) target.song.artwork = target.song.albumArt;
+        if (target.song.artwork && !target.song.albumArt) target.song.albumArt = target.song.artwork;
+        target.genre.songs_listened = target.songs;
+        try { removeLoggedSongsFromPending(target.genre); } catch (_) {}
+        if (currentGenre && String(currentGenre.id) === String(target.genre.id)) {
+          currentGenre = target.genre;
+        }
+        spotifyMetadataFailures.delete(stagedReactionKey(genreId, key));
+        libraryUpdatesPending = true;
+        setUnsavedState(true);
+        toggleLibrarySaveButton(true);
+
+        const restore = preserveScrollSnapshot();
+        try {
+          if (document.activeElement?.closest?.('#screen-review')) document.activeElement.blur();
+        } catch (_) {}
+        if (document.getElementById('screen-review')?.classList.contains('active') && typeof renderReview === 'function') {
+          renderReview();
+        } else if (String(mountId || '').startsWith('viz') && typeof renderVisuals === 'function') {
+          renderVisuals();
+        }
+        restore();
+        showSaveToast(metadataWarning
+          ? `URL updated; ${metadataWarning} Save Library Updates to persist.`
+          : 'URL updated with Spotify metadata — Save Library Updates to persist.',
+          !!(metadataWarning && !/recovered|filled/i.test(metadataWarning))
+        );
+      } catch (err) {
+        console.error('Inline metadata URL update failed', err);
+        showSaveToast(`Inline update failed: ${err?.message || err || 'Unknown error'}`, true);
+      } finally {
+        if (button && document.body.contains(button)) {
+          button.disabled = false;
+          button.classList.remove('is-saving');
+          button.textContent = oldButtonText || 'Update URL';
+        }
+      }
+    }
+
     function renderMetadataQueue(mountId, items) {
       const mount = document.getElementById(mountId);
       if (!mount) return;
@@ -5908,8 +6033,11 @@ async function loadData() {
           const effective = songEffectiveYear(row.song);
           const eraNote = effective.year ? `${effective.source}: ${effective.year}${row.song.releaseYear && effective.source !== 'Spotify' ? ` · Spotify: ${row.song.releaseYear}` : ''}` : 'No era/release year yet';
           const eraForm = `<div class="viz-era-form viz-era-form-metadata"><span>${escapeHtml(eraNote)}</span><input id="${eraInputId}" type="text" placeholder="1950s or 1953" value="${escapeHtml(savedEra)}"><button type="button" onclick="saveEraOverride('${visualActionArg(row.genre.id)}','${visualActionArg(songIdentity(row.song))}','${eraInputId}')">Save Era</button></div>`;
+          const urlInputId = `metadataUrl_${mountId}_${idx}_${String(row.genre.id).replace(/[^a-zA-Z0-9]/g,'')}`;
+          const currentUrl = row.song.spotifyUrl || row.song.url || '';
+          const urlForm = `<form class="viz-meta-inline-edit" onsubmit="event.preventDefault(); updateMetadataTrackUrlFromQueue('${visualActionArg(row.genre.id)}','${visualActionArg(songIdentity(row.song))}','${urlInputId}', this.querySelector('button[type=submit]'), '${mountId}')"><label for="${urlInputId}">Spotify URL</label><div><input id="${urlInputId}" type="url" placeholder="https://open.spotify.com/track/..." value="${escapeHtml(currentUrl)}"><button type="submit">Update URL</button></div></form>`;
           const trackLink = row.song.url ? `<a class="viz-meta-link" href="${escapeHtml(row.song.url)}" target="_blank" rel="noopener noreferrer">Open Track ↗</a>` : '';
-          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${refreshText}</button>` : ''}<button type="button" onclick="editMetadataTrackUrl('${visualActionArg(row.genre.genre || '')}')">Edit URL</button><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button>${trackLink}<button type="button" class="viz-meta-delete" onclick="deleteFromMetadataQueue('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}', '${mountId}')" title="Remove this track from the genre entirely">Delete</button></div></div>`;
+          return `<div class="viz-metadata-row"><div><div class="viz-metadata-title">${vizSongTitleLink(row.song)}</div><div class="viz-metadata-context"><button type="button" class="viz-metadata-genre" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">${escapeHtml(row.genre.genre || 'Unknown')}</button>${row.missing.map(field => `<span class="viz-missing-chip">missing ${escapeHtml(field)}</span>`).join('')}${failure}${skipped}</div>${eraForm}${urlForm}</div><div class="viz-meta-actions">${canRefresh ? `<button type="button" class="primary" onclick="refreshSingleSpotifyTrack('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}')">${refreshText}</button>` : ''}<button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open Genre</button>${trackLink}<button type="button" class="viz-meta-delete" onclick="deleteFromMetadataQueue('${visualActionArg(row.genre.id)}', '${visualActionArg(songIdentity(row.song))}', '${mountId}')" title="Remove this track from the genre entirely">Delete</button></div></div>`;
         }).join('')}</div>` : `<div class="viz-empty">${escapeHtml(emptyCopy)}</div>`}${allVisible.length > limit ? `<button type="button" class="viz-show-more" onclick="showMoreVizQueue('metadata')">Show 8 more</button>` : ''}</div>
       </details>`;
     }

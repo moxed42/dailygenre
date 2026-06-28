@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v32-inbox-paste-guard";
+  const VERSION = "studio-polish-v33-inline-repair";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -13,7 +13,7 @@
 
   function isEditableStudioTarget(target) {
     const el = target?.closest?.(
-      'input, textarea, select, option, [contenteditable="true"], .inbox-card, .studio-genre-typeahead-wrap',
+      'input, textarea, select, option, [contenteditable="true"], .inbox-card, .studio-genre-typeahead-wrap, .studio-inline-track-edit',
     );
     return Boolean(el);
   }
@@ -413,7 +413,7 @@
     if (!rows.length)
       return `<div class="studio-empty">${esc(emptyCopy)}</div>`;
     return `<div class="studio-mini-list">${rows
-      .map((row) => {
+      .map((row, idx) => {
         const href = spotifyUrl(row.song);
         const problem = row.problem || "Needs review";
         const genreName = row.genre?.genre || "Unknown genre";
@@ -422,14 +422,22 @@
           row.song?.originFit ||
           row.song?.nominatedFit ||
           "";
-        return `<article class="studio-mini-row" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
+        const isRepair = ["missingArt", "missingYear", "missingMeta"].includes(row.type);
+        const inputId = `studioRepairUrl_${String(row.genre?.id ?? "").replace(/[^a-zA-Z0-9_-]/g, "")}_${idx}`;
+        const key = songKey(row.song);
+        const currentUrl = row.song?.spotifyUrl || row.song?.url || "";
+        const inlineRepair = isRepair
+          ? `<form class="studio-inline-track-edit" onsubmit="event.preventDefault(); typeof updateMetadataTrackUrlFromQueue === 'function' ? updateMetadataTrackUrlFromQueue('${encodeURIComponent(String(row.genre?.id ?? ""))}', '${encodeURIComponent(String(key || ""))}', '${esc(inputId)}', this.querySelector('button[type=submit]'), 'review') : null"><label for="${esc(inputId)}">Spotify URL</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}"><button type="submit" class="btn btn-primary btn-tiny">Update</button></div></form>`
+          : "";
+        return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
           <div class="studio-mini-main">
             <div class="studio-mini-title">${href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(songTitle(row.song))}</a>` : esc(songTitle(row.song))}</div>
             <div class="studio-mini-meta"><span>${esc(problem)}</span><span>${esc(genreName)}</span>${fit ? `<span>fit ${esc(fit)}/5</span>` : ""}${row.song?.pendingFrom ? `<span>from ${esc(row.song.pendingFrom)}</span>` : ""}</div>
+            ${inlineRepair}
           </div>
           <div class="studio-mini-actions">
-            <button type="button" class="btn btn-secondary btn-tiny" onclick="openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "duplicate"})">Open</button>
+            <button type="button" class="btn btn-secondary btn-tiny" onclick="openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "duplicate"})">Open genre</button>
           </div>
         </article>`;
       })
@@ -449,7 +457,7 @@
       </div>
       <div class="studio-action-strip">
         <button type="button" class="btn btn-secondary" onclick="typeof openMetadataQueue === 'function' ? openMetadataQueue('art','alltime') : null">Open album-art queue</button>
-        <button type="button" class="btn btn-secondary" onclick="typeof openMetadataQueue === 'function' ? openMetadataQueue('metadata','alltime') : null">Open metadata queue</button>
+        <button type="button" class="btn btn-secondary" onclick="typeof openMetadataQueue === 'function' ? openMetadataQueue('spotify','alltime') : null">Open metadata queue</button>
         <button type="button" class="btn btn-secondary" onclick="typeof refreshNextSpotifyTracks === 'function' ? refreshNextSpotifyTracks(5) : null">Refresh next 5</button>
       </div>
       ${renderQueueRows(rows, "No obvious metadata repair items found.")}

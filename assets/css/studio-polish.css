@@ -1196,3 +1196,59 @@
   .album-dive-json-head { flex-direction: column; }
   .album-dive-json-head .btn { width: 100%; }
 }
+
+/* === Studio v91: inline Spotify URL repair in Repair Bay === */
+.studio-inline-track-edit {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+  max-width: 760px;
+}
+
+.studio-inline-track-edit label {
+  margin: 0;
+  color: var(--muted, #735a3c);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.studio-inline-track-edit > div {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  gap: 7px;
+  align-items: center;
+}
+
+.studio-inline-track-edit input {
+  height: 34px;
+  min-height: 0;
+  border-radius: 12px;
+  padding: 7px 10px;
+  font-size: 0.82rem;
+}
+
+.studio-inline-track-edit .btn {
+  height: 34px;
+  min-height: 0;
+  padding: 0 11px !important;
+  border-radius: 12px !important;
+  white-space: nowrap;
+}
+
+.studio-mini-row-repair .studio-mini-actions {
+  align-self: end;
+}
+
+@media (max-width: 720px) {
+  .studio-inline-track-edit > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .studio-inline-track-edit .btn,
+  .studio-inline-track-edit input {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

@@ -668,51 +668,91 @@ function toggleAlbumDiveFocusDetails(slotKey, forceOpen = false) {
 function renderAlbumDivePanel(genre) {
   const dive = normalizeAlbumDive(genre, false);
   const eligible = albumDiveEligible(genre);
+
   if (!dive) {
-    return `<div class="panel album-dive-panel"><div class="album-dive-head"><div><div class="eyebrow">Album Dive</div><h3 class="album-dive-title">Deepen this genre through records</h3><p class="small">Paste structured album JSON or Spotify album URLs, fetch cover art and track lists, choose a favorite song from each album, and promote favorites back into the main song log.</p></div><div class="album-dive-actions"><button type="button" class="btn btn-primary" onclick="startAlbumDive()">${escapeHtml(albumDiveCtaText(genre))}</button></div></div>${albumDiveJsonImportMarkup('albumDiveJsonImportStart')}${eligible ? "" : '<div class="album-dive-empty small">Tip: this works best after you rate a genre 3, 4, or 5 stars, but you can start a dive any time.</div>'}</div>`;
+    return `<details class="panel album-dive-panel album-dive-collapsible album-dive-empty-panel">
+        <summary class="album-dive-collapsed-head">
+          <span class="album-dive-summary-main">
+            <span class="eyebrow">Album Dive</span>
+            <strong>Album Dive</strong>
+            <small>No album shelf set yet</small>
+          </span>
+          <span class="album-dive-summary-actions">
+            <button type="button" class="btn btn-primary album-dive-start-summary-btn" onclick="event.preventDefault(); event.stopPropagation(); startAlbumDive()">Start</button>
+            <span class="album-dive-expand-cue" aria-hidden="true">Open</span>
+          </span>
+        </summary>
+        <div class="album-dive-collapsed-body">
+          <div class="album-dive-head">
+            <div>
+              <div class="eyebrow">Album Dive</div>
+              <h3 class="album-dive-title">Deepen this genre through records</h3>
+              <p class="small">Paste structured album JSON or Spotify album URLs, fetch cover art and track lists, choose a favorite song from each album, and promote favorites back into the main song log.</p>
+            </div>
+            <div class="album-dive-actions"><button type="button" class="btn btn-primary" onclick="startAlbumDive()">${escapeHtml(albumDiveCtaText(genre))}</button></div>
+          </div>
+          ${albumDiveJsonImportMarkup('albumDiveJsonImportStart')}
+          ${eligible ? "" : '<div class="album-dive-empty small">Tip: this works best after you rate a genre 3, 4, or 5 stars, but you can start a dive any time.</div>'}
+        </div>
+      </details>`;
   }
+
   const progress = albumDiveProgress(dive);
   const listenMode = albumDiveIsListenMode();
+  const shouldOpen = !!albumDiveEditorMode;
   if (listenMode) setTimeout(hydrateAlbumDiveAmbient, 0);
-  return `<div class="panel album-dive-panel ${listenMode ? "album-dive-focus-panel" : ""}" id="albumDivePanel">
-        <div class="album-dive-head">
-          <div>
-            <div class="eyebrow">Album Dive</div>
-            <h3 class="album-dive-title">Canonical album shelf</h3>
-            <div class="status-row">
-              <span class="tag">${escapeHtml(dive.mode || "canon")} dive</span>
-              <span class="tag">${progress.fetched}/${progress.total} fetched</span>
-              <span class="tag">${progress.finished}/${progress.total} finished</span>
-              ${progress.sampled ? `<span class="tag">${progress.sampled} sampled</span>` : ""}
-              ${dive.status === "completed" ? '<span class="tag">Dive complete</span>' : '<span class="tag">In progress</span>'}
+  return `<details class="panel album-dive-panel album-dive-collapsible ${listenMode ? "album-dive-focus-panel" : ""}" id="albumDivePanel" ${shouldOpen ? "open" : ""}>
+        <summary class="album-dive-collapsed-head">
+          <span class="album-dive-summary-main">
+            <span class="eyebrow">Album Dive</span>
+            <strong>Canonical album shelf</strong>
+            <small>${progress.fetched}/${progress.total} fetched · ${progress.finished}/${progress.total} finished${progress.sampled ? ` · ${progress.sampled} sampled` : ""}</small>
+          </span>
+          <span class="album-dive-summary-actions">
+            <span class="tag">${escapeHtml(dive.mode || "canon")} dive</span>
+            <span class="tag">${dive.status === "completed" ? "Complete" : "In progress"}</span>
+            <span class="album-dive-expand-cue" aria-hidden="true">Open</span>
+          </span>
+        </summary>
+        <div class="album-dive-collapsed-body">
+          <div class="album-dive-head">
+            <div>
+              <div class="eyebrow">Album Dive</div>
+              <h3 class="album-dive-title">Canonical album shelf</h3>
+              <div class="status-row">
+                <span class="tag">${escapeHtml(dive.mode || "canon")} dive</span>
+                <span class="tag">${progress.fetched}/${progress.total} fetched</span>
+                <span class="tag">${progress.finished}/${progress.total} finished</span>
+                ${progress.sampled ? `<span class="tag">${progress.sampled} sampled</span>` : ""}
+                ${dive.status === "completed" ? '<span class="tag">Dive complete</span>' : '<span class="tag">In progress</span>'}
+              </div>
+            </div>
+            <div class="album-dive-actions">
+              <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
+              <button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">${listenMode ? "Finish Dive" : "Mark Dive Complete"}</button>
+              <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
+              <button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>
             </div>
           </div>
-          <div class="album-dive-actions">
-            <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
-            <button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">${listenMode ? "Finish Dive" : "Mark Dive Complete"}</button>
-            <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
-            <button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>
+          ${listenMode ? "" : albumDiveJsonImportMarkup('albumDiveJsonImport')}
+          ${listenMode ? renderAlbumDiveFocusPanel(dive) : `<div class="album-dive-grid">${dive.slots.map(renderAlbumDiveSlot).join("")}</div>`}
+          <div class="album-dive-verdict">
+            <div class="album-dive-verdict-grid">
+              <div>
+                <label for="albumDiveVerdictImpact">Verdict impact</label>
+                <select id="albumDiveVerdictImpact" onchange="updateAlbumDiveRootField('verdictImpact', this.value)">
+                  ${["", "reinforced", "complicated", "weakened"].map((value) => `<option value="${value}" ${String(dive.verdictImpact || "") === value ? "selected" : ""}>${value ? value[0].toUpperCase() + value.slice(1) : "Choose…"}</option>`).join("")}
+                </select>
+              </div>
+              <div>
+                <label for="albumDiveVerdict">Final dive verdict</label>
+                <textarea id="albumDiveVerdict" placeholder="Did the album dive strengthen, complicate, or weaken your original rating?" oninput="updateAlbumDiveRootField('verdict', this.value)">${escapeHtml(dive.verdict || "")}</textarea>
+              </div>
+            </div>
           </div>
         </div>
-        ${listenMode ? "" : albumDiveJsonImportMarkup('albumDiveJsonImport')}
-        ${listenMode ? renderAlbumDiveFocusPanel(dive) : `<div class="album-dive-grid">${dive.slots.map(renderAlbumDiveSlot).join("")}</div>`}
-        <div class="album-dive-verdict">
-          <div class="album-dive-verdict-grid">
-            <div>
-              <label for="albumDiveVerdictImpact">Verdict impact</label>
-              <select id="albumDiveVerdictImpact" onchange="updateAlbumDiveRootField('verdictImpact', this.value)">
-                ${["", "reinforced", "complicated", "weakened"].map((value) => `<option value="${value}" ${String(dive.verdictImpact || "") === value ? "selected" : ""}>${value ? value[0].toUpperCase() + value.slice(1) : "Choose…"}</option>`).join("")}
-              </select>
-            </div>
-            <div>
-              <label for="albumDiveVerdict">Final dive verdict</label>
-              <textarea id="albumDiveVerdict" placeholder="Did the album dive strengthen, complicate, or weaken your original rating?" oninput="updateAlbumDiveRootField('verdict', this.value)">${escapeHtml(dive.verdict || "")}</textarea>
-            </div>
-          </div>
-        </div>
-      </div>`;
+      </details>`;
 }
-
 function albumDiveTrackOptionValue(track) {
   return (
     track.spotifyTrackId ||

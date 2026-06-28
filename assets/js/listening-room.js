@@ -320,9 +320,24 @@
     const edit = children.find((el) =>
       /edit|setup|curation|studio/i.test(el.textContent || ""),
     );
-    const genrePrev = children.find((el) => /previous/i.test(el.textContent || ""));
-    const genreNext = children.find((el) => /^\s*next/i.test(el.textContent || ""));
-    const archiveBack = children.find((el) => /back\s+to\s+(archive|library)/i.test(el.textContent || ""));
+    let genrePrev = children.find((el) => /previous/i.test(el.textContent || ""));
+    let genreNext = children.find((el) => /^\s*next/i.test(el.textContent || ""));
+    let archiveBack = children.find((el) => /back\s+to\s+(archive|library)/i.test(el.textContent || ""));
+    if (genrePrev) {
+      genrePrev.classList.add("dc-prev-genre-btn");
+      genrePrev.setAttribute("aria-label", "Previous genre");
+      genrePrev.setAttribute("title", "Previous genre");
+    }
+    if (archiveBack) {
+      archiveBack.classList.add("dc-back-archive-btn");
+      archiveBack.setAttribute("aria-label", "Back to Archive");
+      archiveBack.setAttribute("title", "Back to Archive");
+    }
+    if (genreNext) {
+      genreNext.classList.add("dc-next-genre-btn");
+      genreNext.setAttribute("aria-label", "Next genre");
+      genreNext.setAttribute("title", "Next genre");
+    }
     const genreNav = [genrePrev, archiveBack, genreNext].filter(Boolean);
     if (!genreNav.length) {
       const makeNav = (label, action, className) => {
@@ -330,6 +345,8 @@
         btn.type = "button";
         btn.className = `btn btn-secondary ${className || ""}`.trim();
         btn.textContent = label;
+        btn.setAttribute("aria-label", label.replace(/\s+/g, " ").trim());
+        btn.setAttribute("title", label.replace(/\s+/g, " ").trim());
         btn.addEventListener("click", (event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -339,12 +356,49 @@
         });
         return btn;
       };
-      genreNav.push(
-        makeNav("← Previous", "prev", "dc-prev-genre-btn"),
-        makeNav("Back to Archive", "archive", "dc-back-archive-btn"),
-        makeNav("Next →", "next", "dc-next-genre-btn"),
-      );
+      genrePrev = makeNav("← Previous", "prev", "dc-prev-genre-btn");
+      archiveBack = makeNav("Back to Archive", "archive", "dc-back-archive-btn");
+      genreNext = makeNav("Next →", "next", "dc-next-genre-btn");
+      genreNav.push(genrePrev, archiveBack, genreNext);
     }
+
+    const fireGenreNavAction = (action) => {
+      let handled = false;
+      if (action === "prev" && typeof openAdjacentGenre === "function") {
+        openAdjacentGenre(-1);
+        handled = true;
+      }
+      if (action === "next" && typeof openAdjacentGenre === "function") {
+        openAdjacentGenre(1);
+        handled = true;
+      }
+      if (action === "archive" && typeof restoreArchiveUiState === "function") {
+        restoreArchiveUiState();
+        handled = true;
+      }
+      if (handled) return;
+
+      const target =
+        action === "prev" ? genrePrev : action === "next" ? genreNext : archiveBack;
+      try {
+        if (target && typeof target.click === "function") target.click();
+      } catch {}
+    };
+
+    const makeMobileNav = (icon, label, action, className) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `btn btn-secondary dc-mobile-genre-nav-btn ${className || ""}`.trim();
+      btn.textContent = icon;
+      btn.setAttribute("aria-label", label);
+      btn.setAttribute("title", label);
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        fireGenreNavAction(action);
+      });
+      return btn;
+    };
     const rest = children.filter(
       (el) =>
         el !== listen &&
@@ -367,12 +421,22 @@
     }
     if (genreNav.length) {
       const navWrap = document.createElement("div");
-      navWrap.className = "dc-genre-nav-actions";
+      navWrap.className = "dc-genre-nav-actions dc-desktop-genre-nav";
       genreNav.forEach((el) => {
         el.classList.add("dc-genre-nav-action");
         navWrap.appendChild(el);
       });
       actions.appendChild(navWrap);
+
+      const mobileNavWrap = document.createElement("div");
+      mobileNavWrap.className = "dc-mobile-genre-nav";
+      mobileNavWrap.setAttribute("aria-label", "Genre navigation");
+      mobileNavWrap.append(
+        makeMobileNav("←", "Previous genre", "prev", "dc-mobile-prev-genre"),
+        makeMobileNav("⌂", "Back to Archive", "archive", "dc-mobile-archive-genre"),
+        makeMobileNav("→", "Next genre", "next", "dc-mobile-next-genre"),
+      );
+      actions.appendChild(mobileNavWrap);
     }
 
     // Song-to-song navigation belongs inside the Song Queue, not in the genre hero.
@@ -405,7 +469,15 @@
     const statusRow = record.querySelector(".status-row");
     if (statusRow) {
       statusRow.querySelectorAll(".tag").forEach((tag) => {
-        const txt = (tag.textContent || "").toLowerCase();
+        const raw = tag.textContent || "";
+        const txt = raw.toLowerCase();
+        if (txt.includes("listened on")) {
+          tag.classList.add("dc-listened-chip", "dc-low-priority-chip");
+          tag.setAttribute("title", raw.trim());
+        }
+        if (txt.includes("song") && txt.includes("logged")) {
+          tag.classList.add("dc-song-count-chip", "dc-low-priority-chip");
+        }
         if (
           txt.includes("pending") ||
           txt.includes("monthly") ||
@@ -460,7 +532,7 @@
     const details = document.createElement("details");
     details.className = "dc-pending-alert dc-console-card";
     const summary = document.createElement("summary");
-    summary.innerHTML = `<span>${count ? `${count} pending nomination${count === 1 ? "" : "s"} need review` : "No pending nominations"}</span><button type="button" class="btn btn-secondary btn-tiny dc-open-review">Open Studio</button>`;
+    summary.innerHTML = `<span>${count ? `${count} pending nomination${count === 1 ? "" : "s"} need review` : "No pending nominations"}</span><button type="button" class="btn btn-secondary btn-tiny dc-open-review" title="Open Studio" aria-label="Open Studio"><span class="dc-open-review-text">Studio</span></button>`;
     summary
       .querySelector(".dc-open-review")
       ?.addEventListener("click", (event) => {
