@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v35-inline-batch-save";
+  const VERSION = "studio-polish-v36-inline-submit-guard";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -539,7 +539,7 @@
           ? row.repairProblems.map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${esc(kind)}">missing ${esc(kind)}</span>`).join("")
           : `<span class="studio-repair-missing-chip" data-repair-kind="${esc(problem)}">${esc(problem)}</span>`;
         const inlineRepair = isRepair
-          ? `<form class="studio-inline-track-edit" onsubmit="event.preventDefault(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this.querySelector('button[type=submit]')) : (typeof updateMetadataTrackUrlFromQueue === 'function' ? updateMetadataTrackUrlFromQueue('${encodeURIComponent(String(row.genre?.id ?? ""))}', '${encodeURIComponent(String(key || ""))}', '${esc(inputId)}', this.querySelector('button[type=submit]'), 'review') : null)"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}"><button type="submit" class="btn btn-primary btn-tiny">${row.targetCount > 1 ? "Update copies" : "Update"}</button></div></form>`
+          ? `<form class="studio-inline-track-edit" onsubmit="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this.querySelector('button[type=submit]')) : (typeof updateMetadataTrackUrlFromQueue === 'function' ? updateMetadataTrackUrlFromQueue('${encodeURIComponent(String(row.genre?.id ?? ""))}', '${encodeURIComponent(String(key || ""))}', '${esc(inputId)}', this.querySelector('button[type=submit]'), 'review') : null); return false;"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();"><button type="submit" class="btn btn-primary btn-tiny" onclick="event.stopPropagation();">${row.targetCount > 1 ? "Update copies" : "Update"}</button></div></form>`
           : "";
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
@@ -549,7 +549,7 @@
             ${inlineRepair}
           </div>
           <div class="studio-mini-actions">
-            <button type="button" class="btn btn-secondary btn-tiny" onclick="openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "duplicate"})">Open genre</button>
+            <button type="button" class="btn btn-secondary btn-tiny" onclick="event.stopPropagation(); openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "duplicate"})">Open genre</button>
           </div>
         </article>`;
       })
@@ -759,6 +759,9 @@
     if (mount.dataset.studioInteractions === "1") return;
     mount.dataset.studioInteractions = "1";
     mount.addEventListener("click", (ev) => {
+      if (ev.target?.closest?.(".studio-inline-track-edit")) {
+        return;
+      }
       const collapseBtn = ev.target.closest(".studio-collapse-btn");
       if (collapseBtn) {
         ev.preventDefault();
