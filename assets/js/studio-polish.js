@@ -243,6 +243,29 @@
     return missing;
   }
 
+  function findSongByGenreAndKey(genreId, key) {
+    const genre = getGenres().find((g) => String(g?.id ?? "") === String(genreId ?? ""));
+    if (!genre) return null;
+    const songs = allNonPendingSongs(genre);
+    return songs.find((song) => String(songKey(song)) === String(key || "")) || null;
+  }
+
+  function repairLabel(kind) {
+    const clean = String(kind || "").replace(/^missing\s+/i, "").trim();
+    return clean ? `missing ${clean}` : "missing metadata";
+  }
+
+  function updateRepairMetaChips(metaEl, missing) {
+    if (!metaEl) return;
+    metaEl.querySelectorAll(".studio-repair-missing-chip").forEach((chip) => chip.remove());
+    const anchor = metaEl.querySelector(".studio-inline-group-updated-chip, .studio-inline-updated-chip");
+    const html = (missing || []).map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${esc(kind)}">${esc(repairLabel(kind))}</span>`).join("");
+    if (html) {
+      if (anchor) anchor.insertAdjacentHTML("afterend", html);
+      else metaEl.insertAdjacentHTML("afterbegin", html);
+    }
+  }
+
   function stats() {
     const genres = getGenres();
     const rows = [];
@@ -513,8 +536,8 @@
           ? `<span class="studio-repair-copy-chip">${esc(String(row.targetCount))} copies</span>`
           : "";
         const problemChips = isRepair && Array.isArray(row.repairProblems) && row.repairProblems.length
-          ? row.repairProblems.map((kind) => `<span>missing ${esc(kind)}</span>`).join("")
-          : `<span>${esc(problem)}</span>`;
+          ? row.repairProblems.map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${esc(kind)}">missing ${esc(kind)}</span>`).join("")
+          : `<span class="studio-repair-missing-chip" data-repair-kind="${esc(problem)}">${esc(problem)}</span>`;
         const inlineRepair = isRepair
           ? `<form class="studio-inline-track-edit" onsubmit="event.preventDefault(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this.querySelector('button[type=submit]')) : (typeof updateMetadataTrackUrlFromQueue === 'function' ? updateMetadataTrackUrlFromQueue('${encodeURIComponent(String(row.genre?.id ?? ""))}', '${encodeURIComponent(String(key || ""))}', '${esc(inputId)}', this.querySelector('button[type=submit]'), 'review') : null)"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}"><button type="submit" class="btn btn-primary btn-tiny">${row.targetCount > 1 ? "Update copies" : "Update"}</button></div></form>`
           : "";
@@ -1022,6 +1045,12 @@
         if (existing) existing.textContent = label;
         else metaEl.insertAdjacentHTML("afterbegin", `<span class="studio-inline-group-updated-chip">${esc(label)}</span>`);
       }
+      const remainingKinds = Array.from(new Set(unique.flatMap((target) => {
+        const song = findSongByGenreAndKey(target.genreId, target.key);
+        return song ? missingKinds(song) : [];
+      })));
+      const rowElForChips = button?.closest?.(".studio-mini-row-repair");
+      updateRepairMetaChips(rowElForChips?.querySelector?.(".studio-mini-meta"), remainingKinds);
       if (updated > 1) toast(`Updated ${updated} matching copies — Save cleanup to persist.`, false);
     } finally {
       clearBusy();

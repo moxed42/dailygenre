@@ -6002,9 +6002,25 @@ async function loadData() {
               metaEl.insertAdjacentHTML('afterbegin', '<span class="studio-inline-updated-chip">updated · save pending</span>');
             }
             if (metaEl) {
+              const trackUrl = target.song.spotifyUrl || target.song.url || nextUrl;
+              const hasAnyOfficialMetadata = !!(target.song.spotifyId || target.song.spotifyUrl || target.song.releaseYear || target.song.releaseDate || target.song.durationMs || target.song.isrc);
+              const stillMissing = [];
+              if (!(target.song.artwork || target.song.albumArt)) stillMissing.push('art');
+              if (trackUrl && !target.song.spotifyId) stillMissing.push('id');
+              if (trackUrl && !target.song.releaseYear && !target.song.releaseDate && !target.song.eraYear) stillMissing.push('year');
+              if (trackUrl && !hasAnyOfficialMetadata) stillMissing.push('metadata');
+              metaEl.querySelectorAll('.studio-repair-missing-chip').forEach((chip) => chip.remove());
+              const anchor = metaEl.querySelector('.studio-inline-updated-chip, .studio-inline-group-updated-chip');
+              const missingHtml = stillMissing.map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${escapeHtml(kind)}">missing ${escapeHtml(kind)}</span>`).join('');
+              if (missingHtml) {
+                if (anchor) anchor.insertAdjacentHTML('afterend', missingHtml);
+                else metaEl.insertAdjacentHTML('afterbegin', missingHtml);
+              }
               const detailParts = [currentArtist, currentAlbum, currentYear].filter(Boolean).join(' · ');
-              if (detailParts && !metaEl.querySelector('.studio-inline-track-detail')) {
-                metaEl.insertAdjacentHTML('beforeend', `<span class="studio-inline-track-detail">${escapeHtml(detailParts)}</span>`);
+              if (detailParts) {
+                const detailEl = metaEl.querySelector('.studio-inline-track-detail');
+                if (detailEl) detailEl.textContent = detailParts;
+                else metaEl.insertAdjacentHTML('beforeend', `<span class="studio-inline-track-detail">${escapeHtml(detailParts)}</span>`);
               }
             }
             const urlInput = rowEl.querySelector('.studio-inline-track-edit input');
