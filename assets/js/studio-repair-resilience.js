@@ -1,28 +1,27 @@
-/* Daily Genre Studio Repair Resilience v107
+/* Daily Genre Studio Repair Resilience v108
    Hotfix only: makes Studio Repair Bay inline URL updates tolerate grouped rows,
-   older identity keys, and songs whose metadata identity changes after repair.
+   old/empty target keys, and row metadata that changed after repair.
 */
 (function () {
   "use strict";
 
-  const VERSION = "studio-repair-resilient-v107";
+  const VERSION = "studio-repair-resilient-v108";
 
   function toast(message, isError) {
     if (typeof window.showSaveToast === "function") window.showSaveToast(message, !!isError);
   }
 
   function decodeMaybe(value) {
-    try {
-      return decodeURIComponent(String(value || ""));
-    } catch (_) {
-      return String(value || "");
-    }
+    const raw = String(value || "");
+    try { return decodeURIComponent(raw); } catch (_) { return raw; }
   }
 
   function norm(value) {
     return String(value || "")
       .toLowerCase()
       .replace(/https?:\/\/\S+/g, " ")
+      .replace(/&amp;/g, " and ")
+      .replace(/\band\b/g, " and ")
       .replace(/[^a-z0-9]+/g, " ")
       .replace(/\s+/g, " ")
       .trim();
@@ -39,9 +38,7 @@
 
   function normalizeSongUrl(value) {
     if (typeof window.normalizeSongUrl === "function") {
-      try {
-        return window.normalizeSongUrl(value || "");
-      } catch (_) {}
+      try { return window.normalizeSongUrl(value || ""); } catch (_) {}
     }
     return String(value || "").trim();
   }
@@ -58,9 +55,7 @@
 
   function inflateSongs(raw) {
     if (typeof window.inflateSongsFromStorage === "function") {
-      try {
-        return window.inflateSongsFromStorage(raw || []);
-      } catch (_) {}
+      try { return window.inflateSongsFromStorage(raw || []); } catch (_) {}
     }
     return Array.isArray(raw) ? raw : [];
   }
@@ -73,6 +68,14 @@
       if (song.levelUp) out.push(song.levelUp);
     });
     return out;
+  }
+
+  function songArtist(song) {
+    return String(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(", ") : "") || "").trim();
+  }
+
+  function songTitleOnly(song) {
+    return String(song?.title || song?.name || song?.track || "").trim();
   }
 
   function appIdentity(song) {
@@ -90,7 +93,7 @@
     const spotify = url.match(/spotify\.com\/track\/([a-z0-9]+)/i);
     if (spotify) return `spotify:${spotify[1].toLowerCase()}`;
     if (url) return `url:${url}`;
-    return `meta:${String(song?.artist || "").trim().toLowerCase()}|${String(song?.title || "").trim().toLowerCase()}`;
+    return `meta:${songArtist(song).toLowerCase()}|${songTitleOnly(song).toLowerCase()}`;
   }
 
   function identityKeys(song) {
@@ -108,13 +111,13 @@
     const tid = spotifyTrackId(url);
     if (tid) add(`spotify:${tid.toLowerCase()}`);
     if (url) add(`url:${url}`);
-    const artist = String(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(", ") : "")).trim().toLowerCase();
-    const title = String(song?.title || song?.name || "").trim().toLowerCase();
-    if (artist || title) add(`meta:${artist}|${title}`);
-    const canon = canonicalSongTitle(title);
-    if (artist || canon) add(`canon:${artist}|${canon}`);
-    add(norm([song?.spotifyId, song?.isrc, song?.spotifyUrl || song?.url, artist, title].join(" ")));
-    add(norm([artist, title].join(" ")));
+    const artistRaw = songArtist(song).toLowerCase();
+    const titleRaw = songTitleOnly(song).toLowerCase();
+    if (artistRaw || titleRaw) add(`meta:${artistRaw}|${titleRaw}`);
+    const canon = canonicalSongTitle(titleRaw);
+    if (artistRaw || canon) add(`canon:${artistRaw}|${canon}`);
+    add(norm([song?.spotifyId, song?.isrc, song?.spotifyUrl || song?.url, artistRaw, titleRaw].join(" ")));
+    add(norm([artistRaw, titleRaw].join(" ")));
     return Array.from(keys);
   }
 
@@ -124,60 +127,137 @@
     if (!rawKey && !keyNorm) return false;
     const keys = identityKeys(song);
     if (keys.includes(rawKey) || keys.includes(keyNorm)) return true;
-    const artist = norm(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
-    const title = norm(song?.title || song?.name || "");
+    const artist = norm(songArtist(song));
+    const title = norm(songTitleOnly(song));
     const artistTitle = norm([artist, title].join(" "));
     if (artistTitle && (keyNorm === artistTitle || keyNorm.includes(artistTitle))) return true;
     if (artist && title && keyNorm.includes(artist) && keyNorm.includes(title)) return true;
     return false;
   }
 
+  function parseTitleLine(line) {
+    const clean = String(line || "").replace(/\s+/g, " ").trim();
+    if (!clean) return { artist: "", title: "" };
+    const parts = clean.split(/\s+[—–-]\s+/);
+    if (parts.length >= 2) {
+      return { artist: parts.shift().trim(), title: parts.join(" - ").trim() };
+    }
+    return { artist: "", title: clean };
+  }
+
+  function rowCandidateInfo(rowEl) {
+    const titleLine = rowEl?.querySelector?.(".studio-mini-title")?.textContent || "";
+    const parsed = parseTitleLine(titleLine);
+    const spans = Array.from(rowEl?.querySelectorAll?.(".studio-mini-meta span") || []);
+    const genreNames = spans
+      .filter((span) => {
+        const cls = span.className || "";
+        const text = norm(span.textContent || "");
+        return !/studio-repair|updated|copy/.test(cls) && text && !/^missing\b/.test(text) && !/^fit\b/.test(text) && !/^from\b/.test(text) && !/^updated\b/.test(text);
+      })
+      .map((span) => String(span.textContent || "").trim())
+      .filter(Boolean);
+    return {
+      artist: parsed.artist,
+      title: parsed.title,
+      titleLine,
+      genreNames,
+      rowText: rowEl?.getAttribute?.("data-studio-text") || rowEl?.textContent || "",
+    };
+  }
+
+  function genreMatches(genre, hints) {
+    const idHints = new Set((hints || []).map((h) => String(h?.genreId ?? "")).filter(Boolean));
+    if (idHints.size && idHints.has(String(genre?.id ?? ""))) return true;
+    const nameHints = new Set((hints || []).map((h) => norm(h?.genreName || "")).filter(Boolean));
+    if (!nameHints.size) return !idHints.size;
+    const gName = norm(genre?.genre || "");
+    return nameHints.has(gName);
+  }
+
+  function songMatchesRowInfo(song, info) {
+    const rowArtist = norm(info.artist || "");
+    const rowTitle = norm(info.title || info.titleLine || "");
+    const sArtist = norm(songArtist(song));
+    const sTitle = norm(songTitleOnly(song));
+    const sCanon = norm(canonicalSongTitle(songTitleOnly(song)));
+    if (rowArtist && rowTitle) {
+      if (sArtist === rowArtist && (sTitle === rowTitle || sCanon === rowTitle)) return true;
+      if (sArtist && rowArtist && (sArtist.includes(rowArtist) || rowArtist.includes(sArtist)) && (sTitle === rowTitle || sTitle.includes(rowTitle) || rowTitle.includes(sTitle))) return true;
+    }
+    const rowText = norm(info.rowText || info.titleLine || "");
+    if (sArtist && sTitle && rowText.includes(sArtist) && rowText.includes(sTitle)) return true;
+    return false;
+  }
+
+  function findSongTargetsFromRow(rowEl, parsedTargets) {
+    const info = rowCandidateInfo(rowEl);
+    const out = [];
+    getGenres().forEach((genre) => {
+      if (!genreMatches(genre, parsedTargets) && info.genreNames.length) {
+        const gName = norm(genre?.genre || "");
+        if (!info.genreNames.some((name) => norm(name) === gName)) return;
+      } else if (!genreMatches(genre, parsedTargets)) {
+        return;
+      }
+      allSongsWithLevelUps(genre).forEach((song) => {
+        if (songMatchesRowInfo(song, info)) {
+          out.push({ genreId: String(genre?.id ?? ""), key: appIdentity(song), source: "row" });
+        }
+      });
+    });
+    return out;
+  }
+
   function resolveRepairTarget(target) {
     const genreId = String(target?.genreId ?? "");
     const key = String(target?.key ?? "");
     const genre = getGenres().find((g) => String(g?.id ?? "") === genreId);
-    if (!genre) return { genreId, key };
+    if (!genre || !key) return null;
     const song = allSongsWithLevelUps(genre).find((candidate) => songMatchesKey(candidate, key));
-    if (!song) return { genreId, key };
-    return {
-      genreId,
-      key: appIdentity(song) || key,
-    };
+    if (!song) return null;
+    return { genreId, key: appIdentity(song) || key };
   }
 
-  function uniqueTargets(targets) {
+  function uniqueTargets(targets, rowEl) {
     const out = [];
     const seen = new Set();
-    (targets || []).forEach((target) => {
-      const resolved = resolveRepairTarget(target);
-      const genreId = String(resolved.genreId || "");
-      const key = String(resolved.key || "");
+    function add(target) {
+      const genreId = String(target?.genreId || "");
+      const key = String(target?.key || "");
       const id = `${genreId}::${key}`;
       if (!genreId || !key || seen.has(id)) return;
       seen.add(id);
       out.push({ genreId, key });
-    });
+    }
+
+    (targets || []).forEach((target) => add(resolveRepairTarget(target)));
+
+    // v108 fallback: some grouped repair rows were rendered with an empty/old key.
+    // Infer the song from the visible row title + genre chip instead of failing.
+    if (!out.length && rowEl) {
+      findSongTargetsFromRow(rowEl, targets || []).forEach(add);
+    }
     return out;
   }
 
   function install() {
     if (typeof window.updateMetadataTrackUrlFromQueue !== "function") return false;
 
-    window.updateStudioRepairGroupUrlFromQueue = async function updateStudioRepairGroupUrlFromQueueV107(encodedTargetsJson, inputId, button) {
+    window.updateStudioRepairGroupUrlFromQueue = async function updateStudioRepairGroupUrlFromQueueV108(encodedTargetsJson, inputId, button) {
       let parsed = [];
-      try {
-        parsed = JSON.parse(decodeMaybe(encodedTargetsJson || "[]"));
-      } catch (_) {
-        parsed = [];
-      }
-      const targets = uniqueTargets(parsed);
+      try { parsed = JSON.parse(decodeMaybe(encodedTargetsJson || "[]")); } catch (_) { parsed = []; }
+
+      const rowEl = button?.closest?.(".studio-mini-row-repair");
+      const targets = uniqueTargets(parsed, rowEl);
       if (!targets.length) {
-        toast("Could not find matching repair rows. Refresh Studio and try again.", true);
+        const title = rowEl?.querySelector?.(".studio-mini-title")?.textContent?.trim?.() || "that repair row";
+        toast(`Could not find matching repair row for ${title}. Try opening the genre once, or refresh Studio and try again.`, true);
+        console.warn("Daily Genre Studio repair could not resolve row", { parsed, inputId, rowText: rowEl?.textContent });
         return;
       }
 
       const originalText = button?.textContent || "Update";
-      const rowEl = button?.closest?.(".studio-mini-row-repair");
       const setBusy = (label) => {
         if (!button) return;
         button.disabled = true;
