@@ -3142,6 +3142,24 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    function updateSaveRetryNotice(message) {
+      const notice = document.getElementById('passwordNotice');
+      if (notice) notice.textContent = message;
+      const floating = document.querySelector('.floating-save-submit[aria-busy="true"], .floating-save-submit');
+      if (floating && floating.getAttribute('aria-busy') === 'true') {
+        floating.title = message;
+      }
+      const status = document.getElementById('studioSaveState');
+      if (status && status.classList.contains('is-dirty')) {
+        status.setAttribute('title', message);
+      }
+    }
+
+    function describeSaveRetryWait(ms, attempt, totalAttempts) {
+      const seconds = Math.max(1, Math.round(ms / 1000));
+      return `Cloudflare/GitHub is slow right now. Keeping your edits and retrying in ${seconds}s… (${attempt}/${totalAttempts})`;
+    }
+
     function makeSaveError(message, code = 'SAVE_FAILED', status = 0, details = null) {
       const error = new Error(message);
       error.code = code;
@@ -3197,7 +3215,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       }
 
       const payload = genresForSave();
-      const retryDelays = [650, 1600, 3200];
+      const retryDelays = [1000, 2500, 5000, 10000, 20000, 40000];
+      const totalAttempts = retryDelays.length + 1;
       let conflictRetried = false;
       let lastError = null;
 
@@ -3217,7 +3236,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
               serverFileSha = '';
               const freshSha = await refreshServerFileSha(true);
               if (freshSha && freshSha !== previousSha) {
-                await saveRetryDelay(350);
+                updateSaveRetryNotice('Fresh GitHub revision found. Retrying save safely…');
+                await saveRetryDelay(750);
                 continue;
               }
             }
@@ -3231,6 +3251,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
           if (saveResponseIsRetryable(res, data) && attempt < retryDelays.length) {
             lastError = makeSaveError(saveFailureMessage(res, data), data.code || 'SAVE_RETRYABLE', res.status, data);
+            updateSaveRetryNotice(describeSaveRetryWait(retryDelays[attempt], attempt + 2, totalAttempts));
             await saveRetryDelay(retryDelays[attempt]);
             continue;
           }
@@ -3240,6 +3261,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           if (error && ['AUTH_FAILED', 'STALE_DATA', 'NO_REVISION', 'DUPLICATE_GENRES'].includes(error.code)) throw error;
           lastError = error;
           if (attempt < retryDelays.length) {
+            updateSaveRetryNotice(describeSaveRetryWait(retryDelays[attempt], attempt + 2, totalAttempts));
             await saveRetryDelay(retryDelays[attempt]);
             continue;
           }
@@ -3247,8 +3269,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       }
 
       const message = lastError?.code === 'NETWORK_ERROR'
-        ? 'Could not reach the production Worker after several tries. Your edits are still on this page; try Save again in a few seconds.'
-        : `${lastError?.message || 'Unknown Worker error.'} Your edits are still on this page; try Save again in a few seconds.`;
+        ? 'Could not reach the production Worker after waiting and retrying for about 80 seconds. Your edits are still on this page; try Save again in a minute.'
+        : `${lastError?.message || 'Unknown Worker error.'} Your edits are still on this page; try Save again in a minute.`;
       throw makeSaveError(message, lastError?.code || 'SAVE_FAILED', lastError?.status || 0, lastError?.details || null);
     }
 
