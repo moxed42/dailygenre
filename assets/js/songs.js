@@ -633,7 +633,10 @@
     const song = entry.song;
     const href = spotifyHref(song);
     const hasHref = /^https?:\/\//i.test(href);
-    const title = song.title || (hasHref ? "Linked track" : "Track");
+    const source = safeCall(() => songUrlSource(href || song.url || song.spotifyUrl || ''), song.source || '');
+    const isSpotify = /spotify\.com\/track\//i.test(href || '') || /^spotify:track:/i.test(href || '');
+    const isYoutube = source === 'youtube' || /(?:youtube\.com|youtu\.be)/i.test(href || '');
+    const title = song.title || (isYoutube ? "YouTube track" : (hasHref ? "Linked track" : "Track"));
     const art = song.artwork || song.albumArt || "";
     const artStyle = art
       ? ` style="--song-focus-art:url('${html(art).replace(/'/g, "%27")}')"`
@@ -647,8 +650,10 @@
     );
     const miniArtwork = encodeURIComponent(art || "");
     const miniUrl = encodeURIComponent(href || "");
-    const miniButton = hasHref
+    const miniButton = isSpotify
       ? `<button type="button" class="song-focus-mini-btn spotify-mini-play" onclick="event.preventDefault(); event.stopPropagation(); if (typeof stickyPlayerOpen === 'function') stickyPlayerOpen('${miniUrl}', '${miniTitle}', '${miniArtist}', '${miniArtwork}');" title="Open mini player" aria-label="Open Spotify mini player">▶</button>`
+      : hasHref
+      ? `<button type="button" class="song-focus-mini-btn" onclick="event.preventDefault(); event.stopPropagation(); window.open('${miniUrl ? html(decodeURIComponent(miniUrl)).replace(/'/g, '%27') : ''}', '_blank', 'noopener');" title="Open link" aria-label="Open ${isYoutube ? 'YouTube' : 'web'} link">↗</button>`
       : "";
     const readMore = "";
     const filterLabel =
@@ -816,6 +821,9 @@
                   const subline = songSubline(song);
                   const href = spotifyHref(song);
                   const hasHref = /^https?:\/\//i.test(href);
+                  const rowSource = safeCall(() => songUrlSource(href || song.url || song.spotifyUrl || ''), song.source || '');
+                  const rowIsSpotify = /spotify\.com\/track\//i.test(href || '') || /^spotify:track:/i.test(href || '');
+                  const rowIsYoutube = rowSource === 'youtube' || /(?:youtube\.com|youtu\.be)/i.test(href || '');
                   const safeKeyAttr = html(key).replace(/'/g, "&#39;");
                   const titleMarkup = hasHref
                     ? `<a class="song-focus-row-title" href="${html(href)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${html(title)} <span class="song-link-arrow">↗</span></a>`
@@ -824,8 +832,10 @@
                   const rowMiniArtist = encodeURIComponent(song.artist || (Array.isArray(song.artists) ? song.artists.join(", ") : ""));
                   const rowMiniArtwork = encodeURIComponent(art || "");
                   const rowMiniUrl = encodeURIComponent(href || "");
-                  const rowMiniButton = hasHref
+                  const rowMiniButton = rowIsSpotify
                     ? `<button type="button" class="song-focus-row-play spotify-mini-play" onclick="event.preventDefault(); event.stopPropagation(); if (typeof stickyPlayerOpen === 'function') stickyPlayerOpen('${rowMiniUrl}', '${rowMiniTitle}', '${rowMiniArtist}', '${rowMiniArtwork}');" title="Open mini player" aria-label="Open Spotify mini player">▶</button>`
+                    : hasHref
+                    ? `<button type="button" class="song-focus-row-play" onclick="event.preventDefault(); event.stopPropagation(); window.open('${rowMiniUrl ? html(decodeURIComponent(rowMiniUrl)).replace(/'/g, '%27') : ''}', '_blank', 'noopener');" title="Open link" aria-label="Open ${rowIsYoutube ? 'YouTube' : 'web'} link">↗</button>`
                     : "";
                   const childRelation =
                     entry.isChild && entry.parentSong
