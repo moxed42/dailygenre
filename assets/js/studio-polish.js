@@ -165,19 +165,11 @@
               ? "metadata"
               : row.problem || "repair";
       group.problemSet.add(problemLabel);
-      const repairKey = songKey(row.song) || "";
-      const displayTargetKey = repairDisplayKey(row.song) || repairKey || norm(songTitle(row.song));
-      const targetKey = `${String(row.genre?.id ?? "")}::${displayTargetKey || repairKey}`;
+      const targetKey = `${String(row.genre?.id ?? "")}::${songKey(row.song)}`;
       if (!group.targetMap.has(targetKey)) {
         group.targetMap.set(targetKey, {
           genreId: String(row.genre?.id ?? ""),
-          key: repairKey,
-          displayKey: displayTargetKey,
-          title: row.song?.title || row.song?.name || "",
-          artist: row.song?.artist || (Array.isArray(row.song?.artists) ? row.song.artists.join(", ") : ""),
-          url: row.song?.spotifyUrl || row.song?.url || "",
-          spotifyId: row.song?.spotifyId || "",
-          isrc: row.song?.isrc || "",
+          key: songKey(row.song),
           genreName: row.genre?.genre || "Unknown genre",
         });
       }
@@ -192,7 +184,7 @@
         ...group,
         problem: problems.length ? `Missing ${problems.join(" + ")}` : group.problem,
         repairProblems: problems,
-        targets: Array.from(group.targetMap.values()).filter((x) => x.genreId),
+        targets: Array.from(group.targetMap.values()).filter((x) => x.genreId && x.key),
         targetCount: group.targetMap.size,
       };
     });
@@ -538,17 +530,7 @@
         const currentUrl = row.song?.spotifyUrl || row.song?.url || "";
         const groupTargets = isRepair && Array.isArray(row.targets) && row.targets.length
           ? row.targets
-          : [{
-              genreId: String(row.genre?.id ?? ""),
-              key: String(key || ""),
-              displayKey: repairDisplayKey(row.song) || String(key || ""),
-              title: row.song?.title || row.song?.name || "",
-              artist: row.song?.artist || (Array.isArray(row.song?.artists) ? row.song.artists.join(", ") : ""),
-              url: row.song?.spotifyUrl || row.song?.url || "",
-              spotifyId: row.song?.spotifyId || "",
-              isrc: row.song?.isrc || "",
-              genreName
-            }];
+          : [{ genreId: String(row.genre?.id ?? ""), key: String(key || ""), genreName }];
         const encodedTargets = encodeURIComponent(JSON.stringify(groupTargets));
         const copyChip = isRepair && row.targetCount > 1
           ? `<span class="studio-repair-copy-chip">${esc(String(row.targetCount))} copies</span>`
@@ -746,6 +728,37 @@
       btn.innerHTML = collapsed
         ? '<span aria-hidden="true">＋</span><strong>Expand</strong>'
         : '<span aria-hidden="true">−</span><strong>Collapse</strong>';
+    }
+  }
+
+
+  function captureStudioSectionState(mount) {
+    if (!mount) return null;
+    const openIds = [];
+    $$(".studio-collapsible-section[id]", mount).forEach((section) => {
+      if (!section.classList.contains("studio-section-collapsed")) {
+        openIds.push(section.id);
+      }
+    });
+    return {
+      openIds,
+      showAll: mount.classList.contains("studio-show-all"),
+    };
+  }
+
+  function restoreStudioSectionState(mount, state) {
+    if (!mount || !state) return;
+    if (state.showAll) mount.classList.add("studio-show-all");
+    state.openIds.forEach((id) => {
+      const section = document.getElementById(id);
+      if (section && section.closest("#reviewContent") === mount) {
+        setSectionCollapsed(section, false);
+      }
+    });
+    const expand = document.getElementById("studioExpandAllBtn");
+    if (expand && state.showAll) {
+      expand.textContent = "Collapse all sections";
+      expand.setAttribute("aria-expanded", "true");
     }
   }
 
@@ -993,9 +1006,11 @@
       }
       const draft = captureInboxDraft();
       const mount = document.getElementById("reviewContent");
+      const sectionState = captureStudioSectionState(mount);
       if (mount) mount.classList.add("studio-rendering");
       const result = original.apply(this, arguments);
       apply();
+      restoreStudioSectionState(mount, sectionState);
       restoreInboxDraft(draft);
       if (mount) {
         requestAnimationFrame(() => mount.classList.remove("studio-rendering"));
@@ -1005,211 +1020,6 @@
     wrappedRenderReview.__studioWrapped = true;
     window.renderReview = wrappedRenderReview;
     return true;
-  }
-
-
-  function decodeArg(value) {
-    try {
-      return decodeURIComponent(String(value || ""));
-    } catch (_) {
-      return String(value || "");
-    }
-  }
-
-  function parseRepairTargetPayload(encodedGenreId, encodedKey) {
-    const genreId = decodeArg(encodedGenreId);
-    const rawKey = decodeArg(encodedKey);
-    let payload = null;
-    if (/^\s*\{/.test(rawKey)) {
-      try { payload = JSON.parse(rawKey); } catch (_) { payload = null; }
-    }
-    return {
-      ...(payload && typeof payload === "object" ? payload : {}),
-      genreId: String(payload?.genreId ?? genreId ?? ""),
-      key: String(payload?.key ?? (payload ? "" : rawKey) ?? ""),
-    };
-  }
-
-  function compactKey(value) {
-    return norm(String(value || "").replace(/^artist-title:/i, " ").replace(/::/g, " "));
-  }
-
-  function repairTargetMatchesSong(song, target) {
-    if (!song || !target) return false;
-    const incoming = [
-      target.key,
-      target.displayKey,
-      target.url,
-      target.spotifyId,
-      target.isrc,
-      [target.artist, target.title].filter(Boolean).join(" "),
-    ].map(compactKey).filter(Boolean);
-
-    const songKeys = [
-      songKey(song),
-      repairDisplayKey(song),
-      song?.spotifyUrl || song?.url || "",
-      song?.spotifyId || "",
-      song?.isrc || "",
-      [song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""), song?.title || song?.name || ""].filter(Boolean).join(" "),
-      songTitle(song),
-    ].map(compactKey).filter(Boolean);
-
-    if (incoming.some((key) => songKeys.includes(key))) return true;
-
-    const targetArtist = compactKey(target.artist);
-    const targetTitle = compactKey(target.title);
-    const songArtistValue = compactKey(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
-    const songTitleValue = compactKey(song?.title || song?.name || "");
-    if (targetTitle && songTitleValue && targetTitle === songTitleValue) {
-      if (!targetArtist || !songArtistValue || targetArtist === songArtistValue) return true;
-    }
-    if (targetArtist && targetTitle) {
-      return songKeys.some((key) => key.includes(targetArtist) && key.includes(targetTitle));
-    }
-    return false;
-  }
-
-  function findMutableRepairSongTarget(target) {
-    const genre = getGenres().find((g) => String(g?.id ?? "") === String(target?.genreId ?? ""));
-    if (!genre) return null;
-    const songs = Array.isArray(genre.songs_listened) ? genre.songs_listened : [];
-    for (let index = 0; index < songs.length; index += 1) {
-      const song = songs[index];
-      if (!song) continue;
-      if (repairTargetMatchesSong(song, target)) {
-        return { genre, songs, song, index, parent: null, isLevelUp: false };
-      }
-      if (song.levelUp && repairTargetMatchesSong(song.levelUp, target)) {
-        return { genre, songs, song: song.levelUp, index, parent: song, isLevelUp: true };
-      }
-    }
-
-    const inflated = allNonPendingSongs(genre);
-    const match = inflated.find((song) => repairTargetMatchesSong(song, target));
-    if (match) {
-      const matchIdentity = compactKey(songKey(match) || repairDisplayKey(match) || songTitle(match));
-      const rawIndex = songs.findIndex((song) =>
-        compactKey(songKey(song) || repairDisplayKey(song) || songTitle(song)) === matchIdentity
-      );
-      if (rawIndex >= 0) return { genre, songs, song: songs[rawIndex], index: rawIndex, parent: null, isLevelUp: false };
-    }
-    return null;
-  }
-
-  function normalizeRepairUrl(value) {
-    let nextUrl = String(value || "").trim();
-    if (typeof window.normalizeSongUrl === "function") nextUrl = window.normalizeSongUrl(nextUrl);
-    if ((/spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl)) && typeof window.spotifyCanonicalTrackUrl === "function") {
-      nextUrl = window.spotifyCanonicalTrackUrl(nextUrl);
-    }
-    return nextUrl;
-  }
-
-  async function defaultUpdateMetadataTrackUrlFromQueue(encodedGenreId, encodedKey, inputId, button) {
-    const targetSpec = parseRepairTargetPayload(encodedGenreId, encodedKey);
-    const input = document.getElementById(inputId);
-    const nextUrl = normalizeRepairUrl(input?.value || "");
-    if (!nextUrl || (!/^https?:\/\//i.test(nextUrl) && !/^spotify:track:/i.test(nextUrl))) {
-      toast("Please paste a valid Spotify track URL.", true);
-      return false;
-    }
-    if (input) input.value = nextUrl;
-
-    const found = findMutableRepairSongTarget(targetSpec);
-    if (!found?.song) {
-      toast("Could not find that song in the library. Open the genre once, then try Studio again.", true);
-      console.warn("Daily Genre Studio repair failed to resolve mutable song", { targetSpec, inputId });
-      return false;
-    }
-
-    const song = found.song;
-    const keep = {
-      reason: song.reason,
-      score: song.score,
-      reaction: song.reaction,
-      pendingFrom: song.pendingFrom,
-      originFit: song.originFit,
-      nominatedFit: song.nominatedFit,
-      promotedFrom: song.promotedFrom,
-      promotedFromFit: song.promotedFromFit,
-      isPending: song.isPending,
-      isLevelUp: song.isLevelUp,
-      isAdd: song.isAdd,
-      isPromote: song.isPromote,
-      levelUp: song.levelUp,
-      _pendingGenreTag: song._pendingGenreTag,
-    };
-
-    song.url = nextUrl;
-    song.spotifyUrl = /^spotify:track:/i.test(nextUrl) && typeof window.spotifyTrackId === "function"
-      ? `https://open.spotify.com/track/${window.spotifyTrackId(nextUrl)}`
-      : nextUrl;
-    song.spotifyId = typeof window.spotifyTrackId === "function" ? (window.spotifyTrackId(nextUrl) || song.spotifyId || "") : (song.spotifyId || "");
-    song.source = "spotify";
-    song.spotifyMetadataFetched = false;
-    song.spotifyMetadataFetchedAt = "";
-
-    let warning = "";
-    try {
-      if (typeof window.fetchSpotifyTrackResult === "function") {
-        const refreshed = await window.fetchSpotifyTrackResult(nextUrl, true);
-        if (refreshed?.ok && refreshed.track && typeof window.applyOfficialSpotifyMetadata === "function") {
-          window.applyOfficialSpotifyMetadata(song, refreshed.track);
-        } else {
-          warning = refreshed?.error || "Spotify metadata lookup did not return full metadata.";
-          if (typeof window.applySpotifyOembedFallback === "function") {
-            const recovered = await window.applySpotifyOembedFallback(song, nextUrl, { forceArtwork: true, forceTitle: true });
-            if (recovered) warning = "";
-          }
-        }
-      } else if (typeof window.fetchSpotifyTrackMetadata === "function" && typeof window.applyOfficialSpotifyMetadata === "function") {
-        const track = await window.fetchSpotifyTrackMetadata(nextUrl, true);
-        if (track) window.applyOfficialSpotifyMetadata(song, track);
-      }
-    } catch (err) {
-      warning = err?.message || String(err || "");
-      console.warn("Studio Spotify metadata refresh failed", err);
-    }
-
-    Object.keys(keep).forEach((k) => {
-      if (keep[k] !== undefined && keep[k] !== null && keep[k] !== "") song[k] = keep[k];
-    });
-    if (song.artwork && !song.albumArt) song.albumArt = song.artwork;
-    if (song.albumArt && !song.artwork) song.artwork = song.albumArt;
-
-    try {
-      if (typeof window.markListeningUpdatePending === "function") window.markListeningUpdatePending();
-      else {
-        window.libraryUpdatesPending = true;
-        window.hasUnsavedChanges = true;
-      }
-    } catch (_) {}
-
-    const rowEl = button?.closest?.(".studio-mini-row-repair");
-    if (rowEl) {
-      const thumb = rowEl.querySelector(".studio-thumb");
-      if (thumb && song.artwork) {
-        if (thumb.tagName === "IMG") thumb.src = song.artwork;
-        else {
-          const img = document.createElement("img");
-          img.className = thumb.className || "studio-thumb";
-          img.src = song.artwork;
-          img.alt = "";
-          thumb.replaceWith(img);
-        }
-      }
-      const titleEl = rowEl.querySelector(".studio-mini-title");
-      if (titleEl) titleEl.textContent = songTitle(song);
-      updateRepairMetaChips(rowEl.querySelector(".studio-mini-meta"), missingKinds(song));
-    }
-
-    toast(warning ? `URL applied, but metadata may still need review: ${warning}` : "Spotify URL and metadata applied — Save cleanup to persist.", !!warning);
-    return true;
-  }
-
-  if (typeof window.updateMetadataTrackUrlFromQueue !== "function") {
-    window.updateMetadataTrackUrlFromQueue = defaultUpdateMetadataTrackUrlFromQueue;
   }
 
   async function updateStudioRepairGroupUrlFromQueue(encodedTargetsJson, inputId, button) {
@@ -1224,21 +1034,10 @@
     targets.forEach((target) => {
       const genreId = String(target?.genreId ?? "");
       const key = String(target?.key ?? "");
-      const payload = {
-        genreId,
-        key,
-        displayKey: target?.displayKey || "",
-        title: target?.title || "",
-        artist: target?.artist || "",
-        url: target?.url || "",
-        spotifyId: target?.spotifyId || "",
-        isrc: target?.isrc || "",
-      };
-      const fallbackId = payload.key || payload.displayKey || [payload.artist, payload.title].filter(Boolean).join(" ") || payload.url || payload.spotifyId || payload.isrc;
-      const id = `${genreId}::${fallbackId}`;
-      if (!genreId || !fallbackId || seen.has(id)) return;
+      const id = `${genreId}::${key}`;
+      if (!genreId || !key || seen.has(id)) return;
       seen.add(id);
-      unique.push(payload);
+      unique.push({ genreId, key });
     });
     if (!unique.length || typeof window.updateMetadataTrackUrlFromQueue !== "function") {
       toast("Could not find matching repair rows. Refresh Studio and try again.", true);
@@ -1267,7 +1066,7 @@
         if (idx > 0) setBusy(`Updating ${idx + 1}/${unique.length}…`);
         await window.updateMetadataTrackUrlFromQueue(
           encodeURIComponent(target.genreId),
-          encodeURIComponent(target.key || JSON.stringify(target)),
+          encodeURIComponent(target.key),
           inputId,
           idx === 0 ? button : null,
           "review",

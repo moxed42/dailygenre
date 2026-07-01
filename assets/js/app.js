@@ -3656,6 +3656,7 @@ function blockSaveIfDuplicateGenres() {
       const targetArg = visualActionArg(row.targetGenre.id);
       const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
       const idx = Number(row.index) || 0;
+      const moveInputId = `${pendingReviewRowId(row.targetGenre.id, row.key || songIdentity(row.song) || '')}-send`;
       const fitBtns = [1,2,3,4,5].map(n => `<button type="button" class="pending-fit-btn ${nominatedFit === n ? 'active' : ''}" title="Set target-genre fit to ${n}/5" onclick="setReviewPendingFit('${targetArg}', ${idx}, '${keyArg}', ${n})">${n}</button>`).join('');
       return `<div class="review-row review-pending-action-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
         <div>
@@ -3675,6 +3676,10 @@ function blockSaveIfDuplicateGenres() {
           <button type="button" class="btn btn-danger" title="Remove this pending nomination from the target genre" onclick="resolveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', 'dismiss')">Dismiss</button>
           <button type="button" class="btn btn-secondary" onclick="openGenreByIdEncoded('${targetArg}', false)">Open Target</button>
           ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}
+          <div class="review-pending-send-row">
+            <input id="${escapeHtml(moveInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" placeholder="Send to different genre…" aria-label="Send pending nomination to a different genre">
+            <button type="button" class="btn btn-secondary" title="Move this pending nomination to another genre's pending queue" onclick="moveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(moveInputId)}')">Send</button>
+          </div>
         </div>
       </div>`;
     }
@@ -3762,6 +3767,44 @@ function blockSaveIfDuplicateGenres() {
       stageReviewPendingChange(already ? 'Song was already logged; pending nomination removed.' : action);
     }
 
+    function moveReviewPendingNomination(targetId, pendingIndex, encodedKey, inputId) {
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
+        return;
+      }
+      const input = document.getElementById(inputId);
+      const { target: destination, error } = resolveReviewMoveGenre(input?.value || '', found.target.id);
+      if (!destination) {
+        showSaveToast(error || 'Choose a destination genre first.', true);
+        input?.focus?.();
+        return;
+      }
+      const destinationPending = normalizePendingSongs(destination.pending_songs || []);
+      const key = songIdentity(found.song);
+      const sourceName = found.song.pendingFrom || found.song.source || '';
+      const alreadyQueued = destinationPending.some(candidate => {
+        const sameSong = key && (songIdentity(candidate) === key || songIdentityKeys(candidate).includes(key));
+        const sameSource = !sourceName || normalizePendingTag(candidate.pendingFrom || candidate.source || '') === normalizePendingTag(sourceName);
+        return sameSong && sameSource;
+      });
+      if (!alreadyQueued) {
+        const moved = { ...(found.song || {}) };
+        moved.movedFromPendingGenre = found.target.genre || '';
+        moved.movedAt = new Date().toISOString();
+        destinationPending.push(moved);
+        destination.pending_songs = destinationPending;
+      }
+      found.pending.splice(found.index, 1);
+      found.target.pending_songs = found.pending;
+      if (input) input.value = '';
+      stageReviewPendingChange(
+        alreadyQueued
+          ? `Already queued in ${destination.genre}; removed duplicate pending nomination here.`
+          : `Sent pending nomination to ${destination.genre}.`
+      );
+    }
+
     function filterReviewPendingQueue(inputId) {
       const input = document.getElementById(inputId);
       const term = String(input?.value || '').trim().toLowerCase();
@@ -3793,6 +3836,30 @@ function blockSaveIfDuplicateGenres() {
         .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
         .map(g => `<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre || '')}</option>`)
         .join('');
+    }
+
+
+    function reviewGenreDatalistOptions() {
+      return (genres || [])
+        .filter(g => g && g.genre)
+        .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
+        .map(g => `<option value="${escapeHtml(g.genre || '')}" data-id="${escapeHtml(String(g.id))}"></option>`)
+        .join('');
+    }
+
+    function resolveReviewMoveGenre(inputValue, currentTargetId = '') {
+      const raw = String(inputValue || '').trim();
+      if (!raw) return { target: null, error: 'Choose a destination genre first.' };
+      const byId = (genres || []).find(g => String(g?.id) === raw && String(g?.id) !== String(currentTargetId));
+      if (byId) return { target: byId, error: '' };
+      const normalized = normalizePendingTag(raw);
+      const exact = (genres || []).filter(g => g && String(g.id) !== String(currentTargetId) && normalizePendingTag(g.genre || '') === normalized);
+      if (exact.length === 1) return { target: exact[0], error: '' };
+      if (exact.length > 1) return { target: null, error: 'That genre name is ambiguous. Open the target genre or choose a more exact name.' };
+      const contains = (genres || []).filter(g => g && String(g.id) !== String(currentTargetId) && normalizePendingTag(g.genre || '').includes(normalized));
+      if (contains.length === 1) return { target: contains[0], error: '' };
+      if (contains.length > 1) return { target: null, error: 'Multiple genres match that text. Type the exact genre name.' };
+      return { target: null, error: 'Could not find that destination genre.' };
     }
 
     function pendingReviewRowId(sourceId, key) {
@@ -4270,7 +4337,7 @@ function blockSaveIfDuplicateGenres() {
             <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
             <span class="small" id="reviewPendingVisibleCount">${queuedRows.length} shown</span>
           </div>
-          ${queuedRows.length ? `<div class="review-list-scroll">${queuedRows.map(reviewQueuedPendingRowHtml).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
+          ${queuedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${queuedRows.map(reviewQueuedPendingRowHtml).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
         </div>
         <div class="review-card" id="reviewManualQueueCard">
           <div class="review-card-head">

@@ -1340,3 +1340,40 @@
     max-width: none;
   }
 }
+
+/* === Studio Workbench v116: routing desk direct retargeting === */
+.review-pending-actions {
+  align-items: center !important;
+  flex-wrap: wrap !important;
+}
+
+.review-pending-send-row {
+  flex: 1 1 100%;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+  max-width: 480px;
+}
+
+.review-pending-send-input {
+  min-height: 38px !important;
+  height: 38px !important;
+  padding: 7px 11px !important;
+  border-radius: 13px !important;
+  font-size: 0.88rem !important;
+}
+
+.review-pending-send-row .btn {
+  min-height: 38px !important;
+  padding: 8px 12px !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 760px) {
+  .review-pending-send-row {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+}
