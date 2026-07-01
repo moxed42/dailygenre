@@ -2055,6 +2055,47 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       }
     }
 
+    function captureSongQueueViewport() {
+      const queue = document.querySelector('#screen-listen .song-focus-queue');
+      const activeRow = queue?.querySelector?.('.song-focus-row.active') || null;
+      return {
+        pageX: window.scrollX || window.pageXOffset || 0,
+        pageY: window.scrollY || window.pageYOffset || 0,
+        queueScrollTop: queue ? queue.scrollTop : 0,
+        queueScrollLeft: queue ? queue.scrollLeft : 0,
+        activeTop: activeRow?.getBoundingClientRect?.().top ?? null,
+        activeLeft: activeRow?.getBoundingClientRect?.().left ?? null
+      };
+    }
+
+    function restoreSongQueueViewport(snapshot) {
+      if (!snapshot) return;
+      const restoreOnce = () => {
+        const queue = document.querySelector('#screen-listen .song-focus-queue');
+        if (queue) {
+          queue.scrollTop = Number(snapshot.queueScrollTop) || 0;
+          queue.scrollLeft = Number(snapshot.queueScrollLeft) || 0;
+          const activeRow = queue.querySelector?.('.song-focus-row.active') || null;
+          if (activeRow && Number.isFinite(snapshot.activeTop)) {
+            const nextTop = activeRow.getBoundingClientRect().top;
+            if (Number.isFinite(nextTop)) {
+              queue.scrollTop += nextTop - snapshot.activeTop;
+            }
+          }
+        }
+        window.scrollTo({
+          top: Number(snapshot.pageY) || 0,
+          left: Number(snapshot.pageX) || 0,
+          behavior: 'auto'
+        });
+      };
+      restoreOnce();
+      requestAnimationFrame(restoreOnce);
+      setTimeout(restoreOnce, 40);
+      setTimeout(restoreOnce, 140);
+      setTimeout(restoreOnce, 320);
+    }
+
     async function updateTrackUrlFromCard(encodedKey, pendingIndex, button, path = '') {
       if (!currentGenre) return;
       // The inline detail editor and the focused Song Queue details drawer use
@@ -2294,17 +2335,21 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
 
         removeLoggedSongsFromPending(currentGenre);
         const restore = preserveScrollSnapshot();
+        const queueViewport = captureSongQueueViewport();
+        const nextKey = typeof songIdentity === 'function' ? songIdentity(target) : '';
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-        applyDetailEditMode(detailEditMode);
-        restore();
         try {
-          const nextKey = typeof songIdentity === 'function' ? songIdentity(target) : '';
-          if (nextKey && typeof window.openSongEditorFromQueue === 'function') {
-            setTimeout(() => window.openSongEditorFromQueue(nextKey), 0);
+          if (nextKey && typeof window.setSongFocus === 'function') {
+            window.setSongFocus(nextKey);
+          } else if (nextKey && typeof window.openSongEditorFromQueue === 'function') {
+            window.openSongEditorFromQueue(nextKey);
           } else if (typeof window.enhanceSongListeningExperience === 'function') {
-            setTimeout(() => window.enhanceSongListeningExperience(), 0);
+            window.enhanceSongListeningExperience();
           }
         } catch (_) {}
+        applyDetailEditMode(detailEditMode);
+        restore();
+        restoreSongQueueViewport(queueViewport);
         markListeningUpdatePending();
         if (metadataWarning) {
           console.warn('Track URL updated with metadata warning:', metadataWarning);
@@ -3123,8 +3168,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       passwordNotice.textContent = '';
     }
 
-    async function refreshServerFileSha(force = false) {
-      if (serverFileSha && !force) return serverFileSha;
+    async function refreshServerFileSha() {
+      if (serverFileSha) return serverFileSha;
       try {
         const apiRes = await fetch(DATA_API_URL, { cache: 'no-store' });
         const meta = await apiRes.json().catch(() => ({}));
@@ -3138,51 +3183,25 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       return '';
     }
 
-    function saveRetryDelay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
+
+  async function doSaveWithPassword(password) {
+    finalizeListeningUpdatesBeforeSave();
+
+    if (blockSaveIfDuplicateGenres()) {
+      const error = new Error('Duplicate genres detected. Clean the JSON before saving.');
+      error.code = 'DUPLICATE_GENRES';
+      throw error;
     }
 
-    function updateSaveRetryNotice(message) {
-      const notice = document.getElementById('passwordNotice');
-      if (notice) notice.textContent = message;
-      const floating = document.querySelector('.floating-save-submit[aria-busy="true"], .floating-save-submit');
-      if (floating && floating.getAttribute('aria-busy') === 'true') {
-        floating.title = message;
+    if (!serverFileSha) await refreshServerFileSha();      
+    
+    if (!serverFileSha) {
+        const error = new Error('No loaded data revision is available. Reload before saving.');
+        error.code = 'NO_REVISION';
+        throw error;
       }
-      const status = document.getElementById('studioSaveState');
-      if (status && status.classList.contains('is-dirty')) {
-        status.setAttribute('title', message);
-      }
-    }
 
-    function describeSaveRetryWait(ms, attempt, totalAttempts) {
-      const seconds = Math.max(1, Math.round(ms / 1000));
-      return `Cloudflare/GitHub is slow right now. Keeping your edits and retrying in ${seconds}s… (${attempt}/${totalAttempts})`;
-    }
-
-    function makeSaveError(message, code = 'SAVE_FAILED', status = 0, details = null) {
-      const error = new Error(message);
-      error.code = code;
-      error.status = status;
-      error.details = details || null;
-      return error;
-    }
-
-    function saveResponseIsRetryable(res, data = {}) {
-      if (!res) return true;
-      if ([408, 425, 429, 500, 502, 503, 504].includes(Number(res.status))) return true;
-      const code = String(data?.code || '').toUpperCase();
-      return ['NETWORK_ERROR', 'WORKER_ERROR', 'GITHUB_ERROR', 'RATE_LIMITED', 'TIMEOUT'].includes(code);
-    }
-
-    function saveFailureMessage(res, data = {}) {
-      const status = res?.status ? ` (${res.status})` : '';
-      if (data?.error) return `${data.error}${status}`;
-      if (data?.message) return `${data.message}${status}`;
-      return `Save failed${status}.`;
-    }
-
-    async function postGenresToWorker(payload, password, expectedSha) {
+      const payload = genresForSave();
       let res;
       try {
         res = await fetch(WORKER_URL, {
@@ -3190,88 +3209,35 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           headers: {
             'Content-Type': 'application/json',
             'X-Password': password,
-            'X-Expected-Sha': expectedSha
+            'X-Expected-Sha': serverFileSha
           },
           body: JSON.stringify(payload)
         });
       } catch (networkError) {
-        throw makeSaveError('Could not reach the production Worker.', 'NETWORK_ERROR', 0, networkError);
+        const error = new Error('Could not reach the production Worker.');
+        error.code = 'NETWORK_ERROR';
+        throw error;
       }
+
       const data = await res.json().catch(() => ({}));
-      return { res, data };
-    }
-
-    async function doSaveWithPassword(password) {
-      finalizeListeningUpdatesBeforeSave();
-
-      if (blockSaveIfDuplicateGenres()) {
-        throw makeSaveError('Duplicate genres detected. Clean the JSON before saving.', 'DUPLICATE_GENRES');
+      if (res.status === 401) {
+        const error = new Error('That password did not work.');
+        error.code = 'AUTH_FAILED';
+        throw error;
+      }
+      if (res.status === 409 || data.conflict) {
+        const error = new Error('Newer saved data exists. Reload this development page before saving.');
+        error.code = 'STALE_DATA';
+        throw error;
+      }
+      if (!res.ok || !data.ok) {
+        const error = new Error(data.error || `Save failed (${res.status}).`);
+        error.code = data.code || 'SAVE_FAILED';
+        throw error;
       }
 
-      if (!serverFileSha) await refreshServerFileSha(true);
-
-      if (!serverFileSha) {
-        throw makeSaveError('No loaded data revision is available. Reload before saving.', 'NO_REVISION');
-      }
-
-      const payload = genresForSave();
-      const retryDelays = [1000, 2500, 5000, 10000, 20000, 40000];
-      const totalAttempts = retryDelays.length + 1;
-      let conflictRetried = false;
-      let lastError = null;
-
-      for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
-        const expectedSha = serverFileSha;
-        try {
-          const { res, data } = await postGenresToWorker(payload, password, expectedSha);
-
-          if (res.status === 401) {
-            throw makeSaveError('That password did not work.', 'AUTH_FAILED', res.status, data);
-          }
-
-          if (res.status === 409 || data.conflict) {
-            if (!conflictRetried) {
-              conflictRetried = true;
-              const previousSha = serverFileSha;
-              serverFileSha = '';
-              const freshSha = await refreshServerFileSha(true);
-              if (freshSha && freshSha !== previousSha) {
-                updateSaveRetryNotice('Fresh GitHub revision found. Retrying save safely…');
-                await saveRetryDelay(750);
-                continue;
-              }
-            }
-            throw makeSaveError('GitHub data changed while this page was open. Refresh the page before saving so you do not overwrite newer data.', 'STALE_DATA', res.status, data);
-          }
-
-          if (res.ok && data.ok) {
-            serverFileSha = data.sha || serverFileSha;
-            return data;
-          }
-
-          if (saveResponseIsRetryable(res, data) && attempt < retryDelays.length) {
-            lastError = makeSaveError(saveFailureMessage(res, data), data.code || 'SAVE_RETRYABLE', res.status, data);
-            updateSaveRetryNotice(describeSaveRetryWait(retryDelays[attempt], attempt + 2, totalAttempts));
-            await saveRetryDelay(retryDelays[attempt]);
-            continue;
-          }
-
-          throw makeSaveError(saveFailureMessage(res, data), data.code || 'SAVE_FAILED', res.status, data);
-        } catch (error) {
-          if (error && ['AUTH_FAILED', 'STALE_DATA', 'NO_REVISION', 'DUPLICATE_GENRES'].includes(error.code)) throw error;
-          lastError = error;
-          if (attempt < retryDelays.length) {
-            updateSaveRetryNotice(describeSaveRetryWait(retryDelays[attempt], attempt + 2, totalAttempts));
-            await saveRetryDelay(retryDelays[attempt]);
-            continue;
-          }
-        }
-      }
-
-      const message = lastError?.code === 'NETWORK_ERROR'
-        ? 'Could not reach the production Worker after waiting and retrying for about 80 seconds. Your edits are still on this page; try Save again in a minute.'
-        : `${lastError?.message || 'Unknown Worker error.'} Your edits are still on this page; try Save again in a minute.`;
-      throw makeSaveError(message, lastError?.code || 'SAVE_FAILED', lastError?.status || 0, lastError?.details || null);
+      serverFileSha = data.sha || serverFileSha;
+      return data;
     }
 
     function ensureRankOrderForRating(rating) {
@@ -3325,38 +3291,6 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
     function hasAltTake(genre) {
       return inflateSongsFromStorage(genre?.songs_listened || []).some(song => !!song.levelUp);
-    }
-
-    function hasAlbumDive(genre) {
-      const dive = genre?.albumDive;
-      if (!dive || typeof dive !== 'object') return false;
-      const slots = Array.isArray(dive.slots) ? dive.slots : [];
-      const slotHasContent = (slot = {}) => {
-        const fav = slot.favoriteSong || {};
-        return !!(
-          slot.album ||
-          slot.artist ||
-          slot.albumArt ||
-          slot.manualAlbumArt ||
-          slot.spotifyAlbumUrl ||
-          slot.spotifyUrl ||
-          slot.itunesAlbumUrl ||
-          slot.appleAlbumUrl ||
-          slot.albumProviderUrl ||
-          slot.notes ||
-          slot.rationale ||
-          fav.title ||
-          (Array.isArray(slot.tracks) && slot.tracks.length)
-        );
-      };
-      return !!(
-        dive.summary ||
-        dive.verdict ||
-        dive.verdictImpact ||
-        dive.completedAt ||
-        dive.lastWorkedAt ||
-        slots.some(slotHasContent)
-      );
     }
 
     function songSearchText(genre) {
@@ -4481,7 +4415,6 @@ function blockSaveIfDuplicateGenres() {
       const summary = document.getElementById('archiveSummary');
       if (!summary) return;
       const altCount = items.filter(hasAltTake).length;
-      const albumDiveCount = items.filter(hasAlbumDive).length;
       const contenderCount = items.filter(g => !!g.monthlycontender).length;
       const zangerCount = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto').length;
       const songCount = items.reduce((total, g) => total + countSongsForDisplay(g.songs_listened || []), 0);
@@ -4492,7 +4425,6 @@ function blockSaveIfDuplicateGenres() {
         <span class="archive-stat-chip">avg ${escapeHtml(avg)} ★</span>
         <span class="archive-stat-chip">${songCount} song${songCount === 1 ? '' : 's'}</span>
         <span class="archive-stat-chip">${altCount} Alt Take${altCount === 1 ? '' : 's'}</span>
-        <span class="archive-stat-chip">${albumDiveCount} Album Dive${albumDiveCount === 1 ? '' : 's'}</span>
         <span class="archive-stat-chip">${contenderCount} contender${contenderCount === 1 ? '' : 's'}</span>
         <span class="archive-stat-chip">${zangerCount} zanger${zangerCount === 1 ? '' : 's'}</span>
       `;
@@ -4546,7 +4478,6 @@ function blockSaveIfDuplicateGenres() {
 
       if (flag === 'contender') items = items.filter(g => !!g.monthlycontender);
       if (flag === 'alt') items = items.filter(hasAltTake);
-      if (flag === 'album-dive') items = items.filter(hasAlbumDive);
       if (flag === 'pending') items = items.filter(hasPending);
       if (flag === 'songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0);
       if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
@@ -4605,7 +4536,6 @@ function blockSaveIfDuplicateGenres() {
                 ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
                 ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : (countSongsForDisplay(songs) > 0 && !g.rank_order && g.rating !== 'zanger' ? '<span class="tag tag-warn">No rank yet</span>' : '')}
                 ${hasAltTake(g) ? '<span class="tag">Alt Take</span>' : ''}
-                ${hasAlbumDive(g) ? '<span class="tag dc-album-dive-icon-tag">◎ Album Dive</span>' : ''}
                 ${hasPending(g) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
                 ${songCount ? `<span class="tag">${songCount} song${songCount===1?'':'s'}</span>` : '<span class="tag">Needs songs</span>'}
               </div>
