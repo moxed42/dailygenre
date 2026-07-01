@@ -608,105 +608,6 @@
       if (key === 'web' || key === 'other') return '<span class="song-source-badge web">Web</span>';
       return '';
     }
-
-    function youtubeCanonicalUrl(url='') {
-      const value = normalizeSongUrl(url || '');
-      const id = youtubeVideoId(value);
-      return id ? `https://www.youtube.com/watch?v=${id}` : value;
-    }
-
-    function youtubeGenericArtwork() {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ff3b30"/><stop offset="1" stop-color="#8b1d16"/></linearGradient></defs><rect width="640" height="640" rx="128" fill="url(#bg)"/><rect x="128" y="208" width="384" height="224" rx="58" fill="#fff"/><path d="M292 260v120l106-60-106-60z" fill="#d9251d"/><text x="320" y="520" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="800" fill="#fff">YouTube</text></svg>`;
-      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-    }
-
-    function youtubeThumbnailFromId(id='') {
-      const clean = String(id || '').trim();
-      return clean ? `https://i.ytimg.com/vi/${encodeURIComponent(clean)}/hqdefault.jpg` : '';
-    }
-
-    function youtubeTitleParts(title='', author='') {
-      let cleanTitle = cleanPastedCitationArtifacts(String(title || '').replace(/\s+-\s+YouTube\s*$/i, '').trim());
-      let cleanArtist = cleanPastedCitationArtifacts(String(author || '').replace(/\s+-\s+Topic\s*$/i, '').trim());
-      const split = cleanTitle.match(/^(.+?)\s+[—–-]\s+(.+)$/);
-      if (split) {
-        const possibleArtist = cleanPastedCitationArtifacts(split[1]);
-        const possibleTitle = cleanPastedCitationArtifacts(split.slice(2).join(' — '));
-        if (possibleArtist && possibleTitle) {
-          cleanArtist = cleanArtist || possibleArtist;
-          cleanTitle = possibleTitle;
-        }
-      }
-      return { title: cleanTitle, artist: cleanArtist };
-    }
-
-    async function fetchYoutubeOembed(url, bust=false) {
-      const canonical = youtubeCanonicalUrl(url);
-      if (!canonical || !isYoutubeUrl(canonical)) return null;
-      const endpoint = `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(canonical)}${bust ? `&dg=${Date.now()}` : ''}`;
-      try {
-        const response = await fetch(endpoint, { cache: bust ? 'no-store' : 'default' });
-        if (!response.ok) return null;
-        return await response.json();
-      } catch (error) {
-        console.warn('YouTube oEmbed lookup failed', error);
-        return null;
-      }
-    }
-
-    async function applyYoutubeOembedFallback(song, url, options = {}) {
-      if (!song || !url || !isYoutubeUrl(url)) return false;
-      const canonical = youtubeCanonicalUrl(url);
-      const id = youtubeVideoId(canonical);
-      const embed = await fetchYoutubeOembed(canonical, true);
-      const parts = youtubeTitleParts(embed?.title || '', embed?.author_name || '');
-      const artwork = String(embed?.thumbnail_url || '').trim() || youtubeThumbnailFromId(id) || youtubeGenericArtwork();
-      let changed = false;
-
-      if (canonical && song.url !== canonical) {
-        song.url = canonical;
-        changed = true;
-      }
-      if (song.source !== 'youtube') {
-        song.source = 'youtube';
-        changed = true;
-      }
-      if (id && song.youtubeId !== id) {
-        song.youtubeId = id;
-        changed = true;
-      }
-      if (canonical && song.youtubeUrl !== canonical) {
-        song.youtubeUrl = canonical;
-        changed = true;
-      }
-      if (artwork && (options.forceArtwork || !song.artwork || !song.albumArt)) {
-        song.artwork = artwork;
-        song.albumArt = artwork;
-        changed = true;
-      }
-      const genericTitles = /^(track|linked track|youtube track)$/i;
-      if (parts.title && (options.forceTitle || !song.title || genericTitles.test(String(song.title || '')))) {
-        song.title = parts.title;
-        changed = true;
-      }
-      if (parts.artist && (options.forceArtist || !song.artist)) {
-        song.artist = parts.artist;
-        if (!Array.isArray(song.artists) || !song.artists.length) song.artists = [parts.artist];
-        changed = true;
-      }
-      song.spotifyId = '';
-      song.spotifyUrl = '';
-      song.spotifyMetadataFetched = false;
-      song.spotifyMetadataFetchedAt = '';
-      song.youtubeMetadataFetched = !!embed;
-      song.youtubeMetadataFetchedAt = new Date().toISOString();
-      if (!song.artwork && !song.albumArt) {
-        song.artwork = youtubeGenericArtwork();
-        song.albumArt = song.artwork;
-        changed = true;
-      }
-      return changed || !!embed;
-    }
     
   function normalizeSongArtistAndTitle(title='', artist='') {
     let normalizedTitle = cleanPastedCitationArtifacts(title);
@@ -2315,8 +2216,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             console.warn('Could not sync queue URL overwrite back to Genre DNA', identityError);
           }
         } else if (isYoutubeUrl(nextUrl)) {
-          const canonicalYoutube = youtubeCanonicalUrl(nextUrl);
-          target.url = canonicalYoutube || nextUrl;
+          target.url = nextUrl;
           target.artwork = '';
           target.albumArt = '';
           target.releaseDate = '';
@@ -2333,14 +2233,6 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           target.isrc = '';
           target.title = savedTitle || target.title || 'YouTube track';
           target.artist = savedArtist || target.artist || '';
-          const usedYoutubeMetadata = await applyYoutubeOembedFallback(target, target.url, {
-            forceArtwork: true,
-            forceTitle: !savedTitle || /^youtube track$/i.test(savedTitle),
-            forceArtist: !savedArtist
-          });
-          metadataWarning = usedYoutubeMetadata
-            ? 'YouTube metadata filled from oEmbed/thumbnail fallback.'
-            : 'YouTube metadata could not be fetched; using generic YouTube artwork.';
         } else {
           target.url = nextUrl;
           target.artwork = '';
@@ -2460,23 +2352,14 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         restoreSongQueueViewport(queueViewport);
         markListeningUpdatePending();
         if (metadataWarning) {
-          console.warn('Track URL updated with metadata note:', metadataWarning);
+          console.warn('Track URL updated with metadata warning:', metadataWarning);
           const recovered = /recovered from Spotify embed/i.test(metadataWarning);
-          const youtubeFilled = /YouTube metadata filled/i.test(metadataWarning);
-          const youtubeGeneric = /generic YouTube artwork/i.test(metadataWarning);
           showSaveToast(recovered
             ? 'URL saved and artwork recovered from Spotify embed — use Save to keep it.'
-            : youtubeFilled
-            ? 'YouTube link updated with title/artwork — use Save to keep it.'
-            : youtubeGeneric
-            ? 'YouTube link updated with generic artwork — use Save to keep it.'
             : `URL saved, but Spotify metadata did not refresh: ${metadataWarning}`,
-            !(recovered || youtubeFilled || youtubeGeneric));
+            !recovered);
         } else {
-          const source = songUrlSource(target.url || nextUrl);
-          showSaveToast(source === 'spotify'
-            ? 'Queue row overwritten with Spotify metadata — use the floating Save button to keep it.'
-            : 'Track URL updated — use the floating Save button to keep it.', false);
+          showSaveToast('Queue row overwritten with Spotify metadata — use the floating Save button to keep it.', false);
         }
       } catch (err) {
         console.error('Track URL update failed', err);
@@ -2738,7 +2621,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         : '';
       const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
-        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, or web track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove Track</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, or other web track links. Spotify fills official metadata; YouTube fills title/channel/artwork from oEmbed and uses a generic YouTube tile if no thumbnail is available. Use the floating Save button to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, or web track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove Track</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, or other web track links. Refresh Spotify updates title, artist, album, artwork, release year, duration, Spotify ID, and ISRC for Spotify tracks. use the floating Save button to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
@@ -3980,13 +3863,6 @@ function blockSaveIfDuplicateGenres() {
             song.albumArt = oembed.thumbnail_url || '';
           }
         }
-      } else if (isYoutubeUrl(raw)) {
-        const canonical = youtubeCanonicalUrl(raw);
-        song.url = canonical || normalizeSongUrl(raw) || raw;
-        song.source = 'youtube';
-        song.title = 'YouTube track';
-        song.artist = '';
-        await applyYoutubeOembedFallback(song, song.url, { forceArtwork: true, forceTitle: true, forceArtist: true });
       } else {
         song.source = 'manual';
         const dashMatch = raw.match(/^(.+?)\s*[—–-]\s*(.+)$/);
@@ -6245,6 +6121,121 @@ async function loadData() {
 
     function waitForSpotifyPacing(ms=2500) {
       return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function refreshNextSpotifyTracks(limit=5) {
+      const batchSize = Math.max(1, Math.min(10, Number(limit || 5)));
+      const button = document.querySelector('#studio-repair-lane button[onclick*="refreshNextSpotifyTracks"]');
+      const idleText = button?.textContent || 'Refresh next 5';
+
+      if (spotifyRefreshRunning) {
+        spotifyRefreshCancelRequested = true;
+        if (button) button.textContent = 'Stopping…';
+        showSaveToast('Stopping Spotify refresh after the current track…', false);
+        return;
+      }
+
+      if (Date.now() < spotifyRefreshPausedUntil) {
+        const wait = Math.ceil((spotifyRefreshPausedUntil - Date.now()) / 1000);
+        showSaveToast(`Spotify cooldown active — try again in ${wait} seconds.`, true);
+        updateSpotifyPauseDisplay();
+        return;
+      }
+
+      const rows = collectMetadataRows(allListenedGenresForMaintenance())
+        .filter(row => row.group === 'spotify' && !row.bulkSkipped)
+        .slice(0, batchSize);
+
+      if (!rows.length) {
+        const skipped = collectMetadataRows(allListenedGenresForMaintenance()).filter(row => row.bulkSkipped).length;
+        showSaveToast(skipped
+          ? 'No bulk-refreshable Spotify tracks remain. Broken/resource-missing tracks need a manual URL update.'
+          : 'No Spotify tracks are currently queued for metadata refresh.', false);
+        const restore = preserveScrollSnapshot();
+        renderReview();
+        restore();
+        return;
+      }
+
+      spotifyRefreshRunning = true;
+      spotifyRefreshCancelRequested = false;
+      spotifyRefreshReport = { updated:0, attempted:0, remaining:rows.length, broken:0, rateLimited:0, failed:0, stopped:false, pausedSeconds:0, scope:'Studio Repair Bay' };
+      if (button) {
+        button.disabled = false;
+        button.textContent = '■ Stop refresh';
+      }
+
+      try {
+        for (let i = 0; i < rows.length; i += 1) {
+          if (spotifyRefreshCancelRequested) {
+            spotifyRefreshReport.stopped = true;
+            break;
+          }
+          const row = rows[i];
+          spotifyRefreshReport.attempted += 1;
+          if (button) button.textContent = `Refreshing ${i + 1}/${rows.length}…`;
+          showSaveToast(`Refreshing Studio repair track ${i + 1} of ${rows.length}…`, false);
+
+          const result = await fetchSpotifyTrackResult(row.song.url, true);
+          if (result.ok) {
+            const target = findSongForMetadataAction(row.genre.id, songIdentity(row.song));
+            if (target) {
+              applyOfficialSpotifyMetadata(target.song, result.track);
+              target.genre.songs_listened = target.songs;
+              spotifyRefreshReport.updated += 1;
+              spotifyMetadataFailures.delete(row.key);
+            } else {
+              spotifyRefreshReport.failed += 1;
+            }
+          } else if (result.code === 'rate_limited') {
+            spotifyMetadataFailures.set(row.key, result);
+            spotifyRefreshReport.rateLimited = 1;
+            spotifyRefreshReport.pausedSeconds = result.retryAfterSeconds || 30;
+            spotifyRefreshReport.stopped = true;
+            beginSpotifyPause(spotifyRefreshReport.pausedSeconds);
+            break;
+          } else {
+            spotifyMetadataFailures.set(row.key, result);
+            if (result.code === 'broken') spotifyRefreshReport.broken += 1;
+            else spotifyRefreshReport.failed += 1;
+          }
+
+          await waitForSpotifyPacing();
+        }
+
+        spotifyRefreshReport.remaining = collectMetadataRows(allListenedGenresForMaintenance())
+          .filter(row => row.group === 'spotify' && !row.bulkSkipped).length;
+
+        if (spotifyRefreshReport.updated > 0) {
+          libraryUpdatesPending = true;
+          setUnsavedState(true);
+          toggleLibrarySaveButton(true);
+        }
+
+        const restore = preserveScrollSnapshot();
+        renderHistory();
+        renderRankings();
+        renderReview();
+        restore();
+
+        if (spotifyRefreshReport.rateLimited) {
+          updateSpotifyPauseDisplay();
+          showSaveToast('Spotify paused requests. Save any completed updates; wait before retrying.', true);
+        } else if (spotifyRefreshReport.updated > 0) {
+          showSaveToast(`Studio repair refreshed ${spotifyRefreshReport.updated} track${spotifyRefreshReport.updated === 1 ? '' : 's'} — save library updates to persist.`, false);
+        } else if (spotifyRefreshReport.stopped) {
+          showSaveToast('Studio repair refresh stopped.', false);
+        } else {
+          showSaveToast('No tracks were updated. Check rows that need a manual URL update.', true);
+        }
+      } finally {
+        spotifyRefreshRunning = false;
+        spotifyRefreshCancelRequested = false;
+        if (button && Date.now() >= spotifyRefreshPausedUntil) {
+          button.disabled = false;
+          button.textContent = idleText;
+        }
+      }
     }
 
     function allListenedGenresForMaintenance() {
