@@ -1288,3 +1288,55 @@
   align-items: center;
   flex-wrap: wrap;
 }
+
+/* === Studio Routing Desk v113: direct pending nomination actions === */
+#reviewPendingQueueCard .review-pending-action-row {
+  grid-template-columns: minmax(0, 1fr) minmax(360px, auto) !important;
+  align-items: start !important;
+}
+
+#reviewPendingQueueCard .review-pending-fitline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+#reviewPendingQueueCard .review-pending-fitline > span {
+  color: var(--muted, #735a3c);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#reviewPendingQueueCard .review-pending-actions {
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  justify-content: flex-end !important;
+  max-width: 520px;
+}
+
+#reviewPendingQueueCard .review-pending-actions .btn {
+  min-height: 36px !important;
+  padding: 8px 11px !important;
+  border-radius: 14px !important;
+  font-size: 0.86rem !important;
+}
+
+#reviewPendingQueueCard .review-chip-good {
+  color: #2f6b3b !important;
+  background: rgba(47, 107, 59, 0.12) !important;
+  border-color: rgba(47, 107, 59, 0.2) !important;
+}
+
+@media (max-width: 860px) {
+  #reviewPendingQueueCard .review-pending-action-row {
+    grid-template-columns: 1fr !important;
+  }
+  #reviewPendingQueueCard .review-pending-actions {
+    justify-content: flex-start !important;
+    max-width: none;
+  }
+}

@@ -3647,24 +3647,119 @@ function blockSaveIfDuplicateGenres() {
 
     function reviewQueuedPendingRowHtml(row) {
       const source = row.sourceName || 'Unknown source';
-      const fitLine = row.fit !== '' && row.fit != null ? `<span class="review-chip">source fit ${escapeHtml(String(row.fit))}/5</span>` : '';
+      const originFit = row.fit !== '' && row.fit != null ? Number(row.fit) : null;
+      const nominatedFit = row.song?.nominatedFit != null ? Number(row.song.nominatedFit) : null;
+      const fitLine = originFit != null && Number.isFinite(originFit) ? `<span class="review-chip">source fit ${escapeHtml(String(originFit))}/5</span>` : '';
+      const hereFitLine = nominatedFit != null && Number.isFinite(nominatedFit) ? `<span class="review-chip review-chip-good">target fit ${escapeHtml(String(nominatedFit))}/5</span>` : '';
       const addedLine = row.added ? `<span class="review-chip">added ${escapeHtml(String(row.added))}</span>` : '';
       const searchText = [row.song.artist, row.song.title, row.targetGenre.genre, source, row.song.url].join(' ').toLowerCase();
-      return `<div class="review-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
+      const targetArg = visualActionArg(row.targetGenre.id);
+      const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+      const idx = Number(row.index) || 0;
+      const fitBtns = [1,2,3,4,5].map(n => `<button type="button" class="pending-fit-btn ${nominatedFit === n ? 'active' : ''}" title="Set target-genre fit to ${n}/5" onclick="setReviewPendingFit('${targetArg}', ${idx}, '${keyArg}', ${n})">${n}</button>`).join('');
+      return `<div class="review-row review-pending-action-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
         <div>
           <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
           <div class="review-meta">
             <span class="review-chip">queued in ${escapeHtml(row.targetGenre.genre || 'Unknown genre')}</span>
             <span class="review-chip">from ${escapeHtml(source)}</span>
             ${fitLine}
+            ${hereFitLine}
             ${addedLine}
           </div>
+          <div class="review-pending-fitline"><span>Fit here</span>${fitBtns}</div>
         </div>
-        <div class="review-move">
-          <button type="button" class="btn btn-secondary" onclick="openGenreByIdEncoded('${visualActionArg(row.targetGenre.id)}', false)">Open Target</button>
+        <div class="review-move review-pending-actions">
+          <button type="button" class="btn btn-primary" title="Accept this pending song as a normal song in the target genre" onclick="resolveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', 'canon')">Keep</button>
+          <button type="button" class="btn btn-secondary" title="Accept this as an ADD: useful but not one of the core three songs" onclick="resolveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', 'add')">ADD</button>
+          <button type="button" class="btn btn-danger" title="Remove this pending nomination from the target genre" onclick="resolveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', 'dismiss')">Dismiss</button>
+          <button type="button" class="btn btn-secondary" onclick="openGenreByIdEncoded('${targetArg}', false)">Open Target</button>
           ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}
         </div>
       </div>`;
+    }
+
+    function findReviewPendingNomination(targetId, pendingIndex, encodedKey = '') {
+      const target = (genres || []).find(g => String(g?.id) === String(targetId));
+      if (!target) return null;
+      const pending = normalizePendingSongs(target.pending_songs || []);
+      let index = Number(pendingIndex);
+      let song = Number.isInteger(index) && index >= 0 ? pending[index] : null;
+      const decodedKey = decodeURIComponent(String(encodedKey || ''));
+      if (decodedKey && (!song || songIdentity(song) !== decodedKey)) {
+        index = pending.findIndex(candidate => songIdentity(candidate) === decodedKey || songIdentityKeys(candidate).includes(decodedKey));
+        song = index >= 0 ? pending[index] : null;
+      }
+      if (!song) return null;
+      target.pending_songs = pending;
+      return { target, pending, song, index };
+    }
+
+    function officialSongFromPending(song, targetGenre, mode = 'canon') {
+      const out = { ...(song || {}) };
+      const targetFit = out.nominatedFit != null ? Number(out.nominatedFit) : null;
+      const sourceFit = out.originFit != null ? Number(out.originFit) : (out.score != null ? Number(out.score) : null);
+      out.url = normalizeSongUrl(out.url || out.spotifyUrl || '');
+      out.score = Number.isFinite(targetFit) ? targetFit : (Number.isFinite(sourceFit) ? sourceFit : null);
+      out.promotedFrom = out.pendingFrom || out.source || '';
+      out.promotedFromFit = Number.isFinite(sourceFit) ? sourceFit : null;
+      out.promotedTo = targetGenre?.genre || '';
+      out.reviewedAt = new Date().toISOString();
+      delete out.isPending;
+      delete out.pendingFrom;
+      delete out.originFit;
+      delete out.nominatedFit;
+      delete out.levelUp;
+      out.isLevelUp = false;
+      out.isAdd = mode === 'add';
+      return out;
+    }
+
+    function stageReviewPendingChange(message) {
+      libraryUpdatesPending = true;
+      setUnsavedState(true);
+      toggleLibrarySaveButton(true);
+      const restore = preserveScrollSnapshot();
+      renderReview();
+      restore();
+      showSaveToast(`${message} Save Library Updates to persist.`, false);
+    }
+
+    function setReviewPendingFit(targetId, pendingIndex, encodedKey, value) {
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
+        return;
+      }
+      found.song.nominatedFit = Number(value);
+      found.target.pending_songs = found.pending;
+      stageReviewPendingChange(`Target fit set to ${value}/5.`);
+    }
+
+    function resolveReviewPendingNomination(targetId, pendingIndex, encodedKey, mode = 'canon') {
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
+        return;
+      }
+      const label = [found.song.artist, found.song.title].filter(Boolean).join(' — ') || found.song.title || found.song.url || 'This song';
+      if (mode === 'dismiss') {
+        if (!window.confirm(`Dismiss pending nomination for ${label}?`)) return;
+        found.pending.splice(found.index, 1);
+        found.target.pending_songs = found.pending;
+        stageReviewPendingChange('Pending nomination dismissed.');
+        return;
+      }
+
+      found.target.songs_listened = inflateSongsFromStorage(found.target.songs_listened || []).filter(song => !song.isPending);
+      const official = officialSongFromPending(found.song, found.target, mode);
+      const key = songIdentity(official);
+      const already = key ? found.target.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
+      if (!already) found.target.songs_listened.push(official);
+      found.pending.splice(found.index, 1);
+      found.target.pending_songs = found.pending;
+      const action = mode === 'add' ? 'Accepted as ADD.' : 'Accepted as target song.';
+      stageReviewPendingChange(already ? 'Song was already logged; pending nomination removed.' : action);
     }
 
     function filterReviewPendingQueue(inputId) {
@@ -4167,7 +4262,7 @@ function blockSaveIfDuplicateGenres() {
           <div class="review-card-head">
             <div>
               <h3>Queued pending nominations</h3>
-              <p class="small" style="margin:6px 0 0;">These are the actual songs sitting in each genre’s pending queue. Click a target genre to see/listen/edit it there.</p>
+              <p class="small" style="margin:6px 0 0;">These are the actual songs sitting in each genre’s pending queue. Set the target fit, then Keep, mark as ADD, Dismiss, or open the target genre for deeper edits like Level Up.</p>
             </div>
             <span class="review-chip">${queuedRows.length} total</span>
           </div>
