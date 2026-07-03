@@ -1096,6 +1096,10 @@
 
   function openManualGenre(g) {
     if (!g) return;
+    if (typeof window.openGenreFromManualPicker === "function") {
+      window.openGenreFromManualPicker(g.id);
+      return;
+    }
     if (typeof openGenreDetail === "function") openGenreDetail(g, true);
   }
 
@@ -1136,11 +1140,11 @@
             .map(
               (g) => `
             <div class="manual-result-row ${String(g.id) === String(selectedId) ? "selected" : ""}" role="listitem">
-              <button class="manual-result-main" type="button" data-spin-polish-id="${escapeHtmlLocal(g.id)}">
+              <button class="manual-result-main" type="button" data-spin-preview-id="${escapeHtmlLocal(g.id)}">
                 <span class="manual-result-name">${escapeHtmlLocal(g.genre || "Unknown")}</span>
                 <span class="manual-result-path">${escapeHtmlLocal(categoryLineForGenre(g))}${aliasHitForQuery(g, query) ? ` · ${escapeHtmlLocal(aliasHitForQuery(g, query))}` : ""}</span>
               </button>
-              <button class="manual-result-info" type="button" data-spin-preview-button-id="${escapeHtmlLocal(g.id)}" title="Preview genre" aria-label="Preview ${escapeHtmlLocal(g.genre || "genre")}">♪</button>
+              <button class="manual-result-info" type="button" data-spin-listen-id="${escapeHtmlLocal(g.id)}" title="Listen" aria-label="Listen to ${escapeHtmlLocal(g.genre || "genre")}">♪</button>
             </div>
           `,
             )
@@ -1153,25 +1157,23 @@
     `
       : `<div class="manual-empty-state">No close genre matches yet.</div>`;
 
-    [...results.querySelectorAll("[data-spin-polish-id]")].forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-spin-polish-id");
-        openManualGenre(rows.find((g) => String(g.id) === String(id)));
+    [...results.querySelectorAll("[data-spin-preview-id]")].forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        STATE.previewGenreId = btn.getAttribute("data-spin-preview-id");
+        renderBetterManualSearch();
       });
     });
 
-    [...results.querySelectorAll("[data-spin-preview-button-id]")].forEach(
-      (btn) => {
-        btn.addEventListener("click", (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          STATE.previewGenreId = btn.getAttribute(
-            "data-spin-preview-button-id",
-          );
-          renderBetterManualSearch();
-        });
-      },
-    );
+    [...results.querySelectorAll("[data-spin-listen-id]")].forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const id = btn.getAttribute("data-spin-listen-id");
+        openManualGenre(rows.find((g) => String(g.id) === String(id)));
+      });
+    });
 
     [...results.querySelectorAll("[data-spin-open-id]")].forEach((btn) => {
       btn.addEventListener("click", () => {
