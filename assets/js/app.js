@@ -4219,6 +4219,68 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
         null;
     }
 
+    function routeGenreSlug(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 64) || 'genre';
+    }
+
+    function nextGenreNumericId() {
+      const max = (genres || []).reduce((highest, genre) => {
+        const id = Number(genre?.id);
+        return Number.isFinite(id) ? Math.max(highest, id) : highest;
+      }, -1);
+      return max + 1;
+    }
+
+    function buildRoutedGenreScaffold(name, sourceGenre = null) {
+      const cleanName = String(name || '').trim().replace(/^@+/, '');
+      const now = new Date().toISOString();
+      const sourcePath = sourceGenre ? categoryLine(sourceGenre) : '';
+      const parts = sourcePath.split('>').map(part => part.trim()).filter(Boolean);
+      const row = {
+        id: nextGenreNumericId(),
+        genre: cleanName,
+        status: 'unlistened',
+        rating: '',
+        notes: '',
+        summary: '',
+        key_artists: [],
+        suggested_songs: [],
+        songs_listened: [],
+        pending_songs: [],
+        createdFromRoutingDesk: true,
+        createdFromRoutingDeskAt: now
+      };
+      if (parts[0]) row.category = parts[0];
+      if (parts[1]) row.subcategory = parts[1];
+      if (parts.length) row.category_path = parts.slice(0, 2).join(' > ');
+      if (sourceGenre?.genre) row.createdFromSourceGenre = sourceGenre.genre;
+      row.slug = routeGenreSlug(cleanName);
+      return row;
+    }
+
+    function ensureRoutingDestinationGenre(inputValue, options = {}) {
+      const raw = String(inputValue || '').trim().replace(/^@+/, '');
+      if (!raw) return { target: null, error: 'Choose a destination genre first.', created: false };
+      const resolved = resolveReviewMoveGenre(raw, options.currentTargetId || '');
+      if (resolved.target) return { ...resolved, created: false };
+      if (!options.allowCreate) return { ...resolved, created: false };
+      if (raw.length < 2) return { target: null, error: 'Type a clearer genre name first.', created: false };
+      const unsafe = /https?:|spotify:|youtube|[\\/]/i.test(raw) || /[\t\n]/.test(raw);
+      if (unsafe) return { target: null, error: `Could not use “${raw}” as a genre name.`, created: false };
+      const existing = findGenreByNameLoose(raw);
+      if (existing) return { target: existing, error: '', created: false };
+      const scaffold = buildRoutedGenreScaffold(raw, options.sourceGenre || null);
+      genres.push(scaffold);
+      return { target: scaffold, error: '', created: true };
+    }
+
     function updateSourceGenreSongFromPending(sourceGenre, pendingSong, score) {
       if (!sourceGenre || !pendingSong) return false;
       const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
@@ -4264,15 +4326,21 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
         return;
       }
       const typedGenre = String(input?.value || found.target.genre || '').trim();
-      const { target: destination, error } = resolveReviewMoveGenre(typedGenre, '');
+
+      const sourceName = found.song?.pendingFrom || found.song?.source || '';
+      const sourceGenre = findGenreByNameLoose(sourceName);
+      const ensured = ensureRoutingDestinationGenre(typedGenre, {
+        allowCreate: true,
+        sourceGenre,
+        currentTargetId: found.target?.id || ''
+      });
+      const destination = ensured.target;
+      const error = ensured.error;
       if (!destination) {
         showSaveToast(error || 'Choose the best matching genre first.', true);
         input?.focus?.();
         return;
       }
-
-      const sourceName = found.song?.pendingFrom || found.song?.source || '';
-      const sourceGenre = findGenreByNameLoose(sourceName);
       const returningToSource = sourceGenre && String(destination.id) === String(sourceGenre.id);
       const sourceFit = Number(found.song?.originFit ?? found.song?.nominatedFit ?? found.song?.score ?? '');
       const requestedFit = Number(fitInput?.value || found.song?.nominatedFit || '');
@@ -4322,7 +4390,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
 
       const action = already
         ? `Already logged in ${destination.genre}; removed pending nomination.`
-        : `Sent to ${destination.genre} as ADD (${requestedFit}/5).`;
+        : `${ensured.created ? `Created ${destination.genre} and sent` : 'Sent'} as ADD (${requestedFit}/5).`;
       stageReviewPendingChange(action);
     }
 
@@ -4413,7 +4481,13 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
         return;
       }
       const typedGenre = String(input?.value || '').trim();
-      const { target: destination, error } = resolveReviewMoveGenre(typedGenre, '');
+      const ensured = ensureRoutingDestinationGenre(typedGenre, {
+        allowCreate: true,
+        sourceGenre: found.sourceGenre,
+        currentTargetId: found.sourceGenre?.id || ''
+      });
+      const destination = ensured.target;
+      const error = ensured.error;
       if (!destination) {
         showSaveToast(error || 'Choose the best matching genre first.', true);
         input?.focus?.();
@@ -4468,7 +4542,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       stageReviewPendingChange(
         already
           ? `Already logged in ${destination.genre}; cleared the pending tag from ${found.sourceGenre.genre}.`
-          : `Sent to ${destination.genre} as ADD (${requestedFit}/5) and cleared the pending tag.`
+          : `${ensured.created ? `Created ${destination.genre} and sent` : `Sent to ${destination.genre}`} as ADD (${requestedFit}/5) and cleared the pending tag.`
       );
     }
 
@@ -5351,7 +5425,22 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       `;
     }
 
+    function ensureArchiveIdentityFilterOption() {
+      const select = document.getElementById('archiveFlagFilter');
+      if (!select) return;
+      if (!select.querySelector('option[value="missing-identity"]')) {
+        const option = document.createElement('option');
+        option.value = 'missing-identity';
+        option.textContent = 'Missing Genre Identity';
+        const notes = select.querySelector('option[value="notes"]');
+        select.insertBefore(option, notes || null);
+      }
+      const option = select.querySelector('option[value="missing-identity"]');
+      if (option) option.textContent = 'Missing Genre Identity';
+    }
+
     function renderHistory() {
+      ensureArchiveIdentityFilterOption();
       const monthEl = document.getElementById('historyMonthFilter');
       const ratingEl = document.getElementById('historyRatingFilter');
       const searchEl = document.getElementById('archiveSearchInput') || document.getElementById('historyCategoryFilter');
@@ -6073,6 +6162,7 @@ async function loadData() {
     const historyRatingFilter = document.getElementById('historyRatingFilter');
     const archiveSearchInput = document.getElementById('archiveSearchInput');
     const archiveFlagFilter = document.getElementById('archiveFlagFilter');
+    ensureArchiveIdentityFilterOption();
     const archiveSortFilter = document.getElementById('archiveSortFilter');
     const archiveCopyBtn = document.getElementById('archiveCopyBtn');
     const archivePlaylistToggleVisibleBtn = document.getElementById('archivePlaylistToggleVisibleBtn');
