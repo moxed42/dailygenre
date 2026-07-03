@@ -368,6 +368,7 @@
 
   function identityLooseText(value) {
     return String(value || "")
+      .normalize("NFKC")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
@@ -1276,19 +1277,27 @@
   }
 
 
-  function injectDetailIdentityImport(genre = null) {
+  function injectDetailIdentityImport(genre = null, options = {}) {
     const g = genre || currentGenre();
     const panel = document.getElementById("listenEditPanel");
     if (!panel || !g) return;
+    const genreId = String(g.id ?? "");
     const existing = panel.querySelector("#detailGenreIdentityImport");
-    if (existing) existing.remove();
+    if (existing) {
+      const sameGenre = String(existing.dataset.genreId || "") === genreId;
+      const active = existing.contains(document.activeElement);
+      if (sameGenre && !options.force) return;
+      if (active && !options.force) return;
+      existing.remove();
+    }
     const section = document.createElement("div");
+    section.dataset.genreId = genreId;
     section.className = "form-section genre-identity-detail-import genre-identity-detail-block";
     section.id = "detailGenreIdentityImport";
     section.innerHTML = `
       <div class="eyebrow" style="margin:0 0 6px;">Genre Identity</div>
       <div class="genre-identity-form genre-identity-detail-form" data-genre-id="${esc(String(g.id ?? ""))}">
-        <textarea id="detailGenreIdentityBlock" rows="9" style="font-family: monospace; font-size: 0.86rem;" placeholder="GENRE: ${esc(g.genre || "Genre name")}&#10;&#10;ALIASES:&#10;known synonym&#10;&#10;SEMINAL_TRACK:&#10;ARTIST: Artist&#10;TITLE: Song&#10;SPOTIFY_URL: https://open.spotify.com/track/...&#10;REASON: Why this defines the genre&#10;&#10;MEDIA_TOUCHSTONE:&#10;ARTIST: Artist&#10;TITLE: Song&#10;MEDIA_TITLE: Movie / game / show&#10;MEDIA_TYPE: film&#10;REASON: Why this matters">${esc(identityBlockFromGenre(g))}</textarea>
+        <textarea id="detailGenreIdentityBlock" rows="11" spellcheck="false" data-dg-identity-textarea="1" style="font-family: monospace; font-size: 0.86rem; width:100%; max-width:none;" placeholder="GENRE: ${esc(g.genre || "Genre name")}&#10;&#10;ALIASES:&#10;known synonym&#10;&#10;SEMINAL_TRACK:&#10;ARTIST: Artist&#10;TITLE: Song&#10;SPOTIFY_URL: https://open.spotify.com/track/...&#10;REASON: Why this defines the genre&#10;&#10;MEDIA_TOUCHSTONE:&#10;ARTIST: Artist&#10;TITLE: Song&#10;MEDIA_TITLE: Movie / game / show&#10;MEDIA_TYPE: film&#10;REASON: Why this matters">${esc(identityBlockFromGenre(g))}</textarea>
         <div class="genre-identity-actions genre-identity-full" style="margin-top:10px;">
           <button type="button" class="btn btn-primary btn-tiny" id="detailGenreIdentityApplyBtn">Apply &amp; Save Genre Identity</button>
           <button type="button" class="btn btn-secondary btn-tiny" id="detailGenreIdentityOverwriteBtn">Overwrite Identity</button>
@@ -1297,6 +1306,13 @@
     const songBulk = document.getElementById("songsListenedBulk")?.closest("div");
     if (songBulk && songBulk.parentNode === panel) songBulk.insertAdjacentElement("afterend", section);
     else panel.appendChild(section);
+
+    const identityTextarea = section.querySelector("#detailGenreIdentityBlock");
+    if (identityTextarea) {
+      ["click", "mousedown", "mouseup", "keydown", "keyup", "input", "paste", "focus"].forEach((type) => {
+        identityTextarea.addEventListener(type, (event) => event.stopPropagation());
+      });
+    }
 
     const saveBlock = async (overwrite = false) => {
       const target = currentGenre() || g;
@@ -1311,7 +1327,7 @@
       }
       const ok = await importStructuredIdentityBlock(text, { overwrite, genreFallback: target.genre || target.name || "" });
       if (ok !== false) {
-        setTimeout(() => injectDetailIdentityImport(target), 120);
+        setTimeout(() => injectDetailIdentityImport(target, { force: true }), 120);
       }
     };
     section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => saveBlock(false));

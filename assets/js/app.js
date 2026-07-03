@@ -2554,9 +2554,9 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const text = String(value || '').trim();
       if (!text) return '';
       const patterns = [
-        /^(.*?)(\s+(?:-|–|—)\s*(?:remaster(?:ed)?|\d{4}\s+remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live|demo|bonus track|explicit|clean|edit|version)\b.*)$/i,
-        /^(.*?)(\s*\((?:[^)]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live|demo|bonus track|explicit|clean|edit|version)[^)]*)\)\s*)$/i,
-        /^(.*?)(\s*\[(?:[^\]]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live|demo|bonus track|explicit|clean|edit|version)[^\]]*)\]\s*)$/i,
+        /^(.*?)(\s+(?:-|–|—)\s*(?:remaster(?:ed)?|\d{4}\s+remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+)\b.*)$/i,
+        /^(.*?)(\s*\((?:[^)]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+)[^)]*)\)\s*)$/i,
+        /^(.*?)(\s*\[(?:[^\]]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+)[^\]]*)\]\s*)$/i,
       ];
       for (const re of patterns) {
         const match = text.match(re);
@@ -3657,25 +3657,789 @@ function blockSaveIfDuplicateGenres() {
 
     function reviewQueuedPendingRowHtml(row) {
       const source = row.sourceName || 'Unknown source';
-      const fitLine = row.fit !== '' && row.fit != null ? `<span class="review-chip">source fit ${escapeHtml(String(row.fit))}/5</span>` : '';
+      const originFit = row.fit !== '' && row.fit != null ? Number(row.fit) : null;
+      const nominatedFit = row.song?.nominatedFit != null ? Number(row.song.nominatedFit) : null;
+      const fitLine = originFit != null && Number.isFinite(originFit) ? `<span class="review-chip">source fit ${escapeHtml(String(originFit))}/5</span>` : '';
+      const hereFitLine = nominatedFit != null && Number.isFinite(nominatedFit) && nominatedFit >= 4 ? `<span class="review-chip review-chip-good">ready ${escapeHtml(String(nominatedFit))}/5</span>` : '';
       const addedLine = row.added ? `<span class="review-chip">added ${escapeHtml(String(row.added))}</span>` : '';
       const searchText = [row.song.artist, row.song.title, row.targetGenre.genre, source, row.song.url].join(' ').toLowerCase();
-      return `<div class="review-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
-        <div>
+      const copyTitle = String(row.song?.title || row.song?.name || row.song?.url || 'Untitled track').trim();
+      const copyArtist = String(row.song?.artist || '').trim();
+      const copyGenre = String(row.targetGenre?.genre || 'Unknown genre').trim();
+      const copyLine = `* ${copyArtist ? `${copyArtist} - ` : ''}${copyTitle}: ${copyGenre}`;
+      const targetArg = visualActionArg(row.targetGenre.id);
+      const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+      const idx = Number(row.index) || 0;
+      const rowId = pendingReviewRowId(row.targetGenre.id, row.key || songIdentity(row.song) || '');
+      const genreInputId = `${rowId}-genre`;
+      const fitInputId = `${rowId}-fit`;
+      const currentFit = nominatedFit === 4 || nominatedFit === 5 ? nominatedFit : '';
+      const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong ${currentFit === n ? 'active' : ''}" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
+      const suggested = row.targetGenre.genre || 'Unknown genre';
+      return `<div class="review-row review-pending-action-row review-pending-route-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}" data-pending-target-id="${escapeHtml(String(row.targetGenre.id || ''))}" data-pending-target-name="${escapeHtml(String(row.targetGenre.genre || ''))}" data-pending-source="${escapeHtml(String(source || ''))}" data-pending-artist="${escapeHtml(String(row.song.artist || ''))}" data-pending-title="${escapeHtml(String(row.song.title || row.song.name || ''))}" data-pending-url="${escapeHtml(String(row.song.url || row.song.spotifyUrl || ''))}" data-pending-key="${escapeHtml(String(row.key || songIdentity(row.song) || ''))}">
+        <div class="review-pending-main">
           <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
           <div class="review-meta">
-            <span class="review-chip">queued in ${escapeHtml(row.targetGenre.genre || 'Unknown genre')}</span>
+            <span class="review-chip review-chip-good">suggested: ${escapeHtml(suggested)}</span>
             <span class="review-chip">from ${escapeHtml(source)}</span>
             ${fitLine}
+            ${hereFitLine}
             ${addedLine}
           </div>
+          <p class="studio-pending-route-copy">Pick the best matching genre, choose fit 4/5 for a new genre, or choose the source genre to return it there.</p>
         </div>
-        <div class="review-move">
-          <button type="button" class="btn btn-secondary" onclick="openGenreByIdEncoded('${visualActionArg(row.targetGenre.id)}', false)">Open Target</button>
-          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}
+        <div class="review-move review-pending-actions review-pending-route-actions">
+          <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
+          <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value="${escapeHtml(String(currentFit))}"></div>
+          <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendReviewPendingAsAdd('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
+          <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Remove this stuck/incorrect nomination from the pending queue" onclick="dismissReviewPendingFromDesk('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
+          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
         </div>
       </div>`;
     }
+
+    function pendingTagToGenreLabel(tag) {
+      return String(tag || '')
+        .replace(/^@+/, '')
+        .replace(/[_-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/\b\w/g, ch => ch.toUpperCase());
+    }
+
+    function reviewManualPendingRowHtml(row) {
+      const source = row.sourceGenre?.genre || 'Unknown source';
+      const sourceFit = row.song?.score != null && row.song?.score !== '' ? Number(row.song.score) : null;
+      const fitLine = sourceFit != null && Number.isFinite(sourceFit) ? `<span class="review-chip">source fit ${escapeHtml(String(sourceFit))}/5</span>` : '';
+      const suggested = pendingTagToGenreLabel(row.tag || row.song?._pendingGenreTag || '');
+      const searchText = [row.song?.artist, row.song?.title, row.sourceGenre?.genre, row.tag, suggested, row.song?.url].join(' ').toLowerCase();
+      const copyTitle = String(row.song?.title || row.song?.name || row.song?.url || 'Untitled track').trim();
+      const copyArtist = String(row.song?.artist || '').trim();
+      const copyGenre = suggested || 'Choose genre';
+      const copyLine = `* ${copyArtist ? `${copyArtist} - ` : ''}${copyTitle}: ${copyGenre}`;
+      const sourceArg = visualActionArg(row.sourceGenre?.id || '');
+      const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+      const rowId = pendingReviewRowId(row.sourceGenre?.id || 'manual', row.key || songIdentity(row.song) || '');
+      const genreInputId = `${rowId}-manual-genre`;
+      const fitInputId = `${rowId}-manual-fit`;
+      const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
+      return `<div class="review-row review-pending-action-row review-pending-route-row review-pending-manual-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}" data-pending-kind="manual-tag" data-pending-source-id="${escapeHtml(String(row.sourceGenre?.id || ''))}" data-pending-source="${escapeHtml(String(source || ''))}" data-pending-artist="${escapeHtml(String(row.song?.artist || ''))}" data-pending-title="${escapeHtml(String(row.song?.title || row.song?.name || ''))}" data-pending-url="${escapeHtml(String(row.song?.url || row.song?.spotifyUrl || ''))}" data-pending-key="${escapeHtml(String(row.key || songIdentity(row.song) || ''))}">
+        <div class="review-pending-main">
+          <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
+          <div class="review-meta">
+            <span class="review-chip review-chip-good">suggested: ${escapeHtml(suggested || 'Choose genre')}</span>
+            <span class="review-chip">from ${escapeHtml(source)}</span>
+            ${fitLine}
+          </div>
+          <p class="studio-pending-route-copy">Pick the best matching genre, choose fit 4/5 for a new genre, or choose the source genre to keep it there.</p>
+        </div>
+        <div class="review-move review-pending-actions review-pending-route-actions">
+          <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
+          <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value=""></div>
+          <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendManualPendingTagAsAdd('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
+          <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Clear this unresolved pending tag" onclick="dismissManualPendingTag('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
+          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
+        </div>
+      </div>`;
+    }
+
+
+    function setReviewPendingInlineFit(inputId, value, button) {
+      const input = document.getElementById(inputId);
+      if (input) input.value = String(value);
+      const wrap = button?.closest?.('.review-pending-fitline');
+      if (wrap) {
+        wrap.querySelectorAll('.pending-fit-btn').forEach(btn => btn.classList.toggle('active', btn === button));
+      }
+    }
+
+    function reviewPendingContextFromRow(row) {
+      if (!row) return {};
+      return {
+        targetId: row.dataset.pendingTargetId || '',
+        targetName: row.dataset.pendingTargetName || '',
+        sourceName: row.dataset.pendingSource || '',
+        artist: row.dataset.pendingArtist || '',
+        title: row.dataset.pendingTitle || '',
+        url: row.dataset.pendingUrl || '',
+        key: row.dataset.pendingKey || ''
+      };
+    }
+
+    function normalizedPendingSongTitle(songOrText) {
+      const raw = typeof songOrText === 'string' ? songOrText : (songOrText?.title || songOrText?.name || '');
+      return normalizePendingTag(raw)
+        .replace(/\b(?:remaster(?:ed)?|mono|stereo|single version|single edit|radio edit|edit|version)\b/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function normalizedPendingSongArtist(songOrText) {
+      const raw = typeof songOrText === 'string' ? songOrText : (songOrText?.artist || '');
+      return normalizePendingTag(raw);
+    }
+
+    function pendingFieldLooksSame(a, b) {
+      const left = normalizePendingTag(a || '');
+      const right = normalizePendingTag(b || '');
+      if (!left || !right) return false;
+      return left === right || left.includes(right) || right.includes(left);
+    }
+
+    function pendingSongMatchesReviewContext(candidate, context = {}) {
+      if (!candidate) return false;
+      const wantedKeys = [context.decodedKey, context.key].filter(Boolean).map(key => String(key).trim().toLowerCase());
+      const candidateKeys = songIdentityKeys(candidate);
+      const candidateKey = songIdentity(candidate);
+      if (wantedKeys.some(key => key && (candidateKey === key || candidateKeys.includes(key)))) return true;
+
+      const wantedUrl = normalizeSongUrl(context.url || '').trim().toLowerCase();
+      const candidateUrl = normalizeSongUrl(candidate.url || candidate.spotifyUrl || '').trim().toLowerCase();
+      if (wantedUrl && candidateUrl && wantedUrl === candidateUrl) return true;
+
+      const wantedTitle = normalizedPendingSongTitle(context.title || '');
+      const candidateTitle = normalizedPendingSongTitle(candidate);
+      const wantedArtist = normalizedPendingSongArtist(context.artist || '');
+      const candidateArtist = normalizedPendingSongArtist(candidate);
+      const wantedSource = normalizePendingTag(context.sourceName || '');
+      const candidateSource = normalizePendingTag(candidate.pendingFrom || candidate.source || '');
+
+      const titleMatches = wantedTitle && candidateTitle && (candidateTitle === wantedTitle || candidateTitle.includes(wantedTitle) || wantedTitle.includes(candidateTitle));
+      const artistMatches = !wantedArtist || !candidateArtist || candidateArtist === wantedArtist || candidateArtist.includes(wantedArtist) || wantedArtist.includes(candidateArtist);
+      const sourceMatches = !wantedSource || !candidateSource || candidateSource === wantedSource;
+      return !!(titleMatches && artistMatches && sourceMatches);
+    }
+
+    function findReviewPendingNominationInTarget(target, pendingIndex, decodedKey, context = {}) {
+      if (!target) return null;
+      const pending = normalizePendingSongs(target.pending_songs || []);
+      let index = Number(pendingIndex);
+      let song = Number.isInteger(index) && index >= 0 ? pending[index] : null;
+      const rowContext = { ...context, decodedKey };
+      if (song && pendingSongMatchesReviewContext(song, rowContext)) {
+        target.pending_songs = pending;
+        return { target, pending, song, index };
+      }
+      if (decodedKey) {
+        index = pending.findIndex(candidate => songIdentity(candidate) === decodedKey || songIdentityKeys(candidate).includes(decodedKey));
+        if (index >= 0) {
+          target.pending_songs = pending;
+          return { target, pending, song: pending[index], index };
+        }
+      }
+      index = pending.findIndex(candidate => pendingSongMatchesReviewContext(candidate, rowContext));
+      if (index >= 0) {
+        target.pending_songs = pending;
+        return { target, pending, song: pending[index], index };
+      }
+      return null;
+    }
+
+    function findReviewPendingNomination(targetId, pendingIndex, encodedKey = '', context = {}) {
+      let decodedKey = '';
+      try {
+        decodedKey = decodeURIComponent(String(encodedKey || ''));
+      } catch (error) {
+        decodedKey = String(encodedKey || '');
+      }
+      const mergedContext = { ...context, decodedKey, key: context.key || decodedKey };
+      const target = (genres || []).find(g => String(g?.id) === String(targetId));
+      const foundInTarget = findReviewPendingNominationInTarget(target, pendingIndex, decodedKey, mergedContext);
+      if (foundInTarget) return foundInTarget;
+
+      const hintedTargetName = mergedContext.targetName || '';
+      const hintedTarget = hintedTargetName
+        ? (genres || []).find(g => normalizePendingTag(g?.genre || '') === normalizePendingTag(hintedTargetName))
+        : null;
+      if (hintedTarget && (!target || String(hintedTarget.id) !== String(target.id))) {
+        const foundHinted = findReviewPendingNominationInTarget(hintedTarget, pendingIndex, decodedKey, mergedContext);
+        if (foundHinted) return foundHinted;
+      }
+
+      for (const genre of (genres || [])) {
+        if (!genre || String(genre.id) === String(target?.id || '') || String(genre.id) === String(hintedTarget?.id || '')) continue;
+        const found = findReviewPendingNominationInTarget(genre, -1, decodedKey, mergedContext);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function officialSongFromPending(song, targetGenre, mode = 'canon') {
+      const out = { ...(song || {}) };
+      const targetFit = out.nominatedFit != null ? Number(out.nominatedFit) : null;
+      const sourceFit = out.originFit != null ? Number(out.originFit) : (out.score != null ? Number(out.score) : null);
+      out.url = normalizeSongUrl(out.url || out.spotifyUrl || '');
+      out.score = Number.isFinite(targetFit) ? targetFit : (Number.isFinite(sourceFit) ? sourceFit : null);
+      out.promotedFrom = out.pendingFrom || out.source || '';
+      out.promotedFromFit = Number.isFinite(sourceFit) ? sourceFit : null;
+      out.promotedTo = targetGenre?.genre || '';
+      out.reviewedAt = new Date().toISOString();
+      delete out.isPending;
+      delete out.pendingFrom;
+      delete out.originFit;
+      delete out.nominatedFit;
+      delete out.levelUp;
+      out.isLevelUp = false;
+      out.isAdd = mode === 'add';
+      return out;
+    }
+
+    function stageReviewPendingChange(message) {
+      libraryUpdatesPending = true;
+      setUnsavedState(true);
+      toggleLibrarySaveButton(true);
+      const restore = preserveScrollSnapshot();
+      renderReview();
+      restore();
+      showSaveToast(`${message} Save Library Updates to persist.`, false);
+    }
+
+    function setReviewPendingFit(targetId, pendingIndex, encodedKey, value) {
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
+        return;
+      }
+      found.song.nominatedFit = Number(value);
+      found.target.pending_songs = found.pending;
+      stageReviewPendingChange(`Target fit set to ${value}/5.`);
+    }
+
+    function resolveReviewPendingNomination(targetId, pendingIndex, encodedKey, mode = 'canon') {
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
+        return;
+      }
+      const label = [found.song.artist, found.song.title].filter(Boolean).join(' — ') || found.song.title || found.song.url || 'This song';
+      if (mode === 'dismiss') {
+        if (!window.confirm(`Dismiss pending nomination for ${label}?`)) return;
+        found.pending.splice(found.index, 1);
+        found.target.pending_songs = found.pending;
+        stageReviewPendingChange('Pending nomination dismissed.');
+        return;
+      }
+
+      found.target.songs_listened = inflateSongsFromStorage(found.target.songs_listened || []).filter(song => !song.isPending);
+      const official = officialSongFromPending(found.song, found.target, mode);
+      const key = songIdentity(official);
+      const already = key ? found.target.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
+      if (!already) found.target.songs_listened.push(official);
+      found.pending.splice(found.index, 1);
+      found.target.pending_songs = found.pending;
+      const action = mode === 'add' ? 'Accepted as ADD.' : 'Accepted as target song.';
+      stageReviewPendingChange(already ? 'Song was already logged; pending nomination removed.' : action);
+    }
+
+    function findGenreByNameLoose(name) {
+      const needle = normalizePendingTag(name || '');
+      if (!needle) return null;
+      return (genres || []).find(g => normalizePendingTag(g?.genre || '') === needle) ||
+        (genres || []).find(g => normalizePendingTag(g?.genre || '').includes(needle) || needle.includes(normalizePendingTag(g?.genre || ''))) ||
+        null;
+    }
+
+    function routeGenreSlug(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 64) || 'genre';
+    }
+
+    function nextGenreNumericId() {
+      const max = (genres || []).reduce((highest, genre) => {
+        const id = Number(genre?.id);
+        return Number.isFinite(id) ? Math.max(highest, id) : highest;
+      }, -1);
+      return max + 1;
+    }
+
+    function buildRoutedGenreScaffold(name, sourceGenre = null) {
+      const cleanName = String(name || '').trim().replace(/^@+/, '');
+      const now = new Date().toISOString();
+      const sourcePath = sourceGenre ? categoryLine(sourceGenre) : '';
+      const parts = sourcePath.split('>').map(part => part.trim()).filter(Boolean);
+      const row = {
+        id: nextGenreNumericId(),
+        genre: cleanName,
+        status: 'unlistened',
+        rating: '',
+        notes: '',
+        summary: '',
+        key_artists: [],
+        suggested_songs: [],
+        songs_listened: [],
+        pending_songs: [],
+        createdFromRoutingDesk: true,
+        createdFromRoutingDeskAt: now
+      };
+      if (parts[0]) row.category = parts[0];
+      if (parts[1]) row.subcategory = parts[1];
+      if (parts.length) row.category_path = parts.slice(0, 2).join(' > ');
+      if (sourceGenre?.genre) row.createdFromSourceGenre = sourceGenre.genre;
+      row.slug = routeGenreSlug(cleanName);
+      return row;
+    }
+
+    function ensureRoutingDestinationGenre(inputValue, options = {}) {
+      const raw = String(inputValue || '').trim().replace(/^@+/, '');
+      if (!raw) return { target: null, error: 'Choose a destination genre first.', created: false };
+      const resolved = resolveReviewMoveGenre(raw, options.currentTargetId || '');
+      if (resolved.target) return { ...resolved, created: false };
+      if (!options.allowCreate) return { ...resolved, created: false };
+      if (raw.length < 2) return { target: null, error: 'Type a clearer genre name first.', created: false };
+      const unsafe = /https?:|spotify:|youtube|[\\/]/i.test(raw) || /[\t\n]/.test(raw);
+      if (unsafe) return { target: null, error: `Could not use “${raw}” as a genre name.`, created: false };
+      const existing = findGenreByNameLoose(raw);
+      if (existing) return { target: existing, error: '', created: false };
+      const scaffold = buildRoutedGenreScaffold(raw, options.sourceGenre || null);
+      genres.push(scaffold);
+      return { target: scaffold, error: '', created: true };
+    }
+
+    function updateSourceGenreSongFromPending(sourceGenre, pendingSong, score) {
+      if (!sourceGenre || !pendingSong) return false;
+      const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
+      const pendingKeys = songIdentityKeys(pendingSong);
+      const pendingKey = songIdentity(pendingSong);
+      let matchIndex = sourceSongs.findIndex(song => {
+        const keys = songIdentityKeys(song);
+        return (pendingKey && keys.includes(pendingKey)) || pendingKeys.some(key => key && keys.includes(key));
+      });
+      if (matchIndex < 0) {
+        const artist = normalizePendingTag(pendingSong.artist || '');
+        const title = normalizePendingTag(pendingSong.title || pendingSong.name || '');
+        matchIndex = sourceSongs.findIndex(song =>
+          normalizePendingTag(song.artist || '') === artist &&
+          normalizePendingTag(song.title || song.name || '') === title
+        );
+      }
+      if (matchIndex >= 0) {
+        sourceSongs[matchIndex] = {
+          ...sourceSongs[matchIndex],
+          score,
+          pendingReevaluatedAt: new Date().toISOString()
+        };
+      } else {
+        const restored = officialSongFromPending({ ...pendingSong, nominatedFit: score }, sourceGenre, 'canon');
+        restored.score = score;
+        restored.isAdd = false;
+        restored.returnedFromPendingReview = true;
+        restored.reviewedAt = new Date().toISOString();
+        sourceSongs.push(restored);
+      }
+      sourceGenre.songs_listened = sourceSongs;
+      return true;
+    }
+
+
+    function reviewPendingSameNomination(candidate, reference, context = {}) {
+      if (!candidate || !reference) return false;
+      const candidateKeys = typeof songIdentityKeys === 'function' ? songIdentityKeys(candidate) : [];
+      const referenceKeys = typeof songIdentityKeys === 'function' ? songIdentityKeys(reference) : [];
+      if (candidateKeys.some(key => key && referenceKeys.includes(key))) return true;
+
+      const cTitle = normalizePendingTag(candidate.title || candidate.name || '');
+      const rTitle = normalizePendingTag(reference.title || reference.name || context.title || '');
+      if (!cTitle || !rTitle || cTitle !== rTitle) return false;
+
+      const cArtist = normalizePendingTag(candidate.artist || '');
+      const rArtist = normalizePendingTag(reference.artist || context.artist || '');
+      const artistCompatible = !cArtist || !rArtist || cArtist === rArtist || cArtist.includes(rArtist) || rArtist.includes(cArtist);
+      if (!artistCompatible) return false;
+
+      const cSource = normalizePendingTag(candidate.pendingFrom || candidate.source || '');
+      const rSource = normalizePendingTag(reference.pendingFrom || reference.source || context.source || context.sourceName || '');
+      const sourceCompatible = context.looseSource || !cSource || !rSource || cSource === rSource;
+      if (!sourceCompatible) return false;
+
+      return true;
+    }
+
+    function removeMatchingPendingNominations(referenceSong, context = {}) {
+      if (!referenceSong) return { removed: 0, genresTouched: 0 };
+      let removed = 0;
+      let genresTouched = 0;
+      (genres || []).forEach(genre => {
+        const pending = normalizePendingSongs(genre.pending_songs || []);
+        if (!pending.length) return;
+        const kept = [];
+        pending.forEach(candidate => {
+          if (reviewPendingSameNomination(candidate, referenceSong, context)) {
+            removed += 1;
+          } else {
+            kept.push(candidate);
+          }
+        });
+        if (kept.length !== pending.length) {
+          genre.pending_songs = kept;
+          genresTouched += 1;
+        }
+      });
+      return { removed, genresTouched };
+    }
+
+    function clearManualPendingTagsForSong(referenceSong, context = {}) {
+      if (!referenceSong) return 0;
+      let cleared = 0;
+      (genres || []).forEach(genre => {
+        const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending);
+        let changed = false;
+        songs.forEach((song, index) => {
+          if (!song?._pendingGenreTag) return;
+          if (!reviewPendingSameNomination(song, referenceSong, context)) return;
+          songs[index] = {
+            ...song,
+            _pendingGenreTag: '',
+            pendingTagDismissedAt: new Date().toISOString()
+          };
+          changed = true;
+          cleared += 1;
+        });
+        if (changed) genre.songs_listened = songs;
+      });
+      return cleared;
+    }
+
+    function sendReviewPendingAsAdd(targetId, pendingIndex, encodedKey, genreInputId, fitInputId) {
+      const input = document.getElementById(genreInputId);
+      const fitInput = document.getElementById(fitInputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Use Dismiss to remove the stuck row, or refresh Studio and try again.', true);
+        return;
+      }
+      const typedGenre = String(input?.value || found.target.genre || '').trim();
+
+      const sourceName = found.song?.pendingFrom || found.song?.source || '';
+      const sourceGenre = findGenreByNameLoose(sourceName);
+      const ensured = ensureRoutingDestinationGenre(typedGenre, {
+        allowCreate: true,
+        sourceGenre,
+        currentTargetId: found.target?.id || ''
+      });
+      const destination = ensured.target;
+      const error = ensured.error;
+      if (!destination) {
+        showSaveToast(error || 'Choose the best matching genre first.', true);
+        input?.focus?.();
+        return;
+      }
+      const returningToSource = sourceGenre && String(destination.id) === String(sourceGenre.id);
+      const sourceFit = Number(found.song?.originFit ?? found.song?.nominatedFit ?? found.song?.score ?? '');
+      const requestedFit = Number(fitInput?.value || found.song?.nominatedFit || '');
+
+      if (!returningToSource && ![4, 5].includes(requestedFit)) {
+        showSaveToast('Choose fit 4 or 5 before sending.', true);
+        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
+        fitWrap?.classList?.add?.('needs-attention');
+        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
+        return;
+      }
+
+      const sourceTarget = found.target;
+      sourceTarget.pending_songs = found.pending;
+      const pendingSong = found.song || {};
+
+      if (returningToSource) {
+        const returnFit = Number.isFinite(requestedFit) && requestedFit > 0
+          ? requestedFit
+          : (Number.isFinite(sourceFit) && sourceFit > 0 ? sourceFit : null);
+        if (!returnFit) {
+          showSaveToast('Could not determine the original source fit. Choose 4 or 5, or open the source genre to edit manually.', true);
+          return;
+        }
+        updateSourceGenreSongFromPending(sourceGenre, pendingSong, returnFit);
+        const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName, targetName: sourceTarget.genre }, pendingSong);
+        clearManualPendingTagsByReviewContext({ ...rowContext, sourceName }, pendingSong);
+        stageReviewPendingChange(`Returned to ${sourceGenre.genre} at ${returnFit}/5 and removed ${removedInfo.removed || 1} pending nomination${(removedInfo.removed || 1) === 1 ? '' : 's'}.`);
+        return;
+      }
+
+      pendingSong.nominatedFit = requestedFit;
+
+      destination.songs_listened = inflateSongsFromStorage(destination.songs_listened || []).filter(song => !song.isPending);
+      const official = officialSongFromPending(pendingSong, destination, 'add');
+      official.score = requestedFit;
+      official.isAdd = true;
+      official.routedFromPendingGenre = sourceTarget.genre || '';
+      official.routedAt = new Date().toISOString();
+
+      const key = songIdentity(official);
+      const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
+      if (!already) destination.songs_listened.push(official);
+
+      const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName, targetName: sourceTarget.genre, destination: destination.genre }, pendingSong);
+      clearManualPendingTagsByReviewContext({ ...rowContext, sourceName }, pendingSong);
+
+      const action = already
+        ? `Already logged in ${destination.genre}; removed ${removedInfo.removed || 1} pending nomination${(removedInfo.removed || 1) === 1 ? '' : 's'}.`
+        : `${ensured.created ? `Created ${destination.genre} and sent` : 'Sent'} as ADD (${requestedFit}/5).`;
+      stageReviewPendingChange(action);
+    }
+
+    function reviewPendingReferenceFromContext(context = {}, fallback = {}) {
+      return {
+        ...(fallback || {}),
+        title: context.title || fallback.title || fallback.name || '',
+        name: context.title || fallback.name || fallback.title || '',
+        artist: context.artist || fallback.artist || '',
+        url: context.url || fallback.url || fallback.spotifyUrl || '',
+        spotifyUrl: context.url || fallback.spotifyUrl || fallback.url || '',
+        pendingFrom: context.sourceName || context.source || fallback.pendingFrom || fallback.source || '',
+        source: context.sourceName || context.source || fallback.source || fallback.pendingFrom || ''
+      };
+    }
+
+    function removeMatchingPendingByReviewContext(context = {}, fallbackSong = null) {
+      const reference = reviewPendingReferenceFromContext(context, fallbackSong || {});
+      let removed = 0;
+      let genresTouched = 0;
+      (genres || []).forEach(genre => {
+        const pending = normalizePendingSongs(genre.pending_songs || []);
+        if (!pending.length) return;
+        const kept = [];
+        pending.forEach(candidate => {
+          const matchByRow = pendingSongMatchesReviewContext(candidate, {
+            ...context,
+            sourceName: context.sourceName || context.source || context.pendingFrom || '',
+            key: context.key || '',
+            decodedKey: context.key || ''
+          });
+          const matchByReference = reviewPendingSameNomination(candidate, reference, { ...context, looseSource: true });
+          if (matchByRow || matchByReference) removed += 1;
+          else kept.push(candidate);
+        });
+        if (kept.length !== pending.length) {
+          genre.pending_songs = kept;
+          genresTouched += 1;
+        }
+      });
+      return { removed, genresTouched, reference };
+    }
+
+    function clearManualPendingTagsByReviewContext(context = {}, fallbackSong = null) {
+      const reference = reviewPendingReferenceFromContext(context, fallbackSong || {});
+      let cleared = 0;
+      (genres || []).forEach(genre => {
+        const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending);
+        let changed = false;
+        songs.forEach((song, index) => {
+          if (!song?._pendingGenreTag) return;
+          const matchByRow = pendingSongMatchesReviewContext(song, {
+            ...context,
+            sourceName: context.sourceName || context.source || genre.genre || '',
+            key: context.key || '',
+            decodedKey: context.key || ''
+          });
+          const matchByReference = reviewPendingSameNomination(song, reference, { ...context, looseSource: true });
+          if (!matchByRow && !matchByReference) return;
+          songs[index] = {
+            ...song,
+            _pendingGenreTag: '',
+            pendingTagDismissedAt: new Date().toISOString()
+          };
+          changed = true;
+          cleared += 1;
+        });
+        if (changed) genre.songs_listened = songs;
+      });
+      return cleared;
+    }
+
+    function dismissReviewPendingFromDesk(targetId, pendingIndex, encodedKey, genreInputId) {
+      const input = document.getElementById(genreInputId);
+      const row = input?.closest?.('[data-review-pending-row]');
+      const rowContext = reviewPendingContextFromRow(row);
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
+      const fallbackSong = found?.song || null;
+      const context = {
+        ...rowContext,
+        sourceName: found?.song?.pendingFrom || found?.song?.source || rowContext.sourceName || rowContext.source || '',
+        targetName: found?.target?.genre || rowContext.targetName || ''
+      };
+      const label = [context.artist || fallbackSong?.artist, context.title || fallbackSong?.title || fallbackSong?.name].filter(Boolean).join(' — ') || fallbackSong?.url || 'this pending nomination';
+      if (!window.confirm(`Dismiss ${label} from pending nominations?`)) return;
+
+      const removedInfo = removeMatchingPendingByReviewContext(context, fallbackSong);
+      const cleared = clearManualPendingTagsByReviewContext(context, fallbackSong);
+
+      if (!removedInfo.removed && !cleared && found) {
+        found.pending.splice(found.index, 1);
+        found.target.pending_songs = found.pending;
+        removedInfo.removed = 1;
+      }
+
+      if (!removedInfo.removed && !cleared) {
+        showSaveToast('Could not find any matching pending rows to dismiss. Try searching the exact title, then dismiss again.', true);
+        return;
+      }
+
+      stageReviewPendingChange(`Pending nomination dismissed${removedInfo.removed > 1 ? ` (${removedInfo.removed} queued rows removed)` : ''}${cleared ? `; ${cleared} source tag${cleared === 1 ? '' : 's'} cleared` : ''}.`);
+    }
+
+    function moveReviewPendingNomination(targetId, pendingIndex, encodedKey, inputId) {
+      const input = document.getElementById(inputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
+        return;
+      }
+      const { target: destination, error } = resolveReviewMoveGenre(input?.value || '', found.target.id);
+      if (!destination) {
+        showSaveToast(error || 'Choose a destination genre first.', true);
+        input?.focus?.();
+        return;
+      }
+      const destinationPending = normalizePendingSongs(destination.pending_songs || []);
+      const key = songIdentity(found.song);
+      const sourceName = found.song.pendingFrom || found.song.source || '';
+      const alreadyQueued = destinationPending.some(candidate => {
+        const sameSong = key && (songIdentity(candidate) === key || songIdentityKeys(candidate).includes(key));
+        const sameSource = !sourceName || normalizePendingTag(candidate.pendingFrom || candidate.source || '') === normalizePendingTag(sourceName);
+        return sameSong && sameSource;
+      });
+      if (!alreadyQueued) {
+        const moved = { ...(found.song || {}) };
+        moved.movedFromPendingGenre = found.target.genre || '';
+        moved.movedAt = new Date().toISOString();
+        destinationPending.push(moved);
+        destination.pending_songs = destinationPending;
+      }
+      found.pending.splice(found.index, 1);
+      found.target.pending_songs = found.pending;
+      if (input) input.value = '';
+      stageReviewPendingChange(
+        alreadyQueued
+          ? `Already queued in ${destination.genre}; removed duplicate pending nomination here.`
+          : `Sent pending nomination to ${destination.genre}.`
+      );
+    }
+
+    function findManualPendingSourceSong(sourceId, encodedKey = '', context = {}) {
+      let decodedKey = '';
+      try {
+        decodedKey = decodeURIComponent(String(encodedKey || ''));
+      } catch (error) {
+        decodedKey = String(encodedKey || '');
+      }
+      const sourceGenre = (genres || []).find(g => String(g?.id) === String(sourceId));
+      if (!sourceGenre) return null;
+      const songs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
+      let index = -1;
+      if (decodedKey) {
+        index = songs.findIndex(song => songIdentity(song) === decodedKey || songIdentityKeys(song).includes(decodedKey));
+      }
+      if (index < 0) {
+        const rowContext = { ...context, decodedKey, key: decodedKey };
+        index = songs.findIndex(song => pendingSongMatchesReviewContext(song, rowContext));
+      }
+      if (index < 0) return null;
+      sourceGenre.songs_listened = songs;
+      return { sourceGenre, songs, song: songs[index], index, decodedKey };
+    }
+
+    function sendManualPendingTagAsAdd(sourceId, encodedKey, genreInputId, fitInputId) {
+      const input = document.getElementById(genreInputId);
+      const fitInput = document.getElementById(fitInputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findManualPendingSourceSong(sourceId, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending source song. Refresh Studio and try again.', true);
+        return;
+      }
+      const typedGenre = String(input?.value || '').trim();
+      const ensured = ensureRoutingDestinationGenre(typedGenre, {
+        allowCreate: true,
+        sourceGenre: found.sourceGenre,
+        currentTargetId: found.sourceGenre?.id || ''
+      });
+      const destination = ensured.target;
+      const error = ensured.error;
+      if (!destination) {
+        showSaveToast(error || 'Choose the best matching genre first.', true);
+        input?.focus?.();
+        return;
+      }
+      const requestedFit = Number(fitInput?.value || '');
+      if (![4, 5].includes(requestedFit)) {
+        showSaveToast('Choose fit 4 or 5 before sending.', true);
+        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
+        fitWrap?.classList?.add?.('needs-attention');
+        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
+        return;
+      }
+
+      const sourceSong = found.song || {};
+      if (String(destination.id) === String(found.sourceGenre.id)) {
+        found.songs[found.index] = {
+          ...sourceSong,
+          score: requestedFit,
+          _pendingGenreTag: '',
+          pendingReevaluatedAt: new Date().toISOString()
+        };
+        found.sourceGenre.songs_listened = found.songs;
+        stageReviewPendingChange(`Kept in ${found.sourceGenre.genre} at ${requestedFit}/5 and cleared the pending tag.`);
+        return;
+      }
+
+      const pendingPayload = pendingReviewSongPayload(sourceSong);
+      pendingPayload.nominatedFit = requestedFit;
+      pendingPayload.originFit = sourceSong.score ?? pendingPayload.originFit ?? null;
+      pendingPayload.pendingFrom = found.sourceGenre.genre || '';
+
+      destination.songs_listened = inflateSongsFromStorage(destination.songs_listened || []).filter(song => !song.isPending);
+      const official = officialSongFromPending(pendingPayload, destination, 'add');
+      official.score = requestedFit;
+      official.isAdd = true;
+      official.routedFromPendingGenre = found.sourceGenre.genre || '';
+      official.routedAt = new Date().toISOString();
+      official.routedFromManualPendingTag = sourceSong._pendingGenreTag || '';
+
+      const key = songIdentity(official);
+      const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
+      if (!already) destination.songs_listened.push(official);
+
+      found.songs[found.index] = {
+        ...sourceSong,
+        _pendingGenreTag: '',
+        pendingRoutedTo: destination.genre || '',
+        pendingRoutedAt: new Date().toISOString()
+      };
+      found.sourceGenre.songs_listened = found.songs;
+      stageReviewPendingChange(
+        already
+          ? `Already logged in ${destination.genre}; cleared the pending tag from ${found.sourceGenre.genre}.`
+          : `${ensured.created ? `Created ${destination.genre} and sent` : `Sent to ${destination.genre}`} as ADD (${requestedFit}/5) and cleared the pending tag.`
+      );
+    }
+
+    function dismissManualPendingTag(sourceId, encodedKey, genreInputId) {
+      const input = document.getElementById(genreInputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findManualPendingSourceSong(sourceId, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending source song to dismiss. Refresh Studio and try again.', true);
+        return;
+      }
+      const label = [found.song.artist, found.song.title || found.song.name].filter(Boolean).join(' — ') || found.song.url || 'this pending tag';
+      if (!window.confirm(`Clear pending tag for ${label}?`)) return;
+      found.songs[found.index] = {
+        ...found.song,
+        _pendingGenreTag: '',
+        pendingTagDismissedAt: new Date().toISOString()
+      };
+      found.sourceGenre.songs_listened = found.songs;
+      const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName: found.sourceGenre?.genre || rowContext.sourceName || rowContext.source || '' }, found.song);
+      stageReviewPendingChange(`Pending tag dismissed${removedInfo.removed ? ` and ${removedInfo.removed} matching queued row${removedInfo.removed === 1 ? '' : 's'} removed` : ''}.`);
+    }
+
 
     function filterReviewPendingQueue(inputId) {
       const input = document.getElementById(inputId);
@@ -3690,6 +4454,25 @@ function blockSaveIfDuplicateGenres() {
       });
       const count = document.getElementById('reviewPendingVisibleCount');
       if (count) count.textContent = `${visible} shown`;
+    }
+
+    async function copyReviewPendingQueueFirst25() {
+      const rows = Array.from(document.querySelectorAll('#reviewPendingQueueCard [data-review-pending-row]:not(.is-hidden)')).slice(0, 25);
+      const lines = rows
+        .map(row => String(row.dataset.reviewPendingCopy || '').trim())
+        .filter(Boolean);
+      if (!lines.length) {
+        showSaveToast('No visible pending nominations to copy.', true);
+        return;
+      }
+      const text = lines.join('\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        showSaveToast(`Copied ${lines.length} pending nomination${lines.length === 1 ? '' : 's'}.`, false);
+      } catch (error) {
+        console.warn('Could not copy pending nominations', error);
+        showSaveToast('Could not copy pending nominations. Browser blocked clipboard access.', true);
+      }
     }
 
     function scrollToReviewPendingQueue() {
@@ -3708,6 +4491,89 @@ function blockSaveIfDuplicateGenres() {
         .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
         .map(g => `<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre || '')}</option>`)
         .join('');
+    }
+
+
+    function reviewGenreDatalistOptions() {
+      return (genres || [])
+        .filter(g => g && g.genre)
+        .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
+        .map(g => `<option value="${escapeHtml(g.genre || '')}" data-id="${escapeHtml(String(g.id))}"></option>`)
+        .join('');
+    }
+
+    function resolveReviewMoveGenre(inputValue, currentTargetId = '') {
+      const raw = String(inputValue || '').trim().replace(/^@+/, '');
+      if (!raw) return { target: null, error: 'Choose a destination genre first.' };
+      // Include the current target in lookup. In the unified routing desk, choosing
+      // the suggested/current target is a valid Send ADD action, not an error.
+      const pool = (genres || []).filter(g => g && g.genre);
+      const byId = pool.find(g => String(g?.id) === raw);
+      if (byId) return { target: byId, error: '' };
+
+      const normPending = normalizePendingTag(raw);
+      const normSearch = typeof normalizeGenreSearchText === 'function'
+        ? normalizeGenreSearchText(raw)
+        : normPending;
+      const compact = value => normalizePendingTag(value).replace(/\s+/g, '');
+      const rawCompact = compact(raw);
+      const namesForGenre = genre => {
+        const names = [genre?.genre || ''];
+        try {
+          if (typeof genreAliasListForSearch === 'function') names.push(...genreAliasListForSearch(genre));
+        } catch {}
+        return [...new Set(names.filter(Boolean))];
+      };
+
+      const exact = pool.filter(g => namesForGenre(g).some(name =>
+        normalizePendingTag(name) === normPending ||
+        (typeof normalizeGenreSearchText === 'function' && normalizeGenreSearchText(name) === normSearch) ||
+        compact(name) === rawCompact
+      ));
+      if (exact.length === 1) return { target: exact[0], error: '' };
+      if (exact.length > 1) return { target: null, error: 'That genre name is ambiguous. Type the exact genre name.' };
+
+      const scored = pool.map(g => {
+        let best = 0;
+        namesForGenre(g).forEach(name => {
+          const p = normalizePendingTag(name);
+          const q = typeof normalizeGenreSearchText === 'function' ? normalizeGenreSearchText(name) : p;
+          const c = compact(name);
+          if (p.startsWith(normPending) || normPending.startsWith(p)) best = Math.max(best, 82);
+          if (q.startsWith(normSearch) || normSearch.startsWith(q)) best = Math.max(best, 82);
+          if (p.includes(normPending) || normPending.includes(p)) best = Math.max(best, 70);
+          if (q.includes(normSearch) || normSearch.includes(q)) best = Math.max(best, 70);
+          if (c.includes(rawCompact) || rawCompact.includes(c)) best = Math.max(best, 66);
+          try {
+            if (Math.min(p.length, normPending.length) >= 5 && levenshtein(p, normPending) <= 2) best = Math.max(best, 60);
+          } catch {}
+        });
+        return { genre: g, score: best };
+      }).filter(item => item.score > 0).sort((a,b) => b.score - a.score || String(a.genre.genre || '').localeCompare(String(b.genre.genre || '')));
+
+      if (scored.length && scored[0].score >= 80 && (scored.length === 1 || scored[0].score > scored[1].score)) {
+        return { target: scored[0].genre, error: '' };
+      }
+      if (scored.length === 1 && scored[0].score >= 66) return { target: scored[0].genre, error: '' };
+      if (scored.length > 1 && scored[0].score >= 66) {
+        // If the typed value came from the datalist or is a clear prefix/completion,
+        // prefer the single shortest completion. This keeps routing fast for cases like
+        // Australian folk -> Australian folk-rock and Nightcore -> Nightcore-style labels.
+        const completionMatches = scored.filter(item => namesForGenre(item.genre).some(name => {
+          const n = normalizePendingTag(name);
+          const c = compact(name);
+          return n.startsWith(normPending) || normPending.startsWith(n) || c.startsWith(rawCompact) || rawCompact.startsWith(c);
+        })).sort((a,b) => String(a.genre.genre || '').length - String(b.genre.genre || '').length);
+        if (completionMatches.length === 1 && completionMatches[0].score >= 66) return { target: completionMatches[0].genre, error: '' };
+        if (completionMatches.length > 1 && completionMatches[0].score >= 66) {
+          const firstName = normalizePendingTag(completionMatches[0].genre.genre || '');
+          const secondName = normalizePendingTag(completionMatches[1].genre.genre || '');
+          if (firstName !== secondName && firstName.length + 5 <= secondName.length) return { target: completionMatches[0].genre, error: '' };
+        }
+        if (scored[0].score >= 80 && scored[0].score - scored[1].score >= 8) return { target: scored[0].genre, error: '' };
+        return { target: null, error: `Multiple genres match “${raw}”. Try ${scored.slice(0, 3).map(item => item.genre.genre).join(', ')}.` };
+      }
+      return { target: null, error: `Could not find “${raw}”. Choose one of the suggested genres or type a closer match.` };
     }
 
     function pendingReviewRowId(sourceId, key) {
@@ -4166,56 +5032,35 @@ function blockSaveIfDuplicateGenres() {
       const stats = pendingReviewStats();
       const manualRows = stats.rows.filter(row => row.status !== 'routable');
       const queuedRows = collectQueuedPendingNominationRows();
+      const combinedRows = [
+        ...queuedRows.map(row => ({ type: 'queued', row })),
+        ...manualRows.map(row => ({ type: 'manual', row }))
+      ];
       mount.innerHTML = renderSongInboxCard() + `
         <div class="review-stat-grid">
-          <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${stats.pendingTotal}</strong><span>Queued pending nominations</span></button>
-          <div class="review-stat"><strong>${stats.routable}</strong><span>Auto-routable @tags</span></div>
-          <button type="button" class="review-stat" onclick="scrollToReviewManualQueue()"><strong>${stats.unresolved}</strong><span>Need manual review</span></button>
+          <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${combinedRows.length}</strong><span>Pending nominations</span></button>
+          <div class="review-stat"><strong>${queuedRows.length}</strong><span>Queued by suggested genre</span></div>
+          <div class="review-stat"><strong>${manualRows.length}</strong><span>Need best-match genre</span></div>
           <div class="review-stat"><strong>${libraryUpdatesPending || hasUnsavedChanges ? 'Yes' : 'No'}</strong><span>Unsaved cleanup</span></div>
         </div>
         <div class="review-card" id="reviewPendingQueueCard">
           <div class="review-card-head">
             <div>
-              <h3>Queued pending nominations</h3>
-              <p class="small" style="margin:6px 0 0;">These are the actual songs sitting in each genre’s pending queue. Click a target genre to see/listen/edit it there.</p>
+              <h3>Pending nominations</h3>
+              <p class="small" style="margin:6px 0 0;">One routing desk for queued nominations and songs that need a better genre match. Confirm the best matching genre, choose fit 4 or 5, then send the song as an <strong>ADD</strong>. Use the source genre to keep it there and clear the pending flag.</p>
             </div>
-            <span class="review-chip">${queuedRows.length} total</span>
+            <div class="review-card-copy-actions">
+              ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
+              <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst25()" title="Copy the first 25 visible pending nominations">⧉ Copy first 25</button>
+              <span class="review-chip">${combinedRows.length} total</span>
+            </div>
           </div>
           <div class="review-filter-row">
             <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
-            <span class="small" id="reviewPendingVisibleCount">${queuedRows.length} shown</span>
+            <span class="small" id="reviewPendingVisibleCount">${combinedRows.length} shown</span>
           </div>
-          ${queuedRows.length ? `<div class="review-list-scroll">${queuedRows.map(reviewQueuedPendingRowHtml).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
-        </div>
-        <div class="review-card" id="reviewManualQueueCard">
-          <div class="review-card-head">
-            <div>
-              <h3>Pending nomination routing</h3>
-              <p class="small" style="margin:6px 0 0;">This section is only for low-fit songs with unresolved @tags that have not been safely routed yet.</p>
-            </div>
-            ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
-          </div>
-          ${manualRows.length ? manualRows.map(row => {
-            const selectId = pendingReviewRowId(row.sourceGenre.id, row.key);
-            const title = (row.song.artist ? `${row.song.artist} — ` : '') + (row.song.title || 'Untitled track');
-            const reason = row.status === 'ambiguous' ? 'multiple possible genre matches' : 'no confident genre match';
-            return `<div class="review-row">
-              <div>
-                <div class="review-track-title">${escapeHtml(title)}</div>
-                <div class="review-meta">
-                  <span class="review-chip warn">tag: @${escapeHtml(row.tag || '')}</span>
-                  <span class="review-chip">from ${escapeHtml(row.sourceGenre.genre || 'Unknown')}</span>
-                  <span class="review-chip">fit ${escapeHtml(String(row.song.score ?? ''))}/5</span>
-                  <span class="review-chip warn">${escapeHtml(reason)}</span>
-                </div>
-              </div>
-              <div class="review-move">
-                <select id="${selectId}" aria-label="Move pending nomination target"><option value="">Choose genre…</option>${reviewGenreOptions(row.sourceGenre.id)}</select>
-                <button type="button" class="btn btn-secondary" onclick="movePendingReviewItem('${visualActionArg(row.sourceGenre.id)}', '${visualActionArg(row.key)}', '${selectId}')">Move</button>
-              </div>
-            </div>`;
-          }).join('') : `<div class="viz-empty">No ambiguous pending @tags need manual routing right now.</div>`}
-        </div>`;
+          ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${combinedRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
+        </div>`
     }
 
     function runPendingTagCleanupFromReview() {

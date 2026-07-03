@@ -789,7 +789,7 @@ function renderAlbumDiveFocusPanel(dive) {
       </select>`;
   const trackSummary = albumDiveTrackReactionSummary(slot);
   const manualMetadataDetails = `<details class="album-focus-edit-details">
-        <summary>Manual metadata / fallback art</summary>
+        <summary>Edit / replace this album</summary>
         <div class="album-slot-title" style="margin-top:8px;">
           <input type="text" value="${escapeHtml(slot.album || "")}" placeholder="Album title" oninput="updateAlbumDiveSlotField('${safeKey}', 'album', this.value)">
           <input type="number" value="${slot.year || ""}" placeholder="Year" oninput="updateAlbumDiveSlotField('${safeKey}', 'year', this.value)">
@@ -797,6 +797,14 @@ function renderAlbumDiveFocusPanel(dive) {
         <div class="album-slot-minirow" style="margin-top:8px;">
           <input type="text" value="${escapeHtml(slot.artist || "")}" placeholder="Artist" oninput="updateAlbumDiveSlotField('${safeKey}', 'artist', this.value)">
           <input type="url" value="${escapeHtml(slot.manualAlbumArt || "")}" placeholder="Manual album art URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'manualAlbumArt', this.value)">
+        </div>
+        <div class="album-slot-replace-block" style="margin-top:10px;">
+          <label for="albumSlotReplace_${safeKey}">Replace with pasted album entry</label>
+          <textarea id="albumSlotReplace_${safeKey}" rows="4" placeholder='{"type":"${escapeHtml(slot.label || "Breakout")}","artist":"Artist","album":"Album","spotify_url":"https://open.spotify.com/album/...","year":1999,"reason":"why it belongs"}'></textarea>
+          <div class="row" style="margin-top:8px;gap:8px;">
+            <button type="button" class="btn btn-primary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, true)">Replace + fetch</button>
+            <button type="button" class="btn btn-secondary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, false)">Replace only</button>
+          </div>
         </div>
       </details>`;
   return `<div class="album-focus-view" data-album-focus-key="${safeKey}">
@@ -1201,7 +1209,7 @@ function renderAlbumDiveSlot(slot) {
                 .join("")}
             </select>`;
   const manualMetadataDetails = `<details>
-            <summary>Edit manual metadata / fallback art</summary>
+            <summary>Edit / replace this album</summary>
             <div class="album-slot-title" style="margin-top:8px;">
               <input type="text" value="${escapeHtml(slot.album || "")}" placeholder="Album title" oninput="updateAlbumDiveSlotField('${safeKey}', 'album', this.value)">
               <input type="number" value="${slot.year || ""}" placeholder="Year" oninput="updateAlbumDiveSlotField('${safeKey}', 'year', this.value)">
@@ -1209,6 +1217,14 @@ function renderAlbumDiveSlot(slot) {
             <div class="album-slot-minirow" style="margin-top:8px;">
               <input type="text" value="${escapeHtml(slot.artist || "")}" placeholder="Artist" oninput="updateAlbumDiveSlotField('${safeKey}', 'artist', this.value)">
               <input type="url" value="${escapeHtml(slot.manualAlbumArt || "")}" placeholder="Manual album art URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'manualAlbumArt', this.value)">
+            </div>
+            <div class="album-slot-replace-block" style="margin-top:10px;">
+              <label for="albumSlotReplace_${safeKey}">Replace with pasted album entry</label>
+              <textarea id="albumSlotReplace_${safeKey}" rows="4" placeholder='{"type":"${escapeHtml(slot.label || "Breakout")}","artist":"Artist","album":"Album","spotify_url":"https://open.spotify.com/album/...","year":1999,"reason":"why it belongs"}'></textarea>
+              <div class="row" style="margin-top:8px;gap:8px;">
+                <button type="button" class="btn btn-primary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, true)">Replace + fetch</button>
+                <button type="button" class="btn btn-secondary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, false)">Replace only</button>
+              </div>
             </div>
           </details>`;
   const favoriteBlock = `<div class="album-slot-favorite">
@@ -1409,6 +1425,134 @@ function importAlbumDiveJson(inputId = "albumDiveJsonImport") {
   touchAlbumDive();
   rerenderAlbumDive({ preserveScroll: true });
   showSaveToast(`Imported ${imported} album${imported === 1 ? "" : "s"} into Album Dive — fetch Spotify metadata next, then save.`, false);
+}
+
+
+function albumDiveParseKeyValuePaste(raw = "") {
+  const row = {};
+  const lines = String(raw || "").replace(/\r/g, "").split("\n").map((line) => line.trim()).filter(Boolean);
+  lines.forEach((line) => {
+    const match = line.match(/^([A-Za-z_ ]+)\s*:\s*(.*)$/);
+    if (!match) return;
+    const key = match[1].trim().toLowerCase().replace(/\s+/g, "_");
+    const value = albumDiveCleanPastedRefs(match[2] || "");
+    if (["type", "category", "slot", "label"].includes(key)) row.type = value;
+    else if (["album", "album_title", "title", "name"].includes(key)) row.album = value;
+    else if (["artist", "album_artist", "albumartist"].includes(key)) row.artist = value;
+    else if (["spotify_url", "spotify", "spotify_album_url"].includes(key)) row.spotify_url = value;
+    else if (["apple_url", "itunes_url", "itunes_album_url", "apple_album_url"].includes(key)) row.itunes_url = value;
+    else if (["url", "album_url"].includes(key)) row.url = value;
+    else if (key === "year") row.year = value;
+    else if (["reason", "rationale", "description"].includes(key)) row.reason = value;
+    else if (["artwork", "album_art", "cover"].includes(key)) row.albumArt = value;
+  });
+  if (!Object.keys(row).length && lines.length) {
+    const parts = lines.join(" ").split(/\s*\|\s*/).map((part) => part.trim()).filter(Boolean);
+    const urlPart = parts.find((part) => /https?:\/\//i.test(part));
+    if (urlPart) row.url = urlPart;
+    const yearPart = parts.find((part) => /^(19|20)\d{2}$/.test(part));
+    if (yearPart) row.year = yearPart;
+    const albumPart = parts.find((part) => part !== urlPart && part !== yearPart && /\s+[—–-]\s+/.test(part)) || parts[0] || "";
+    const nameParts = albumPart.split(/\s+[—–-]\s+/).map((part) => part.trim()).filter(Boolean);
+    if (nameParts.length >= 2) {
+      row.artist = nameParts.shift();
+      row.album = nameParts.join(" — ");
+    } else if (albumPart) {
+      row.album = albumPart;
+    }
+    const reasonPart = parts.find((part) => part !== albumPart && part !== urlPart && part !== yearPart);
+    if (reasonPart) row.reason = reasonPart;
+  }
+  return row;
+}
+
+function albumDiveSingleImportRowFromPaste(raw = "") {
+  const text = String(raw || "").trim();
+  if (!text) throw new Error("Paste one album entry first.");
+  try {
+    const rows = normalizedAlbumDiveImportRows(text);
+    if (rows.length) return rows[0];
+  } catch (_) {}
+  const row = albumDiveParseKeyValuePaste(text);
+  if (!row.album && !row.artist && !row.url && !row.spotify_url && !row.itunes_url && !row.reason) {
+    throw new Error("Could not read an album entry from that paste.");
+  }
+  return row;
+}
+
+function albumDiveApplyImportRowToExistingSlot(slot, row = {}, options = {}) {
+  if (!slot || !row) return false;
+  const keep = {
+    key: slot.key,
+    label: slot.label,
+    listenState: options.preserveListeningState ? slot.listenState : "not_started",
+    albumReaction: options.preserveListeningState ? albumDiveSlotReaction(slot) : null,
+    rating: options.preserveListeningState ? slot.rating : null,
+  };
+  const typeLabel = row.type || row.category || row.slot || row.label || slot.label;
+  const spotifyUrl = String(row.spotify_url || row.spotifyAlbumUrl || row.spotifyUrl || "").trim();
+  const appleUrl = String(row.itunes_url || row.itunesAlbumUrl || row.apple_url || row.appleAlbumUrl || row.collectionViewUrl || "").trim();
+  const providerUrl = String(row.url || spotifyUrl || appleUrl || "").trim();
+  Object.keys(slot).forEach((key) => delete slot[key]);
+  Object.assign(slot, defaultAlbumDiveSlot(keep.key, keep.label));
+  slot.label = keep.label || typeLabel || slot.label;
+  slot.listenState = keep.listenState || "not_started";
+  if (keep.albumReaction) slot.albumReaction = keep.albumReaction;
+  if (keep.rating) slot.rating = keep.rating;
+  slot.album = albumDiveCleanPastedRefs(row.album || row.albumTitle || row.title || row.name || "");
+  slot.artist = albumDiveCleanPastedRefs(row.artist || row.album_artist || row.albumArtist || "");
+  slot.year = row.year ? Number(row.year) || null : null;
+  slot.releaseDate = albumDiveCleanPastedRefs(row.release_date || row.releaseDate || "");
+  slot.rationale = albumDiveCleanPastedRefs(row.reason || row.rationale || row.description || "");
+  slot.notes = albumDiveCleanPastedRefs(row.notes || "");
+  slot.albumArt = row.albumArt || row.album_art || row.artwork || row.cover || "";
+  slot.manualAlbumArt = row.manualAlbumArt || row.manual_album_art || "";
+  if (providerUrl) albumDiveApplyProviderUrl(slot, providerUrl);
+  if (row.favorite_song || row.favoriteSong) {
+    const favRaw = row.favorite_song || row.favoriteSong || {};
+    if (typeof favRaw === "string") slot.favoriteSong.title = albumDiveCleanPastedRefs(favRaw);
+    else {
+      slot.favoriteSong.title = albumDiveCleanPastedRefs(favRaw.title || favRaw.name || "");
+      slot.favoriteSong.artist = albumDiveCleanPastedRefs(favRaw.artist || slot.artist || "");
+      slot.favoriteSong.spotifyTrackUrl = String(favRaw.spotify_url || favRaw.spotifyTrackUrl || favRaw.spotifyUrl || "").trim();
+      slot.favoriteSong.itunesTrackUrl = String(favRaw.itunes_url || favRaw.itunesTrackUrl || favRaw.apple_url || favRaw.trackViewUrl || favRaw.url || "").trim();
+      slot.favoriteSong.note = albumDiveCleanPastedRefs(favRaw.reason || favRaw.note || "");
+    }
+  }
+  return true;
+}
+
+async function replaceAlbumDiveSlotFromPaste(slotKey, inputId, button, fetchAfter = true) {
+  const slot = getAlbumDiveSlot(slotKey);
+  const input = document.getElementById(inputId);
+  if (!slot || !input) return;
+  const raw = input.value || "";
+  let row;
+  try {
+    row = albumDiveSingleImportRowFromPaste(raw);
+  } catch (err) {
+    showSaveToast(err?.message || "Could not parse album entry.", true);
+    return;
+  }
+  const hasExisting = albumDiveSlotHasContent(slot);
+  if (hasExisting && !confirm(`Replace ${slot.label || slotKey} album ${slot.album ? `(${slot.album}) ` : ""}with the pasted album?`)) return;
+  const originalText = button?.textContent || "";
+  try {
+    if (button) { button.disabled = true; button.textContent = fetchAfter ? "Replacing…" : "Saving…"; }
+    albumDiveApplyImportRowToExistingSlot(slot, row, { preserveListeningState: false });
+    touchAlbumDive();
+    if (fetchAfter && albumDiveSlotInputUrl(slot)) {
+      await fetchAlbumDiveAlbumMetadata(slotKey, null);
+    } else {
+      rerenderAlbumDive({ preserveScroll: true });
+      showSaveToast("Album replaced — save changes to keep it.", false);
+    }
+  } catch (err) {
+    console.error("Album replacement failed", err);
+    showSaveToast(`Album replacement failed: ${err?.message || "Unknown error"}`, true);
+  } finally {
+    if (button) { button.disabled = false; button.textContent = originalText || (fetchAfter ? "Replace + fetch" : "Replace only"); }
+  }
 }
 
 function getAlbumDiveSlot(slotKey) {

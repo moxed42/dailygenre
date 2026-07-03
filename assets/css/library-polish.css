@@ -9129,3 +9129,46 @@ body.dg-album-dive-scroll-lock *,
     grid-template-columns: 1fr !important;
   }
 }
+
+
+/* === v146: stable wide side-panel identity textbox + title suffix cleanup === */
+#screen-listen .detail-edit-panel #detailGenreIdentityImport,
+#listenEditPanel #detailGenreIdentityImport {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+#screen-listen .detail-edit-panel #detailGenreIdentityImport .genre-identity-form,
+#listenEditPanel #detailGenreIdentityImport .genre-identity-form {
+  width: 100% !important;
+  max-width: none !important;
+  display: block !important;
+}
+#screen-listen .detail-edit-panel #detailGenreIdentityBlock,
+#listenEditPanel #detailGenreIdentityBlock,
+textarea[data-dg-identity-textarea="1"] {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  min-height: 220px !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  scrollbar-gutter: stable !important;
+  resize: vertical !important;
+}
+#screen-listen .detail-edit-panel label[for="favoriteSong"],
+#screen-listen .detail-edit-panel label[for="favoriteSongUrl"],
+#screen-listen .detail-edit-panel #favoriteSong,
+#screen-listen .detail-edit-panel #favoriteSongUrl,
+#screen-listen .detail-edit-panel #favoriteSongFetchStatus,
+#screen-listen .detail-edit-panel .favorite-song-section,
+#screen-listen .detail-edit-panel .favorite-track-section,
+#screen-listen .detail-edit-panel [data-favorite-song-section] {
+  display: none !important;
+}
+.song-title-edition {
+  font-weight: 750 !important;
+  opacity: .68 !important;
+}
