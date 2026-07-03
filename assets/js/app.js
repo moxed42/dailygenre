@@ -4316,6 +4316,75 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       return true;
     }
 
+
+    function reviewPendingSameNomination(candidate, reference, context = {}) {
+      if (!candidate || !reference) return false;
+      const candidateKeys = typeof songIdentityKeys === 'function' ? songIdentityKeys(candidate) : [];
+      const referenceKeys = typeof songIdentityKeys === 'function' ? songIdentityKeys(reference) : [];
+      if (candidateKeys.some(key => key && referenceKeys.includes(key))) return true;
+
+      const cTitle = normalizePendingTag(candidate.title || candidate.name || '');
+      const rTitle = normalizePendingTag(reference.title || reference.name || context.title || '');
+      if (!cTitle || !rTitle || cTitle !== rTitle) return false;
+
+      const cArtist = normalizePendingTag(candidate.artist || '');
+      const rArtist = normalizePendingTag(reference.artist || context.artist || '');
+      const artistCompatible = !cArtist || !rArtist || cArtist === rArtist || cArtist.includes(rArtist) || rArtist.includes(cArtist);
+      if (!artistCompatible) return false;
+
+      const cSource = normalizePendingTag(candidate.pendingFrom || candidate.source || '');
+      const rSource = normalizePendingTag(reference.pendingFrom || reference.source || context.source || context.sourceName || '');
+      const sourceCompatible = context.looseSource || !cSource || !rSource || cSource === rSource;
+      if (!sourceCompatible) return false;
+
+      return true;
+    }
+
+    function removeMatchingPendingNominations(referenceSong, context = {}) {
+      if (!referenceSong) return { removed: 0, genresTouched: 0 };
+      let removed = 0;
+      let genresTouched = 0;
+      (genres || []).forEach(genre => {
+        const pending = normalizePendingSongs(genre.pending_songs || []);
+        if (!pending.length) return;
+        const kept = [];
+        pending.forEach(candidate => {
+          if (reviewPendingSameNomination(candidate, referenceSong, context)) {
+            removed += 1;
+          } else {
+            kept.push(candidate);
+          }
+        });
+        if (kept.length !== pending.length) {
+          genre.pending_songs = kept;
+          genresTouched += 1;
+        }
+      });
+      return { removed, genresTouched };
+    }
+
+    function clearManualPendingTagsForSong(referenceSong, context = {}) {
+      if (!referenceSong) return 0;
+      let cleared = 0;
+      (genres || []).forEach(genre => {
+        const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending);
+        let changed = false;
+        songs.forEach((song, index) => {
+          if (!song?._pendingGenreTag) return;
+          if (!reviewPendingSameNomination(song, referenceSong, context)) return;
+          songs[index] = {
+            ...song,
+            _pendingGenreTag: '',
+            pendingTagDismissedAt: new Date().toISOString()
+          };
+          changed = true;
+          cleared += 1;
+        });
+        if (changed) genre.songs_listened = songs;
+      });
+      return cleared;
+    }
+
     function sendReviewPendingAsAdd(targetId, pendingIndex, encodedKey, genreInputId, fitInputId) {
       const input = document.getElementById(genreInputId);
       const fitInput = document.getElementById(fitInputId);
@@ -4366,9 +4435,9 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
           return;
         }
         updateSourceGenreSongFromPending(sourceGenre, pendingSong, returnFit);
-        found.pending.splice(found.index, 1);
-        sourceTarget.pending_songs = found.pending;
-        stageReviewPendingChange(`Returned to ${sourceGenre.genre} at ${returnFit}/5 and removed from pending nominations.`);
+        const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName, targetName: sourceTarget.genre }, pendingSong);
+        clearManualPendingTagsByReviewContext({ ...rowContext, sourceName }, pendingSong);
+        stageReviewPendingChange(`Returned to ${sourceGenre.genre} at ${returnFit}/5 and removed ${removedInfo.removed || 1} pending nomination${(removedInfo.removed || 1) === 1 ? '' : 's'}.`);
         return;
       }
 
@@ -4385,28 +4454,113 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
       if (!already) destination.songs_listened.push(official);
 
-      found.pending.splice(found.index, 1);
-      sourceTarget.pending_songs = found.pending;
+      const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName, targetName: sourceTarget.genre, destination: destination.genre }, pendingSong);
+      clearManualPendingTagsByReviewContext({ ...rowContext, sourceName }, pendingSong);
 
       const action = already
-        ? `Already logged in ${destination.genre}; removed pending nomination.`
+        ? `Already logged in ${destination.genre}; removed ${removedInfo.removed || 1} pending nomination${(removedInfo.removed || 1) === 1 ? '' : 's'}.`
         : `${ensured.created ? `Created ${destination.genre} and sent` : 'Sent'} as ADD (${requestedFit}/5).`;
       stageReviewPendingChange(action);
     }
 
+    function reviewPendingReferenceFromContext(context = {}, fallback = {}) {
+      return {
+        ...(fallback || {}),
+        title: context.title || fallback.title || fallback.name || '',
+        name: context.title || fallback.name || fallback.title || '',
+        artist: context.artist || fallback.artist || '',
+        url: context.url || fallback.url || fallback.spotifyUrl || '',
+        spotifyUrl: context.url || fallback.spotifyUrl || fallback.url || '',
+        pendingFrom: context.sourceName || context.source || fallback.pendingFrom || fallback.source || '',
+        source: context.sourceName || context.source || fallback.source || fallback.pendingFrom || ''
+      };
+    }
+
+    function removeMatchingPendingByReviewContext(context = {}, fallbackSong = null) {
+      const reference = reviewPendingReferenceFromContext(context, fallbackSong || {});
+      let removed = 0;
+      let genresTouched = 0;
+      (genres || []).forEach(genre => {
+        const pending = normalizePendingSongs(genre.pending_songs || []);
+        if (!pending.length) return;
+        const kept = [];
+        pending.forEach(candidate => {
+          const matchByRow = pendingSongMatchesReviewContext(candidate, {
+            ...context,
+            sourceName: context.sourceName || context.source || context.pendingFrom || '',
+            key: context.key || '',
+            decodedKey: context.key || ''
+          });
+          const matchByReference = reviewPendingSameNomination(candidate, reference, { ...context, looseSource: true });
+          if (matchByRow || matchByReference) removed += 1;
+          else kept.push(candidate);
+        });
+        if (kept.length !== pending.length) {
+          genre.pending_songs = kept;
+          genresTouched += 1;
+        }
+      });
+      return { removed, genresTouched, reference };
+    }
+
+    function clearManualPendingTagsByReviewContext(context = {}, fallbackSong = null) {
+      const reference = reviewPendingReferenceFromContext(context, fallbackSong || {});
+      let cleared = 0;
+      (genres || []).forEach(genre => {
+        const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending);
+        let changed = false;
+        songs.forEach((song, index) => {
+          if (!song?._pendingGenreTag) return;
+          const matchByRow = pendingSongMatchesReviewContext(song, {
+            ...context,
+            sourceName: context.sourceName || context.source || genre.genre || '',
+            key: context.key || '',
+            decodedKey: context.key || ''
+          });
+          const matchByReference = reviewPendingSameNomination(song, reference, { ...context, looseSource: true });
+          if (!matchByRow && !matchByReference) return;
+          songs[index] = {
+            ...song,
+            _pendingGenreTag: '',
+            pendingTagDismissedAt: new Date().toISOString()
+          };
+          changed = true;
+          cleared += 1;
+        });
+        if (changed) genre.songs_listened = songs;
+      });
+      return cleared;
+    }
+
     function dismissReviewPendingFromDesk(targetId, pendingIndex, encodedKey, genreInputId) {
       const input = document.getElementById(genreInputId);
-      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const row = input?.closest?.('[data-review-pending-row]');
+      const rowContext = reviewPendingContextFromRow(row);
       const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
-      if (!found) {
-        showSaveToast('Could not find that pending nomination to dismiss. Refresh Studio and try again.', true);
+      const fallbackSong = found?.song || null;
+      const context = {
+        ...rowContext,
+        sourceName: found?.song?.pendingFrom || found?.song?.source || rowContext.sourceName || rowContext.source || '',
+        targetName: found?.target?.genre || rowContext.targetName || ''
+      };
+      const label = [context.artist || fallbackSong?.artist, context.title || fallbackSong?.title || fallbackSong?.name].filter(Boolean).join(' — ') || fallbackSong?.url || 'this pending nomination';
+      if (!window.confirm(`Dismiss ${label} from pending nominations?`)) return;
+
+      const removedInfo = removeMatchingPendingByReviewContext(context, fallbackSong);
+      const cleared = clearManualPendingTagsByReviewContext(context, fallbackSong);
+
+      if (!removedInfo.removed && !cleared && found) {
+        found.pending.splice(found.index, 1);
+        found.target.pending_songs = found.pending;
+        removedInfo.removed = 1;
+      }
+
+      if (!removedInfo.removed && !cleared) {
+        showSaveToast('Could not find any matching pending rows to dismiss. Try searching the exact title, then dismiss again.', true);
         return;
       }
-      const label = [found.song.artist, found.song.title || found.song.name].filter(Boolean).join(' — ') || found.song.url || 'this pending nomination';
-      if (!window.confirm(`Dismiss ${label} from pending nominations?`)) return;
-      found.pending.splice(found.index, 1);
-      found.target.pending_songs = found.pending;
-      stageReviewPendingChange('Pending nomination dismissed.');
+
+      stageReviewPendingChange(`Pending nomination dismissed${removedInfo.removed > 1 ? ` (${removedInfo.removed} queued rows removed)` : ''}${cleared ? `; ${cleared} source tag${cleared === 1 ? '' : 's'} cleared` : ''}.`);
     }
 
     function moveReviewPendingNomination(targetId, pendingIndex, encodedKey, inputId) {
@@ -4562,7 +4716,8 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
         pendingTagDismissedAt: new Date().toISOString()
       };
       found.sourceGenre.songs_listened = found.songs;
-      stageReviewPendingChange('Pending tag dismissed.');
+      const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName: found.sourceGenre?.genre || rowContext.sourceName || rowContext.source || '' }, found.song);
+      stageReviewPendingChange(`Pending tag dismissed${removedInfo.removed ? ` and ${removedInfo.removed} matching queued row${removedInfo.removed === 1 ? '' : 's'} removed` : ''}.`);
     }
 
 
