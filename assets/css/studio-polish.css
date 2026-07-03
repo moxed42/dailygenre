@@ -1487,3 +1487,14 @@
     grid-column: 1 / -1;
   }
 }
+
+/* === v118 Studio cleanup hardening ==================================== */
+.studio-mini-actions .studio-mini-player-btn + .studio-mini-player-btn,
+.review-move .studio-mini-player-btn + .studio-mini-player-btn {
+  display: none !important;
+}
+
+.studio-workbench .review-move button:not(.studio-mini-player-btn)[title*="Spotify"],
+.studio-workbench .studio-mini-actions button:not(.studio-mini-player-btn)[title*="Spotify"] {
+  display: none !important;
+}

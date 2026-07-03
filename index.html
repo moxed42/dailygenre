@@ -12,8 +12,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <link rel="stylesheet" href="./assets/css/core-loader.css?v=loader-v59" />
-    <link rel="stylesheet" href="./assets/css/library-polish.css?v=identity-preserve-v85" />
-    <link rel="stylesheet" href="./assets/css/studio-polish.css?v=routing-desk-fast-add-v117" />
+    <link rel="stylesheet" href="./assets/css/library-polish.css?v=genre-page-cleanup-v118" />
+    <link rel="stylesheet" href="./assets/css/studio-polish.css?v=genre-page-cleanup-v118" />
     <link rel="stylesheet" href="./assets/css/ranks-polish.css?v=final1" />
     <link rel="stylesheet" href="./assets/css/genre-identity.css?v=confirmed-replace-v74" />
     <script
@@ -122,14 +122,12 @@
           </div>
 
           <div class="panel stack detail-edit-panel" id="listenEditPanel">
-            <div class="form-section">
+            <div class="form-section detail-editor-intro">
               <div class="eyebrow" style="margin: 0 0 6px">
-                Setup / Curation Editor
+                Add Songs / Genre DNA
               </div>
               <div class="small">
-                Use this before the listen for song uploads, curation text,
-                song-fit reasons, and detailed setup. Listening actions live on
-                the song cards and Listening Actions panel.
+                Use this panel for bulk song adds, song-fit reasons, and Genre DNA. Ratings, reactions, favorites, and most cleanup now live inline on the genre page or in Studio.
               </div>
             </div>
             <div class="form-section share-section collapsed" id="shareSection">
@@ -163,7 +161,7 @@
               </div>
             </div>
 
-            <div>
+            <div class="detail-editor-rating">
               <label>Rating</label>
               <div class="stars" id="ratingStars"></div>
               <div class="row" style="margin-top: 10px">
@@ -174,7 +172,7 @@
               </div>
             </div>
 
-            <div>
+            <div class="detail-editor-favorite">
               <label for="favoriteSongUrl">Favorite song — Spotify URL</label>
               <input
                 id="favoriteSongUrl"
@@ -236,7 +234,7 @@
               </div>
             </div>
 
-            <div>
+            <div class="detail-editor-monthly">
               <label style="display: flex; gap: 10px; align-items: center">
                 <input
                   type="checkbox"
@@ -247,7 +245,7 @@
               </label>
             </div>
 
-            <div class="row" style="gap: 14px; align-items: flex-start">
+            <div class="row detail-editor-monthly-flags" style="gap: 14px; align-items: flex-start">
               <label
                 style="
                   display: flex;
@@ -278,7 +276,7 @@
               </label>
             </div>
 
-            <div>
+            <div class="detail-editor-notes">
               <label for="notes">Notes</label>
               <textarea
                 id="notes"
@@ -291,17 +289,15 @@
                 <button class="btn btn-primary" id="saveBtn">
                   Save Changes
                 </button>
-                <button class="btn btn-secondary" id="markListenedBtn">
-                  Mark as Listened Today
+                <button class="btn btn-secondary detail-editor-mark-listened" id="markListenedBtn">
+                  Mark Listened
                 </button>
                 <button class="btn btn-danger hidden" id="unlistenBtn">
-                  Undo Listen / Remove Date
+                  Reset to Unlistened
                 </button>
               </div>
               <div class="small save-behavior-note">
-                Setup save keeps uploaded songs, song descriptions, and setup
-                notes. Listening actions can be saved from the genre page
-                without opening this editor.
+                Save is only needed for setup edits that are not already staged by inline tools.
               </div>
             </div>
           </div>
@@ -1014,11 +1010,11 @@
     <script src="./assets/js/genre-data.js?v=search-mobile-v58"></script>
     <script src="./assets/js/spotify.js"></script>
     <script src="./assets/js/album-dive.js?v=identity-preserve-v85"></script>
-    <script src="./assets/js/app.js?v=routing-desk-fast-add-v117"></script>
-    <script src="./assets/js/studio-polish.js?v=studio-open-state-v117"></script>
-    <script src="./assets/js/genre-identity.js?v=identity-preserve-v85"></script>
-    <script src="./assets/js/songs.js?v=identity-preserve-v85"></script>
-    <script src="./assets/js/listening-room.js?v=identity-queue-v65"></script>
+    <script src="./assets/js/app.js?v=genre-page-cleanup-v118"></script>
+    <script src="./assets/js/studio-polish.js?v=genre-page-cleanup-v118"></script>
+    <script src="./assets/js/genre-identity.js?v=genre-page-cleanup-v118"></script>
+    <script src="./assets/js/songs.js?v=genre-page-cleanup-v118"></script>
+    <script src="./assets/js/listening-room.js?v=genre-page-cleanup-v118"></script>
     <script src="./assets/js/library-polish.js?v=perf-v11"></script>
     <script src="./assets/js/visuals.js?v=stats-v15"></script>
     <script src="./assets/js/ranks-polish.js?v=stability6"></script>

@@ -756,6 +756,45 @@
 
 
 
+  function copyGenreDnaDiscordBlock() {
+    try {
+      const text = typeof buildDiscordBlock === "function" ? buildDiscordBlock() : "";
+      if (!text) {
+        if (typeof showSaveToast === "function") showSaveToast("No Discord block available yet.", true);
+        return;
+      }
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          if (typeof showSaveToast === "function") showSaveToast("Discord block copied.", false);
+        }).catch(() => fallbackCopyGenreDnaDiscordBlock(text));
+      } else {
+        fallbackCopyGenreDnaDiscordBlock(text);
+      }
+    } catch (err) {
+      console.warn("Could not copy Discord block", err);
+      if (typeof showSaveToast === "function") showSaveToast("Could not copy Discord block.", true);
+    }
+  }
+
+  function fallbackCopyGenreDnaDiscordBlock(text) {
+    try {
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+      if (typeof showSaveToast === "function") showSaveToast("Discord block copied.", false);
+    } catch (_) {
+      if (typeof showSaveToast === "function") showSaveToast("Could not copy Discord block.", true);
+    }
+  }
+
+  window.copyGenreDnaDiscordBlock = copyGenreDnaDiscordBlock;
+
   function renderDnaCard(genre) {
     const aliases = aliasList(genre);
     const sem = getSeminal(genre);
@@ -765,6 +804,7 @@
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
         <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
+        <button type="button" class="genre-dna-copy-btn" title="Copy Discord block" aria-label="Copy Discord block" onclick="event.preventDefault(); event.stopPropagation(); copyGenreDnaDiscordBlock();">⧉</button>
       </div>
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">

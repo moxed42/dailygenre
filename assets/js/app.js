@@ -829,7 +829,7 @@
 
     function genreRatingStarsOnly(genre) {
       if (!genre || !genre.rating) return 'Unrated';
-      if (String(genre.rating) === 'zanger') return '✕ Zanger';
+      if (String(genre.rating) === 'zanger') return 'Z Zanger';
       const n = Number(genre.rating);
       if (!Number.isFinite(n) || n < 1 || n > 5) return 'Unrated';
       return `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
@@ -857,7 +857,7 @@
         </div>
         <div class="view-rating-stars" aria-label="Genre rating controls">
           ${[1,2,3,4,5].map(n => `<button type="button" class="view-rating-star ${active === String(n) ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="${n} stars, ${escapeHtml(genreRatingLabel(n))}">★</button>`).join('')}
-          <button type="button" class="view-rating-zanger ${active === 'zanger' ? 'active' : ''}" onclick="setGenreRatingFromView('zanger')" title="Zanger">✕ Zanger</button>
+          <button type="button" class="view-rating-zanger ${active === 'zanger' ? 'active' : ''}" onclick="setGenreRatingFromView('zanger')" title="Zanger">Z Zanger</button>
         </div>
       </div>`;
     }
@@ -1043,13 +1043,13 @@
       return `<span class="genre-header-rating" role="group" aria-label="Genre rating: ${escapeHtml(label)}">
         <span class="genre-header-rating-label">${escapeHtml(label)}</span>
         <span class="genre-header-stars">${starButtons}</span>
-        <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">✕</button>
+        <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">Z</button>
       </span>`;
     }
 
     function genreRatingDisplay(genre) {
       if (!genre || !genre.rating) return 'Unrated';
-      if (String(genre.rating) === 'zanger') return '✕ Zanger';
+      if (String(genre.rating) === 'zanger') return 'Z Zanger';
       const n = Number(genre.rating);
       return `${'★'.repeat(n)}${'☆'.repeat(5 - n)} ${genreRatingLabel(genre.rating)}`;
     }
@@ -2741,7 +2741,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       loadListenScreen(genre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(true);
       markDirty();
-      showSaveToast('Zanger logged for today — click Save Changes to keep it.', false);
+      showSaveToast('Zanger logged — click Save Changes to keep it.', false);
     }
 
 async function prepareAndSaveCurrentGenre(options = {}) {
@@ -3105,7 +3105,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 <button type="button" class="btn btn-secondary edit-mode-toggle" onclick="toggleDetailEditMode()">${detailEditMode ? 'Hide Setup Editor' : 'Edit Setup / Curation'}</button>
                 <button type="button" class="spotify-queue-btn" onclick="openSpotifyPlaylistModal('${encodeURIComponent(String(genre.id || ''))}')">＋ Playlist</button>
                 ${!hasListenMarkers
-                  ? `<button type="button" class="btn btn-primary" onclick="markCurrentGenreListened()">✓ Mark as Listened Today</button>`
+                  ? `<button type="button" class="btn btn-primary" title="Mark this genre listened so it leaves the spin bucket" onclick="markCurrentGenreListened()">Mark Listened</button>`
                   : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Reset to Unlistened</button>`}
               </div>
 
@@ -5839,7 +5839,7 @@ async function loadData() {
       if (!root) return;
       root.innerHTML = groups.map(([k, label]) => {
         const list = map[k].sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || String(a.genre || '').localeCompare(String(b.genre || '')));
-        return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? '✕' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button type="button" class="viz-chip viz-click-chip" onclick="vizOpenGenreEncoded('${visualActionArg(g.genre || '')}')">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
+        return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? 'Z' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button type="button" class="viz-chip viz-click-chip" onclick="vizOpenGenreEncoded('${visualActionArg(g.genre || '')}')">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
       }).join('');
     }
 

@@ -9051,3 +9051,133 @@ body.dg-album-dive-scroll-lock *,
 .album-focus-tracks > details > summary small::before {
   content: "· ";
 }
+
+/* === v118 genre-page cleanup + queue readability ===================== */
+/* Song queue: show more of the fit note so sequential cleanup does not require
+   opening Details for every track. */
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+#dc-songs .song-focus-queue .song-focus-row {
+  grid-template-columns: 54px minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  row-gap: 8px !important;
+  padding: 12px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-main,
+#dc-songs .song-focus-queue .song-focus-row-main {
+  gap: 4px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-reason,
+#dc-songs .song-focus-queue .song-focus-row-reason {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  max-width: min(86ch, 100%) !important;
+  margin-top: 3px !important;
+  color: color-mix(in srgb, var(--muted, #735a3c) 84%, var(--text, #22160d)) !important;
+  font-size: 0.79rem !important;
+  line-height: 1.32 !important;
+  font-style: italic !important;
+  overflow-wrap: anywhere !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid,
+#dc-songs .song-focus-details-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-note-card,
+#dc-songs .song-focus-note-card,
+#screen-listen.listen-experience-mode .song-note-editor.song-focus-details-drawer .song-focus-note-card {
+  display: none !important;
+}
+
+/* Zanger uses Z, not X, so it does not read like delete/remove. */
+.genre-header-zanger,
+.view-rating-zanger[title="Zanger"],
+#zangerBtn {
+  font-weight: 1000 !important;
+}
+
+.genre-header-zanger {
+  font-family: inherit !important;
+  letter-spacing: -0.04em !important;
+}
+
+/* Copy Discord block from Genre DNA without opening the setup editor. */
+.genre-identity-dna-head {
+  align-items: flex-start !important;
+}
+
+.genre-dna-copy-btn {
+  appearance: none !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  inline-size: 38px !important;
+  block-size: 34px !important;
+  min-inline-size: 38px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(127, 82, 28, 0.18) !important;
+  background: rgba(255, 252, 241, 0.78) !important;
+  color: var(--accent-dark, #7a4714) !important;
+  box-shadow: 0 8px 18px rgba(55, 35, 10, 0.08), inset 0 1px 0 rgba(255,255,255,0.6) !important;
+  cursor: pointer !important;
+  font-size: 1rem !important;
+  font-weight: 1000 !important;
+}
+
+.genre-dna-copy-btn:hover,
+.genre-dna-copy-btn:focus-visible {
+  transform: translateY(-1px) !important;
+  background: #332013 !important;
+  color: #ffe0a1 !important;
+  outline: none !important;
+}
+
+/* Setup editor is now mostly for bulk songs / Genre DNA. Keep hidden inputs in
+   the DOM for JS compatibility, but remove the distracting old controls. */
+.detail-edit-panel .detail-editor-rating,
+.detail-edit-panel .detail-editor-favorite,
+.detail-edit-panel .detail-editor-monthly,
+.detail-edit-panel .detail-editor-monthly-flags,
+.detail-edit-panel .detail-editor-notes,
+.detail-edit-panel .detail-editor-mark-listened,
+.detail-edit-panel #shareSection {
+  display: none !important;
+}
+
+.detail-edit-panel .detail-editor-intro .eyebrow {
+  color: var(--accent-dark, #7a4714) !important;
+}
+
+.detail-edit-panel .editor-save-actions .row {
+  gap: 8px !important;
+}
+
+.detail-edit-panel .editor-save-actions #saveBtn {
+  font-size: 0.86rem !important;
+  padding: 9px 12px !important;
+}
+
+.detail-edit-panel .editor-save-actions #unlistenBtn:not(.hidden) {
+  display: inline-flex !important;
+}
+
+/* Make the primary genre action explicit. */
+body.dc-listen-mode .detail-actions .dc-primary-action,
+body.dc-listen-mode .dc-compact-hero .detail-actions .dc-primary-action {
+  min-width: auto !important;
+}
+
+@media (max-width: 760px) {
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row,
+  #dc-songs .song-focus-queue .song-focus-row {
+    grid-template-columns: 46px minmax(0, 1fr) !important;
+  }
+  #screen-listen.listen-experience-mode .song-focus-queue .song-focus-row-reason,
+  #dc-songs .song-focus-queue .song-focus-row-reason {
+    -webkit-line-clamp: 5 !important;
+  }
+}

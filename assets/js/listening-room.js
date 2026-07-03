@@ -410,9 +410,9 @@
     actions.innerHTML = "";
     if (listen) {
       listen.classList.add("dc-primary-action");
-      listen.textContent = /mark/i.test(listen.textContent || "")
-        ? "Start Listening"
-        : "Listen";
+      listen.textContent = "Mark listened";
+      listen.setAttribute("title", "Mark this genre listened so it leaves the spin bucket");
+      listen.setAttribute("aria-label", "Mark genre listened");
       actions.appendChild(listen);
     }
     if (playlist) {

@@ -899,17 +899,17 @@
       const titleLink = $(".review-track-title a", rowEl);
       const href = song ? spotifyUrl(song) : titleLink?.href || "";
 
-      // Replace duplicate Spotify outbound button with a compact mini-player button.
-      if (move && !move.querySelector(".studio-mini-player-btn")) {
+      // Keep only one web/mini-player action. Older layers can leave both a Spotify
+      // text button and a compact play button in the same row.
+      if (move) {
         Array.from(move.querySelectorAll("button")).forEach((btn) => {
-          if (/^spotify$/i.test((btn.textContent || "").trim())) btn.remove();
+          const txt = (btn.textContent || "").trim();
+          if (btn.classList.contains("studio-mini-player-btn") || /^spotify$/i.test(txt) || txt === "▶") btn.remove();
         });
-        if (song && href)
+        if (song && href) {
           move.insertAdjacentHTML("beforeend", miniPlayerButtonForSong(song));
-        else if (href) {
-          const label = (titleLink?.textContent || "Spotify track")
-            .replace(/↗/g, "")
-            .trim();
+        } else if (href) {
+          const label = (titleLink?.textContent || "Spotify track").replace(/↗/g, "").trim();
           const rawUrl = encodeURIComponent(href);
           const title = encodeURIComponent(label);
           move.insertAdjacentHTML(
