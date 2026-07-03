@@ -3886,9 +3886,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       const source = row.sourceGenre?.genre || 'Unknown source';
       const sourceFit = row.song?.score != null && row.song?.score !== '' ? Number(row.song.score) : null;
       const fitLine = sourceFit != null && Number.isFinite(sourceFit) ? `<span class="review-chip">source fit ${escapeHtml(String(sourceFit))}/5</span>` : '';
-      const reason = row.status === 'ambiguous' ? 'multiple possible genre matches' : 'no confident genre match';
       const suggested = pendingTagToGenreLabel(row.tag || row.song?._pendingGenreTag || '');
-      const titleText = [row.song?.artist, row.song?.title || row.song?.name].filter(Boolean).join(' — ') || row.song?.url || 'Untitled track';
       const searchText = [row.song?.artist, row.song?.title, row.sourceGenre?.genre, row.tag, suggested, row.song?.url].join(' ').toLowerCase();
       const copyTitle = String(row.song?.title || row.song?.name || row.song?.url || 'Untitled track').trim();
       const copyArtist = String(row.song?.artist || '').trim();
@@ -3904,12 +3902,11 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
         <div class="review-pending-main">
           <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
           <div class="review-meta">
-            <span class="review-chip warn">tag: @${escapeHtml(String(row.tag || '').replace(/^@+/, ''))}</span>
+            <span class="review-chip review-chip-good">suggested: ${escapeHtml(suggested || 'Choose genre')}</span>
             <span class="review-chip">from ${escapeHtml(source)}</span>
             ${fitLine}
-            <span class="review-chip warn">${escapeHtml(reason)}</span>
           </div>
-          <p class="studio-pending-route-copy">Choose the best matching genre, choose fit 4/5, then send it as an <strong>ADD</strong>.</p>
+          <p class="studio-pending-route-copy">Pick the best matching genre, choose fit 4/5 for a new genre, or choose the source genre to keep it there.</p>
         </div>
         <div class="review-move review-pending-actions review-pending-route-actions">
           <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
@@ -4938,7 +4935,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
           <div class="review-card-head">
             <div>
               <h3>Pending nominations</h3>
-              <p class="small" style="margin:6px 0 0;">One routing desk for queued nominations and unresolved @tags. Confirm the best matching genre, choose fit 4 or 5, then send the song as an <strong>ADD</strong>. Use the source genre to keep it there and clear the pending tag.</p>
+              <p class="small" style="margin:6px 0 0;">One routing desk for queued nominations and songs that need a better genre match. Confirm the best matching genre, choose fit 4 or 5, then send the song as an <strong>ADD</strong>. Use the source genre to keep it there and clear the pending flag.</p>
             </div>
             <div class="review-card-copy-actions">
               ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
@@ -4947,10 +4944,10 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
             </div>
           </div>
           <div class="review-filter-row">
-            <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, target genre, or @tag…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
+            <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
             <span class="small" id="reviewPendingVisibleCount">${combinedRows.length} shown</span>
           </div>
-          ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${combinedRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations or unresolved @tags.</div>`}
+          ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${combinedRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
         </div>`
     }
 
