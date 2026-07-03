@@ -717,17 +717,25 @@
           <h4>Why this song fits</h4>
           <p>${song.reason ? html(song.reason) : "No fit note yet."}</p>
           <div class="song-focus-edit-helper">
-            <button type="button" class="btn btn-secondary btn-tiny" onclick="if (typeof openStudioMode === 'function') openStudioMode(); else if (typeof toggleDetailEditMode === 'function') toggleDetailEditMode();">Edit in setup editor</button>
-            <small>Fit reasons live in the Songs listened bulk text. Edit the line for this track, then save.</small>
+            <button type="button" class="btn btn-secondary btn-tiny" onclick="if (typeof openStudioMode === 'function') openStudioMode(); else if (typeof toggleDetailEditMode === 'function') toggleDetailEditMode();">Edit fit reason</button>
           </div>
         </div>
+        <div class="song-focus-detail-card song-focus-note-card">
+          <h4>Listening note</h4>
+          <textarea data-song-note-input maxlength="320" placeholder="Short listening note for this song…">${html(noteValue)}</textarea>
+          <div class="song-note-actions">
+            <button type="button" class="btn btn-primary" onclick="savePendingSongNoteFromCard('${encodedKey}', -1, '${encodedPath}', this)">Stage Note</button>
+            ${pendingSongNote ? `<button type="button" class="btn btn-danger" onclick="clearPendingSongNoteFromCard('${encodedKey}', -1, '${encodedPath}', this)">Clear Pending Note</button>` : ""}
+          </div>
+          <div class="track-card-edit-note">Staged locally. Save Listening Updates will roll this up and persist it.</div>
+        </div>
         <div class="song-focus-detail-card compact song-focus-url-card">
-          <h4>Track URL <span class="song-focus-inline-label">no full edit mode needed</span></h4>
+          <h4>Track URL</h4>
           <div class="song-focus-url-row">
             <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
             <button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply URL / Refresh</button>
           </div>
-          <p class="song-focus-helper">Paste or correct a Spotify track URL here. Applying the URL also refreshes Spotify artwork and metadata.</p>
+          <p class="song-focus-helper">Applying the URL refreshes Spotify artwork and metadata.</p>
         </div>
         <div class="song-focus-detail-card compact song-focus-meta-card">
           <h4>Metadata</h4>
@@ -735,8 +743,7 @@
         </div>
         <div class="song-focus-detail-card compact song-focus-delete-card">
           <h4>Delete song</h4>
-          <p>Remove this song from the genre entirely. This is staged locally until you save Listening Updates.</p>
-          <button type="button" class="btn btn-danger" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Delete song</button>
+          <button type="button" class="btn btn-danger btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Delete song</button>
         </div>
       </div>
     </section>`;
@@ -822,9 +829,10 @@
                     entry.isChild && entry.parentSong
                       ? `<span class="song-focus-row-relation">↳ Level up from ${html(entry.parentSong.title || "previous pick")}</span>`
                       : "";
-                  const rowReason = song.reason
-                    ? `<span class="song-focus-row-reason">${html(song.reason)}</span>`
-                    : "";
+                  const childReason =
+                    entry.isChild && song.reason
+                      ? `<span class="song-focus-row-reason">${html(song.reason)}</span>`
+                      : "";
                   const parentSelected =
                     !selected &&
                     entry.parentKey &&
@@ -835,7 +843,7 @@
               <span class="song-focus-row-title-line">${rowMiniButton}${titleMarkup}${selected ? '<span class="song-focus-now-badge">Now Listening</span>' : ""}</span>
               ${subline ? `<span class="song-focus-row-sub">${html(subline)}</span>` : ""}
               ${childRelation}
-              ${rowReason}
+              ${childReason}
             </span>
             <span class="song-focus-row-badge-wrap">${songTypeBadge(entry)}</span>
             ${renderReactionButtons(song, "queue")}

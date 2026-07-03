@@ -93,6 +93,14 @@
         >
           Crate Dig
         </button>
+        <button
+          class="tab-btn tab-action-btn tab-album-dive-btn"
+          id="topAlbumDiveBtn"
+          type="button"
+          title="Open the current Album Dive"
+        >
+          Album Dive
+        </button>
         <button class="tab-btn" data-screen="viz">Visuals</button>
         <button class="tab-btn" data-screen="review">Review</button>
         <button class="tab-btn" data-screen="ranking">Ranking</button>
@@ -158,17 +166,10 @@
           </div>
 
           <div class="panel stack detail-edit-panel" id="listenEditPanel">
-            <div class="form-section detail-editor-intro">
-              <div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;">
-                <div style="min-width: 0;">
-                  <div class="eyebrow" style="margin: 0 0 6px">
-                    Add Songs / Genre DNA
-                  </div>
-                  <div class="small">
-                    Use this panel for bulk song adds, song-fit reasons, and Genre DNA. Ratings, reactions, favorites, and most cleanup now live inline on the genre page or in Studio.
-                  </div>
-                </div>
-                <button type="button" class="btn btn-secondary btn-tiny" onclick="toggleDetailEditMode()" title="Close Add Songs / Genre DNA panel">Close editor</button>
+            <div class="form-section detail-editor-intro compact-editor-intro">
+              <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
+                <div class="eyebrow" style="margin: 0">Add Songs / Genre DNA</div>
+                <button type="button" class="btn btn-secondary btn-tiny editor-x-btn" data-dg-close-song-editor onclick="toggleDetailEditMode()" title="Close Add Songs / Genre DNA panel" aria-label="Close Add Songs / Genre DNA panel">×</button>
               </div>
             </div>
             <div class="form-section share-section collapsed" id="shareSection">
@@ -213,37 +214,6 @@
               </div>
             </div>
 
-            <div class="detail-editor-favorite">
-              <label for="favoriteSongUrl">Favorite song — Spotify URL</label>
-              <input
-                id="favoriteSongUrl"
-                type="url"
-                placeholder="https://open.spotify.com/track/..."
-              />
-              <div
-                class="small"
-                style="margin-top: 8px"
-                id="favoriteSongFetchStatus"
-              ></div>
-              <div style="margin-top: 10px">
-                <label
-                  for="favoriteSong"
-                  style="
-                    font-weight: 500;
-                    color: var(--muted);
-                    font-size: 0.92rem;
-                    margin-bottom: 6px;
-                  "
-                  >Track title (auto-filled from URL, or type manually)</label
-                >
-                <input
-                  id="favoriteSong"
-                  type="text"
-                  placeholder="Paste URL above to auto-fill…"
-                />
-              </div>
-            </div>
-
             <div>
               <label for="songsListenedBulk"
                 >Songs listened — one per line</label
@@ -267,11 +237,7 @@
               <div class="row" style="margin-top: 10px; gap: 10px; align-items: center;">
                 <button type="button" class="btn btn-primary btn-tiny" onclick="applySongsBulkAndSave(this)">Apply &amp; Save Songs</button>
                 <button type="button" class="btn btn-secondary btn-tiny" onclick="overwriteSongsBulkAndSave(this)">Overwrite &amp; Save Songs</button>
-                <span class="small" style="color: var(--muted);">Apply merges with existing songs. Overwrite replaces this genre’s song list only; Genre Identity stays intact.</span>
-              </div>
-              <div class="small" style="margin-top: 8px">
-                These are stored on the genre as an array so you can later
-                reverse-engineer what you actually listened to.
+                <span class="small" style="color: var(--muted);">Apply merges. Overwrite replaces this genre’s song list only; Genre Identity stays separate.</span>
               </div>
             </div>
 
@@ -357,6 +323,9 @@
               </p>
             </div>
             <div class="archive-actions">
+              <button class="btn btn-secondary" id="archiveRefreshBtn" type="button">
+                Refresh results
+              </button>
               <button class="btn btn-secondary" id="archiveCopyBtn">
                 Copy current view
               </button>
@@ -827,8 +796,8 @@
       </section>
 
       <footer class="dg-build-footer" aria-label="Daily Genre build information">
-        <span>Daily Genre v143</span>
-        <span>Updated 2026-07-03 11:17 AM ET</span>
+        <span>Daily Genre v145</span>
+        <span>Updated 2026-07-03 05:55 PM ET</span>
       </footer>
     </div>
 

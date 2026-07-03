@@ -191,7 +191,8 @@
     close.setAttribute('data-dg-close-song-editor', '');
     close.setAttribute('aria-label', 'Close song editor');
     close.title = 'Close song editor';
-    close.textContent = 'Close editor';
+    close.textContent = '×';
+    close.classList.add('editor-x-btn');
     if (head.classList && head.classList.contains('form-section')) {
       head.classList.add('dg-editor-head-with-close');
       head.appendChild(close);

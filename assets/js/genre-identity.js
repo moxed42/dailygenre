@@ -481,6 +481,13 @@
     const entryText = identitySongDuplicateKey(entry.track);
     if (songText && entryText && songText === entryText) return true;
 
+    const target = identityTrackId(entry.track);
+    const songId = identityTrackId(song);
+    if (target && songId && !target.startsWith("name:") && target === songId) return true;
+    const targetSpotifyId = spotifyIdFromTrackLike(entry.track);
+    const songSpotifyId = spotifyIdFromTrackLike(song);
+    if (targetSpotifyId && songSpotifyId && targetSpotifyId === songSpotifyId) return true;
+
     const songTitle = identityLooseText(song?.title || song?.name || "");
     const entryTitle = identityLooseText(entry.track?.title || entry.track?.name || "");
     const songArtist = identityLooseText(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
@@ -497,12 +504,6 @@
     if (hasBothTitles && titleClose && !artistClose) return false;
     if (hasBothTitles && titleClose && artistClose) return true;
 
-    const target = identityTrackId(entry.track);
-    const songId = identityTrackId(song);
-    if (target && songId && !target.startsWith("name:") && target === songId) return true;
-    const targetSpotifyId = spotifyIdFromTrackLike(entry.track);
-    const songSpotifyId = spotifyIdFromTrackLike(song);
-    if (targetSpotifyId && songSpotifyId && targetSpotifyId === songSpotifyId) return true;
     return false;
   }
 
@@ -1222,106 +1223,101 @@
   }
 
 
-  function identityStructuredLine(track, label) {
-    if (!track || typeof track !== "object") return "";
-    const title = track.title || track.name || "";
-    const artist = track.artist || (Array.isArray(track.artists) ? track.artists.join(", ") : "");
-    const url = identityUsableTrackUrl(track) || track.spotifyUrl || track.url || track.spotify_url || "";
-    const reason = track.reason || track.description || track.note || "";
-    const media = track.media || track.context || "";
-    const name = [artist, title].filter(Boolean).join(" — ") || title || artist || "";
-    if (!name && !url && !reason) return "";
-    if (label === "MEDIA TOUCHSTONE") return [label + ": " + name, media, url, reason].filter(Boolean).join(" | ");
-    return [label + ": " + name, url, reason].filter(Boolean).join(" | ");
+  function identityBlockHasContent(genre) {
+    if (!genre) return false;
+    const aliases = aliasList(genre);
+    const sem = getSeminal(genre);
+    const media = getMedia(genre);
+    const hasSem = !!(sem?.artist || sem?.title || sem?.name || sem?.spotifyUrl || sem?.url || sem?.reason);
+    const hasMedia = media.some((m) => m && (m.artist || m.title || m.name || m.mediaTitle || m.media || m.mediaType || m.spotifyUrl || m.url || m.reason));
+    return Boolean(aliases.length || hasSem || hasMedia);
   }
 
-  function buildStructuredIdentityBlock(genre) {
-    const g = genre || currentGenre();
-    if (!g) return "";
-    const id = identity(g);
+  function identityBlockFromGenre(genre) {
+    if (!identityBlockHasContent(genre)) return "";
     const lines = [];
-    const trackHasContent = (track) => !!(
-      track && typeof track === "object" && (
-        String(track.artist || "").trim() ||
-        String(track.title || track.name || "").trim() ||
-        String(track.spotifyUrl || track.url || "").trim() ||
-        String(track.reason || track.description || track.note || "").trim()
-      )
-    );
-    const identityQueueSongs = queueSongs(g).filter((song) => {
-      const source = String(song?.source || song?.sourceType || "").toLowerCase();
-      return !!(
-        song?.isIdentityTrack ||
-        song?.identityType ||
-        song?.identityLabel ||
-        source === "genre_identity" ||
-        source === "genre identity"
-      );
+    lines.push(`GENRE: ${genre.genre || genre.name || ""}`.trim());
+    const aliases = aliasList(genre);
+    if (aliases.length) {
+      lines.push("", "ALIASES:");
+      aliases.forEach((alias) => lines.push(alias));
+    }
+    const sem = getSeminal(genre) || {};
+    if (sem.artist || sem.title || sem.name || sem.spotifyUrl || sem.url || sem.reason) {
+      lines.push("", "SEMINAL_TRACK:");
+      if (sem.artist) lines.push(`ARTIST: ${sem.artist}`);
+      if (sem.title || sem.name) lines.push(`TITLE: ${sem.title || sem.name}`);
+      if (sem.spotifyUrl || sem.url || sem.spotify_url) lines.push(`SPOTIFY_URL: ${sem.spotifyUrl || sem.url || sem.spotify_url}`);
+      if (sem.reason) lines.push(`REASON: ${sem.reason}`);
+    }
+    getMedia(genre).forEach((m) => {
+      if (!(m && (m.artist || m.title || m.name || m.mediaTitle || m.media || m.mediaType || m.spotifyUrl || m.url || m.reason))) return;
+      lines.push("", "MEDIA_TOUCHSTONE:");
+      if (m.artist) lines.push(`ARTIST: ${m.artist}`);
+      if (m.title || m.name) lines.push(`TITLE: ${m.title || m.name}`);
+      if (m.mediaTitle || m.media) lines.push(`MEDIA_TITLE: ${m.mediaTitle || m.media}`);
+      if (m.mediaType) lines.push(`MEDIA_TYPE: ${m.mediaType}`);
+      if (m.spotifyUrl || m.url || m.spotify_url) lines.push(`SPOTIFY_URL: ${m.spotifyUrl || m.url || m.spotify_url}`);
+      if (m.reason) lines.push(`REASON: ${m.reason}`);
     });
-    const songAsTrack = (song) => ({
-      artist: song?.artist || "",
-      title: song?.title || song?.name || "",
-      spotifyUrl: song?.spotifyUrl || song?.url || "",
-      url: song?.spotifyUrl || song?.url || "",
-      reason: song?.reason || song?.description || song?.note || "",
-      media: song?.media || song?.identityLabel || "",
-    });
-    const semFromQueue = identityQueueSongs.find((song) => String(song.identityType || song.identityLabel || "").toLowerCase().includes("seminal"));
-    const mediaFromQueue = identityQueueSongs
-      .filter((song) => String(song.identityType || song.identityLabel || "").toLowerCase().includes("media"))
-      .map(songAsTrack)
-      .filter(trackHasContent);
-
-    lines.push(`GENRE: ${g.genre || ""}`);
-    const aliases = aliasList(g).join("; ");
-    if (aliases) lines.push(`ALIASES: ${aliases}`);
-    const canonicalSem = trackHasContent(id.seminalTrack) ? id.seminalTrack : (trackHasContent(g.seminal_song) ? g.seminal_song : (semFromQueue ? songAsTrack(semFromQueue) : {}));
-    const sem = identityStructuredLine(canonicalSem, "SEMINAL TRACK");
-    if (sem) lines.push(sem);
-
-    let media = [];
-    if (Array.isArray(id.mediaTouchstones) && id.mediaTouchstones.some(trackHasContent)) media = id.mediaTouchstones.filter(trackHasContent);
-    else if (Array.isArray(g.media_touchstones) && g.media_touchstones.some(trackHasContent)) media = g.media_touchstones.filter(trackHasContent);
-    else media = mediaFromQueue;
-    media.forEach(track => {
-      const line = identityStructuredLine(track, "MEDIA TOUCHSTONE");
-      if (line) lines.push(line);
-    });
-    return lines.join("\n");
+    return lines.join("\n").trim();
   }
+
+  function identityEntriesMatchingExistingSongs(genre, parsed) {
+    if (!genre || !parsed) return [];
+    const entries = [];
+    const sem = parsed.seminal || {};
+    if (sem.artist || sem.title || sem.spotifyUrl || sem.url || sem.reason) entries.push({ label: "Seminal track", type: "seminal", index: -1, track: sem });
+    (parsed.mediaTouchstones || []).forEach((track, index) => {
+      if (track && (track.artist || track.title || track.spotifyUrl || track.url || track.reason || track.mediaTitle || track.mediaType)) entries.push({ label: "Media touchstone", type: "media", index, track });
+    });
+    const songs = queueSongs(genre).filter((song) => song && !song.isPending && !song.isIdentityTrack);
+    return entries.filter((entry) => songs.some((song) => identityEntryContentMatchesSong(song, entry)));
+  }
+
 
   function injectDetailIdentityImport(genre = null) {
     const g = genre || currentGenre();
     const panel = document.getElementById("listenEditPanel");
     if (!panel || !g) return;
-    if (panel.querySelector("#detailGenreIdentityImport")) return;
+    const existing = panel.querySelector("#detailGenreIdentityImport");
+    if (existing) existing.remove();
     const section = document.createElement("div");
-    section.className = "form-section genre-identity-detail-import";
+    section.className = "form-section genre-identity-detail-import genre-identity-detail-block";
     section.id = "detailGenreIdentityImport";
     section.innerHTML = `
       <div class="eyebrow" style="margin:0 0 6px;">Genre Identity</div>
-      <label for="detailGenreIdentityBlock">Paste structured identity block</label>
-      <textarea id="detailGenreIdentityBlock" rows="7" placeholder="GENRE: ${esc(g.genre || "")}&#10;ALIASES: ...&#10;SEMINAL TRACK: Artist — Title | Spotify URL | reason&#10;MEDIA TOUCHSTONE: Artist — Title | Media | Spotify URL | why it matters">${esc(buildStructuredIdentityBlock(g))}</textarea>
-      <div class="row" style="margin-top:10px;">
-        <button type="button" class="btn btn-secondary" id="detailGenreIdentityApplyBtn">Apply & Save identity block</button>
-        <button type="button" class="btn btn-secondary" id="detailGenreIdentityOverwriteBtn">Overwrite & Save identity block</button>
+      <div class="genre-identity-form genre-identity-detail-form" data-genre-id="${esc(String(g.id ?? ""))}">
+        <textarea id="detailGenreIdentityBlock" rows="9" style="font-family: monospace; font-size: 0.86rem;" placeholder="GENRE: ${esc(g.genre || "Genre name")}&#10;&#10;ALIASES:&#10;known synonym&#10;&#10;SEMINAL_TRACK:&#10;ARTIST: Artist&#10;TITLE: Song&#10;SPOTIFY_URL: https://open.spotify.com/track/...&#10;REASON: Why this defines the genre&#10;&#10;MEDIA_TOUCHSTONE:&#10;ARTIST: Artist&#10;TITLE: Song&#10;MEDIA_TITLE: Movie / game / show&#10;MEDIA_TYPE: film&#10;REASON: Why this matters">${esc(identityBlockFromGenre(g))}</textarea>
+        <div class="genre-identity-actions genre-identity-full" style="margin-top:10px;">
+          <button type="button" class="btn btn-primary btn-tiny" id="detailGenreIdentityApplyBtn">Apply &amp; Save Genre Identity</button>
+          <button type="button" class="btn btn-secondary btn-tiny" id="detailGenreIdentityOverwriteBtn">Overwrite Identity</button>
+        </div>
       </div>`;
     const songBulk = document.getElementById("songsListenedBulk")?.closest("div");
     if (songBulk && songBulk.parentNode === panel) songBulk.insertAdjacentElement("afterend", section);
     else panel.appendChild(section);
-    const runDetailIdentityImport = async (overwrite = false) => {
+
+    const saveBlock = async (overwrite = false) => {
+      const target = currentGenre() || g;
+      if (!target) return toast("Open a genre before saving identity.", true);
       const text = section.querySelector("#detailGenreIdentityBlock")?.value || "";
-      const ok = await importStructuredIdentityBlock(text, { genreFallback: g.genre || "", overwrite });
-      if (ok) {
-        setTimeout(() => {
-          section.querySelector("#detailGenreIdentityBlock").value = buildStructuredIdentityBlock(g);
-          injectDetailIdentityImport(g);
-        }, 80);
+      const parsed = parseIdentityBlock(text);
+      if (!parsed.genre) parsed.genre = target.genre || target.name || "";
+      const matches = identityEntriesMatchingExistingSongs(target, parsed);
+      if (matches.length) {
+        const ok = window.confirm(`${matches.length} identity item${matches.length === 1 ? "" : "s"} already exist in Songs listened. Update the existing row instead of creating a duplicate?`);
+        if (!ok) return;
+      }
+      const ok = await importStructuredIdentityBlock(text, { overwrite, genreFallback: target.genre || target.name || "" });
+      if (ok !== false) {
+        setTimeout(() => injectDetailIdentityImport(target), 120);
       }
     };
-    section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => runDetailIdentityImport(false));
-    section.querySelector("#detailGenreIdentityOverwriteBtn")?.addEventListener("click", () => runDetailIdentityImport(true));
+    section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => saveBlock(false));
+    section.querySelector("#detailGenreIdentityOverwriteBtn")?.addEventListener("click", () => saveBlock(true));
   }
+
 
   function installEditorEvents(root = document) {
     if (!root) return;

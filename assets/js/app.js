@@ -147,57 +147,6 @@
       return status === '' || status === 'unlistened';
     }
 
-    function todayListenDateString() {
-      return new Date().toISOString().slice(0, 10);
-    }
-
-    function isGenreDatedToday(genre) {
-      return String(dateValue(genre) || '') === todayListenDateString();
-    }
-
-    function hasNonZangerGenreForToday(exceptGenre = null) {
-      return (genres || []).some(g => {
-        if (!g) return false;
-        if (exceptGenre && String(g.id) === String(exceptGenre.id)) return false;
-        if (!isGenreDatedToday(g)) return false;
-        return !isGenreZanger(g);
-      });
-    }
-
-    function canAutoAssignTodayFromSpin(genre) {
-      if (!genre) return false;
-      if (isGenreAlreadyListened(genre)) return false;
-      return !hasNonZangerGenreForToday(genre);
-    }
-
-    function stageGenreAsTodayListen(genre) {
-      if (!genre) return false;
-      genre.date_normalized = todayListenDateString();
-      genre.datenormalized = '';
-      genre.status = 'listened';
-      return true;
-    }
-
-    function openGenreFromSpinListen(genre, options = {}) {
-      if (!genre) return;
-      const autoAssigned = canAutoAssignTodayFromSpin(genre);
-      if (autoAssigned) {
-        stageGenreAsTodayListen(genre);
-        openGenreDetail(genre, true);
-        markDirty();
-        updateRemainingCount();
-        showSaveToast(`${genre.genre || 'Genre'} set as today’s listen — save to persist.`, false);
-        return;
-      }
-      openGenreDetail(genre, true);
-      const already = isGenreAlreadyListened(genre);
-      const blockedByToday = hasNonZangerGenreForToday(genre);
-      if (options && options.source === 'manual') {
-        if (already) showSaveToast(`${genre.genre || 'Genre'} already has listening history; date unchanged.`, false);
-        else if (blockedByToday) showSaveToast('Today already has a non-Zanger genre; date unchanged.', false);
-      }
-    }
-
     function getUnlistened() {
       return genres.filter(isGenreRemaining);
     }
@@ -379,6 +328,38 @@
       }
     }
 
+    function albumDiveProgressScore(g) {
+      const dive = g && g.albumDive;
+      const slots = Array.isArray(dive?.slots) ? dive.slots : [];
+      const total = slots.length;
+      const finished = slots.filter(slot => Number(slot?.albumReaction || slot?.reaction || 0) > 0 || slot?.finished || slot?.completed).length;
+      return { total, finished, active: !!(dive && (dive.enabled !== false) && String(dive.status || 'active').toLowerCase() !== 'completed') };
+    }
+
+    function findActiveAlbumDiveGenre() {
+      const active = genres
+        .filter(g => albumDiveProgressScore(g).total > 0 || !!g.albumDive)
+        .filter(g => albumDiveProgressScore(g).active)
+        .sort((a,b) => String(b.albumDive?.lastWorkedAt || '').localeCompare(String(a.albumDive?.lastWorkedAt || '')) || String(a.genre || '').localeCompare(String(b.genre || '')));
+      return active[0] || genres.find(g => albumDiveProgressScore(g).total > 0) || null;
+    }
+
+    function openCurrentAlbumDive(event) {
+      if (event) event.preventDefault();
+      const genre = findActiveAlbumDiveGenre();
+      if (!genre) {
+        showSaveToast('No active Album Dive yet. Open a genre and start one from its Album Dive panel.', true);
+        return false;
+      }
+      openGenreDetail(genre, false, { skipSpotifyHydration: true });
+      if (typeof setAlbumDiveEditorMode === 'function') setAlbumDiveEditorMode(false);
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('topAlbumDiveBtn')?.classList.add('active');
+      setTimeout(() => document.getElementById('albumDivePanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 160);
+      return true;
+    }
+    window.openCurrentAlbumDive = openCurrentAlbumDive;
+
     function randomGenre() {
       const pool = getUnlistened();
       return pool[Math.floor(Math.random() * pool.length)];
@@ -465,7 +446,7 @@
       if (_respin) _respin.onclick = spinWheel;
       if (_veto) _veto.onclick = () => markAsZangerToday(genre);
       if (_listen) _listen.onclick = () => {
-        openGenreFromSpinListen(genre, { source: 'spin' });
+        openGenreDetail(genre, true);
       };
     }
 
@@ -880,7 +861,7 @@
 
     function genreRatingStarsOnly(genre) {
       if (!genre || !genre.rating) return 'Unrated';
-      if (String(genre.rating) === 'zanger') return 'Z Zanger';
+      if (String(genre.rating) === 'zanger') return '✕ Zanger';
       const n = Number(genre.rating);
       if (!Number.isFinite(n) || n < 1 || n > 5) return 'Unrated';
       return `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
@@ -908,8 +889,7 @@
         </div>
         <div class="view-rating-stars" aria-label="Genre rating controls">
           ${[1,2,3,4,5].map(n => `<button type="button" class="view-rating-star ${active === String(n) ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="${n} stars, ${escapeHtml(genreRatingLabel(n))}">★</button>`).join('')}
-          <button type="button" class="view-rating-zanger ${active === 'zanger' ? 'active' : ''}" onclick="setGenreRatingFromView('zanger')" title="Zanger">Z Zanger</button>
-          ${active ? '<button type="button" class="btn btn-ghost btn-tiny" onclick="resetGenreRatingFromView()" title="Clear genre rating">Clear rating</button>' : ''}
+          <button type="button" class="view-rating-zanger ${active === 'zanger' ? 'active' : ''}" onclick="setGenreRatingFromView('zanger')" title="Zanger">Zanger</button>
         </div>
       </div>`;
     }
@@ -1022,24 +1002,6 @@
       }
     }
 
-    function resetGenreRatingFromView() {
-      if (!currentGenre) return;
-      const hadRating = !!currentGenre.rating || currentGenre.status === 'veto' || currentGenre.rank_order != null;
-      currentGenre.rating = '';
-      currentGenre.rank_order = null;
-      if (currentGenre.status === 'veto') currentGenre.status = 'listened';
-      selectedRating = '';
-      libraryUpdatesPending = true;
-      setUnsavedState(true);
-      toggleLibrarySaveButton(true);
-      const restore = preserveScrollSnapshot();
-      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-      applyDetailEditMode(detailEditMode);
-      restore();
-      showSaveToast(hadRating ? 'Genre rating cleared — use the floating Save button to persist it.' : 'Genre rating is already clear.', false);
-    }
-    window.resetGenreRatingFromView = resetGenreRatingFromView;
-
     function setGenreRatingFromView(value) {
       if (!currentGenre) return;
       if (String(value) === 'zanger') {
@@ -1113,14 +1075,13 @@
       return `<span class="genre-header-rating" role="group" aria-label="Genre rating: ${escapeHtml(label)}">
         <span class="genre-header-rating-label">${escapeHtml(label)}</span>
         <span class="genre-header-stars">${starButtons}</span>
-        <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">Z</button>
-        ${active ? '<button type="button" class="genre-header-clear-rating" onclick="event.stopPropagation(); resetGenreRatingFromView()" title="Clear genre rating" aria-label="Clear genre rating">↺</button>' : ''}
+        <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">✕</button>
       </span>`;
     }
 
     function genreRatingDisplay(genre) {
       if (!genre || !genre.rating) return 'Unrated';
-      if (String(genre.rating) === 'zanger') return 'Z Zanger';
+      if (String(genre.rating) === 'zanger') return '✕ Zanger';
       const n = Number(genre.rating);
       return `${'★'.repeat(n)}${'☆'.repeat(5 - n)} ${genreRatingLabel(genre.rating)}`;
     }
@@ -1206,26 +1167,13 @@
     }
 
 
-    function songBelongsToGenreIdentityEditor(song) {
-      const source = String(song?.source || song?.sourceType || '').toLowerCase();
-      return !!(
-        song?.isIdentityTrack ||
-        song?.identityType ||
-        song?.identityLabel ||
-        source === 'genre_identity' ||
-        source === 'genre identity'
-      );
-    }
-
     function buildSongsBulkEditorText(genre) {
       const displaySongLabel = song => {
         const title = String(song?.title || '').trim();
         const artist = String(song?.artist || '').trim();
         return artist && title ? `${artist} — ${title}` : (title || null);
       };
-      return inflateSongsFromStorage(genre?.songs_listened || [])
-        .filter(song => !song.isPending && !songBelongsToGenreIdentityEditor(song))
-        .flatMap(song => {
+      return inflateSongsFromStorage(genre?.songs_listened || []).filter(song => !song.isPending).flatMap(song => {
         const prefix = song.isPromote ? '🔼 PROMOTE: ' : (song.isAdd ? '🔼 ADD: ' : '');
         const reason = song._pendingGenreTag ? `${song.reason || ''} @${song._pendingGenreTag}`.trim() : (song.reason || null);
         const lines = [
@@ -2139,47 +2087,6 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       }
     }
 
-    function captureSongQueueViewport() {
-      const queue = document.querySelector('#screen-listen .song-focus-queue');
-      const activeRow = queue?.querySelector?.('.song-focus-row.active') || null;
-      return {
-        pageX: window.scrollX || window.pageXOffset || 0,
-        pageY: window.scrollY || window.pageYOffset || 0,
-        queueScrollTop: queue ? queue.scrollTop : 0,
-        queueScrollLeft: queue ? queue.scrollLeft : 0,
-        activeTop: activeRow?.getBoundingClientRect?.().top ?? null,
-        activeLeft: activeRow?.getBoundingClientRect?.().left ?? null
-      };
-    }
-
-    function restoreSongQueueViewport(snapshot) {
-      if (!snapshot) return;
-      const restoreOnce = () => {
-        const queue = document.querySelector('#screen-listen .song-focus-queue');
-        if (queue) {
-          queue.scrollTop = Number(snapshot.queueScrollTop) || 0;
-          queue.scrollLeft = Number(snapshot.queueScrollLeft) || 0;
-          const activeRow = queue.querySelector?.('.song-focus-row.active') || null;
-          if (activeRow && Number.isFinite(snapshot.activeTop)) {
-            const nextTop = activeRow.getBoundingClientRect().top;
-            if (Number.isFinite(nextTop)) {
-              queue.scrollTop += nextTop - snapshot.activeTop;
-            }
-          }
-        }
-        window.scrollTo({
-          top: Number(snapshot.pageY) || 0,
-          left: Number(snapshot.pageX) || 0,
-          behavior: 'auto'
-        });
-      };
-      restoreOnce();
-      requestAnimationFrame(restoreOnce);
-      setTimeout(restoreOnce, 40);
-      setTimeout(restoreOnce, 140);
-      setTimeout(restoreOnce, 320);
-    }
-
     async function updateTrackUrlFromCard(encodedKey, pendingIndex, button, path = '') {
       if (!currentGenre) return;
       // The inline detail editor and the focused Song Queue details drawer use
@@ -2419,21 +2326,17 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
 
         removeLoggedSongsFromPending(currentGenre);
         const restore = preserveScrollSnapshot();
-        const queueViewport = captureSongQueueViewport();
-        const nextKey = typeof songIdentity === 'function' ? songIdentity(target) : '';
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-        try {
-          if (nextKey && typeof window.setSongFocus === 'function') {
-            window.setSongFocus(nextKey);
-          } else if (nextKey && typeof window.openSongEditorFromQueue === 'function') {
-            window.openSongEditorFromQueue(nextKey);
-          } else if (typeof window.enhanceSongListeningExperience === 'function') {
-            window.enhanceSongListeningExperience();
-          }
-        } catch (_) {}
         applyDetailEditMode(detailEditMode);
         restore();
-        restoreSongQueueViewport(queueViewport);
+        try {
+          const nextKey = typeof songIdentity === 'function' ? songIdentity(target) : '';
+          if (nextKey && typeof window.openSongEditorFromQueue === 'function') {
+            setTimeout(() => window.openSongEditorFromQueue(nextKey), 0);
+          } else if (typeof window.enhanceSongListeningExperience === 'function') {
+            setTimeout(() => window.enhanceSongListeningExperience(), 0);
+          }
+        } catch (_) {}
         markListeningUpdatePending();
         if (metadataWarning) {
           console.warn('Track URL updated with metadata warning:', metadataWarning);
@@ -2647,12 +2550,29 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       });
     }
     
+    function songTitleWithEditionMarkup(value) {
+      const text = String(value || '').trim();
+      if (!text) return '';
+      const patterns = [
+        /^(.*?)(\s+(?:-|–|—)\s*(?:remaster(?:ed)?|\d{4}\s+remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live|demo|bonus track|explicit|clean|edit|version)\b.*)$/i,
+        /^(.*?)(\s*\((?:[^)]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live|demo|bonus track|explicit|clean|edit|version)[^)]*)\)\s*)$/i,
+        /^(.*?)(\s*\[(?:[^\]]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live|demo|bonus track|explicit|clean|edit|version)[^\]]*)\]\s*)$/i,
+      ];
+      for (const re of patterns) {
+        const match = text.match(re);
+        if (match && match[1] && match[2] && match[1].trim().length >= 2) {
+          return `${escapeHtml(match[1].trim())}<span class="song-title-edition">${escapeHtml(match[2].trim())}</span>`;
+        }
+      }
+      return escapeHtml(text);
+    }
+
     function renderSongEntry(s, isChild, options = {}) {
       const rawUrl = normalizeSongUrl(s.url || s.spotifyUrl || '');
       const hasHref = /^https?:\/\//i.test(rawUrl);
       const source = songUrlSource(rawUrl || s.spotifyUrl || '');
       const defaultTitle = source === 'spotify' ? 'Spotify track' : (source === 'youtube' ? 'YouTube track' : (hasHref ? 'Track' : 'Linked track'));
-      const titleText = escapeHtml(s.title || defaultTitle);
+      const titleText = songTitleWithEditionMarkup(s.title || defaultTitle);
       const href = escapeHtml(rawUrl);
       const pendingIndex = Number.isInteger(options.pendingIndex) ? options.pendingIndex : null;
       const originFit = s.originFit != null ? Number(s.originFit) : (s.isPending && s.score != null ? Number(s.score) : null);
@@ -2752,31 +2672,11 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       if (block) block.value = buildDiscordBlock();
     }
 
-    async function copyDiscordBlockFromGenreHeader(button) {
-      if (!currentGenre) return;
-      const text = buildDiscordBlock();
-      try {
-        await navigator.clipboard.writeText(text);
-        if (button) {
-          const old = button.textContent;
-          button.textContent = '✓ Copied';
-          button.classList.add('copied');
-          setTimeout(() => {
-            button.textContent = old || '⧉ Discord';
-            button.classList.remove('copied');
-          }, 1200);
-        }
-        showSaveToast('Discord block copied.', false);
-      } catch (error) {
-        alert(text);
-      }
-    }
-
     function renderStars() {
       const starsEl = document.getElementById('ratingStars');
       starsEl.innerHTML = [1,2,3,4,5].map(n =>
         `<button class="star-btn ${String(n) === String(selectedRating) ? 'active' : ''}" data-rating="${n}" aria-label="${n} stars">★</button>`
-      ).join('') + (currentGenre?.rating ? '<button type="button" class="btn btn-ghost btn-tiny" onclick="resetGenreRatingFromView(); renderStars();" title="Clear rating">Clear</button>' : '');
+      ).join('');
 
       [...starsEl.querySelectorAll('.star-btn')].forEach(btn => {
         btn.onclick = () => {
@@ -2818,8 +2718,10 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         currentGenre.favoriteartist = artist;
         currentGenre.favoritesongartwork = artwork;
       }
-      document.getElementById('favoriteSongUrl').value = currentGenre.favoritesongurl || '';
-      document.getElementById('favoriteSong').value = currentGenre.favoritesong || '';
+      const favUrlInput = document.getElementById('favoriteSongUrl');
+      const favTitleInput = document.getElementById('favoriteSong');
+      if (favUrlInput) favUrlInput.value = currentGenre.favoritesongurl || '';
+      if (favTitleInput) favTitleInput.value = currentGenre.favoritesong || '';
       markDirty();
       loadListenScreen(currentGenre, { preserveDirty: true });
     }
@@ -2845,7 +2747,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       loadListenScreen(genre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(true);
       markDirty();
-      showSaveToast('Zanger logged — click Save Changes to keep it.', false);
+      showSaveToast('Zanger logged for today — click Save Changes to keep it.', false);
     }
 
 async function prepareAndSaveCurrentGenre(options = {}) {
@@ -2858,8 +2760,10 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       const alreadyListened = !!dateValue(currentGenre);
 
       currentGenre.rating = currentGenre.rating === 'zanger' ? 'zanger' : (selectedRating || currentGenre.rating || '');
-      currentGenre.favoritesong = document.getElementById('favoriteSong').value.trim();
-      currentGenre.favoritesongurl = document.getElementById('favoriteSongUrl').value.trim();
+      const favoriteSongInput = document.getElementById('favoriteSong');
+      const favoriteSongUrlInput = document.getElementById('favoriteSongUrl');
+      if (favoriteSongInput) currentGenre.favoritesong = favoriteSongInput.value.trim();
+      if (favoriteSongUrlInput) currentGenre.favoritesongurl = favoriteSongUrlInput.value.trim();
       if (currentGenre.favoritesongurl && currentGenre.favoritesongurl.includes('spotify.com/track/')) {
         const officialFavorite = await fetchSpotifyTrackMetadata(currentGenre.favoritesongurl);
         if (officialFavorite) {
@@ -3166,8 +3070,10 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       const preserveDirty = !!options.preserveDirty;
       selectedRating = genre.rating && genre.rating !== 'zanger' ? String(genre.rating) : '';
 
-      document.getElementById('favoriteSong').value = genre.favoritesong || '';
-      document.getElementById('favoriteSongUrl').value = genre.favoritesongurl || '';
+      const favTitleInput = document.getElementById('favoriteSong');
+      const favUrlInput = document.getElementById('favoriteSongUrl');
+      if (favTitleInput) favTitleInput.value = genre.favoritesong || '';
+      if (favUrlInput) favUrlInput.value = genre.favoritesongurl || '';
       document.getElementById('monthlyContender').checked = !!genre.monthlycontender;
       document.getElementById('monthFavorite').checked = !!genre.monthfavorite;
       document.getElementById('monthLeastFavorite').checked = !!genre.monthleastfavorite;
@@ -3196,7 +3102,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
               <div class="status-row">
                 ${ratingHero}
                 ${listenedDate ? `<span class="tag">Listened on ${escapeHtml(listenedDate)}</span>` : (hasListenMarkers ? '<span class="tag tag-warn">Marked listened — reset if mistaken</span>' : '')}
-                ${songCount ? `<span class="tag dc-song-count-chip">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag dc-needs-song-log-chip">Needs song log</span>'}
+                ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
                 ${hasPending(genre) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
                 ${genre.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
@@ -3208,10 +3114,9 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(1)">Next →</button>
                 <button type="button" class="btn btn-secondary edit-mode-toggle" onclick="toggleDetailEditMode()">${detailEditMode ? 'Hide Setup Editor' : 'Edit Setup / Curation'}</button>
                 <button type="button" class="spotify-queue-btn" onclick="openSpotifyPlaylistModal('${encodeURIComponent(String(genre.id || ''))}')">＋ Playlist</button>
-                <button type="button" class="btn btn-secondary dg-discord-action" title="Copy Discord share block" aria-label="Copy Discord share block" onclick="copyDiscordBlockFromGenreHeader(this)">⧉ Discord</button>
                 ${!hasListenMarkers
-                  ? `<button type="button" class="btn btn-primary" title="Log this genre for today and remove it from the remaining spin bucket" onclick="markCurrentGenreListened()">Log today</button>`
-                  : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" title="Reset this genre to unlistened" onclick="unlistenCurrentGenre()">Unlisten</button>`}
+                  ? `<button type="button" class="btn btn-primary" onclick="markCurrentGenreListened()">✓ Mark as Listened Today</button>`
+                  : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Reset to Unlistened</button>`}
               </div>
 
             </div>
@@ -3506,191 +3411,6 @@ function blockSaveIfDuplicateGenres() {
   showSaveToast(`${groups.length} duplicate genre name${groups.length === 1 ? '' : 's'} must be cleaned before saving.`, true);
   return true;
 }
-
-
-function mergeTextFieldValue(primaryValue, duplicateValue, label='') {
-  const a = String(primaryValue || '').trim();
-  const b = String(duplicateValue || '').trim();
-  if (!b) return primaryValue || '';
-  if (!a) return b;
-  if (a.toLowerCase() === b.toLowerCase()) return primaryValue;
-  if (a.toLowerCase().includes(b.toLowerCase())) return primaryValue;
-  if (b.toLowerCase().includes(a.toLowerCase())) return b;
-  return `${a}\n\n${label ? label + ': ' : ''}${b}`;
-}
-
-function mergeStringArrayUnique(primary, duplicate) {
-  const out = [];
-  const seen = new Set();
-  const add = value => {
-    if (value == null) return;
-    const text = typeof value === 'string' ? value.trim() : String(value).trim();
-    if (!text) return;
-    const key = text.toLowerCase();
-    if (seen.has(key)) return;
-    seen.add(key);
-    out.push(text);
-  };
-  (Array.isArray(primary) ? primary : String(primary || '').split(/[,\n]/)).forEach(add);
-  (Array.isArray(duplicate) ? duplicate : String(duplicate || '').split(/[,\n]/)).forEach(add);
-  return out;
-}
-
-function songMergeLookupKey(song) {
-  const keys = typeof songIdentityKeys === 'function' ? songIdentityKeys(song) : [];
-  return String(keys[0] || keys[1] || keys[2] || song?.spotifyId || song?.url || `${song?.artist || ''}::${song?.title || ''}`).toLowerCase();
-}
-
-function mergeSongArrayUnique(primary = [], duplicate = []) {
-  const out = Array.isArray(primary) ? primary : [];
-  const byKey = new Map();
-  out.forEach(song => {
-    const key = songMergeLookupKey(song);
-    if (key) byKey.set(key, song);
-  });
-  (Array.isArray(duplicate) ? duplicate : []).forEach(song => {
-    if (!song || typeof song !== 'object') return;
-    const key = songMergeLookupKey(song);
-    const existing = key ? byKey.get(key) : null;
-    if (existing) {
-      mergeSongObjectsInPlace(existing, song);
-    } else {
-      const copy = clonePlainObject(song) || song;
-      out.push(copy);
-      if (key) byKey.set(key, copy);
-    }
-  });
-  return out;
-}
-
-function mergePendingSongArrayUnique(primary = [], duplicate = []) {
-  const out = Array.isArray(primary) ? primary : [];
-  const seen = new Set(out.map(songMergeLookupKey).filter(Boolean));
-  (Array.isArray(duplicate) ? duplicate : []).forEach(song => {
-    const key = songMergeLookupKey(song);
-    if (key && seen.has(key)) return;
-    out.push(clonePlainObject(song) || song);
-    if (key) seen.add(key);
-  });
-  return out;
-}
-
-function addMergedGenreAlias(target, duplicate) {
-  if (!target || !duplicate) return;
-  const oldName = String(duplicate.genre || '').trim();
-  if (!oldName || oldName.toLowerCase() === String(target.genre || '').trim().toLowerCase()) return;
-  const aliasSet = new Set();
-  const aliases = Array.isArray(target.aliases) ? target.aliases.slice() : [];
-  aliases.forEach(a => aliasSet.add(String(a || '').toLowerCase()));
-  if (!aliasSet.has(oldName.toLowerCase())) aliases.push(oldName);
-  target.aliases = aliases;
-  target.merged_genre_names = mergeStringArrayUnique(target.merged_genre_names, [oldName]);
-  const oldId = String(duplicate.id ?? '').trim();
-  if (oldId) target.merged_genre_ids = mergeStringArrayUnique(target.merged_genre_ids, [oldId]);
-}
-
-function mergeGenreObjectIntoCanonical(target, duplicate) {
-  if (!target || !duplicate || target === duplicate) return target;
-  addMergedGenreAlias(target, duplicate);
-
-  ['subcategory','subsubcategory','subsubsubcategory','category_path','vibe','parse_notes'].forEach(key => {
-    if ((target[key] == null || target[key] === '') && duplicate[key] != null && duplicate[key] !== '') target[key] = duplicate[key];
-  });
-
-  ['summary','notes','key_artists','suggested_songs'].forEach(key => {
-    target[key] = mergeTextFieldValue(target[key], duplicate[key], `Merged from ${duplicate.genre || 'duplicate genre'}`);
-  });
-
-  if ((target.status == null || target.status === '') && duplicate.status) target.status = duplicate.status;
-  if ((target.rating == null || target.rating === '') && duplicate.rating) target.rating = duplicate.rating;
-  if ((target.rank_order == null || target.rank_order === '') && duplicate.rank_order) target.rank_order = duplicate.rank_order;
-  if (!target.favorite_song && duplicate.favorite_song) target.favorite_song = duplicate.favorite_song;
-  if (!target.favorite_song_url && duplicate.favorite_song_url) target.favorite_song_url = duplicate.favorite_song_url;
-  if (!target.favoritesong && duplicate.favoritesong) target.favoritesong = duplicate.favoritesong;
-  if (!target.favoritesongurl && duplicate.favoritesongurl) target.favoritesongurl = duplicate.favoritesongurl;
-  if (!target.monthly_contender && duplicate.monthly_contender) target.monthly_contender = duplicate.monthly_contender;
-  if (!target.monthlycontender && duplicate.monthlycontender) target.monthlycontender = duplicate.monthlycontender;
-
-  target.songs_listened = mergeSongArrayUnique(target.songs_listened, duplicate.songs_listened);
-  target.pending_songs = mergePendingSongArrayUnique(target.pending_songs, duplicate.pending_songs);
-
-  target.synonyms = mergeStringArrayUnique(target.synonyms, duplicate.synonyms);
-  target.aliases = mergeStringArrayUnique(target.aliases, duplicate.aliases);
-  if (duplicate.identity && typeof duplicate.identity === 'object') {
-    if (!target.identity || typeof target.identity !== 'object') target.identity = {};
-    Object.entries(duplicate.identity).forEach(([key, value]) => {
-      if (target.identity[key] == null || target.identity[key] === '' || (Array.isArray(target.identity[key]) && !target.identity[key].length)) {
-        target.identity[key] = clonePlainObject(value) || value;
-      }
-    });
-  }
-
-  if (!target.albumDive && duplicate.albumDive) target.albumDive = clonePlainObject(duplicate.albumDive) || duplicate.albumDive;
-  if (!target.album_dive && duplicate.album_dive) target.album_dive = clonePlainObject(duplicate.album_dive) || duplicate.album_dive;
-  return target;
-}
-
-function renderDuplicateGenreMergeCard() {
-  const groups = findDuplicateGenreGroups(genres);
-  if (!groups.length) return '';
-  const rows = groups.map(group => {
-    const keyArg = encodeURIComponent(group.key);
-    const options = group.rows.map(g => `<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre || 'Untitled')} · ID ${escapeHtml(String(g.id ?? '?'))}</option>`).join('');
-    const details = group.rows.map(g => {
-      const songCount = Array.isArray(g.songs_listened) ? g.songs_listened.length : 0;
-      const pendingCount = Array.isArray(g.pending_songs) ? g.pending_songs.length : 0;
-      const path = categoryPath(g) || g.category_path || '';
-      return `<span class="review-chip">${escapeHtml(g.genre || 'Untitled')} · ID ${escapeHtml(String(g.id ?? '?'))}${songCount ? ` · ${songCount} songs` : ''}${pendingCount ? ` · ${pendingCount} pending` : ''}${path ? ` · ${escapeHtml(path)}` : ''}</span>`;
-    }).join('');
-    const selectId = `dupMergeCanonical-${String(group.key).replace(/[^a-z0-9_-]/gi, '-')}`;
-    return `<div class="review-row review-duplicate-genre-row">
-      <div>
-        <div class="review-track-title">${escapeHtml(group.rows.map(g => g.genre || 'Untitled').join(' / '))}</div>
-        <div class="review-meta">${details}</div>
-      </div>
-      <div class="review-move review-duplicate-genre-actions">
-        <label class="review-pending-route-genre"><span>Keep canonical genre</span><select id="${escapeHtml(selectId)}">${options}</select></label>
-        <button type="button" class="btn btn-primary" onclick="mergeDuplicateGenreGroup('${keyArg}', '${escapeHtml(selectId)}')">Merge duplicates</button>
-      </div>
-    </div>`;
-  }).join('');
-  return `<div class="review-card review-duplicate-genre-card" id="reviewDuplicateGenreCard">
-    <div class="review-card-head">
-      <div>
-        <h3>Duplicate genre names</h3>
-        <p class="small" style="margin:6px 0 0;">Merge near-identical genre rows before saving. This preserves the selected canonical ID, folds songs/pending/notes into it, and stores the old spelling/ID as merge history.</p>
-      </div>
-      <span class="review-chip warn">${groups.length} group${groups.length === 1 ? '' : 's'}</span>
-    </div>
-    <div class="review-list-scroll review-duplicate-genre-list">${rows}</div>
-  </div>`;
-}
-
-function mergeDuplicateGenreGroup(encodedKey, selectId) {
-  const key = decodeURIComponent(String(encodedKey || ''));
-  const canonicalId = String(document.getElementById(selectId)?.value || '').trim();
-  const group = findDuplicateGenreGroups(genres).find(g => g.key === key);
-  if (!group || group.rows.length < 2) {
-    showSaveToast('Could not find that duplicate genre group. Refresh Studio and try again.', true);
-    return;
-  }
-  const target = group.rows.find(g => String(g.id) === canonicalId) || group.rows[0];
-  if (!target) {
-    showSaveToast('Choose a canonical genre to keep.', true);
-    return;
-  }
-  const duplicates = group.rows.filter(g => g !== target);
-  const confirmed = window.confirm(`Merge ${duplicates.map(g => g.genre || g.id).join(', ')} into ${target.genre || target.id}?\n\nThis keeps ID ${target.id ?? '?'} and removes the duplicate row(s).`);
-  if (!confirmed) return;
-  duplicates.forEach(dup => mergeGenreObjectIntoCanonical(target, dup));
-  genres = genres.filter(g => !duplicates.includes(g));
-  filteredGenres = filteredGenres.filter(g => !duplicates.includes(g));
-  libraryUpdatesPending = true;
-  hasUnsavedChanges = true;
-  updateGlobalGenreRefs();
-  showSaveToast(`Merged ${duplicates.length} duplicate genre${duplicates.length === 1 ? '' : 's'} into ${target.genre}. Save Library Updates to persist.`, false);
-  renderReview();
-}
     
     function resolvePendingTargetGenre(tag, sourceGenreId) {
       const wanted = normalizePendingTag(tag);
@@ -3937,789 +3657,25 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
 
     function reviewQueuedPendingRowHtml(row) {
       const source = row.sourceName || 'Unknown source';
-      const originFit = row.fit !== '' && row.fit != null ? Number(row.fit) : null;
-      const nominatedFit = row.song?.nominatedFit != null ? Number(row.song.nominatedFit) : null;
-      const fitLine = originFit != null && Number.isFinite(originFit) ? `<span class="review-chip">source fit ${escapeHtml(String(originFit))}/5</span>` : '';
-      const hereFitLine = nominatedFit != null && Number.isFinite(nominatedFit) && nominatedFit >= 4 ? `<span class="review-chip review-chip-good">ready ${escapeHtml(String(nominatedFit))}/5</span>` : '';
+      const fitLine = row.fit !== '' && row.fit != null ? `<span class="review-chip">source fit ${escapeHtml(String(row.fit))}/5</span>` : '';
       const addedLine = row.added ? `<span class="review-chip">added ${escapeHtml(String(row.added))}</span>` : '';
       const searchText = [row.song.artist, row.song.title, row.targetGenre.genre, source, row.song.url].join(' ').toLowerCase();
-      const copyTitle = String(row.song?.title || row.song?.name || row.song?.url || 'Untitled track').trim();
-      const copyArtist = String(row.song?.artist || '').trim();
-      const copyGenre = String(row.targetGenre?.genre || 'Unknown genre').trim();
-      const copyLine = `* ${copyArtist ? `${copyArtist} - ` : ''}${copyTitle}: ${copyGenre}`;
-      const targetArg = visualActionArg(row.targetGenre.id);
-      const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
-      const idx = Number(row.index) || 0;
-      const rowId = pendingReviewRowId(row.targetGenre.id, row.key || songIdentity(row.song) || '');
-      const genreInputId = `${rowId}-genre`;
-      const fitInputId = `${rowId}-fit`;
-      const currentFit = nominatedFit === 4 || nominatedFit === 5 ? nominatedFit : '';
-      const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong ${currentFit === n ? 'active' : ''}" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
-      const suggested = row.targetGenre.genre || 'Unknown genre';
-      return `<div class="review-row review-pending-action-row review-pending-route-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}" data-pending-target-id="${escapeHtml(String(row.targetGenre.id || ''))}" data-pending-target-name="${escapeHtml(String(row.targetGenre.genre || ''))}" data-pending-source="${escapeHtml(String(source || ''))}" data-pending-artist="${escapeHtml(String(row.song.artist || ''))}" data-pending-title="${escapeHtml(String(row.song.title || row.song.name || ''))}" data-pending-url="${escapeHtml(String(row.song.url || row.song.spotifyUrl || ''))}" data-pending-key="${escapeHtml(String(row.key || songIdentity(row.song) || ''))}">
-        <div class="review-pending-main">
+      return `<div class="review-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
+        <div>
           <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
           <div class="review-meta">
-            <span class="review-chip review-chip-good">suggested: ${escapeHtml(suggested)}</span>
+            <span class="review-chip">queued in ${escapeHtml(row.targetGenre.genre || 'Unknown genre')}</span>
             <span class="review-chip">from ${escapeHtml(source)}</span>
             ${fitLine}
-            ${hereFitLine}
             ${addedLine}
           </div>
-          <p class="studio-pending-route-copy">Pick the best matching genre, choose fit 4/5 for a new genre, or choose the source genre to return it there.</p>
         </div>
-        <div class="review-move review-pending-actions review-pending-route-actions">
-          <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
-          <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value="${escapeHtml(String(currentFit))}"></div>
-          <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendReviewPendingAsAdd('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
-          <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Remove this stuck/incorrect nomination from the pending queue" onclick="dismissReviewPendingFromDesk('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
-          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
+        <div class="review-move">
+          <button type="button" class="btn btn-secondary" onclick="openGenreByIdEncoded('${visualActionArg(row.targetGenre.id)}', false)">Open Target</button>
+          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}
         </div>
       </div>`;
     }
-
-    function pendingTagToGenreLabel(tag) {
-      return String(tag || '')
-        .replace(/^@+/, '')
-        .replace(/[_-]+/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .replace(/\b\w/g, ch => ch.toUpperCase());
-    }
-
-    function reviewManualPendingRowHtml(row) {
-      const source = row.sourceGenre?.genre || 'Unknown source';
-      const sourceFit = row.song?.score != null && row.song?.score !== '' ? Number(row.song.score) : null;
-      const fitLine = sourceFit != null && Number.isFinite(sourceFit) ? `<span class="review-chip">source fit ${escapeHtml(String(sourceFit))}/5</span>` : '';
-      const suggested = pendingTagToGenreLabel(row.tag || row.song?._pendingGenreTag || '');
-      const searchText = [row.song?.artist, row.song?.title, row.sourceGenre?.genre, row.tag, suggested, row.song?.url].join(' ').toLowerCase();
-      const copyTitle = String(row.song?.title || row.song?.name || row.song?.url || 'Untitled track').trim();
-      const copyArtist = String(row.song?.artist || '').trim();
-      const copyGenre = suggested || 'Choose genre';
-      const copyLine = `* ${copyArtist ? `${copyArtist} - ` : ''}${copyTitle}: ${copyGenre}`;
-      const sourceArg = visualActionArg(row.sourceGenre?.id || '');
-      const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
-      const rowId = pendingReviewRowId(row.sourceGenre?.id || 'manual', row.key || songIdentity(row.song) || '');
-      const genreInputId = `${rowId}-manual-genre`;
-      const fitInputId = `${rowId}-manual-fit`;
-      const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
-      return `<div class="review-row review-pending-action-row review-pending-route-row review-pending-manual-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}" data-pending-kind="manual-tag" data-pending-source-id="${escapeHtml(String(row.sourceGenre?.id || ''))}" data-pending-source="${escapeHtml(String(source || ''))}" data-pending-artist="${escapeHtml(String(row.song?.artist || ''))}" data-pending-title="${escapeHtml(String(row.song?.title || row.song?.name || ''))}" data-pending-url="${escapeHtml(String(row.song?.url || row.song?.spotifyUrl || ''))}" data-pending-key="${escapeHtml(String(row.key || songIdentity(row.song) || ''))}">
-        <div class="review-pending-main">
-          <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
-          <div class="review-meta">
-            <span class="review-chip review-chip-good">suggested: ${escapeHtml(suggested || 'Choose genre')}</span>
-            <span class="review-chip">from ${escapeHtml(source)}</span>
-            ${fitLine}
-          </div>
-          <p class="studio-pending-route-copy">Pick the best matching genre, choose fit 4/5 for a new genre, or choose the source genre to keep it there.</p>
-        </div>
-        <div class="review-move review-pending-actions review-pending-route-actions">
-          <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
-          <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value=""></div>
-          <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendManualPendingTagAsAdd('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
-          <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Clear this unresolved pending tag" onclick="dismissManualPendingTag('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
-          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
-        </div>
-      </div>`;
-    }
-
-
-    function setReviewPendingInlineFit(inputId, value, button) {
-      const input = document.getElementById(inputId);
-      if (input) input.value = String(value);
-      const wrap = button?.closest?.('.review-pending-fitline');
-      if (wrap) {
-        wrap.querySelectorAll('.pending-fit-btn').forEach(btn => btn.classList.toggle('active', btn === button));
-      }
-    }
-
-    function reviewPendingContextFromRow(row) {
-      if (!row) return {};
-      return {
-        targetId: row.dataset.pendingTargetId || '',
-        targetName: row.dataset.pendingTargetName || '',
-        sourceName: row.dataset.pendingSource || '',
-        artist: row.dataset.pendingArtist || '',
-        title: row.dataset.pendingTitle || '',
-        url: row.dataset.pendingUrl || '',
-        key: row.dataset.pendingKey || ''
-      };
-    }
-
-    function normalizedPendingSongTitle(songOrText) {
-      const raw = typeof songOrText === 'string' ? songOrText : (songOrText?.title || songOrText?.name || '');
-      return normalizePendingTag(raw)
-        .replace(/\b(?:remaster(?:ed)?|mono|stereo|single version|single edit|radio edit|edit|version)\b/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-    }
-
-    function normalizedPendingSongArtist(songOrText) {
-      const raw = typeof songOrText === 'string' ? songOrText : (songOrText?.artist || '');
-      return normalizePendingTag(raw);
-    }
-
-    function pendingFieldLooksSame(a, b) {
-      const left = normalizePendingTag(a || '');
-      const right = normalizePendingTag(b || '');
-      if (!left || !right) return false;
-      return left === right || left.includes(right) || right.includes(left);
-    }
-
-    function pendingSongMatchesReviewContext(candidate, context = {}) {
-      if (!candidate) return false;
-      const wantedKeys = [context.decodedKey, context.key].filter(Boolean).map(key => String(key).trim().toLowerCase());
-      const candidateKeys = songIdentityKeys(candidate);
-      const candidateKey = songIdentity(candidate);
-      if (wantedKeys.some(key => key && (candidateKey === key || candidateKeys.includes(key)))) return true;
-
-      const wantedUrl = normalizeSongUrl(context.url || '').trim().toLowerCase();
-      const candidateUrl = normalizeSongUrl(candidate.url || candidate.spotifyUrl || '').trim().toLowerCase();
-      if (wantedUrl && candidateUrl && wantedUrl === candidateUrl) return true;
-
-      const wantedTitle = normalizedPendingSongTitle(context.title || '');
-      const candidateTitle = normalizedPendingSongTitle(candidate);
-      const wantedArtist = normalizedPendingSongArtist(context.artist || '');
-      const candidateArtist = normalizedPendingSongArtist(candidate);
-      const wantedSource = normalizePendingTag(context.sourceName || '');
-      const candidateSource = normalizePendingTag(candidate.pendingFrom || candidate.source || '');
-
-      const titleMatches = wantedTitle && candidateTitle && (candidateTitle === wantedTitle || candidateTitle.includes(wantedTitle) || wantedTitle.includes(candidateTitle));
-      const artistMatches = !wantedArtist || !candidateArtist || candidateArtist === wantedArtist || candidateArtist.includes(wantedArtist) || wantedArtist.includes(candidateArtist);
-      const sourceMatches = !wantedSource || !candidateSource || candidateSource === wantedSource;
-      return !!(titleMatches && artistMatches && sourceMatches);
-    }
-
-    function findReviewPendingNominationInTarget(target, pendingIndex, decodedKey, context = {}) {
-      if (!target) return null;
-      const pending = normalizePendingSongs(target.pending_songs || []);
-      let index = Number(pendingIndex);
-      let song = Number.isInteger(index) && index >= 0 ? pending[index] : null;
-      const rowContext = { ...context, decodedKey };
-      if (song && pendingSongMatchesReviewContext(song, rowContext)) {
-        target.pending_songs = pending;
-        return { target, pending, song, index };
-      }
-      if (decodedKey) {
-        index = pending.findIndex(candidate => songIdentity(candidate) === decodedKey || songIdentityKeys(candidate).includes(decodedKey));
-        if (index >= 0) {
-          target.pending_songs = pending;
-          return { target, pending, song: pending[index], index };
-        }
-      }
-      index = pending.findIndex(candidate => pendingSongMatchesReviewContext(candidate, rowContext));
-      if (index >= 0) {
-        target.pending_songs = pending;
-        return { target, pending, song: pending[index], index };
-      }
-      return null;
-    }
-
-    function findReviewPendingNomination(targetId, pendingIndex, encodedKey = '', context = {}) {
-      let decodedKey = '';
-      try {
-        decodedKey = decodeURIComponent(String(encodedKey || ''));
-      } catch (error) {
-        decodedKey = String(encodedKey || '');
-      }
-      const mergedContext = { ...context, decodedKey, key: context.key || decodedKey };
-      const target = (genres || []).find(g => String(g?.id) === String(targetId));
-      const foundInTarget = findReviewPendingNominationInTarget(target, pendingIndex, decodedKey, mergedContext);
-      if (foundInTarget) return foundInTarget;
-
-      const hintedTargetName = mergedContext.targetName || '';
-      const hintedTarget = hintedTargetName
-        ? (genres || []).find(g => normalizePendingTag(g?.genre || '') === normalizePendingTag(hintedTargetName))
-        : null;
-      if (hintedTarget && (!target || String(hintedTarget.id) !== String(target.id))) {
-        const foundHinted = findReviewPendingNominationInTarget(hintedTarget, pendingIndex, decodedKey, mergedContext);
-        if (foundHinted) return foundHinted;
-      }
-
-      for (const genre of (genres || [])) {
-        if (!genre || String(genre.id) === String(target?.id || '') || String(genre.id) === String(hintedTarget?.id || '')) continue;
-        const found = findReviewPendingNominationInTarget(genre, -1, decodedKey, mergedContext);
-        if (found) return found;
-      }
-      return null;
-    }
-
-    function officialSongFromPending(song, targetGenre, mode = 'canon') {
-      const out = { ...(song || {}) };
-      const targetFit = out.nominatedFit != null ? Number(out.nominatedFit) : null;
-      const sourceFit = out.originFit != null ? Number(out.originFit) : (out.score != null ? Number(out.score) : null);
-      out.url = normalizeSongUrl(out.url || out.spotifyUrl || '');
-      out.score = Number.isFinite(targetFit) ? targetFit : (Number.isFinite(sourceFit) ? sourceFit : null);
-      out.promotedFrom = out.pendingFrom || out.source || '';
-      out.promotedFromFit = Number.isFinite(sourceFit) ? sourceFit : null;
-      out.promotedTo = targetGenre?.genre || '';
-      out.reviewedAt = new Date().toISOString();
-      delete out.isPending;
-      delete out.pendingFrom;
-      delete out.originFit;
-      delete out.nominatedFit;
-      delete out.levelUp;
-      out.isLevelUp = false;
-      out.isAdd = mode === 'add';
-      return out;
-    }
-
-    function stageReviewPendingChange(message) {
-      libraryUpdatesPending = true;
-      setUnsavedState(true);
-      toggleLibrarySaveButton(true);
-      const restore = preserveScrollSnapshot();
-      renderReview();
-      restore();
-      showSaveToast(`${message} Save Library Updates to persist.`, false);
-    }
-
-    function setReviewPendingFit(targetId, pendingIndex, encodedKey, value) {
-      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
-      if (!found) {
-        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
-        return;
-      }
-      found.song.nominatedFit = Number(value);
-      found.target.pending_songs = found.pending;
-      stageReviewPendingChange(`Target fit set to ${value}/5.`);
-    }
-
-    function resolveReviewPendingNomination(targetId, pendingIndex, encodedKey, mode = 'canon') {
-      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
-      if (!found) {
-        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
-        return;
-      }
-      const label = [found.song.artist, found.song.title].filter(Boolean).join(' — ') || found.song.title || found.song.url || 'This song';
-      if (mode === 'dismiss') {
-        if (!window.confirm(`Dismiss pending nomination for ${label}?`)) return;
-        found.pending.splice(found.index, 1);
-        found.target.pending_songs = found.pending;
-        stageReviewPendingChange('Pending nomination dismissed.');
-        return;
-      }
-
-      found.target.songs_listened = inflateSongsFromStorage(found.target.songs_listened || []).filter(song => !song.isPending);
-      const official = officialSongFromPending(found.song, found.target, mode);
-      const key = songIdentity(official);
-      const already = key ? found.target.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
-      if (!already) found.target.songs_listened.push(official);
-      found.pending.splice(found.index, 1);
-      found.target.pending_songs = found.pending;
-      const action = mode === 'add' ? 'Accepted as ADD.' : 'Accepted as target song.';
-      stageReviewPendingChange(already ? 'Song was already logged; pending nomination removed.' : action);
-    }
-
-    function findGenreByNameLoose(name) {
-      const needle = normalizePendingTag(name || '');
-      if (!needle) return null;
-      return (genres || []).find(g => normalizePendingTag(g?.genre || '') === needle) ||
-        (genres || []).find(g => normalizePendingTag(g?.genre || '').includes(needle) || needle.includes(normalizePendingTag(g?.genre || ''))) ||
-        null;
-    }
-
-    function routeGenreSlug(value) {
-      return String(value || '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .replace(/&/g, ' and ')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .slice(0, 64) || 'genre';
-    }
-
-    function nextGenreNumericId() {
-      const max = (genres || []).reduce((highest, genre) => {
-        const id = Number(genre?.id);
-        return Number.isFinite(id) ? Math.max(highest, id) : highest;
-      }, -1);
-      return max + 1;
-    }
-
-    function buildRoutedGenreScaffold(name, sourceGenre = null) {
-      const cleanName = String(name || '').trim().replace(/^@+/, '');
-      const now = new Date().toISOString();
-      const sourcePath = sourceGenre ? categoryLine(sourceGenre) : '';
-      const parts = sourcePath.split('>').map(part => part.trim()).filter(Boolean);
-      const row = {
-        id: nextGenreNumericId(),
-        genre: cleanName,
-        status: 'unlistened',
-        rating: '',
-        notes: '',
-        summary: '',
-        key_artists: [],
-        suggested_songs: [],
-        songs_listened: [],
-        pending_songs: [],
-        createdFromRoutingDesk: true,
-        createdFromRoutingDeskAt: now
-      };
-      if (parts[0]) row.category = parts[0];
-      if (parts[1]) row.subcategory = parts[1];
-      if (parts.length) row.category_path = parts.slice(0, 2).join(' > ');
-      if (sourceGenre?.genre) row.createdFromSourceGenre = sourceGenre.genre;
-      row.slug = routeGenreSlug(cleanName);
-      return row;
-    }
-
-    function ensureRoutingDestinationGenre(inputValue, options = {}) {
-      const raw = String(inputValue || '').trim().replace(/^@+/, '');
-      if (!raw) return { target: null, error: 'Choose a destination genre first.', created: false };
-      const resolved = resolveReviewMoveGenre(raw, options.currentTargetId || '');
-      if (resolved.target) return { ...resolved, created: false };
-      if (!options.allowCreate) return { ...resolved, created: false };
-      if (raw.length < 2) return { target: null, error: 'Type a clearer genre name first.', created: false };
-      const unsafe = /https?:|spotify:|youtube|[\\/]/i.test(raw) || /[\t\n]/.test(raw);
-      if (unsafe) return { target: null, error: `Could not use “${raw}” as a genre name.`, created: false };
-      const existing = findGenreByNameLoose(raw);
-      if (existing) return { target: existing, error: '', created: false };
-      const scaffold = buildRoutedGenreScaffold(raw, options.sourceGenre || null);
-      genres.push(scaffold);
-      return { target: scaffold, error: '', created: true };
-    }
-
-    function updateSourceGenreSongFromPending(sourceGenre, pendingSong, score) {
-      if (!sourceGenre || !pendingSong) return false;
-      const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
-      const pendingKeys = songIdentityKeys(pendingSong);
-      const pendingKey = songIdentity(pendingSong);
-      let matchIndex = sourceSongs.findIndex(song => {
-        const keys = songIdentityKeys(song);
-        return (pendingKey && keys.includes(pendingKey)) || pendingKeys.some(key => key && keys.includes(key));
-      });
-      if (matchIndex < 0) {
-        const artist = normalizePendingTag(pendingSong.artist || '');
-        const title = normalizePendingTag(pendingSong.title || pendingSong.name || '');
-        matchIndex = sourceSongs.findIndex(song =>
-          normalizePendingTag(song.artist || '') === artist &&
-          normalizePendingTag(song.title || song.name || '') === title
-        );
-      }
-      if (matchIndex >= 0) {
-        sourceSongs[matchIndex] = {
-          ...sourceSongs[matchIndex],
-          score,
-          pendingReevaluatedAt: new Date().toISOString()
-        };
-      } else {
-        const restored = officialSongFromPending({ ...pendingSong, nominatedFit: score }, sourceGenre, 'canon');
-        restored.score = score;
-        restored.isAdd = false;
-        restored.returnedFromPendingReview = true;
-        restored.reviewedAt = new Date().toISOString();
-        sourceSongs.push(restored);
-      }
-      sourceGenre.songs_listened = sourceSongs;
-      return true;
-    }
-
-
-    function reviewPendingSameNomination(candidate, reference, context = {}) {
-      if (!candidate || !reference) return false;
-      const candidateKeys = typeof songIdentityKeys === 'function' ? songIdentityKeys(candidate) : [];
-      const referenceKeys = typeof songIdentityKeys === 'function' ? songIdentityKeys(reference) : [];
-      if (candidateKeys.some(key => key && referenceKeys.includes(key))) return true;
-
-      const cTitle = normalizePendingTag(candidate.title || candidate.name || '');
-      const rTitle = normalizePendingTag(reference.title || reference.name || context.title || '');
-      if (!cTitle || !rTitle || cTitle !== rTitle) return false;
-
-      const cArtist = normalizePendingTag(candidate.artist || '');
-      const rArtist = normalizePendingTag(reference.artist || context.artist || '');
-      const artistCompatible = !cArtist || !rArtist || cArtist === rArtist || cArtist.includes(rArtist) || rArtist.includes(cArtist);
-      if (!artistCompatible) return false;
-
-      const cSource = normalizePendingTag(candidate.pendingFrom || candidate.source || '');
-      const rSource = normalizePendingTag(reference.pendingFrom || reference.source || context.source || context.sourceName || '');
-      const sourceCompatible = context.looseSource || !cSource || !rSource || cSource === rSource;
-      if (!sourceCompatible) return false;
-
-      return true;
-    }
-
-    function removeMatchingPendingNominations(referenceSong, context = {}) {
-      if (!referenceSong) return { removed: 0, genresTouched: 0 };
-      let removed = 0;
-      let genresTouched = 0;
-      (genres || []).forEach(genre => {
-        const pending = normalizePendingSongs(genre.pending_songs || []);
-        if (!pending.length) return;
-        const kept = [];
-        pending.forEach(candidate => {
-          if (reviewPendingSameNomination(candidate, referenceSong, context)) {
-            removed += 1;
-          } else {
-            kept.push(candidate);
-          }
-        });
-        if (kept.length !== pending.length) {
-          genre.pending_songs = kept;
-          genresTouched += 1;
-        }
-      });
-      return { removed, genresTouched };
-    }
-
-    function clearManualPendingTagsForSong(referenceSong, context = {}) {
-      if (!referenceSong) return 0;
-      let cleared = 0;
-      (genres || []).forEach(genre => {
-        const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending);
-        let changed = false;
-        songs.forEach((song, index) => {
-          if (!song?._pendingGenreTag) return;
-          if (!reviewPendingSameNomination(song, referenceSong, context)) return;
-          songs[index] = {
-            ...song,
-            _pendingGenreTag: '',
-            pendingTagDismissedAt: new Date().toISOString()
-          };
-          changed = true;
-          cleared += 1;
-        });
-        if (changed) genre.songs_listened = songs;
-      });
-      return cleared;
-    }
-
-    function sendReviewPendingAsAdd(targetId, pendingIndex, encodedKey, genreInputId, fitInputId) {
-      const input = document.getElementById(genreInputId);
-      const fitInput = document.getElementById(fitInputId);
-      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
-      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
-      if (!found) {
-        showSaveToast('Could not find that pending nomination. Use Dismiss to remove the stuck row, or refresh Studio and try again.', true);
-        return;
-      }
-      const typedGenre = String(input?.value || found.target.genre || '').trim();
-
-      const sourceName = found.song?.pendingFrom || found.song?.source || '';
-      const sourceGenre = findGenreByNameLoose(sourceName);
-      const ensured = ensureRoutingDestinationGenre(typedGenre, {
-        allowCreate: true,
-        sourceGenre,
-        currentTargetId: found.target?.id || ''
-      });
-      const destination = ensured.target;
-      const error = ensured.error;
-      if (!destination) {
-        showSaveToast(error || 'Choose the best matching genre first.', true);
-        input?.focus?.();
-        return;
-      }
-      const returningToSource = sourceGenre && String(destination.id) === String(sourceGenre.id);
-      const sourceFit = Number(found.song?.originFit ?? found.song?.nominatedFit ?? found.song?.score ?? '');
-      const requestedFit = Number(fitInput?.value || found.song?.nominatedFit || '');
-
-      if (!returningToSource && ![4, 5].includes(requestedFit)) {
-        showSaveToast('Choose fit 4 or 5 before sending.', true);
-        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
-        fitWrap?.classList?.add?.('needs-attention');
-        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
-        return;
-      }
-
-      const sourceTarget = found.target;
-      sourceTarget.pending_songs = found.pending;
-      const pendingSong = found.song || {};
-
-      if (returningToSource) {
-        const returnFit = Number.isFinite(requestedFit) && requestedFit > 0
-          ? requestedFit
-          : (Number.isFinite(sourceFit) && sourceFit > 0 ? sourceFit : null);
-        if (!returnFit) {
-          showSaveToast('Could not determine the original source fit. Choose 4 or 5, or open the source genre to edit manually.', true);
-          return;
-        }
-        updateSourceGenreSongFromPending(sourceGenre, pendingSong, returnFit);
-        const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName, targetName: sourceTarget.genre }, pendingSong);
-        clearManualPendingTagsByReviewContext({ ...rowContext, sourceName }, pendingSong);
-        stageReviewPendingChange(`Returned to ${sourceGenre.genre} at ${returnFit}/5 and removed ${removedInfo.removed || 1} pending nomination${(removedInfo.removed || 1) === 1 ? '' : 's'}.`);
-        return;
-      }
-
-      pendingSong.nominatedFit = requestedFit;
-
-      destination.songs_listened = inflateSongsFromStorage(destination.songs_listened || []).filter(song => !song.isPending);
-      const official = officialSongFromPending(pendingSong, destination, 'add');
-      official.score = requestedFit;
-      official.isAdd = true;
-      official.routedFromPendingGenre = sourceTarget.genre || '';
-      official.routedAt = new Date().toISOString();
-
-      const key = songIdentity(official);
-      const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
-      if (!already) destination.songs_listened.push(official);
-
-      const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName, targetName: sourceTarget.genre, destination: destination.genre }, pendingSong);
-      clearManualPendingTagsByReviewContext({ ...rowContext, sourceName }, pendingSong);
-
-      const action = already
-        ? `Already logged in ${destination.genre}; removed ${removedInfo.removed || 1} pending nomination${(removedInfo.removed || 1) === 1 ? '' : 's'}.`
-        : `${ensured.created ? `Created ${destination.genre} and sent` : 'Sent'} as ADD (${requestedFit}/5).`;
-      stageReviewPendingChange(action);
-    }
-
-    function reviewPendingReferenceFromContext(context = {}, fallback = {}) {
-      return {
-        ...(fallback || {}),
-        title: context.title || fallback.title || fallback.name || '',
-        name: context.title || fallback.name || fallback.title || '',
-        artist: context.artist || fallback.artist || '',
-        url: context.url || fallback.url || fallback.spotifyUrl || '',
-        spotifyUrl: context.url || fallback.spotifyUrl || fallback.url || '',
-        pendingFrom: context.sourceName || context.source || fallback.pendingFrom || fallback.source || '',
-        source: context.sourceName || context.source || fallback.source || fallback.pendingFrom || ''
-      };
-    }
-
-    function removeMatchingPendingByReviewContext(context = {}, fallbackSong = null) {
-      const reference = reviewPendingReferenceFromContext(context, fallbackSong || {});
-      let removed = 0;
-      let genresTouched = 0;
-      (genres || []).forEach(genre => {
-        const pending = normalizePendingSongs(genre.pending_songs || []);
-        if (!pending.length) return;
-        const kept = [];
-        pending.forEach(candidate => {
-          const matchByRow = pendingSongMatchesReviewContext(candidate, {
-            ...context,
-            sourceName: context.sourceName || context.source || context.pendingFrom || '',
-            key: context.key || '',
-            decodedKey: context.key || ''
-          });
-          const matchByReference = reviewPendingSameNomination(candidate, reference, { ...context, looseSource: true });
-          if (matchByRow || matchByReference) removed += 1;
-          else kept.push(candidate);
-        });
-        if (kept.length !== pending.length) {
-          genre.pending_songs = kept;
-          genresTouched += 1;
-        }
-      });
-      return { removed, genresTouched, reference };
-    }
-
-    function clearManualPendingTagsByReviewContext(context = {}, fallbackSong = null) {
-      const reference = reviewPendingReferenceFromContext(context, fallbackSong || {});
-      let cleared = 0;
-      (genres || []).forEach(genre => {
-        const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(song => !song.isPending);
-        let changed = false;
-        songs.forEach((song, index) => {
-          if (!song?._pendingGenreTag) return;
-          const matchByRow = pendingSongMatchesReviewContext(song, {
-            ...context,
-            sourceName: context.sourceName || context.source || genre.genre || '',
-            key: context.key || '',
-            decodedKey: context.key || ''
-          });
-          const matchByReference = reviewPendingSameNomination(song, reference, { ...context, looseSource: true });
-          if (!matchByRow && !matchByReference) return;
-          songs[index] = {
-            ...song,
-            _pendingGenreTag: '',
-            pendingTagDismissedAt: new Date().toISOString()
-          };
-          changed = true;
-          cleared += 1;
-        });
-        if (changed) genre.songs_listened = songs;
-      });
-      return cleared;
-    }
-
-    function dismissReviewPendingFromDesk(targetId, pendingIndex, encodedKey, genreInputId) {
-      const input = document.getElementById(genreInputId);
-      const row = input?.closest?.('[data-review-pending-row]');
-      const rowContext = reviewPendingContextFromRow(row);
-      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
-      const fallbackSong = found?.song || null;
-      const context = {
-        ...rowContext,
-        sourceName: found?.song?.pendingFrom || found?.song?.source || rowContext.sourceName || rowContext.source || '',
-        targetName: found?.target?.genre || rowContext.targetName || ''
-      };
-      const label = [context.artist || fallbackSong?.artist, context.title || fallbackSong?.title || fallbackSong?.name].filter(Boolean).join(' — ') || fallbackSong?.url || 'this pending nomination';
-      if (!window.confirm(`Dismiss ${label} from pending nominations?`)) return;
-
-      const removedInfo = removeMatchingPendingByReviewContext(context, fallbackSong);
-      const cleared = clearManualPendingTagsByReviewContext(context, fallbackSong);
-
-      if (!removedInfo.removed && !cleared && found) {
-        found.pending.splice(found.index, 1);
-        found.target.pending_songs = found.pending;
-        removedInfo.removed = 1;
-      }
-
-      if (!removedInfo.removed && !cleared) {
-        showSaveToast('Could not find any matching pending rows to dismiss. Try searching the exact title, then dismiss again.', true);
-        return;
-      }
-
-      stageReviewPendingChange(`Pending nomination dismissed${removedInfo.removed > 1 ? ` (${removedInfo.removed} queued rows removed)` : ''}${cleared ? `; ${cleared} source tag${cleared === 1 ? '' : 's'} cleared` : ''}.`);
-    }
-
-    function moveReviewPendingNomination(targetId, pendingIndex, encodedKey, inputId) {
-      const input = document.getElementById(inputId);
-      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
-      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
-      if (!found) {
-        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
-        return;
-      }
-      const { target: destination, error } = resolveReviewMoveGenre(input?.value || '', found.target.id);
-      if (!destination) {
-        showSaveToast(error || 'Choose a destination genre first.', true);
-        input?.focus?.();
-        return;
-      }
-      const destinationPending = normalizePendingSongs(destination.pending_songs || []);
-      const key = songIdentity(found.song);
-      const sourceName = found.song.pendingFrom || found.song.source || '';
-      const alreadyQueued = destinationPending.some(candidate => {
-        const sameSong = key && (songIdentity(candidate) === key || songIdentityKeys(candidate).includes(key));
-        const sameSource = !sourceName || normalizePendingTag(candidate.pendingFrom || candidate.source || '') === normalizePendingTag(sourceName);
-        return sameSong && sameSource;
-      });
-      if (!alreadyQueued) {
-        const moved = { ...(found.song || {}) };
-        moved.movedFromPendingGenre = found.target.genre || '';
-        moved.movedAt = new Date().toISOString();
-        destinationPending.push(moved);
-        destination.pending_songs = destinationPending;
-      }
-      found.pending.splice(found.index, 1);
-      found.target.pending_songs = found.pending;
-      if (input) input.value = '';
-      stageReviewPendingChange(
-        alreadyQueued
-          ? `Already queued in ${destination.genre}; removed duplicate pending nomination here.`
-          : `Sent pending nomination to ${destination.genre}.`
-      );
-    }
-
-    function findManualPendingSourceSong(sourceId, encodedKey = '', context = {}) {
-      let decodedKey = '';
-      try {
-        decodedKey = decodeURIComponent(String(encodedKey || ''));
-      } catch (error) {
-        decodedKey = String(encodedKey || '');
-      }
-      const sourceGenre = (genres || []).find(g => String(g?.id) === String(sourceId));
-      if (!sourceGenre) return null;
-      const songs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
-      let index = -1;
-      if (decodedKey) {
-        index = songs.findIndex(song => songIdentity(song) === decodedKey || songIdentityKeys(song).includes(decodedKey));
-      }
-      if (index < 0) {
-        const rowContext = { ...context, decodedKey, key: decodedKey };
-        index = songs.findIndex(song => pendingSongMatchesReviewContext(song, rowContext));
-      }
-      if (index < 0) return null;
-      sourceGenre.songs_listened = songs;
-      return { sourceGenre, songs, song: songs[index], index, decodedKey };
-    }
-
-    function sendManualPendingTagAsAdd(sourceId, encodedKey, genreInputId, fitInputId) {
-      const input = document.getElementById(genreInputId);
-      const fitInput = document.getElementById(fitInputId);
-      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
-      const found = findManualPendingSourceSong(sourceId, encodedKey, rowContext);
-      if (!found) {
-        showSaveToast('Could not find that pending source song. Refresh Studio and try again.', true);
-        return;
-      }
-      const typedGenre = String(input?.value || '').trim();
-      const ensured = ensureRoutingDestinationGenre(typedGenre, {
-        allowCreate: true,
-        sourceGenre: found.sourceGenre,
-        currentTargetId: found.sourceGenre?.id || ''
-      });
-      const destination = ensured.target;
-      const error = ensured.error;
-      if (!destination) {
-        showSaveToast(error || 'Choose the best matching genre first.', true);
-        input?.focus?.();
-        return;
-      }
-      const requestedFit = Number(fitInput?.value || '');
-      if (![4, 5].includes(requestedFit)) {
-        showSaveToast('Choose fit 4 or 5 before sending.', true);
-        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
-        fitWrap?.classList?.add?.('needs-attention');
-        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
-        return;
-      }
-
-      const sourceSong = found.song || {};
-      if (String(destination.id) === String(found.sourceGenre.id)) {
-        found.songs[found.index] = {
-          ...sourceSong,
-          score: requestedFit,
-          _pendingGenreTag: '',
-          pendingReevaluatedAt: new Date().toISOString()
-        };
-        found.sourceGenre.songs_listened = found.songs;
-        stageReviewPendingChange(`Kept in ${found.sourceGenre.genre} at ${requestedFit}/5 and cleared the pending tag.`);
-        return;
-      }
-
-      const pendingPayload = pendingReviewSongPayload(sourceSong);
-      pendingPayload.nominatedFit = requestedFit;
-      pendingPayload.originFit = sourceSong.score ?? pendingPayload.originFit ?? null;
-      pendingPayload.pendingFrom = found.sourceGenre.genre || '';
-
-      destination.songs_listened = inflateSongsFromStorage(destination.songs_listened || []).filter(song => !song.isPending);
-      const official = officialSongFromPending(pendingPayload, destination, 'add');
-      official.score = requestedFit;
-      official.isAdd = true;
-      official.routedFromPendingGenre = found.sourceGenre.genre || '';
-      official.routedAt = new Date().toISOString();
-      official.routedFromManualPendingTag = sourceSong._pendingGenreTag || '';
-
-      const key = songIdentity(official);
-      const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
-      if (!already) destination.songs_listened.push(official);
-
-      found.songs[found.index] = {
-        ...sourceSong,
-        _pendingGenreTag: '',
-        pendingRoutedTo: destination.genre || '',
-        pendingRoutedAt: new Date().toISOString()
-      };
-      found.sourceGenre.songs_listened = found.songs;
-      stageReviewPendingChange(
-        already
-          ? `Already logged in ${destination.genre}; cleared the pending tag from ${found.sourceGenre.genre}.`
-          : `${ensured.created ? `Created ${destination.genre} and sent` : `Sent to ${destination.genre}`} as ADD (${requestedFit}/5) and cleared the pending tag.`
-      );
-    }
-
-    function dismissManualPendingTag(sourceId, encodedKey, genreInputId) {
-      const input = document.getElementById(genreInputId);
-      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
-      const found = findManualPendingSourceSong(sourceId, encodedKey, rowContext);
-      if (!found) {
-        showSaveToast('Could not find that pending source song to dismiss. Refresh Studio and try again.', true);
-        return;
-      }
-      const label = [found.song.artist, found.song.title || found.song.name].filter(Boolean).join(' — ') || found.song.url || 'this pending tag';
-      if (!window.confirm(`Clear pending tag for ${label}?`)) return;
-      found.songs[found.index] = {
-        ...found.song,
-        _pendingGenreTag: '',
-        pendingTagDismissedAt: new Date().toISOString()
-      };
-      found.sourceGenre.songs_listened = found.songs;
-      const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName: found.sourceGenre?.genre || rowContext.sourceName || rowContext.source || '' }, found.song);
-      stageReviewPendingChange(`Pending tag dismissed${removedInfo.removed ? ` and ${removedInfo.removed} matching queued row${removedInfo.removed === 1 ? '' : 's'} removed` : ''}.`);
-    }
-
 
     function filterReviewPendingQueue(inputId) {
       const input = document.getElementById(inputId);
@@ -4734,25 +3690,6 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       });
       const count = document.getElementById('reviewPendingVisibleCount');
       if (count) count.textContent = `${visible} shown`;
-    }
-
-    async function copyReviewPendingQueueFirst25() {
-      const rows = Array.from(document.querySelectorAll('#reviewPendingQueueCard [data-review-pending-row]:not(.is-hidden)')).slice(0, 25);
-      const lines = rows
-        .map(row => String(row.dataset.reviewPendingCopy || '').trim())
-        .filter(Boolean);
-      if (!lines.length) {
-        showSaveToast('No visible pending nominations to copy.', true);
-        return;
-      }
-      const text = lines.join('\n');
-      try {
-        await navigator.clipboard.writeText(text);
-        showSaveToast(`Copied ${lines.length} pending nomination${lines.length === 1 ? '' : 's'}.`, false);
-      } catch (error) {
-        console.warn('Could not copy pending nominations', error);
-        showSaveToast('Could not copy pending nominations. Browser blocked clipboard access.', true);
-      }
     }
 
     function scrollToReviewPendingQueue() {
@@ -4771,89 +3708,6 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
         .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
         .map(g => `<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre || '')}</option>`)
         .join('');
-    }
-
-
-    function reviewGenreDatalistOptions() {
-      return (genres || [])
-        .filter(g => g && g.genre)
-        .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
-        .map(g => `<option value="${escapeHtml(g.genre || '')}" data-id="${escapeHtml(String(g.id))}"></option>`)
-        .join('');
-    }
-
-    function resolveReviewMoveGenre(inputValue, currentTargetId = '') {
-      const raw = String(inputValue || '').trim().replace(/^@+/, '');
-      if (!raw) return { target: null, error: 'Choose a destination genre first.' };
-      // Include the current target in lookup. In the unified routing desk, choosing
-      // the suggested/current target is a valid Send ADD action, not an error.
-      const pool = (genres || []).filter(g => g && g.genre);
-      const byId = pool.find(g => String(g?.id) === raw);
-      if (byId) return { target: byId, error: '' };
-
-      const normPending = normalizePendingTag(raw);
-      const normSearch = typeof normalizeGenreSearchText === 'function'
-        ? normalizeGenreSearchText(raw)
-        : normPending;
-      const compact = value => normalizePendingTag(value).replace(/\s+/g, '');
-      const rawCompact = compact(raw);
-      const namesForGenre = genre => {
-        const names = [genre?.genre || ''];
-        try {
-          if (typeof genreAliasListForSearch === 'function') names.push(...genreAliasListForSearch(genre));
-        } catch {}
-        return [...new Set(names.filter(Boolean))];
-      };
-
-      const exact = pool.filter(g => namesForGenre(g).some(name =>
-        normalizePendingTag(name) === normPending ||
-        (typeof normalizeGenreSearchText === 'function' && normalizeGenreSearchText(name) === normSearch) ||
-        compact(name) === rawCompact
-      ));
-      if (exact.length === 1) return { target: exact[0], error: '' };
-      if (exact.length > 1) return { target: null, error: 'That genre name is ambiguous. Type the exact genre name.' };
-
-      const scored = pool.map(g => {
-        let best = 0;
-        namesForGenre(g).forEach(name => {
-          const p = normalizePendingTag(name);
-          const q = typeof normalizeGenreSearchText === 'function' ? normalizeGenreSearchText(name) : p;
-          const c = compact(name);
-          if (p.startsWith(normPending) || normPending.startsWith(p)) best = Math.max(best, 82);
-          if (q.startsWith(normSearch) || normSearch.startsWith(q)) best = Math.max(best, 82);
-          if (p.includes(normPending) || normPending.includes(p)) best = Math.max(best, 70);
-          if (q.includes(normSearch) || normSearch.includes(q)) best = Math.max(best, 70);
-          if (c.includes(rawCompact) || rawCompact.includes(c)) best = Math.max(best, 66);
-          try {
-            if (Math.min(p.length, normPending.length) >= 5 && levenshtein(p, normPending) <= 2) best = Math.max(best, 60);
-          } catch {}
-        });
-        return { genre: g, score: best };
-      }).filter(item => item.score > 0).sort((a,b) => b.score - a.score || String(a.genre.genre || '').localeCompare(String(b.genre.genre || '')));
-
-      if (scored.length && scored[0].score >= 80 && (scored.length === 1 || scored[0].score > scored[1].score)) {
-        return { target: scored[0].genre, error: '' };
-      }
-      if (scored.length === 1 && scored[0].score >= 66) return { target: scored[0].genre, error: '' };
-      if (scored.length > 1 && scored[0].score >= 66) {
-        // If the typed value came from the datalist or is a clear prefix/completion,
-        // prefer the single shortest completion. This keeps routing fast for cases like
-        // Australian folk -> Australian folk-rock and Nightcore -> Nightcore-style labels.
-        const completionMatches = scored.filter(item => namesForGenre(item.genre).some(name => {
-          const n = normalizePendingTag(name);
-          const c = compact(name);
-          return n.startsWith(normPending) || normPending.startsWith(n) || c.startsWith(rawCompact) || rawCompact.startsWith(c);
-        })).sort((a,b) => String(a.genre.genre || '').length - String(b.genre.genre || '').length);
-        if (completionMatches.length === 1 && completionMatches[0].score >= 66) return { target: completionMatches[0].genre, error: '' };
-        if (completionMatches.length > 1 && completionMatches[0].score >= 66) {
-          const firstName = normalizePendingTag(completionMatches[0].genre.genre || '');
-          const secondName = normalizePendingTag(completionMatches[1].genre.genre || '');
-          if (firstName !== secondName && firstName.length + 5 <= secondName.length) return { target: completionMatches[0].genre, error: '' };
-        }
-        if (scored[0].score >= 80 && scored[0].score - scored[1].score >= 8) return { target: scored[0].genre, error: '' };
-        return { target: null, error: `Multiple genres match “${raw}”. Try ${scored.slice(0, 3).map(item => item.genre.genre).join(', ')}.` };
-      }
-      return { target: null, error: `Could not find “${raw}”. Choose one of the suggested genres or type a closer match.` };
     }
 
     function pendingReviewRowId(sourceId, key) {
@@ -5312,36 +4166,56 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       const stats = pendingReviewStats();
       const manualRows = stats.rows.filter(row => row.status !== 'routable');
       const queuedRows = collectQueuedPendingNominationRows();
-      const combinedRows = [
-        ...queuedRows.map(row => ({ type: 'queued', row })),
-        ...manualRows.map(row => ({ type: 'manual', row }))
-      ];
       mount.innerHTML = renderSongInboxCard() + `
         <div class="review-stat-grid">
-          <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${combinedRows.length}</strong><span>Pending nominations</span></button>
-          <div class="review-stat"><strong>${queuedRows.length}</strong><span>Queued by suggested genre</span></div>
-          <div class="review-stat"><strong>${manualRows.length}</strong><span>Need best-match genre</span></div>
+          <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${stats.pendingTotal}</strong><span>Queued pending nominations</span></button>
+          <div class="review-stat"><strong>${stats.routable}</strong><span>Auto-routable @tags</span></div>
+          <button type="button" class="review-stat" onclick="scrollToReviewManualQueue()"><strong>${stats.unresolved}</strong><span>Need manual review</span></button>
           <div class="review-stat"><strong>${libraryUpdatesPending || hasUnsavedChanges ? 'Yes' : 'No'}</strong><span>Unsaved cleanup</span></div>
         </div>
-        ${renderDuplicateGenreMergeCard()}
         <div class="review-card" id="reviewPendingQueueCard">
           <div class="review-card-head">
             <div>
-              <h3>Pending nominations</h3>
-              <p class="small" style="margin:6px 0 0;">One routing desk for queued nominations and songs that need a better genre match. Confirm the best matching genre, choose fit 4 or 5, then send the song as an <strong>ADD</strong>. Use the source genre to keep it there and clear the pending flag.</p>
+              <h3>Queued pending nominations</h3>
+              <p class="small" style="margin:6px 0 0;">These are the actual songs sitting in each genre’s pending queue. Click a target genre to see/listen/edit it there.</p>
             </div>
-            <div class="review-card-copy-actions">
-              ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
-              <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst25()" title="Copy the first 25 visible pending nominations">⧉ Copy first 25</button>
-              <span class="review-chip">${combinedRows.length} total</span>
-            </div>
+            <span class="review-chip">${queuedRows.length} total</span>
           </div>
           <div class="review-filter-row">
             <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
-            <span class="small" id="reviewPendingVisibleCount">${combinedRows.length} shown</span>
+            <span class="small" id="reviewPendingVisibleCount">${queuedRows.length} shown</span>
           </div>
-          ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${combinedRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
-        </div>`
+          ${queuedRows.length ? `<div class="review-list-scroll">${queuedRows.map(reviewQueuedPendingRowHtml).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
+        </div>
+        <div class="review-card" id="reviewManualQueueCard">
+          <div class="review-card-head">
+            <div>
+              <h3>Pending nomination routing</h3>
+              <p class="small" style="margin:6px 0 0;">This section is only for low-fit songs with unresolved @tags that have not been safely routed yet.</p>
+            </div>
+            ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
+          </div>
+          ${manualRows.length ? manualRows.map(row => {
+            const selectId = pendingReviewRowId(row.sourceGenre.id, row.key);
+            const title = (row.song.artist ? `${row.song.artist} — ` : '') + (row.song.title || 'Untitled track');
+            const reason = row.status === 'ambiguous' ? 'multiple possible genre matches' : 'no confident genre match';
+            return `<div class="review-row">
+              <div>
+                <div class="review-track-title">${escapeHtml(title)}</div>
+                <div class="review-meta">
+                  <span class="review-chip warn">tag: @${escapeHtml(row.tag || '')}</span>
+                  <span class="review-chip">from ${escapeHtml(row.sourceGenre.genre || 'Unknown')}</span>
+                  <span class="review-chip">fit ${escapeHtml(String(row.song.score ?? ''))}/5</span>
+                  <span class="review-chip warn">${escapeHtml(reason)}</span>
+                </div>
+              </div>
+              <div class="review-move">
+                <select id="${selectId}" aria-label="Move pending nomination target"><option value="">Choose genre…</option>${reviewGenreOptions(row.sourceGenre.id)}</select>
+                <button type="button" class="btn btn-secondary" onclick="movePendingReviewItem('${visualActionArg(row.sourceGenre.id)}', '${visualActionArg(row.key)}', '${selectId}')">Move</button>
+              </div>
+            </div>`;
+          }).join('') : `<div class="viz-empty">No ambiguous pending @tags need manual routing right now.</div>`}
+        </div>`;
     }
 
     function runPendingTagCleanupFromReview() {
@@ -5547,20 +4421,6 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       el.style.display = isOpen ? 'none' : 'grid';
     }
 
-    function hasGenreIdentityGap(genre) {
-      if (!genre) return true;
-      const identity = genre.identity && typeof genre.identity === 'object' ? genre.identity : {};
-      const seminal = identity.seminalTrack || genre.seminal_song || genre.seminalTrack || null;
-      const media = Array.isArray(identity.mediaTouchstones) && identity.mediaTouchstones.length
-        ? identity.mediaTouchstones
-        : (Array.isArray(genre.media_touchstones) ? genre.media_touchstones : []);
-      const hasUsefulTrack = track => {
-        if (!track || typeof track !== 'object') return false;
-        return !!(track.url || track.spotifyUrl || track.title || track.name || track.artist || track.media || track.reason);
-      };
-      return !hasUsefulTrack(seminal) || !media.some(hasUsefulTrack);
-    }
-
     function renderArchiveSummary(items, label) {
       const summary = document.getElementById('archiveSummary');
       if (!summary) return;
@@ -5580,22 +4440,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       `;
     }
 
-    function ensureArchiveIdentityFilterOption() {
-      const select = document.getElementById('archiveFlagFilter');
-      if (!select) return;
-      if (!select.querySelector('option[value="missing-identity"]')) {
-        const option = document.createElement('option');
-        option.value = 'missing-identity';
-        option.textContent = 'Missing Genre Identity';
-        const notes = select.querySelector('option[value="notes"]');
-        select.insertBefore(option, notes || null);
-      }
-      const option = select.querySelector('option[value="missing-identity"]');
-      if (option) option.textContent = 'Missing Genre Identity';
-    }
-
     function renderHistory() {
-      ensureArchiveIdentityFilterOption();
       const monthEl = document.getElementById('historyMonthFilter');
       const ratingEl = document.getElementById('historyRatingFilter');
       const searchEl = document.getElementById('archiveSearchInput') || document.getElementById('historyCategoryFilter');
@@ -5648,7 +4493,6 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
       if (flag === 'missing-songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) === 0);
       if (flag === 'missing-favorite') items = items.filter(g => !(g.favoritesong || g.favoritesongurl));
-      if (flag === 'missing-identity') items = items.filter(hasGenreIdentityGap);
       if (flag === 'notes') items = items.filter(g => !!g.notes);
       if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
       if (flag === 'unranked') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0 && !g.rank_order && g.rating !== 'zanger');
@@ -5887,88 +4731,12 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       return 9;
     }
 
-    function ensureManualGenrePreview(resultsEl) {
-      const panel = resultsEl?.closest?.('#manualPanel') || document.getElementById('manualPanel');
-      if (!panel) return null;
-      let preview = panel.querySelector('#manualGenrePreview');
-      if (!preview) {
-        preview = document.createElement('aside');
-        preview.id = 'manualGenrePreview';
-        preview.className = 'dc-manual-preview-card hidden';
-        panel.appendChild(preview);
-      }
-      return preview;
-    }
-
-    function manualGenrePreviewCopy(genre) {
-      const notes = String(genre?.notes || genre?.description || '').trim();
-      if (notes) return notes.length > 420 ? `${notes.slice(0, 420).trim()}…` : notes;
-      const artists = Array.isArray(genre?.key_artists) ? genre.key_artists.join(', ') : String(genre?.key_artists || '').trim();
-      if (artists) return `Key artists: ${artists}`;
-      const songs = Array.isArray(genre?.suggested_songs) ? genre.suggested_songs.join(', ') : String(genre?.suggested_songs || '').trim();
-      if (songs) return `Suggested songs: ${songs}`;
-      return 'Preview this genre, then press Listen when you want to open it as a listening candidate.';
-    }
-
-    function selectManualGenrePreview(genreId, resultsEl = null) {
-      const genre = (genres || []).find(g => String(g?.id) === String(genreId));
-      if (!genre) return;
-      const preview = ensureManualGenrePreview(resultsEl || document.getElementById('manualResults2'));
-      if (!preview) return;
-      const already = isGenreAlreadyListened(genre);
-      const blockedByToday = hasNonZangerGenreForToday(genre);
-      const canSetToday = canAutoAssignTodayFromSpin(genre);
-      const statusHint = already
-        ? 'Already listened — opening will not change its date.'
-        : blockedByToday
-          ? 'Today already has a non-Zanger genre — opening will not change today.'
-          : canSetToday
-            ? 'Eligible to become today’s listen.'
-            : 'Preview only.';
-      preview.innerHTML = `
-        <div class="dc-manual-preview-kicker">Genre preview</div>
-        <div class="dc-manual-preview-head">
-          <div>
-            <h3>${escapeHtml(genre.genre || 'Unknown genre')}</h3>
-            <div class="small">${escapeHtml(categoryLine(genre))}</div>
-          </div>
-          <button type="button" class="btn btn-primary dc-manual-preview-listen" onclick="listenToManualPreviewGenre('${escapeHtml(String(genre.id || ''))}')">Listen</button>
-        </div>
-        <p>${escapeHtml(manualGenrePreviewCopy(genre))}</p>
-        <div class="dc-manual-preview-status">${escapeHtml(statusHint)}</div>
-      `;
-      preview.classList.remove('hidden');
-      document.querySelectorAll('#manualResults2 [data-id]').forEach(row => row.classList.toggle('selected', String(row.dataset.id) === String(genre.id)));
-    }
-
-    function listenToManualPreviewGenre(genreId) {
-      const picked = (genres || []).find(g => String(g?.id) === String(genreId));
-      if (!picked) {
-        showSaveToast('Could not find that genre. Search again and retry.', true);
-        return;
-      }
-      openGenreFromSpinListen(picked, { source: 'manual' });
-    }
-
-    // Used by the polished Spin manual picker. Card click previews only;
-    // the music-note/Listen action comes through here so today-listen rules stay centralized.
-    window.openGenreFromManualPicker = function openGenreFromManualPicker(genreId) {
-      const picked = (genres || []).find(g => String(g?.id) === String(genreId));
-      if (!picked) {
-        showSaveToast('Could not find that genre. Search again and retry.', true);
-        return;
-      }
-      openGenreFromSpinListen(picked, { source: 'manual' });
-    };
-
     function searchGenresInto(inputEl, resultsEl) {
       if (!resultsEl) return;
       const rawQ = inputEl.value.trim();
       const q = normalizeGenreSearchText(rawQ);
-      const preview = ensureManualGenrePreview(resultsEl);
       if (!q) {
         resultsEl.innerHTML = '';
-        if (preview) preview.classList.add('hidden');
         return;
       }
 
@@ -5981,29 +4749,27 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       resultsEl.innerHTML = matches.map(({ g }) => {
         const aliasHit = genreAliasListForSearch(g).find(alias => normalizeGenreSearchText(alias).includes(q));
         return `
-        <div class="list-item dc-manual-result-card" data-id="${g.id}" role="button" tabindex="0" aria-label="Preview ${escapeHtml(g.genre || 'genre')}">
-          <div class="dc-manual-result-main">
-            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-            <div class="small">${escapeHtml(categoryLine(g))}${aliasHit ? ` · ${escapeHtml(aliasHit)}` : ''}</div>
-          </div>
-          <button type="button" class="dc-manual-preview-glyph" aria-label="Listen to ${escapeHtml(g.genre || 'genre')}" title="Listen" onclick="event.preventDefault(); event.stopPropagation(); openGenreFromManualPicker('${escapeHtml(String(g.id || ''))}')">♪</button>
+        <div class="list-item dc-manual-result-card" data-id="${g.id}" role="button" tabindex="0">
+          <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+          <div class="small">${escapeHtml(categoryLine(g))}${aliasHit ? ` · ${escapeHtml(aliasHit)}` : ''}</div>
         </div>
       `;
       }).join('');
 
       [...resultsEl.querySelectorAll('[data-id]')].forEach(btn => {
-        const previewPicked = () => selectManualGenrePreview(btn.dataset.id, resultsEl);
-        btn.onclick = previewPicked;
+        const openPicked = () => {
+          const picked = genres.find(g => String(g.id) === btn.dataset.id);
+          if (!picked) return;
+          openGenreDetail(picked, true);
+        };
+        btn.onclick = openPicked;
         btn.onkeydown = (event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            previewPicked();
+            openPicked();
           }
         };
       });
-
-      if (matches.length === 1) selectManualGenrePreview(matches[0].g.id, resultsEl);
-      else if (preview) preview.classList.add('hidden');
     }
 
     function levenshtein(a, b) {
@@ -6247,6 +5013,7 @@ async function loadData() {
 
     spinBtn.addEventListener('click', spinWheel);
     document.getElementById('topCrateDigBtn')?.addEventListener('click', openCrateDig);
+    document.getElementById('topAlbumDiveBtn')?.addEventListener('click', openCurrentAlbumDive);
     manualToggleBtn.addEventListener('click', () => manualPanel.classList.toggle('hidden'));
     remainingCount?.addEventListener('click', showRemainingCountAudit);
 
@@ -6268,16 +5035,16 @@ async function loadData() {
     }
     document.getElementById('includeSongsToggle').addEventListener('change', updateDiscordBlock);
     document.getElementById('shareToggle')?.addEventListener('click', () => document.getElementById('shareSection')?.classList.toggle('collapsed'));
-    document.getElementById('favoriteSongUrl').addEventListener('change', function() {
+    document.getElementById('favoriteSongUrl')?.addEventListener('change', function() {
       const url = this.value.trim();
       const statusEl = document.getElementById('favoriteSongFetchStatus');
-      if (!url) { statusEl.textContent = ''; refreshDirtyFromSnapshot(); return; }
+      if (!url) { if (statusEl) statusEl.textContent = ''; refreshDirtyFromSnapshot(); return; }
       if (!url.includes('spotify.com/track/')) {
-        statusEl.textContent = 'Paste a Spotify track URL.';
+        if (statusEl) statusEl.textContent = 'Paste a Spotify track URL.';
         refreshDirtyFromSnapshot();
         return;
       }
-      statusEl.textContent = 'Spotify auto-fill disabled here; URL will still save.';
+      if (statusEl) statusEl.textContent = 'Spotify auto-fill disabled here; URL will still save.';
       refreshDirtyFromSnapshot();
     });
 
@@ -6317,9 +5084,9 @@ async function loadData() {
     const historyRatingFilter = document.getElementById('historyRatingFilter');
     const archiveSearchInput = document.getElementById('archiveSearchInput');
     const archiveFlagFilter = document.getElementById('archiveFlagFilter');
-    ensureArchiveIdentityFilterOption();
     const archiveSortFilter = document.getElementById('archiveSortFilter');
     const archiveCopyBtn = document.getElementById('archiveCopyBtn');
+    const archiveRefreshBtn = document.getElementById('archiveRefreshBtn');
     const archivePlaylistToggleVisibleBtn = document.getElementById('archivePlaylistToggleVisibleBtn');
     const archivePlaylistSelectedBtn = document.getElementById('archivePlaylistSelectedBtn');
 
@@ -6339,6 +5106,7 @@ async function loadData() {
       });
     }
     if (archiveFlagFilter) archiveFlagFilter.addEventListener('change', renderHistory);
+    if (archiveRefreshBtn) archiveRefreshBtn.addEventListener('click', () => { renderHistory(); showSaveToast('Archive results refreshed.', false); });
     if (archiveSortFilter) archiveSortFilter.addEventListener('change', renderHistory);
     if (archivePlaylistToggleVisibleBtn) archivePlaylistToggleVisibleBtn.addEventListener('click', archiveToggleVisiblePlaylistSelection);
     if (archivePlaylistSelectedBtn) archivePlaylistSelectedBtn.addEventListener('click', openArchivePlaylistModal);
@@ -6864,7 +5632,7 @@ async function loadData() {
       if (!root) return;
       root.innerHTML = groups.map(([k, label]) => {
         const list = map[k].sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || String(a.genre || '').localeCompare(String(b.genre || '')));
-        return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? 'Z' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button type="button" class="viz-chip viz-click-chip" onclick="vizOpenGenreEncoded('${visualActionArg(g.genre || '')}')">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
+        return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? '✕' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button type="button" class="viz-chip viz-click-chip" onclick="vizOpenGenreEncoded('${visualActionArg(g.genre || '')}')">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
       }).join('');
     }
 
@@ -7162,164 +5930,6 @@ async function loadData() {
       showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
       }
 
-    function studioRepairNorm(value) {
-      return String(value || '')
-        .toLowerCase()
-        .replace(/https?:\/\/\S+/g, ' ')
-        .replace(/[^a-z0-9]+/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-    }
-
-    function studioRepairArtist(song) {
-      return String(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(' ') : '') || '').trim();
-    }
-
-    function studioRepairTitle(song) {
-      return String(song?.title || song?.name || '').trim();
-    }
-
-    function studioRepairTargetMatches(song, target = {}) {
-      if (!song) return false;
-      const key = String(target.key || '').trim();
-      if (key && songsIdentityMatch(song, key)) return true;
-      if (key && studioRepairNorm(songIdentity(song)) === studioRepairNorm(key)) return true;
-
-      const targetUrl = normalizeSongUrl(target.url || target.spotifyUrl || '').toLowerCase();
-      const songUrl = normalizeSongUrl(song.url || song.spotifyUrl || '').toLowerCase();
-      if (targetUrl && songUrl && targetUrl === songUrl) return true;
-
-      const targetSpotifyId = String(target.spotifyId || '').trim().toLowerCase();
-      const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
-      if (targetSpotifyId && songSpotifyId && targetSpotifyId === songSpotifyId) return true;
-
-      const targetIsrc = String(target.isrc || '').trim().toLowerCase();
-      const songIsrc = String(song.isrc || '').trim().toLowerCase();
-      if (targetIsrc && songIsrc && targetIsrc === songIsrc) return true;
-
-      const targetTitle = studioRepairNorm(target.title || target.name || '');
-      const targetArtist = studioRepairNorm(target.artist || (Array.isArray(target.artists) ? target.artists.join(' ') : ''));
-      const songTitleText = studioRepairNorm(studioRepairTitle(song));
-      const songArtistText = studioRepairNorm(studioRepairArtist(song));
-      if (targetTitle && targetArtist && songTitleText === targetTitle && songArtistText === targetArtist) return true;
-
-      const displayKey = String(target.displayKey || '').toLowerCase();
-      if (displayKey && targetTitle && songTitleText === targetTitle && (!targetArtist || displayKey.includes(songArtistText) || songArtistText.includes(targetArtist))) return true;
-      return false;
-    }
-
-    function findStudioRepairTarget(target = {}) {
-      const genreId = String(target.genreId || '').trim();
-      const genreName = studioRepairNorm(target.genreName || target.genre || '');
-      const preferred = [];
-      const seenGenreIds = new Set();
-      (genres || []).forEach(genre => {
-        const id = String(genre?.id || '');
-        if (genreId && id === genreId) {
-          preferred.unshift(genre);
-          seenGenreIds.add(id);
-        }
-      });
-      (genres || []).forEach(genre => {
-        const id = String(genre?.id || '');
-        if (seenGenreIds.has(id)) return;
-        if (genreName && studioRepairNorm(genre?.genre || '') === genreName) {
-          preferred.push(genre);
-          seenGenreIds.add(id);
-        }
-      });
-      (genres || []).forEach(genre => {
-        const id = String(genre?.id || '');
-        if (!seenGenreIds.has(id)) preferred.push(genre);
-      });
-
-      for (const genre of preferred) {
-        const songs = inflateSongsFromStorage(genre?.songs_listened || []);
-        let found = null;
-        eachSongInLog(songs, song => {
-          if (!found && !song?.isPending && studioRepairTargetMatches(song, target)) found = song;
-        });
-        if (found) return { genre, songs, song: found };
-      }
-      return null;
-    }
-
-    async function updateStudioRepairUrlTarget(target = {}, inputId = '', button = null, source = 'review') {
-      const input = document.getElementById(inputId);
-      const nextUrl = normalizeSongUrl(input?.value || target.newUrl || '');
-      if (!validSpotifyTrackUrl(nextUrl)) {
-        showSaveToast('Paste a Spotify track URL for this repair row.', true);
-        return { ok: false, code: 'invalid_url' };
-      }
-
-      const resolved = findStudioRepairTarget(target);
-      if (!resolved?.song) {
-        console.warn('[Daily Genre] Studio repair target not found', target);
-        showSaveToast('Could not match that repair row. Try Refresh repair list; if it remains, open the genre and update the song URL there.', true);
-        return { ok: false, code: 'not_found' };
-      }
-
-      const originalText = button?.textContent || '';
-      if (button) {
-        button.disabled = true;
-        button.classList.add('is-saving');
-        button.textContent = 'Updating…';
-      }
-
-      const oldKey = songIdentity(resolved.song);
-      const oldFailureKey = stagedReactionKey(resolved.genre.id, oldKey);
-      try {
-        const result = await fetchSpotifyTrackResult(nextUrl, true);
-        if (!result.ok) {
-          spotifyMetadataFailures.set(oldFailureKey, result);
-          if (result.code === 'rate_limited') beginSpotifyPause(result.retryAfterSeconds || 30);
-          showSaveToast(`Spotify repair failed: ${result.error}`, true);
-          return { ok: false, code: result.code || 'spotify_failed' };
-        }
-
-        resolved.song.url = result.track.spotifyUrl || (typeof spotifyCanonicalTrackUrl === 'function' ? spotifyCanonicalTrackUrl(nextUrl) : nextUrl);
-        resolved.song.spotifyUrl = resolved.song.url;
-        applyOfficialSpotifyMetadata(resolved.song, result.track);
-        resolved.genre.songs_listened = resolved.songs;
-
-        const newKey = songIdentity(resolved.song);
-        spotifyMetadataFailures.delete(oldFailureKey);
-        spotifyMetadataFailures.delete(stagedReactionKey(resolved.genre.id, newKey));
-        libraryUpdatesPending = true;
-        setUnsavedState(true);
-        toggleLibrarySaveButton(true);
-
-        if (source === 'review') {
-          // Studio Repair Bay updates are easier to verify in-place: keep the row visible
-          // with its refreshed title/artwork chips, then let the explicit Refresh repair list
-          // button remove resolved rows when the curator is ready.
-        } else if (typeof renderReview === 'function') {
-          const restore = preserveScrollSnapshot();
-          renderReview();
-          restore();
-        }
-        showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
-        return { ok: true, genre: resolved.genre, song: resolved.song, key: newKey };
-      } finally {
-        if (button && document.body.contains(button)) {
-          button.disabled = false;
-          button.classList.remove('is-saving');
-          if (originalText) button.textContent = originalText;
-        }
-      }
-    }
-
-    async function updateMetadataTrackUrlFromQueue(encodedGenreId, encodedKey, inputId, button = null, source = 'review') {
-      const target = {
-        genreId: decodeURIComponent(String(encodedGenreId || '')),
-        key: decodeURIComponent(String(encodedKey || ''))
-      };
-      return updateStudioRepairUrlTarget(target, inputId, button, source);
-    }
-
-    window.updateStudioRepairUrlTarget = updateStudioRepairUrlTarget;
-    window.updateMetadataTrackUrlFromQueue = updateMetadataTrackUrlFromQueue;
-
   function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
       if (!window.confirm('Permanently delete this track from its genre? This cannot be undone until you reload without saving.')) return;
       const genreId = decodeURIComponent(encodedGenreId || '');
@@ -7429,121 +6039,6 @@ async function loadData() {
 
     function waitForSpotifyPacing(ms=2500) {
       return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function refreshNextSpotifyTracks(limit=5) {
-      const batchSize = Math.max(1, Math.min(10, Number(limit || 5)));
-      const button = document.querySelector('#studio-repair-lane button[onclick*="refreshNextSpotifyTracks"]');
-      const idleText = button?.textContent || 'Refresh next 5';
-
-      if (spotifyRefreshRunning) {
-        spotifyRefreshCancelRequested = true;
-        if (button) button.textContent = 'Stopping…';
-        showSaveToast('Stopping Spotify refresh after the current track…', false);
-        return;
-      }
-
-      if (Date.now() < spotifyRefreshPausedUntil) {
-        const wait = Math.ceil((spotifyRefreshPausedUntil - Date.now()) / 1000);
-        showSaveToast(`Spotify cooldown active — try again in ${wait} seconds.`, true);
-        updateSpotifyPauseDisplay();
-        return;
-      }
-
-      const rows = collectMetadataRows(allListenedGenresForMaintenance())
-        .filter(row => row.group === 'spotify' && !row.bulkSkipped)
-        .slice(0, batchSize);
-
-      if (!rows.length) {
-        const skipped = collectMetadataRows(allListenedGenresForMaintenance()).filter(row => row.bulkSkipped).length;
-        showSaveToast(skipped
-          ? 'No bulk-refreshable Spotify tracks remain. Broken/resource-missing tracks need a manual URL update.'
-          : 'No Spotify tracks are currently queued for metadata refresh.', false);
-        const restore = preserveScrollSnapshot();
-        renderReview();
-        restore();
-        return;
-      }
-
-      spotifyRefreshRunning = true;
-      spotifyRefreshCancelRequested = false;
-      spotifyRefreshReport = { updated:0, attempted:0, remaining:rows.length, broken:0, rateLimited:0, failed:0, stopped:false, pausedSeconds:0, scope:'Studio Repair Bay' };
-      if (button) {
-        button.disabled = false;
-        button.textContent = '■ Stop refresh';
-      }
-
-      try {
-        for (let i = 0; i < rows.length; i += 1) {
-          if (spotifyRefreshCancelRequested) {
-            spotifyRefreshReport.stopped = true;
-            break;
-          }
-          const row = rows[i];
-          spotifyRefreshReport.attempted += 1;
-          if (button) button.textContent = `Refreshing ${i + 1}/${rows.length}…`;
-          showSaveToast(`Refreshing Studio repair track ${i + 1} of ${rows.length}…`, false);
-
-          const result = await fetchSpotifyTrackResult(row.song.url, true);
-          if (result.ok) {
-            const target = findSongForMetadataAction(row.genre.id, songIdentity(row.song));
-            if (target) {
-              applyOfficialSpotifyMetadata(target.song, result.track);
-              target.genre.songs_listened = target.songs;
-              spotifyRefreshReport.updated += 1;
-              spotifyMetadataFailures.delete(row.key);
-            } else {
-              spotifyRefreshReport.failed += 1;
-            }
-          } else if (result.code === 'rate_limited') {
-            spotifyMetadataFailures.set(row.key, result);
-            spotifyRefreshReport.rateLimited = 1;
-            spotifyRefreshReport.pausedSeconds = result.retryAfterSeconds || 30;
-            spotifyRefreshReport.stopped = true;
-            beginSpotifyPause(spotifyRefreshReport.pausedSeconds);
-            break;
-          } else {
-            spotifyMetadataFailures.set(row.key, result);
-            if (result.code === 'broken') spotifyRefreshReport.broken += 1;
-            else spotifyRefreshReport.failed += 1;
-          }
-
-          await waitForSpotifyPacing();
-        }
-
-        spotifyRefreshReport.remaining = collectMetadataRows(allListenedGenresForMaintenance())
-          .filter(row => row.group === 'spotify' && !row.bulkSkipped).length;
-
-        if (spotifyRefreshReport.updated > 0) {
-          libraryUpdatesPending = true;
-          setUnsavedState(true);
-          toggleLibrarySaveButton(true);
-        }
-
-        const restore = preserveScrollSnapshot();
-        renderHistory();
-        renderRankings();
-        renderReview();
-        restore();
-
-        if (spotifyRefreshReport.rateLimited) {
-          updateSpotifyPauseDisplay();
-          showSaveToast('Spotify paused requests. Save any completed updates; wait before retrying.', true);
-        } else if (spotifyRefreshReport.updated > 0) {
-          showSaveToast(`Studio repair refreshed ${spotifyRefreshReport.updated} track${spotifyRefreshReport.updated === 1 ? '' : 's'} — save library updates to persist.`, false);
-        } else if (spotifyRefreshReport.stopped) {
-          showSaveToast('Studio repair refresh stopped.', false);
-        } else {
-          showSaveToast('No tracks were updated. Check rows that need a manual URL update.', true);
-        }
-      } finally {
-        spotifyRefreshRunning = false;
-        spotifyRefreshCancelRequested = false;
-        if (button && Date.now() >= spotifyRefreshPausedUntil) {
-          button.disabled = false;
-          button.textContent = idleText;
-        }
-      }
     }
 
     function allListenedGenresForMaintenance() {

@@ -1000,6 +1000,7 @@ function renderAlbumDivePanel(genre) {
               <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
               <button type="button" class="btn btn-secondary" onclick="openAlbumDiveSpotifyPlaylistModal()">＋ Playlist Albums</button>
               <button type="button" class="btn btn-secondary" onclick="copyAlbumDiveStats()" title="Copy Album Dive summary for Discord">⧉ Copy stats</button>
+              ${dive.status === "completed" ? `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveActive()">Mark Active</button>` : `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveActive()">Keep Active</button>`}
               <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
               ${listenMode ? "" : `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">Mark Complete</button><button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>`}
             </div>
@@ -1522,6 +1523,17 @@ function clearAlbumDive() {
     skipSpotifyHydration: true,
   });
 }
+
+function markAlbumDiveActive() {
+  const dive = normalizeAlbumDive(currentGenre, true);
+  dive.enabled = true;
+  dive.status = "active";
+  dive.lastWorkedAt = new Date().toISOString();
+  touchAlbumDive();
+  rerenderAlbumDive({ preserveScroll: true });
+  showSaveToast("Album Dive marked active — save changes to keep it.", false);
+}
+window.markAlbumDiveActive = markAlbumDiveActive;
 
 function markAlbumDiveComplete() {
   const dive = normalizeAlbumDive(currentGenre, true);
