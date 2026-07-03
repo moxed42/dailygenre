@@ -858,6 +858,7 @@
         <div class="view-rating-stars" aria-label="Genre rating controls">
           ${[1,2,3,4,5].map(n => `<button type="button" class="view-rating-star ${active === String(n) ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="${n} stars, ${escapeHtml(genreRatingLabel(n))}">★</button>`).join('')}
           <button type="button" class="view-rating-zanger ${active === 'zanger' ? 'active' : ''}" onclick="setGenreRatingFromView('zanger')" title="Zanger">Z Zanger</button>
+          ${active ? '<button type="button" class="btn btn-ghost btn-tiny" onclick="resetGenreRatingFromView()" title="Clear genre rating">Clear rating</button>' : ''}
         </div>
       </div>`;
     }
@@ -970,6 +971,24 @@
       }
     }
 
+    function resetGenreRatingFromView() {
+      if (!currentGenre) return;
+      const hadRating = !!currentGenre.rating || currentGenre.status === 'veto' || currentGenre.rank_order != null;
+      currentGenre.rating = '';
+      currentGenre.rank_order = null;
+      if (currentGenre.status === 'veto') currentGenre.status = 'listened';
+      selectedRating = '';
+      libraryUpdatesPending = true;
+      setUnsavedState(true);
+      toggleLibrarySaveButton(true);
+      const restore = preserveScrollSnapshot();
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      applyDetailEditMode(detailEditMode);
+      restore();
+      showSaveToast(hadRating ? 'Genre rating cleared — use the floating Save button to persist it.' : 'Genre rating is already clear.', false);
+    }
+    window.resetGenreRatingFromView = resetGenreRatingFromView;
+
     function setGenreRatingFromView(value) {
       if (!currentGenre) return;
       if (String(value) === 'zanger') {
@@ -1044,6 +1063,7 @@
         <span class="genre-header-rating-label">${escapeHtml(label)}</span>
         <span class="genre-header-stars">${starButtons}</span>
         <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">Z</button>
+        ${active ? '<button type="button" class="genre-header-clear-rating" onclick="event.stopPropagation(); resetGenreRatingFromView()" title="Clear genre rating" aria-label="Clear genre rating">↺</button>' : ''}
       </span>`;
     }
 
@@ -2692,7 +2712,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const starsEl = document.getElementById('ratingStars');
       starsEl.innerHTML = [1,2,3,4,5].map(n =>
         `<button class="star-btn ${String(n) === String(selectedRating) ? 'active' : ''}" data-rating="${n}" aria-label="${n} stars">★</button>`
-      ).join('');
+      ).join('') + (currentGenre?.rating ? '<button type="button" class="btn btn-ghost btn-tiny" onclick="resetGenreRatingFromView(); renderStars();" title="Clear rating">Clear</button>' : '');
 
       [...starsEl.querySelectorAll('.star-btn')].forEach(btn => {
         btn.onclick = () => {
@@ -3112,8 +3132,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
               <div class="status-row">
                 ${ratingHero}
                 ${listenedDate ? `<span class="tag">Listened on ${escapeHtml(listenedDate)}</span>` : (hasListenMarkers ? '<span class="tag tag-warn">Marked listened — reset if mistaken</span>' : '')}
-                ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
-                <button type="button" class="tag dg-discord-copy-chip" title="Copy Discord share block" aria-label="Copy Discord share block" onclick="copyDiscordBlockFromGenreHeader(this)">⧉ Discord</button>
+                ${songCount ? `<span class="tag dc-song-count-chip">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag dc-needs-song-log-chip">Needs song log</span>'}
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
                 ${hasPending(genre) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
                 ${genre.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
@@ -3127,8 +3146,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 <button type="button" class="spotify-queue-btn" onclick="openSpotifyPlaylistModal('${encodeURIComponent(String(genre.id || ''))}')">＋ Playlist</button>
                 <button type="button" class="btn btn-secondary dg-discord-action" title="Copy Discord share block" aria-label="Copy Discord share block" onclick="copyDiscordBlockFromGenreHeader(this)">⧉ Discord</button>
                 ${!hasListenMarkers
-                  ? `<button type="button" class="btn btn-primary" title="Mark this genre listened and remove it from the remaining spin bucket" onclick="markCurrentGenreListened()">Unlisten</button>`
-                  : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Unlisten</button>`}
+                  ? `<button type="button" class="btn btn-primary" title="Log this genre for today and remove it from the remaining spin bucket" onclick="markCurrentGenreListened()">Log today</button>`
+                  : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" title="Reset this genre to unlistened" onclick="unlistenCurrentGenre()">Unlisten</button>`}
               </div>
 
             </div>
@@ -4471,18 +4490,60 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
     }
 
     function resolveReviewMoveGenre(inputValue, currentTargetId = '') {
-      const raw = String(inputValue || '').trim();
+      const raw = String(inputValue || '').trim().replace(/^@+/, '');
       if (!raw) return { target: null, error: 'Choose a destination genre first.' };
-      const byId = (genres || []).find(g => String(g?.id) === raw && String(g?.id) !== String(currentTargetId));
+      const pool = (genres || []).filter(g => g && g.genre && String(g.id) !== String(currentTargetId));
+      const byId = pool.find(g => String(g?.id) === raw);
       if (byId) return { target: byId, error: '' };
-      const normalized = normalizePendingTag(raw);
-      const exact = (genres || []).filter(g => g && String(g.id) !== String(currentTargetId) && normalizePendingTag(g.genre || '') === normalized);
+
+      const normPending = normalizePendingTag(raw);
+      const normSearch = typeof normalizeGenreSearchText === 'function'
+        ? normalizeGenreSearchText(raw)
+        : normPending;
+      const compact = value => normalizePendingTag(value).replace(/\s+/g, '');
+      const rawCompact = compact(raw);
+      const namesForGenre = genre => {
+        const names = [genre?.genre || ''];
+        try {
+          if (typeof genreAliasListForSearch === 'function') names.push(...genreAliasListForSearch(genre));
+        } catch {}
+        return [...new Set(names.filter(Boolean))];
+      };
+
+      const exact = pool.filter(g => namesForGenre(g).some(name =>
+        normalizePendingTag(name) === normPending ||
+        (typeof normalizeGenreSearchText === 'function' && normalizeGenreSearchText(name) === normSearch) ||
+        compact(name) === rawCompact
+      ));
       if (exact.length === 1) return { target: exact[0], error: '' };
-      if (exact.length > 1) return { target: null, error: 'That genre name is ambiguous. Open the target genre or choose a more exact name.' };
-      const contains = (genres || []).filter(g => g && String(g.id) !== String(currentTargetId) && normalizePendingTag(g.genre || '').includes(normalized));
-      if (contains.length === 1) return { target: contains[0], error: '' };
-      if (contains.length > 1) return { target: null, error: 'Multiple genres match that text. Type the exact genre name.' };
-      return { target: null, error: 'Could not find that destination genre.' };
+      if (exact.length > 1) return { target: null, error: 'That genre name is ambiguous. Type the exact genre name.' };
+
+      const scored = pool.map(g => {
+        let best = 0;
+        namesForGenre(g).forEach(name => {
+          const p = normalizePendingTag(name);
+          const q = typeof normalizeGenreSearchText === 'function' ? normalizeGenreSearchText(name) : p;
+          const c = compact(name);
+          if (p.startsWith(normPending) || normPending.startsWith(p)) best = Math.max(best, 82);
+          if (q.startsWith(normSearch) || normSearch.startsWith(q)) best = Math.max(best, 82);
+          if (p.includes(normPending) || normPending.includes(p)) best = Math.max(best, 70);
+          if (q.includes(normSearch) || normSearch.includes(q)) best = Math.max(best, 70);
+          if (c.includes(rawCompact) || rawCompact.includes(c)) best = Math.max(best, 66);
+          try {
+            if (Math.min(p.length, normPending.length) >= 5 && levenshtein(p, normPending) <= 2) best = Math.max(best, 60);
+          } catch {}
+        });
+        return { genre: g, score: best };
+      }).filter(item => item.score > 0).sort((a,b) => b.score - a.score || String(a.genre.genre || '').localeCompare(String(b.genre.genre || '')));
+
+      if (scored.length && scored[0].score >= 80 && (scored.length === 1 || scored[0].score > scored[1].score)) {
+        return { target: scored[0].genre, error: '' };
+      }
+      if (scored.length === 1 && scored[0].score >= 66) return { target: scored[0].genre, error: '' };
+      if (scored.length > 1 && scored[0].score >= 66) {
+        return { target: null, error: `Multiple genres match “${raw}”. Try ${scored.slice(0, 3).map(item => item.genre.genre).join(', ')}.` };
+      }
+      return { target: null, error: `Could not find “${raw}”. Try the exact genre name from Library search.` };
     }
 
     function pendingReviewRowId(sourceId, key) {

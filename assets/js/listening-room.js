@@ -411,47 +411,126 @@
         !genreNav.includes(el),
     );
 
+    const heroMain = actions.parentElement;
+    if (heroMain) heroMain.classList.add("dc-hero-main");
+
+    const statusRow = record.querySelector(".status-row");
+    if (statusRow && heroMain) {
+      statusRow.classList.add("dc-hero-state-row");
+      const rating = statusRow.querySelector(".genre-header-rating");
+      if (rating) {
+        let ratingRow = heroMain.querySelector(".dc-hero-rating-row");
+        if (!ratingRow) {
+          ratingRow = document.createElement("div");
+          ratingRow.className = "dc-hero-rating-row";
+          const subtle = heroMain.querySelector(".subtle");
+          if (subtle?.nextSibling) heroMain.insertBefore(ratingRow, subtle.nextSibling);
+          else heroMain.insertBefore(ratingRow, statusRow);
+        }
+        ratingRow.appendChild(rating);
+      }
+      statusRow.querySelectorAll(".tag").forEach((tag) => {
+        const raw = tag.textContent || "";
+        const txt = raw.toLowerCase();
+        if (txt.includes("listened on")) {
+          tag.classList.add("dc-listened-chip", "dc-low-priority-chip");
+          tag.setAttribute("title", raw.trim());
+        }
+        if (txt.includes("needs song log")) tag.classList.add("dc-needs-song-log-chip");
+        if (txt.includes("song") && txt.includes("logged")) {
+          tag.classList.add("dc-song-count-chip", "dc-low-priority-chip");
+        }
+        if (txt.includes("pending") || txt.includes("monthly") || txt.includes("alt take")) {
+          tag.classList.add("dc-low-priority-chip");
+        }
+      });
+    }
+
     actions.innerHTML = "";
+    const hasLoggedSongs = !!record.querySelector(".dc-song-count-chip") || !!(window.currentGenre?.songs_listened || []).some?.((song) => song && !song.isPending);
     if (listen) {
       listen.classList.add("dc-primary-action");
       const currentListenText = (listen.textContent || "").trim();
-      listen.textContent = /unlisten/i.test(currentListenText)
-        ? "Unlisten"
-        : (/mark/i.test(currentListenText) ? "Unlisten" : currentListenText || "Unlisten");
+      const listenOnclick = String(listen.getAttribute("onclick") || "");
+      const listenTitle = String(listen.getAttribute("title") || "");
+      if (/unlistenCurrentGenre/i.test(listenOnclick) || /reset.*unlisten/i.test(listenTitle)) {
+        listen.textContent = "Unlisten";
+        listen.classList.add("dc-unlisten-action");
+      } else if (/markCurrentGenreListened/i.test(listenOnclick) || /mark.*listened|log.*today/i.test(listenTitle)) {
+        if (!hasLoggedSongs) {
+          listen.textContent = "Add songs";
+          listen.classList.add("dc-add-songs-action");
+          listen.removeAttribute("onclick");
+          listen.title = "Open the song add panel";
+          listen.setAttribute("aria-label", "Open the song add panel");
+          listen.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            try { if (typeof applyDetailEditMode === "function") applyDetailEditMode(true); } catch {}
+            try { if (typeof toggleDetailEditMode === "function" && !document.body.classList.contains("detail-edit-mode")) toggleDetailEditMode(); } catch {}
+            setTimeout(() => {
+              const target = document.getElementById("songsListenedBulk") || document.querySelector(".setup-editor, #detailEditPanel, #songsListenedBulk");
+              try { target?.scrollIntoView?.({ behavior: "smooth", block: "center" }); } catch {}
+              try { target?.focus?.(); } catch {}
+            }, 60);
+          });
+        } else {
+          listen.textContent = "Log today";
+          listen.classList.add("dc-log-today-action");
+        }
+      } else {
+        listen.textContent = currentListenText || "Log today";
+      }
       actions.appendChild(listen);
     }
     if (playlist) {
-      playlist.classList.add("dc-secondary-action");
+      playlist.classList.add("dc-secondary-action", "dc-playlist-action");
+      playlist.textContent = "+ Playlist";
       actions.appendChild(playlist);
     }
 
-    if (copyDiscord) {
-      copyDiscord.classList.remove("tag", "dg-discord-copy-chip");
-      copyDiscord.classList.add("btn", "btn-secondary", "dc-copy-discord-action");
-      copyDiscord.textContent = "⧉ Discord";
-      copyDiscord.title = "Copy Discord share block";
-      copyDiscord.setAttribute("aria-label", "Copy Discord share block");
-      actions.appendChild(copyDiscord);
-    } else if (!actions.querySelector(".dc-copy-discord-action")) {
-      const copyBtn = document.createElement("button");
-      copyBtn.type = "button";
-      copyBtn.className = "btn btn-secondary dc-copy-discord-action";
-      copyBtn.title = "Copy Discord share block";
-      copyBtn.setAttribute("aria-label", "Copy Discord share block");
-      copyBtn.textContent = "⧉ Discord";
-      copyBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        copyCurrentGenreDiscord(copyBtn);
-      });
-      actions.appendChild(copyBtn);
+    const ensureCopyButton = () => {
+      const btn = copyDiscord || document.createElement("button");
+      btn.type = "button";
+      btn.classList.remove("tag", "dg-discord-copy-chip");
+      btn.classList.add("btn", "btn-secondary", "dc-copy-discord-action");
+      btn.textContent = "⧉";
+      btn.title = "Copy Discord share block";
+      btn.setAttribute("aria-label", "Copy Discord share block");
+      if (!copyDiscord) {
+        btn.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          copyCurrentGenreDiscord(btn);
+        });
+      }
+      return btn;
+    };
+    actions.appendChild(ensureCopyButton());
+
+    if (edit) {
+      edit.classList.add("btn", "btn-secondary", "dc-setup-action");
+      edit.textContent = "⚙";
+      edit.title = "Setup / curation editor";
+      edit.setAttribute("aria-label", "Setup / curation editor");
+      actions.appendChild(edit);
     }
+
+    actions.querySelectorAll(".dc-copy-discord-action").forEach((btn, index) => {
+      if (index > 0) btn.remove();
+    });
 
     if (genreNav.length) {
       const navWrap = document.createElement("div");
       navWrap.className = "dc-genre-nav-actions dc-desktop-genre-nav";
+      const compactLabels = new Map([
+        [genrePrev, "‹"],
+        [archiveBack, "Archive"],
+        [genreNext, "›"],
+      ]);
       genreNav.forEach((el) => {
         el.classList.add("dc-genre-nav-action");
+        if (compactLabels.has(el)) el.textContent = compactLabels.get(el);
         navWrap.appendChild(el);
       });
       actions.appendChild(navWrap);
@@ -460,9 +539,9 @@
       mobileNavWrap.className = "dc-mobile-genre-nav";
       mobileNavWrap.setAttribute("aria-label", "Genre navigation");
       mobileNavWrap.append(
-        makeMobileNav("←", "Previous genre", "prev", "dc-mobile-prev-genre"),
-        makeMobileNav("⌂", "Back to Archive", "archive", "dc-mobile-archive-genre"),
-        makeMobileNav("→", "Next genre", "next", "dc-mobile-next-genre"),
+        makeMobileNav("‹", "Previous genre", "prev", "dc-mobile-prev-genre"),
+        makeMobileNav("Archive", "Back to Archive", "archive", "dc-mobile-archive-genre"),
+        makeMobileNav("›", "Next genre", "next", "dc-mobile-next-genre"),
       );
       actions.appendChild(mobileNavWrap);
     }
@@ -473,7 +552,7 @@
       const details = document.createElement("details");
       details.className = "dc-overflow-menu";
       const summary = document.createElement("summary");
-      summary.textContent = "More";
+      summary.textContent = "⋯";
       summary.setAttribute("role", "button");
       summary.setAttribute("aria-label", "More listening actions");
       summary.addEventListener("click", (event) => {
@@ -484,35 +563,12 @@
       menu.className = "dc-overflow-menu-list";
       rest.forEach((el) => {
         el.classList.add("dc-overflow-action");
-        el.addEventListener("click", () =>
-          setTimeout(() => details.removeAttribute("open"), 50),
-        );
+        el.addEventListener("click", () => setTimeout(() => details.removeAttribute("open"), 50));
         menu.appendChild(el);
       });
       details.appendChild(summary);
       details.appendChild(menu);
       actions.appendChild(details);
-    }
-
-    const statusRow = record.querySelector(".status-row");
-    if (statusRow) {
-      statusRow.querySelectorAll(".tag").forEach((tag) => {
-        const raw = tag.textContent || "";
-        const txt = raw.toLowerCase();
-        if (txt.includes("listened on")) {
-          tag.classList.add("dc-listened-chip", "dc-low-priority-chip");
-          tag.setAttribute("title", raw.trim());
-        }
-        if (txt.includes("song") && txt.includes("logged")) {
-          tag.classList.add("dc-song-count-chip", "dc-low-priority-chip");
-        }
-        if (
-          txt.includes("pending") ||
-          txt.includes("monthly") ||
-          txt.includes("alt take")
-        )
-          tag.classList.add("dc-low-priority-chip");
-      });
     }
   }
 
