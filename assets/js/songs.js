@@ -863,8 +863,12 @@
     const screen = document.getElementById("screen-listen");
     if (!screen || !screen.classList.contains("active")) return;
     const section = screen.querySelector(".detail-log-section");
-    const activeList = section?.querySelector(".detail-song-list");
-    if (!section || !activeList) return;
+    if (!section) return;
+    const focusShell = screen.querySelector(".listening-focus-section-shell") || section;
+    const songsPane = focusShell.querySelector(".listening-focus-songs") || section;
+    if (songsPane.classList.contains("hidden")) return;
+    const activeList = songsPane.querySelector(".detail-song-list");
+    if (!activeList) return;
 
     const entries = songListForFocus(currentGenre);
     if (!entries.length) return;
@@ -889,24 +893,25 @@
 
     screen.classList.add("listen-experience-mode");
     section.classList.add("song-focus-section");
-    const heading = Array.from(section.children).find((el) =>
+    songsPane.classList.add("song-focus-section");
+    const heading = Array.from(songsPane.children).find((el) =>
       el.classList?.contains("eyebrow"),
     );
-    if (heading) heading.textContent = "Song Listening";
+    if (heading) heading.textContent = "Song Carousel";
 
-    // The focused queue replaces the legacy logged-song list. Keep the legacy
-    // DOM present for older edit/save helpers, but remove it visually so the
-    // same songs are not shown twice under the queue.
-    section.querySelectorAll(":scope > .detail-song-list").forEach((list) => {
+    // The focused queue replaces the legacy logged-song list inside the Songs
+    // pane. Keep the legacy DOM present for older edit/save helpers, but remove
+    // it visually so the same songs are not shown twice under the carousel.
+    songsPane.querySelectorAll(":scope .detail-song-list").forEach((list) => {
       list.classList.add("song-original-list-hidden");
       list.setAttribute("aria-hidden", "true");
     });
 
-    let mount = section.querySelector(".song-focus-experience");
+    let mount = songsPane.querySelector(":scope > .song-focus-experience");
     if (!mount) {
       mount = document.createElement("div");
       mount.className = "song-focus-experience";
-      section.insertBefore(mount, activeList);
+      songsPane.insertBefore(mount, activeList);
     }
     mount.innerHTML = `${renderFocusedSong(selected, detailsOpen, entries, activeFilter)}${detailsOpen ? renderSongDetails(selected) : ""}${renderSongQueue(entries, selectedKey, activeFilter, queueOpen)}`;
   }

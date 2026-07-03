@@ -9,6 +9,102 @@
       if (listenTab) listenTab.classList.toggle('dirty', hasUnsavedChanges);
     }
 
+
+
+    let listeningFocusMode = 'songs';
+
+    function listeningFocusStorageKey(genre = currentGenre) {
+      const id = genre?.id || genre?.genre || 'default';
+      return `dailyGenreListeningFocus:${id}`;
+    }
+
+    function genreHasAlbumDiveContent(genre = currentGenre) {
+      const dive = genre?.albumDive || genre?.album_dive || null;
+      const slots = Array.isArray(dive?.slots) ? dive.slots : [];
+      return slots.some(slot => slot && (slot.album || slot.artist || slot.spotify_url || slot.spotifyUrl || slot.albumUrl || slot.url || slot.rationale || slot.albumArt || slot.manualAlbumArt));
+    }
+
+    function getListeningFocusMode(genre = currentGenre) {
+      const key = listeningFocusStorageKey(genre);
+      let saved = '';
+      try { saved = localStorage.getItem(key) || ''; } catch {}
+      const mode = saved || listeningFocusMode || 'songs';
+      return mode === 'albums' ? 'albums' : 'songs';
+    }
+
+    function setListeningFocusMode(mode, event = null) {
+      if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
+      const previousScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const previousScrollX = window.scrollX || document.documentElement.scrollLeft || 0;
+      const previousActive = document.activeElement;
+      const previousBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      try { previousActive?.blur?.(); } catch {}
+
+      listeningFocusMode = mode === 'albums' ? 'albums' : 'songs';
+      try { localStorage.setItem(listeningFocusStorageKey(currentGenre), listeningFocusMode); } catch {}
+
+      const restoreListeningToggleScroll = () => {
+        try { window.scrollTo({ left: previousScrollX, top: previousScrollY, behavior: 'auto' }); }
+        catch { window.scrollTo(previousScrollX, previousScrollY); }
+      };
+
+      const shell = document.querySelector('.listening-focus-section-shell');
+      const songsPane = document.querySelector('.listening-focus-songs');
+      const albumsPane = document.querySelector('.listening-focus-albums');
+      if (shell && songsPane && albumsPane && currentGenre) {
+        shell.dataset.listeningFocus = listeningFocusMode;
+        shell.querySelectorAll('.listening-focus-tab').forEach(tab => {
+          const isActive = tab.dataset.focusMode === listeningFocusMode;
+          tab.classList.toggle('active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+        songsPane.classList.toggle('hidden', listeningFocusMode !== 'songs');
+        albumsPane.classList.toggle('hidden', listeningFocusMode !== 'albums');
+        if (listeningFocusMode === 'albums' && typeof renderAlbumDivePanel === 'function') {
+          albumsPane.innerHTML = renderAlbumDivePanel(currentGenre);
+        }
+      } else if (currentGenre && typeof loadListenScreen === 'function') {
+        loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      }
+
+      restoreListeningToggleScroll();
+      requestAnimationFrame(() => {
+        restoreListeningToggleScroll();
+        requestAnimationFrame(restoreListeningToggleScroll);
+      });
+      setTimeout(() => {
+        if (typeof enhanceSongListeningExperience === 'function') enhanceSongListeningExperience();
+        if (typeof hydrateAlbumDiveAmbient === 'function') hydrateAlbumDiveAmbient();
+        restoreListeningToggleScroll();
+      }, 0);
+      [40, 120, 260, 520, 900].forEach(delay => setTimeout(restoreListeningToggleScroll, delay));
+      setTimeout(() => { document.documentElement.style.scrollBehavior = previousBehavior; }, 940);
+    }
+    window.setListeningFocusMode = setListeningFocusMode;
+    window.getListeningFocusMode = getListeningFocusMode;
+
+    function renderListeningFocusTabs(genre) {
+      const mode = getListeningFocusMode(genre);
+      const albumReady = genreHasAlbumDiveContent(genre);
+      const dive = genre?.albumDive || genre?.album_dive || null;
+      let albumMeta = albumReady ? 'Album shelf ready' : 'Start or import a dive';
+      if (albumReady && typeof albumDiveProgress === 'function') {
+        const progress = albumDiveProgress(dive);
+        albumMeta = `${progress.fetched}/${progress.total} fetched · ${progress.finished}/${progress.total} finished`;
+      }
+      return `<div class="listening-focus-head">
+          <div>
+            <div class="eyebrow listening-focus-eyebrow">Listening</div>
+            <div class="small listening-focus-subtitle">Switch between the song carousel and this genre’s album shelf.</div>
+          </div>
+          <div class="listening-focus-tabs" role="tablist" aria-label="Listening focus">
+            <button type="button" class="listening-focus-tab ${mode === 'songs' ? 'active' : ''}" data-focus-mode="songs" role="tab" aria-selected="${mode === 'songs'}" onclick="setListeningFocusMode('songs', event)">Songs</button>
+            <button type="button" class="listening-focus-tab ${mode === 'albums' ? 'active' : ''}" data-focus-mode="albums" role="tab" aria-selected="${mode === 'albums'}" onclick="setListeningFocusMode('albums', event)">Albums <span>${escapeHtml(albumMeta)}</span></button>
+          </div>
+        </div>`;
+    }
+
     let lastSavedListenSnapshot = '';
 
     function buildListenSnapshot() {
@@ -328,15 +424,36 @@
       }
     }
 
+    const ACTIVE_ALBUM_DIVE_STORAGE_KEY = 'dailyGenreActiveAlbumDive:v1';
+
+    function albumDiveStateGenreId(genre) {
+      return String(genre?.id ?? genre?.genre ?? '');
+    }
+
+    function readActiveAlbumDiveState() {
+      try {
+        return JSON.parse(localStorage.getItem(ACTIVE_ALBUM_DIVE_STORAGE_KEY) || 'null') || null;
+      } catch {
+        return null;
+      }
+    }
+
     function albumDiveProgressScore(g) {
       const dive = g && g.albumDive;
       const slots = Array.isArray(dive?.slots) ? dive.slots : [];
       const total = slots.length;
-      const finished = slots.filter(slot => Number(slot?.albumReaction || slot?.reaction || 0) > 0 || slot?.finished || slot?.completed).length;
-      return { total, finished, active: !!(dive && (dive.enabled !== false) && String(dive.status || 'active').toLowerCase() !== 'completed') };
+      const finished = slots.filter(slot => slot?.listenState === 'finished' || slot?.listenState === 'completed' || Number(slot?.albumReaction || slot?.reaction || 0) > 0 || slot?.finished || slot?.completed).length;
+      const sampledOnly = slots.filter(slot => slot?.listenState === 'sampled').length;
+      const started = Math.min(total, finished + sampledOnly);
+      return { total, finished, sampled: sampledOnly, started, active: !!(dive && (dive.enabled !== false) && String(dive.status || 'active').toLowerCase() !== 'completed') };
     }
 
     function findActiveAlbumDiveGenre() {
+      const saved = readActiveAlbumDiveState();
+      if (saved?.genreId) {
+        const fromSaved = genres.find(g => albumDiveStateGenreId(g) === String(saved.genreId));
+        if (fromSaved && albumDiveProgressScore(fromSaved).total > 0) return fromSaved;
+      }
       const active = genres
         .filter(g => albumDiveProgressScore(g).total > 0 || !!g.albumDive)
         .filter(g => albumDiveProgressScore(g).active)
@@ -344,15 +461,40 @@
       return active[0] || genres.find(g => albumDiveProgressScore(g).total > 0) || null;
     }
 
+    function refreshTopAlbumDiveButton() {
+      const btn = document.getElementById('topAlbumDiveBtn');
+      if (!btn) return;
+      const genre = findActiveAlbumDiveGenre();
+      if (!genre) {
+        btn.classList.remove('has-active-dive');
+        btn.innerHTML = 'Album Dive';
+        btn.title = 'Open the current Album Dive';
+        return;
+      }
+      const saved = readActiveAlbumDiveState();
+      const label = saved?.albumTitle ? ` · ${saved.albumTitle}` : '';
+      btn.classList.add('has-active-dive');
+      btn.innerHTML = 'Album Dive';
+      btn.title = `Return to active Album Dive: ${genre.genre || 'Genre'}${label}`;
+    }
+    window.refreshTopAlbumDiveButton = refreshTopAlbumDiveButton;
+
     function openCurrentAlbumDive(event) {
       if (event) event.preventDefault();
+      const activeState = readActiveAlbumDiveState();
       const genre = findActiveAlbumDiveGenre();
       if (!genre) {
         showSaveToast('No active Album Dive yet. Open a genre and start one from its Album Dive panel.', true);
         return false;
       }
+      listeningFocusMode = 'albums';
+      try {
+        localStorage.setItem(listeningFocusStorageKey(genre), 'albums');
+        if (activeState?.slotKey) localStorage.setItem(`dailyGenreAlbumDiveFocusSlot:${albumDiveStateGenreId(genre)}`, activeState.slotKey);
+      } catch {}
       openGenreDetail(genre, false, { skipSpotifyHydration: true });
       if (typeof setAlbumDiveEditorMode === 'function') setAlbumDiveEditorMode(false);
+      refreshTopAlbumDiveButton();
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById('topAlbumDiveBtn')?.classList.add('active');
       setTimeout(() => document.getElementById('albumDivePanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 160);
@@ -3069,6 +3211,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       document.title = `${genre.genre || 'Genre'} | Daily Genre`;
       const preserveDirty = !!options.preserveDirty;
       selectedRating = genre.rating && genre.rating !== 'zanger' ? String(genre.rating) : '';
+      listeningFocusMode = getListeningFocusMode(genre);
 
       const favTitleInput = document.getElementById('favoriteSong');
       const favUrlInput = document.getElementById('favoriteSongUrl');
@@ -3136,13 +3279,18 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           </div>
           ${renderGenreRatingPanel(genre)}
           ${renderListeningActionsPanel(genre)}
-          ${renderAlbumDivePanel(genre)}
           ${renderGenreReactionSummary(genre)}
           ${renderPendingSongNotesPanel(genre)}
-          <div class="detail-log-section">
-            <div class="eyebrow">Logged Songs</div>
-            ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map((song, idx) => renderSongEntry(song, false, { allowTrackEdit: true, songIndex: idx })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
-            <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: true })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
+          <div class="detail-log-section listening-focus-section-shell" data-listening-focus="${escapeHtml(listeningFocusMode)}">
+            ${renderListeningFocusTabs(genre)}
+            <div class="listening-focus-pane listening-focus-songs ${listeningFocusMode === 'songs' ? '' : 'hidden'}">
+              <div class="eyebrow listening-focus-pane-label">Song Queue</div>
+              ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map((song, idx) => renderSongEntry(song, false, { allowTrackEdit: true, songIndex: idx })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
+              <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: true })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
+            </div>
+            <div class="listening-focus-pane listening-focus-albums ${listeningFocusMode === 'albums' ? '' : 'hidden'}">
+              ${renderAlbumDivePanel(genre)}
+            </div>
           </div>
         </div>
       `;
@@ -3160,6 +3308,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         setUnsavedState(false);
       }
 
+      refreshTopAlbumDiveButton();
       // Existing saved artwork/metadata is displayed here. Missing metadata is enriched
       // only through the explicit Refresh Metadata action in Visuals.
     }
@@ -5833,6 +5982,7 @@ async function loadData() {
   repairExistingPendingSources();
 
   updateRemainingCount();
+  refreshTopAlbumDiveButton();
   buildSpinnerPool();
   populateMonthFilter();
   renderHistory();

@@ -380,10 +380,14 @@ function hydrateAlbumDiveAmbient() {
 }
 
 function albumDiveIsListenMode() {
+  const screen = document.getElementById("screen-listen");
+  const focusMode =
+    typeof getListeningFocusMode === "function" ? getListeningFocusMode(currentGenre) : "songs";
   return (
-    document
-      .getElementById("screen-listen")
-      ?.classList.contains("listen-experience-mode") && !albumDiveEditorMode
+    !!screen &&
+    screen.classList.contains("active") &&
+    focusMode === "albums" &&
+    !albumDiveEditorMode
   );
 }
 
@@ -400,6 +404,64 @@ function setAlbumDiveEditorMode(enabled) {
 function albumDiveStorageKey() {
   const id = currentGenre?.id || currentGenre?.genre || "default";
   return `dailyGenreAlbumDiveFocusSlot:${id}`;
+}
+
+
+const ALBUM_DIVE_ACTIVE_STATE_KEY = "dailyGenreActiveAlbumDive:v1";
+
+function albumDiveGenreStateId(genre = currentGenre) {
+  return String(genre?.id ?? genre?.genre ?? "");
+}
+
+function albumDiveReadActiveState() {
+  try {
+    return JSON.parse(localStorage.getItem(ALBUM_DIVE_ACTIVE_STATE_KEY) || "null") || null;
+  } catch {
+    return null;
+  }
+}
+
+function albumDiveWriteActiveState(state) {
+  try {
+    localStorage.setItem(ALBUM_DIVE_ACTIVE_STATE_KEY, JSON.stringify(state || {}));
+  } catch {}
+  if (typeof window.refreshTopAlbumDiveButton === "function") {
+    window.refreshTopAlbumDiveButton();
+  }
+}
+
+function albumDiveActiveStateForCurrent(slotKey = "") {
+  const dive = normalizeAlbumDive(currentGenre, false);
+  const selectedSlotKey = slotKey || getAlbumDiveFocusSlotKey(dive);
+  const slot = (dive?.slots || []).find((item) => item.key === selectedSlotKey) || null;
+  return {
+    genreId: albumDiveGenreStateId(currentGenre),
+    genreName: currentGenre?.genre || "",
+    slotKey: selectedSlotKey || "",
+    slotLabel: slot?.label || "",
+    albumTitle: slot?.album || "",
+    mode: "albums",
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+function albumDiveCurrentGenreIsActiveDive() {
+  const active = albumDiveReadActiveState();
+  return !!active && !!currentGenre && String(active.genreId || "") === albumDiveGenreStateId(currentGenre);
+}
+
+function albumDiveMaybeUpdateActiveSlot(slotKey) {
+  if (!albumDiveCurrentGenreIsActiveDive()) return;
+  albumDiveWriteActiveState(albumDiveActiveStateForCurrent(slotKey));
+}
+
+function albumDiveActiveChipMarkup(dive, selectedKey) {
+  if (!albumDiveCurrentGenreIsActiveDive()) return "";
+  const progress = albumDiveProgress(dive);
+  const started = (progress.sampled || 0) + (progress.finished || 0);
+  const slot = (dive?.slots || []).find((item) => item.key === selectedKey);
+  const albumText = slot?.album ? ` · ${slot.album}` : "";
+  return `<div class="album-dive-active-chip" title="This is your active Album Dive session">Album Dive active · ${started}/${progress.total} albums sampled${escapeHtml(albumText)}</div>`;
 }
 
 function albumDiveInstantScrollTo(x, y) {
@@ -484,6 +546,7 @@ function setAlbumDiveFocusSlot(slotKey, options = {}) {
   try {
     localStorage.setItem(albumDiveStorageKey(), slotKey || "");
   } catch {}
+  albumDiveMaybeUpdateActiveSlot(slotKey || "");
 
   // In listening mode, changing the focused album should feel like moving a
   // carousel, not like rebuilding the whole Album Dive section. Replacing only
@@ -758,8 +821,6 @@ function renderAlbumDiveFocusPanel(dive) {
     (dive.slots || []).find((item) => item.key === selectedKey) ||
     dive.slots[0];
   if (!slot) return "";
-  const prevSlot = albumDiveAdjacentSlot(dive, slot.key, -1);
-  const nextSlot = albumDiveAdjacentSlot(dive, slot.key, 1);
   const safeKey = escapeHtml(slot.key);
   const state = slot.listenState || "not_started";
   const fav = slot.favoriteSong || {};
@@ -788,7 +849,7 @@ function renderAlbumDiveFocusPanel(dive) {
           .join("")}
       </select>`;
   const trackSummary = albumDiveTrackReactionSummary(slot);
-  const manualMetadataDetails = `<details class="album-focus-edit-details">
+  const manualMetadataDetails = `<details class="album-focus-edit-details album-focus-edit-bottom">
         <summary>Edit / replace this album</summary>
         <div class="album-slot-title" style="margin-top:8px;">
           <input type="text" value="${escapeHtml(slot.album || "")}" placeholder="Album title" oninput="updateAlbumDiveSlotField('${safeKey}', 'album', this.value)">
@@ -807,10 +868,17 @@ function renderAlbumDiveFocusPanel(dive) {
           </div>
         </div>
       </details>`;
-  return `<div class="album-focus-view" data-album-focus-key="${safeKey}">
-        <div class="album-focus-carousel" aria-label="Focused Album Dive carousel">
+  return `<div class="album-focus-view album-focus-view-shelf-top album-focus-view-arrows-only" data-album-focus-key="${safeKey}">
+        <div class="album-focus-shelf-top-wrap">
+          <div class="album-focus-shelf-top-head">
+            <span>Album shelf</span>
+            <small>Pick an album to load its hero and track queue below.</small>
+          </div>
+          ${renderAlbumDiveFocusRail(dive, selectedKey)}
+        </div>
+        ${albumDiveActiveChipMarkup(dive, selectedKey)}
+        <div class="album-focus-carousel album-focus-carousel-arrows-only" aria-label="Focused Album Dive carousel">
           <button type="button" class="album-focus-nav album-focus-prev" onclick="setAlbumDiveFocusRelative(-1, event)" aria-label="Previous Album Dive slot">‹</button>
-          ${renderAlbumDiveSidePeek(prevSlot, "Previous")}
           <div class="album-focus-hero">
             <div class="album-focus-art-wrap">${albumDiveArtHtml(slot)}</div>
             <div class="album-focus-main">
@@ -825,42 +893,48 @@ function renderAlbumDiveFocusPanel(dive) {
                 <div class="album-focus-rating"><span>Album</span>${reactionButtons}</div>
                 <button type="button" class="album-focus-trophy ${slot.favoriteAlbum ? "active" : ""}" onclick="setAlbumDiveFavoriteAlbum('${safeKey}', event)" title="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}" aria-label="${slot.favoriteAlbum ? "Remove favorite album" : "Mark as favorite album"}">🏆</button>
                 <button type="button" class="btn btn-secondary btn-tiny album-focus-details-button" onclick="toggleAlbumDiveFocusDetails('${safeKey}', event)">Details</button>
-                <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}', event)">Delete entry</button>
               </div>
               <div class="album-focus-favorite album-focus-favorite-summary ${favoriteLabel ? "" : "empty"}"><strong>Top songs:</strong> <span>${escapeHtml(favoriteLabel || "No top songs picked")}</span></div>
             </div>
           </div>
-          ${renderAlbumDiveSidePeek(nextSlot, "Next")}
           <button type="button" class="album-focus-nav album-focus-next" onclick="setAlbumDiveFocusRelative(1, event)" aria-label="Next Album Dive slot">›</button>
         </div>
-        <details class="album-focus-detail-drawer" id="album-focus-details-${safeKey}">
-          <summary>Album controls and top songs</summary>
-          <div class="album-focus-detail-grid">
-            <section class="album-focus-detail-section">
-              <h5>Listening state</h5>
-              <div class="album-slot-meta album-focus-state-editor">${listenStateSelect}${reactionButtons}</div>
-            </section>
-            <section class="album-focus-detail-section">
-              <h5>Top songs from this album</h5>
-              <div class="album-slot-favorite album-focus-favorite-editor">
-                ${renderAlbumDiveFavoritePicker(slot, safeKey)}
-                <div class="album-fav-actions">
-                  ${fav.spotifyTrackUrl ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="fetchAlbumDiveFavoriteMetadata('${safeKey}', this)">Refresh Track Info</button>` : ""}
-                  <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add First Top Song to Song Log</button>
-                  ${fav.promotedToSongLog ? '<span class="tag">Promoted</span>' : ""}
-                </div>
-              </div>
-            </section>
+        <details class="album-focus-detail-drawer album-focus-controls-drawer" id="album-focus-details-${safeKey}">
+          <summary>Album controls &amp; top songs</summary>
+          <div class="album-focus-control-strip">
+            <label class="album-focus-control-field">
+              <span>State</span>
+              ${listenStateSelect}
+            </label>
+            <div class="album-focus-control-field album-focus-control-rating">
+              <span>Album rating</span>
+              ${reactionButtons}
+            </div>
+            <div class="album-focus-control-field album-focus-control-top-songs">
+              <span>Top songs</span>
+              <strong>${escapeHtml(favoriteLabel || "No top songs picked")}</strong>
+              <small>Use Tracks below to mark or unmark picks.</small>
+            </div>
+            <div class="album-focus-control-actions">
+              ${fav.spotifyTrackUrl ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="fetchAlbumDiveFavoriteMetadata('${safeKey}', this)">Refresh Track Info</button>` : ""}
+              <button type="button" class="btn btn-primary btn-tiny" onclick="promoteAlbumDiveFavorite('${safeKey}')">Add First Top Song</button>
+              ${fav.promotedToSongLog ? '<span class="tag">Promoted</span>' : ""}
+            </div>
           </div>
-          ${manualMetadataDetails}
         </details>
-        <div class="album-focus-tracks">
-          <details>
-            <summary><span>Track queue</span><small>from ${escapeHtml(displayTitle)}${trackSummary}</small></summary>
+        <details class="album-focus-tracks album-focus-tracks-open album-focus-tracks-drawer" open>
+          <summary class="album-focus-tracks-summary">
+            <span>Tracks</span>
+            <small>${escapeHtml(displayTitle)}${trackSummary}</small>
+          </summary>
+          <div class="album-focus-tracks-body">
             ${renderAlbumDiveTrackReactionRows(slot, safeKey)}
-          </details>
+          </div>
+        </details>
+        <div class="album-focus-maintenance">
+          ${manualMetadataDetails}
+          <button type="button" class="btn btn-ghost btn-tiny album-slot-clear-btn" onclick="clearAlbumDiveSlot('${safeKey}', event)">Delete entry</button>
         </div>
-        ${renderAlbumDiveFocusRail(dive, selectedKey)}
       </div>`;
 }
 
@@ -946,7 +1020,8 @@ function renderAlbumDivePanel(genre) {
   const eligible = albumDiveEligible(genre);
 
   if (!dive) {
-    return `<details class="panel album-dive-panel album-dive-collapsible album-dive-empty-panel">
+    const emptyOpen = albumDiveIsListenMode() ? " open" : "";
+    return `<details class="panel album-dive-panel album-dive-collapsible album-dive-empty-panel"${emptyOpen}>
         <summary class="album-dive-collapsed-head">
           <span class="album-dive-summary-main">
             <span class="eyebrow">Album Dive</span>
@@ -975,7 +1050,7 @@ function renderAlbumDivePanel(genre) {
 
   const progress = albumDiveProgress(dive);
   const listenMode = albumDiveIsListenMode();
-  const shouldOpen = !!albumDiveEditorMode || !!albumDivePanelOpen;
+  const shouldOpen = !!listenMode || !!albumDiveEditorMode || !!albumDivePanelOpen;
   if (listenMode) setTimeout(hydrateAlbumDiveAmbient, 0);
   const queueButtonLabel = albumDiveQueueOpen ? "Hide queue" : "Show queue";
   const summaryStatus = [
@@ -998,12 +1073,12 @@ function renderAlbumDivePanel(genre) {
           </span>
         </summary>
         <div class="album-dive-collapsed-body">
-          <div class="album-dive-head">
-            <div>
+          <div class="album-dive-head ${listenMode ? "album-dive-head-session" : ""}">
+            ${listenMode ? "" : `<div>
               <div class="eyebrow">Album Dive</div>
               <h3 class="album-dive-title">Canonical album shelf</h3>
-              <p class="small album-dive-progress-line">${escapeHtml(summaryStatus)}${listenMode ? "" : ` · ${escapeHtml(dive.mode || "canon")} dive`}</p>
-            </div>
+              <p class="small album-dive-progress-line">${escapeHtml(summaryStatus)} · ${escapeHtml(dive.mode || "canon")} dive</p>
+            </div>`}
             <div class="album-dive-actions album-dive-actions-clean">
               <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
               <button type="button" class="btn btn-secondary" onclick="openAlbumDiveSpotifyPlaylistModal()">＋ Playlist Albums</button>
@@ -1673,9 +1748,14 @@ function markAlbumDiveActive() {
   dive.enabled = true;
   dive.status = "active";
   dive.lastWorkedAt = new Date().toISOString();
+  const selectedKey = getAlbumDiveFocusSlotKey(dive);
+  try {
+    localStorage.setItem(albumDiveStorageKey(), selectedKey || "");
+  } catch {}
+  albumDiveWriteActiveState(albumDiveActiveStateForCurrent(selectedKey));
   touchAlbumDive();
   rerenderAlbumDive({ preserveScroll: true });
-  showSaveToast("Album Dive marked active — save changes to keep it.", false);
+  showSaveToast("Album Dive kept active — use the top Album Dive shortcut to return here.", false);
 }
 window.markAlbumDiveActive = markAlbumDiveActive;
 
