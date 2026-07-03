@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Genre</title>
+    <meta name="daily-genre-version" content="v143" />
+    <meta name="daily-genre-updated" content="2026-07-03 11:17 AM ET" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -20,6 +22,40 @@
       src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"
       crossorigin="anonymous"
     ></script>
+    <style>
+      .dg-build-footer {
+        max-width: 1180px;
+        margin: 18px auto 0;
+        padding: 10px 4px 24px;
+        color: rgba(255, 245, 223, 0.58);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .dg-build-footer span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 999px;
+        background: rgba(255, 245, 223, 0.06);
+        border: 1px solid rgba(255, 224, 161, 0.12);
+      }
+      @media (max-width: 680px) {
+        .dg-build-footer {
+          justify-content: flex-start;
+          padding-left: 2px;
+          padding-right: 2px;
+          font-size: 0.68rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="app">
@@ -789,6 +825,11 @@
           <div id="rankingWrap"></div>
         </div>
       </section>
+
+      <footer class="dg-build-footer" aria-label="Daily Genre build information">
+        <span>Daily Genre v143</span>
+        <span>Updated 2026-07-03 11:17 AM ET</span>
+      </footer>
     </div>
 
     <div class="modal-backdrop" id="passwordModal">
@@ -1015,10 +1056,10 @@
     <script src="./assets/js/utils.js"></script>
     <script src="./assets/js/genre-data.js?v=search-mobile-v58"></script>
     <script src="./assets/js/spotify.js"></script>
-    <script src="./assets/js/album-dive.js?v=identity-preserve-v85"></script>
+    <script src="./assets/js/album-dive.js?v=album-copy-v142"></script>
     <script src="./assets/js/app.js?v=manual-repair-layout-v137"></script>
     <script src="./assets/js/studio-polish.js?v=manual-repair-layout-v137"></script>
-    <script src="./assets/js/genre-identity.js?v=routing-copy-v119"></script>
+    <script src="./assets/js/genre-identity.js?v=identity-editor-separate-v142"></script>
     <script src="./assets/js/songs.js?v=routing-copy-v119"></script>
     <script src="./assets/js/listening-room.js?v=manual-repair-layout-v137"></script>
     <script src="./assets/js/library-polish.js?v=perf-v11"></script>

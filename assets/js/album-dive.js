@@ -517,6 +517,49 @@ function albumDiveReactionLabel(value) {
         : "Unrated";
 }
 
+
+function albumDiveSlotCopySummary(slot = {}) {
+  const reaction = albumDiveSlotReaction(slot);
+  const reactionLabel = reaction ? albumDiveReactionEmoji(reaction) : "unrated";
+  const album = String(slot.album || slot.albumTitle || "Untitled album").trim();
+  const artist = String(slot.artist || slot.albumArtist || "Unknown artist").trim();
+  const category = String(slot.label || slot.key || "Album").trim();
+  const year = slot.year || (slot.releaseDate ? String(slot.releaseDate).slice(0, 4) : "");
+  const status = String(slot.listenState || slot.status || "").trim();
+  const tail = [year, status, reactionLabel].filter(Boolean).join(" · ");
+  return `* [${category}] ${artist} — ${album}${tail ? `: ${tail}` : ""}`;
+}
+
+function buildAlbumDiveStatsCopy(genre = currentGenre) {
+  const dive = normalizeAlbumDive(genre, false);
+  const slots = (dive?.slots || []).filter(albumDiveSlotHasContent);
+  if (!genre || !slots.length) return "";
+  const progress = albumDiveProgress(dive);
+  const header = `Album Dive — ${genre.genre || "Unknown genre"} (${progress.fetched}/${progress.total} fetched · ${progress.finished}/${progress.total} finished)`;
+  const lines = [header, ...slots.map(albumDiveSlotCopySummary)];
+  const verdictMap = { better: "made me like the genre better", no_change: "no change", worse: "made me like the genre worse" };
+  const verdict = verdictMap[dive.verdictImpact] || dive.verdictImpact || "";
+  if (verdict) lines.push(`Overall: ${verdict}`);
+  return lines.join("\n");
+}
+
+async function copyAlbumDiveStats(genre = currentGenre) {
+  const text = buildAlbumDiveStatsCopy(genre);
+  if (!text) {
+    if (typeof showSaveToast === "function") showSaveToast("No Album Dive stats to copy yet.", true);
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    if (typeof showSaveToast === "function") showSaveToast("Album Dive stats copied.", false);
+  } catch (error) {
+    console.warn("Could not copy Album Dive stats", error);
+    if (typeof showSaveToast === "function") showSaveToast("Could not copy Album Dive stats.", true);
+  }
+}
+
+window.copyAlbumDiveStats = copyAlbumDiveStats;
+
 function albumDiveReactionFromLegacyRating(value) {
   const n = Number(value);
   if (!Number.isFinite(n) || n <= 0) return null;
@@ -956,6 +999,7 @@ function renderAlbumDivePanel(genre) {
             <div class="album-dive-actions album-dive-actions-clean">
               <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
               <button type="button" class="btn btn-secondary" onclick="openAlbumDiveSpotifyPlaylistModal()">＋ Playlist Albums</button>
+              <button type="button" class="btn btn-secondary" onclick="copyAlbumDiveStats()" title="Copy Album Dive summary for Discord">⧉ Copy stats</button>
               <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
               ${listenMode ? "" : `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">Mark Complete</button><button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>`}
             </div>

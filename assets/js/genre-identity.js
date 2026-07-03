@@ -756,45 +756,6 @@
 
 
 
-  function copyGenreDnaDiscordBlock() {
-    try {
-      const text = typeof buildDiscordBlock === "function" ? buildDiscordBlock() : "";
-      if (!text) {
-        if (typeof showSaveToast === "function") showSaveToast("No Discord block available yet.", true);
-        return;
-      }
-      if (navigator.clipboard?.writeText) {
-        navigator.clipboard.writeText(text).then(() => {
-          if (typeof showSaveToast === "function") showSaveToast("Discord block copied.", false);
-        }).catch(() => fallbackCopyGenreDnaDiscordBlock(text));
-      } else {
-        fallbackCopyGenreDnaDiscordBlock(text);
-      }
-    } catch (err) {
-      console.warn("Could not copy Discord block", err);
-      if (typeof showSaveToast === "function") showSaveToast("Could not copy Discord block.", true);
-    }
-  }
-
-  function fallbackCopyGenreDnaDiscordBlock(text) {
-    try {
-      const area = document.createElement("textarea");
-      area.value = text;
-      area.setAttribute("readonly", "");
-      area.style.position = "fixed";
-      area.style.left = "-9999px";
-      document.body.appendChild(area);
-      area.select();
-      document.execCommand("copy");
-      area.remove();
-      if (typeof showSaveToast === "function") showSaveToast("Discord block copied.", false);
-    } catch (_) {
-      if (typeof showSaveToast === "function") showSaveToast("Could not copy Discord block.", true);
-    }
-  }
-
-  window.copyGenreDnaDiscordBlock = copyGenreDnaDiscordBlock;
-
   function renderDnaCard(genre) {
     const aliases = aliasList(genre);
     const sem = getSeminal(genre);
@@ -804,7 +765,6 @@
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
         <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
-        <button type="button" class="genre-dna-copy-btn" title="Copy Discord block" aria-label="Copy Discord block" onclick="event.preventDefault(); event.stopPropagation(); copyGenreDnaDiscordBlock();">⧉</button>
       </div>
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">
@@ -1262,6 +1222,74 @@
   }
 
 
+  function identityStructuredLine(track, label) {
+    if (!track || typeof track !== "object") return "";
+    const title = track.title || track.name || "";
+    const artist = track.artist || (Array.isArray(track.artists) ? track.artists.join(", ") : "");
+    const url = identityUsableTrackUrl(track) || track.spotifyUrl || track.url || track.spotify_url || "";
+    const reason = track.reason || track.description || track.note || "";
+    const media = track.media || track.context || "";
+    const name = [artist, title].filter(Boolean).join(" — ") || title || artist || "";
+    if (!name && !url && !reason) return "";
+    if (label === "MEDIA TOUCHSTONE") return [label + ": " + name, media, url, reason].filter(Boolean).join(" | ");
+    return [label + ": " + name, url, reason].filter(Boolean).join(" | ");
+  }
+
+  function buildStructuredIdentityBlock(genre) {
+    const g = genre || currentGenre();
+    if (!g) return "";
+    const id = identity(g);
+    const lines = [];
+    const trackHasContent = (track) => !!(
+      track && typeof track === "object" && (
+        String(track.artist || "").trim() ||
+        String(track.title || track.name || "").trim() ||
+        String(track.spotifyUrl || track.url || "").trim() ||
+        String(track.reason || track.description || track.note || "").trim()
+      )
+    );
+    const identityQueueSongs = queueSongs(g).filter((song) => {
+      const source = String(song?.source || song?.sourceType || "").toLowerCase();
+      return !!(
+        song?.isIdentityTrack ||
+        song?.identityType ||
+        song?.identityLabel ||
+        source === "genre_identity" ||
+        source === "genre identity"
+      );
+    });
+    const songAsTrack = (song) => ({
+      artist: song?.artist || "",
+      title: song?.title || song?.name || "",
+      spotifyUrl: song?.spotifyUrl || song?.url || "",
+      url: song?.spotifyUrl || song?.url || "",
+      reason: song?.reason || song?.description || song?.note || "",
+      media: song?.media || song?.identityLabel || "",
+    });
+    const semFromQueue = identityQueueSongs.find((song) => String(song.identityType || song.identityLabel || "").toLowerCase().includes("seminal"));
+    const mediaFromQueue = identityQueueSongs
+      .filter((song) => String(song.identityType || song.identityLabel || "").toLowerCase().includes("media"))
+      .map(songAsTrack)
+      .filter(trackHasContent);
+
+    lines.push(`GENRE: ${g.genre || ""}`);
+    const aliases = aliasList(g).join("; ");
+    if (aliases) lines.push(`ALIASES: ${aliases}`);
+    const canonicalSem = trackHasContent(id.seminalTrack) ? id.seminalTrack : (trackHasContent(g.seminal_song) ? g.seminal_song : (semFromQueue ? songAsTrack(semFromQueue) : {}));
+    const sem = identityStructuredLine(canonicalSem, "SEMINAL TRACK");
+    if (sem) lines.push(sem);
+
+    let media = [];
+    if (Array.isArray(id.mediaTouchstones) && id.mediaTouchstones.some(trackHasContent)) media = id.mediaTouchstones.filter(trackHasContent);
+    else if (Array.isArray(g.media_touchstones) && g.media_touchstones.some(trackHasContent)) media = g.media_touchstones.filter(trackHasContent);
+    else media = mediaFromQueue;
+    media.forEach(track => {
+      const line = identityStructuredLine(track, "MEDIA TOUCHSTONE");
+      if (line) lines.push(line);
+    });
+    return lines.join("\n");
+  }
+
   function injectDetailIdentityImport(genre = null) {
     const g = genre || currentGenre();
     const panel = document.getElementById("listenEditPanel");
@@ -1273,7 +1301,7 @@
     section.innerHTML = `
       <div class="eyebrow" style="margin:0 0 6px;">Genre Identity</div>
       <label for="detailGenreIdentityBlock">Paste structured identity block</label>
-      <textarea id="detailGenreIdentityBlock" rows="5" placeholder="GENRE: ${esc(g.genre || "")}&#10;ALIASES: ...&#10;SEMINAL TRACK: Artist — Title | Spotify URL | reason&#10;MEDIA TOUCHSTONE: Artist — Title | Media | Spotify URL | why it matters"></textarea>
+      <textarea id="detailGenreIdentityBlock" rows="7" placeholder="GENRE: ${esc(g.genre || "")}&#10;ALIASES: ...&#10;SEMINAL TRACK: Artist — Title | Spotify URL | reason&#10;MEDIA TOUCHSTONE: Artist — Title | Media | Spotify URL | why it matters">${esc(buildStructuredIdentityBlock(g))}</textarea>
       <div class="row" style="margin-top:10px;">
         <button type="button" class="btn btn-secondary" id="detailGenreIdentityApplyBtn">Apply & Save identity block</button>
         <button type="button" class="btn btn-secondary" id="detailGenreIdentityOverwriteBtn">Overwrite & Save identity block</button>
@@ -1285,8 +1313,10 @@
       const text = section.querySelector("#detailGenreIdentityBlock")?.value || "";
       const ok = await importStructuredIdentityBlock(text, { genreFallback: g.genre || "", overwrite });
       if (ok) {
-        section.querySelector("#detailGenreIdentityBlock").value = "";
-        setTimeout(() => injectDetailIdentityImport(g), 80);
+        setTimeout(() => {
+          section.querySelector("#detailGenreIdentityBlock").value = buildStructuredIdentityBlock(g);
+          injectDetailIdentityImport(g);
+        }, 80);
       }
     };
     section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => runDetailIdentityImport(false));
