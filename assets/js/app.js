@@ -3401,6 +3401,191 @@ function blockSaveIfDuplicateGenres() {
   showSaveToast(`${groups.length} duplicate genre name${groups.length === 1 ? '' : 's'} must be cleaned before saving.`, true);
   return true;
 }
+
+
+function mergeTextFieldValue(primaryValue, duplicateValue, label='') {
+  const a = String(primaryValue || '').trim();
+  const b = String(duplicateValue || '').trim();
+  if (!b) return primaryValue || '';
+  if (!a) return b;
+  if (a.toLowerCase() === b.toLowerCase()) return primaryValue;
+  if (a.toLowerCase().includes(b.toLowerCase())) return primaryValue;
+  if (b.toLowerCase().includes(a.toLowerCase())) return b;
+  return `${a}\n\n${label ? label + ': ' : ''}${b}`;
+}
+
+function mergeStringArrayUnique(primary, duplicate) {
+  const out = [];
+  const seen = new Set();
+  const add = value => {
+    if (value == null) return;
+    const text = typeof value === 'string' ? value.trim() : String(value).trim();
+    if (!text) return;
+    const key = text.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push(text);
+  };
+  (Array.isArray(primary) ? primary : String(primary || '').split(/[,\n]/)).forEach(add);
+  (Array.isArray(duplicate) ? duplicate : String(duplicate || '').split(/[,\n]/)).forEach(add);
+  return out;
+}
+
+function songMergeLookupKey(song) {
+  const keys = typeof songIdentityKeys === 'function' ? songIdentityKeys(song) : [];
+  return String(keys[0] || keys[1] || keys[2] || song?.spotifyId || song?.url || `${song?.artist || ''}::${song?.title || ''}`).toLowerCase();
+}
+
+function mergeSongArrayUnique(primary = [], duplicate = []) {
+  const out = Array.isArray(primary) ? primary : [];
+  const byKey = new Map();
+  out.forEach(song => {
+    const key = songMergeLookupKey(song);
+    if (key) byKey.set(key, song);
+  });
+  (Array.isArray(duplicate) ? duplicate : []).forEach(song => {
+    if (!song || typeof song !== 'object') return;
+    const key = songMergeLookupKey(song);
+    const existing = key ? byKey.get(key) : null;
+    if (existing) {
+      mergeSongObjectsInPlace(existing, song);
+    } else {
+      const copy = clonePlainObject(song) || song;
+      out.push(copy);
+      if (key) byKey.set(key, copy);
+    }
+  });
+  return out;
+}
+
+function mergePendingSongArrayUnique(primary = [], duplicate = []) {
+  const out = Array.isArray(primary) ? primary : [];
+  const seen = new Set(out.map(songMergeLookupKey).filter(Boolean));
+  (Array.isArray(duplicate) ? duplicate : []).forEach(song => {
+    const key = songMergeLookupKey(song);
+    if (key && seen.has(key)) return;
+    out.push(clonePlainObject(song) || song);
+    if (key) seen.add(key);
+  });
+  return out;
+}
+
+function addMergedGenreAlias(target, duplicate) {
+  if (!target || !duplicate) return;
+  const oldName = String(duplicate.genre || '').trim();
+  if (!oldName || oldName.toLowerCase() === String(target.genre || '').trim().toLowerCase()) return;
+  const aliasSet = new Set();
+  const aliases = Array.isArray(target.aliases) ? target.aliases.slice() : [];
+  aliases.forEach(a => aliasSet.add(String(a || '').toLowerCase()));
+  if (!aliasSet.has(oldName.toLowerCase())) aliases.push(oldName);
+  target.aliases = aliases;
+  target.merged_genre_names = mergeStringArrayUnique(target.merged_genre_names, [oldName]);
+  const oldId = String(duplicate.id ?? '').trim();
+  if (oldId) target.merged_genre_ids = mergeStringArrayUnique(target.merged_genre_ids, [oldId]);
+}
+
+function mergeGenreObjectIntoCanonical(target, duplicate) {
+  if (!target || !duplicate || target === duplicate) return target;
+  addMergedGenreAlias(target, duplicate);
+
+  ['subcategory','subsubcategory','subsubsubcategory','category_path','vibe','parse_notes'].forEach(key => {
+    if ((target[key] == null || target[key] === '') && duplicate[key] != null && duplicate[key] !== '') target[key] = duplicate[key];
+  });
+
+  ['summary','notes','key_artists','suggested_songs'].forEach(key => {
+    target[key] = mergeTextFieldValue(target[key], duplicate[key], `Merged from ${duplicate.genre || 'duplicate genre'}`);
+  });
+
+  if ((target.status == null || target.status === '') && duplicate.status) target.status = duplicate.status;
+  if ((target.rating == null || target.rating === '') && duplicate.rating) target.rating = duplicate.rating;
+  if ((target.rank_order == null || target.rank_order === '') && duplicate.rank_order) target.rank_order = duplicate.rank_order;
+  if (!target.favorite_song && duplicate.favorite_song) target.favorite_song = duplicate.favorite_song;
+  if (!target.favorite_song_url && duplicate.favorite_song_url) target.favorite_song_url = duplicate.favorite_song_url;
+  if (!target.favoritesong && duplicate.favoritesong) target.favoritesong = duplicate.favoritesong;
+  if (!target.favoritesongurl && duplicate.favoritesongurl) target.favoritesongurl = duplicate.favoritesongurl;
+  if (!target.monthly_contender && duplicate.monthly_contender) target.monthly_contender = duplicate.monthly_contender;
+  if (!target.monthlycontender && duplicate.monthlycontender) target.monthlycontender = duplicate.monthlycontender;
+
+  target.songs_listened = mergeSongArrayUnique(target.songs_listened, duplicate.songs_listened);
+  target.pending_songs = mergePendingSongArrayUnique(target.pending_songs, duplicate.pending_songs);
+
+  target.synonyms = mergeStringArrayUnique(target.synonyms, duplicate.synonyms);
+  target.aliases = mergeStringArrayUnique(target.aliases, duplicate.aliases);
+  if (duplicate.identity && typeof duplicate.identity === 'object') {
+    if (!target.identity || typeof target.identity !== 'object') target.identity = {};
+    Object.entries(duplicate.identity).forEach(([key, value]) => {
+      if (target.identity[key] == null || target.identity[key] === '' || (Array.isArray(target.identity[key]) && !target.identity[key].length)) {
+        target.identity[key] = clonePlainObject(value) || value;
+      }
+    });
+  }
+
+  if (!target.albumDive && duplicate.albumDive) target.albumDive = clonePlainObject(duplicate.albumDive) || duplicate.albumDive;
+  if (!target.album_dive && duplicate.album_dive) target.album_dive = clonePlainObject(duplicate.album_dive) || duplicate.album_dive;
+  return target;
+}
+
+function renderDuplicateGenreMergeCard() {
+  const groups = findDuplicateGenreGroups(genres);
+  if (!groups.length) return '';
+  const rows = groups.map(group => {
+    const keyArg = encodeURIComponent(group.key);
+    const options = group.rows.map(g => `<option value="${escapeHtml(String(g.id))}">${escapeHtml(g.genre || 'Untitled')} · ID ${escapeHtml(String(g.id ?? '?'))}</option>`).join('');
+    const details = group.rows.map(g => {
+      const songCount = Array.isArray(g.songs_listened) ? g.songs_listened.length : 0;
+      const pendingCount = Array.isArray(g.pending_songs) ? g.pending_songs.length : 0;
+      const path = categoryPath(g) || g.category_path || '';
+      return `<span class="review-chip">${escapeHtml(g.genre || 'Untitled')} · ID ${escapeHtml(String(g.id ?? '?'))}${songCount ? ` · ${songCount} songs` : ''}${pendingCount ? ` · ${pendingCount} pending` : ''}${path ? ` · ${escapeHtml(path)}` : ''}</span>`;
+    }).join('');
+    const selectId = `dupMergeCanonical-${String(group.key).replace(/[^a-z0-9_-]/gi, '-')}`;
+    return `<div class="review-row review-duplicate-genre-row">
+      <div>
+        <div class="review-track-title">${escapeHtml(group.rows.map(g => g.genre || 'Untitled').join(' / '))}</div>
+        <div class="review-meta">${details}</div>
+      </div>
+      <div class="review-move review-duplicate-genre-actions">
+        <label class="review-pending-route-genre"><span>Keep canonical genre</span><select id="${escapeHtml(selectId)}">${options}</select></label>
+        <button type="button" class="btn btn-primary" onclick="mergeDuplicateGenreGroup('${keyArg}', '${escapeHtml(selectId)}')">Merge duplicates</button>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div class="review-card review-duplicate-genre-card" id="reviewDuplicateGenreCard">
+    <div class="review-card-head">
+      <div>
+        <h3>Duplicate genre names</h3>
+        <p class="small" style="margin:6px 0 0;">Merge near-identical genre rows before saving. This preserves the selected canonical ID, folds songs/pending/notes into it, and stores the old spelling/ID as merge history.</p>
+      </div>
+      <span class="review-chip warn">${groups.length} group${groups.length === 1 ? '' : 's'}</span>
+    </div>
+    <div class="review-list-scroll review-duplicate-genre-list">${rows}</div>
+  </div>`;
+}
+
+function mergeDuplicateGenreGroup(encodedKey, selectId) {
+  const key = decodeURIComponent(String(encodedKey || ''));
+  const canonicalId = String(document.getElementById(selectId)?.value || '').trim();
+  const group = findDuplicateGenreGroups(genres).find(g => g.key === key);
+  if (!group || group.rows.length < 2) {
+    showSaveToast('Could not find that duplicate genre group. Refresh Studio and try again.', true);
+    return;
+  }
+  const target = group.rows.find(g => String(g.id) === canonicalId) || group.rows[0];
+  if (!target) {
+    showSaveToast('Choose a canonical genre to keep.', true);
+    return;
+  }
+  const duplicates = group.rows.filter(g => g !== target);
+  const confirmed = window.confirm(`Merge ${duplicates.map(g => g.genre || g.id).join(', ')} into ${target.genre || target.id}?\n\nThis keeps ID ${target.id ?? '?'} and removes the duplicate row(s).`);
+  if (!confirmed) return;
+  duplicates.forEach(dup => mergeGenreObjectIntoCanonical(target, dup));
+  genres = genres.filter(g => !duplicates.includes(g));
+  filteredGenres = filteredGenres.filter(g => !duplicates.includes(g));
+  libraryUpdatesPending = true;
+  hasUnsavedChanges = true;
+  updateGlobalGenreRefs();
+  showSaveToast(`Merged ${duplicates.length} duplicate genre${duplicates.length === 1 ? '' : 's'} into ${target.genre}. Save Library Updates to persist.`, false);
+  renderReview();
+}
     
     function resolvePendingTargetGenre(tag, sourceGenreId) {
       const wanted = normalizePendingTag(tag);
@@ -4470,6 +4655,7 @@ function blockSaveIfDuplicateGenres() {
           <button type="button" class="review-stat" onclick="scrollToReviewManualQueue()"><strong>${stats.unresolved}</strong><span>Need manual review</span></button>
           <div class="review-stat"><strong>${libraryUpdatesPending || hasUnsavedChanges ? 'Yes' : 'No'}</strong><span>Unsaved cleanup</span></div>
         </div>
+        ${renderDuplicateGenreMergeCard()}
         <div class="review-card" id="reviewPendingQueueCard">
           <div class="review-card-head">
             <div>

@@ -1521,3 +1521,35 @@
     justify-content: flex-start;
   }
 }
+
+
+/* === v121: duplicate genre merge workbench === */
+.review-duplicate-genre-card {
+  border-color: rgba(155, 52, 40, 0.28) !important;
+}
+.review-duplicate-genre-card .review-card-head h3::before {
+  content: "⚠ ";
+  color: #9b3428;
+}
+.review-duplicate-genre-list {
+  max-height: min(52vh, 520px) !important;
+}
+.review-duplicate-genre-row {
+  grid-template-columns: minmax(0, 1fr) minmax(340px, auto) !important;
+}
+.review-duplicate-genre-actions {
+  display: grid !important;
+  grid-template-columns: minmax(190px, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: end !important;
+}
+.review-duplicate-genre-actions select {
+  min-height: 40px !important;
+  border-radius: 14px !important;
+}
+@media (max-width: 760px) {
+  .review-duplicate-genre-row,
+  .review-duplicate-genre-actions {
+    grid-template-columns: 1fr !important;
+  }
+}
