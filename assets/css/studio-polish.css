@@ -1377,3 +1377,113 @@
     max-width: 100%;
   }
 }
+
+/* === Studio Routing Desk v117: fast ADD routing workflow === */
+#reviewPendingQueueCard .review-pending-route-row {
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.92fr) !important;
+  align-items: center !important;
+  min-height: 118px !important;
+}
+
+#reviewPendingQueueCard .review-pending-main {
+  min-width: 0;
+}
+
+#reviewPendingQueueCard .studio-pending-route-copy {
+  margin: 8px 0 0;
+  color: var(--muted, #735a3c);
+  font-size: 0.84rem;
+  line-height: 1.32;
+}
+
+#reviewPendingQueueCard .review-pending-route-actions {
+  display: grid !important;
+  grid-template-columns: minmax(180px, 1fr) auto auto auto;
+  gap: 8px !important;
+  align-items: end !important;
+  justify-content: stretch !important;
+  max-width: none !important;
+}
+
+#reviewPendingQueueCard .review-pending-route-genre {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  min-width: 0;
+}
+
+#reviewPendingQueueCard .review-pending-route-genre > span {
+  color: var(--muted, #735a3c);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#reviewPendingQueueCard .review-pending-fitline-strong {
+  margin: 0 !important;
+  padding: 0 2px 2px;
+  align-self: end;
+  flex-wrap: nowrap !important;
+}
+
+#reviewPendingQueueCard .pending-fit-strong {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(127, 82, 28, 0.2);
+  background: rgba(255, 252, 241, 0.78);
+  color: #4d321d;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+#reviewPendingQueueCard .pending-fit-strong.active {
+  color: #22160d;
+  background: linear-gradient(180deg, #ffdc8e, #d88c28);
+  border-color: #d98d25;
+  box-shadow: 0 0 0 3px rgba(217, 141, 37, 0.16);
+}
+
+#reviewPendingQueueCard .review-pending-fitline.needs-attention .pending-fit-strong {
+  box-shadow: 0 0 0 3px rgba(155, 52, 40, 0.18);
+  border-color: rgba(155, 52, 40, 0.52);
+}
+
+#reviewPendingQueueCard .review-pending-send-primary {
+  min-width: 92px;
+  white-space: nowrap !important;
+  align-self: end;
+}
+
+#reviewPendingQueueCard .review-pending-mini-action {
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px !important;
+  align-self: end;
+}
+
+@media (max-width: 980px) {
+  #reviewPendingQueueCard .review-pending-route-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  #reviewPendingQueueCard .review-pending-route-actions {
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    justify-content: start !important;
+  }
+}
+
+@media (max-width: 680px) {
+  #reviewPendingQueueCard .review-pending-route-actions {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  #reviewPendingQueueCard .review-pending-route-genre {
+    grid-column: 1 / -1;
+  }
+}

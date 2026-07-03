@@ -3650,38 +3650,46 @@ function blockSaveIfDuplicateGenres() {
       const originFit = row.fit !== '' && row.fit != null ? Number(row.fit) : null;
       const nominatedFit = row.song?.nominatedFit != null ? Number(row.song.nominatedFit) : null;
       const fitLine = originFit != null && Number.isFinite(originFit) ? `<span class="review-chip">source fit ${escapeHtml(String(originFit))}/5</span>` : '';
-      const hereFitLine = nominatedFit != null && Number.isFinite(nominatedFit) ? `<span class="review-chip review-chip-good">target fit ${escapeHtml(String(nominatedFit))}/5</span>` : '';
+      const hereFitLine = nominatedFit != null && Number.isFinite(nominatedFit) && nominatedFit >= 4 ? `<span class="review-chip review-chip-good">ready ${escapeHtml(String(nominatedFit))}/5</span>` : '';
       const addedLine = row.added ? `<span class="review-chip">added ${escapeHtml(String(row.added))}</span>` : '';
       const searchText = [row.song.artist, row.song.title, row.targetGenre.genre, source, row.song.url].join(' ').toLowerCase();
       const targetArg = visualActionArg(row.targetGenre.id);
       const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
       const idx = Number(row.index) || 0;
-      const moveInputId = `${pendingReviewRowId(row.targetGenre.id, row.key || songIdentity(row.song) || '')}-send`;
-      const fitBtns = [1,2,3,4,5].map(n => `<button type="button" class="pending-fit-btn ${nominatedFit === n ? 'active' : ''}" title="Set target-genre fit to ${n}/5" onclick="setReviewPendingFit('${targetArg}', ${idx}, '${keyArg}', ${n})">${n}</button>`).join('');
-      return `<div class="review-row review-pending-action-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
-        <div>
+      const rowId = pendingReviewRowId(row.targetGenre.id, row.key || songIdentity(row.song) || '');
+      const genreInputId = `${rowId}-genre`;
+      const fitInputId = `${rowId}-fit`;
+      const currentFit = nominatedFit === 4 || nominatedFit === 5 ? nominatedFit : '';
+      const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong ${currentFit === n ? 'active' : ''}" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
+      const suggested = row.targetGenre.genre || 'Unknown genre';
+      return `<div class="review-row review-pending-action-row review-pending-route-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
+        <div class="review-pending-main">
           <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
           <div class="review-meta">
-            <span class="review-chip">queued in ${escapeHtml(row.targetGenre.genre || 'Unknown genre')}</span>
+            <span class="review-chip review-chip-good">suggested: ${escapeHtml(suggested)}</span>
             <span class="review-chip">from ${escapeHtml(source)}</span>
             ${fitLine}
             ${hereFitLine}
             ${addedLine}
           </div>
-          <div class="review-pending-fitline"><span>Fit here</span>${fitBtns}</div>
+          <p class="studio-pending-route-copy">Pick the best matching genre, choose a strong fit, then send it as an <strong>ADD</strong>.</p>
         </div>
-        <div class="review-move review-pending-actions">
-          <button type="button" class="btn btn-primary" title="Accept this pending song as a normal song in the target genre" onclick="resolveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', 'canon')">Keep</button>
-          <button type="button" class="btn btn-secondary" title="Accept this as an ADD: useful but not one of the core three songs" onclick="resolveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', 'add')">ADD</button>
-          <button type="button" class="btn btn-danger" title="Remove this pending nomination from the target genre" onclick="resolveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', 'dismiss')">Dismiss</button>
-          <button type="button" class="btn btn-secondary" onclick="openGenreByIdEncoded('${targetArg}', false)">Open Target</button>
-          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">Spotify</button>` : ''}
-          <div class="review-pending-send-row">
-            <input id="${escapeHtml(moveInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" placeholder="Send to different genre…" aria-label="Send pending nomination to a different genre">
-            <button type="button" class="btn btn-secondary" title="Move this pending nomination to another genre's pending queue" onclick="moveReviewPendingNomination('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(moveInputId)}')">Send</button>
-          </div>
+        <div class="review-move review-pending-actions review-pending-route-actions">
+          <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
+          <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value="${escapeHtml(String(currentFit))}"></div>
+          <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendReviewPendingAsAdd('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
+          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
         </div>
       </div>`;
+    }
+
+    function setReviewPendingInlineFit(inputId, value, button) {
+      const input = document.getElementById(inputId);
+      if (input) input.value = String(value);
+      const wrap = button?.closest?.('.review-pending-fitline');
+      if (wrap) {
+        wrap.querySelectorAll('.pending-fit-btn').forEach(btn => btn.classList.toggle('active', btn === button));
+      }
     }
 
     function findReviewPendingNomination(targetId, pendingIndex, encodedKey = '') {
@@ -3765,6 +3773,56 @@ function blockSaveIfDuplicateGenres() {
       found.target.pending_songs = found.pending;
       const action = mode === 'add' ? 'Accepted as ADD.' : 'Accepted as target song.';
       stageReviewPendingChange(already ? 'Song was already logged; pending nomination removed.' : action);
+    }
+
+    function sendReviewPendingAsAdd(targetId, pendingIndex, encodedKey, genreInputId, fitInputId) {
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
+        return;
+      }
+      const input = document.getElementById(genreInputId);
+      const fitInput = document.getElementById(fitInputId);
+      const requestedFit = Number(fitInput?.value || found.song?.nominatedFit || '');
+      if (![4, 5].includes(requestedFit)) {
+        showSaveToast('Choose fit 4 or 5 before sending.', true);
+        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
+        fitWrap?.classList?.add?.('needs-attention');
+        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
+        return;
+      }
+      const typedGenre = String(input?.value || found.target.genre || '').trim();
+      const { target: destination, error } = resolveReviewMoveGenre(typedGenre, '');
+      if (!destination) {
+        showSaveToast(error || 'Choose the best matching genre first.', true);
+        input?.focus?.();
+        return;
+      }
+
+      const sourceTarget = found.target;
+      sourceTarget.pending_songs = found.pending;
+      const pendingSong = found.song || {};
+      pendingSong.nominatedFit = requestedFit;
+
+      destination.songs_listened = inflateSongsFromStorage(destination.songs_listened || []).filter(song => !song.isPending);
+      const official = officialSongFromPending(pendingSong, destination, 'add');
+      official.score = requestedFit;
+      official.isAdd = true;
+      official.routedFromPendingGenre = sourceTarget.genre || '';
+      official.routedAt = new Date().toISOString();
+
+      const key = songIdentity(official);
+      const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
+      if (!already) destination.songs_listened.push(official);
+
+      found.pending.splice(found.index, 1);
+      sourceTarget.pending_songs = found.pending;
+
+      const sameGenre = String(destination.id) === String(sourceTarget.id);
+      const action = already
+        ? `Already logged in ${destination.genre}; removed pending nomination.`
+        : `Sent to ${destination.genre} as ADD (${requestedFit}/5).`;
+      stageReviewPendingChange(sameGenre ? action : action);
     }
 
     function moveReviewPendingNomination(targetId, pendingIndex, encodedKey, inputId) {
@@ -4329,7 +4387,7 @@ function blockSaveIfDuplicateGenres() {
           <div class="review-card-head">
             <div>
               <h3>Queued pending nominations</h3>
-              <p class="small" style="margin:6px 0 0;">These are the actual songs sitting in each genre’s pending queue. Set the target fit, then Keep, mark as ADD, Dismiss, or open the target genre for deeper edits like Level Up.</p>
+              <p class="small" style="margin:6px 0 0;">Fast routing desk: confirm the best matching genre, choose 4 or 5, then send the song as an ADD. Use a different genre when the suggestion is not the strongest match.</p>
             </div>
             <span class="review-chip">${queuedRows.length} total</span>
           </div>
