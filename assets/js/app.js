@@ -3676,7 +3676,7 @@ function blockSaveIfDuplicateGenres() {
             ${hereFitLine}
             ${addedLine}
           </div>
-          <p class="studio-pending-route-copy">Pick the best matching genre, choose a strong fit, then send it as an <strong>ADD</strong>.</p>
+          <p class="studio-pending-route-copy">Pick the best matching genre, choose fit 4/5 for a new genre, or choose the source genre to return it there.</p>
         </div>
         <div class="review-move review-pending-actions review-pending-route-actions">
           <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
@@ -3779,6 +3779,49 @@ function blockSaveIfDuplicateGenres() {
       stageReviewPendingChange(already ? 'Song was already logged; pending nomination removed.' : action);
     }
 
+    function findGenreByNameLoose(name) {
+      const needle = normalizePendingTag(name || '');
+      if (!needle) return null;
+      return (genres || []).find(g => normalizePendingTag(g?.genre || '') === needle) ||
+        (genres || []).find(g => normalizePendingTag(g?.genre || '').includes(needle) || needle.includes(normalizePendingTag(g?.genre || ''))) ||
+        null;
+    }
+
+    function updateSourceGenreSongFromPending(sourceGenre, pendingSong, score) {
+      if (!sourceGenre || !pendingSong) return false;
+      const sourceSongs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
+      const pendingKeys = songIdentityKeys(pendingSong);
+      const pendingKey = songIdentity(pendingSong);
+      let matchIndex = sourceSongs.findIndex(song => {
+        const keys = songIdentityKeys(song);
+        return (pendingKey && keys.includes(pendingKey)) || pendingKeys.some(key => key && keys.includes(key));
+      });
+      if (matchIndex < 0) {
+        const artist = normalizePendingTag(pendingSong.artist || '');
+        const title = normalizePendingTag(pendingSong.title || pendingSong.name || '');
+        matchIndex = sourceSongs.findIndex(song =>
+          normalizePendingTag(song.artist || '') === artist &&
+          normalizePendingTag(song.title || song.name || '') === title
+        );
+      }
+      if (matchIndex >= 0) {
+        sourceSongs[matchIndex] = {
+          ...sourceSongs[matchIndex],
+          score,
+          pendingReevaluatedAt: new Date().toISOString()
+        };
+      } else {
+        const restored = officialSongFromPending({ ...pendingSong, nominatedFit: score }, sourceGenre, 'canon');
+        restored.score = score;
+        restored.isAdd = false;
+        restored.returnedFromPendingReview = true;
+        restored.reviewedAt = new Date().toISOString();
+        sourceSongs.push(restored);
+      }
+      sourceGenre.songs_listened = sourceSongs;
+      return true;
+    }
+
     function sendReviewPendingAsAdd(targetId, pendingIndex, encodedKey, genreInputId, fitInputId) {
       const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
       if (!found) {
@@ -3787,14 +3830,6 @@ function blockSaveIfDuplicateGenres() {
       }
       const input = document.getElementById(genreInputId);
       const fitInput = document.getElementById(fitInputId);
-      const requestedFit = Number(fitInput?.value || found.song?.nominatedFit || '');
-      if (![4, 5].includes(requestedFit)) {
-        showSaveToast('Choose fit 4 or 5 before sending.', true);
-        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
-        fitWrap?.classList?.add?.('needs-attention');
-        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
-        return;
-      }
       const typedGenre = String(input?.value || found.target.genre || '').trim();
       const { target: destination, error } = resolveReviewMoveGenre(typedGenre, '');
       if (!destination) {
@@ -3803,9 +3838,39 @@ function blockSaveIfDuplicateGenres() {
         return;
       }
 
+      const sourceName = found.song?.pendingFrom || found.song?.source || '';
+      const sourceGenre = findGenreByNameLoose(sourceName);
+      const returningToSource = sourceGenre && String(destination.id) === String(sourceGenre.id);
+      const sourceFit = Number(found.song?.originFit ?? found.song?.nominatedFit ?? found.song?.score ?? '');
+      const requestedFit = Number(fitInput?.value || found.song?.nominatedFit || '');
+
+      if (!returningToSource && ![4, 5].includes(requestedFit)) {
+        showSaveToast('Choose fit 4 or 5 before sending.', true);
+        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
+        fitWrap?.classList?.add?.('needs-attention');
+        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
+        return;
+      }
+
       const sourceTarget = found.target;
       sourceTarget.pending_songs = found.pending;
       const pendingSong = found.song || {};
+
+      if (returningToSource) {
+        const returnFit = Number.isFinite(requestedFit) && requestedFit > 0
+          ? requestedFit
+          : (Number.isFinite(sourceFit) && sourceFit > 0 ? sourceFit : null);
+        if (!returnFit) {
+          showSaveToast('Could not determine the original source fit. Choose 4 or 5, or open the source genre to edit manually.', true);
+          return;
+        }
+        updateSourceGenreSongFromPending(sourceGenre, pendingSong, returnFit);
+        found.pending.splice(found.index, 1);
+        sourceTarget.pending_songs = found.pending;
+        stageReviewPendingChange(`Returned to ${sourceGenre.genre} at ${returnFit}/5 and removed from pending nominations.`);
+        return;
+      }
+
       pendingSong.nominatedFit = requestedFit;
 
       destination.songs_listened = inflateSongsFromStorage(destination.songs_listened || []).filter(song => !song.isPending);
@@ -3822,11 +3887,10 @@ function blockSaveIfDuplicateGenres() {
       found.pending.splice(found.index, 1);
       sourceTarget.pending_songs = found.pending;
 
-      const sameGenre = String(destination.id) === String(sourceTarget.id);
       const action = already
         ? `Already logged in ${destination.genre}; removed pending nomination.`
         : `Sent to ${destination.genre} as ADD (${requestedFit}/5).`;
-      stageReviewPendingChange(sameGenre ? action : action);
+      stageReviewPendingChange(action);
     }
 
     function moveReviewPendingNomination(targetId, pendingIndex, encodedKey, inputId) {
@@ -3882,8 +3946,8 @@ function blockSaveIfDuplicateGenres() {
       if (count) count.textContent = `${visible} shown`;
     }
 
-    async function copyReviewPendingQueueFirst50() {
-      const rows = Array.from(document.querySelectorAll('#reviewPendingQueueCard [data-review-pending-row]:not(.is-hidden)')).slice(0, 50);
+    async function copyReviewPendingQueueFirst25() {
+      const rows = Array.from(document.querySelectorAll('#reviewPendingQueueCard [data-review-pending-row]:not(.is-hidden)')).slice(0, 25);
       const lines = rows
         .map(row => String(row.dataset.reviewPendingCopy || '').trim())
         .filter(Boolean);
@@ -4410,10 +4474,10 @@ function blockSaveIfDuplicateGenres() {
           <div class="review-card-head">
             <div>
               <h3>Queued pending nominations</h3>
-              <p class="small" style="margin:6px 0 0;">Fast routing desk: confirm the best matching genre, choose 4 or 5, then send the song as an ADD. Use a different genre when the suggestion is not the strongest match.</p>
+              <p class="small" style="margin:6px 0 0;">Fast routing desk: confirm the best matching genre, choose 4 or 5, then send the song as an ADD. Use a different genre when the suggestion is not the strongest match. To keep it in the source genre, type the source genre and send without choosing a new fit.</p>
             </div>
             <div class="review-card-copy-actions">
-              <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst50()" title="Copy the first 50 visible queued pending nominations">⧉ Copy first 50</button>
+              <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst25()" title="Copy the first 25 visible queued pending nominations">⧉ Copy first 25</button>
               <span class="review-chip">${queuedRows.length} total</span>
             </div>
           </div>
