@@ -3851,7 +3851,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       const currentFit = nominatedFit === 4 || nominatedFit === 5 ? nominatedFit : '';
       const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong ${currentFit === n ? 'active' : ''}" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
       const suggested = row.targetGenre.genre || 'Unknown genre';
-      return `<div class="review-row review-pending-action-row review-pending-route-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}">
+      return `<div class="review-row review-pending-action-row review-pending-route-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}" data-pending-target-id="${escapeHtml(String(row.targetGenre.id || ''))}" data-pending-target-name="${escapeHtml(String(row.targetGenre.genre || ''))}" data-pending-source="${escapeHtml(String(source || ''))}" data-pending-artist="${escapeHtml(String(row.song.artist || ''))}" data-pending-title="${escapeHtml(String(row.song.title || row.song.name || ''))}" data-pending-url="${escapeHtml(String(row.song.url || row.song.spotifyUrl || ''))}" data-pending-key="${escapeHtml(String(row.key || songIdentity(row.song) || ''))}">
         <div class="review-pending-main">
           <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
           <div class="review-meta">
@@ -3867,6 +3867,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
           <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
           <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value="${escapeHtml(String(currentFit))}"></div>
           <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendReviewPendingAsAdd('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
+          <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Remove this stuck/incorrect nomination from the pending queue" onclick="dismissReviewPendingFromDesk('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
           ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
         </div>
       </div>`;
@@ -3881,20 +3882,115 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       }
     }
 
-    function findReviewPendingNomination(targetId, pendingIndex, encodedKey = '') {
-      const target = (genres || []).find(g => String(g?.id) === String(targetId));
+    function reviewPendingContextFromRow(row) {
+      if (!row) return {};
+      return {
+        targetId: row.dataset.pendingTargetId || '',
+        targetName: row.dataset.pendingTargetName || '',
+        sourceName: row.dataset.pendingSource || '',
+        artist: row.dataset.pendingArtist || '',
+        title: row.dataset.pendingTitle || '',
+        url: row.dataset.pendingUrl || '',
+        key: row.dataset.pendingKey || ''
+      };
+    }
+
+    function normalizedPendingSongTitle(songOrText) {
+      const raw = typeof songOrText === 'string' ? songOrText : (songOrText?.title || songOrText?.name || '');
+      return normalizePendingTag(raw)
+        .replace(/\b(?:remaster(?:ed)?|mono|stereo|single version|single edit|radio edit|edit|version)\b/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function normalizedPendingSongArtist(songOrText) {
+      const raw = typeof songOrText === 'string' ? songOrText : (songOrText?.artist || '');
+      return normalizePendingTag(raw);
+    }
+
+    function pendingFieldLooksSame(a, b) {
+      const left = normalizePendingTag(a || '');
+      const right = normalizePendingTag(b || '');
+      if (!left || !right) return false;
+      return left === right || left.includes(right) || right.includes(left);
+    }
+
+    function pendingSongMatchesReviewContext(candidate, context = {}) {
+      if (!candidate) return false;
+      const wantedKeys = [context.decodedKey, context.key].filter(Boolean).map(key => String(key).trim().toLowerCase());
+      const candidateKeys = songIdentityKeys(candidate);
+      const candidateKey = songIdentity(candidate);
+      if (wantedKeys.some(key => key && (candidateKey === key || candidateKeys.includes(key)))) return true;
+
+      const wantedUrl = normalizeSongUrl(context.url || '').trim().toLowerCase();
+      const candidateUrl = normalizeSongUrl(candidate.url || candidate.spotifyUrl || '').trim().toLowerCase();
+      if (wantedUrl && candidateUrl && wantedUrl === candidateUrl) return true;
+
+      const wantedTitle = normalizedPendingSongTitle(context.title || '');
+      const candidateTitle = normalizedPendingSongTitle(candidate);
+      const wantedArtist = normalizedPendingSongArtist(context.artist || '');
+      const candidateArtist = normalizedPendingSongArtist(candidate);
+      const wantedSource = normalizePendingTag(context.sourceName || '');
+      const candidateSource = normalizePendingTag(candidate.pendingFrom || candidate.source || '');
+
+      const titleMatches = wantedTitle && candidateTitle && (candidateTitle === wantedTitle || candidateTitle.includes(wantedTitle) || wantedTitle.includes(candidateTitle));
+      const artistMatches = !wantedArtist || !candidateArtist || candidateArtist === wantedArtist || candidateArtist.includes(wantedArtist) || wantedArtist.includes(candidateArtist);
+      const sourceMatches = !wantedSource || !candidateSource || candidateSource === wantedSource;
+      return !!(titleMatches && artistMatches && sourceMatches);
+    }
+
+    function findReviewPendingNominationInTarget(target, pendingIndex, decodedKey, context = {}) {
       if (!target) return null;
       const pending = normalizePendingSongs(target.pending_songs || []);
       let index = Number(pendingIndex);
       let song = Number.isInteger(index) && index >= 0 ? pending[index] : null;
-      const decodedKey = decodeURIComponent(String(encodedKey || ''));
-      if (decodedKey && (!song || songIdentity(song) !== decodedKey)) {
-        index = pending.findIndex(candidate => songIdentity(candidate) === decodedKey || songIdentityKeys(candidate).includes(decodedKey));
-        song = index >= 0 ? pending[index] : null;
+      const rowContext = { ...context, decodedKey };
+      if (song && pendingSongMatchesReviewContext(song, rowContext)) {
+        target.pending_songs = pending;
+        return { target, pending, song, index };
       }
-      if (!song) return null;
-      target.pending_songs = pending;
-      return { target, pending, song, index };
+      if (decodedKey) {
+        index = pending.findIndex(candidate => songIdentity(candidate) === decodedKey || songIdentityKeys(candidate).includes(decodedKey));
+        if (index >= 0) {
+          target.pending_songs = pending;
+          return { target, pending, song: pending[index], index };
+        }
+      }
+      index = pending.findIndex(candidate => pendingSongMatchesReviewContext(candidate, rowContext));
+      if (index >= 0) {
+        target.pending_songs = pending;
+        return { target, pending, song: pending[index], index };
+      }
+      return null;
+    }
+
+    function findReviewPendingNomination(targetId, pendingIndex, encodedKey = '', context = {}) {
+      let decodedKey = '';
+      try {
+        decodedKey = decodeURIComponent(String(encodedKey || ''));
+      } catch (error) {
+        decodedKey = String(encodedKey || '');
+      }
+      const mergedContext = { ...context, decodedKey, key: context.key || decodedKey };
+      const target = (genres || []).find(g => String(g?.id) === String(targetId));
+      const foundInTarget = findReviewPendingNominationInTarget(target, pendingIndex, decodedKey, mergedContext);
+      if (foundInTarget) return foundInTarget;
+
+      const hintedTargetName = mergedContext.targetName || '';
+      const hintedTarget = hintedTargetName
+        ? (genres || []).find(g => normalizePendingTag(g?.genre || '') === normalizePendingTag(hintedTargetName))
+        : null;
+      if (hintedTarget && (!target || String(hintedTarget.id) !== String(target.id))) {
+        const foundHinted = findReviewPendingNominationInTarget(hintedTarget, pendingIndex, decodedKey, mergedContext);
+        if (foundHinted) return foundHinted;
+      }
+
+      for (const genre of (genres || [])) {
+        if (!genre || String(genre.id) === String(target?.id || '') || String(genre.id) === String(hintedTarget?.id || '')) continue;
+        const found = findReviewPendingNominationInTarget(genre, -1, decodedKey, mergedContext);
+        if (found) return found;
+      }
+      return null;
     }
 
     function officialSongFromPending(song, targetGenre, mode = 'canon') {
@@ -4008,13 +4104,14 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
     }
 
     function sendReviewPendingAsAdd(targetId, pendingIndex, encodedKey, genreInputId, fitInputId) {
-      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
-      if (!found) {
-        showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
-        return;
-      }
       const input = document.getElementById(genreInputId);
       const fitInput = document.getElementById(fitInputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination. Use Dismiss to remove the stuck row, or refresh Studio and try again.', true);
+        return;
+      }
       const typedGenre = String(input?.value || found.target.genre || '').trim();
       const { target: destination, error } = resolveReviewMoveGenre(typedGenre, '');
       if (!destination) {
@@ -4078,13 +4175,29 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       stageReviewPendingChange(action);
     }
 
+    function dismissReviewPendingFromDesk(targetId, pendingIndex, encodedKey, genreInputId) {
+      const input = document.getElementById(genreInputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending nomination to dismiss. Refresh Studio and try again.', true);
+        return;
+      }
+      const label = [found.song.artist, found.song.title || found.song.name].filter(Boolean).join(' — ') || found.song.url || 'this pending nomination';
+      if (!window.confirm(`Dismiss ${label} from pending nominations?`)) return;
+      found.pending.splice(found.index, 1);
+      found.target.pending_songs = found.pending;
+      stageReviewPendingChange('Pending nomination dismissed.');
+    }
+
     function moveReviewPendingNomination(targetId, pendingIndex, encodedKey, inputId) {
-      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey);
+      const input = document.getElementById(inputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findReviewPendingNomination(targetId, pendingIndex, encodedKey, rowContext);
       if (!found) {
         showSaveToast('Could not find that pending nomination. Refresh Studio and try again.', true);
         return;
       }
-      const input = document.getElementById(inputId);
       const { target: destination, error } = resolveReviewMoveGenre(input?.value || '', found.target.id);
       if (!destination) {
         showSaveToast(error || 'Choose a destination genre first.', true);

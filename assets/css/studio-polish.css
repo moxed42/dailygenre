@@ -1553,3 +1553,20 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/* === Studio v122: pending nomination stuck-row rescue === */
+.review-pending-dismiss-inline {
+  min-height: 36px !important;
+  padding: 8px 10px !important;
+  border-style: solid !important;
+  opacity: 0.78;
+}
+.review-pending-dismiss-inline:hover,
+.review-pending-dismiss-inline:focus-visible {
+  opacity: 1;
+}
+@media (max-width: 760px) {
+  .review-pending-dismiss-inline {
+    width: auto !important;
+  }
+}
