@@ -5495,6 +5495,7 @@ function blockSaveIfDuplicateGenres() {
       if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
       if (flag === 'missing-songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) === 0);
       if (flag === 'missing-favorite') items = items.filter(g => !(g.favoritesong || g.favoritesongurl));
+      if (flag === 'missing-identity') items = items.filter(g => !genreHasMeaningfulIdentity(g));
       if (flag === 'notes') items = items.filter(g => !!g.notes);
       if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
       if (flag === 'unranked') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0 && !g.rank_order && g.rating !== 'zanger');
@@ -5698,6 +5699,50 @@ function blockSaveIfDuplicateGenres() {
         .replace(/[^a-z0-9]+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
+    }
+
+    function genreIdentityUsefulText(value) {
+      return String(value ?? '').trim();
+    }
+
+    function genreIdentityUsefulUrl(value) {
+      const url = genreIdentityUsefulText(value);
+      if (!/^https?:\/\//i.test(url)) return '';
+      if (/^https?:\/\/(?:www\.)?(?:url\.com|example\.com|example\.org)(?:\/)?$/i.test(url)) return '';
+      return url;
+    }
+
+    function genreIdentityTrackHasContent(track) {
+      if (!track || typeof track !== 'object') return false;
+      return Boolean(
+        genreIdentityUsefulText(track.artist) ||
+        genreIdentityUsefulText(track.title || track.name) ||
+        genreIdentityUsefulText(track.reason) ||
+        genreIdentityUsefulText(track.mediaTitle || track.media || track.mediaType) ||
+        genreIdentityUsefulUrl(track.spotifyUrl || track.url || track.spotify_url)
+      );
+    }
+
+    function genreIdentityMediaRows(genre) {
+      const candidates = [];
+      if (Array.isArray(genre?.media_touchstones)) candidates.push(...genre.media_touchstones);
+      if (Array.isArray(genre?.mediaTouchstones)) candidates.push(...genre.mediaTouchstones);
+      if (Array.isArray(genre?.identity?.mediaTouchstones)) candidates.push(...genre.identity.mediaTouchstones);
+      if (Array.isArray(genre?.identity?.media_touchstones)) candidates.push(...genre.identity.media_touchstones);
+      return candidates.filter(genreIdentityTrackHasContent);
+    }
+
+    function genreIdentitySeminalTrack(genre) {
+      return genre?.identity?.seminalTrack || genre?.identity?.seminal_track || genre?.seminal_song || genre?.seminalTrack || null;
+    }
+
+    function genreHasMeaningfulIdentity(genre) {
+      if (!genre) return false;
+      if (genreAliasListForSearch(genre).length > 0) return true;
+      if (genreIdentityTrackHasContent(genreIdentitySeminalTrack(genre))) return true;
+      if (genreIdentityMediaRows(genre).length > 0) return true;
+      if (Array.isArray(genre.songs_listened) && genre.songs_listened.some(song => song?.isIdentityTrack || song?.identityType)) return true;
+      return false;
     }
 
     function genreSearchBlob(genre) {
