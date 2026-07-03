@@ -3873,6 +3873,55 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       </div>`;
     }
 
+    function pendingTagToGenreLabel(tag) {
+      return String(tag || '')
+        .replace(/^@+/, '')
+        .replace(/[_-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/\b\w/g, ch => ch.toUpperCase());
+    }
+
+    function reviewManualPendingRowHtml(row) {
+      const source = row.sourceGenre?.genre || 'Unknown source';
+      const sourceFit = row.song?.score != null && row.song?.score !== '' ? Number(row.song.score) : null;
+      const fitLine = sourceFit != null && Number.isFinite(sourceFit) ? `<span class="review-chip">source fit ${escapeHtml(String(sourceFit))}/5</span>` : '';
+      const reason = row.status === 'ambiguous' ? 'multiple possible genre matches' : 'no confident genre match';
+      const suggested = pendingTagToGenreLabel(row.tag || row.song?._pendingGenreTag || '');
+      const titleText = [row.song?.artist, row.song?.title || row.song?.name].filter(Boolean).join(' — ') || row.song?.url || 'Untitled track';
+      const searchText = [row.song?.artist, row.song?.title, row.sourceGenre?.genre, row.tag, suggested, row.song?.url].join(' ').toLowerCase();
+      const copyTitle = String(row.song?.title || row.song?.name || row.song?.url || 'Untitled track').trim();
+      const copyArtist = String(row.song?.artist || '').trim();
+      const copyGenre = suggested || 'Choose genre';
+      const copyLine = `* ${copyArtist ? `${copyArtist} - ` : ''}${copyTitle}: ${copyGenre}`;
+      const sourceArg = visualActionArg(row.sourceGenre?.id || '');
+      const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+      const rowId = pendingReviewRowId(row.sourceGenre?.id || 'manual', row.key || songIdentity(row.song) || '');
+      const genreInputId = `${rowId}-manual-genre`;
+      const fitInputId = `${rowId}-manual-fit`;
+      const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
+      return `<div class="review-row review-pending-action-row review-pending-route-row review-pending-manual-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}" data-pending-kind="manual-tag" data-pending-source-id="${escapeHtml(String(row.sourceGenre?.id || ''))}" data-pending-source="${escapeHtml(String(source || ''))}" data-pending-artist="${escapeHtml(String(row.song?.artist || ''))}" data-pending-title="${escapeHtml(String(row.song?.title || row.song?.name || ''))}" data-pending-url="${escapeHtml(String(row.song?.url || row.song?.spotifyUrl || ''))}" data-pending-key="${escapeHtml(String(row.key || songIdentity(row.song) || ''))}">
+        <div class="review-pending-main">
+          <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
+          <div class="review-meta">
+            <span class="review-chip warn">tag: @${escapeHtml(String(row.tag || '').replace(/^@+/, ''))}</span>
+            <span class="review-chip">from ${escapeHtml(source)}</span>
+            ${fitLine}
+            <span class="review-chip warn">${escapeHtml(reason)}</span>
+          </div>
+          <p class="studio-pending-route-copy">Choose the best matching genre, choose fit 4/5, then send it as an <strong>ADD</strong>.</p>
+        </div>
+        <div class="review-move review-pending-actions review-pending-route-actions">
+          <label class="review-pending-route-genre"><span>Best match genre</span><input id="${escapeHtml(genreInputId)}" class="review-pending-send-input" list="reviewPendingMoveGenreOptions" value="${escapeHtml(suggested)}" aria-label="Best matching genre"></label>
+          <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value=""></div>
+          <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendManualPendingTagAsAdd('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
+          <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Clear this unresolved pending tag" onclick="dismissManualPendingTag('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
+          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
+        </div>
+      </div>`;
+    }
+
+
     function setReviewPendingInlineFit(inputId, value, button) {
       const input = document.getElementById(inputId);
       if (input) input.value = String(value);
@@ -4228,6 +4277,118 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
           : `Sent pending nomination to ${destination.genre}.`
       );
     }
+
+    function findManualPendingSourceSong(sourceId, encodedKey = '', context = {}) {
+      let decodedKey = '';
+      try {
+        decodedKey = decodeURIComponent(String(encodedKey || ''));
+      } catch (error) {
+        decodedKey = String(encodedKey || '');
+      }
+      const sourceGenre = (genres || []).find(g => String(g?.id) === String(sourceId));
+      if (!sourceGenre) return null;
+      const songs = inflateSongsFromStorage(sourceGenre.songs_listened || []).filter(song => !song.isPending);
+      let index = -1;
+      if (decodedKey) {
+        index = songs.findIndex(song => songIdentity(song) === decodedKey || songIdentityKeys(song).includes(decodedKey));
+      }
+      if (index < 0) {
+        const rowContext = { ...context, decodedKey, key: decodedKey };
+        index = songs.findIndex(song => pendingSongMatchesReviewContext(song, rowContext));
+      }
+      if (index < 0) return null;
+      sourceGenre.songs_listened = songs;
+      return { sourceGenre, songs, song: songs[index], index, decodedKey };
+    }
+
+    function sendManualPendingTagAsAdd(sourceId, encodedKey, genreInputId, fitInputId) {
+      const input = document.getElementById(genreInputId);
+      const fitInput = document.getElementById(fitInputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findManualPendingSourceSong(sourceId, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending source song. Refresh Studio and try again.', true);
+        return;
+      }
+      const typedGenre = String(input?.value || '').trim();
+      const { target: destination, error } = resolveReviewMoveGenre(typedGenre, '');
+      if (!destination) {
+        showSaveToast(error || 'Choose the best matching genre first.', true);
+        input?.focus?.();
+        return;
+      }
+      const requestedFit = Number(fitInput?.value || '');
+      if (![4, 5].includes(requestedFit)) {
+        showSaveToast('Choose fit 4 or 5 before sending.', true);
+        const fitWrap = fitInput?.closest?.('.review-pending-fitline');
+        fitWrap?.classList?.add?.('needs-attention');
+        setTimeout(() => fitWrap?.classList?.remove?.('needs-attention'), 900);
+        return;
+      }
+
+      const sourceSong = found.song || {};
+      if (String(destination.id) === String(found.sourceGenre.id)) {
+        found.songs[found.index] = {
+          ...sourceSong,
+          score: requestedFit,
+          _pendingGenreTag: '',
+          pendingReevaluatedAt: new Date().toISOString()
+        };
+        found.sourceGenre.songs_listened = found.songs;
+        stageReviewPendingChange(`Kept in ${found.sourceGenre.genre} at ${requestedFit}/5 and cleared the pending tag.`);
+        return;
+      }
+
+      const pendingPayload = pendingReviewSongPayload(sourceSong);
+      pendingPayload.nominatedFit = requestedFit;
+      pendingPayload.originFit = sourceSong.score ?? pendingPayload.originFit ?? null;
+      pendingPayload.pendingFrom = found.sourceGenre.genre || '';
+
+      destination.songs_listened = inflateSongsFromStorage(destination.songs_listened || []).filter(song => !song.isPending);
+      const official = officialSongFromPending(pendingPayload, destination, 'add');
+      official.score = requestedFit;
+      official.isAdd = true;
+      official.routedFromPendingGenre = found.sourceGenre.genre || '';
+      official.routedAt = new Date().toISOString();
+      official.routedFromManualPendingTag = sourceSong._pendingGenreTag || '';
+
+      const key = songIdentity(official);
+      const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
+      if (!already) destination.songs_listened.push(official);
+
+      found.songs[found.index] = {
+        ...sourceSong,
+        _pendingGenreTag: '',
+        pendingRoutedTo: destination.genre || '',
+        pendingRoutedAt: new Date().toISOString()
+      };
+      found.sourceGenre.songs_listened = found.songs;
+      stageReviewPendingChange(
+        already
+          ? `Already logged in ${destination.genre}; cleared the pending tag from ${found.sourceGenre.genre}.`
+          : `Sent to ${destination.genre} as ADD (${requestedFit}/5) and cleared the pending tag.`
+      );
+    }
+
+    function dismissManualPendingTag(sourceId, encodedKey, genreInputId) {
+      const input = document.getElementById(genreInputId);
+      const rowContext = reviewPendingContextFromRow(input?.closest?.('[data-review-pending-row]'));
+      const found = findManualPendingSourceSong(sourceId, encodedKey, rowContext);
+      if (!found) {
+        showSaveToast('Could not find that pending source song to dismiss. Refresh Studio and try again.', true);
+        return;
+      }
+      const label = [found.song.artist, found.song.title || found.song.name].filter(Boolean).join(' — ') || found.song.url || 'this pending tag';
+      if (!window.confirm(`Clear pending tag for ${label}?`)) return;
+      found.songs[found.index] = {
+        ...found.song,
+        _pendingGenreTag: '',
+        pendingTagDismissedAt: new Date().toISOString()
+      };
+      found.sourceGenre.songs_listened = found.songs;
+      stageReviewPendingChange('Pending tag dismissed.');
+    }
+
 
     function filterReviewPendingQueue(inputId) {
       const input = document.getElementById(inputId);
@@ -4761,60 +4922,36 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       const stats = pendingReviewStats();
       const manualRows = stats.rows.filter(row => row.status !== 'routable');
       const queuedRows = collectQueuedPendingNominationRows();
+      const combinedRows = [
+        ...queuedRows.map(row => ({ type: 'queued', row })),
+        ...manualRows.map(row => ({ type: 'manual', row }))
+      ];
       mount.innerHTML = renderSongInboxCard() + `
         <div class="review-stat-grid">
-          <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${stats.pendingTotal}</strong><span>Queued pending nominations</span></button>
-          <div class="review-stat"><strong>${stats.routable}</strong><span>Auto-routable @tags</span></div>
-          <button type="button" class="review-stat" onclick="scrollToReviewManualQueue()"><strong>${stats.unresolved}</strong><span>Need manual review</span></button>
+          <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${combinedRows.length}</strong><span>Pending nominations</span></button>
+          <div class="review-stat"><strong>${queuedRows.length}</strong><span>Queued by suggested genre</span></div>
+          <div class="review-stat"><strong>${manualRows.length}</strong><span>Need best-match genre</span></div>
           <div class="review-stat"><strong>${libraryUpdatesPending || hasUnsavedChanges ? 'Yes' : 'No'}</strong><span>Unsaved cleanup</span></div>
         </div>
         ${renderDuplicateGenreMergeCard()}
         <div class="review-card" id="reviewPendingQueueCard">
           <div class="review-card-head">
             <div>
-              <h3>Queued pending nominations</h3>
-              <p class="small" style="margin:6px 0 0;">Fast routing desk: confirm the best matching genre, choose 4 or 5, then send the song as an ADD. Use a different genre when the suggestion is not the strongest match. To keep it in the source genre, type the source genre and send without choosing a new fit.</p>
+              <h3>Pending nominations</h3>
+              <p class="small" style="margin:6px 0 0;">One routing desk for queued nominations and unresolved @tags. Confirm the best matching genre, choose fit 4 or 5, then send the song as an <strong>ADD</strong>. Use the source genre to keep it there and clear the pending tag.</p>
             </div>
             <div class="review-card-copy-actions">
-              <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst25()" title="Copy the first 25 visible queued pending nominations">⧉ Copy first 25</button>
-              <span class="review-chip">${queuedRows.length} total</span>
+              ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
+              <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst25()" title="Copy the first 25 visible pending nominations">⧉ Copy first 25</button>
+              <span class="review-chip">${combinedRows.length} total</span>
             </div>
           </div>
           <div class="review-filter-row">
-            <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
-            <span class="small" id="reviewPendingVisibleCount">${queuedRows.length} shown</span>
+            <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, target genre, or @tag…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
+            <span class="small" id="reviewPendingVisibleCount">${combinedRows.length} shown</span>
           </div>
-          ${queuedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${queuedRows.map(reviewQueuedPendingRowHtml).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
-        </div>
-        <div class="review-card" id="reviewManualQueueCard">
-          <div class="review-card-head">
-            <div>
-              <h3>Pending nomination routing</h3>
-              <p class="small" style="margin:6px 0 0;">This section is only for low-fit songs with unresolved @tags that have not been safely routed yet.</p>
-            </div>
-            ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
-          </div>
-          ${manualRows.length ? manualRows.map(row => {
-            const selectId = pendingReviewRowId(row.sourceGenre.id, row.key);
-            const title = (row.song.artist ? `${row.song.artist} — ` : '') + (row.song.title || 'Untitled track');
-            const reason = row.status === 'ambiguous' ? 'multiple possible genre matches' : 'no confident genre match';
-            return `<div class="review-row">
-              <div>
-                <div class="review-track-title">${escapeHtml(title)}</div>
-                <div class="review-meta">
-                  <span class="review-chip warn">tag: @${escapeHtml(row.tag || '')}</span>
-                  <span class="review-chip">from ${escapeHtml(row.sourceGenre.genre || 'Unknown')}</span>
-                  <span class="review-chip">fit ${escapeHtml(String(row.song.score ?? ''))}/5</span>
-                  <span class="review-chip warn">${escapeHtml(reason)}</span>
-                </div>
-              </div>
-              <div class="review-move">
-                <select id="${selectId}" aria-label="Move pending nomination target"><option value="">Choose genre…</option>${reviewGenreOptions(row.sourceGenre.id)}</select>
-                <button type="button" class="btn btn-secondary" onclick="movePendingReviewItem('${visualActionArg(row.sourceGenre.id)}', '${visualActionArg(row.key)}', '${selectId}')">Move</button>
-              </div>
-            </div>`;
-          }).join('') : `<div class="viz-empty">No ambiguous pending @tags need manual routing right now.</div>`}
-        </div>`;
+          ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${combinedRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations or unresolved @tags.</div>`}
+        </div>`
     }
 
     function runPendingTagCleanupFromReview() {

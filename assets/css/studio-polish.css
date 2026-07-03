@@ -1570,3 +1570,38 @@
     width: auto !important;
   }
 }
+
+
+/* === Studio v123: unified pending nomination desk === */
+#reviewPendingQueueCard .review-pending-manual-row {
+  border-color: rgba(120, 74, 27, 0.22) !important;
+}
+#reviewPendingQueueCard .review-pending-manual-row .review-track-title::after {
+  content: " needs genre";
+  display: inline-flex;
+  margin-left: 7px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(217, 141, 37, 0.14);
+  color: #7a4714;
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+#reviewPendingQueueCard .review-card-copy-actions .btn-primary {
+  min-height: 36px !important;
+  padding: 8px 12px !important;
+  border-radius: 14px !important;
+  white-space: nowrap;
+}
+@media (max-width: 680px) {
+  #reviewPendingQueueCard .review-pending-route-actions {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  #reviewPendingQueueCard .review-pending-fitline-strong,
+  #reviewPendingQueueCard .review-pending-route-genre {
+    grid-column: 1 / -1;
+  }
+}
