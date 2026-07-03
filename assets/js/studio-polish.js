@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v36-inline-submit-guard";
+  const VERSION = "studio-polish-v39-repair-bay-thumbnail-streamline";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -75,6 +75,30 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
+  }
+
+  function studioArtworkUrl(song) {
+    return String(song?.artwork || song?.albumArt || song?.image || song?.thumbnail || song?.cover || "").trim();
+  }
+
+  function updateRepairRowThumbnail(rowEl, songOrArt) {
+    if (!rowEl) return false;
+    const art = typeof songOrArt === "string" ? songOrArt.trim() : studioArtworkUrl(songOrArt);
+    if (!art) return false;
+    const thumbSlot = rowEl.querySelector(".studio-thumb, .studio-thumb-empty");
+    if (!thumbSlot) return false;
+    if (thumbSlot.tagName === "IMG") {
+      thumbSlot.src = art;
+      thumbSlot.classList.remove("studio-thumb-empty");
+      return true;
+    }
+    const img = document.createElement("img");
+    img.className = "studio-thumb studio-thumb-updated";
+    img.src = art;
+    img.alt = "";
+    img.loading = "lazy";
+    thumbSlot.replaceWith(img);
+    return true;
   }
 
   function toast(msg, isErr) {
@@ -512,7 +536,7 @@
   }
 
   function renderSongThumb(song) {
-    const art = song?.artwork || song?.albumArt || song?.image || "";
+    const art = studioArtworkUrl(song);
     if (!art) return '<div class="studio-thumb studio-thumb-empty">♪</div>';
     return `<img class="studio-thumb" src="${esc(art)}" alt="" loading="lazy">`;
   }
@@ -557,7 +581,7 @@
           ? row.repairProblems.map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${esc(kind)}">missing ${esc(kind)}</span>`).join("")
           : `<span class="studio-repair-missing-chip" data-repair-kind="${esc(problem)}">${esc(problem)}</span>`;
         const inlineRepair = isRepair
-          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Update copies" : "Update"}</button></div></div>`
+          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Apply to copies" : "Apply URL"}</button></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite"></div></div>`
           : "";
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
@@ -581,11 +605,10 @@
         <div><div class="eyebrow">Repair Bay</div><h3>Metadata and artwork cleanup</h3><p>Prioritize high-fit, liked, and visible songs first so Library, Stats, and carousels stay trustworthy.</p></div>
         <div class="studio-lane-counts"><span>${s.missingArt} art</span><span>${s.missingYear} years</span><span>${s.missingMeta} metadata</span></div>
       </div>
-      <div class="studio-action-strip">
-        <button type="button" class="btn btn-secondary" onclick="typeof openMetadataQueue === 'function' ? openMetadataQueue('art','alltime') : null">Open album-art queue</button>
-        <button type="button" class="btn btn-secondary" onclick="typeof openMetadataQueue === 'function' ? openMetadataQueue('spotify','alltime') : null">Open metadata queue</button>
-        <button type="button" class="btn btn-secondary" onclick="typeof refreshNextSpotifyTracks === 'function' ? refreshNextSpotifyTracks(5) : null">Refresh next 5</button>
+      <div class="studio-action-strip studio-repair-actions-compact">
+        <button type="button" class="btn btn-secondary" onclick="typeof refreshNextSpotifyTracks === 'function' ? refreshNextSpotifyTracks(5) : null">Auto-refresh next 5</button>
         <button type="button" class="btn btn-secondary" onclick="typeof refreshStudioRepairList === 'function' ? refreshStudioRepairList(this) : (typeof renderReview === 'function' ? renderReview() : null)">Refresh repair list</button>
+        <div class="studio-action-helper">Paste a better Spotify track URL inline, click <strong>Apply URL</strong>, confirm the thumbnail changes, then Save Library Updates. Use Refresh repair list to remove resolved rows.</div>
       </div>
       ${renderQueueRows(rows, "No obvious metadata repair items found.")}
     </section>`;
@@ -973,9 +996,13 @@
         (btn) => /pending tag cleanup/i.test(btn.textContent || ""),
       );
       if (pendingBtn) {
-        pendingBtn.textContent = "Route @tag nominations";
+        pendingBtn.textContent = "Import @tags (advanced)";
         pendingBtn.title =
-          "Scans low-fit songs with @genre tags and queues them as pending nominations in the matching target genre.";
+          "Advanced backfill only: scans pasted low-fit @genre rows and can re-create pending nominations. Manual Routing Desk decisions are the normal flow.";
+        const wrap = pendingBtn.closest('.review-hero, .panel, .review-card') || hero;
+        if (wrap && !wrap.querySelector('.studio-retired-tag-route-note')) {
+          pendingBtn.insertAdjacentHTML('afterend', '<div class="studio-retired-tag-route-note"><strong>Heads up:</strong> @tag import is only for old pasted Studio blocks. For everyday cleanup, use the Routing Desk rows below.</div>');
+        }
       }
     }
   }
@@ -1041,6 +1068,95 @@
     return true;
   }
 
+
+  function setStudioLibraryDirty() {
+    try { libraryUpdatesPending = true; } catch (_) {}
+    try { setUnsavedState(true); } catch (_) {}
+    try { toggleLibrarySaveButton(true); } catch (_) {}
+  }
+
+  function canonicalSpotifyTrackUrl(url = "") {
+    const raw = String(url || "").trim();
+    if (typeof window.spotifyCanonicalTrackUrl === "function") return window.spotifyCanonicalTrackUrl(raw);
+    const match = raw.match(/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?track\/([A-Za-z0-9]{22})/i) || raw.match(/spotify:track:([A-Za-z0-9]{22})/i) || raw.match(/^[A-Za-z0-9]{22}$/);
+    const id = match ? (match[1] || match[0]) : "";
+    return id ? `https://open.spotify.com/track/${id}` : raw;
+  }
+
+  function findRepairTargetSong(target) {
+    const genre = getGenres().find((g) => String(g?.id ?? "") === String(target?.genreId ?? ""));
+    if (!genre) return null;
+    const songs = inflateSongs(genre.songs_listened || []);
+    let found = null;
+    const key = String(target?.key || "");
+    const displayKey = String(target?.displayKey || "");
+    const targetUrl = canonicalSpotifyTrackUrl(target?.url || "");
+    const targetTitle = norm(target?.title || "");
+    const targetArtist = norm(target?.artist || "");
+    const visit = (song) => {
+      if (!song || found) return;
+      const keys = [songKey(song), repairDisplayKey(song)].filter(Boolean).map(String);
+      const songUrl = canonicalSpotifyTrackUrl(song.spotifyUrl || song.url || "");
+      const title = norm(song.title || song.name || "");
+      const artist = norm(song.artist || (Array.isArray(song.artists) ? song.artists.join(" ") : ""));
+      if ((key && keys.includes(key)) || (displayKey && keys.includes(displayKey)) || (targetUrl && songUrl && targetUrl === songUrl) || (targetTitle && targetArtist && title === targetTitle && artist === targetArtist)) found = song;
+    };
+    songs.forEach((song) => {
+      visit(song);
+      if (song?.levelUp) visit(song.levelUp);
+    });
+    return found ? { genre, songs, song: found } : null;
+  }
+
+  async function applyRepairUrlTarget(target, inputId) {
+    const input = document.getElementById(inputId);
+    const rawUrl = String(input?.value || "").trim();
+    if (!rawUrl) return { ok: false, error: "Paste a Spotify track URL first." };
+    const located = findRepairTargetSong(target);
+    if (!located) return { ok: false, error: "Could not find that track in the current library rows." };
+
+    const canonical = canonicalSpotifyTrackUrl(rawUrl);
+    located.song.url = canonical;
+    located.song.spotifyUrl = /open\.spotify\.com\/track\//i.test(canonical) ? canonical : (located.song.spotifyUrl || "");
+
+    let refreshed = false;
+    let refreshError = "";
+    if (/open\.spotify\.com\/track\//i.test(canonical) && typeof fetchSpotifyTrackResult === "function") {
+      const result = await fetchSpotifyTrackResult(canonical, true);
+      if (result?.ok && result.track) {
+        if (typeof applyOfficialSpotifyMetadata === "function") applyOfficialSpotifyMetadata(located.song, result.track);
+        Object.assign(located.song, {
+          spotifyId: result.track.spotifyId || located.song.spotifyId || "",
+          spotifyUrl: result.track.spotifyUrl || canonical,
+          title: result.track.title || located.song.title || "",
+          artist: result.track.artist || located.song.artist || "",
+          artists: Array.isArray(result.track.artists) ? result.track.artists.filter(Boolean) : (located.song.artists || []),
+          album: result.track.album || located.song.album || "",
+          artwork: result.track.artwork || located.song.artwork || located.song.albumArt || "",
+          albumArt: result.track.artwork || located.song.albumArt || located.song.artwork || "",
+          releaseDate: result.track.releaseDate || located.song.releaseDate || "",
+          releaseYear: result.track.releaseYear || located.song.releaseYear || null,
+          durationMs: Number(result.track.durationMs || 0) || located.song.durationMs || null,
+          isrc: result.track.isrc || located.song.isrc || "",
+          source: "spotify",
+          spotifyMetadataFetched: true,
+          spotifyMetadataFetchedAt: new Date().toISOString(),
+        });
+        refreshed = true;
+      } else {
+        refreshError = result?.error || "Spotify lookup did not return metadata.";
+      }
+    }
+
+    located.genre.songs_listened = located.songs;
+    setStudioLibraryDirty();
+    return { ok: true, key: songKey(located.song), song: located.song, genre: located.genre, refreshed, refreshError };
+  }
+
+  window.updateStudioRepairUrlTarget = async function updateStudioRepairUrlTarget(target, inputId) {
+    return applyRepairUrlTarget(target, inputId);
+  };
+
   async function updateStudioRepairGroupUrlFromQueue(encodedTargetsJson, inputId, button) {
     let targets = [];
     try {
@@ -1066,7 +1182,10 @@
       return;
     }
 
-    const originalText = button?.textContent || "Update";
+    const originalText = button?.textContent || "Apply URL";
+    const rowForStatus = button?.closest?.(".studio-mini-row-repair");
+    const statusEl = rowForStatus?.querySelector?.("[data-studio-repair-status]");
+    const setStatus = (copy, isErr = false) => { if (statusEl) { statusEl.textContent = copy || ""; statusEl.classList.toggle("is-error", !!isErr); } };
     const setBusy = (copy) => {
       if (!button) return;
       button.disabled = true;
@@ -1083,10 +1202,11 @@
     let updated = 0;
     const resolved = [];
     try {
-      setBusy(unique.length > 1 ? `Updating 1/${unique.length}…` : "Updating…");
+      setStatus("Applying URL and checking Spotify artwork…");
+      setBusy(unique.length > 1 ? `Applying 1/${unique.length}…` : "Applying…");
       for (let idx = 0; idx < unique.length; idx += 1) {
         const target = unique[idx];
-        if (idx > 0) setBusy(`Updating ${idx + 1}/${unique.length}…`);
+        if (idx > 0) setBusy(`Applying ${idx + 1}/${unique.length}…`);
         let result = null;
         if (typeof window.updateStudioRepairUrlTarget === "function") {
           result = await window.updateStudioRepairUrlTarget(target, inputId, idx === 0 ? button : null, "review");
@@ -1105,6 +1225,7 @@
         }
       }
       if (!updated) {
+        setStatus("No matching row was updated.", true);
         toast("Could not find matching repair rows. The row may be stale; open the genre once or use the Metadata Queue delete/open tools.", true);
         return;
       }
@@ -1112,7 +1233,7 @@
       const metaEl = rowEl?.querySelector?.(".studio-mini-meta");
       if (metaEl) {
         const existing = metaEl.querySelector(".studio-inline-group-updated-chip");
-        const label = `updated ${updated} ${updated === 1 ? "copy" : "copies"} · save pending`;
+        const label = `applied ${updated} ${updated === 1 ? "copy" : "copies"} · save pending`;
         if (existing) existing.textContent = label;
         else metaEl.insertAdjacentHTML("afterbegin", `<span class="studio-inline-group-updated-chip">${esc(label)}</span>`);
       }
@@ -1124,15 +1245,7 @@
         const href = spotifyUrl(updatedSong);
         const titleText = songTitle(updatedSong);
         if (titleEl) titleEl.innerHTML = href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(titleText)}</a>` : esc(titleText);
-        const thumbSlot = rowElVisible.querySelector(".studio-thumb, .studio-thumb-empty");
-        const art = artworkUrl(updatedSong);
-        if (thumbSlot && art) {
-          const img = document.createElement("img");
-          img.className = "studio-thumb";
-          img.src = art;
-          img.alt = "";
-          thumbSlot.replaceWith(img);
-        }
+        updateRepairRowThumbnail(rowElVisible, updatedSong);
         if (metaEl) {
           const info = [];
           if (updatedSong.artist) info.push(updatedSong.artist);
@@ -1159,7 +1272,14 @@
           meta.insertAdjacentHTML("afterbegin", '<span class="studio-repair-resolved-chip">resolved · refresh list to remove</span>');
         }
       }
-      if (updated > 1) toast(`Updated ${updated} matching copies — Save cleanup to persist.`, false);
+      const refreshedCount = resolved.filter((item) => item.song && (item.song.artwork || item.song.albumArt)).length;
+      setStatus(refreshedCount ? `Applied · artwork found for ${refreshedCount} ${refreshedCount === 1 ? "track" : "tracks"}. Save cleanup to persist.` : "Applied URL · no artwork returned yet. Try a different Spotify track URL if this remains in the list.", !refreshedCount);
+      if (updated > 1) toast(`Applied URL to ${updated} matching copies — Save cleanup to persist.`, false);
+      else toast(refreshedCount ? "Artwork updated in place — Save cleanup to persist." : "URL applied, but artwork is still missing.", !refreshedCount);
+    } catch (err) {
+      console.error("Repair Bay apply failed", err);
+      setStatus(`Apply failed: ${err?.message || err || "Unknown error"}`, true);
+      toast("Repair Bay update failed. Check the row message and try again.", true);
     } finally {
       clearBusy();
     }
@@ -1195,11 +1315,22 @@
   window.updateStudioRepairGroupUrlFromQueue = updateStudioRepairGroupUrlFromQueue;
 
 
-  // v137: Repair Bay rows are clickable containers, so URL/edit controls must never
-  // bubble into the row-level open-genre behavior. Use capture listeners as a final
-  // guard in addition to inline handlers.
+  // v137/v161: Repair Bay rows are clickable containers, so URL/edit controls must
+  // never bubble into the row-level open-genre behavior. In capture phase, button
+  // clicks must also run the apply action here; otherwise stopPropagation prevents
+  // the inline onclick from ever reaching the target in some browsers.
   document.addEventListener("click", (event) => {
-    const edit = event.target?.closest?.(".studio-inline-track-edit, [data-studio-repair-form], [data-studio-repair-update]");
+    const button = event.target?.closest?.("[data-studio-repair-update]");
+    if (button) {
+      event.preventDefault();
+      event.stopPropagation();
+      const form = button.closest?.("[data-studio-repair-form]");
+      const encodedTargets = form?.getAttribute?.("data-studio-repair-targets") || "";
+      const inputId = form?.getAttribute?.("data-studio-repair-input") || "";
+      updateStudioRepairGroupUrlFromQueue(encodedTargets, inputId, button);
+      return;
+    }
+    const edit = event.target?.closest?.(".studio-inline-track-edit, [data-studio-repair-form]");
     if (!edit) return;
     event.stopPropagation();
   }, true);

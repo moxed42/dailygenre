@@ -767,6 +767,49 @@ function setAlbumDiveFocusRelative(direction, event) {
   if (next?.key) setAlbumDiveFocusSlot(next.key, { event, preserveScroll: true });
 }
 
+
+function albumDiveTitleWithEditionMarkup(value) {
+  const text = String(value || '').trim();
+  if (!text) return '';
+  const editionTerms = '(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\\s+(?:at|from|in|on|@))?|live recording|concert(?:\\s*\\(live\\))?|anniversary(?:\\s+concert)?|demo|bonus track|explicit|clean|edit|version|alternate(?:\\s+take)?|alt(?:\\.|ernate)?\\s+version|acoustic|session|take\\s+\\d+)';
+  const patterns = [
+    new RegExp('^(.*?)(\\s+(?:-|–|—)\\s*(?:[^()\\[\\]]*' + editionTerms + '[^()\\[\\]]*)(?:\\([^)]*\\))?\\s*)$', 'i'),
+    new RegExp('^(.*?)(\\s*\\((?:[^)]*' + editionTerms + '[^)]*)\\)\\s*)$', 'i'),
+    new RegExp('^(.*?)(\\s*\\[(?:[^\\]]*' + editionTerms + '[^\\]]*)\\]\\s*)$', 'i'),
+  ];
+  for (const re of patterns) {
+    const match = text.match(re);
+    if (match && match[1] && match[2] && match[1].trim().length >= 2) {
+      return `${escapeHtml(match[1].trim())}<span class="song-title-edition">${escapeHtml(match[2].trim().replace(/^[-–—]\\s*/, ''))}</span>`;
+    }
+  }
+  return escapeHtml(text);
+}
+
+function albumDiveEditQuickBlock(slot, safeKey) {
+  const inputUrl = albumDiveSlotInputUrl(slot);
+  return `<div class="album-focus-edit-help">Most edits should be a quick URL/reason update, or a single pasted album block. Use JSON when you want to replace the whole slot.</div>
+    <div class="album-focus-edit-quick-grid">
+      <label class="wide"><span>Album URL</span><input type="url" value="${escapeHtml(inputUrl)}" placeholder="Spotify, Apple Music, or iTunes album URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'albumProviderUrl', this.value)"></label>
+      <label><span>Album</span><input type="text" value="${escapeHtml(slot.album || '')}" placeholder="Album title" oninput="updateAlbumDiveSlotField('${safeKey}', 'album', this.value)"></label>
+      <label><span>Artist</span><input type="text" value="${escapeHtml(slot.artist || '')}" placeholder="Artist" oninput="updateAlbumDiveSlotField('${safeKey}', 'artist', this.value)"></label>
+      <label><span>Year</span><input type="number" value="${slot.year || ''}" placeholder="Year" oninput="updateAlbumDiveSlotField('${safeKey}', 'year', this.value)"></label>
+      <label><span>Album art URL</span><input type="url" value="${escapeHtml(slot.manualAlbumArt || '')}" placeholder="Manual album art URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'manualAlbumArt', this.value)"></label>
+      <label class="wide"><span>Description / reason</span><textarea rows="3" placeholder="Why this album belongs in this slot" oninput="updateAlbumDiveSlotField('${safeKey}', 'rationale', this.value)">${escapeHtml(slot.rationale || '')}</textarea></label>
+    </div>
+    <div class="row" style="margin-top:8px;gap:8px;">
+      <button type="button" class="btn btn-primary btn-tiny" onclick="fetchAlbumDiveAlbumMetadata('${safeKey}', this)">Fetch / refresh metadata</button>
+    </div>
+    <div class="album-slot-replace-block" style="margin-top:12px;">
+      <label for="albumSlotReplace_${safeKey}">Paste JSON or text block to replace this slot</label>
+      <textarea id="albumSlotReplace_${safeKey}" rows="4" placeholder='{"type":"${escapeHtml(slot.label || 'Breakout')}","artist":"Artist","album":"Album","spotify_url":"https://open.spotify.com/album/...","year":1999,"reason":"why it belongs"}'></textarea>
+      <div class="row" style="margin-top:8px;gap:8px;">
+        <button type="button" class="btn btn-primary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, true)">Replace + fetch</button>
+        <button type="button" class="btn btn-secondary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, false)">Replace only</button>
+      </div>
+    </div>`;
+}
+
 function renderAlbumDiveSidePeek(slot, sideLabel) {
   if (!slot)
     return '<div class="album-focus-peek album-focus-peek-empty" aria-hidden="true"></div>';
@@ -851,22 +894,7 @@ function renderAlbumDiveFocusPanel(dive) {
   const trackSummary = albumDiveTrackReactionSummary(slot);
   const manualMetadataDetails = `<details class="album-focus-edit-details album-focus-edit-bottom">
         <summary>Edit / replace this album</summary>
-        <div class="album-slot-title" style="margin-top:8px;">
-          <input type="text" value="${escapeHtml(slot.album || "")}" placeholder="Album title" oninput="updateAlbumDiveSlotField('${safeKey}', 'album', this.value)">
-          <input type="number" value="${slot.year || ""}" placeholder="Year" oninput="updateAlbumDiveSlotField('${safeKey}', 'year', this.value)">
-        </div>
-        <div class="album-slot-minirow" style="margin-top:8px;">
-          <input type="text" value="${escapeHtml(slot.artist || "")}" placeholder="Artist" oninput="updateAlbumDiveSlotField('${safeKey}', 'artist', this.value)">
-          <input type="url" value="${escapeHtml(slot.manualAlbumArt || "")}" placeholder="Manual album art URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'manualAlbumArt', this.value)">
-        </div>
-        <div class="album-slot-replace-block" style="margin-top:10px;">
-          <label for="albumSlotReplace_${safeKey}">Replace with pasted album entry</label>
-          <textarea id="albumSlotReplace_${safeKey}" rows="4" placeholder='{"type":"${escapeHtml(slot.label || "Breakout")}","artist":"Artist","album":"Album","spotify_url":"https://open.spotify.com/album/...","year":1999,"reason":"why it belongs"}'></textarea>
-          <div class="row" style="margin-top:8px;gap:8px;">
-            <button type="button" class="btn btn-primary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, true)">Replace + fetch</button>
-            <button type="button" class="btn btn-secondary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, false)">Replace only</button>
-          </div>
-        </div>
+        ${albumDiveEditQuickBlock(slot, safeKey)}
       </details>`;
   return `<div class="album-focus-view album-focus-view-shelf-top album-focus-view-arrows-only" data-album-focus-key="${safeKey}">
         <div class="album-focus-shelf-top-wrap">
@@ -886,7 +914,7 @@ function renderAlbumDiveFocusPanel(dive) {
                 <span class="album-focus-label">${escapeHtml(slot.label)}</span>
                 ${state === "not_started" ? "" : `<span class="album-focus-state ${escapeHtml(state)}">${escapeHtml(state.replaceAll("_", " "))}</span>`}
               </div>
-              <h4 class="album-focus-title">${albumUrl ? `<a href="${escapeHtml(albumUrl)}" target="_blank" rel="noopener">${escapeHtml(displayTitle)} <span class="song-link-arrow">↗</span></a>` : escapeHtml(displayTitle)}</h4>
+              <h4 class="album-focus-title">${albumUrl ? `<a href="${escapeHtml(albumUrl)}" target="_blank" rel="noopener">${albumDiveTitleWithEditionMarkup(displayTitle)} <span class="song-link-arrow">↗</span></a>` : albumDiveTitleWithEditionMarkup(displayTitle)}</h4>
               ${displaySub ? `<div class="album-focus-sub">${escapeHtml(displaySub)}</div>` : ""}
               ${slot.rationale ? `<p class="album-focus-rationale">${escapeHtml(slot.rationale)}</p>` : ""}
               <div class="album-focus-actions">
@@ -1285,22 +1313,7 @@ function renderAlbumDiveSlot(slot) {
             </select>`;
   const manualMetadataDetails = `<details>
             <summary>Edit / replace this album</summary>
-            <div class="album-slot-title" style="margin-top:8px;">
-              <input type="text" value="${escapeHtml(slot.album || "")}" placeholder="Album title" oninput="updateAlbumDiveSlotField('${safeKey}', 'album', this.value)">
-              <input type="number" value="${slot.year || ""}" placeholder="Year" oninput="updateAlbumDiveSlotField('${safeKey}', 'year', this.value)">
-            </div>
-            <div class="album-slot-minirow" style="margin-top:8px;">
-              <input type="text" value="${escapeHtml(slot.artist || "")}" placeholder="Artist" oninput="updateAlbumDiveSlotField('${safeKey}', 'artist', this.value)">
-              <input type="url" value="${escapeHtml(slot.manualAlbumArt || "")}" placeholder="Manual album art URL" onchange="updateAlbumDiveSlotField('${safeKey}', 'manualAlbumArt', this.value)">
-            </div>
-            <div class="album-slot-replace-block" style="margin-top:10px;">
-              <label for="albumSlotReplace_${safeKey}">Replace with pasted album entry</label>
-              <textarea id="albumSlotReplace_${safeKey}" rows="4" placeholder='{"type":"${escapeHtml(slot.label || "Breakout")}","artist":"Artist","album":"Album","spotify_url":"https://open.spotify.com/album/...","year":1999,"reason":"why it belongs"}'></textarea>
-              <div class="row" style="margin-top:8px;gap:8px;">
-                <button type="button" class="btn btn-primary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, true)">Replace + fetch</button>
-                <button type="button" class="btn btn-secondary btn-tiny" onclick="replaceAlbumDiveSlotFromPaste('${safeKey}', 'albumSlotReplace_${safeKey}', this, false)">Replace only</button>
-              </div>
-            </div>
+            ${albumDiveEditQuickBlock(slot, safeKey)}
           </details>`;
   const favoriteBlock = `<div class="album-slot-favorite">
             <h4>Top songs from this album</h4>
@@ -1319,8 +1332,8 @@ function renderAlbumDiveSlot(slot) {
           <div>
             ${
               albumUrl
-                ? `<a class="album-slot-display-title album-slot-link" href="${escapeHtml(albumUrl)}" target="_blank" rel="noopener">${escapeHtml(displayTitle)} <span class="song-link-arrow">↗</span></a>`
-                : `<div class="album-slot-display-title">${escapeHtml(displayTitle)}</div>`
+                ? `<a class="album-slot-display-title album-slot-link" href="${escapeHtml(albumUrl)}" target="_blank" rel="noopener">${albumDiveTitleWithEditionMarkup(displayTitle)} <span class="song-link-arrow">↗</span></a>`
+                : `<div class="album-slot-display-title">${albumDiveTitleWithEditionMarkup(displayTitle)}</div>`
             }
             ${displaySub ? `<div class="album-slot-display-sub">${escapeHtml(displaySub)}</div>` : ""}
           </div>

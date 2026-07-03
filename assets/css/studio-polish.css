@@ -1646,3 +1646,91 @@
   -webkit-appearance: none !important;
   border: 1px solid rgba(120, 74, 27, 0.2) !important;
 }
+
+
+/* === v159 Studio triage polish: pending play button + safer @tag import === */
+#reviewPendingQueueCard .review-pending-route-row {
+  position: relative !important;
+  padding-right: 46px !important;
+}
+
+#reviewPendingQueueCard .review-pending-mini-action {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  font-size: 0.78rem !important;
+  line-height: 1 !important;
+  z-index: 3 !important;
+  box-shadow: 0 8px 18px rgba(44, 24, 10, 0.13) !important;
+}
+
+#reviewPendingQueueCard .review-pending-route-actions {
+  padding-right: 0 !important;
+}
+
+.studio-retired-tag-route-note {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(155, 52, 40, 0.18);
+  background: rgba(255, 252, 241, 0.52);
+  color: var(--muted, #735a3c);
+  font-size: 0.83rem;
+  line-height: 1.32;
+}
+
+.studio-retired-tag-route-note strong {
+  color: #7a4714;
+}
+
+.studio-action-strip .studio-action-helper {
+  flex-basis: 100%;
+  color: var(--muted, #735a3c);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  padding: 2px 4px 0;
+}
+
+/* === Studio v160: Repair Bay apply confirmation ======================= */
+.studio-inline-repair-status {
+  margin-top: 6px;
+  min-height: 1.1em;
+  color: color-mix(in srgb, var(--success, #496b3b) 78%, var(--text, #22160d));
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+.studio-inline-repair-status.is-error {
+  color: color-mix(in srgb, var(--danger, #9b3428) 78%, var(--text, #22160d));
+}
+.studio-mini-row-repair .studio-inline-track-edit .btn-tiny {
+  min-width: 86px;
+}
+
+/* === Studio v162: Repair Bay thumbnail confirmation + compact actions === */
+.studio-repair-actions-compact {
+  align-items: center;
+}
+.studio-repair-actions-compact .btn {
+  padding: 9px 13px !important;
+  min-height: 38px !important;
+  border-radius: 14px !important;
+}
+.studio-thumb-updated,
+.studio-repair-resolved .studio-thumb {
+  box-shadow:
+    0 0 0 3px rgba(73, 107, 59, 0.18),
+    0 10px 20px rgba(38, 22, 10, 0.14) !important;
+  border-color: rgba(73, 107, 59, 0.42) !important;
+}
+.studio-repair-resolved-chip {
+  color: #315728 !important;
+  background: rgba(73, 107, 59, 0.16) !important;
+  border-color: rgba(73, 107, 59, 0.24) !important;
+}

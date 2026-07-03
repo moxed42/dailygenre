@@ -9959,3 +9959,68 @@ textarea[data-dg-identity-textarea="1"] {
     justify-content: flex-start !important;
   }
 }
+
+
+/* === v159 Album Dive edit simplification + title editions === */
+.album-focus-edit-details .album-focus-edit-help,
+.album-slot-card .album-focus-edit-help {
+  margin: 8px 0 10px;
+  color: var(--muted, #735a3c);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.album-focus-edit-quick-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.album-focus-edit-quick-grid .wide {
+  grid-column: 1 / -1;
+}
+
+.album-focus-edit-quick-grid label {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+}
+
+.album-focus-edit-quick-grid label > span,
+.album-slot-replace-block label {
+  color: var(--muted, #735a3c);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.album-focus-edit-quick-grid input,
+.album-focus-edit-quick-grid textarea,
+.album-slot-replace-block textarea {
+  min-height: 36px !important;
+  border-radius: 13px !important;
+  font-size: 0.88rem !important;
+}
+
+.album-focus-title .song-title-edition,
+.album-slot-display-title .song-title-edition {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted, #735a3c);
+  font-size: 0.44em;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 850;
+}
+
+.album-slot-display-title .song-title-edition {
+  font-size: 0.72em;
+}
+
+@media (max-width: 720px) {
+  .album-focus-edit-quick-grid {
+    grid-template-columns: 1fr;
+  }
+}

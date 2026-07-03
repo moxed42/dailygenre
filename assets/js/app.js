@@ -2998,8 +2998,9 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         await doSaveWithPassword(appPassword);
         updateRemainingCount();
         populateMonthFilter();
-        renderHistory();
-        renderRankings();
+        const activeScreenId = document.querySelector('.screen.active')?.id || '';
+        if (activeScreenId === 'screen-history') renderHistory();
+        if (activeScreenId === 'screen-ranking') renderRankings();
         loadListenScreen(currentGenre, { preserveDirty: false });
         lastSavedListenSnapshot = buildListenSnapshot();
         setUnsavedState(false);
@@ -4937,7 +4938,7 @@ function blockSaveIfDuplicateGenres() {
         <div class="review-card-head">
           <div>
             <h3>Song Inbox</h3>
-            <p class="small" style="margin:6px 0 0;">Paste one song or many. Use <strong>Add to Inbox</strong> for plain URLs/manual songs, or <strong>Import Studio @tags</strong> for Studio blocks: only score 1–3 rows with @genre tags are routed, and score 4–5 rows are ignored.</p>
+            <p class="small" style="margin:6px 0 0;">Paste one song or many. Use <strong>Add to Inbox</strong> for normal routing. <strong>Import @tags</strong> is an advanced backfill for pasted Studio blocks only; it scans score 1–3 rows with @genre tags and can re-create pending nominations.</p>
           </div>
         </div>
         <div class="inbox-bulk-grid">
@@ -4945,7 +4946,7 @@ function blockSaveIfDuplicateGenres() {
           <label class="inbox-target-genre"><span>Optional genre</span><select id="inboxTargetGenre"><option value="">Unknown / unassigned</option>${inboxGenreOptionsHtml()}</select></label>
           <div class="inbox-action-stack" style="display:flex; flex-direction:column; gap:8px;">
             <button type="button" class="btn btn-primary" onclick="addToSongInbox()">Add to Inbox</button>
-            <button type="button" class="btn btn-secondary" onclick="importStudioTaggedSongs()">Import Studio @tags</button>
+            <button type="button" class="btn btn-secondary" onclick="importStudioTaggedSongs()" title="Advanced backfill for pasted Studio @tag blocks only">Import @tags (advanced)</button>
           </div>
         </div>
         <div class="inbox-result" id="inboxResult"></div>
@@ -4965,6 +4966,13 @@ function blockSaveIfDuplicateGenres() {
       if (sourceSelect?.value && !sourceGenre) {
         resultEl.className = 'inbox-result err';
         resultEl.textContent = 'Selected source genre was not found.';
+        return;
+      }
+
+      const ok = window.confirm('Import @tags is an advanced backfill. It scans the pasted text and adds score 1–3 @genre rows back into pending nominations. Use Add to Inbox for normal routing. Continue?');
+      if (!ok) {
+        resultEl.className = 'inbox-result';
+        resultEl.textContent = 'Import @tags canceled.';
         return;
       }
 
@@ -6003,7 +6011,13 @@ async function loadData() {
     });
 
     document.querySelectorAll('.tab-btn[data-screen]').forEach(btn => {
-      btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
+      btn.addEventListener('click', () => {
+        const name = btn.dataset.screen;
+        const ok = switchScreen(name);
+        if (!ok) return;
+        if (name === 'history') setTimeout(renderHistory, 0);
+        if (name === 'ranking') setTimeout(renderRankings, 0);
+      });
     });
 
     spinBtn.addEventListener('click', spinWheel);
