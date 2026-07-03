@@ -410,15 +410,31 @@
     actions.innerHTML = "";
     if (listen) {
       listen.classList.add("dc-primary-action");
-      listen.textContent = "Mark listened";
-      listen.setAttribute("title", "Mark this genre listened so it leaves the spin bucket");
-      listen.setAttribute("aria-label", "Mark genre listened");
+      listen.textContent = /mark/i.test(listen.textContent || "")
+        ? "Start Listening"
+        : "Listen";
       actions.appendChild(listen);
     }
     if (playlist) {
       playlist.classList.add("dc-secondary-action");
       actions.appendChild(playlist);
     }
+
+    if (!actions.querySelector(".dc-copy-discord-action")) {
+      const copyBtn = document.createElement("button");
+      copyBtn.type = "button";
+      copyBtn.className = "dc-copy-discord-action";
+      copyBtn.title = "Copy Discord share block";
+      copyBtn.setAttribute("aria-label", "Copy Discord share block");
+      copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+      copyBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        copyCurrentGenreDiscord(copyBtn);
+      });
+      actions.appendChild(copyBtn);
+    }
+
     if (genreNav.length) {
       const navWrap = document.createElement("div");
       navWrap.className = "dc-genre-nav-actions dc-desktop-genre-nav";

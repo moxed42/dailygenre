@@ -2668,6 +2668,26 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       if (block) block.value = buildDiscordBlock();
     }
 
+    async function copyDiscordBlockFromGenreHeader(button) {
+      if (!currentGenre) return;
+      const text = buildDiscordBlock();
+      try {
+        await navigator.clipboard.writeText(text);
+        if (button) {
+          const old = button.textContent;
+          button.textContent = '✓ Copied';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = old || '⧉ Discord';
+            button.classList.remove('copied');
+          }, 1200);
+        }
+        showSaveToast('Discord block copied.', false);
+      } catch (error) {
+        alert(text);
+      }
+    }
+
     function renderStars() {
       const starsEl = document.getElementById('ratingStars');
       starsEl.innerHTML = [1,2,3,4,5].map(n =>
@@ -3093,6 +3113,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 ${ratingHero}
                 ${listenedDate ? `<span class="tag">Listened on ${escapeHtml(listenedDate)}</span>` : (hasListenMarkers ? '<span class="tag tag-warn">Marked listened — reset if mistaken</span>' : '')}
                 ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
+                <button type="button" class="tag dg-discord-copy-chip" title="Copy Discord share block" aria-label="Copy Discord share block" onclick="copyDiscordBlockFromGenreHeader(this)">⧉ Discord</button>
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
                 ${hasPending(genre) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
                 ${genre.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
