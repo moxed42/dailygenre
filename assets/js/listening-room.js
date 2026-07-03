@@ -317,6 +317,9 @@
     const playlist = children.find((el) =>
       /playlist/i.test(el.textContent || ""),
     );
+    const copyDiscord = children.find((el) =>
+      /discord/i.test(el.textContent || "") || el.classList?.contains("dg-discord-action") || el.classList?.contains("dg-discord-copy-chip"),
+    );
     const edit = children.find((el) =>
       /edit|setup|curation|studio/i.test(el.textContent || ""),
     );
@@ -403,6 +406,7 @@
       (el) =>
         el !== listen &&
         el !== playlist &&
+        el !== copyDiscord &&
         el !== edit &&
         !genreNav.includes(el),
     );
@@ -410,9 +414,10 @@
     actions.innerHTML = "";
     if (listen) {
       listen.classList.add("dc-primary-action");
-      listen.textContent = /mark/i.test(listen.textContent || "")
-        ? "Start Listening"
-        : "Listen";
+      const currentListenText = (listen.textContent || "").trim();
+      listen.textContent = /unlisten/i.test(currentListenText)
+        ? "Unlisten"
+        : (/mark/i.test(currentListenText) ? "Unlisten" : currentListenText || "Unlisten");
       actions.appendChild(listen);
     }
     if (playlist) {
@@ -420,13 +425,20 @@
       actions.appendChild(playlist);
     }
 
-    if (!actions.querySelector(".dc-copy-discord-action")) {
+    if (copyDiscord) {
+      copyDiscord.classList.remove("tag", "dg-discord-copy-chip");
+      copyDiscord.classList.add("btn", "btn-secondary", "dc-copy-discord-action");
+      copyDiscord.textContent = "⧉ Discord";
+      copyDiscord.title = "Copy Discord share block";
+      copyDiscord.setAttribute("aria-label", "Copy Discord share block");
+      actions.appendChild(copyDiscord);
+    } else if (!actions.querySelector(".dc-copy-discord-action")) {
       const copyBtn = document.createElement("button");
       copyBtn.type = "button";
-      copyBtn.className = "dc-copy-discord-action";
+      copyBtn.className = "btn btn-secondary dc-copy-discord-action";
       copyBtn.title = "Copy Discord share block";
       copyBtn.setAttribute("aria-label", "Copy Discord share block");
-      copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+      copyBtn.textContent = "⧉ Discord";
       copyBtn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();

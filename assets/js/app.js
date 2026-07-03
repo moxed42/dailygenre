@@ -3125,9 +3125,10 @@ async function prepareAndSaveCurrentGenre(options = {}) {
                 <button type="button" class="btn btn-secondary" onclick="openAdjacentGenre(1)">Next →</button>
                 <button type="button" class="btn btn-secondary edit-mode-toggle" onclick="toggleDetailEditMode()">${detailEditMode ? 'Hide Setup Editor' : 'Edit Setup / Curation'}</button>
                 <button type="button" class="spotify-queue-btn" onclick="openSpotifyPlaylistModal('${encodeURIComponent(String(genre.id || ''))}')">＋ Playlist</button>
+                <button type="button" class="btn btn-secondary dg-discord-action" title="Copy Discord share block" aria-label="Copy Discord share block" onclick="copyDiscordBlockFromGenreHeader(this)">⧉ Discord</button>
                 ${!hasListenMarkers
-                  ? `<button type="button" class="btn btn-primary" title="Mark this genre listened so it leaves the spin bucket" onclick="markCurrentGenreListened()">Mark Listened</button>`
-                  : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Reset to Unlistened</button>`}
+                  ? `<button type="button" class="btn btn-primary" title="Mark this genre listened and remove it from the remaining spin bucket" onclick="markCurrentGenreListened()">Unlisten</button>`
+                  : `<button type="button" class="btn btn-danger btn-compact listen-correction-btn" onclick="unlistenCurrentGenre()">Unlisten</button>`}
               </div>
 
             </div>

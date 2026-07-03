@@ -123,11 +123,16 @@
 
           <div class="panel stack detail-edit-panel" id="listenEditPanel">
             <div class="form-section detail-editor-intro">
-              <div class="eyebrow" style="margin: 0 0 6px">
-                Add Songs / Genre DNA
-              </div>
-              <div class="small">
-                Use this panel for bulk song adds, song-fit reasons, and Genre DNA. Ratings, reactions, favorites, and most cleanup now live inline on the genre page or in Studio.
+              <div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;">
+                <div style="min-width: 0;">
+                  <div class="eyebrow" style="margin: 0 0 6px">
+                    Add Songs / Genre DNA
+                  </div>
+                  <div class="small">
+                    Use this panel for bulk song adds, song-fit reasons, and Genre DNA. Ratings, reactions, favorites, and most cleanup now live inline on the genre page or in Studio.
+                  </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-tiny" onclick="toggleDetailEditMode()" title="Close Add Songs / Genre DNA panel">Close editor</button>
               </div>
             </div>
             <div class="form-section share-section collapsed" id="shareSection">
