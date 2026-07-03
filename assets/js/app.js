@@ -3653,6 +3653,10 @@ function blockSaveIfDuplicateGenres() {
       const hereFitLine = nominatedFit != null && Number.isFinite(nominatedFit) && nominatedFit >= 4 ? `<span class="review-chip review-chip-good">ready ${escapeHtml(String(nominatedFit))}/5</span>` : '';
       const addedLine = row.added ? `<span class="review-chip">added ${escapeHtml(String(row.added))}</span>` : '';
       const searchText = [row.song.artist, row.song.title, row.targetGenre.genre, source, row.song.url].join(' ').toLowerCase();
+      const copyTitle = String(row.song?.title || row.song?.name || row.song?.url || 'Untitled track').trim();
+      const copyArtist = String(row.song?.artist || '').trim();
+      const copyGenre = String(row.targetGenre?.genre || 'Unknown genre').trim();
+      const copyLine = `* ${copyArtist ? `${copyArtist} - ` : ''}${copyTitle}: ${copyGenre}`;
       const targetArg = visualActionArg(row.targetGenre.id);
       const keyArg = encodeURIComponent(row.key || songIdentity(row.song) || '').replace(/[!'()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
       const idx = Number(row.index) || 0;
@@ -3662,7 +3666,7 @@ function blockSaveIfDuplicateGenres() {
       const currentFit = nominatedFit === 4 || nominatedFit === 5 ? nominatedFit : '';
       const fitBtns = [4,5].map(n => `<button type="button" class="pending-fit-btn pending-fit-strong ${currentFit === n ? 'active' : ''}" title="Route as a ${n}/5 match" onclick="setReviewPendingInlineFit('${escapeHtml(fitInputId)}', ${n}, this)">${n}</button>`).join('');
       const suggested = row.targetGenre.genre || 'Unknown genre';
-      return `<div class="review-row review-pending-action-row review-pending-route-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}">
+      return `<div class="review-row review-pending-action-row review-pending-route-row" data-review-pending-row data-review-pending-text="${escapeHtml(searchText)}" data-review-pending-copy="${escapeHtml(copyLine)}">
         <div class="review-pending-main">
           <div class="review-track-title">${vizSongTitleLink(row.song)}</div>
           <div class="review-meta">
@@ -3876,6 +3880,25 @@ function blockSaveIfDuplicateGenres() {
       });
       const count = document.getElementById('reviewPendingVisibleCount');
       if (count) count.textContent = `${visible} shown`;
+    }
+
+    async function copyReviewPendingQueueFirst50() {
+      const rows = Array.from(document.querySelectorAll('#reviewPendingQueueCard [data-review-pending-row]:not(.is-hidden)')).slice(0, 50);
+      const lines = rows
+        .map(row => String(row.dataset.reviewPendingCopy || '').trim())
+        .filter(Boolean);
+      if (!lines.length) {
+        showSaveToast('No visible pending nominations to copy.', true);
+        return;
+      }
+      const text = lines.join('\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        showSaveToast(`Copied ${lines.length} pending nomination${lines.length === 1 ? '' : 's'}.`, false);
+      } catch (error) {
+        console.warn('Could not copy pending nominations', error);
+        showSaveToast('Could not copy pending nominations. Browser blocked clipboard access.', true);
+      }
     }
 
     function scrollToReviewPendingQueue() {
@@ -4389,7 +4412,10 @@ function blockSaveIfDuplicateGenres() {
               <h3>Queued pending nominations</h3>
               <p class="small" style="margin:6px 0 0;">Fast routing desk: confirm the best matching genre, choose 4 or 5, then send the song as an ADD. Use a different genre when the suggestion is not the strongest match.</p>
             </div>
-            <span class="review-chip">${queuedRows.length} total</span>
+            <div class="review-card-copy-actions">
+              <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst50()" title="Copy the first 50 visible queued pending nominations">⧉ Copy first 50</button>
+              <span class="review-chip">${queuedRows.length} total</span>
+            </div>
           </div>
           <div class="review-filter-row">
             <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">

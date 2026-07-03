@@ -1498,3 +1498,26 @@
 .studio-workbench .studio-mini-actions button:not(.studio-mini-player-btn)[title*="Spotify"] {
   display: none !important;
 }
+
+
+/* === Studio v119: queued pending quick-copy control === */
+#reviewPendingQueueCard .review-card-copy-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#reviewPendingQueueCard .review-pending-copy-btn {
+  min-height: 36px;
+  padding: 8px 12px !important;
+  border-radius: 14px !important;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  #reviewPendingQueueCard .review-card-copy-actions {
+    justify-content: flex-start;
+  }
+}
