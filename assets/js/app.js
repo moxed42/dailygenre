@@ -6663,6 +6663,162 @@ async function loadData() {
       showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
       }
 
+    function studioRepairNorm(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/https?:\/\/\S+/g, ' ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function studioRepairArtist(song) {
+      return String(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(' ') : '') || '').trim();
+    }
+
+    function studioRepairTitle(song) {
+      return String(song?.title || song?.name || '').trim();
+    }
+
+    function studioRepairTargetMatches(song, target = {}) {
+      if (!song) return false;
+      const key = String(target.key || '').trim();
+      if (key && songsIdentityMatch(song, key)) return true;
+      if (key && studioRepairNorm(songIdentity(song)) === studioRepairNorm(key)) return true;
+
+      const targetUrl = normalizeSongUrl(target.url || target.spotifyUrl || '').toLowerCase();
+      const songUrl = normalizeSongUrl(song.url || song.spotifyUrl || '').toLowerCase();
+      if (targetUrl && songUrl && targetUrl === songUrl) return true;
+
+      const targetSpotifyId = String(target.spotifyId || '').trim().toLowerCase();
+      const songSpotifyId = String(song.spotifyId || '').trim().toLowerCase();
+      if (targetSpotifyId && songSpotifyId && targetSpotifyId === songSpotifyId) return true;
+
+      const targetIsrc = String(target.isrc || '').trim().toLowerCase();
+      const songIsrc = String(song.isrc || '').trim().toLowerCase();
+      if (targetIsrc && songIsrc && targetIsrc === songIsrc) return true;
+
+      const targetTitle = studioRepairNorm(target.title || target.name || '');
+      const targetArtist = studioRepairNorm(target.artist || (Array.isArray(target.artists) ? target.artists.join(' ') : ''));
+      const songTitleText = studioRepairNorm(studioRepairTitle(song));
+      const songArtistText = studioRepairNorm(studioRepairArtist(song));
+      if (targetTitle && targetArtist && songTitleText === targetTitle && songArtistText === targetArtist) return true;
+
+      const displayKey = String(target.displayKey || '').toLowerCase();
+      if (displayKey && targetTitle && songTitleText === targetTitle && (!targetArtist || displayKey.includes(songArtistText) || songArtistText.includes(targetArtist))) return true;
+      return false;
+    }
+
+    function findStudioRepairTarget(target = {}) {
+      const genreId = String(target.genreId || '').trim();
+      const genreName = studioRepairNorm(target.genreName || target.genre || '');
+      const preferred = [];
+      const seenGenreIds = new Set();
+      (genres || []).forEach(genre => {
+        const id = String(genre?.id || '');
+        if (genreId && id === genreId) {
+          preferred.unshift(genre);
+          seenGenreIds.add(id);
+        }
+      });
+      (genres || []).forEach(genre => {
+        const id = String(genre?.id || '');
+        if (seenGenreIds.has(id)) return;
+        if (genreName && studioRepairNorm(genre?.genre || '') === genreName) {
+          preferred.push(genre);
+          seenGenreIds.add(id);
+        }
+      });
+      (genres || []).forEach(genre => {
+        const id = String(genre?.id || '');
+        if (!seenGenreIds.has(id)) preferred.push(genre);
+      });
+
+      for (const genre of preferred) {
+        const songs = inflateSongsFromStorage(genre?.songs_listened || []);
+        let found = null;
+        eachSongInLog(songs, song => {
+          if (!found && !song?.isPending && studioRepairTargetMatches(song, target)) found = song;
+        });
+        if (found) return { genre, songs, song: found };
+      }
+      return null;
+    }
+
+    async function updateStudioRepairUrlTarget(target = {}, inputId = '', button = null, source = 'review') {
+      const input = document.getElementById(inputId);
+      const nextUrl = normalizeSongUrl(input?.value || target.newUrl || '');
+      if (!validSpotifyTrackUrl(nextUrl)) {
+        showSaveToast('Paste a Spotify track URL for this repair row.', true);
+        return { ok: false, code: 'invalid_url' };
+      }
+
+      const resolved = findStudioRepairTarget(target);
+      if (!resolved?.song) {
+        console.warn('[Daily Genre] Studio repair target not found', target);
+        showSaveToast('Could not find matching repair row. Try opening the genre once, or refresh Studio and try again.', true);
+        return { ok: false, code: 'not_found' };
+      }
+
+      const originalText = button?.textContent || '';
+      if (button) {
+        button.disabled = true;
+        button.classList.add('is-saving');
+        button.textContent = 'Updating…';
+      }
+
+      const oldKey = songIdentity(resolved.song);
+      const oldFailureKey = stagedReactionKey(resolved.genre.id, oldKey);
+      try {
+        const result = await fetchSpotifyTrackResult(nextUrl, true);
+        if (!result.ok) {
+          spotifyMetadataFailures.set(oldFailureKey, result);
+          if (result.code === 'rate_limited') beginSpotifyPause(result.retryAfterSeconds || 30);
+          showSaveToast(`Spotify repair failed: ${result.error}`, true);
+          return { ok: false, code: result.code || 'spotify_failed' };
+        }
+
+        resolved.song.url = result.track.spotifyUrl || (typeof spotifyCanonicalTrackUrl === 'function' ? spotifyCanonicalTrackUrl(nextUrl) : nextUrl);
+        resolved.song.spotifyUrl = resolved.song.url;
+        applyOfficialSpotifyMetadata(resolved.song, result.track);
+        resolved.genre.songs_listened = resolved.songs;
+
+        const newKey = songIdentity(resolved.song);
+        spotifyMetadataFailures.delete(oldFailureKey);
+        spotifyMetadataFailures.delete(stagedReactionKey(resolved.genre.id, newKey));
+        libraryUpdatesPending = true;
+        setUnsavedState(true);
+        toggleLibrarySaveButton(true);
+
+        if (source === 'review' && typeof renderReview === 'function') {
+          const repairLaneOpen = !!document.getElementById('studio-repair-lane');
+          const restore = preserveScrollSnapshot();
+          renderReview();
+          if (repairLaneOpen) document.getElementById('studio-repair-lane')?.scrollIntoView?.({ block: 'nearest' });
+          restore();
+        }
+        showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
+        return { ok: true, genre: resolved.genre, song: resolved.song, key: newKey };
+      } finally {
+        if (button && document.body.contains(button)) {
+          button.disabled = false;
+          button.classList.remove('is-saving');
+          if (originalText) button.textContent = originalText;
+        }
+      }
+    }
+
+    async function updateMetadataTrackUrlFromQueue(encodedGenreId, encodedKey, inputId, button = null, source = 'review') {
+      const target = {
+        genreId: decodeURIComponent(String(encodedGenreId || '')),
+        key: decodeURIComponent(String(encodedKey || ''))
+      };
+      return updateStudioRepairUrlTarget(target, inputId, button, source);
+    }
+
+    window.updateStudioRepairUrlTarget = updateStudioRepairUrlTarget;
+    window.updateMetadataTrackUrlFromQueue = updateMetadataTrackUrlFromQueue;
+
   function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
       if (!window.confirm('Permanently delete this track from its genre? This cannot be undone until you reload without saving.')) return;
       const genreId = decodeURIComponent(encodedGenreId || '');

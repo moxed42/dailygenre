@@ -171,6 +171,12 @@
           genreId: String(row.genre?.id ?? ""),
           key: songKey(row.song),
           genreName: row.genre?.genre || "Unknown genre",
+          title: row.song?.title || row.song?.name || "",
+          artist: row.song?.artist || (Array.isArray(row.song?.artists) ? row.song.artists.join(" ") : ""),
+          url: row.song?.spotifyUrl || row.song?.url || "",
+          spotifyId: row.song?.spotifyId || "",
+          isrc: row.song?.isrc || "",
+          displayKey: repairDisplayKey(row.song) || songKey(row.song),
         });
       }
       groups.set(displayKey, group);
@@ -528,9 +534,21 @@
         const inputId = `studioRepairUrl_${String(row.genre?.id ?? "").replace(/[^a-zA-Z0-9_-]/g, "")}_${idx}`;
         const key = songKey(row.song);
         const currentUrl = row.song?.spotifyUrl || row.song?.url || "";
+        const repairTargetForRow = (target = {}) => ({
+          ...target,
+          genreId: String(target.genreId ?? row.genre?.id ?? ""),
+          key: String(target.key ?? key ?? ""),
+          genreName: target.genreName || genreName,
+          title: target.title || row.song?.title || row.song?.name || "",
+          artist: target.artist || row.song?.artist || (Array.isArray(row.song?.artists) ? row.song.artists.join(" ") : ""),
+          url: target.url || row.song?.spotifyUrl || row.song?.url || "",
+          spotifyId: target.spotifyId || row.song?.spotifyId || "",
+          isrc: target.isrc || row.song?.isrc || "",
+          displayKey: target.displayKey || repairDisplayKey(row.song) || String(key || ""),
+        });
         const groupTargets = isRepair && Array.isArray(row.targets) && row.targets.length
-          ? row.targets
-          : [{ genreId: String(row.genre?.id ?? ""), key: String(key || ""), genreName }];
+          ? row.targets.map(repairTargetForRow)
+          : [repairTargetForRow()];
         const encodedTargets = encodeURIComponent(JSON.stringify(groupTargets));
         const copyChip = isRepair && row.targetCount > 1
           ? `<span class="studio-repair-copy-chip">${esc(String(row.targetCount))} copies</span>`
@@ -1034,12 +1052,15 @@
     targets.forEach((target) => {
       const genreId = String(target?.genreId ?? "");
       const key = String(target?.key ?? "");
-      const id = `${genreId}::${key}`;
-      if (!genreId || !key || seen.has(id)) return;
+      const displayKey = String(target?.displayKey ?? "");
+      const title = String(target?.title ?? "");
+      const artist = String(target?.artist ?? "");
+      const id = `${genreId}::${key || displayKey || `${artist}::${title}`}`;
+      if (!genreId || seen.has(id)) return;
       seen.add(id);
-      unique.push({ genreId, key });
+      unique.push({ ...target, genreId, key });
     });
-    if (!unique.length || typeof window.updateMetadataTrackUrlFromQueue !== "function") {
+    if (!unique.length) {
       toast("Could not find matching repair rows. Refresh Studio and try again.", true);
       return;
     }
@@ -1059,19 +1080,32 @@
     };
 
     let updated = 0;
+    const resolved = [];
     try {
       setBusy(unique.length > 1 ? `Updating 1/${unique.length}…` : "Updating…");
       for (let idx = 0; idx < unique.length; idx += 1) {
         const target = unique[idx];
         if (idx > 0) setBusy(`Updating ${idx + 1}/${unique.length}…`);
-        await window.updateMetadataTrackUrlFromQueue(
-          encodeURIComponent(target.genreId),
-          encodeURIComponent(target.key),
-          inputId,
-          idx === 0 ? button : null,
-          "review",
-        );
-        updated += 1;
+        let result = null;
+        if (typeof window.updateStudioRepairUrlTarget === "function") {
+          result = await window.updateStudioRepairUrlTarget(target, inputId, idx === 0 ? button : null, "review");
+        } else if (typeof window.updateMetadataTrackUrlFromQueue === "function" && target.key) {
+          result = await window.updateMetadataTrackUrlFromQueue(
+            encodeURIComponent(target.genreId),
+            encodeURIComponent(target.key),
+            inputId,
+            idx === 0 ? button : null,
+            "review",
+          );
+        }
+        if (result?.ok !== false) {
+          updated += 1;
+          resolved.push({ ...target, key: result?.key || target.key });
+        }
+      }
+      if (!updated) {
+        toast("Could not find matching repair rows. The row may be stale; open the genre once or use the Metadata Queue delete/open tools.", true);
+        return;
       }
       const rowEl = button?.closest?.(".studio-mini-row-repair");
       const metaEl = rowEl?.querySelector?.(".studio-mini-meta");
@@ -1081,7 +1115,7 @@
         if (existing) existing.textContent = label;
         else metaEl.insertAdjacentHTML("afterbegin", `<span class="studio-inline-group-updated-chip">${esc(label)}</span>`);
       }
-      const remainingKinds = Array.from(new Set(unique.flatMap((target) => {
+      const remainingKinds = Array.from(new Set(resolved.flatMap((target) => {
         const song = findSongByGenreAndKey(target.genreId, target.key);
         return song ? missingKinds(song) : [];
       })));
