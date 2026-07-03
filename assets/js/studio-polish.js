@@ -557,7 +557,7 @@
           ? row.repairProblems.map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${esc(kind)}">missing ${esc(kind)}</span>`).join("")
           : `<span class="studio-repair-missing-chip" data-repair-kind="${esc(problem)}">${esc(problem)}</span>`;
         const inlineRepair = isRepair
-          ? `<form class="studio-inline-track-edit" onsubmit="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this.querySelector('button[type=submit]')) : (typeof updateMetadataTrackUrlFromQueue === 'function' ? updateMetadataTrackUrlFromQueue('${encodeURIComponent(String(row.genre?.id ?? ""))}', '${encodeURIComponent(String(key || ""))}', '${esc(inputId)}', this.querySelector('button[type=submit]'), 'review') : null); return false;"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();"><button type="submit" class="btn btn-primary btn-tiny" onclick="event.stopPropagation();">${row.targetCount > 1 ? "Update copies" : "Update"}</button></div></form>`
+          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Update copies" : "Update"}</button></div></div>`
           : "";
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
@@ -585,6 +585,7 @@
         <button type="button" class="btn btn-secondary" onclick="typeof openMetadataQueue === 'function' ? openMetadataQueue('art','alltime') : null">Open album-art queue</button>
         <button type="button" class="btn btn-secondary" onclick="typeof openMetadataQueue === 'function' ? openMetadataQueue('spotify','alltime') : null">Open metadata queue</button>
         <button type="button" class="btn btn-secondary" onclick="typeof refreshNextSpotifyTracks === 'function' ? refreshNextSpotifyTracks(5) : null">Refresh next 5</button>
+        <button type="button" class="btn btn-secondary" onclick="typeof refreshStudioRepairList === 'function' ? refreshStudioRepairList(this) : (typeof renderReview === 'function' ? renderReview() : null)">Refresh repair list</button>
       </div>
       ${renderQueueRows(rows, "No obvious metadata repair items found.")}
     </section>`;
@@ -1100,7 +1101,7 @@
         }
         if (result?.ok !== false) {
           updated += 1;
-          resolved.push({ ...target, key: result?.key || target.key });
+          resolved.push({ ...target, key: result?.key || target.key, song: result?.song || null, genre: result?.genre || null });
         }
       }
       if (!updated) {
@@ -1115,27 +1116,129 @@
         if (existing) existing.textContent = label;
         else metaEl.insertAdjacentHTML("afterbegin", `<span class="studio-inline-group-updated-chip">${esc(label)}</span>`);
       }
+      const primaryUpdate = resolved.find((item) => item.song) || null;
+      const updatedSong = primaryUpdate?.song || null;
+      const rowElVisible = button?.closest?.(".studio-mini-row-repair");
+      if (updatedSong && rowElVisible) {
+        const titleEl = rowElVisible.querySelector(".studio-mini-title");
+        const href = spotifyUrl(updatedSong);
+        const titleText = songTitle(updatedSong);
+        if (titleEl) titleEl.innerHTML = href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(titleText)}</a>` : esc(titleText);
+        const thumbSlot = rowElVisible.querySelector(".studio-thumb, .studio-thumb-empty");
+        const art = artworkUrl(updatedSong);
+        if (thumbSlot && art) {
+          const img = document.createElement("img");
+          img.className = "studio-thumb";
+          img.src = art;
+          img.alt = "";
+          thumbSlot.replaceWith(img);
+        }
+        if (metaEl) {
+          const info = [];
+          if (updatedSong.artist) info.push(updatedSong.artist);
+          if (updatedSong.year) info.push(updatedSong.year);
+          if (updatedSong.album) info.push(updatedSong.album);
+          if (info.length) {
+            const oldInfo = metaEl.querySelector(".studio-inline-updated-info-chip");
+            const text = `now: ${info.slice(0, 3).join(" · ")}`;
+            if (oldInfo) oldInfo.textContent = text;
+            else metaEl.insertAdjacentHTML("beforeend", `<span class="studio-inline-updated-info-chip">${esc(text)}</span>`);
+          }
+        }
+      }
       const remainingKinds = Array.from(new Set(resolved.flatMap((target) => {
         const song = findSongByGenreAndKey(target.genreId, target.key);
         return song ? missingKinds(song) : [];
       })));
       const rowElForChips = button?.closest?.(".studio-mini-row-repair");
       updateRepairMetaChips(rowElForChips?.querySelector?.(".studio-mini-meta"), remainingKinds);
+      if (rowElForChips && !remainingKinds.length) {
+        rowElForChips.classList.add("studio-repair-resolved");
+        const meta = rowElForChips.querySelector(".studio-mini-meta");
+        if (meta && !meta.querySelector(".studio-repair-resolved-chip")) {
+          meta.insertAdjacentHTML("afterbegin", '<span class="studio-repair-resolved-chip">resolved · refresh list to remove</span>');
+        }
+      }
       if (updated > 1) toast(`Updated ${updated} matching copies — Save cleanup to persist.`, false);
     } finally {
       clearBusy();
     }
   }
 
+
+  function refreshStudioRepairList(button = null) {
+    const original = button?.textContent || "Refresh repair list";
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Refreshing…";
+    }
+    const restore = typeof preserveScrollSnapshot === "function" ? preserveScrollSnapshot() : null;
+    try {
+      if (typeof renderReview === "function") renderReview();
+      setTimeout(() => {
+        const lane = document.getElementById("studio-repair-lane");
+        lane?.scrollIntoView?.({ block: "nearest" });
+        if (restore) restore();
+      }, 0);
+    } finally {
+      setTimeout(() => {
+        if (button && document.body.contains(button)) {
+          button.disabled = false;
+          button.textContent = original;
+        }
+      }, 120);
+    }
+  }
+
+  window.refreshStudioRepairList = refreshStudioRepairList;
+
   window.updateStudioRepairGroupUrlFromQueue = updateStudioRepairGroupUrlFromQueue;
+
+
+  // v137: Repair Bay rows are clickable containers, so URL/edit controls must never
+  // bubble into the row-level open-genre behavior. Use capture listeners as a final
+  // guard in addition to inline handlers.
+  document.addEventListener("click", (event) => {
+    const edit = event.target?.closest?.(".studio-inline-track-edit, [data-studio-repair-form], [data-studio-repair-update]");
+    if (!edit) return;
+    event.stopPropagation();
+  }, true);
+  document.addEventListener("pointerdown", (event) => {
+    if (event.target?.closest?.(".studio-inline-track-edit, [data-studio-repair-form], [data-studio-repair-update]")) {
+      event.stopPropagation();
+    }
+  }, true);
+  document.addEventListener("submit", (event) => {
+    if (event.target?.closest?.(".studio-inline-track-edit, [data-studio-repair-form]")) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
 
   function boot() {
     wrapRenderReview();
     if (document.getElementById("screen-review")?.classList.contains("active"))
       apply();
+    ["click", "pointerdown", "mousedown"].forEach((eventName) => {
+      document.addEventListener(eventName, (ev) => {
+        if (ev.target.closest?.(".studio-inline-track-edit")) {
+          ev.stopPropagation();
+        }
+      }, true);
+    });
+    document.addEventListener("submit", (ev) => {
+      if (ev.target?.matches?.(".studio-inline-track-edit")) {
+        ev.stopPropagation();
+      }
+    }, true);
+
     document.addEventListener(
       "click",
       (ev) => {
+        if (ev.target.closest?.(".studio-inline-track-edit")) {
+          ev.stopPropagation();
+          return;
+        }
         const reviewTab = ev.target.closest?.('[data-screen="review"]');
         if (reviewTab) {
           const mount = document.getElementById("reviewContent");

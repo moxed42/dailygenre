@@ -9598,3 +9598,229 @@ body.dc-listen-mode .detail-record-card.dc-compact-hero .genre-header-clear-rati
     font-size: 0.8rem !important;
   }
 }
+
+/* === v134: manual picker preview, not auto-listen ======================= */
+#manualPanel {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(300px, 1.05fr);
+  gap: 12px !important;
+  align-items: start !important;
+}
+#manualPanel.hidden { display: none !important; }
+#manualPanel > label,
+#manualPanel > input {
+  grid-column: 1 / -1;
+}
+#manualResults2 {
+  grid-column: 1;
+}
+.dc-manual-preview-card {
+  grid-column: 2;
+  position: sticky;
+  top: 14px;
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(127, 82, 28, 0.18);
+  background: linear-gradient(180deg, rgba(255, 252, 241, 0.86), rgba(239, 214, 174, 0.78));
+  box-shadow: 0 16px 34px rgba(55, 35, 10, 0.10), inset 0 1px 0 rgba(255,255,255,.55);
+}
+.dc-manual-preview-kicker {
+  color: var(--accent-dark, #7a4714);
+  font-size: 0.7rem;
+  font-weight: 1000;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.dc-manual-preview-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dc-manual-preview-head h3 {
+  margin: 0 0 3px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+}
+.dc-manual-preview-card p {
+  margin: 0;
+  color: var(--muted, #735a3c);
+  line-height: 1.42;
+}
+.dc-manual-preview-status {
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #5c3a18;
+  background: rgba(255, 248, 229, 0.72);
+  border: 1px solid rgba(127, 82, 28, 0.14);
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+#manualResults2 .dc-manual-result-card {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+}
+#manualResults2 .dc-manual-result-card.selected {
+  border-color: rgba(217, 141, 37, 0.64) !important;
+  background: linear-gradient(180deg, rgba(255, 232, 171, .96), rgba(239, 202, 138, .92)) !important;
+  box-shadow: 0 0 0 3px rgba(217, 141, 37, 0.12), 0 12px 28px rgba(55, 35, 10, 0.12) !important;
+}
+.dc-manual-result-main { min-width: 0; }
+.dc-manual-preview-glyph {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: #7a4714;
+  background: rgba(255, 248, 229, 0.78);
+  border: 1px solid rgba(217, 141, 37, 0.28);
+  font-weight: 1000;
+}
+@media (max-width: 780px) {
+  #manualPanel {
+    grid-template-columns: 1fr !important;
+  }
+  #manualResults2,
+  .dc-manual-preview-card {
+    grid-column: 1 !important;
+  }
+  .dc-manual-preview-card {
+    position: static;
+  }
+}
+
+
+/* === v135: manual picker behavior/layout + repair bay refreshed info ===== */
+#manualResults2 .manual-search-browser {
+  grid-template-columns: minmax(280px, 360px) minmax(420px, 1fr) !important;
+  gap: 14px !important;
+  width: min(100%, 980px) !important;
+}
+#manualResults2 .manual-search-preview {
+  padding: 16px !important;
+}
+#manualResults2 .manual-preview-card h3 {
+  font-size: clamp(1.55rem, 2.4vw, 2.25rem) !important;
+}
+#manualResults2 .manual-result-info::after {
+  content: "";
+}
+#manualResults2 .manual-result-info,
+#manualResults2 button.manual-result-info {
+  background: #18c65a !important;
+  color: #161006 !important;
+  border-color: rgba(24, 198, 90, 0.72) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.16) !important;
+}
+#manualResults2 .manual-result-info:hover,
+#manualResults2 .manual-result-info:focus-visible {
+  background: #21df6a !important;
+}
+.studio-inline-updated-info-chip {
+  color: #2f6b3b !important;
+  background: rgba(47, 107, 59, 0.14) !important;
+  border-color: rgba(47, 107, 59, 0.22) !important;
+}
+@media (max-width: 860px) {
+  #manualResults2 .manual-search-browser {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+}
+
+/* === v136: wider manual preview + sturdier repair feedback ============ */
+#manualPanel {
+  grid-template-columns: minmax(220px, 0.62fr) minmax(520px, 1.38fr) !important;
+  gap: 16px !important;
+}
+.dc-manual-preview-card {
+  max-width: min(720px, 100%) !important;
+}
+.dc-manual-preview-card p {
+  max-width: 68ch !important;
+}
+.dc-manual-preview-glyph {
+  border: 0 !important;
+  cursor: pointer !important;
+  color: #2a180c !important;
+  background: #18c75a !important;
+  box-shadow: 0 10px 18px rgba(24, 199, 90, 0.22) !important;
+}
+.dc-manual-preview-glyph:hover,
+.dc-manual-preview-glyph:focus-visible {
+  transform: translateY(-1px) !important;
+  outline: 2px solid rgba(24, 199, 90, 0.25) !important;
+}
+
+@media (min-width: 980px) {
+  #manualPanel {
+    max-width: 1120px !important;
+  }
+}
+
+@media (max-width: 820px) {
+  #manualPanel {
+    grid-template-columns: 1fr !important;
+  }
+  .dc-manual-preview-card {
+    max-width: 100% !important;
+  }
+}
+
+/* === v137: manual picker preview should use full available width ======== */
+#manualPanel {
+  width: 100% !important;
+  max-width: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: start !important;
+}
+#manualPanel > label,
+#manualPanel > input,
+#manualSearch2 {
+  grid-column: 1 / -1 !important;
+}
+#manualResults2 {
+  grid-column: 1 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+.dc-manual-preview-card,
+#manualGenrePreview {
+  grid-column: 2 !important;
+  justify-self: stretch !important;
+  align-self: start !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+.dc-manual-preview-card p,
+#manualGenrePreview p {
+  max-width: 84ch !important;
+}
+@media (min-width: 1180px) {
+  #manualPanel {
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr) !important;
+  }
+}
+@media (max-width: 860px) {
+  #manualPanel {
+    grid-template-columns: 1fr !important;
+  }
+  #manualResults2,
+  .dc-manual-preview-card,
+  #manualGenrePreview {
+    grid-column: 1 !important;
+  }
+  .dc-manual-preview-card,
+  #manualGenrePreview {
+    position: static !important;
+  }
+}

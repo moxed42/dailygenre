@@ -147,6 +147,57 @@
       return status === '' || status === 'unlistened';
     }
 
+    function todayListenDateString() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function isGenreDatedToday(genre) {
+      return String(dateValue(genre) || '') === todayListenDateString();
+    }
+
+    function hasNonZangerGenreForToday(exceptGenre = null) {
+      return (genres || []).some(g => {
+        if (!g) return false;
+        if (exceptGenre && String(g.id) === String(exceptGenre.id)) return false;
+        if (!isGenreDatedToday(g)) return false;
+        return !isGenreZanger(g);
+      });
+    }
+
+    function canAutoAssignTodayFromSpin(genre) {
+      if (!genre) return false;
+      if (isGenreAlreadyListened(genre)) return false;
+      return !hasNonZangerGenreForToday(genre);
+    }
+
+    function stageGenreAsTodayListen(genre) {
+      if (!genre) return false;
+      genre.date_normalized = todayListenDateString();
+      genre.datenormalized = '';
+      genre.status = 'listened';
+      return true;
+    }
+
+    function openGenreFromSpinListen(genre, options = {}) {
+      if (!genre) return;
+      const autoAssigned = canAutoAssignTodayFromSpin(genre);
+      if (autoAssigned) {
+        stageGenreAsTodayListen(genre);
+        openGenreDetail(genre, true);
+        markDirty();
+        updateRemainingCount();
+        showSaveToast(`${genre.genre || 'Genre'} set as today’s listen — save to persist.`, false);
+        return;
+      }
+      openGenreDetail(genre, true);
+      const already = isGenreAlreadyListened(genre);
+      const blockedByToday = hasNonZangerGenreForToday(genre);
+      if (options && options.source === 'manual') {
+        if (already) showSaveToast(`${genre.genre || 'Genre'} already has listening history; date unchanged.`, false);
+        else if (blockedByToday) showSaveToast('Today already has a non-Zanger genre; date unchanged.', false);
+      }
+    }
+
     function getUnlistened() {
       return genres.filter(isGenreRemaining);
     }
@@ -414,7 +465,7 @@
       if (_respin) _respin.onclick = spinWheel;
       if (_veto) _veto.onclick = () => markAsZangerToday(genre);
       if (_listen) _listen.onclick = () => {
-        openGenreDetail(genre, true);
+        openGenreFromSpinListen(genre, { source: 'spin' });
       };
     }
 
@@ -1155,13 +1206,26 @@
     }
 
 
+    function songBelongsToGenreIdentityEditor(song) {
+      const source = String(song?.source || song?.sourceType || '').toLowerCase();
+      return !!(
+        song?.isIdentityTrack ||
+        song?.identityType ||
+        song?.identityLabel ||
+        source === 'genre_identity' ||
+        source === 'genre identity'
+      );
+    }
+
     function buildSongsBulkEditorText(genre) {
       const displaySongLabel = song => {
         const title = String(song?.title || '').trim();
         const artist = String(song?.artist || '').trim();
         return artist && title ? `${artist} — ${title}` : (title || null);
       };
-      return inflateSongsFromStorage(genre?.songs_listened || []).filter(song => !song.isPending).flatMap(song => {
+      return inflateSongsFromStorage(genre?.songs_listened || [])
+        .filter(song => !song.isPending && !songBelongsToGenreIdentityEditor(song))
+        .flatMap(song => {
         const prefix = song.isPromote ? '🔼 PROMOTE: ' : (song.isAdd ? '🔼 ADD: ' : '');
         const reason = song._pendingGenreTag ? `${song.reason || ''} @${song._pendingGenreTag}`.trim() : (song.reason || null);
         const lines = [
@@ -4492,7 +4556,9 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
     function resolveReviewMoveGenre(inputValue, currentTargetId = '') {
       const raw = String(inputValue || '').trim().replace(/^@+/, '');
       if (!raw) return { target: null, error: 'Choose a destination genre first.' };
-      const pool = (genres || []).filter(g => g && g.genre && String(g.id) !== String(currentTargetId));
+      // Include the current target in lookup. In the unified routing desk, choosing
+      // the suggested/current target is a valid Send ADD action, not an error.
+      const pool = (genres || []).filter(g => g && g.genre);
       const byId = pool.find(g => String(g?.id) === raw);
       if (byId) return { target: byId, error: '' };
 
@@ -4541,9 +4607,24 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       }
       if (scored.length === 1 && scored[0].score >= 66) return { target: scored[0].genre, error: '' };
       if (scored.length > 1 && scored[0].score >= 66) {
+        // If the typed value came from the datalist or is a clear prefix/completion,
+        // prefer the single shortest completion. This keeps routing fast for cases like
+        // Australian folk -> Australian folk-rock and Nightcore -> Nightcore-style labels.
+        const completionMatches = scored.filter(item => namesForGenre(item.genre).some(name => {
+          const n = normalizePendingTag(name);
+          const c = compact(name);
+          return n.startsWith(normPending) || normPending.startsWith(n) || c.startsWith(rawCompact) || rawCompact.startsWith(c);
+        })).sort((a,b) => String(a.genre.genre || '').length - String(b.genre.genre || '').length);
+        if (completionMatches.length === 1 && completionMatches[0].score >= 66) return { target: completionMatches[0].genre, error: '' };
+        if (completionMatches.length > 1 && completionMatches[0].score >= 66) {
+          const firstName = normalizePendingTag(completionMatches[0].genre.genre || '');
+          const secondName = normalizePendingTag(completionMatches[1].genre.genre || '');
+          if (firstName !== secondName && firstName.length + 5 <= secondName.length) return { target: completionMatches[0].genre, error: '' };
+        }
+        if (scored[0].score >= 80 && scored[0].score - scored[1].score >= 8) return { target: scored[0].genre, error: '' };
         return { target: null, error: `Multiple genres match “${raw}”. Try ${scored.slice(0, 3).map(item => item.genre.genre).join(', ')}.` };
       }
-      return { target: null, error: `Could not find “${raw}”. Try the exact genre name from Library search.` };
+      return { target: null, error: `Could not find “${raw}”. Choose one of the suggested genres or type a closer match.` };
     }
 
     function pendingReviewRowId(sourceId, key) {
@@ -5237,6 +5318,20 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       el.style.display = isOpen ? 'none' : 'grid';
     }
 
+    function hasGenreIdentityGap(genre) {
+      if (!genre) return true;
+      const identity = genre.identity && typeof genre.identity === 'object' ? genre.identity : {};
+      const seminal = identity.seminalTrack || genre.seminal_song || genre.seminalTrack || null;
+      const media = Array.isArray(identity.mediaTouchstones) && identity.mediaTouchstones.length
+        ? identity.mediaTouchstones
+        : (Array.isArray(genre.media_touchstones) ? genre.media_touchstones : []);
+      const hasUsefulTrack = track => {
+        if (!track || typeof track !== 'object') return false;
+        return !!(track.url || track.spotifyUrl || track.title || track.name || track.artist || track.media || track.reason);
+      };
+      return !hasUsefulTrack(seminal) || !media.some(hasUsefulTrack);
+    }
+
     function renderArchiveSummary(items, label) {
       const summary = document.getElementById('archiveSummary');
       if (!summary) return;
@@ -5309,6 +5404,7 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
       if (flag === 'missing-songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) === 0);
       if (flag === 'missing-favorite') items = items.filter(g => !(g.favoritesong || g.favoritesongurl));
+      if (flag === 'missing-identity') items = items.filter(hasGenreIdentityGap);
       if (flag === 'notes') items = items.filter(g => !!g.notes);
       if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
       if (flag === 'unranked') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0 && !g.rank_order && g.rating !== 'zanger');
@@ -5547,12 +5643,88 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       return 9;
     }
 
+    function ensureManualGenrePreview(resultsEl) {
+      const panel = resultsEl?.closest?.('#manualPanel') || document.getElementById('manualPanel');
+      if (!panel) return null;
+      let preview = panel.querySelector('#manualGenrePreview');
+      if (!preview) {
+        preview = document.createElement('aside');
+        preview.id = 'manualGenrePreview';
+        preview.className = 'dc-manual-preview-card hidden';
+        panel.appendChild(preview);
+      }
+      return preview;
+    }
+
+    function manualGenrePreviewCopy(genre) {
+      const notes = String(genre?.notes || genre?.description || '').trim();
+      if (notes) return notes.length > 420 ? `${notes.slice(0, 420).trim()}…` : notes;
+      const artists = Array.isArray(genre?.key_artists) ? genre.key_artists.join(', ') : String(genre?.key_artists || '').trim();
+      if (artists) return `Key artists: ${artists}`;
+      const songs = Array.isArray(genre?.suggested_songs) ? genre.suggested_songs.join(', ') : String(genre?.suggested_songs || '').trim();
+      if (songs) return `Suggested songs: ${songs}`;
+      return 'Preview this genre, then press Listen when you want to open it as a listening candidate.';
+    }
+
+    function selectManualGenrePreview(genreId, resultsEl = null) {
+      const genre = (genres || []).find(g => String(g?.id) === String(genreId));
+      if (!genre) return;
+      const preview = ensureManualGenrePreview(resultsEl || document.getElementById('manualResults2'));
+      if (!preview) return;
+      const already = isGenreAlreadyListened(genre);
+      const blockedByToday = hasNonZangerGenreForToday(genre);
+      const canSetToday = canAutoAssignTodayFromSpin(genre);
+      const statusHint = already
+        ? 'Already listened — opening will not change its date.'
+        : blockedByToday
+          ? 'Today already has a non-Zanger genre — opening will not change today.'
+          : canSetToday
+            ? 'Eligible to become today’s listen.'
+            : 'Preview only.';
+      preview.innerHTML = `
+        <div class="dc-manual-preview-kicker">Genre preview</div>
+        <div class="dc-manual-preview-head">
+          <div>
+            <h3>${escapeHtml(genre.genre || 'Unknown genre')}</h3>
+            <div class="small">${escapeHtml(categoryLine(genre))}</div>
+          </div>
+          <button type="button" class="btn btn-primary dc-manual-preview-listen" onclick="listenToManualPreviewGenre('${escapeHtml(String(genre.id || ''))}')">Listen</button>
+        </div>
+        <p>${escapeHtml(manualGenrePreviewCopy(genre))}</p>
+        <div class="dc-manual-preview-status">${escapeHtml(statusHint)}</div>
+      `;
+      preview.classList.remove('hidden');
+      document.querySelectorAll('#manualResults2 [data-id]').forEach(row => row.classList.toggle('selected', String(row.dataset.id) === String(genre.id)));
+    }
+
+    function listenToManualPreviewGenre(genreId) {
+      const picked = (genres || []).find(g => String(g?.id) === String(genreId));
+      if (!picked) {
+        showSaveToast('Could not find that genre. Search again and retry.', true);
+        return;
+      }
+      openGenreFromSpinListen(picked, { source: 'manual' });
+    }
+
+    // Used by the polished Spin manual picker. Card click previews only;
+    // the music-note/Listen action comes through here so today-listen rules stay centralized.
+    window.openGenreFromManualPicker = function openGenreFromManualPicker(genreId) {
+      const picked = (genres || []).find(g => String(g?.id) === String(genreId));
+      if (!picked) {
+        showSaveToast('Could not find that genre. Search again and retry.', true);
+        return;
+      }
+      openGenreFromSpinListen(picked, { source: 'manual' });
+    };
+
     function searchGenresInto(inputEl, resultsEl) {
       if (!resultsEl) return;
       const rawQ = inputEl.value.trim();
       const q = normalizeGenreSearchText(rawQ);
+      const preview = ensureManualGenrePreview(resultsEl);
       if (!q) {
         resultsEl.innerHTML = '';
+        if (preview) preview.classList.add('hidden');
         return;
       }
 
@@ -5565,27 +5737,29 @@ function mergeDuplicateGenreGroup(encodedKey, selectId) {
       resultsEl.innerHTML = matches.map(({ g }) => {
         const aliasHit = genreAliasListForSearch(g).find(alias => normalizeGenreSearchText(alias).includes(q));
         return `
-        <div class="list-item dc-manual-result-card" data-id="${g.id}" role="button" tabindex="0">
-          <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
-          <div class="small">${escapeHtml(categoryLine(g))}${aliasHit ? ` · ${escapeHtml(aliasHit)}` : ''}</div>
+        <div class="list-item dc-manual-result-card" data-id="${g.id}" role="button" tabindex="0" aria-label="Preview ${escapeHtml(g.genre || 'genre')}">
+          <div class="dc-manual-result-main">
+            <strong>${escapeHtml(g.genre || 'Unknown')}</strong>
+            <div class="small">${escapeHtml(categoryLine(g))}${aliasHit ? ` · ${escapeHtml(aliasHit)}` : ''}</div>
+          </div>
+          <button type="button" class="dc-manual-preview-glyph" aria-label="Listen to ${escapeHtml(g.genre || 'genre')}" title="Listen" onclick="event.preventDefault(); event.stopPropagation(); openGenreFromManualPicker('${escapeHtml(String(g.id || ''))}')">♪</button>
         </div>
       `;
       }).join('');
 
       [...resultsEl.querySelectorAll('[data-id]')].forEach(btn => {
-        const openPicked = () => {
-          const picked = genres.find(g => String(g.id) === btn.dataset.id);
-          if (!picked) return;
-          openGenreDetail(picked, true);
-        };
-        btn.onclick = openPicked;
+        const previewPicked = () => selectManualGenrePreview(btn.dataset.id, resultsEl);
+        btn.onclick = previewPicked;
         btn.onkeydown = (event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            openPicked();
+            previewPicked();
           }
         };
       });
+
+      if (matches.length === 1) selectManualGenrePreview(matches[0].g.id, resultsEl);
+      else if (preview) preview.classList.add('hidden');
     }
 
     function levenshtein(a, b) {
@@ -6836,7 +7010,7 @@ async function loadData() {
       const resolved = findStudioRepairTarget(target);
       if (!resolved?.song) {
         console.warn('[Daily Genre] Studio repair target not found', target);
-        showSaveToast('Could not find matching repair row. Try opening the genre once, or refresh Studio and try again.', true);
+        showSaveToast('Could not match that repair row. Try Refresh repair list; if it remains, open the genre and update the song URL there.', true);
         return { ok: false, code: 'not_found' };
       }
 
@@ -6870,11 +7044,13 @@ async function loadData() {
         setUnsavedState(true);
         toggleLibrarySaveButton(true);
 
-        if (source === 'review' && typeof renderReview === 'function') {
-          const repairLaneOpen = !!document.getElementById('studio-repair-lane');
+        if (source === 'review') {
+          // Studio Repair Bay updates are easier to verify in-place: keep the row visible
+          // with its refreshed title/artwork chips, then let the explicit Refresh repair list
+          // button remove resolved rows when the curator is ready.
+        } else if (typeof renderReview === 'function') {
           const restore = preserveScrollSnapshot();
           renderReview();
-          if (repairLaneOpen) document.getElementById('studio-repair-lane')?.scrollIntoView?.({ block: 'nearest' });
           restore();
         }
         showSaveToast('Spotify metadata updated — save library updates to persist it.', false);

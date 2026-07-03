@@ -1605,3 +1605,44 @@
     grid-column: 1 / -1;
   }
 }
+
+/* === Studio v136/v137: repair bay in-place confirmation ================= */
+.studio-repair-resolved {
+  border-color: rgba(47, 107, 59, 0.28) !important;
+  background: linear-gradient(180deg, rgba(235, 248, 228, 0.56), rgba(255, 252, 241, 0.7)) !important;
+}
+.studio-repair-resolved-chip,
+.studio-inline-updated-info-chip,
+.studio-inline-group-updated-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+.studio-repair-resolved-chip {
+  color: #2f6b3b;
+  background: rgba(47, 107, 59, 0.13);
+  border: 1px solid rgba(47, 107, 59, 0.22);
+}
+.studio-inline-updated-info-chip {
+  max-width: min(420px, 100%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #5c3a18;
+  background: rgba(255, 248, 229, 0.76);
+  border: 1px solid rgba(127, 82, 28, 0.16);
+}
+
+/* === Studio v137: guard native workbench formatting from partial CSS ===== */
+.studio-workbench-hero .studio-lane-grid {
+  grid-column: 1 / -1;
+}
+.studio-lane-card {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 1px solid rgba(120, 74, 27, 0.2) !important;
+}
