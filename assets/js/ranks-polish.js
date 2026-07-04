@@ -1,5 +1,5 @@
-/* Daily Genre Ranks Polish v8
-   Safe add-on: ranking workbench, tier moves, copyable rank lists, and direct rank jumps. Does not touch loading/save core. */
+/* Daily Genre Ranks Polish v9
+   Safe add-on: ranking workbench, tier moves, copyable rank lists, direct rank jumps, and manual rank review markers. Does not touch loading/save core. */
 (function () {
   "use strict";
 
@@ -131,6 +131,63 @@
     if (!scores.length) return "";
     const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
     return avg.toFixed(1).replace(/\.0$/, "");
+  }
+
+
+  function rankReviewed(genre) {
+    return Boolean(
+      genre?.rank_reviewed ||
+        genre?.rankReviewed ||
+        genre?.ranking_reviewed ||
+        genre?.rankingReviewed
+    );
+  }
+
+  function rankReviewedLabel(genre) {
+    if (!rankReviewed(genre)) return "Mark as manually reviewed/ranked";
+    const stamp =
+      genre?.rank_reviewed_at ||
+      genre?.rankReviewedAt ||
+      genre?.ranking_reviewed_at ||
+      genre?.rankingReviewedAt ||
+      "";
+    if (!stamp) return "Reviewed/ranked manually";
+    const date = String(stamp).slice(0, 10);
+    return `Reviewed/ranked manually${date ? ` · ${date}` : ""}`;
+  }
+
+  function setRankReviewed(id, value) {
+    const genre = allGenres().find((g) => String(g.id) === String(id));
+    if (!genre) return false;
+    const next = Boolean(value);
+    genre.rank_reviewed = next;
+    genre.rankReviewed = next;
+    if (next) {
+      const stamp = new Date().toISOString();
+      genre.rank_reviewed_at = stamp;
+      genre.rankReviewedAt = stamp;
+      genre.rank_reviewed_source = "manual";
+    } else {
+      genre.rank_reviewed_at = "";
+      genre.rankReviewedAt = "";
+      genre.rank_reviewed_source = "";
+    }
+    try {
+      window.genres = allGenres();
+    } catch (_) {}
+    markRanksDirty(
+      next
+        ? `Marked ${genre.genre || "genre"} as manually ranked. Save Library Updates to persist.`
+        : `Cleared manual rank review for ${genre.genre || "genre"}. Save Library Updates to persist.`,
+    );
+    renderRankingsPolished();
+    return true;
+  }
+
+  function toggleRankReviewed(id) {
+    const genre = allGenres().find((g) => String(g.id) === String(id));
+    if (!genre) return false;
+    return setRankReviewed(id, !rankReviewed(genre));
   }
 
   function bestAudition(genre) {
@@ -338,6 +395,7 @@
     const artwork = genreArtwork(genre);
     const canPlay = audition?.url;
     const rank = genre.rank_order || idx + 1;
+    const reviewed = rankReviewed(genre);
     const stats = [
       `${songs} song${songs === 1 ? "" : "s"}`,
       likes ? `${likes} 👍` : "",
@@ -352,9 +410,9 @@
     return `
       ${tierBandMarker(idx, tierTotal, tierRating)}
       <article class="ranking-row ranks-polish-row ${tierClass(tierRating)} rank-band-row-${bandForIndex(idx, tierTotal)}" data-rank-card-id="${esc(genre.id)}">
-        <div class="ranking-num ranks-polish-num ranks-jump-cell" title="Type a rank number and press Enter, or tab away, to jump within this tier">
+        <div class="ranking-num ranks-polish-num ranks-jump-cell" title="Type a rank number and press Enter to jump within this tier">
           <span class="ranks-jump-prefix">#</span>
-          <input class="ranks-jump-input" type="number" min="1" max="${esc(tierTotal)}" step="1" value="${esc(rank)}" data-rank-jump-id="${esc(genre.id)}" aria-label="Move ${esc(genre.genre || 'genre')} to rank number" />
+          <input class="ranks-jump-input" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="${esc(rank)}" data-rank-jump-id="${esc(genre.id)}" aria-label="Move ${esc(genre.genre || 'genre')} to rank number" />
         </div>
         <div class="ranks-polish-artwrap">
           ${artwork ? `<img class="ranking-artwork ranks-polish-art" src="${esc(artwork)}" alt="${esc(genre.genre || "Genre")} artwork" loading="lazy" />` : `<div class="ranking-artwork ranks-polish-art ranks-polish-art-empty">♪</div>`}
@@ -366,6 +424,7 @@
         </div>
         <div class="ranks-polish-actions">
           <button type="button" class="ranks-play-btn" data-rank-play-id="${esc(genre.id)}" ${canPlay ? "" : "disabled"} title="Play audition track">▶</button>
+          <button type="button" class="ranks-review-btn ${reviewed ? "is-reviewed" : ""}" data-rank-review-id="${esc(genre.id)}" title="${esc(rankReviewedLabel(genre))}" aria-pressed="${reviewed ? "true" : "false"}" aria-label="${esc(rankReviewedLabel(genre))}">✓</button>
           <div class="ranks-tier-move" aria-label="Move genre to tier">
             ${renderTierButtons(genre)}
           </div>
@@ -427,7 +486,7 @@
         <button type="button" class="btn btn-secondary ranks-copy-btn" id="ranksCopyVisibleBtn" title="Copy this filtered rank list for Discord">Copy list</button>
         <button type="button" class="btn btn-secondary ranks-save-btn" onclick="saveLibraryUpdates()">Save rank changes</button>
       </div>
-      <div class="ranks-polish-note">Use ▶ to audition. Move genres between star tiers, then fine-tune order with ↑/↓. Colored band markers show high, upper-mid, lower-mid, and low positions inside each tier. Copy list uses the current search/tier/category filters.</div>
+      <div class="ranks-polish-note">Use ▶ to audition. Use ✓ to mark a genre as manually reviewed/ranked after a revisit or Album Dive. Move genres between star tiers, fine-tune order with ↑/↓, or type a number for a bigger jump. Copy list uses the current search/tier/category filters.</div>
     `;
   }
 
@@ -788,6 +847,14 @@
       });
     });
 
+    wrap.querySelectorAll("[data-rank-review-id]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleRankReviewed(btn.dataset.rankReviewId);
+      });
+    });
+
     wrap.querySelectorAll("[data-rank-jump-id]").forEach((input) => {
       const apply = () => moveGenreToRank(input.dataset.rankJumpId, input.value);
       input.addEventListener("click", (event) => event.stopPropagation());
@@ -815,6 +882,8 @@
     apply: renderRankingsPolished,
     moveGenreToTier,
     moveGenreToRank,
+    toggleRankReviewed,
+    setRankReviewed,
     restoreZangerToSpin,
     playAudition,
     copyRankList,
@@ -829,6 +898,66 @@
     if (document.querySelector("#screen-ranking.active"))
       renderRankingsPolished();
   });
+})();
+
+
+/* === Ranks Polish v9: delegated manual review marker reliability ========== */
+(function () {
+  "use strict";
+
+  function source() {
+    try { if (Array.isArray(genres)) return genres; } catch (_) {}
+    return Array.isArray(window.genres) ? window.genres : [];
+  }
+
+  function reviewed(genre) {
+    return Boolean(genre?.rank_reviewed || genre?.rankReviewed || genre?.ranking_reviewed || genre?.rankingReviewed);
+  }
+
+  function markDirty(message) {
+    try { libraryUpdatesPending = true; } catch (_) {}
+    try { if (typeof window.toggleLibrarySaveButton === "function") window.toggleLibrarySaveButton(true); } catch (_) {}
+    try { if (typeof window.renderFloatingListeningSave === "function") window.renderFloatingListeningSave(); } catch (_) {}
+    try { if (typeof window.showSaveToast === "function") window.showSaveToast(message, false); } catch (_) {}
+  }
+
+  function toggle(id) {
+    const list = source();
+    const genre = list.find((g) => String(g.id) === String(id));
+    if (!genre) return false;
+    const next = !reviewed(genre);
+    genre.rank_reviewed = next;
+    genre.rankReviewed = next;
+    if (next) {
+      const stamp = new Date().toISOString();
+      genre.rank_reviewed_at = stamp;
+      genre.rankReviewedAt = stamp;
+      genre.rank_reviewed_source = "manual";
+    } else {
+      genre.rank_reviewed_at = "";
+      genre.rankReviewedAt = "";
+      genre.rank_reviewed_source = "";
+    }
+    try { window.genres = list; } catch (_) {}
+    markDirty(next ? `Marked ${genre.genre || "genre"} as manually ranked.` : `Cleared manual rank review for ${genre.genre || "genre"}.`);
+    try { if (typeof window.renderRankings === "function") window.renderRankings(); } catch (_) {}
+    return true;
+  }
+
+  document.addEventListener("click", (event) => {
+    const btn = event.target.closest?.("[data-rank-review-id]");
+    if (!btn) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation?.();
+    if (window.DailyGenreRanksPolish?.toggleRankReviewed) {
+      window.DailyGenreRanksPolish.toggleRankReviewed(btn.dataset.rankReviewId);
+    } else {
+      toggle(btn.dataset.rankReviewId);
+    }
+  }, true);
+
+  window.DailyGenreRankReviewV9 = { toggle };
 })();
 
 /* === Ranks Polish v6: delegated tier movement reliability =================

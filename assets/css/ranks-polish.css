@@ -267,7 +267,7 @@
 
 .ranks-polish-actions {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
   gap: 8px;
   align-items: center;
   justify-content: end;
@@ -854,6 +854,8 @@
   font-weight: 950 !important;
   text-align: center !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52) !important;
+  appearance: textfield !important;
+  -moz-appearance: textfield !important;
 }
 
 .ranks-jump-input:focus {
@@ -864,7 +866,9 @@
 
 .ranks-jump-input::-webkit-outer-spin-button,
 .ranks-jump-input::-webkit-inner-spin-button {
-  margin: 0;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  margin: 0 !important;
 }
 
 @media (max-width: 680px) {
@@ -879,5 +883,45 @@
 
   .ranks-jump-input {
     width: 35px !important;
+  }
+}
+
+
+/* === Ranks Polish v9: manual reviewed/ranked marker === */
+.ranks-review-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border, #c89548) 65%, transparent);
+  background: color-mix(in srgb, var(--surface, #fff4dc) 80%, white);
+  color: color-mix(in srgb, var(--muted, #735a3c) 82%, var(--text, #22160d));
+  font-weight: 950;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.ranks-review-btn:hover,
+.ranks-review-btn:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent, #d98d25) 55%, transparent);
+  background: color-mix(in srgb, var(--accent-soft, #ffe0a1) 70%, white);
+}
+
+.ranks-review-btn.is-reviewed {
+  color: #fff4d8;
+  background: linear-gradient(180deg, #5d7a43, #36552d);
+  border-color: color-mix(in srgb, #496b3b 72%, var(--border, #c89548));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 8px 16px rgba(54, 85, 45, 0.16);
+}
+
+@media (max-width: 760px) {
+  .ranks-review-btn {
+    width: 34px;
+    height: 34px;
   }
 }
