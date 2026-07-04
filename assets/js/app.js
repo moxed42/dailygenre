@@ -453,13 +453,14 @@
       const saved = readActiveAlbumDiveState();
       if (saved?.genreId) {
         const fromSaved = genres.find(g => albumDiveStateGenreId(g) === String(saved.genreId));
-        if (fromSaved && albumDiveProgressScore(fromSaved).total > 0) return fromSaved;
+        const savedScore = albumDiveProgressScore(fromSaved);
+        if (fromSaved && savedScore.total > 0 && savedScore.active) return fromSaved;
       }
       const active = genres
         .filter(g => albumDiveProgressScore(g).total > 0 || !!g.albumDive)
         .filter(g => albumDiveProgressScore(g).active)
         .sort((a,b) => String(b.albumDive?.lastWorkedAt || '').localeCompare(String(a.albumDive?.lastWorkedAt || '')) || String(a.genre || '').localeCompare(String(b.genre || '')));
-      return active[0] || genres.find(g => albumDiveProgressScore(g).total > 0) || null;
+      return active[0] || null;
     }
 
     function refreshTopAlbumDiveButton() {
@@ -5486,7 +5487,12 @@ function blockSaveIfDuplicateGenres() {
         items = items.filter(hasPending);
       }
 
-      if (effectiveMonth && archiveView !== 'monthly') items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
+      if (flag === 'album-dive') {
+        items = genres.filter(g => genreHasAlbumDiveContent(g));
+        label = 'Genres with Album Dive';
+      }
+
+      if (effectiveMonth && archiveView !== 'monthly' && flag !== 'album-dive') items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
       if (rating) items = items.filter(g => String(g.rating || '') === rating);
 
       if (flag === 'contender') items = items.filter(g => !!g.monthlycontender);

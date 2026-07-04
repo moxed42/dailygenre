@@ -637,6 +637,14 @@ function albumDiveSlotReaction(slot = {}) {
   return albumDiveReactionFromLegacyRating(slot.rating);
 }
 
+function albumDiveMarkSlotSampled(slot = {}) {
+  if (!slot || typeof slot !== "object") return false;
+  const state = String(slot.listenState || "not_started").toLowerCase();
+  if (["sampled", "finished", "completed"].includes(state)) return false;
+  slot.listenState = "sampled";
+  return true;
+}
+
 function albumDiveReactionButtons(slotKey, currentValue, compact = false) {
   const safeKey = escapeHtml(slotKey);
   return `<div class="album-reaction-buttons ${compact ? "compact" : ""}" aria-label="Album reaction" data-album-slot-key="${safeKey}">
@@ -1132,9 +1140,9 @@ function renderAlbumDivePanel(genre) {
               <button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">${listenMode ? "Save" : "Save Album Dive"}</button>
               <button type="button" class="btn btn-secondary" onclick="openAlbumDiveSpotifyPlaylistModal()">＋ Playlist Albums</button>
               <button type="button" class="btn btn-secondary" onclick="copyAlbumDiveStats()" title="Copy Album Dive summary for Discord">⧉ Copy stats</button>
-              ${dive.status === "completed" ? `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveActive()">Mark Active</button>` : `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveActive()">Keep Active</button>`}
+              ${dive.status === "completed" ? `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveActive()">Mark Active</button>` : `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveActive()">Keep Active</button><button type="button" class="btn btn-secondary" onclick="endAlbumDive()" title="End this active Album Dive and remove it from the top shortcut">End Dive</button>`}
               <button type="button" class="btn btn-secondary" onclick="setAlbumDiveEditorMode(${listenMode ? "true" : "false"})">${listenMode ? "Edit Dive" : "Carousel View"}</button>
-              ${listenMode ? "" : `<button type="button" class="btn btn-secondary" onclick="markAlbumDiveComplete()">Mark Complete</button><button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>`}
+              ${listenMode ? "" : `<button type="button" class="btn btn-ghost album-dive-remove-btn" onclick="clearAlbumDive()">Remove Dive</button>`}
             </div>
           </div>
           ${listenMode ? "" : albumDiveJsonImportMarkup('albumDiveJsonImport')}
@@ -1793,13 +1801,26 @@ function markAlbumDiveActive() {
 }
 window.markAlbumDiveActive = markAlbumDiveActive;
 
-function markAlbumDiveComplete() {
+function endAlbumDive(event) {
+  if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
   const dive = normalizeAlbumDive(currentGenre, true);
+  if (!dive) return;
   dive.status = "completed";
+  dive.enabled = false;
   dive.completedAt = new Date().toISOString();
+  const active = albumDiveReadActiveState();
+  if (active && String(active.genreId || "") === albumDiveGenreStateId(currentGenre)) {
+    try { localStorage.removeItem(albumDiveStorageKey()); } catch {}
+    albumDiveWriteActiveState(null);
+  }
   touchAlbumDive();
   rerenderAlbumDive({ preserveScroll: true });
+  if (typeof refreshTopAlbumDiveButton === "function") refreshTopAlbumDiveButton();
+  showSaveToast("Album Dive ended — save changes to keep it.", false);
 }
+window.endAlbumDive = endAlbumDive;
+function markAlbumDiveComplete() { endAlbumDive(); }
+window.markAlbumDiveComplete = markAlbumDiveComplete;
 
 function updateAlbumDiveRootField(field, value) {
   const dive = normalizeAlbumDive(currentGenre, true);
@@ -1962,8 +1983,13 @@ function setAlbumDiveSlotReaction(slotKey, value, event) {
   const reaction = [1, 2, 3].includes(Number(value)) ? Number(value) : null;
   slot.albumReaction = Number(slot.albumReaction) === reaction ? null : reaction;
   slot.rating = null;
+  const markedSampled = [1, 2, 3].includes(Number(value)) ? albumDiveMarkSlotSampled(slot) : false;
   touchAlbumDive();
-  albumDiveRefreshSlotReactionInPlace(slotKey);
+  if (markedSampled && typeof albumDiveReplaceFocusViewInPlace === "function") {
+    albumDiveReplaceFocusViewInPlace({ preserveScroll: true });
+  } else {
+    albumDiveRefreshSlotReactionInPlace(slotKey);
+  }
 }
 
 function setAlbumDiveFavoriteAlbum(slotKey, event) {
@@ -1977,8 +2003,13 @@ function setAlbumDiveFavoriteAlbum(slotKey, event) {
     item.favoriteAlbum = false;
   });
   slot.favoriteAlbum = next;
+  const markedSampled = next ? albumDiveMarkSlotSampled(slot) : false;
   touchAlbumDive();
-  albumDiveRefreshFavoriteAlbumInPlace(slotKey);
+  if (markedSampled && typeof albumDiveReplaceFocusViewInPlace === "function") {
+    albumDiveReplaceFocusViewInPlace({ preserveScroll: true });
+  } else {
+    albumDiveRefreshFavoriteAlbumInPlace(slotKey);
+  }
 }
 
 
@@ -2308,10 +2339,7 @@ function setAlbumDiveTrackReaction(slotKey, trackValue, value, event) {
   if (!track) return;
   const reaction = [1, 2, 3].includes(Number(value)) ? Number(value) : null;
   track.reaction = Number(track.reaction) === reaction ? null : reaction;
-  const ratedNow = [1, 2, 3].includes(Number(track.reaction));
-  const state = String(slot.listenState || "not_started");
-  const shouldMarkSampled = ratedNow && !["sampled", "finished", "completed"].includes(state);
-  if (shouldMarkSampled) slot.listenState = "sampled";
+  const shouldMarkSampled = [1, 2, 3].includes(Number(value)) ? albumDiveMarkSlotSampled(slot) : false;
   touchAlbumDive();
   if (shouldMarkSampled && typeof albumDiveReplaceFocusViewInPlace === "function") {
     albumDiveReplaceFocusViewInPlace({ preserveScroll: true });
@@ -2359,8 +2387,13 @@ function toggleAlbumDiveTopTrack(slotKey, trackValue, forceValue, event) {
   else current.delete(canonical);
   slot.topTracks = [...current];
   if (slot.topTracks.length) syncAlbumDiveFavoriteToFirstTopTrack(slot);
+  const markedSampled = shouldAdd ? albumDiveMarkSlotSampled(slot) : false;
   touchAlbumDive();
-  albumDiveRefreshTopTracksInPlace(slotKey, canonical);
+  if (markedSampled && typeof albumDiveReplaceFocusViewInPlace === "function") {
+    albumDiveReplaceFocusViewInPlace({ preserveScroll: true });
+  } else {
+    albumDiveRefreshTopTracksInPlace(slotKey, canonical);
+  }
 }
 
 function setAlbumDiveFavoriteFromTrack(slotKey, value) {
