@@ -2586,14 +2586,30 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         }
 
         removeLoggedSongsFromPending(currentGenre);
+        // v174: Keep the focused song carousel on the edited row after a URL overwrite.
+        // URL edits can change the row's identity key, so the old stored focus key no
+        // longer matches after the re-render and the song carousel falls back to item 1.
+        // Store the new identity key before rebuilding, then explicitly restore it after
+        // the screen has been refreshed.
+        const nextFocusKey = (() => {
+          try {
+            return typeof songIdentity === 'function' ? songIdentity(target) : '';
+          } catch (_) {
+            return '';
+          }
+        })();
+        try {
+          if (nextFocusKey && currentGenre) {
+            localStorage.setItem(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`, nextFocusKey);
+          }
+        } catch (_) {}
         const restore = preserveScrollSnapshot();
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
         applyDetailEditMode(detailEditMode);
         restore();
         try {
-          const nextKey = typeof songIdentity === 'function' ? songIdentity(target) : '';
-          if (nextKey && typeof window.openSongEditorFromQueue === 'function') {
-            setTimeout(() => window.openSongEditorFromQueue(nextKey), 0);
+          if (nextFocusKey && typeof window.setSongFocus === 'function') {
+            setTimeout(() => window.setSongFocus(nextFocusKey), 0);
           } else if (typeof window.enhanceSongListeningExperience === 'function') {
             setTimeout(() => window.enhanceSongListeningExperience(), 0);
           }
@@ -5440,7 +5456,10 @@ function blockSaveIfDuplicateGenres() {
       panel.classList.toggle('is-hidden', !detailEditMode);
       panel.classList.toggle('is-editing', detailEditMode);
       if (detailEditMode && focusEditor) {
-        setTimeout(() => document.getElementById('songsListenedBulk')?.focus(), 0);
+        setTimeout(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.getElementById('songsListenedBulk')?.focus({ preventScroll: true });
+        }, 0);
       }
     }
 
@@ -5448,13 +5467,13 @@ function blockSaveIfDuplicateGenres() {
       if (!currentGenre) return;
       detailEditMode = !detailEditMode;
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-      applyDetailEditMode(detailEditMode);
+      applyDetailEditMode(detailEditMode, detailEditMode);
     }
 
     function openGenreDetail(genre, editMode=false, options = {}) {
       if (!genre) return false;
       saveArchiveUiState();
-      detailEditMode = !!editMode || !dateValue(genre);
+      detailEditMode = !!editMode;
       try {
         loadListenScreen(genre);
       } catch (error) {
@@ -7633,6 +7652,29 @@ async function loadData() {
     }
 
 
+function ensureBackToTopButton() {
+  if (document.getElementById('dgBackToTopBtn')) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.id = 'dgBackToTopBtn';
+  btn.className = 'dg-back-to-top';
+  btn.title = 'Back to top';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.textContent = '↑';
+  btn.addEventListener('click', () => {
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    catch { window.scrollTo(0, 0); }
+  });
+  document.body.appendChild(btn);
+  const sync = () => {
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    btn.classList.toggle('show', y > 520);
+  };
+  window.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', sync, { passive: true });
+  sync();
+}
+
 bootApp().catch(err => {
   console.error('App boot failed:', err);
   if (remainingCount) remainingCount.textContent = 'Could not start app. Check console.';
@@ -7656,4 +7698,5 @@ async function bootApp() {
   }
   if (spotifySession?.access_token) spotifyStartPolling();
   await loadData();
+  ensureBackToTopButton();
 }

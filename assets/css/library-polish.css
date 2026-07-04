@@ -10190,3 +10190,67 @@ textarea[data-dg-identity-textarea="1"] {
   background: color-mix(in srgb, var(--accent, #d98d25) 28%, white);
   outline: none;
 }
+
+
+/* === v176: keep setup editor below genre page, never as side panel === */
+#screen-listen .listen-grid,
+#screen-listen.screen-detail .listen-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: start !important;
+}
+
+#screen-listen #listenDetails,
+#screen-listen #listenEditPanel {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+#screen-listen.is-view-mode #listenEditPanel,
+#listenEditPanel.is-hidden {
+  display: none !important;
+}
+
+#screen-listen #listenEditPanel.is-editing {
+  display: grid !important;
+  margin-top: 14px !important;
+}
+
+#screen-listen #listenEditPanel.detail-edit-panel {
+  border-radius: 24px !important;
+}
+
+/* === v177: global back-to-top shortcut === */
+.dg-back-to-top {
+  position: fixed;
+  right: clamp(14px, 2vw, 24px);
+  bottom: clamp(14px, 2vw, 24px);
+  z-index: 2200;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 224, 161, 0.38);
+  background: linear-gradient(180deg, rgba(255, 239, 191, 0.96), rgba(215, 139, 36, 0.96));
+  color: #23150b;
+  font-weight: 950;
+  font-size: 1.08rem;
+  line-height: 1;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+.dg-back-to-top.show {
+  opacity: 0.94;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.dg-back-to-top:hover,
+.dg-back-to-top:focus-visible {
+  opacity: 1;
+  transform: translateY(-1px) scale(1.02);
+  outline: none;
+}

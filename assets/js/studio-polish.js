@@ -1252,22 +1252,94 @@
     song.externalMetadataFetchedAt = new Date().toISOString();
   }
 
+  function repairTextSimilarity(a = "", b = "") {
+    const tokens = (value) => String(value || "")
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .split(/\s+/)
+      .filter(Boolean)
+      .filter((token) => !["the", "a", "an", "el", "la", "los", "las", "le", "les", "un", "una", "feat", "ft", "official", "video", "audio"].includes(token));
+    const left = tokens(a);
+    const right = tokens(b);
+    if (!left.length && !right.length) return 1;
+    if (!left.length || !right.length) return 0;
+    const rightSet = new Set(right);
+    const overlap = left.filter((token) => rightSet.has(token)).length;
+    return overlap / Math.max(left.length, right.length);
+  }
+
+  function repairArtistName(value) {
+    if (Array.isArray(value?.artists)) return value.artists.filter(Boolean).join(" ");
+    return String(value?.artist || value?.author || value?.artistName || "");
+  }
+
+  function repairTitleName(value) {
+    return String(value?.title || value?.trackName || value?.name || "");
+  }
+
+  function repairMetadataLooksClose(oldSong, newMetadata) {
+    if (!oldSong || !newMetadata) return true;
+    const oldTitle = repairTitleName(oldSong);
+    const oldArtist = repairArtistName(oldSong);
+    const newTitle = repairTitleName(newMetadata);
+    const newArtist = repairArtistName(newMetadata);
+    if (!oldTitle.trim() && !oldArtist.trim()) return true;
+    if (!newTitle.trim() && !newArtist.trim()) return true;
+    const titleScore = repairTextSimilarity(oldTitle, newTitle);
+    const artistScore = repairTextSimilarity(oldArtist, newArtist);
+    return titleScore >= 0.45 && (artistScore >= 0.35 || !oldArtist.trim() || !newArtist.trim());
+  }
+
+  function repairDisplayLabel(songLike, fallback = "this repair row") {
+    const title = repairTitleName(songLike).trim();
+    const artist = repairArtistName(songLike).trim();
+    if (artist && title) return `${artist} — ${title}`;
+    return title || artist || fallback;
+  }
+
+  function repairSourceLabel(kind = "") {
+    if (kind === "spotify") return "Spotify";
+    if (kind === "youtube") return "YouTube";
+    if (kind === "apple") return "Apple Music";
+    return "linked";
+  }
+
+  function confirmStudioRepairUrlOverwrite(oldSong, newMetadata, kind = "") {
+    if (repairMetadataLooksClose(oldSong, newMetadata)) return true;
+    const currentLabel = repairDisplayLabel(oldSong, "this repair row");
+    const resultLabel = repairDisplayLabel(newMetadata, `the ${repairSourceLabel(kind)} track`);
+    return window.confirm(`This ${repairSourceLabel(kind)} result does not look like a close match.
+
+Current repair row: ${currentLabel}
+${repairSourceLabel(kind)} result: ${resultLabel}
+
+Overwrite the selected repair row anyway? This will replace its title, artist, artwork, URL, and metadata without creating a new row.`);
+  }
+
   async function applyRepairUrlTarget(target, inputId) {
     const input = document.getElementById(inputId);
     const rawUrl = String(input?.value || "").trim();
-    if (!rawUrl) return { ok: false, error: "Paste a Spotify track URL first." };
+    if (!rawUrl) return { ok: false, error: "Paste a Spotify, YouTube, or Apple Music URL first." };
     const located = findRepairTargetSong(target);
     if (!located) return { ok: false, error: "Could not find that track in the current library rows." };
 
     const kind = classifyRepairUrl(rawUrl);
     const canonical = kind === "spotify" ? canonicalSpotifyTrackUrl(rawUrl) : rawUrl;
-    located.song.url = canonical;
-    located.song.spotifyUrl = /open\.spotify\.com\/track\//i.test(canonical) ? canonical : (located.song.spotifyUrl || "");
+    const oldSong = {
+      title: located.song.title || located.song.name || target?.title || "",
+      artist: located.song.artist || (Array.isArray(located.song.artists) ? located.song.artists.join(" ") : "") || target?.artist || "",
+      artists: Array.isArray(located.song.artists) ? located.song.artists.slice() : [],
+    };
 
     let refreshed = false;
     let refreshError = "";
     if (kind !== "spotify") {
       const metadata = await fetchExternalRepairMetadata(canonical);
+      const hasLookupIdentity = !!(metadata.title || metadata.artist);
+      if (hasLookupIdentity && !confirmStudioRepairUrlOverwrite(oldSong, metadata, kind)) {
+        return { ok: false, cancelled: true, error: "Apply cancelled." };
+      }
       applyExternalRepairMetadata(located.song, canonical, metadata);
       refreshed = !!(metadata.artwork || metadata.title || metadata.artist || metadata.album || metadata.releaseYear || metadata.releaseDate);
       if (!metadata.artwork && kind === "youtube") {
@@ -1278,6 +1350,11 @@
     } else if (/open\.spotify\.com\/track\//i.test(canonical) && typeof fetchSpotifyTrackResult === "function") {
       const result = await fetchSpotifyTrackResult(canonical, true);
       if (result?.ok && result.track) {
+        if (!confirmStudioRepairUrlOverwrite(oldSong, result.track, kind)) {
+          return { ok: false, cancelled: true, error: "Apply cancelled." };
+        }
+        located.song.url = canonical;
+        located.song.spotifyUrl = result.track.spotifyUrl || canonical;
         if (typeof applyOfficialSpotifyMetadata === "function") applyOfficialSpotifyMetadata(located.song, result.track);
         Object.assign(located.song, {
           spotifyId: result.track.spotifyId || located.song.spotifyId || "",
@@ -1298,8 +1375,13 @@
         });
         refreshed = true;
       } else {
+        located.song.url = canonical;
+        located.song.spotifyUrl = /open\.spotify\.com\/track\//i.test(canonical) ? canonical : (located.song.spotifyUrl || "");
         refreshError = result?.error || "Spotify lookup did not return metadata.";
       }
+    } else {
+      located.song.url = canonical;
+      located.song.spotifyUrl = /open\.spotify\.com\/track\//i.test(canonical) ? canonical : (located.song.spotifyUrl || "");
     }
 
     located.genre.songs_listened = located.songs;
@@ -1354,6 +1436,7 @@
     };
 
     let updated = 0;
+    let cancelled = 0;
     const resolved = [];
     try {
       setStatus("Applying URL and checking artwork/metadata…");
@@ -1373,14 +1456,23 @@
             "review",
           );
         }
+        if (result?.cancelled) {
+          cancelled += 1;
+          break;
+        }
         if (result?.ok !== false) {
           updated += 1;
           resolved.push({ ...target, key: result?.key || target.key, song: result?.song || null, genre: result?.genre || null });
         }
       }
       if (!updated) {
-        setStatus("No matching row was updated.", true);
-        toast("Could not find matching repair rows. The row may be stale; open the genre once or use the Metadata Queue delete/open tools.", true);
+        if (cancelled) {
+          setStatus("Apply cancelled — no repair rows changed.", false);
+          toast("Apply cancelled. The repair row was left unchanged.", false);
+        } else {
+          setStatus("No matching row was updated.", true);
+          toast("Could not find matching repair rows. The row may be stale; open the genre once or use the Metadata Queue delete/open tools.", true);
+        }
         return;
       }
       const rowEl = button?.closest?.(".studio-mini-row-repair");

@@ -58,22 +58,31 @@
     toast._hideTimer = setTimeout(() => toast.classList.remove("show"), 1400);
   }
 
+  function buildFullCurrentGenreDiscordText() {
+    try {
+      if (typeof window.buildDiscordBlock === "function") {
+        const text = window.buildDiscordBlock();
+        if (String(text || "").trim()) return String(text).trim();
+      }
+    } catch {}
+    try {
+      if (typeof buildSpinDiscordText === "function" && currentGenre) {
+        const text = buildSpinDiscordText(currentGenre);
+        if (String(text || "").trim()) return String(text).trim();
+      }
+    } catch {}
+    return `Today's Genre is..... ${currentGenre?.genre || ""}`.trim();
+  }
+
   async function copyCurrentGenreDiscord(button) {
     if (!currentGenre) return;
+    const text = buildFullCurrentGenreDiscordText();
     try {
       if (button) button.classList.add("copied");
-      const text =
-        typeof buildSpinDiscordText === "function"
-          ? buildSpinDiscordText(currentGenre)
-          : `Today's Genre is..... ${currentGenre.genre || ""}`;
       await navigator.clipboard.writeText(text);
-      showDcToast("Discord block copied");
+      showDcToast("Full Discord genre details copied");
       setTimeout(() => button?.classList.remove("copied"), 900);
     } catch {
-      const text =
-        typeof buildSpinDiscordText === "function"
-          ? buildSpinDiscordText(currentGenre)
-          : `Today's Genre is..... ${currentGenre?.genre || ""}`;
       alert(text);
     }
   }
