@@ -1,5 +1,5 @@
-/* Daily Genre Ranks Polish v5
-   Safe add-on: ranking workbench, tier moves, copyable rank lists. Does not touch loading/save core. */
+/* Daily Genre Ranks Polish v8
+   Safe add-on: ranking workbench, tier moves, copyable rank lists, and direct rank jumps. Does not touch loading/save core. */
 (function () {
   "use strict";
 
@@ -352,7 +352,10 @@
     return `
       ${tierBandMarker(idx, tierTotal, tierRating)}
       <article class="ranking-row ranks-polish-row ${tierClass(tierRating)} rank-band-row-${bandForIndex(idx, tierTotal)}" data-rank-card-id="${esc(genre.id)}">
-        <div class="ranking-num ranks-polish-num">#${esc(rank)}</div>
+        <div class="ranking-num ranks-polish-num ranks-jump-cell" title="Type a rank number and press Enter, or tab away, to jump within this tier">
+          <span class="ranks-jump-prefix">#</span>
+          <input class="ranks-jump-input" type="number" min="1" max="${esc(tierTotal)}" step="1" value="${esc(rank)}" data-rank-jump-id="${esc(genre.id)}" aria-label="Move ${esc(genre.genre || 'genre')} to rank number" />
+        </div>
         <div class="ranks-polish-artwrap">
           ${artwork ? `<img class="ranking-artwork ranks-polish-art" src="${esc(artwork)}" alt="${esc(genre.genre || "Genre")} artwork" loading="lazy" />` : `<div class="ranking-artwork ranks-polish-art ranks-polish-art-empty">♪</div>`}
         </div>
@@ -565,6 +568,47 @@
     });
   }
 
+  function moveGenreToRank(id, targetRank) {
+    const source = allGenres();
+    const genre = source.find((g) => String(g.id) === String(id));
+    if (!genre || !genre.rating || String(genre.rating).toLowerCase() === "zanger") return false;
+
+    const rating = String(genre.rating);
+    const currentTier = source
+      .filter((g) => String(g.rating) === rating && String(g.rating).toLowerCase() !== "zanger")
+      .sort((a, b) =>
+        (Number(a.rank_order) || 9999) - (Number(b.rank_order) || 9999) ||
+        String(a.genre || "").localeCompare(String(b.genre || "")),
+      );
+
+    const from = currentTier.findIndex((g) => String(g.id) === String(genre.id));
+    if (from < 0) return false;
+
+    const requested = Math.round(Number(targetRank));
+    if (!Number.isFinite(requested)) return false;
+    const to = Math.max(0, Math.min(currentTier.length - 1, requested - 1));
+    if (to === from) {
+      renderRankingsPolished();
+      return true;
+    }
+
+    const [moved] = currentTier.splice(from, 1);
+    currentTier.splice(to, 0, moved);
+    currentTier.forEach((g, idx) => {
+      g.rank_order = idx + 1;
+    });
+
+    try {
+      window.genres = source;
+    } catch (_) {}
+    markRanksDirty(
+      `Moved ${genre.genre || "genre"} to #${to + 1} in ${rating}★. Save Library Updates to persist.`,
+    );
+    renderRankingsPolished();
+    setTimeout(renderRankingsPolished, 0);
+    return true;
+  }
+
   function moveGenreToTier(id, targetRating) {
     const source = allGenres();
     const genre = source.find((g) => String(g.id) === String(id));
@@ -743,6 +787,20 @@
         renderRankingsPolished();
       });
     });
+
+    wrap.querySelectorAll("[data-rank-jump-id]").forEach((input) => {
+      const apply = () => moveGenreToRank(input.dataset.rankJumpId, input.value);
+      input.addEventListener("click", (event) => event.stopPropagation());
+      input.addEventListener("focus", () => input.select?.());
+      input.addEventListener("keydown", (event) => {
+        event.stopPropagation();
+        if (event.key === "Enter") {
+          event.preventDefault();
+          apply();
+        }
+      });
+      input.addEventListener("change", apply);
+    });
   }
 
   function moveRankPolished(id, direction) {
@@ -756,6 +814,7 @@
   window.DailyGenreRanksPolish = {
     apply: renderRankingsPolished,
     moveGenreToTier,
+    moveGenreToRank,
     restoreZangerToSpin,
     playAudition,
     copyRankList,
@@ -964,4 +1023,82 @@
   );
 
   window.DailyGenreRanksOrderV7 = { moveWithinTier };
+})();
+
+
+/* === Ranks Polish v8: direct rank number jump ============================
+   Lets a genre jump from e.g. #50 to #25 inside its current star tier. */
+(function () {
+  "use strict";
+
+  function source() {
+    try { if (Array.isArray(genres)) return genres; } catch (_) {}
+    return Array.isArray(window.genres) ? window.genres : [];
+  }
+
+  function markDirty(message) {
+    try { libraryUpdatesPending = true; } catch (_) {}
+    try { if (typeof window.toggleLibrarySaveButton === "function") window.toggleLibrarySaveButton(true); } catch (_) {}
+    try { if (typeof window.renderFloatingListeningSave === "function") window.renderFloatingListeningSave(); } catch (_) {}
+    try { if (typeof window.showSaveToast === "function") window.showSaveToast(message, false); } catch (_) {}
+  }
+
+  function tierItems(list, rating) {
+    return list
+      .filter((g) => String(g.rating) === String(rating) && String(g.rating || "").toLowerCase() !== "zanger")
+      .sort((a, b) =>
+        (Number(a.rank_order) || 9999) - (Number(b.rank_order) || 9999) ||
+        String(a.genre || "").localeCompare(String(b.genre || "")),
+      );
+  }
+
+  function moveToRank(id, rank) {
+    const list = source();
+    const item = list.find((g) => String(g.id) === String(id));
+    if (!item || !item.rating || String(item.rating).toLowerCase() === "zanger") return false;
+    const items = tierItems(list, item.rating);
+    const from = items.findIndex((g) => String(g.id) === String(item.id));
+    const requested = Math.round(Number(rank));
+    if (from < 0 || !Number.isFinite(requested)) return false;
+    const to = Math.max(0, Math.min(items.length - 1, requested - 1));
+    if (to === from) {
+      try { if (typeof window.renderRankings === "function") window.renderRankings(); } catch (_) {}
+      return true;
+    }
+    const [moved] = items.splice(from, 1);
+    items.splice(to, 0, moved);
+    items.forEach((g, idx) => { g.rank_order = idx + 1; });
+    try { window.genres = list; } catch (_) {}
+    markDirty(`Moved ${item.genre || "genre"} to #${to + 1}. Save Library Updates to persist.`);
+    try { if (typeof window.renderRankings === "function") window.renderRankings(); } catch (_) {}
+    setTimeout(() => { try { if (typeof window.renderRankings === "function") window.renderRankings(); } catch (_) {} }, 0);
+    return true;
+  }
+
+  document.addEventListener("keydown", (event) => {
+    const input = event.target.closest?.("[data-rank-jump-id]");
+    if (!input) return;
+    event.stopPropagation();
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    event.stopImmediatePropagation?.();
+    moveToRank(input.dataset.rankJumpId, input.value);
+  }, true);
+
+  document.addEventListener("change", (event) => {
+    const input = event.target.closest?.("[data-rank-jump-id]");
+    if (!input) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation?.();
+    moveToRank(input.dataset.rankJumpId, input.value);
+  }, true);
+
+  document.addEventListener("click", (event) => {
+    const input = event.target.closest?.("[data-rank-jump-id]");
+    if (!input) return;
+    event.stopPropagation();
+  }, true);
+
+  window.DailyGenreRanksJumpV8 = { moveToRank };
 })();

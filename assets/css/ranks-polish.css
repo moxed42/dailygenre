@@ -818,3 +818,66 @@
     width: auto !important;
   }
 }
+
+/* === Ranks Polish v8: direct rank jump input ============================ */
+.ranks-polish-row.ranking-row {
+  grid-template-columns: 78px 64px minmax(0, 1fr) auto !important;
+}
+
+.ranks-jump-cell.ranks-polish-num {
+  min-width: 68px !important;
+  width: 68px !important;
+  padding: 4px 6px !important;
+  gap: 2px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ranks-jump-prefix {
+  font-size: 0.76rem;
+  font-weight: 950;
+  color: var(--accent-dark, #7a4714);
+}
+
+.ranks-jump-input {
+  width: 42px !important;
+  min-width: 0 !important;
+  height: 28px !important;
+  min-height: 0 !important;
+  padding: 2px 3px !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: rgba(255, 253, 244, 0.72) !important;
+  color: var(--accent-dark, #7a4714) !important;
+  font-size: 0.78rem !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52) !important;
+}
+
+.ranks-jump-input:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(217, 141, 37, 0.2) !important;
+  background: rgba(255, 253, 244, 0.96) !important;
+}
+
+.ranks-jump-input::-webkit-outer-spin-button,
+.ranks-jump-input::-webkit-inner-spin-button {
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .ranks-polish-row.ranking-row {
+    grid-template-columns: 62px 54px minmax(0, 1fr) !important;
+  }
+
+  .ranks-jump-cell.ranks-polish-num {
+    min-width: 58px !important;
+    width: 58px !important;
+  }
+
+  .ranks-jump-input {
+    width: 35px !important;
+  }
+}

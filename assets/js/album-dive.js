@@ -584,12 +584,13 @@ function albumDiveReactionLabel(value) {
 function albumDiveSlotCopySummary(slot = {}) {
   const reaction = albumDiveSlotReaction(slot);
   const reactionLabel = reaction ? albumDiveReactionEmoji(reaction) : "unrated";
-  const album = String(slot.album || slot.albumTitle || "Untitled album").trim();
+  const rawAlbum = slot.album || slot.albumTitle || "Untitled album";
+  const album = albumDiveCleanEditionTitle(rawAlbum) || String(rawAlbum || "Untitled album").trim();
   const artist = String(slot.artist || slot.albumArtist || "Unknown artist").trim();
   const category = String(slot.label || slot.key || "Album").trim();
   const year = slot.year || (slot.releaseDate ? String(slot.releaseDate).slice(0, 4) : "");
-  const status = String(slot.listenState || slot.status || "").trim();
-  const tail = [year, status, reactionLabel].filter(Boolean).join(" · ");
+  const favorite = slot.favoriteAlbum ? "🏆 favorite album" : "";
+  const tail = [year, reactionLabel, favorite].filter(Boolean).join(" · ");
   return `* [${category}] ${artist} — ${album}${tail ? `: ${tail}` : ""}`;
 }
 
@@ -597,8 +598,7 @@ function buildAlbumDiveStatsCopy(genre = currentGenre) {
   const dive = normalizeAlbumDive(genre, false);
   const slots = (dive?.slots || []).filter(albumDiveSlotHasContent);
   if (!genre || !slots.length) return "";
-  const progress = albumDiveProgress(dive);
-  const header = `Album Dive — ${genre.genre || "Unknown genre"} (${progress.fetched}/${progress.total} fetched · ${progress.finished}/${progress.total} finished)`;
+  const header = `Album Dive — ${genre.genre || "Unknown genre"}`;
   const lines = [header, ...slots.map(albumDiveSlotCopySummary)];
   const verdictMap = { better: "made me like the genre better", no_change: "no change", worse: "made me like the genre worse" };
   const verdict = verdictMap[dive.verdictImpact] || dive.verdictImpact || "";
@@ -768,16 +768,37 @@ function setAlbumDiveFocusRelative(direction, event) {
 }
 
 
-function albumDiveTitleWithEditionMarkup(value) {
-  const text = String(value || '').trim();
-  if (!text) return '';
+function albumDiveEditionPatterns() {
   const editionTerms = '(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\\s+(?:at|from|in|on|@))?|live recording|concert(?:\\s*\\(live\\))?|anniversary(?:\\s+concert)?|demo|bonus track|explicit|clean|edit|version|alternate(?:\\s+take)?|alt(?:\\.|ernate)?\\s+version|acoustic|session|take\\s+\\d+)';
-  const patterns = [
+  return [
     new RegExp('^(.*?)(\\s+(?:-|–|—)\\s*(?:[^()\\[\\]]*' + editionTerms + '[^()\\[\\]]*)(?:\\([^)]*\\))?\\s*)$', 'i'),
     new RegExp('^(.*?)(\\s*\\((?:[^)]*' + editionTerms + '[^)]*)\\)\\s*)$', 'i'),
     new RegExp('^(.*?)(\\s*\\[(?:[^\\]]*' + editionTerms + '[^\\]]*)\\]\\s*)$', 'i'),
   ];
-  for (const re of patterns) {
+}
+
+function albumDiveCleanEditionTitle(value) {
+  let text = String(value || '').trim();
+  if (!text) return '';
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const re of albumDiveEditionPatterns()) {
+      const match = text.match(re);
+      if (match && match[1] && match[1].trim().length >= 2) {
+        text = match[1].trim();
+        changed = true;
+        break;
+      }
+    }
+  }
+  return text;
+}
+
+function albumDiveTitleWithEditionMarkup(value) {
+  const text = String(value || '').trim();
+  if (!text) return '';
+  for (const re of albumDiveEditionPatterns()) {
     const match = text.match(re);
     if (match && match[1] && match[2] && match[1].trim().length >= 2) {
       return `${escapeHtml(match[1].trim())}<span class="song-title-edition">${escapeHtml(match[2].trim().replace(/^[-–—]\\s*/, ''))}</span>`;
@@ -2287,8 +2308,16 @@ function setAlbumDiveTrackReaction(slotKey, trackValue, value, event) {
   if (!track) return;
   const reaction = [1, 2, 3].includes(Number(value)) ? Number(value) : null;
   track.reaction = Number(track.reaction) === reaction ? null : reaction;
+  const ratedNow = [1, 2, 3].includes(Number(track.reaction));
+  const state = String(slot.listenState || "not_started");
+  const shouldMarkSampled = ratedNow && !["sampled", "finished", "completed"].includes(state);
+  if (shouldMarkSampled) slot.listenState = "sampled";
   touchAlbumDive();
-  albumDiveRefreshTrackReactionInPlace(slotKey, cleanValue, track.reaction);
+  if (shouldMarkSampled && typeof albumDiveReplaceFocusViewInPlace === "function") {
+    albumDiveReplaceFocusViewInPlace({ preserveScroll: true });
+  } else {
+    albumDiveRefreshTrackReactionInPlace(slotKey, cleanValue, track.reaction);
+  }
 }
 
 function syncAlbumDiveFavoriteToFirstTopTrack(slot) {
