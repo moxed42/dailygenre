@@ -720,15 +720,6 @@
             <button type="button" class="btn btn-secondary btn-tiny" onclick="if (typeof openStudioMode === 'function') openStudioMode(); else if (typeof toggleDetailEditMode === 'function') toggleDetailEditMode();">Edit fit reason</button>
           </div>
         </div>
-        <div class="song-focus-detail-card song-focus-note-card">
-          <h4>Listening note</h4>
-          <textarea data-song-note-input maxlength="320" placeholder="Short listening note for this song…">${html(noteValue)}</textarea>
-          <div class="song-note-actions">
-            <button type="button" class="btn btn-primary" onclick="savePendingSongNoteFromCard('${encodedKey}', -1, '${encodedPath}', this)">Stage Note</button>
-            ${pendingSongNote ? `<button type="button" class="btn btn-danger" onclick="clearPendingSongNoteFromCard('${encodedKey}', -1, '${encodedPath}', this)">Clear Pending Note</button>` : ""}
-          </div>
-          <div class="track-card-edit-note">Staged locally. Save Listening Updates will roll this up and persist it.</div>
-        </div>
         <div class="song-focus-detail-card compact song-focus-url-card">
           <h4>Track URL</h4>
           <div class="song-focus-url-row">

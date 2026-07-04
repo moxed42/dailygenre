@@ -1005,7 +1005,7 @@
 
     function genreRatingStarsOnly(genre) {
       if (!genre || !genre.rating) return 'Unrated';
-      if (String(genre.rating) === 'zanger') return '✕ Zanger';
+      if (String(genre.rating) === 'zanger') return 'Z Zanger';
       const n = Number(genre.rating);
       if (!Number.isFinite(n) || n < 1 || n > 5) return 'Unrated';
       return `${'★'.repeat(n)}${'☆'.repeat(5 - n)}`;
@@ -1219,13 +1219,13 @@
       return `<span class="genre-header-rating" role="group" aria-label="Genre rating: ${escapeHtml(label)}">
         <span class="genre-header-rating-label">${escapeHtml(label)}</span>
         <span class="genre-header-stars">${starButtons}</span>
-        <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">✕</button>
+        <button type="button" class="genre-header-zanger ${zangerActive ? 'active' : ''}" onclick="event.stopPropagation(); setGenreRatingFromView('zanger')" title="Zanger" aria-label="Mark genre as Zanger">Z</button>
       </span>`;
     }
 
     function genreRatingDisplay(genre) {
       if (!genre || !genre.rating) return 'Unrated';
-      if (String(genre.rating) === 'zanger') return '✕ Zanger';
+      if (String(genre.rating) === 'zanger') return 'Z Zanger';
       const n = Number(genre.rating);
       return `${'★'.repeat(n)}${'☆'.repeat(5 - n)} ${genreRatingLabel(genre.rating)}`;
     }
@@ -5398,7 +5398,7 @@ function blockSaveIfDuplicateGenres() {
           <h3>Zangers</h3>
           ${genres.filter(g => String(g.rating) === 'zanger' || (g.status || '').toLowerCase() === 'veto').map(g => `
             <div class="ranking-row">
-              <div class="ranking-num">✕</div>
+              <div class="ranking-num">Z</div>
               ${artworkHtml(getGenreArtwork(g), 'ranking-artwork', g.genre || 'Genre artwork')}
               <div>
                 <button type="button" class="linklike" data-rank-open-id="${g.id}" style="padding:0;border:0;background:transparent;color:inherit;text-align:left;font-weight:900;font-size:1rem;cursor:pointer;">${escapeHtml(g.genre || 'Unknown')}</button>
@@ -6693,7 +6693,7 @@ async function loadData() {
       if (!root) return;
       root.innerHTML = groups.map(([k, label]) => {
         const list = map[k].sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || String(a.genre || '').localeCompare(String(b.genre || '')));
-        return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? '✕' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button type="button" class="viz-chip viz-click-chip" onclick="vizOpenGenreEncoded('${visualActionArg(g.genre || '')}')">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
+        return `<div class="viz-rating-group"><div class="viz-rating-heading"><span class="viz-star">${k === 'zanger' ? 'Z' : '★'.repeat(Number(k || 0))}</span><span>${escapeHtml(label)}</span></div><div class="viz-rating-chips">${list.length ? list.map(g => `<button type="button" class="viz-chip viz-click-chip" onclick="vizOpenGenreEncoded('${visualActionArg(g.genre || '')}')">${escapeHtml(g.genre || 'Unknown')}</button>`).join('') : '<div class="viz-chip-none">None yet.</div>'}</div></div>`;
       }).join('');
     }
 

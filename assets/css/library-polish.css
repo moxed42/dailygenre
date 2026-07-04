@@ -10024,3 +10024,37 @@ textarea[data-dg-identity-textarea="1"] {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* === v170: genre identity reading room + song details cleanup === */
+.genre-identity-dna-box em,
+.genre-identity-dna-box small,
+.genre-identity-track-main em {
+  -webkit-line-clamp: 4 !important;
+  line-clamp: 4 !important;
+  max-height: none !important;
+}
+
+.genre-identity-track-main em {
+  line-height: 1.32 !important;
+}
+
+#screen-listen .detail-editor-monthly,
+#screen-listen .detail-editor-monthly-flags {
+  display: none !important;
+}
+
+#screen-listen.listen-experience-mode .listening-focus-head {
+  padding-top: 6px !important;
+}
+
+#screen-listen.listen-experience-mode .listening-focus-eyebrow {
+  display: inline-block !important;
+  transform: translateY(3px);
+}
+
+.genre-header-zanger,
+.ranks-zanger-num {
+  font-weight: 950 !important;
+  font-family: inherit !important;
+}

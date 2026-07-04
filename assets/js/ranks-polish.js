@@ -443,8 +443,8 @@
     const canPlay = audition?.url;
     return `
       <article class="ranking-row ranks-polish-row ranks-zanger-row" data-rank-card-id="${esc(genre.id)}">
-        <div class="ranking-num ranks-polish-num">✕</div>
-        <div class="ranks-polish-artwrap">${artwork ? `<img class="ranking-artwork ranks-polish-art" src="${esc(artwork)}" alt="${esc(genre.genre || "Genre")} artwork" loading="lazy" />` : `<div class="ranking-artwork ranks-polish-art ranks-polish-art-empty">×</div>`}</div>
+        <div class="ranking-num ranks-polish-num ranks-zanger-num">Z</div>
+        <div class="ranks-polish-artwrap">${artwork ? `<img class="ranking-artwork ranks-polish-art" src="${esc(artwork)}" alt="${esc(genre.genre || "Genre")} artwork" loading="lazy" />` : `<div class="ranking-artwork ranks-polish-art ranks-polish-art-empty">Z</div>`}</div>
         <div class="ranks-polish-main">
           <button type="button" class="linklike ranks-polish-title" data-rank-open-id="${esc(genre.id)}">${esc(genre.genre || "Unknown genre")}</button>
           <div class="ranks-polish-meta">${esc(catLine(genre))}</div>
