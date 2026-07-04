@@ -1043,14 +1043,23 @@
           if (prior.songNote && !song.listenerNote) song.listenerNote = prior.songNote;
           if (prior.promotedFrom) song.promotedFrom = prior.promotedFrom;
           if (prior.promotedFromFit != null) song.promotedFromFit = prior.promotedFromFit;
+          // Preserve canonical URL + metadata when Overwrite is being used as a
+          // curated list editor. If A/B/C becomes A/C/D, A and C should keep their
+          // Spotify/YouTube/Apple URL, artwork, reaction, and fetched metadata; only
+          // removed rows should disappear.
+          if (!normalizeSongUrl(song.url || '') && prior.url) song.url = prior.url;
           if (prior.spotifyId) song.spotifyId = prior.spotifyId;
           if (prior.spotifyUrl) song.spotifyUrl = prior.spotifyUrl;
           if (prior.artwork) song.artwork = prior.artwork;
+          if (prior.albumArt && !song.albumArt) song.albumArt = prior.albumArt;
           if (prior.source) song.source = prior.source;
           if (prior.album) song.album = prior.album;
           if (Array.isArray(prior.artists) && prior.artists.length) song.artists = prior.artists;
           if (prior.durationMs != null) song.durationMs = prior.durationMs;
           if (prior.isrc) song.isrc = prior.isrc;
+          if (prior.itunesTrackUrl && !song.itunesTrackUrl) song.itunesTrackUrl = prior.itunesTrackUrl;
+          if (prior.itunesTrackId && !song.itunesTrackId) song.itunesTrackId = prior.itunesTrackId;
+          if (prior.youtubeVideoId && !song.youtubeVideoId) song.youtubeVideoId = prior.youtubeVideoId;
           if (prior.explicit != null) song.explicit = !!prior.explicit;
           if (prior.popularity != null) song.popularity = Number(prior.popularity);
           if (prior.trackNumber != null) song.trackNumber = Number(prior.trackNumber);
@@ -3077,9 +3086,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         syncSongsBulkEditorFromModel();
       } else {
         const parsedFromBulk = normalizeSongsListened(parseSongLinks(document.getElementById('songsListenedBulk').value));
-        const parsedOfficial = options.overwriteSongs
-          ? parsedFromBulk
-          : mergeSongMetadata(parsedFromBulk, previousOfficial);
+        const parsedOfficial = mergeSongMetadata(parsedFromBulk, previousOfficial);
         resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
       }
       currentGenre.songs_listened = resolvedOfficial;
