@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v40-repair-skip-external-links";
+  const VERSION = "studio-polish-v41-repair-stable-refresh";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -176,6 +176,49 @@
     try { localStorage.setItem(REPAIR_SKIP_STORAGE_KEY, JSON.stringify(map || {})); } catch (_) {}
   }
 
+  const REPAIR_RESOLVED_STORAGE_KEY = "dailyGenreStudioRepairResolvedRows:v1";
+
+  function readRepairResolvedMap() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(REPAIR_RESOLVED_STORAGE_KEY) || "{}");
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function writeRepairResolvedMap(map) {
+    try { localStorage.setItem(REPAIR_RESOLVED_STORAGE_KEY, JSON.stringify(map || {})); } catch (_) {}
+  }
+
+  function markRepairResolved(key) {
+    if (!key) return;
+    const map = readRepairResolvedMap();
+    map[String(key)] = Date.now();
+    writeRepairResolvedMap(map);
+  }
+
+  function clearRepairResolved(key) {
+    if (!key) return;
+    const map = readRepairResolvedMap();
+    if (map && Object.prototype.hasOwnProperty.call(map, String(key))) {
+      delete map[String(key)];
+      writeRepairResolvedMap(map);
+    }
+  }
+
+  function isRepairRecentlyResolved(row) {
+    const key = repairSkipKey(row);
+    if (!key) return false;
+    const markedAt = Number(readRepairResolvedMap()[key] || 0);
+    if (!markedAt) return false;
+    const missing = Array.isArray(row?.repairProblems) && row.repairProblems.length ? row.repairProblems : missingKinds(row?.song || row);
+    if (!missing.length) return true;
+    // Keep it hidden for this browser session after a successful inline apply. If it still truly
+    // needs work after a fresh page reload, it will reappear instead of sticking at the top forever.
+    return Date.now() - markedAt < 6 * 60 * 60 * 1000;
+  }
+
   function repairSkipKey(rowOrSong) {
     const song = rowOrSong?.song || rowOrSong;
     return repairDisplayKey(song) || songKey(song) || norm(songTitle(song));
@@ -263,6 +306,7 @@
             String(songTitle(a.song)).localeCompare(songTitle(b.song)),
         ),
     )
+      .filter((row) => !isRepairRecentlyResolved(row))
       .sort((a, b) => {
         const aSkipped = isRepairSkipped(a) ? 1 : 0;
         const bSkipped = isRepairSkipped(b) ? 1 : 0;
@@ -1518,6 +1562,11 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
           meta.insertAdjacentHTML("afterbegin", '<span class="studio-repair-resolved-chip">resolved · refresh list to remove</span>');
         }
       }
+      // v178: remember the original repair keys that were successfully handled so Refresh Repair List
+      // does not keep a stale/sticky first row pinned at the top until the user presses Skip.
+      resolved.forEach((item) => {
+        markRepairResolved(item.displayKey || item.key || repairSkipKey(item.song));
+      });
       const refreshedCount = resolved.filter((item) => item.song && (item.song.artwork || item.song.albumArt)).length;
       setStatus(refreshedCount ? `Applied · artwork found for ${refreshedCount} ${refreshedCount === 1 ? "track" : "tracks"}. Save cleanup to persist.` : "Applied URL · no artwork returned yet. Try a different Spotify track URL if this remains in the list.", !refreshedCount);
       if (updated > 1) toast(`Applied URL to ${updated} matching copies — Save cleanup to persist.`, false);
@@ -1561,8 +1610,7 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
     try {
       if (typeof renderReview === "function") renderReview();
       setTimeout(() => {
-        const lane = document.getElementById("studio-repair-lane");
-        lane?.scrollIntoView?.({ block: "nearest" });
+        // v178: re-check the repair list without moving the user's scroll position.
         if (restore) restore();
       }, 0);
     } finally {

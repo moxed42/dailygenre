@@ -208,7 +208,7 @@
         document.title = screenTitle(name);
       }
 
-      if (!options.preserveScroll) {
+      if (!options.preserveScroll && name !== 'listen') {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
       }
 
@@ -511,7 +511,7 @@
       refreshTopAlbumDiveButton();
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById('topAlbumDiveBtn')?.classList.add('active');
-      setTimeout(() => document.getElementById('albumDivePanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 160);
+      // v178: returning to an active dive should not force-scroll the page; keep the user's current viewport stable.
       return true;
     }
     window.openCurrentAlbumDive = openCurrentAlbumDive;
@@ -5485,7 +5485,9 @@ function blockSaveIfDuplicateGenres() {
       if (!switched) return false;
       applyDetailEditMode(detailEditMode);
       if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
-      if (!options.preserveScroll) {
+      // v178: opening/re-rendering a genre should not auto-jump to the carousel or otherwise move the viewport.
+      // Callers that truly want a top jump can pass { scrollTop: true }.
+      if (options.scrollTop) {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
       }
       return true;
