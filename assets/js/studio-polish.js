@@ -667,8 +667,10 @@
         const problemChips = isRepair && Array.isArray(row.repairProblems) && row.repairProblems.length
           ? row.repairProblems.map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${esc(kind)}">missing ${esc(kind)}</span>`).join("")
           : `<span class="studio-repair-missing-chip" data-repair-kind="${esc(problem)}">${esc(problem)}</span>`;
+        const titleOverrideId = `${inputId}_title`;
+        const artistOverrideId = `${inputId}_artist`;
         const inlineRepair = isRepair
-          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify / YouTube / Apple Music URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/... or https://music.apple.com/... or https://youtu.be/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Apply to copies" : "Apply URL"}</button></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite"></div></div>`
+          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify / YouTube / Apple Music URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/... or https://music.apple.com/... or https://youtu.be/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Apply to copies" : "Apply URL"}</button></div><div class="studio-repair-manual-meta"><input id="${esc(titleOverrideId)}" type="text" placeholder="Override title if YouTube/Apple title is messy" onclick="event.stopPropagation();"><input id="${esc(artistOverrideId)}" type="text" placeholder="Override artist/channel if needed" onclick="event.stopPropagation();"></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite"></div></div>`
           : "";
         const skipKey = isRepair ? encodeURIComponent(repairSkipKey(row) || "") : "";
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
@@ -679,7 +681,7 @@
             ${inlineRepair}
           </div>
           <div class="studio-mini-actions">
-            ${isRepair ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof skipStudioRepairRow === 'function' ? skipStudioRepairRow('${skipKey}', this) : null; return false;">Skip for now</button>` : ""}
+            ${isRepair ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof skipStudioRepairRow === 'function' ? skipStudioRepairRow('${skipKey}', this) : null; return false;">Skip for now</button><button type="button" class="btn btn-danger btn-tiny studio-hard-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof hardDeleteStudioRepairGroup === 'function' ? hardDeleteStudioRepairGroup('${encodedTargets}', this) : null; return false;" title="Permanently delete this track from every genre and every queue">Delete everywhere</button>` : ""}
             <button type="button" class="btn btn-secondary btn-tiny" onclick="event.stopPropagation(); openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "duplicate"})">Open genre</button>
           </div>
         </article>`;
@@ -1364,6 +1366,8 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
   async function applyRepairUrlTarget(target, inputId) {
     const input = document.getElementById(inputId);
     const rawUrl = String(input?.value || "").trim();
+    const manualTitle = clean(String(document.getElementById(`${inputId}_title`)?.value || "")).trim();
+    const manualArtist = clean(String(document.getElementById(`${inputId}_artist`)?.value || "")).trim();
     if (!rawUrl) return { ok: false, error: "Paste a Spotify, YouTube, or Apple Music URL first." };
     const located = findRepairTargetSong(target);
     if (!located) return { ok: false, error: "Could not find that track in the current library rows." };
@@ -1426,6 +1430,14 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
     } else {
       located.song.url = canonical;
       located.song.spotifyUrl = /open\.spotify\.com\/track\//i.test(canonical) ? canonical : (located.song.spotifyUrl || "");
+    }
+
+    if (manualTitle) located.song.title = manualTitle;
+    if (manualArtist) {
+      located.song.artist = manualArtist;
+      located.song.artists = [manualArtist];
+    } else if (located.song.artist && (!Array.isArray(located.song.artists) || !located.song.artists.length)) {
+      located.song.artists = [located.song.artist];
     }
 
     located.genre.songs_listened = located.songs;
@@ -1580,6 +1592,72 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
     }
   }
 
+
+  function hardDeleteStudioRepairGroup(encodedTargetsJson, button = null) {
+    let targets = [];
+    try {
+      targets = JSON.parse(decodeURIComponent(String(encodedTargetsJson || "[]")));
+    } catch (_) {
+      targets = [];
+    }
+    const unique = [];
+    const seen = new Set();
+    targets.forEach((target) => {
+      const id = `${target?.genreId || ""}::${target?.key || target?.displayKey || target?.url || target?.title || ""}`;
+      if (!id || seen.has(id)) return;
+      seen.add(id);
+      unique.push(target);
+    });
+    if (!unique.length) {
+      toast("Could not identify that track for Delete everywhere.", true);
+      return;
+    }
+    const label = unique[0]?.artist || unique[0]?.title
+      ? `${unique[0]?.artist ? `${unique[0].artist} — ` : ""}${unique[0]?.title || "this track"}`
+      : "this track";
+    const copyCount = unique.length > 1 ? ` and ${unique.length - 1} matching ${unique.length === 2 ? "copy" : "copies"}` : "";
+    if (!window.confirm(`Delete ${label}${copyCount} everywhere?
+
+This removes it from every genre queue and pending list. It becomes permanent after Save Library Updates.`)) return;
+    const previous = button?.textContent || "Delete everywhere";
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Deleting…";
+    }
+    try {
+      if (typeof window.hardDeleteSongEverywhere !== "function") {
+        toast("Delete everywhere helper is not available. Refresh and try again.", true);
+        return;
+      }
+      const result = window.hardDeleteSongEverywhere(unique, { renderStudio: false });
+      if (!result?.deleted) {
+        toast("No matching songs were found to delete.", true);
+        return;
+      }
+      unique.forEach((target) => markRepairResolved(target.displayKey || target.key || target.url || target.title || ""));
+      const row = button?.closest?.(".studio-mini-row-repair");
+      if (row) {
+        row.classList.add("studio-repair-resolved");
+        row.style.opacity = "0.55";
+        const meta = row.querySelector(".studio-mini-meta");
+        if (meta && !meta.querySelector(".studio-repair-resolved-chip")) {
+          meta.insertAdjacentHTML("afterbegin", '<span class="studio-repair-resolved-chip">deleted everywhere · save pending</span>');
+        }
+      }
+      toast(`Deleted ${result.deleted} ${result.deleted === 1 ? "track" : "tracks"} everywhere from ${result.genresTouched} ${result.genresTouched === 1 ? "genre" : "genres"} — Save Library Updates to persist.`, false);
+      setTimeout(() => refreshStudioRepairList(null), 180);
+    } catch (error) {
+      console.error("Studio delete everywhere failed", error);
+      toast(`Delete everywhere failed: ${error?.message || error || "Unknown error"}`, true);
+    } finally {
+      if (button && document.body.contains(button)) {
+        button.disabled = false;
+        button.textContent = previous;
+      }
+    }
+  }
+
+  window.hardDeleteStudioRepairGroup = hardDeleteStudioRepairGroup;
 
   function skipStudioRepairRow(encodedKey, button = null) {
     let key = "";

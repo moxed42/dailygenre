@@ -565,7 +565,7 @@
   function deleteSongFromDetails(encodedKey, encodedPath = "", button = null) {
     if (typeof currentGenre === "undefined" || !currentGenre) return;
     const path = decodeFocusPath(encodedPath);
-    if (!window.confirm("Delete this song from this genre? This will not move it to Pending.")) return;
+    if (!window.confirm("Remove this song from this genre only? This does not delete copies from other genres or Studio queues.")) return;
 
     const previousText = button?.textContent || "";
     if (button) {
@@ -608,14 +608,74 @@
 
       if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
       enhanceSongListeningExperience();
-      if (typeof showSaveToast === "function") showSaveToast("Song deleted — use Save Listening Updates to keep it.", false);
+      if (typeof showSaveToast === "function") showSaveToast("Removed from this genre — use Save Listening Updates to keep it.", false);
     } catch (error) {
       console.error("Could not delete song from details", error);
       if (typeof showSaveToast === "function") showSaveToast(`Could not delete song: ${error?.message || error || "Unknown error"}`, true);
     } finally {
       if (button && document.body.contains(button)) {
         button.disabled = false;
-        button.textContent = previousText || "Delete song";
+        button.textContent = previousText || "Remove from genre";
+      }
+    }
+  }
+
+  function hardDeleteSongFromDetails(encodedKey, encodedPath = "", button = null) {
+    if (typeof currentGenre === "undefined" || !currentGenre) return;
+    const path = decodeFocusPath(encodedPath);
+    const result = typeof findEditableSongTarget === "function"
+      ? findEditableSongTarget(encodedKey, -1, path)
+      : null;
+    if (!result?.song) {
+      if (typeof showSaveToast === "function") showSaveToast("That song changed. Reopen details and try again.", true);
+      return;
+    }
+    const song = result.song;
+    const label = [song.artist, song.title || song.name].filter(Boolean).join(" — ") || "this song";
+    if (!window.confirm(`Delete ${label} everywhere?
+
+This removes it from every genre and Studio queue. It becomes permanent after Save Library Updates.`)) return;
+    const previousText = button?.textContent || "Delete everywhere";
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Deleting…";
+    }
+    try {
+      if (typeof window.hardDeleteSongEverywhere !== "function") {
+        if (typeof showSaveToast === "function") showSaveToast("Delete everywhere helper is not available. Refresh and try again.", true);
+        return;
+      }
+      const target = {
+        key: safeCall(() => songKey(song), ""),
+        title: song.title || song.name || "",
+        artist: song.artist || (Array.isArray(song.artists) ? song.artists.join(" ") : ""),
+        url: song.spotifyUrl || song.url || "",
+        spotifyId: song.spotifyId || "",
+        isrc: song.isrc || "",
+      };
+      const outcome = window.hardDeleteSongEverywhere(target, { renderStudio: false });
+      if (!outcome?.deleted) {
+        if (typeof showSaveToast === "function") showSaveToast("No matching songs were found to delete.", true);
+        return;
+      }
+      window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;
+      window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;
+      if (typeof syncSongsBulkEditorFromModel === "function") syncSongsBulkEditorFromModel();
+      const nextEntries = songListForFocus(currentGenre);
+      try {
+        if (nextEntries.length) localStorage.setItem(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
+        else localStorage.removeItem(genreFocusStorageKey(currentGenre));
+      } catch {}
+      if (!nextEntries.length) setSongDetailsOpen(false);
+      enhanceSongListeningExperience();
+      if (typeof showSaveToast === "function") showSaveToast(`Deleted ${outcome.deleted} ${outcome.deleted === 1 ? "copy" : "copies"} everywhere — Save Library Updates to persist.`, false);
+    } catch (error) {
+      console.error("Could not delete song everywhere", error);
+      if (typeof showSaveToast === "function") showSaveToast(`Could not delete song everywhere: ${error?.message || error || "Unknown error"}`, true);
+    } finally {
+      if (button && document.body.contains(button)) {
+        button.disabled = false;
+        button.textContent = previousText;
       }
     }
   }
@@ -724,7 +784,8 @@
           <h3>${songTitleWithMetaMarkup(song.title || "Selected song")}</h3>
         </div>
         <div class="song-focus-details-actions">
-          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Delete song</button>
+          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Remove from genre</button>
+          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); hardDeleteSongFromDetails('${encodedKey}', '${encodedPath}', this)" title="Permanently delete this song from every genre and every queue">Delete everywhere</button>
           <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
         </div>
       </div>
@@ -737,8 +798,12 @@
         <div class="song-focus-detail-card song-focus-url-card">
           <h4>Track URL</h4>
           <div class="song-focus-url-row">
-            <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
+            <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify, YouTube, or Apple Music URL">
             <button type="button" class="btn btn-primary btn-tiny" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply / Refresh</button>
+          </div>
+          <div class="track-card-manual-meta song-focus-manual-meta">
+            <input data-track-title-input type="text" placeholder="Override title if metadata is messy">
+            <input data-track-artist-input type="text" placeholder="Override artist/channel if needed">
           </div>
         </div>
         <div class="song-focus-detail-card song-focus-meta-card">
@@ -964,6 +1029,7 @@
   window.setSongFocus = setSelectedSongKey;
   window.setSongFocusDetailsOpen = setSongDetailsOpen;
   window.deleteSongFromDetails = deleteSongFromDetails;
+  window.hardDeleteSongFromDetails = hardDeleteSongFromDetails;
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
   window.moveSongFocus = moveSongFocus;

@@ -2404,6 +2404,10 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         nextUrl = spotifyCanonicalTrackUrl(nextUrl);
       }
       if (input && nextUrl) input.value = nextUrl;
+      const overrideTitleInput = editor?.querySelector?.('[data-track-title-input]') || null;
+      const overrideArtistInput = editor?.querySelector?.('[data-track-artist-input]') || null;
+      const overrideTitle = cleanPastedCitationArtifacts(overrideTitleInput?.value || '').trim();
+      const overrideArtist = cleanPastedCitationArtifacts(overrideArtistInput?.value || '').trim();
       if (!/^https?:\/\//i.test(nextUrl) && !/^spotify:track:/i.test(nextUrl)) {
         showSaveToast('Please provide a valid Spotify track URL or web track link.', true);
         return;
@@ -2512,6 +2516,14 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           applyExternalTrackMetadata(target, nextUrl, externalMetadata, savedTitle, savedArtist);
         } else {
           applyExternalTrackMetadata(target, nextUrl, { source: 'web', url: nextUrl }, savedTitle, savedArtist);
+        }
+
+        if (overrideTitle) target.title = overrideTitle;
+        if (overrideArtist) {
+          target.artist = overrideArtist;
+          target.artists = [overrideArtist];
+        } else if (target.artist && (!Array.isArray(target.artists) || !target.artists.length)) {
+          target.artists = [target.artist];
         }
 
         target.levelUp = nestedLevelUp;
@@ -2913,7 +2925,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         : '';
       const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
-        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, or web track URL"><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove Track</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, or other web track links. Refresh Spotify updates title, artist, album, artwork, release year, duration, Spotify ID, and ISRC for Spotify tracks. use the floating Save button to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, Apple Music, or web track URL"><div class="track-card-manual-meta"><input type="text" data-track-title-input placeholder="Override title if YouTube/Apple title is messy"><input type="text" data-track-artist-input placeholder="Override artist/channel if needed"></div><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove from genre</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, Apple Music, or web track links. Optional title/artist overrides replace messy YouTube or Apple metadata. Use the floating Save button to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
@@ -2928,7 +2940,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             </div>
            </div>`
         : '';
-      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${canShowTrackTools ? `<button type="button" class="song-remove-btn" title="Remove track" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}${savedSongNoteHtml}${pendingSongNoteHtml}${reactionHtml}${noteEditorHtml}${trackEditHtml}${levelUpHtml}</div>`;
+      return `<div class="song-card ${isChild ? 'song-card-alt' : ''} ${s.isAdd ? 'song-card-add' : (s.isPromote ? 'song-card-promote' : '')} ${s.isPending ? 'song-card-pending' : ''} ${(!isChild && s.score != null && Number(s.score) <= 2) ? 'song-card-dim' : ''} ${(!isChild && !s.isPending && currentGenre && normalizeSongUrl(currentGenre.favoritesongurl||'') === rawUrl) ? 'song-card-favorite' : ''}">${addBadge}<div class="song-card-row ${showArtwork ? '' : 'no-art'}">${art}<div style="min-width:0;">${titleHtml}${songArtistLine(s)}</div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">${scoreBadge}${favBtn}${canShowTrackTools ? `<button type="button" class="song-remove-btn" title="Remove from genre" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}</div></div>${reasonHtml}${releaseNote}${promotedNote}${pendingNote}${savedSongNoteHtml}${pendingSongNoteHtml}${reactionHtml}${noteEditorHtml}${trackEditHtml}${levelUpHtml}</div>`;
     }
     function buildDiscordBlock() {
       if (!currentGenre) return '';
@@ -7163,8 +7175,125 @@ async function loadData() {
       showSaveToast('Spotify metadata updated — save library updates to persist it.', false);
       }
 
-  function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
-      if (!window.confirm('Permanently delete this track from its genre? This cannot be undone until you reload without saving.')) return;
+  function hardDeleteTargetDisplayKey(song) {
+      const title = String(song?.title || song?.name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+      const artist = String(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(' ') : '') || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+      if (title && artist) return `artist-title:${artist}::${title}`;
+      const spotifyId = String(song?.spotifyId || '').trim().toLowerCase();
+      if (spotifyId) return `spotify:${spotifyId}`;
+      const url = String(normalizeSongUrl(song?.spotifyUrl || song?.url || '') || '').trim().toLowerCase();
+      if (url) return `url:${url}`;
+      return String(songIdentity(song) || '').trim().toLowerCase();
+    }
+
+    function hardDeleteTargetMatches(song, target) {
+      if (!song || !target) return false;
+      const rawKey = String(target.key || target.displayKey || '').trim().toLowerCase();
+      if (rawKey) {
+        if (songsIdentityMatch(song, rawKey)) return true;
+        if (hardDeleteTargetDisplayKey(song) === rawKey) return true;
+      }
+      if (songsIdentityMatch(song, target)) return true;
+      const display = String(target.displayKey || '').trim().toLowerCase();
+      if (display && hardDeleteTargetDisplayKey(song) === display) return true;
+      const targetUrl = String(normalizeSongUrl(target.spotifyUrl || target.url || '') || '').trim().toLowerCase();
+      const songUrl = String(normalizeSongUrl(song.spotifyUrl || song.url || '') || '').trim().toLowerCase();
+      if (targetUrl && songUrl && targetUrl === songUrl) return true;
+      const targetIsrc = String(target.isrc || '').trim().toLowerCase();
+      if (targetIsrc && String(song.isrc || '').trim().toLowerCase() === targetIsrc) return true;
+      const targetSpotify = String(target.spotifyId || '').trim().toLowerCase();
+      if (targetSpotify && String(song.spotifyId || '').trim().toLowerCase() === targetSpotify) return true;
+      return false;
+    }
+
+    function hardDeleteFavoriteIfNeeded(genre, targets) {
+      if (!genre || !Array.isArray(targets)) return;
+      const favoriteProbe = {
+        title: genre.favoritesong || genre.favorite_song || '',
+        artist: genre.favoriteartist || '',
+        url: genre.favoritesongurl || genre.favorite_song_url || '',
+      };
+      if (!favoriteProbe.title && !favoriteProbe.url) return;
+      if (!targets.some(target => hardDeleteTargetMatches(favoriteProbe, target))) return;
+      genre.favoritesong = '';
+      genre.favoritesongurl = '';
+      genre.favorite_song = '';
+      genre.favorite_song_url = '';
+      genre.favoriteartist = '';
+      genre.favoritesongartwork = '';
+    }
+
+    function hardDeleteSongEverywhere(targetsInput, options = {}) {
+      const targets = (Array.isArray(targetsInput) ? targetsInput : [targetsInput]).filter(Boolean);
+      if (!targets.length) return { deleted: 0, genresTouched: 0 };
+      let deleted = 0;
+      let levelUpsDeleted = 0;
+      let pendingDeleted = 0;
+      let genresTouched = 0;
+      let currentGenreTouched = false;
+      (genres || []).forEach(genre => {
+        let touched = false;
+        const songs = inflateSongsFromStorage(genre.songs_listened || []);
+        const kept = [];
+        songs.forEach(song => {
+          if (targets.some(target => hardDeleteTargetMatches(song, target))) {
+            deleted += 1;
+            touched = true;
+            return;
+          }
+          if (song?.levelUp && targets.some(target => hardDeleteTargetMatches(song.levelUp, target))) {
+            song.levelUp = null;
+            deleted += 1;
+            levelUpsDeleted += 1;
+            touched = true;
+          }
+          kept.push(song);
+        });
+        const pending = Array.isArray(genre.pending_songs) ? genre.pending_songs : [];
+        const pendingKept = pending.filter(song => {
+          const match = targets.some(target => hardDeleteTargetMatches(song, target));
+          if (match) {
+            pendingDeleted += 1;
+            deleted += 1;
+            touched = true;
+          }
+          return !match;
+        });
+        if (touched) {
+          genre.songs_listened = kept;
+          genre.pending_songs = pendingKept;
+          hardDeleteFavoriteIfNeeded(genre, targets);
+          genresTouched += 1;
+          if (currentGenre && String(currentGenre.id) === String(genre.id)) {
+            currentGenre = genre;
+            currentGenreTouched = true;
+          }
+        }
+      });
+      if (!deleted) return { deleted: 0, levelUpsDeleted, pendingDeleted, genresTouched: 0 };
+      libraryUpdatesPending = true;
+      if (typeof toggleLibrarySaveButton === 'function') toggleLibrarySaveButton(true);
+      if (typeof setUnsavedState === 'function') setUnsavedState(true);
+      if (currentGenreTouched) {
+        try { if (typeof syncSongsBulkEditorFromModel === 'function') syncSongsBulkEditorFromModel(); } catch (_) {}
+        try { if (typeof enhanceSongListeningExperience === 'function') enhanceSongListeningExperience(); } catch (_) {}
+      }
+      if (options.renderStudio && typeof renderReview === 'function') {
+        const restore = typeof preserveScrollSnapshot === 'function' ? preserveScrollSnapshot() : null;
+        renderReview();
+        if (restore) restore();
+      }
+      if (typeof renderVisuals === 'function' && options.renderVisuals) {
+        const restore = typeof preserveScrollSnapshot === 'function' ? preserveScrollSnapshot() : null;
+        renderVisuals();
+        if (restore) restore();
+      }
+      return { deleted, levelUpsDeleted, pendingDeleted, genresTouched };
+    }
+    window.hardDeleteSongEverywhere = hardDeleteSongEverywhere;
+
+    function deleteFromMetadataQueue(encodedGenreId, encodedKey, mountId) {
+      if (!window.confirm('Permanently delete this track from this genre? Use Delete everywhere in Studio to remove every copy everywhere. This cannot be undone until you reload without saving.')) return;
       const genreId = decodeURIComponent(encodedGenreId || '');
       const key = decodeURIComponent(encodedKey || '');
       const genre = genres.find(g => String(g.id) === String(genreId));
@@ -7180,7 +7309,7 @@ async function loadData() {
       libraryUpdatesPending = true;
       toggleLibrarySaveButton(true);
       setUnsavedState(true);
-      showSaveToast('Track deleted — click Save Library Updates to persist.', false);
+      showSaveToast('Track deleted from this genre — click Save Library Updates to persist.', false);
       const metaDetailsOpen = !!document.getElementById(mountId)?.querySelector('details.viz-queue-fold')?.open;
       const restore = preserveScrollSnapshot();
       renderVisuals();

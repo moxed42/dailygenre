@@ -10254,3 +10254,35 @@ textarea[data-dg-identity-textarea="1"] {
   transform: translateY(-1px) scale(1.02);
   outline: none;
 }
+
+
+/* === v181: manual artist/title overrides for external links === */
+.track-card-manual-meta,
+.studio-repair-manual-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.track-card-manual-meta input,
+.studio-repair-manual-meta input {
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 6px 10px !important;
+  border-radius: 12px !important;
+  font-size: 0.82rem !important;
+  background: color-mix(in srgb, var(--surface, #fff4dc) 70%, white) !important;
+}
+
+.song-focus-manual-meta {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 680px) {
+  .track-card-manual-meta,
+  .studio-repair-manual-meta {
+    grid-template-columns: 1fr;
+  }
+}
