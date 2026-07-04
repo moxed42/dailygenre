@@ -537,6 +537,9 @@
       libraryUpdatesPending = true;
     } catch (_) {}
     try {
+      if (typeof window.toggleLibrarySaveButton === "function") window.toggleLibrarySaveButton(true);
+    } catch (_) {}
+    try {
       if (typeof window.renderFloatingListeningSave === "function")
         window.renderFloatingListeningSave();
     } catch (_) {}
@@ -545,6 +548,9 @@
         message || "Rank changes pending. Save Library Updates to persist.",
         false,
       );
+    try {
+      if (typeof window.promptLibrarySaveLogin === "function" && !(typeof window.dailyGenreHasSavePassword === "function" && window.dailyGenreHasSavePassword())) window.promptLibrarySaveLogin();
+    } catch (_) {}
   }
 
   function rankedVisibleForCopy() {
@@ -919,6 +925,7 @@
     try { if (typeof window.toggleLibrarySaveButton === "function") window.toggleLibrarySaveButton(true); } catch (_) {}
     try { if (typeof window.renderFloatingListeningSave === "function") window.renderFloatingListeningSave(); } catch (_) {}
     try { if (typeof window.showSaveToast === "function") window.showSaveToast(message, false); } catch (_) {}
+    try { if (typeof window.promptLibrarySaveLogin === "function" && !(typeof window.dailyGenreHasSavePassword === "function" && window.dailyGenreHasSavePassword())) window.promptLibrarySaveLogin(); } catch (_) {}
   }
 
   function toggle(id) {
@@ -1170,6 +1177,7 @@
     try { if (typeof window.toggleLibrarySaveButton === "function") window.toggleLibrarySaveButton(true); } catch (_) {}
     try { if (typeof window.renderFloatingListeningSave === "function") window.renderFloatingListeningSave(); } catch (_) {}
     try { if (typeof window.showSaveToast === "function") window.showSaveToast(message, false); } catch (_) {}
+    try { if (typeof window.promptLibrarySaveLogin === "function" && !(typeof window.dailyGenreHasSavePassword === "function" && window.dailyGenreHasSavePassword())) window.promptLibrarySaveLogin(); } catch (_) {}
   }
 
   function tierItems(list, rating) {

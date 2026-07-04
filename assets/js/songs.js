@@ -20,6 +20,24 @@
       : String(value == null ? "" : value);
   }
 
+  function songTitleWithMetaMarkup(value) {
+    const text = String(value || '').trim();
+    if (!text) return '';
+    const metaWords = '(?:b\s*[-–—]?\s*side|remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+|anniversary|concert|soundtrack|ost|\b(?:19|20)\d{2}\b|dino synth|dungeon synth)';
+    const patterns = [
+      /^(.*?)(\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\])(?:\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\]))+\s*)$/i,
+      new RegExp('^(.*?)(\\s*(?:\\([^)]*' + metaWords + '[^)]*\\)|\\[[^\\]]*' + metaWords + '[^\\]]*\\])\\s*)$', 'i'),
+      new RegExp('^(.*?)(\\s+(?:-|–|—)\\s*' + metaWords + '\\b.*)$', 'i'),
+    ];
+    for (const re of patterns) {
+      const match = text.match(re);
+      if (match && match[1] && match[2] && match[1].trim().length >= 2) {
+        return `${html(match[1].trim())}<span class="song-title-edition">${html(match[2].trim())}</span>`;
+      }
+    }
+    return html(text);
+  }
+
   function looseSongText(value) {
     return String(value || "")
       .normalize("NFD")
@@ -634,6 +652,7 @@
     const href = spotifyHref(song);
     const hasHref = /^https?:\/\//i.test(href);
     const title = song.title || (hasHref ? "Linked track" : "Track");
+    const titleMarkup = songTitleWithMetaMarkup(title);
     const art = song.artwork || song.albumArt || "";
     const artStyle = art
       ? ` style="--song-focus-art:url('${html(art).replace(/'/g, "%27")}')"`
@@ -666,7 +685,7 @@
       </div>
       <div class="song-focus-main">
         <div class="song-focus-kicker">Now Listening · ${songTypeBadge(entry)}</div>
-        <h3 class="song-focus-title">${hasHref ? `<a href="${html(href)}" target="_blank" rel="noopener noreferrer">${html(title)} <span class="song-link-arrow">↗</span></a>` : html(title)}</h3>
+        <h3 class="song-focus-title">${hasHref ? `<a href="${html(href)}" target="_blank" rel="noopener noreferrer">${titleMarkup} <span class="song-link-arrow">↗</span></a>` : titleMarkup}</h3>
         ${subline ? `<div class="song-focus-subline">${html(subline)}</div>` : ""}
         ${relation}
         ${reason ? `<p class="song-focus-reason">${html(reason)}</p>` : ""}
@@ -686,12 +705,6 @@
       /[!'()*]/g,
       (ch) => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`,
     );
-    const pendingSongNote = safeCall(
-      () => pendingSongNoteFor(currentGenre, song, entry.path, -1),
-      "",
-    );
-    const savedNote = song.listenerNote || song.songNote || "";
-    const noteValue = pendingSongNote || savedNote || "";
     const trackUrl = safeCall(
       () => normalizeSongUrl(song.spotifyUrl || song.url || ""),
       song.spotifyUrl || song.url || "",
@@ -704,38 +717,35 @@
     if (song.isrc) meta.push(`ISRC: ${song.isrc}`);
     if (song.releaseDate) meta.push(`Release: ${song.releaseDate}`);
     if (song.releaseSource) meta.push(`Source: ${song.releaseSource}`);
-    return `<section class="song-focus-details-drawer song-note-editor">
+    return `<section class="song-focus-details-drawer song-focus-details-compact">
       <div class="song-focus-details-head">
         <div>
           <div class="eyebrow">Song details</div>
-          <h3>${html(song.title || "Selected song")}</h3>
+          <h3>${songTitleWithMetaMarkup(song.title || "Selected song")}</h3>
         </div>
-        <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
+        <div class="song-focus-details-actions">
+          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Delete song</button>
+          <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
+        </div>
       </div>
-      <div class="song-focus-details-grid">
+      <div class="song-focus-details-grid compact">
         <div class="song-focus-detail-card song-focus-fit-card">
+          <button type="button" class="song-focus-pencil-btn" onclick="if (typeof openStudioMode === 'function') openStudioMode(); else if (typeof toggleDetailEditMode === 'function') toggleDetailEditMode();" title="Edit reason" aria-label="Edit reason">✎</button>
           <h4>Why this song fits</h4>
           <p>${song.reason ? html(song.reason) : "No fit note yet."}</p>
-          <div class="song-focus-edit-helper">
-            <button type="button" class="btn btn-secondary btn-tiny" onclick="if (typeof openStudioMode === 'function') openStudioMode(); else if (typeof toggleDetailEditMode === 'function') toggleDetailEditMode();">Edit fit reason</button>
-          </div>
         </div>
-        <div class="song-focus-detail-card compact song-focus-url-card">
+        <div class="song-focus-detail-card song-focus-url-card">
           <h4>Track URL</h4>
           <div class="song-focus-url-row">
             <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify track URL">
-            <button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply URL / Refresh</button>
+            <button type="button" class="btn btn-primary btn-tiny" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply / Refresh</button>
           </div>
-          <p class="song-focus-helper">Applying the URL refreshes Spotify artwork and metadata.</p>
         </div>
-        <div class="song-focus-detail-card compact song-focus-meta-card">
+        <div class="song-focus-detail-card song-focus-meta-card">
           <h4>Metadata</h4>
           <p>${meta.length ? html(meta.join(" · ")) : "No extra metadata available."}</p>
         </div>
-        <div class="song-focus-detail-card compact song-focus-delete-card">
-          <h4>Delete song</h4>
-          <button type="button" class="btn btn-danger btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Delete song</button>
-        </div>
+
       </div>
     </section>`;
   }

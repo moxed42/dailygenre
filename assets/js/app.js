@@ -181,6 +181,18 @@
         }, 20);
       }
 
+      if (name === 'history' && !options.skipRender) {
+        setTimeout(() => {
+          if (typeof renderHistory === 'function') renderHistory();
+        }, 0);
+      }
+
+      if (name === 'ranking' && !options.skipRender) {
+        setTimeout(() => {
+          if (typeof renderRankings === 'function') renderRankings();
+        }, 0);
+      }
+
       const screen = document.getElementById(`screen-${name}`);
       if (!screen) return false;
 
@@ -771,16 +783,111 @@
       return embed ? embed[1] : '';
     }
 
+    function isAppleMusicUrl(url='') {
+      return /(?:music\.apple\.com|itunes\.apple\.com|geo\.music\.apple\.com)\//i.test(normalizeSongUrl(url || ''));
+    }
+
+    function appleMusicTrackId(url='') {
+      const value = normalizeSongUrl(url || '');
+      const iMatch = value.match(/[?&]i=(\d{6,})/);
+      if (iMatch) return iMatch[1];
+      const matches = Array.from(value.matchAll(/\/(\d{6,})(?:[/?#]|$)/g)).map((m) => m[1]);
+      return matches.length ? matches[matches.length - 1] : '';
+    }
+
+    function youTubePlaceholderIcon() {
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" rx="18" fill="#f4e4c6"/><rect x="18" y="28" width="60" height="40" rx="10" fill="#c4302b"/><path d="M43 38v20l18-10z" fill="#fff"/></svg>');
+    }
+
+    async function fetchYouTubeTrackMetadata(url='') {
+      const id = youtubeVideoId(url);
+      const fallbackThumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : youTubePlaceholderIcon();
+      const metadata = { source: 'youtube', url, artwork: fallbackThumb, albumArt: fallbackThumb, title: '', artist: '' };
+      try {
+        const response = await fetch(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data?.title) metadata.title = data.title;
+          if (data?.author_name) metadata.artist = data.author_name;
+          if (data?.thumbnail_url) {
+            metadata.artwork = data.thumbnail_url;
+            metadata.albumArt = data.thumbnail_url;
+          }
+        }
+      } catch (_) {}
+      return metadata;
+    }
+
+    async function fetchAppleMusicTrackMetadata(url='') {
+      const id = appleMusicTrackId(url);
+      const metadata = { source: 'apple', url, title: '', artist: '', album: '', artwork: '', albumArt: '' };
+      if (!id) return metadata;
+      try {
+        const response = await fetch(`https://itunes.apple.com/lookup?id=${encodeURIComponent(id)}&entity=song`);
+        if (response.ok) {
+          const data = await response.json();
+          const item = Array.isArray(data?.results) ? (data.results.find((r) => r.wrapperType === 'track') || data.results[0]) : null;
+          if (item) {
+            metadata.title = item.trackName || item.collectionName || '';
+            metadata.artist = item.artistName || '';
+            metadata.album = item.collectionName || '';
+            metadata.artwork = String(item.artworkUrl100 || '').replace(/100x100bb\./, '600x600bb.');
+            metadata.albumArt = metadata.artwork;
+            metadata.releaseDate = item.releaseDate || '';
+            metadata.releaseYear = item.releaseDate ? Number(String(item.releaseDate).slice(0, 4)) || null : null;
+            metadata.durationMs = Number(item.trackTimeMillis || 0) || null;
+            metadata.itunesTrackUrl = item.trackViewUrl || url;
+            metadata.itunesTrackId = String(item.trackId || id || '');
+          }
+        }
+      } catch (_) {}
+      return metadata;
+    }
+
+    async function fetchExternalTrackMetadata(url='') {
+      if (isYoutubeUrl(url)) return fetchYouTubeTrackMetadata(url);
+      if (isAppleMusicUrl(url)) return fetchAppleMusicTrackMetadata(url);
+      return { source: 'web', url };
+    }
+
+    function applyExternalTrackMetadata(song, url='', metadata={}, savedTitle='', savedArtist='') {
+      if (!song) return;
+      const kind = metadata.source || (isYoutubeUrl(url) ? 'youtube' : (isAppleMusicUrl(url) ? 'apple' : 'web'));
+      song.url = metadata.url || url;
+      song.source = kind;
+      song.spotifyId = '';
+      song.spotifyUrl = '';
+      song.spotifyMetadataFetched = false;
+      song.spotifyMetadataFetchedAt = '';
+      song.isrc = '';
+      if (metadata.title) song.title = metadata.title;
+      else song.title = savedTitle || song.title || (kind === 'youtube' ? 'YouTube track' : (kind === 'apple' ? 'Apple Music track' : 'Track'));
+      if (metadata.artist) song.artist = metadata.artist;
+      else song.artist = savedArtist || song.artist || '';
+      song.artists = song.artist ? [song.artist] : [];
+      song.album = metadata.album || '';
+      song.artwork = metadata.artwork || metadata.albumArt || (kind === 'youtube' ? youTubePlaceholderIcon() : '');
+      song.albumArt = metadata.albumArt || metadata.artwork || song.artwork || '';
+      song.releaseDate = metadata.releaseDate || '';
+      song.releaseYear = metadata.releaseYear || null;
+      song.releaseSource = kind === 'apple' ? 'Apple/iTunes' : (kind === 'youtube' ? 'YouTube' : '');
+      song.durationMs = metadata.durationMs || null;
+      if (metadata.itunesTrackUrl) song.itunesTrackUrl = metadata.itunesTrackUrl;
+      if (metadata.itunesTrackId) song.itunesTrackId = metadata.itunesTrackId;
+    }
+
     function songUrlSource(url='') {
       const value = normalizeSongUrl(url);
       if (/spotify\.com\/track\//i.test(value) || /^spotify:track:/i.test(value)) return 'spotify';
       if (isYoutubeUrl(value)) return 'youtube';
+      if (isAppleMusicUrl(value)) return 'apple';
       return value ? 'web' : 'manual';
     }
 
     function sourceBadgeHtml(source='') {
       const key = String(source || '').toLowerCase();
       if (key === 'youtube') return '<span class="song-source-badge youtube">YouTube</span>';
+      if (key === 'apple' || key === 'itunes') return '<span class="song-source-badge web">Apple</span>';
       if (key === 'web' || key === 'other') return '<span class="song-source-badge web">Web</span>';
       return '';
     }
@@ -1026,12 +1133,14 @@
     function renderGenreRatingPanel(genre) {
       if (!genre) return '';
       const active = String(genre.rating || '');
+      const inProgress = ['in_progress','in-progress'].includes(String(genre.status || '').toLowerCase()) && !active;
       return `<div class="view-rating-panel">
         <div class="view-rating-head">
           <div><div class="eyebrow" style="margin:0;">Genre Rating</div><div class="small">Listening action — available outside Setup Editor.</div></div>
           ${libraryUpdatesPending ? '<span class="inline-listening-save-hint">● Unsaved</span>' : ''}
         </div>
         <div class="view-rating-stars" aria-label="Genre rating controls">
+          <button type="button" class="view-rating-zanger view-rating-progress ${inProgress ? 'active' : ''}" onclick="setGenreInProgressFromView()" title="Mark in progress for today" aria-label="Mark in progress for today">⏳</button>
           ${[1,2,3,4,5].map(n => `<button type="button" class="view-rating-star ${active === String(n) ? 'active' : ''}" onclick="setGenreRatingFromView(${n})" title="${escapeHtml(genreRatingLabel(n))}" aria-label="${n} stars, ${escapeHtml(genreRatingLabel(n))}">★</button>`).join('')}
           <button type="button" class="view-rating-zanger ${active === 'zanger' ? 'active' : ''}" onclick="setGenreRatingFromView('zanger')" title="Zanger">Zanger</button>
         </div>
@@ -1072,6 +1181,15 @@
         return;
       }
       const overwriteSongs = !!options.overwriteSongs;
+      const previousFocusKey = (() => {
+        try {
+          return currentGenre
+            ? (localStorage.getItem(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`) || '')
+            : '';
+        } catch (_) {
+          return '';
+        }
+      })();
       const oldText = button?.textContent || '';
       if (button) {
         button.disabled = true;
@@ -1080,6 +1198,18 @@
       }
       try {
         await prepareAndSaveCurrentGenre({ overwriteSongs });
+        if (previousFocusKey) {
+          try {
+            if (currentGenre) {
+              localStorage.setItem(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`, previousFocusKey);
+            }
+            if (typeof setSongFocus === 'function') {
+              setTimeout(() => setSongFocus(previousFocusKey), 0);
+            } else if (typeof window.enhanceSongListeningExperience === 'function') {
+              setTimeout(() => window.enhanceSongListeningExperience(), 0);
+            }
+          } catch (_) {}
+        }
       } finally {
         if (button && document.body.contains(button)) {
           button.disabled = false;
@@ -1146,6 +1276,23 @@
       }
     }
 
+    function setGenreInProgressFromView() {
+      if (!currentGenre) return;
+      setListenDateTodayIfNeeded(currentGenre);
+      currentGenre.status = 'in_progress';
+      currentGenre.rating = '';
+      currentGenre.rank_order = null;
+      selectedRating = '';
+      markListeningUpdatePending();
+      const restore = preserveScrollSnapshot();
+      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
+      applyDetailEditMode(detailEditMode);
+      restore();
+      showSaveToast('Moved back to in progress — use the floating Save button to persist it.', false);
+      if (!appPassword) promptLibrarySaveLogin();
+    }
+    window.setGenreInProgressFromView = setGenreInProgressFromView;
+
     function setGenreRatingFromView(value) {
       if (!currentGenre) return;
       if (String(value) === 'zanger') {
@@ -1171,6 +1318,7 @@
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
       showSaveToast('Genre rating updated — use the floating Save button to persist it.', false);
+      if (!appPassword) promptLibrarySaveLogin();
     }
 
     function makeSongFavorite(encodedKey) {
@@ -2350,42 +2498,11 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           } catch (identityError) {
             console.warn('Could not sync queue URL overwrite back to Genre DNA', identityError);
           }
-        } else if (isYoutubeUrl(nextUrl)) {
-          target.url = nextUrl;
-          target.artwork = '';
-          target.albumArt = '';
-          target.releaseDate = '';
-          target.releaseYear = null;
-          target.releaseSource = '';
-          target.source = 'youtube';
-          target.spotifyId = '';
-          target.spotifyUrl = '';
-          target.spotifyMetadataFetched = false;
-          target.spotifyMetadataFetchedAt = '';
-          target.album = '';
-          target.artists = [];
-          target.durationMs = null;
-          target.isrc = '';
-          target.title = savedTitle || target.title || 'YouTube track';
-          target.artist = savedArtist || target.artist || '';
+        } else if (isYoutubeUrl(nextUrl) || isAppleMusicUrl(nextUrl)) {
+          const externalMetadata = await fetchExternalTrackMetadata(nextUrl);
+          applyExternalTrackMetadata(target, nextUrl, externalMetadata, savedTitle, savedArtist);
         } else {
-          target.url = nextUrl;
-          target.artwork = '';
-          target.albumArt = '';
-          target.releaseDate = '';
-          target.releaseYear = null;
-          target.releaseSource = '';
-          target.source = 'web';
-          target.spotifyId = '';
-          target.spotifyUrl = '';
-          target.spotifyMetadataFetched = false;
-          target.spotifyMetadataFetchedAt = '';
-          target.album = '';
-          target.artists = [];
-          target.durationMs = null;
-          target.isrc = '';
-          target.title = savedTitle || target.title || 'Track';
-          target.artist = savedArtist || target.artist || '';
+          applyExternalTrackMetadata(target, nextUrl, { source: 'web', url: nextUrl }, savedTitle, savedArtist);
         }
 
         target.levelUp = nestedLevelUp;
@@ -2697,10 +2814,12 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
     function songTitleWithEditionMarkup(value) {
       const text = String(value || '').trim();
       if (!text) return '';
+      const metaWords = '(?:b\s*[-–—]?\s*side|remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+|anniversary|concert|soundtrack|ost|mono|stereo|\b(?:19|20)\d{2}\b|dino synth|dungeon synth)';
       const patterns = [
-        /^(.*?)(\s+(?:-|–|—)\s*(?:remaster(?:ed)?|\d{4}\s+remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+)\b.*)$/i,
-        /^(.*?)(\s*\((?:[^)]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+)[^)]*)\)\s*)$/i,
-        /^(.*?)(\s*\[(?:[^\]]*(?:remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+)[^\]]*)\]\s*)$/i,
+        // Multiple trailing parentheticals/brackets are almost always metadata: (B-Side) (2019) (Dino Synth, Dungeon Synth).
+        /^(.*?)(\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\])(?:\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\]))+\s*)$/i,
+        new RegExp('^(.*?)(\\s*(?:\\([^)]*' + metaWords + '[^)]*\\)|\\[[^\\]]*' + metaWords + '[^\\]]*\\])\\s*)$', 'i'),
+        new RegExp('^(.*?)(\\s+(?:-|–|—)\\s*' + metaWords + '\\b.*)$', 'i'),
       ];
       for (const re of patterns) {
         const match = text.match(re);
@@ -2788,19 +2907,23 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
     }
     function buildDiscordBlock() {
       if (!currentGenre) return '';
-      const includeSongs = document.getElementById('includeSongsToggle').checked;
+      const includeSongs = !!document.getElementById('includeSongsToggle')?.checked;
       const rawDate = dateValue(currentGenre) || new Date().toISOString().slice(0,10);
       const dateStr = new Date(rawDate + 'T00:00:00').toLocaleDateString('en-US', {month:'2-digit',day:'2-digit',year:'2-digit'});
-      let text = `Today's Genre (${dateStr}) is..... **${String(currentGenre.genre || 'UNKNOWN').toUpperCase()}**\n\n`;
-      if (currentGenre.vibe) text += `${genreEmoji(currentGenre)} *Vibe: ${currentGenre.vibe}*\n\n`;
-      if (currentGenre.summary) text += `${currentGenre.summary}\n\n`;
-      if (currentGenre.key_artists) text += `🎤 Key Artists: ${currentGenre.key_artists}`;
+      const lines = [];
+      lines.push(`Today's Genre (${dateStr}) is..... **${String(currentGenre.genre || 'UNKNOWN').toUpperCase()}**`);
+      if (currentGenre.vibe) lines.push(`${genreEmoji(currentGenre)} *Vibe: ${currentGenre.vibe}*`);
+      if (currentGenre.summary) lines.push(String(currentGenre.summary).trim());
+      if (currentGenre.key_artists) lines.push(`🎤 Key Artists: ${currentGenre.key_artists}`);
+      const categoryText = currentGenre.category_path || categoryLine(currentGenre);
+      if (categoryText) lines.push(`🗂️ ${categoryText}`);
       if (includeSongs && currentGenre.suggested_songs) {
-        const songs = currentGenre.suggested_songs.split(',').map(s => s.trim()).filter(Boolean);
-        text += `\n\n🎶 Suggested Songs:\n` + songs.map(s => `• ${s}`).join('\n');
+        const songs = String(currentGenre.suggested_songs).split(',').map(s => s.trim()).filter(Boolean);
+        if (songs.length) lines.push(`🎶 Suggested Songs:\n${songs.map(s => `• ${s}`).join('\n')}`);
       }
-      return text.trim();
+      return lines.filter(Boolean).join('\n\n').trim();
     }
+    window.buildDiscordBlock = buildDiscordBlock;
 
     function mountDiscordShareSection() {
       const share = document.getElementById('shareSection');
@@ -3042,6 +3165,8 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         genre.date_raw ||
         genre.dateraw ||
         status === 'listened' ||
+        status === 'in_progress' ||
+        status === 'in-progress' ||
         status === 'veto' ||
         status === 'zanger' ||
         rating === 'zanger' ||
@@ -3248,6 +3373,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
               <div class="status-row">
                 ${ratingHero}
                 ${listenedDate ? `<span class="tag">Listened on ${escapeHtml(listenedDate)}</span>` : (hasListenMarkers ? '<span class="tag tag-warn">Marked listened — reset if mistaken</span>' : '')}
+                ${['in_progress','in-progress'].includes(String(genre.status || '').toLowerCase()) ? '<span class="tag tag-pending">⏳ In progress</span>' : ''}
                 ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
                 ${hasPending(genre) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
@@ -3329,6 +3455,18 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       pendingSaveAction = null;
       passwordNotice.textContent = '';
     }
+
+    function dailyGenreHasSavePassword() {
+      return Boolean(appPassword);
+    }
+
+    function promptLibrarySaveLogin() {
+      if (!appPassword) openPasswordModal('library_save');
+      return Boolean(appPassword);
+    }
+
+    window.dailyGenreHasSavePassword = dailyGenreHasSavePassword;
+    window.promptLibrarySaveLogin = promptLibrarySaveLogin;
 
     async function refreshServerFileSha() {
       if (serverFileSha) return serverFileSha;
@@ -5490,9 +5628,15 @@ function blockSaveIfDuplicateGenres() {
       if (flag === 'album-dive') {
         items = genres.filter(g => genreHasAlbumDiveContent(g));
         label = 'Genres with Album Dive';
+      } else if (flag === 'unlistened') {
+        items = genres.filter(g => {
+          const status = String(g.status || '').toLowerCase();
+          return !dateValue(g) && (!status || status === 'unlistened');
+        });
+        label = 'Unlistened genres';
       }
 
-      if (effectiveMonth && archiveView !== 'monthly' && flag !== 'album-dive') items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
+      if (effectiveMonth && archiveView !== 'monthly' && flag !== 'album-dive' && flag !== 'unlistened') items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
       if (rating) items = items.filter(g => String(g.rating || '') === rating);
 
       if (flag === 'contender') items = items.filter(g => !!g.monthlycontender);
@@ -6067,8 +6211,6 @@ async function loadData() {
         const name = btn.dataset.screen;
         const ok = switchScreen(name);
         if (!ok) return;
-        if (name === 'history') setTimeout(renderHistory, 0);
-        if (name === 'ranking') setTimeout(renderRankings, 0);
       });
     });
 
@@ -6110,7 +6252,9 @@ async function loadData() {
     });
 
     document.getElementById('copyDiscordBtn').addEventListener('click', async () => {
-      await navigator.clipboard.writeText(document.getElementById('discordBlock').value);
+      updateDiscordBlock();
+      await navigator.clipboard.writeText(buildDiscordBlock());
+      showSaveToast('Copied Discord genre details.', false);
     });
     document.getElementById('saveBtn').addEventListener('click', async () => {
       if (typeof setLibrarySaveBusy === 'function') setLibrarySaveBusy(true);
@@ -7357,7 +7501,12 @@ async function loadData() {
         stagedQueueReactionKeys.clear();
         toggleLibrarySaveButton(false);
         setUnsavedState(false);
-        { const restore = preserveScrollSnapshot(); renderVisuals(); restore(); }
+        const activeScreenId = document.querySelector('.screen.active')?.id || '';
+        if (activeScreenId === 'screen-viz') {
+          const restore = preserveScrollSnapshot();
+          renderVisuals();
+          restore();
+        }
         if (currentGenre && document.getElementById('screen-listen')?.classList.contains('active')) {
           const restore = preserveScrollSnapshot();
           loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });

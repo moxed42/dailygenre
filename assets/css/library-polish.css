@@ -10058,3 +10058,135 @@ textarea[data-dg-identity-textarea="1"] {
   font-weight: 950 !important;
   font-family: inherit !important;
 }
+
+
+/* === v171: faster nav polish + compact song-details drawer === */
+#screen-listen.listen-experience-mode .song-focus-details-drawer.song-focus-details-compact {
+  padding: 12px !important;
+  border-radius: 20px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact {
+  grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr) !important;
+  gap: 9px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-detail-card {
+  padding: 11px 12px !important;
+  border-radius: 15px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-detail-card h4 {
+  margin-bottom: 5px !important;
+  font-size: 0.73rem !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-detail-card p {
+  font-size: 0.86rem !important;
+  line-height: 1.34 !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-url-row {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-url-row input {
+  min-height: 36px !important;
+  height: 36px !important;
+  padding: 7px 10px !important;
+  border-radius: 12px !important;
+  font-size: 0.86rem !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-url-row .btn,
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .btn-tiny {
+  min-height: 34px !important;
+  padding: 7px 10px !important;
+  border-radius: 12px !important;
+  font-size: 0.76rem !important;
+  white-space: nowrap !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-meta-card,
+#screen-listen.listen-experience-mode .song-focus-details-grid.compact .song-focus-delete-card {
+  grid-column: auto !important;
+}
+
+@media (max-width: 760px) {
+  #screen-listen.listen-experience-mode .song-focus-details-grid.compact {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* === v172: title metadata demotion + compact song details delete === */
+.song-title-edition,
+.song-focus-title .song-title-edition,
+.song-title-link .song-title-edition {
+  display: inline;
+  margin-left: 0.26em;
+  color: color-mix(in srgb, var(--muted, #735a3c) 84%, var(--text, #22160d));
+  font-size: 0.74em;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.song-focus-title .song-title-edition {
+  font-size: 0.56em;
+  vertical-align: baseline;
+}
+.song-focus-details-head {
+  align-items: flex-start;
+}
+.song-focus-details-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.song-focus-delete-inline.btn {
+  min-height: 30px;
+  padding: 6px 10px !important;
+}
+.song-focus-details-grid.compact .song-focus-delete-card {
+  display: none !important;
+}
+@media (max-width: 680px) {
+  .song-focus-details-actions {
+    justify-content: flex-start;
+  }
+}
+
+
+/* === v173: compact song-detail edit control + focus preservation === */
+#screen-listen.listen-experience-mode .song-focus-fit-card {
+  position: relative !important;
+  padding-right: 44px !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-pencil-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border, #b98e55) 60%, transparent);
+  background: color-mix(in srgb, var(--accent-soft, #ffe0a1) 58%, white);
+  color: var(--accent-dark, #7a4714);
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.86rem;
+  font-weight: 950;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#screen-listen.listen-experience-mode .song-focus-pencil-btn:hover,
+#screen-listen.listen-experience-mode .song-focus-pencil-btn:focus-visible {
+  background: color-mix(in srgb, var(--accent, #d98d25) 28%, white);
+  outline: none;
+}

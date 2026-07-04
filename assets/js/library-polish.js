@@ -122,7 +122,12 @@
       return false;
     }
 
-    const today = todaysLoggedGenres()[0];
+    const todayItems = todaysLoggedGenres();
+    const today = todayItems.find((genre) => {
+      const status = safeText(genre && genre.status).toLowerCase();
+      const rating = safeText(genre && genre.rating).toLowerCase();
+      return status !== 'veto' && rating !== 'zanger';
+    }) || todayItems[0];
     if (today) return openGenre(today, `Opened today: ${today.genre || 'today\'s genre'}.`);
 
     const recent = mostRecentLoggedGenre();

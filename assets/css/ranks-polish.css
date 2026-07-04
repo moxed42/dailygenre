@@ -848,7 +848,7 @@
   padding: 2px 3px !important;
   border: 0 !important;
   border-radius: 9px !important;
-  background: rgba(255, 253, 244, 0.72) !important;
+  background: color-mix(in srgb, var(--accent-soft, #ffe0a1) 62%, white) !important;
   color: var(--accent-dark, #7a4714) !important;
   font-size: 0.78rem !important;
   font-weight: 950 !important;
@@ -861,7 +861,7 @@
 .ranks-jump-input:focus {
   outline: none !important;
   box-shadow: 0 0 0 3px rgba(217, 141, 37, 0.2) !important;
-  background: rgba(255, 253, 244, 0.96) !important;
+  background: color-mix(in srgb, var(--accent-soft, #ffe0a1) 74%, white) !important;
 }
 
 .ranks-jump-input::-webkit-outer-spin-button,
