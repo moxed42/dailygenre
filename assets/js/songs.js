@@ -565,7 +565,7 @@
   function deleteSongFromDetails(encodedKey, encodedPath = "", button = null) {
     if (typeof currentGenre === "undefined" || !currentGenre) return;
     const path = decodeFocusPath(encodedPath);
-    if (!window.confirm("Remove this song from this genre only? This does not delete copies from other genres or Studio queues.")) return;
+    if (!window.confirm("Delete this song from this genre? This will not move it to Pending.")) return;
 
     const previousText = button?.textContent || "";
     if (button) {
@@ -608,14 +608,14 @@
 
       if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
       enhanceSongListeningExperience();
-      if (typeof showSaveToast === "function") showSaveToast("Removed from this genre — use Save Listening Updates to keep it.", false);
+      if (typeof showSaveToast === "function") showSaveToast("Song deleted — use Save Listening Updates to keep it.", false);
     } catch (error) {
       console.error("Could not delete song from details", error);
       if (typeof showSaveToast === "function") showSaveToast(`Could not delete song: ${error?.message || error || "Unknown error"}`, true);
     } finally {
       if (button && document.body.contains(button)) {
         button.disabled = false;
-        button.textContent = previousText || "Remove from genre";
+        button.textContent = previousText || "Delete song";
       }
     }
   }
@@ -632,17 +632,17 @@
     }
     const song = result.song;
     const label = [song.artist, song.title || song.name].filter(Boolean).join(" — ") || "this song";
-    if (!window.confirm(`Delete ${label} everywhere?
+    if (!window.confirm(`Hard delete ${label} from every genre and pending queue?
 
-This removes it from every genre and Studio queue. It becomes permanent after Save Library Updates.`)) return;
-    const previousText = button?.textContent || "Delete everywhere";
+This stages a real library deletion. It will be permanent after Save Library Updates.`)) return;
+    const previousText = button?.textContent || "Hard delete everywhere";
     if (button) {
       button.disabled = true;
       button.textContent = "Deleting…";
     }
     try {
       if (typeof window.hardDeleteSongEverywhere !== "function") {
-        if (typeof showSaveToast === "function") showSaveToast("Delete everywhere helper is not available. Refresh and try again.", true);
+        if (typeof showSaveToast === "function") showSaveToast("Hard delete helper is not available. Refresh and try again.", true);
         return;
       }
       const target = {
@@ -668,10 +668,10 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
       } catch {}
       if (!nextEntries.length) setSongDetailsOpen(false);
       enhanceSongListeningExperience();
-      if (typeof showSaveToast === "function") showSaveToast(`Deleted ${outcome.deleted} ${outcome.deleted === 1 ? "copy" : "copies"} everywhere — Save Library Updates to persist.`, false);
+      if (typeof showSaveToast === "function") showSaveToast(`Hard deleted ${outcome.deleted} ${outcome.deleted === 1 ? "copy" : "copies"} — Save Library Updates to persist.`, false);
     } catch (error) {
-      console.error("Could not delete song everywhere", error);
-      if (typeof showSaveToast === "function") showSaveToast(`Could not delete song everywhere: ${error?.message || error || "Unknown error"}`, true);
+      console.error("Could not hard delete song", error);
+      if (typeof showSaveToast === "function") showSaveToast(`Could not hard delete song: ${error?.message || error || "Unknown error"}`, true);
     } finally {
       if (button && document.body.contains(button)) {
         button.disabled = false;
@@ -784,8 +784,8 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
           <h3>${songTitleWithMetaMarkup(song.title || "Selected song")}</h3>
         </div>
         <div class="song-focus-details-actions">
-          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Remove from genre</button>
-          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); hardDeleteSongFromDetails('${encodedKey}', '${encodedPath}', this)" title="Permanently delete this song from every genre and every queue">Delete everywhere</button>
+          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Delete song</button>
+          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); hardDeleteSongFromDetails('${encodedKey}', '${encodedPath}', this)" title="Delete this song from every genre and pending queue">Hard delete everywhere</button>
           <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
         </div>
       </div>
@@ -1029,7 +1029,6 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
   window.setSongFocus = setSelectedSongKey;
   window.setSongFocusDetailsOpen = setSongDetailsOpen;
   window.deleteSongFromDetails = deleteSongFromDetails;
-  window.hardDeleteSongFromDetails = hardDeleteSongFromDetails;
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
   window.moveSongFocus = moveSongFocus;

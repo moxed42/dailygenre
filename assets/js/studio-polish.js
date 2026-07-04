@@ -681,7 +681,7 @@
             ${inlineRepair}
           </div>
           <div class="studio-mini-actions">
-            ${isRepair ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof skipStudioRepairRow === 'function' ? skipStudioRepairRow('${skipKey}', this) : null; return false;">Skip for now</button><button type="button" class="btn btn-danger btn-tiny studio-hard-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof hardDeleteStudioRepairGroup === 'function' ? hardDeleteStudioRepairGroup('${encodedTargets}', this) : null; return false;" title="Permanently delete this track from every genre and every queue">Delete everywhere</button>` : ""}
+            ${isRepair ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof skipStudioRepairRow === 'function' ? skipStudioRepairRow('${skipKey}', this) : null; return false;">Skip for now</button><button type="button" class="btn btn-danger btn-tiny studio-hard-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof hardDeleteStudioRepairGroup === 'function' ? hardDeleteStudioRepairGroup('${encodedTargets}', this) : null; return false;" title="Delete this track from every genre queue and pending list">Hard delete</button>` : ""}
             <button type="button" class="btn btn-secondary btn-tiny" onclick="event.stopPropagation(); openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "duplicate"})">Open genre</button>
           </div>
         </article>`;
@@ -1609,24 +1609,24 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
       unique.push(target);
     });
     if (!unique.length) {
-      toast("Could not identify that track for Delete everywhere.", true);
+      toast("Could not identify that track for hard delete.", true);
       return;
     }
     const label = unique[0]?.artist || unique[0]?.title
       ? `${unique[0]?.artist ? `${unique[0].artist} — ` : ""}${unique[0]?.title || "this track"}`
       : "this track";
     const copyCount = unique.length > 1 ? ` and ${unique.length - 1} matching ${unique.length === 2 ? "copy" : "copies"}` : "";
-    if (!window.confirm(`Delete ${label}${copyCount} everywhere?
+    if (!window.confirm(`Hard delete ${label}${copyCount} from EVERY genre queue and pending list?
 
-This removes it from every genre queue and pending list. It becomes permanent after Save Library Updates.`)) return;
-    const previous = button?.textContent || "Delete everywhere";
+This stages a real library deletion. It will be permanent after Save Library Updates.`)) return;
+    const previous = button?.textContent || "Hard delete";
     if (button) {
       button.disabled = true;
       button.textContent = "Deleting…";
     }
     try {
       if (typeof window.hardDeleteSongEverywhere !== "function") {
-        toast("Delete everywhere helper is not available. Refresh and try again.", true);
+        toast("Hard delete helper is not available. Refresh and try again.", true);
         return;
       }
       const result = window.hardDeleteSongEverywhere(unique, { renderStudio: false });
@@ -1641,14 +1641,14 @@ This removes it from every genre queue and pending list. It becomes permanent af
         row.style.opacity = "0.55";
         const meta = row.querySelector(".studio-mini-meta");
         if (meta && !meta.querySelector(".studio-repair-resolved-chip")) {
-          meta.insertAdjacentHTML("afterbegin", '<span class="studio-repair-resolved-chip">deleted everywhere · save pending</span>');
+          meta.insertAdjacentHTML("afterbegin", '<span class="studio-repair-resolved-chip">hard deleted · save pending</span>');
         }
       }
-      toast(`Deleted ${result.deleted} ${result.deleted === 1 ? "track" : "tracks"} everywhere from ${result.genresTouched} ${result.genresTouched === 1 ? "genre" : "genres"} — Save Library Updates to persist.`, false);
+      toast(`Hard deleted ${result.deleted} ${result.deleted === 1 ? "track" : "tracks"} from ${result.genresTouched} ${result.genresTouched === 1 ? "genre" : "genres"} — Save Library Updates to persist.`, false);
       setTimeout(() => refreshStudioRepairList(null), 180);
     } catch (error) {
-      console.error("Studio delete everywhere failed", error);
-      toast(`Delete everywhere failed: ${error?.message || error || "Unknown error"}`, true);
+      console.error("Studio hard delete failed", error);
+      toast(`Hard delete failed: ${error?.message || error || "Unknown error"}`, true);
     } finally {
       if (button && document.body.contains(button)) {
         button.disabled = false;
