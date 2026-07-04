@@ -1734,3 +1734,17 @@
   background: rgba(73, 107, 59, 0.16) !important;
   border-color: rgba(73, 107, 59, 0.24) !important;
 }
+
+/* === v164 Repair Bay skip/external-link polish === */
+.studio-mini-row-repair .studio-mini-actions {
+  align-self: stretch;
+}
+.studio-mini-row-repair .studio-mini-actions .btn-tiny {
+  white-space: nowrap;
+}
+.studio-repair-skipped-now {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.studio-inline-track-edit input::placeholder {
+  opacity: 0.72;
+}

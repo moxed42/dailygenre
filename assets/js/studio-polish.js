@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v39-repair-bay-thumbnail-streamline";
+  const VERSION = "studio-polish-v40-repair-skip-external-links";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -161,6 +161,39 @@
     return norm(songTitle(song));
   }
 
+  const REPAIR_SKIP_STORAGE_KEY = "dailyGenreStudioRepairSkipOrder:v1";
+
+  function readRepairSkipMap() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(REPAIR_SKIP_STORAGE_KEY) || "{}");
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function writeRepairSkipMap(map) {
+    try { localStorage.setItem(REPAIR_SKIP_STORAGE_KEY, JSON.stringify(map || {})); } catch (_) {}
+  }
+
+  function repairSkipKey(rowOrSong) {
+    const song = rowOrSong?.song || rowOrSong;
+    return repairDisplayKey(song) || songKey(song) || norm(songTitle(song));
+  }
+
+  function markRepairSkipped(key) {
+    if (!key) return;
+    const map = readRepairSkipMap();
+    map[String(key)] = Date.now();
+    writeRepairSkipMap(map);
+  }
+
+  function isRepairSkipped(row) {
+    const key = repairSkipKey(row);
+    const map = readRepairSkipMap();
+    return key && Number(map[key] || 0) > 0;
+  }
+
   function consolidateRepairRows(rows) {
     const groups = new Map();
     rows.forEach((row) => {
@@ -229,7 +262,13 @@
             b.priority - a.priority ||
             String(songTitle(a.song)).localeCompare(songTitle(b.song)),
         ),
-    ).slice(0, limit);
+    )
+      .sort((a, b) => {
+        const aSkipped = isRepairSkipped(a) ? 1 : 0;
+        const bSkipped = isRepairSkipped(b) ? 1 : 0;
+        return aSkipped - bSkipped || (b.priority || 0) - (a.priority || 0) || String(songTitle(a.song)).localeCompare(songTitle(b.song));
+      })
+      .slice(0, limit);
   }
 
   function spotifyUrl(song) {
@@ -255,6 +294,9 @@
     return !!(
       song?.spotifyId ||
       song?.spotifyUrl ||
+      song?.externalMetadataFetched ||
+      song?.source === "youtube" ||
+      song?.source === "apple" ||
       song?.releaseYear ||
       song?.releaseDate ||
       song?.durationMs ||
@@ -265,9 +307,10 @@
   function missingKinds(song) {
     const missing = [];
     const url = spotifyUrl(song);
-    if (!song?.artwork) missing.push("art");
-    if (url && !song?.spotifyId) missing.push("id");
-    if (url && !song?.releaseYear && !song?.releaseDate && !song?.eraYear)
+    const isSpotify = /open\.spotify\.com\/track\//i.test(url || "") || /spotify:track:/i.test(url || "");
+    if (!song?.artwork && !song?.albumArt) missing.push("art");
+    if (isSpotify && !song?.spotifyId) missing.push("id");
+    if (url && !song?.releaseYear && !song?.releaseDate && !song?.eraYear && song?.source !== "youtube")
       missing.push("year");
     if (url && !hasTrackMetadata(song)) missing.push("metadata");
     return missing;
@@ -581,8 +624,9 @@
           ? row.repairProblems.map((kind) => `<span class="studio-repair-missing-chip" data-repair-kind="${esc(kind)}">missing ${esc(kind)}</span>`).join("")
           : `<span class="studio-repair-missing-chip" data-repair-kind="${esc(problem)}">${esc(problem)}</span>`;
         const inlineRepair = isRepair
-          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Apply to copies" : "Apply URL"}</button></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite"></div></div>`
+          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify / YouTube / Apple Music URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/... or https://music.apple.com/... or https://youtu.be/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Apply to copies" : "Apply URL"}</button></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite"></div></div>`
           : "";
+        const skipKey = isRepair ? encodeURIComponent(repairSkipKey(row) || "") : "";
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
           <div class="studio-mini-main">
@@ -591,6 +635,7 @@
             ${inlineRepair}
           </div>
           <div class="studio-mini-actions">
+            ${isRepair ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof skipStudioRepairRow === 'function' ? skipStudioRepairRow('${skipKey}', this) : null; return false;">Skip for now</button>` : ""}
             <button type="button" class="btn btn-secondary btn-tiny" onclick="event.stopPropagation(); openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "duplicate"})">Open genre</button>
           </div>
         </article>`;
@@ -608,7 +653,7 @@
       <div class="studio-action-strip studio-repair-actions-compact">
         <button type="button" class="btn btn-secondary" onclick="typeof refreshNextSpotifyTracks === 'function' ? refreshNextSpotifyTracks(5) : null">Auto-refresh next 5</button>
         <button type="button" class="btn btn-secondary" onclick="typeof refreshStudioRepairList === 'function' ? refreshStudioRepairList(this) : (typeof renderReview === 'function' ? renderReview() : null)">Refresh repair list</button>
-        <div class="studio-action-helper">Paste a better Spotify track URL inline, click <strong>Apply URL</strong>, confirm the thumbnail changes, then Save Library Updates. Use Refresh repair list to remove resolved rows.</div>
+        <div class="studio-action-helper">Paste a better Spotify, YouTube, or Apple Music URL inline, click <strong>Apply URL</strong>, confirm the thumbnail changes, then Save Library Updates. Use Skip for now when a row is not easy to repair yet.</div>
       </div>
       ${renderQueueRows(rows, "No obvious metadata repair items found.")}
     </section>`;
@@ -1108,6 +1153,105 @@
     return found ? { genre, songs, song: found } : null;
   }
 
+
+  function classifyRepairUrl(rawUrl = "") {
+    const raw = String(rawUrl || "").trim();
+    if (/open\.spotify\.com\/track\//i.test(raw) || /spotify:track:/i.test(raw)) return "spotify";
+    if (/music\.apple\.com\//i.test(raw) || /itunes\.apple\.com\//i.test(raw)) return "apple";
+    if (/(youtube\.com\/watch|youtu\.be\/|youtube\.com\/shorts\/)/i.test(raw)) return "youtube";
+    return "generic";
+  }
+
+  function extractYouTubeId(rawUrl = "") {
+    const raw = String(rawUrl || "").trim();
+    const match = raw.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i) || raw.match(/[?&]v=([A-Za-z0-9_-]{6,})/i) || raw.match(/youtube\.com\/shorts\/([A-Za-z0-9_-]{6,})/i) || raw.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/i);
+    return match ? match[1] : "";
+  }
+
+  function youTubePlaceholderIcon() {
+    return "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" rx="18" fill="#f4e4c6"/><rect x="18" y="28" width="60" height="40" rx="10" fill="#c4302b"/><path d="M43 38v20l18-10z" fill="#fff"/></svg>`);
+  }
+
+  async function fetchYouTubeRepairMetadata(rawUrl) {
+    const id = extractYouTubeId(rawUrl);
+    const metadata = { source: "youtube", url: rawUrl, artwork: id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : youTubePlaceholderIcon(), albumArt: id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : youTubePlaceholderIcon() };
+    try {
+      const endpoint = `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(rawUrl)}`;
+      const response = await fetch(endpoint);
+      if (response.ok) {
+        const data = await response.json();
+        if (data?.title) metadata.title = data.title;
+        if (data?.author_name) metadata.artist = data.author_name;
+        if (data?.thumbnail_url) {
+          metadata.artwork = data.thumbnail_url;
+          metadata.albumArt = data.thumbnail_url;
+        }
+      }
+    } catch (_) {}
+    return metadata;
+  }
+
+  function extractAppleMusicId(rawUrl = "") {
+    const raw = String(rawUrl || "");
+    const iMatch = raw.match(/[?&]i=(\d+)/);
+    if (iMatch) return iMatch[1];
+    const matches = Array.from(raw.matchAll(/\/(\d{6,})(?:[/?#]|$)/g)).map((m) => m[1]);
+    return matches.length ? matches[matches.length - 1] : "";
+  }
+
+  async function fetchAppleMusicRepairMetadata(rawUrl) {
+    const id = extractAppleMusicId(rawUrl);
+    const metadata = { source: "apple", url: rawUrl };
+    if (!id) return metadata;
+    try {
+      const response = await fetch(`https://itunes.apple.com/lookup?id=${encodeURIComponent(id)}&entity=song`);
+      if (response.ok) {
+        const data = await response.json();
+        const item = Array.isArray(data?.results) ? (data.results.find((r) => r.wrapperType === "track") || data.results[0]) : null;
+        if (item) {
+          metadata.title = item.trackName || item.collectionName || "";
+          metadata.artist = item.artistName || "";
+          metadata.album = item.collectionName || "";
+          metadata.artwork = String(item.artworkUrl100 || "").replace(/100x100bb\./, "600x600bb.");
+          metadata.albumArt = metadata.artwork;
+          metadata.releaseDate = item.releaseDate || "";
+          metadata.releaseYear = item.releaseDate ? Number(String(item.releaseDate).slice(0, 4)) || null : null;
+          metadata.durationMs = Number(item.trackTimeMillis || 0) || null;
+        }
+      }
+    } catch (_) {}
+    return metadata;
+  }
+
+  async function fetchExternalRepairMetadata(rawUrl) {
+    const kind = classifyRepairUrl(rawUrl);
+    if (kind === "youtube") return fetchYouTubeRepairMetadata(rawUrl);
+    if (kind === "apple") return fetchAppleMusicRepairMetadata(rawUrl);
+    return { source: kind, url: rawUrl };
+  }
+
+  function applyExternalRepairMetadata(song, rawUrl, metadata = {}) {
+    const kind = classifyRepairUrl(rawUrl);
+    song.url = rawUrl;
+    if (kind !== "spotify") song.spotifyUrl = song.spotifyUrl || "";
+    song.source = metadata.source || kind;
+    if (metadata.title) song.title = metadata.title;
+    if (metadata.artist) {
+      song.artist = metadata.artist;
+      song.artists = [metadata.artist].filter(Boolean);
+    }
+    if (metadata.album) song.album = metadata.album;
+    if (metadata.artwork) {
+      song.artwork = metadata.artwork;
+      song.albumArt = metadata.albumArt || metadata.artwork;
+    }
+    if (metadata.releaseDate) song.releaseDate = metadata.releaseDate;
+    if (metadata.releaseYear) song.releaseYear = metadata.releaseYear;
+    if (metadata.durationMs) song.durationMs = metadata.durationMs;
+    song.externalMetadataFetched = true;
+    song.externalMetadataFetchedAt = new Date().toISOString();
+  }
+
   async function applyRepairUrlTarget(target, inputId) {
     const input = document.getElementById(inputId);
     const rawUrl = String(input?.value || "").trim();
@@ -1115,13 +1259,23 @@
     const located = findRepairTargetSong(target);
     if (!located) return { ok: false, error: "Could not find that track in the current library rows." };
 
-    const canonical = canonicalSpotifyTrackUrl(rawUrl);
+    const kind = classifyRepairUrl(rawUrl);
+    const canonical = kind === "spotify" ? canonicalSpotifyTrackUrl(rawUrl) : rawUrl;
     located.song.url = canonical;
     located.song.spotifyUrl = /open\.spotify\.com\/track\//i.test(canonical) ? canonical : (located.song.spotifyUrl || "");
 
     let refreshed = false;
     let refreshError = "";
-    if (/open\.spotify\.com\/track\//i.test(canonical) && typeof fetchSpotifyTrackResult === "function") {
+    if (kind !== "spotify") {
+      const metadata = await fetchExternalRepairMetadata(canonical);
+      applyExternalRepairMetadata(located.song, canonical, metadata);
+      refreshed = !!(metadata.artwork || metadata.title || metadata.artist || metadata.album || metadata.releaseYear || metadata.releaseDate);
+      if (!metadata.artwork && kind === "youtube") {
+        located.song.artwork = youTubePlaceholderIcon();
+        located.song.albumArt = located.song.artwork;
+        refreshed = true;
+      }
+    } else if (/open\.spotify\.com\/track\//i.test(canonical) && typeof fetchSpotifyTrackResult === "function") {
       const result = await fetchSpotifyTrackResult(canonical, true);
       if (result?.ok && result.track) {
         if (typeof applyOfficialSpotifyMetadata === "function") applyOfficialSpotifyMetadata(located.song, result.track);
@@ -1202,7 +1356,7 @@
     let updated = 0;
     const resolved = [];
     try {
-      setStatus("Applying URL and checking Spotify artwork…");
+      setStatus("Applying URL and checking artwork/metadata…");
       setBusy(unique.length > 1 ? `Applying 1/${unique.length}…` : "Applying…");
       for (let idx = 0; idx < unique.length; idx += 1) {
         const target = unique[idx];
@@ -1285,6 +1439,25 @@
     }
   }
 
+
+  function skipStudioRepairRow(encodedKey, button = null) {
+    let key = "";
+    try { key = decodeURIComponent(String(encodedKey || "")); } catch (_) { key = String(encodedKey || ""); }
+    if (!key) {
+      toast("Could not identify that repair row.", true);
+      return;
+    }
+    markRepairSkipped(key);
+    const row = button?.closest?.(".studio-mini-row-repair");
+    if (row) {
+      row.classList.add("studio-repair-skipped-now");
+      row.style.opacity = "0.64";
+    }
+    toast("Skipped for now — it will move to the bottom of the Repair Bay list.", false);
+    setTimeout(() => refreshStudioRepairList(null), 120);
+  }
+
+  window.skipStudioRepairRow = skipStudioRepairRow;
 
   function refreshStudioRepairList(button = null) {
     const original = button?.textContent || "Refresh repair list";

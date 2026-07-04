@@ -28,8 +28,9 @@
       const key = listeningFocusStorageKey(genre);
       let saved = '';
       try { saved = localStorage.getItem(key) || ''; } catch {}
-      const mode = saved || listeningFocusMode || 'songs';
-      return mode === 'albums' ? 'albums' : 'songs';
+      const hasAlbums = genreHasAlbumDiveContent(genre);
+      const mode = saved || (hasAlbums ? 'albums' : 'songs');
+      return mode === 'albums' && hasAlbums ? 'albums' : 'songs';
     }
 
     function setListeningFocusMode(mode, event = null) {
