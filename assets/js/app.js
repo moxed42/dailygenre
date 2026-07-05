@@ -3324,11 +3324,39 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       setTimeout(() => window.scrollTo({ top: archiveUiState.scrollY || 0, behavior: 'auto' }), 0);
     }
 
+    function genreNavIsZanger(genre) {
+      const status = String(genre?.status || '').trim().toLowerCase();
+      const rating = String(genre?.rating || '').trim().toLowerCase();
+      return status === 'veto' || status === 'zanger' || rating === 'zanger';
+    }
+
+    function genreNavDateValue(genre) {
+      return String(dateValue(genre) || '').slice(0, 10);
+    }
+
     function buildDetailNavList() {
-      const items = (archiveCurrentItems && archiveCurrentItems.length) ? archiveCurrentItems.slice() : genres.slice();
-      detailNavList = items
-        .slice()
-        .sort((a,b) => String(dateValue(a)||'').localeCompare(String(dateValue(b)||'')) || String(a.genre||'').localeCompare(String(b.genre||'')));
+      const source = (archiveCurrentItems && archiveCurrentItems.length) ? archiveCurrentItems.slice() : genres.slice();
+      const dated = source.filter(g => genreNavDateValue(g));
+      const undated = source.filter(g => !genreNavDateValue(g));
+      const dates = [...new Set(dated.map(genreNavDateValue))].sort((a, b) => b.localeCompare(a));
+      const ordered = [];
+
+      dates.forEach(day => {
+        const sameDay = dated
+          .filter(g => genreNavDateValue(g) === day)
+          .sort((a, b) => {
+            const zangerDiff = Number(genreNavIsZanger(a)) - Number(genreNavIsZanger(b));
+            if (zangerDiff) return zangerDiff;
+            return String(a.genre || '').localeCompare(String(b.genre || ''));
+          });
+        ordered.push(...sameDay);
+      });
+
+      undated
+        .sort((a, b) => String(a.genre || '').localeCompare(String(b.genre || '')))
+        .forEach(g => ordered.push(g));
+
+      detailNavList = ordered;
       return detailNavList;
     }
 
@@ -3337,8 +3365,12 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       const items = buildDetailNavList();
       const idx = items.findIndex(g => String(g.id) === String(currentGenre.id));
       if (idx === -1) return;
-      const next = items[idx + direction];
-      if (next) openGenreDetail(next, detailEditMode);
+      // v184: Genre detail navigation is grouped by listen date, newest to oldest.
+      // Back first walks through other genres for the same day, then the previous
+      // day's non-zanger pick, then that day's zanger/veto rows. Next reverses it.
+      const targetIndex = direction < 0 ? idx + 1 : idx - 1;
+      const next = items[targetIndex];
+      if (next) openGenreDetail(next, detailEditMode, { preserveScroll: true });
     }
 
     function promotePendingSong(index) {
