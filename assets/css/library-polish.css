@@ -10286,3 +10286,44 @@ textarea[data-dg-identity-textarea="1"] {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* === v183: mobile sticky player hardening === */
+#spotifyStickyPlayer:not(.open) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+#spotifyStickyPlayer.open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+.spotify-sticky-close {
+  min-width: 36px !important;
+  min-height: 36px !important;
+  touch-action: manipulation !important;
+}
+@media (max-width: 720px) {
+  body:not(.spotify-player-open) #spotifyStickyPlayer {
+    display: none !important;
+  }
+  body.spotify-player-open #spotifyStickyPlayer.open {
+    display: grid !important;
+  }
+  #spotifyStickyPlayer {
+    width: min(420px, calc(100vw - 20px)) !important;
+    left: 10px !important;
+    right: 10px !important;
+    transform: translateY(130%) !important;
+    z-index: 2600 !important;
+  }
+  #spotifyStickyPlayer.open {
+    transform: translateY(0) !important;
+  }
+  .spotify-sticky-close {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 1.25rem !important;
+  }
+}

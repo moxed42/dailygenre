@@ -602,7 +602,8 @@
       if (_respin) _respin.onclick = spinWheel;
       if (_veto) _veto.onclick = () => markAsZangerToday(genre);
       if (_listen) _listen.onclick = () => {
-        openGenreDetail(genre, true);
+        markGenreInProgressForToday(genre, { fromSpin: true });
+        openGenreDetail(genre, true, { preserveScroll: true, skipAutoScroll: true });
       };
     }
 
@@ -3031,13 +3032,43 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
     }
 
 
+    function localIsoDateToday() {
+      const now = new Date();
+      return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, '0'),
+        String(now.getDate()).padStart(2, '0'),
+      ].join('-');
+    }
+
     function setListenDateTodayIfNeeded(genre) {
       if (!genre) return false;
       if (dateValue(genre)) return false;
-      genre.date_normalized = new Date().toISOString().slice(0, 10);
+      genre.date_normalized = localIsoDateToday();
       genre.datenormalized = '';
       return true;
     }
+
+    function markGenreInProgressForToday(genre = currentGenre, options = {}) {
+      if (!genre) return false;
+      setListenDateTodayIfNeeded(genre);
+      genre.status = 'in_progress';
+      genre.rating = '';
+      genre.rank_order = null;
+      selectedRating = '';
+      try {
+        if (typeof markListeningUpdatePending === 'function') markListeningUpdatePending();
+        else { markDirty(); toggleLibrarySaveButton(true); }
+      } catch (_) {
+        try { markDirty(); } catch (__) {}
+      }
+      if (options.fromSpin) {
+        setTimeout(() => showSaveToast('Set as today’s genre and marked in progress — use Save to persist it.', false), 80);
+      }
+      try { if (!appPassword) setTimeout(() => promptLibrarySaveLogin(), 120); } catch (_) {}
+      return true;
+    }
+    window.markGenreInProgressForToday = markGenreInProgressForToday;
 
     function markAsZangerToday(genre = currentGenre) {
       if (!genre) return;

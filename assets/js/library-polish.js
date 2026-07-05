@@ -63,7 +63,14 @@
 
   function isLogged(genre) {
     const status = safeText(genre && genre.status).toLowerCase();
-    return (status === 'listened' || status === 'veto' || safeText(genre && genre.rating).toLowerCase() === 'zanger') && !!dateValueSafe(genre);
+    const rating = safeText(genre && genre.rating).toLowerCase();
+    return (
+      status === 'listened' ||
+      status === 'in_progress' ||
+      status === 'in-progress' ||
+      status === 'veto' ||
+      rating === 'zanger'
+    ) && !!dateValueSafe(genre);
   }
 
   function todaysLoggedGenres() {

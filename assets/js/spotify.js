@@ -737,6 +737,7 @@ function stickyPlayerOpen(encodedUrl='', encodedTitle='', encodedArtist='', enco
   if (artistEl) artistEl.textContent = artist;
   embed.innerHTML = `<iframe title="Spotify Embed: ${escapeHtml(title)}" src="https://open.spotify.com/embed/track/${encodeURIComponent(trackId)}?utm_source=generator&theme=0" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
   player.classList.add('open');
+  player.removeAttribute('aria-hidden');
   document.body.classList.add('spotify-player-open');
 }
 
@@ -744,9 +745,20 @@ function stickyPlayerClose() {
   const player = document.getElementById('spotifyStickyPlayer');
   const embed = document.getElementById('spotifyStickyEmbed');
   if (embed) embed.innerHTML = '';
-  if (player) player.classList.remove('open');
+  if (player) {
+    player.classList.remove('open');
+    player.setAttribute('aria-hidden', 'true');
+  }
   document.body.classList.remove('spotify-player-open');
 }
+
+
+try {
+  document.addEventListener('DOMContentLoaded', () => {
+    const player = document.getElementById('spotifyStickyPlayer');
+    if (player && !player.classList.contains('open')) player.setAttribute('aria-hidden', 'true');
+  }, { once: true });
+} catch (_) {}
 
 let spotifyPlaylistContext = null;
 let spotifyPlaylistCache = [];
