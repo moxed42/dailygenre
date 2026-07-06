@@ -763,10 +763,11 @@
     const sem = getSeminal(genre);
     const media = getMedia(genre);
     const hasSem = sem?.title || sem?.artist || sem?.spotifyUrl || sem?.url;
-    if (!aliases.length && !hasSem && !media.length) return "";
+    const genreDescription = String(genre?.summary || genre?.description || genre?.desc || "").trim();
+    if (!aliases.length && !hasSem && !media.length && !genreDescription) return "";
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
-        <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
+        <div><div class="eyebrow">Genre DNA</div>${genreDescription ? `<p class="genre-identity-description">${esc(genreDescription)}</p>` : `<p class="genre-identity-description muted">No genre description saved yet.</p>`}</div>
       </div>
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">

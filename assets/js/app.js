@@ -7853,6 +7853,96 @@ async function loadData() {
     }
 
 
+
+
+function installMobileTapBridge() {
+  if (window.__dailyGenreMobileTapBridgeInstalled) return;
+  window.__dailyGenreMobileTapBridgeInstalled = true;
+
+  const selectors = [
+    '.tab-btn',
+    '#topTodayBtn',
+    '#topCrateDigBtn',
+    '#topAlbumDiveBtn',
+    '.song-focus-nav',
+    '.song-focus-reaction',
+    '.song-focus-trophy',
+    '.song-focus-details-btn',
+    '.view-rating-star',
+    '.view-rating-zanger',
+    '.album-focus-nav',
+    '.album-focus-reaction',
+    '.album-focus-trophy',
+    '.album-slot-card',
+    '.listening-focus-tab',
+    '.sp-play-btn',
+    '.spotify-mini-play',
+    '.spotify-sticky-close',
+    '.dg-back-to-top'
+  ].join(',');
+
+  const isMobilePointer = () => {
+    try {
+      return window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse), (max-width: 820px)').matches;
+    } catch (_) {
+      return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+    }
+  };
+
+  const state = { target: null, x: 0, y: 0, time: 0, suppressTarget: null, suppressUntil: 0 };
+
+  const actionable = (eventTarget) => {
+    if (!eventTarget || !isMobilePointer()) return null;
+    const el = eventTarget.closest?.(selectors);
+    if (!el || el.disabled || el.getAttribute('aria-disabled') === 'true') return null;
+    if (eventTarget.closest?.('input, textarea, select, option, label')) return null;
+    return el;
+  };
+
+  document.addEventListener('pointerdown', (event) => {
+    if (event.pointerType && event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+    const el = actionable(event.target);
+    if (!el) return;
+    state.target = el;
+    state.x = event.clientX || 0;
+    state.y = event.clientY || 0;
+    state.time = Date.now();
+  }, true);
+
+  document.addEventListener('pointerup', (event) => {
+    if (event.pointerType && event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+    const el = actionable(event.target);
+    if (!el || el !== state.target) return;
+    const dx = Math.abs((event.clientX || 0) - state.x);
+    const dy = Math.abs((event.clientY || 0) - state.y);
+    if (dx > 12 || dy > 12 || Date.now() - state.time > 900) return;
+
+    // Some mobile browsers/elements show tap feedback but lose the follow-up click
+    // when fixed overlays, transforms, or hover-only styles are present. Dispatch a
+    // controlled synthetic click immediately and suppress the delayed native duplicate.
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+
+    state.suppressTarget = el;
+    state.suppressUntil = Date.now() + 650;
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+    try { Object.defineProperty(click, '__dailyGenreTapBridge', { value: true }); } catch (_) {}
+    el.dispatchEvent(click);
+  }, true);
+
+  document.addEventListener('click', (event) => {
+    if (event.__dailyGenreTapBridge) return;
+    if (!state.suppressTarget || Date.now() > state.suppressUntil) return;
+    const el = event.target?.closest?.(selectors);
+    if (el && el === state.suppressTarget) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+    }
+  }, true);
+}
+
 function ensureBackToTopButton() {
   if (document.getElementById('dgBackToTopBtn')) return;
   const btn = document.createElement('button');
@@ -7876,6 +7966,7 @@ function ensureBackToTopButton() {
   sync();
 }
 
+installMobileTapBridge();
 bootApp().catch(err => {
   console.error('App boot failed:', err);
   if (remainingCount) remainingCount.textContent = 'Could not start app. Check console.';

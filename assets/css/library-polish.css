@@ -10327,3 +10327,172 @@ textarea[data-dg-identity-textarea="1"] {
     font-size: 1.25rem !important;
   }
 }
+
+
+/* === v185: fuller Genre DNA reading cards === */
+#listenDetails .genre-identity-dna-head h3,
+#listenDetails .genre-identity-dna-head .small {
+  display: none !important;
+}
+
+#listenDetails .genre-identity-description {
+  margin: 6px 0 0 !important;
+  max-width: 92ch;
+  color: var(--muted, #735a3c) !important;
+  font-size: clamp(0.98rem, 1.35vw, 1.12rem) !important;
+  line-height: 1.45 !important;
+  font-weight: 650 !important;
+}
+
+#listenDetails .genre-identity-description.muted {
+  opacity: 0.72;
+  font-style: italic;
+}
+
+#listenDetails .genre-identity-track-card {
+  align-items: flex-start !important;
+}
+
+#listenDetails .genre-identity-track-main strong,
+#listenDetails .genre-identity-track-main a {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+  line-height: 1.18 !important;
+}
+
+#listenDetails .genre-identity-track-main small,
+#listenDetails .genre-identity-track-main em {
+  display: block !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+  max-height: none !important;
+  overflow-wrap: anywhere !important;
+}
+
+#listenDetails .genre-identity-track-main em {
+  margin-top: 5px !important;
+  line-height: 1.42 !important;
+}
+
+#listenDetails .genre-identity-track-grid {
+  align-items: stretch !important;
+}
+
+@media (max-width: 760px) {
+  #listenDetails .genre-identity-description {
+    font-size: 0.96rem !important;
+  }
+}
+
+
+/* === v186: mobile tap reliability hardening === */
+button,
+[role="button"],
+.tab-btn,
+.btn,
+.icon-btn,
+.view-rating-star,
+.view-rating-zanger,
+.song-focus-nav,
+.song-focus-reaction,
+.song-focus-trophy,
+.song-focus-details-btn,
+.album-focus-nav,
+.album-focus-reaction,
+.album-slot-card,
+.listening-focus-tab,
+.spotify-mini-play,
+.sp-play-btn {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: rgba(217, 141, 37, 0.22) !important;
+}
+
+.tabs,
+.topbar,
+.dc-hero-actions,
+.song-focus-actions,
+.song-focus-nav,
+.album-focus-nav,
+.view-rating-row,
+.song-focus-reaction,
+.album-focus-reaction {
+  position: relative;
+}
+
+.tabs,
+.topbar {
+  z-index: 30;
+}
+
+.song-focus-nav,
+.album-focus-nav,
+.song-focus-reaction,
+.song-focus-trophy,
+.view-rating-star,
+.view-rating-zanger,
+.album-focus-reaction {
+  z-index: 24 !important;
+}
+
+#spotifyStickyPlayer[aria-hidden="true"],
+body:not(.spotify-player-open) #spotifyStickyPlayer:not(.open) {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#spotifyStickyPlayer.open {
+  display: grid !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 820px) {
+  .tab-btn,
+  .btn,
+  .icon-btn,
+  .view-rating-star,
+  .view-rating-zanger,
+  .song-focus-nav,
+  .song-focus-reaction,
+  .song-focus-trophy,
+  .song-focus-details-btn,
+  .album-focus-nav,
+  .album-focus-reaction,
+  .listening-focus-tab {
+    min-height: 38px !important;
+  }
+
+  .song-focus-nav,
+  body.dc-listen-mode .song-focus-nav,
+  body.dc-listen-mode #dc-songs .song-focus-nav,
+  .album-focus-nav {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .song-focus-reaction,
+  .song-focus-trophy,
+  body.dc-listen-mode .song-focus-reaction,
+  body.dc-listen-mode .song-focus-trophy,
+  .view-rating-star,
+  .view-rating-zanger {
+    min-width: 38px !important;
+    min-height: 38px !important;
+  }
+
+  .song-focus-player::before,
+  .song-focus-player::after,
+  .album-focus-card::before,
+  .album-focus-card::after {
+    pointer-events: none !important;
+  }
+}
