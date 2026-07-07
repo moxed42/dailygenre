@@ -636,6 +636,23 @@
     return !identitySongHasUsefulData(song);
   }
 
+
+  function identityQueueSongShouldKeepAfterAnchorChange(genre, song) {
+    if (!song) return false;
+    const favoriteUrl = String(genre?.favoritesongurl || "").trim();
+    const songUrl = identityTrackUrl(song);
+    const favoriteTitle = identityLooseText(genre?.favoritesong || "");
+    const songTitle = identityLooseText(song?.title || song?.name || "");
+    return Boolean(
+      song.reaction ||
+      song.note ||
+      song.notes ||
+      song.personalNote ||
+      (favoriteUrl && songUrl && favoriteUrl === songUrl) ||
+      (favoriteTitle && songTitle && favoriteTitle === songTitle)
+    );
+  }
+
   function syncIdentityTracksToSongQueue(genre, mark = false) {
     if (!genre) return false;
     const beforeSnapshot = (() => {
@@ -668,9 +685,13 @@
     const seen = new Map();
     const dedupedRemaining = [];
     remaining.forEach((song) => {
+      // v189: if an auto-added identity anchor is replaced during Overwrite Identity,
+      // remove the stale untouched queue copy instead of leaving it behind as a normal song.
+      const stillMatchesCurrentAnchor = entries.some((entry) => identityEntryContentMatchesSong(song, entry));
+      if (!stillMatchesCurrentAnchor && song?.isIdentityTrack && !identityQueueSongShouldKeepAfterAnchorChange(genre, song)) return;
       // v64: repair old bad stamps. If a row no longer matches current identity anchors,
       // do not let stale isIdentityTrack/identityType keep rendering as Seminal/Media.
-      if (!entries.some((entry) => identityEntryContentMatchesSong(song, entry))) clearIdentityStamp(song);
+      if (!stillMatchesCurrentAnchor) clearIdentityStamp(song);
       const key = identitySongDuplicateKey(song);
       if (key && seen.has(key)) {
         mergeQueueSongPreservingExisting(seen.get(key), song);
@@ -763,11 +784,10 @@
     const sem = getSeminal(genre);
     const media = getMedia(genre);
     const hasSem = sem?.title || sem?.artist || sem?.spotifyUrl || sem?.url;
-    const genreDescription = String(genre?.summary || genre?.description || genre?.desc || "").trim();
-    if (!aliases.length && !hasSem && !media.length && !genreDescription) return "";
+    if (!aliases.length && !hasSem && !media.length) return "";
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
-        <div><div class="eyebrow">Genre DNA</div>${genreDescription ? `<p class="genre-identity-description">${esc(genreDescription)}</p>` : `<p class="genre-identity-description muted">No genre description saved yet.</p>`}</div>
+        <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
       </div>
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">
@@ -1144,7 +1164,7 @@
       );
     id.mediaTouchstones = overwrite ? incomingMedia : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], incomingMedia);
     g.media_touchstones = id.mediaTouchstones;
-    syncIdentityTracksToSongQueue(g, false);
+    syncIdentityTracksToSongQueue(g, true);
     selectedGenreId = String(g.id ?? selectedGenreId);
     markDirty();
     refreshStudioEditor();
@@ -1218,7 +1238,7 @@
     const mediaRows = readMediaRows(form);
     id.mediaTouchstones = overwrite ? mediaRows : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], mediaRows);
     g.media_touchstones = id.mediaTouchstones;
-    syncIdentityTracksToSongQueue(g, false);
+    syncIdentityTracksToSongQueue(g, true);
     markDirty();
     injectDnaCard();
     await persistIdentityApplyNow(`Updated and saved identity for ${g.genre || "genre"}.`);

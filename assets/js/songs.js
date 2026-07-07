@@ -306,6 +306,19 @@
     return parts.join(" · ");
   }
 
+
+  function isRoutedSong(song) {
+    return Boolean(
+      song?.routedFromPendingGenre ||
+      song?.routedAt ||
+      song?.movedFromPendingGenre ||
+      song?.movedAt ||
+      song?.pendingFrom ||
+      song?.pendingRoutedTo ||
+      song?.routedFromManualPendingTag
+    );
+  }
+
   function songTypeBadge(entry) {
     const matchedIdentity = entry.identityEntry || identityEntryForSong(entry.song);
     if (matchedIdentity) {
@@ -325,6 +338,8 @@
     }
     if (entry.label === "Level Up")
       return '<span class="song-focus-badge level">Level Up</span>';
+    if (isRoutedSong(entry.song))
+      return '<span class="song-focus-badge routed">Routed</span>';
     if (entry.label === "Add")
       return '<span class="song-focus-badge add">Add</span>';
     if (entry.song?.score != null)
@@ -799,12 +814,13 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
           <h4>Track URL</h4>
           <div class="song-focus-url-row">
             <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify, YouTube, or Apple Music URL">
-            <button type="button" class="btn btn-primary btn-tiny" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply / Refresh</button>
+            <button type="button" class="btn btn-primary btn-tiny" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply URL / Overrides</button>
           </div>
           <div class="track-card-manual-meta song-focus-manual-meta">
-            <input data-track-title-input type="text" placeholder="Override title if metadata is messy">
-            <input data-track-artist-input type="text" placeholder="Override artist/channel if needed">
+            <input data-track-title-input type="text" value="${html(song.title || song.name || '')}" placeholder="Override title if metadata is messy">
+            <input data-track-artist-input type="text" value="${html(song.artist || (Array.isArray(song.artists) ? song.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed">
           </div>
+          <p class="song-focus-helper">Typed title/artist overrides win over fetched YouTube or Apple metadata. Use the floating Save button to persist.</p>
         </div>
         <div class="song-focus-detail-card song-focus-meta-card">
           <h4>Metadata</h4>
