@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v41-repair-stable-refresh";
+  const VERSION = "studio-polish-v188-repair-clean-helper";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -77,6 +77,11 @@
       .replace(/'/g, "&#39;");
   }
 
+  /* Daily Genre v188: Repair Bay clean helper
+     The inline repair URL flow uses clean() for manual title/artist overrides. */
+  function clean(value) {
+    return String(value ?? "").trim();
+  }
   function studioArtworkUrl(song) {
     return String(song?.artwork || song?.albumArt || song?.image || song?.thumbnail || song?.cover || "").trim();
   }
