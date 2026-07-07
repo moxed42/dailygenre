@@ -257,6 +257,10 @@
     const deduped = out.filter((entry) => {
       const key = displayedSongDuplicateKey(entry.song);
       if (!key) return true;
+      // v194: Level Up rows are relationship rows. Keep them visible even when
+      // the same target track also exists as a normal/canon row elsewhere in the genre.
+      // Otherwise low-fit parents like "Turbo Lover" look like they have no Level Up.
+      if (entry.isChild) return true;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -325,6 +329,8 @@
     }
     if (entry.label === "Level Up")
       return '<span class="song-focus-badge level">Level Up</span>';
+    if (entry.song?.promotedFrom || entry.song?.promotedTo || entry.song?.reviewedAt || entry.label === "Routed")
+      return '<span class="song-focus-badge routed">Routed</span>';
     if (entry.label === "Add")
       return '<span class="song-focus-badge add">Add</span>';
     if (entry.song?.score != null)
@@ -406,8 +412,26 @@
 
   function filterSongEntries(entries, filter) {
     const selected = filter || "all";
+    const parentMatches = (predicate) => {
+      const matchedParents = new Set();
+      const visible = [];
+      (entries || []).forEach((entry) => {
+        if (!entry?.isChild && predicate(entry)) {
+          visible.push(entry);
+          if (entry.song) matchedParents.add(songKey(entry.song));
+        }
+      });
+      // v194: if a parent row is visible in a filtered view, keep its Level Up child
+      // directly available for context even if the child itself does not match the filter.
+      (entries || []).forEach((entry) => {
+        if (entry?.isChild && entry.parentKey && matchedParents.has(entry.parentKey)) {
+          if (!visible.includes(entry)) visible.push(entry);
+        }
+      });
+      return visible;
+    };
     if (selected === "unrated")
-      return entries.filter((entry) => !entry.song?.reaction);
+      return parentMatches((entry) => !entry.song?.reaction);
     if (selected === "favorites")
       return entries.filter((entry) => isFavoriteEntry(entry));
     if (selected === "levelups")
@@ -421,7 +445,7 @@
     if (selected === "fit5")
       return entries.filter((entry) => numericFit(entry.song) === 5);
     if (selected === "lowfit")
-      return entries.filter((entry) => {
+      return parentMatches((entry) => {
         const fit = numericFit(entry.song);
         return fit != null && fit <= 3;
       });

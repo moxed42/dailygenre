@@ -1134,6 +1134,45 @@
       return (parsedSongs || []).map(apply);
     }
 
+    function reattachParsedLevelUpRelationships(targetSongs, parsedSongs) {
+      const targets = inflateSongsFromStorage(targetSongs || []).filter(song => !song.isPending);
+      const parsed = inflateSongsFromStorage(parsedSongs || []).filter(song => !song.isPending);
+      const relationships = new Map();
+      const targetLookup = new Map();
+      const addLookup = song => {
+        if (!song) return;
+        songIdentityKeys(song).map(meaningfulSongIdentityKey).filter(Boolean).forEach(key => {
+          if (!targetLookup.has(key)) targetLookup.set(key, song);
+        });
+      };
+      targets.forEach(song => {
+        addLookup(song);
+        if (song.levelUp) addLookup(song.levelUp);
+      });
+      parsed.forEach(parent => {
+        if (!parent?.levelUp) return;
+        const child = clonePlainObject(parent.levelUp) || { ...parent.levelUp };
+        songIdentityKeys(parent).map(meaningfulSongIdentityKey).filter(Boolean).forEach(key => {
+          if (key) relationships.set(key, child);
+        });
+      });
+      if (!relationships.size) return targets;
+      targets.forEach(parent => {
+        const keys = songIdentityKeys(parent).map(meaningfulSongIdentityKey).filter(Boolean);
+        const parsedChild = keys.map(key => relationships.get(key)).find(Boolean);
+        if (!parsedChild) return;
+        const child = clonePlainObject(parsedChild) || { ...parsedChild };
+        const existingChild = parent.levelUp || null;
+        if (existingChild) mergeSongObjectsInPlace(child, existingChild);
+        const duplicateTopLevel = songIdentityKeys(child).map(meaningfulSongIdentityKey).filter(Boolean).map(key => targetLookup.get(key)).find(Boolean);
+        if (duplicateTopLevel) mergeSongObjectsInPlace(child, duplicateTopLevel);
+        child.isLevelUp = true;
+        child.isAdd = false;
+        parent.levelUp = normalizeSongsListened([child])[0] || child;
+      });
+      return targets;
+    }
+
     function setSongReaction(encodedKey, value) {
       if (!currentGenre) return;
       const key = decodeURIComponent(encodedKey || '');
@@ -1575,7 +1614,8 @@
       }
 
       const previous = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
-      const merged = mergeSongMetadata(parseSongLinks(textarea.value), previous);
+      const parsedDraft = parseSongLinks(textarea.value);
+      const merged = reattachParsedLevelUpRelationships(mergeSongMetadata(parsedDraft, previous), parsedDraft);
       const seenKeys = new Set();
       currentGenre.songs_listened = merged.filter(song => {
         const k = songIdentity(song);
@@ -3183,6 +3223,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         const parsedFromBulk = normalizeSongsListened(parseSongLinks(document.getElementById('songsListenedBulk').value));
         const parsedOfficial = mergeSongMetadata(parsedFromBulk, previousOfficial);
         resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
+        resolvedOfficial = reattachParsedLevelUpRelationships(resolvedOfficial, parsedOfficial);
       }
       currentGenre.songs_listened = resolvedOfficial;
       restoreGenreIdentityData(currentGenre, identitySnapshot);
