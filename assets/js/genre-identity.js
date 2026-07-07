@@ -636,6 +636,20 @@
     return !identitySongHasUsefulData(song);
   }
 
+
+  function shouldRemoveStaleIdentityQueueSong(song, genre) {
+    if (!song || !song.isIdentityTrack) return false;
+    if (song.reaction != null || song.listenerNote || song.songNote || song.favorite || song.isFavorite) return false;
+    const favUrl = identityTrackUrl({ url: genre?.favoritesongurl || "" });
+    const songUrl = identityTrackUrl(song);
+    if (favUrl && songUrl && favUrl === songUrl) return false;
+    const favText = identityQueueTextKey({ title: genre?.favoritesong || "", artist: genre?.favoriteartist || "" });
+    const songText = identityQueueTextKey(song);
+    if (favText && favText !== "|" && favText === songText) return false;
+    const source = String(song.source || "").toLowerCase();
+    return !source || source === "genre_identity" || source === "identity" || source === "spotify" || source === "youtube" || source === "apple";
+  }
+
   function syncIdentityTracksToSongQueue(genre, mark = false) {
     if (!genre) return false;
     const beforeSnapshot = (() => {
@@ -670,7 +684,11 @@
     remaining.forEach((song) => {
       // v64: repair old bad stamps. If a row no longer matches current identity anchors,
       // do not let stale isIdentityTrack/identityType keep rendering as Seminal/Media.
-      if (!entries.some((entry) => identityEntryContentMatchesSong(song, entry))) clearIdentityStamp(song);
+      const stillMatchesIdentity = entries.some((entry) => identityEntryContentMatchesSong(song, entry));
+      // v190: stale identity queue cleanup. When an identity anchor is overwritten,
+      // remove the old auto-created identity queue row only if it looks untouched.
+      if (!stillMatchesIdentity && shouldRemoveStaleIdentityQueueSong(song, genre)) return;
+      if (!stillMatchesIdentity) clearIdentityStamp(song);
       const key = identitySongDuplicateKey(song);
       if (key && seen.has(key)) {
         mergeQueueSongPreservingExisting(seen.get(key), song);
@@ -763,11 +781,10 @@
     const sem = getSeminal(genre);
     const media = getMedia(genre);
     const hasSem = sem?.title || sem?.artist || sem?.spotifyUrl || sem?.url;
-    const genreDescription = String(genre?.summary || genre?.description || genre?.desc || "").trim();
-    if (!aliases.length && !hasSem && !media.length && !genreDescription) return "";
+    if (!aliases.length && !hasSem && !media.length) return "";
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
-        <div><div class="eyebrow">Genre DNA</div>${genreDescription ? `<p class="genre-identity-description">${esc(genreDescription)}</p>` : `<p class="genre-identity-description muted">No genre description saved yet.</p>`}</div>
+        <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
       </div>
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">
@@ -1155,7 +1172,14 @@
 
 
   async function persistIdentityApplyNow(message = '') {
+    const priorIdentitySaveFlag = window.__dgIdentitySaveInFlight;
+    const priorSkipListenRefresh = window.__dgSkipNextListenRefreshAfterSave;
     try {
+      // v192: identity saves should persist the mutated genre data without forcing
+      // a full listen-screen rebuild after the Worker returns. That rebuild was
+      // the main source of post-save Firefox lag on large annotated genres.
+      window.__dgIdentitySaveInFlight = true;
+      window.__dgSkipNextListenRefreshAfterSave = true;
       if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
       if (typeof saveLibraryUpdates === "function") {
         await saveLibraryUpdates();
@@ -1167,6 +1191,9 @@
     } catch (error) {
       console.warn("Could not save identity update", error);
       toast(`Identity applied, but save failed: ${error?.message || error || "Unknown error"}`, true);
+    } finally {
+      window.__dgIdentitySaveInFlight = priorIdentitySaveFlag || false;
+      window.__dgSkipNextListenRefreshAfterSave = priorSkipListenRefresh || false;
     }
   }
 
@@ -1677,25 +1704,43 @@
         editMode = false,
         options = {},
       ) {
+        const targetHash =
+          genre && genre.id != null
+            ? `#genre=${encodeURIComponent(String(genre.id))}`
+            : "";
+        const sameGenreHash = !!targetHash && location.hash === targetHash;
+
+        // v191: Do not push/replace history for same-genre refreshes. Genre
+        // Identity saves re-open the current genre to refresh DNA cards; in
+        // Firefox each redundant history mutation wakes expensive navigation
+        // observers and can freeze tab switching for seconds.
         if (genre && !suppress && !options.skipHistory && genre.id != null) {
           try {
-            const targetHash = `#genre=${encodeURIComponent(String(genre.id))}`;
-            if (location.hash !== targetHash)
+            if (!sameGenreHash) {
               history.pushState(
                 stateForGenre(genre, editMode),
                 "",
                 genreUrl(genre.id),
               );
+            }
           } catch (_) {}
         }
-        const result = originalOpen.apply(this, arguments);
-        if (result !== false && genre?.id != null) {
+
+        const nextOptions = sameGenreHash
+          ? { ...options, skipHistory: true }
+          : options;
+        const result = originalOpen.call(this, genre, editMode, nextOptions);
+
+        if (result !== false && genre?.id != null && !nextOptions.skipHistory) {
           try {
-            history.replaceState(
-              stateForGenre(genre, editMode),
-              "",
-              genreUrl(genre.id),
-            );
+            const nextHash = `#genre=${encodeURIComponent(String(genre.id))}`;
+            if (location.hash !== nextHash) {
+              history.replaceState(
+                stateForGenre(genre, editMode),
+                "",
+                genreUrl(genre.id),
+              );
+            }
           } catch (_) {}
         }
         return result;
@@ -1804,8 +1849,13 @@
     if (listenRoot && typeof MutationObserver === "function") {
       let listenTimer = null;
       const observer = new MutationObserver(() => {
+        if (window.__dgIdentitySaveInFlight) return;
         clearTimeout(listenTimer);
-        listenTimer = setTimeout(() => { injectDnaCard(); injectDetailIdentityImport(); }, 120);
+        listenTimer = setTimeout(() => {
+          if (window.__dgIdentitySaveInFlight) return;
+          injectDnaCard();
+          injectDetailIdentityImport();
+        }, 160);
       });
       observer.observe(listenRoot, { childList: true, subtree: true });
     }

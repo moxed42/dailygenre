@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Genre</title>
-    <meta name="daily-genre-version" content="v190" />
-    <meta name="daily-genre-updated" content="2026-07-06 11:10 PM ET" />
+    <meta name="daily-genre-version" content="v193" />
+    <meta name="daily-genre-updated" content="2026-07-06 11:52 PM ET" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <link rel="stylesheet" href="./assets/css/core-loader.css?v=spin-today-mobile-v183" />
-    <link rel="stylesheet" href="./assets/css/library-polish.css?v=genre-back-v184" />
+    <link rel="stylesheet" href="./assets/css/library-polish.css?v=safe-pending-fixes-v190" />
     <link rel="stylesheet" href="./assets/css/studio-polish.css?v=genre-back-v184" />
     <link rel="stylesheet" href="./assets/css/ranks-polish.css?v=spin-today-mobile-v183" />
     <link rel="stylesheet" href="./assets/css/genre-identity.css?v=spin-today-mobile-v183" />
@@ -394,6 +394,9 @@
               <option value="pending">Has Pending</option>
               <option value="album-dive">Has Album Dive</option>
               <option value="songs">Has song log</option>
+              <option value="non-spotify-links">Has non-Spotify links</option>
+              <option value="youtube-links">Has YouTube links</option>
+              <option value="level-up-issues">Possible Level Up issues</option>
               <option value="favorite">Has favorite song</option>
               <option value="missing-songs">Missing song log</option>
               <option value="unlistened">Unlistened genres</option>
@@ -798,8 +801,8 @@
       </section>
 
       <footer class="dg-build-footer" aria-label="Daily Genre build information">
-        <span>Daily Genre v190</span>
-        <span>Updated 2026-07-06 11:10 PM ET</span>
+        <span>Daily Genre v193</span>
+        <span>Updated 2026-07-06 11:52 PM ET</span>
       </footer>
     </div>
 
@@ -807,7 +810,7 @@
       <div class="modal">
         <h3>Save changes</h3>
         <p>Enter the app password to save changes through Cloudflare.</p>
-        <input id="passwordInput" type="password" placeholder="App password" />
+        <input id="passwordInput" type="password" placeholder="App password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" />
         <div class="row" style="margin-top: 14px">
           <button class="btn btn-primary" id="passwordSubmitBtn">
             Save now
@@ -1028,10 +1031,10 @@
     <script src="./assets/js/genre-data.js?v=spin-today-mobile-v183"></script>
     <script src="./assets/js/spotify.js?v=genre-back-v184"></script>
     <script src="./assets/js/album-dive.js?v=spin-today-mobile-v183"></script>
-    <script src="./assets/js/app.js?v=genre-back-v184"></script>
-    <script src="./assets/js/studio-polish.js?v=repair-clean-helper-v190-safe"></script>
-    <script src="./assets/js/genre-identity.js?v=spin-today-mobile-v183"></script>
-    <script src="./assets/js/songs.js?v=spin-today-mobile-v183"></script>
+    <script src="./assets/js/app.js?v=password-save-perf-v193"></script>
+    <script src="./assets/js/studio-polish.js?v=repair-clean-helper-v190"></script>
+    <script src="./assets/js/genre-identity.js?v=password-save-perf-v193"></script>
+    <script src="./assets/js/songs.js?v=levelup-routed-fix-v190"></script>
     <script src="./assets/js/listening-room.js?v=spin-today-mobile-v183"></script>
     <script src="./assets/js/library-polish.js?v=spin-today-mobile-v183"></script>
     <script src="./assets/js/visuals.js?v=spin-today-mobile-v183"></script>

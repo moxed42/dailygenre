@@ -155,6 +155,17 @@
       return labels[name] ? `${labels[name]} | Daily Genre` : DEFAULT_PAGE_TITLE;
     }
 
+    // v193: keep non-active screens inert so Firefox/password-manager observers
+    // have less live form/control surface to scan after the save-password modal.
+    function applyScreenInertState(activeScreen) {
+      document.querySelectorAll('.screen').forEach(el => {
+        const isActive = el === activeScreen;
+        el.classList.toggle('active', isActive);
+        el.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        try { el.inert = !isActive; } catch (_) {}
+      });
+    }
+
     function switchScreen(name, options = {}) {
       const currentActive = document.querySelector('.screen.active');
       const currentName = currentActive?.id?.replace('screen-', '') || '';
@@ -196,10 +207,8 @@
       const screen = document.getElementById(`screen-${name}`);
       if (!screen) return false;
 
-      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      applyScreenInertState(screen);
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-      screen.classList.add('active');
 
       const tab = document.querySelector(`.tab-btn[data-screen="${name}"]`);
       if (tab) tab.classList.add('active');
@@ -1021,6 +1030,49 @@
         callback(song);
         if (song.levelUp) callback(song.levelUp);
       });
+    }
+
+    function songUrlIsNonSpotifyLink(song) {
+      const url = String(song?.url || song?.spotifyUrl || song?.itunesTrackUrl || '').trim();
+      return /^https?:\/\//i.test(url) && !/spotify\.com\/track\//i.test(url);
+    }
+
+    function songUrlIsYoutubeLink(song) {
+      const url = String(song?.url || song?.spotifyUrl || '').trim();
+      return /(?:youtube\.com\/watch|youtu\.be\/|music\.youtube\.com\/watch)/i.test(url);
+    }
+
+    function genreHasSongMatching(genre, predicate) {
+      let found = false;
+      eachSongInLog(inflateSongsFromStorage(genre?.songs_listened || []), song => {
+        if (!found && predicate(song)) found = true;
+      });
+      eachSongInLog(normalizePendingSongs(genre?.pending_songs || []), song => {
+        if (!found && predicate(song)) found = true;
+      });
+      return found;
+    }
+
+    function levelUpIssuesForGenre(genre) {
+      const raw = normalizeSongsListened(genre?.songs_listened || []);
+      const inflated = inflateSongsFromStorage(genre?.songs_listened || []);
+      const issues = [];
+      if (raw[0]?.isLevelUp) issues.push('First stored row is a Level Up with no parent.');
+      for (let i = 1; i < raw.length; i += 1) {
+        if (raw[i]?.isLevelUp && raw[i - 1]?.isLevelUp) issues.push(`Consecutive Level Up rows near ${raw[i].artist || ''} — ${raw[i].title || raw[i].url || 'unknown track'}.`);
+      }
+      inflated.forEach(song => {
+        const fit = Number(song?.score);
+        if (Number.isFinite(fit) && fit <= 3 && !song.levelUp) {
+          const title = [song.artist, song.title].filter(Boolean).join(' — ') || song.url || 'Untitled low-fit song';
+          issues.push(`${title} is fit ${fit}/5 and has no Level Up attached.`);
+        }
+      });
+      return [...new Set(issues)].slice(0, 12);
+    }
+
+    function genreHasLevelUpIssues(genre) {
+      return levelUpIssuesForGenre(genre).length > 0;
     }
 
     function collectSongReactionSnapshot(arr) {
@@ -2645,7 +2697,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             : `URL saved, but Spotify metadata did not refresh: ${metadataWarning}`,
             !recovered);
         } else {
-          showSaveToast('Queue row overwritten with Spotify metadata — use the floating Save button to keep it.', false);
+          showSaveToast('Queue row updated — use the floating Save button to keep it.', false);
         }
       } catch (err) {
         console.error('Track URL update failed', err);
@@ -2926,7 +2978,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         : '';
       const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
-        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, Apple Music, or web track URL"><div class="track-card-manual-meta"><input type="text" data-track-title-input placeholder="Override title if YouTube/Apple title is messy"><input type="text" data-track-artist-input placeholder="Override artist/channel if needed"></div><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove from genre</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, Apple Music, or web track links. Optional title/artist overrides replace messy YouTube or Apple metadata. Use the floating Save button to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, Apple Music, or web track URL"><div class="track-card-manual-meta"><input type="text" data-track-title-input value="${escapeHtml(s.title || '')}" placeholder="Override title if YouTube/Apple title is messy"><input type="text" data-track-artist-input value="${escapeHtml(s.artist || (Array.isArray(s.artists) ? s.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed"></div><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Apply URL / Overrides</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove from genre</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, Apple Music, or web track links. Optional title/artist overrides replace messy YouTube or Apple metadata. Use the floating Save button to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
@@ -3432,6 +3484,12 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       panel.innerHTML = pending.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: true })).join('');
     }
 
+    function renderLevelUpIntegrityPanel(genre) {
+      const issues = levelUpIssuesForGenre(genre);
+      if (!issues.length) return '';
+      return `<div class="levelup-integrity-panel"><strong>Possible Level Up cleanup</strong><div class="small">Review these before saving if this genre was bulk-overwritten or imported from old annotations.</div><ul>${issues.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`;
+    }
+
     function loadListenScreen(genre, options = {}) {
       currentGenre = genre;
       document.title = `${genre.genre || 'Genre'} | Daily Genre`;
@@ -3508,6 +3566,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
           ${renderListeningActionsPanel(genre)}
           ${renderGenreReactionSummary(genre)}
           ${renderPendingSongNotesPanel(genre)}
+          ${renderLevelUpIntegrityPanel(genre)}
           <div class="detail-log-section listening-focus-section-shell" data-listening-focus="${escapeHtml(listeningFocusMode)}">
             ${renderListeningFocusTabs(genre)}
             <div class="listening-focus-pane listening-focus-songs ${listeningFocusMode === 'songs' ? '' : 'hidden'}">
@@ -3543,6 +3602,16 @@ async function prepareAndSaveCurrentGenre(options = {}) {
     function openPasswordModal(action) {
       pendingSaveAction = action;
       passwordNotice.textContent = '';
+      // v193: explicitly opt the app password field out of browser/password-manager
+      // autofill scanning. Firefox started doing expensive form scans after this
+      // modal was used on pages with thousands of generated controls.
+      passwordInput.setAttribute('autocomplete', 'off');
+      passwordInput.setAttribute('autocapitalize', 'none');
+      passwordInput.setAttribute('autocorrect', 'off');
+      passwordInput.setAttribute('spellcheck', 'false');
+      passwordInput.setAttribute('data-lpignore', 'true');
+      passwordInput.setAttribute('data-1p-ignore', 'true');
+      passwordInput.setAttribute('data-bwignore', 'true');
       passwordInput.value = appPassword || '';
       passwordModal.classList.add('show');
       passwordInput.focus();
@@ -3550,6 +3619,10 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
     function closePasswordModal() {
       passwordModal.classList.remove('show');
+      try { passwordInput.blur(); } catch (_) {}
+      // Do not leave the password sitting in a hidden field after save; appPassword
+      // keeps the session copy for future saves without reopening this modal.
+      passwordInput.value = '';
       pendingSaveAction = null;
       passwordNotice.textContent = '';
     }
@@ -5566,7 +5639,17 @@ function blockSaveIfDuplicateGenres() {
       const switched = switchScreen('listen', { force: !!options.force, preserveScroll: !!options.preserveScroll });
       if (!switched) return false;
       applyDetailEditMode(detailEditMode);
-      if (genre.id != null) history.replaceState(null, '', '#genre=' + encodeURIComponent(String(genre.id)));
+      // v191: Avoid redundant history writes when re-rendering the same genre.
+      // Firefox can spend seconds in page-navigation observers after Genre Identity
+      // saves when replaceState is called repeatedly for an unchanged #genre URL.
+      if (genre.id != null && !options.skipHistory) {
+        try {
+          const targetHash = '#genre=' + encodeURIComponent(String(genre.id));
+          if (location.hash !== targetHash) {
+            history.replaceState(null, '', targetHash);
+          }
+        } catch (_) {}
+      }
       // v178: opening/re-rendering a genre should not auto-jump to the carousel or otherwise move the viewport.
       // Callers that truly want a top jump can pass { scrollTop: true }.
       if (options.scrollTop) {
@@ -5749,6 +5832,9 @@ function blockSaveIfDuplicateGenres() {
       if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
       if (flag === 'missing-songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) === 0);
       if (flag === 'missing-favorite') items = items.filter(g => !(g.favoritesong || g.favoritesongurl));
+      if (flag === 'non-spotify-links') items = items.filter(g => genreHasSongMatching(g, songUrlIsNonSpotifyLink));
+      if (flag === 'youtube-links') items = items.filter(g => genreHasSongMatching(g, songUrlIsYoutubeLink));
+      if (flag === 'level-up-issues') items = items.filter(genreHasLevelUpIssues);
       if (flag === 'missing-identity') items = items.filter(g => !genreHasMeaningfulIdentity(g));
       if (flag === 'notes') items = items.filter(g => !!g.notes);
       if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
@@ -6458,24 +6544,41 @@ async function loadData() {
         pendingSaveAction = completedAction;
         updateRemainingCount();
         populateMonthFilter();
-        renderHistory();
-        renderRankings();
+        const activeScreenId = document.querySelector('.screen.active')?.id || '';
+        const skipListenRefresh = !!window.__dgSkipNextListenRefreshAfterSave || !!window.__dgIdentitySaveInFlight;
+        // v193: Password-modal saves used to rebuild History + Rankings + Visuals +
+        // the full Listen screen immediately after the first password entry. On large
+        // annotated libraries that creates ~100k live nodes and triggers Firefox's
+        // password/form observers after the password field has been used. Only refresh
+        // the active screen, and keep Genre Identity saves from rebuilding Listen.
+        if (activeScreenId === 'screen-history') renderHistory();
+        if (activeScreenId === 'screen-ranking') renderRankings();
+        if (activeScreenId === 'screen-viz') renderVisuals();
         if (pendingSaveAction === 'library_save') {
           libraryUpdatesPending = false;
           stagedQueueReactionKeys.clear();
           toggleLibrarySaveButton(false);
           setUnsavedState(false);
-          renderVisuals();
           if (currentGenre && document.getElementById('screen-listen')?.classList.contains('active')) {
-            loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });
+            const restore = preserveScrollSnapshot();
+            if (!skipListenRefresh) {
+              loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });
+            } else {
+              try {
+                window.dispatchEvent(new CustomEvent('dailygenre:identity-save-skip-listen-refresh', { detail: { genreId: currentGenre?.id } }));
+              } catch (_) {}
+            }
             applyDetailEditMode(detailEditMode);
             resetListenDirtySnapshot();
+            restore();
           }
           const status = document.getElementById('vizRefreshStatus');
           if (status) status.textContent = 'Library updates saved.';
           showSaveToast('Library updates saved.', false);
         } else {
-          loadListenScreen(currentGenre, { preserveDirty: false });
+          if (currentGenre && document.getElementById('screen-listen')?.classList.contains('active')) {
+            loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });
+          }
           lastSavedListenSnapshot = buildListenSnapshot();
           setUnsavedState(false);
           showSaveToast(pendingSaveAction === 'mark_listened' ? `Saved. ${currentGenre.genre || 'Genre'} marked as listened today.` : `Saved changes to ${currentGenre.genre || 'genre'}.`, false);
@@ -6510,6 +6613,21 @@ async function loadData() {
     passwordModal.addEventListener('click', (e) => {
       if (e.target === passwordModal) closePasswordModal();
     });
+
+    function suppressAutofillOnGeneratedControls(root = document) {
+      // v193: Generated library/detail controls are not login fields. Marking them
+      // opt-out reduces extension/password-manager work after the save-password modal.
+      try {
+        root.querySelectorAll('input:not([type="password"]), textarea, select').forEach(el => {
+          if (!el.hasAttribute('autocomplete')) el.setAttribute('autocomplete', 'off');
+          if (!el.hasAttribute('spellcheck')) el.setAttribute('spellcheck', 'false');
+          el.setAttribute('data-lpignore', 'true');
+          el.setAttribute('data-1p-ignore', 'true');
+          el.setAttribute('data-bwignore', 'true');
+        });
+      } catch (_) {}
+    }
+    window.suppressAutofillOnGeneratedControls = suppressAutofillOnGeneratedControls;
 
     // App boot is intentionally run after every helper and Spotify function is declared.
     // Running it here used to call Spotify/session helpers before they existed, which stopped data loading.
@@ -7728,8 +7846,19 @@ async function loadData() {
           restore();
         }
         if (currentGenre && document.getElementById('screen-listen')?.classList.contains('active')) {
+          const skipListenRefresh = !!window.__dgSkipNextListenRefreshAfterSave;
           const restore = preserveScrollSnapshot();
-          loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });
+          if (!skipListenRefresh) {
+            loadListenScreen(currentGenre, { preserveDirty: false, skipSpotifyHydration: true });
+          } else {
+            // v192: Genre Identity saves already update the visible DNA/editor blocks
+            // before persisting. Rebuilding the whole genre detail page here was
+            // causing Firefox to churn through a huge same-page navigation/form
+            // observer path after save. Keep the DOM stable for this save only.
+            try {
+              window.dispatchEvent(new CustomEvent('dailygenre:identity-save-skip-listen-refresh', { detail: { genreId: currentGenre?.id } }));
+            } catch (_) {}
+          }
           applyDetailEditMode(detailEditMode);
           resetListenDirtySnapshot();
           restore();
@@ -7853,96 +7982,6 @@ async function loadData() {
     }
 
 
-
-
-function installMobileTapBridge() {
-  if (window.__dailyGenreMobileTapBridgeInstalled) return;
-  window.__dailyGenreMobileTapBridgeInstalled = true;
-
-  const selectors = [
-    '.tab-btn',
-    '#topTodayBtn',
-    '#topCrateDigBtn',
-    '#topAlbumDiveBtn',
-    '.song-focus-nav',
-    '.song-focus-reaction',
-    '.song-focus-trophy',
-    '.song-focus-details-btn',
-    '.view-rating-star',
-    '.view-rating-zanger',
-    '.album-focus-nav',
-    '.album-focus-reaction',
-    '.album-focus-trophy',
-    '.album-slot-card',
-    '.listening-focus-tab',
-    '.sp-play-btn',
-    '.spotify-mini-play',
-    '.spotify-sticky-close',
-    '.dg-back-to-top'
-  ].join(',');
-
-  const isMobilePointer = () => {
-    try {
-      return window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse), (max-width: 820px)').matches;
-    } catch (_) {
-      return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
-    }
-  };
-
-  const state = { target: null, x: 0, y: 0, time: 0, suppressTarget: null, suppressUntil: 0 };
-
-  const actionable = (eventTarget) => {
-    if (!eventTarget || !isMobilePointer()) return null;
-    const el = eventTarget.closest?.(selectors);
-    if (!el || el.disabled || el.getAttribute('aria-disabled') === 'true') return null;
-    if (eventTarget.closest?.('input, textarea, select, option, label')) return null;
-    return el;
-  };
-
-  document.addEventListener('pointerdown', (event) => {
-    if (event.pointerType && event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-    const el = actionable(event.target);
-    if (!el) return;
-    state.target = el;
-    state.x = event.clientX || 0;
-    state.y = event.clientY || 0;
-    state.time = Date.now();
-  }, true);
-
-  document.addEventListener('pointerup', (event) => {
-    if (event.pointerType && event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-    const el = actionable(event.target);
-    if (!el || el !== state.target) return;
-    const dx = Math.abs((event.clientX || 0) - state.x);
-    const dy = Math.abs((event.clientY || 0) - state.y);
-    if (dx > 12 || dy > 12 || Date.now() - state.time > 900) return;
-
-    // Some mobile browsers/elements show tap feedback but lose the follow-up click
-    // when fixed overlays, transforms, or hover-only styles are present. Dispatch a
-    // controlled synthetic click immediately and suppress the delayed native duplicate.
-    event.preventDefault();
-    event.stopPropagation();
-    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
-
-    state.suppressTarget = el;
-    state.suppressUntil = Date.now() + 650;
-    const click = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
-    try { Object.defineProperty(click, '__dailyGenreTapBridge', { value: true }); } catch (_) {}
-    el.dispatchEvent(click);
-  }, true);
-
-  document.addEventListener('click', (event) => {
-    if (event.__dailyGenreTapBridge) return;
-    if (!state.suppressTarget || Date.now() > state.suppressUntil) return;
-    const el = event.target?.closest?.(selectors);
-    if (el && el === state.suppressTarget) {
-      event.preventDefault();
-      event.stopPropagation();
-      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
-    }
-  }, true);
-}
-
 function ensureBackToTopButton() {
   if (document.getElementById('dgBackToTopBtn')) return;
   const btn = document.createElement('button');
@@ -7966,7 +8005,6 @@ function ensureBackToTopButton() {
   sync();
 }
 
-installMobileTapBridge();
 bootApp().catch(err => {
   console.error('App boot failed:', err);
   if (remainingCount) remainingCount.textContent = 'Could not start app. Check console.';
@@ -7991,4 +8029,7 @@ async function bootApp() {
   if (spotifySession?.access_token) spotifyStartPolling();
   await loadData();
   ensureBackToTopButton();
+  suppressAutofillOnGeneratedControls();
+  const activeScreen = document.querySelector('.screen.active');
+  if (activeScreen) applyScreenInertState(activeScreen);
 }
