@@ -2645,7 +2645,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             : `URL saved, but Spotify metadata did not refresh: ${metadataWarning}`,
             !recovered);
         } else {
-          showSaveToast('Track URL/metadata updated — use the floating Save button to keep it.', false);
+          showSaveToast('Queue row overwritten with Spotify metadata — use the floating Save button to keep it.', false);
         }
       } catch (err) {
         console.error('Track URL update failed', err);
@@ -2654,7 +2654,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         if (button && document.body.contains(button)) {
           button.disabled = false;
           button.classList.remove('is-saving');
-          button.textContent = oldButtonText || 'Apply URL / Overrides';
+          button.textContent = oldButtonText || 'Update Track';
         }
       }
     }
@@ -2926,7 +2926,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         : '';
       const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
-        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, Apple Music, or web track URL"><div class="track-card-manual-meta"><input type="text" data-track-title-input value="${escapeHtml(s.title || s.name || '')}" placeholder="Override title if YouTube/Apple title is messy"><input type="text" data-track-artist-input value="${escapeHtml(s.artist || (Array.isArray(s.artists) ? s.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed"></div><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove from genre</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, Apple Music, or web track links. Optional title/artist overrides replace messy YouTube or Apple metadata. Use the floating Save button to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, Apple Music, or web track URL"><div class="track-card-manual-meta"><input type="text" data-track-title-input placeholder="Override title if YouTube/Apple title is messy"><input type="text" data-track-artist-input placeholder="Override artist/channel if needed"></div><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Update Track</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove from genre</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, Apple Music, or web track links. Optional title/artist overrides replace messy YouTube or Apple metadata. Use the floating Save button to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
@@ -5685,25 +5685,6 @@ function blockSaveIfDuplicateGenres() {
       `;
     }
 
-
-    function genreHasNonSpotifySongLinks(genre, mode = 'non-spotify') {
-      const urls = [];
-      const collect = (song) => {
-        if (!song) return;
-        const url = normalizeSongUrl(song.url || song.spotifyUrl || '');
-        if (url) urls.push(url);
-        if (song.levelUp) collect(song.levelUp);
-      };
-      try {
-        inflateSongsFromStorage(genre?.songs_listened || []).forEach(collect);
-        normalizePendingSongs(genre?.pending_songs || []).forEach(collect);
-      } catch (_) {}
-      return urls.some((url) => {
-        if (mode === 'youtube') return isYoutubeUrl(url);
-        return /^https?:\/\//i.test(url) && !/open\.spotify\.com\/track\//i.test(url) && !/^spotify:track:/i.test(url);
-      });
-    }
-
     function renderHistory() {
       const monthEl = document.getElementById('historyMonthFilter');
       const ratingEl = document.getElementById('historyRatingFilter');
@@ -5772,8 +5753,6 @@ function blockSaveIfDuplicateGenres() {
       if (flag === 'notes') items = items.filter(g => !!g.notes);
       if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
       if (flag === 'unranked') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0 && !g.rank_order && g.rating !== 'zanger');
-      if (flag === 'non-spotify-links') items = items.filter(g => genreHasNonSpotifySongLinks(g, 'non-spotify'));
-      if (flag === 'youtube-links') items = items.filter(g => genreHasNonSpotifySongLinks(g, 'youtube'));
 
       if (query) {
         const normalizedQuery = normalizeGenreSearchText(query);
@@ -7874,6 +7853,96 @@ async function loadData() {
     }
 
 
+
+
+function installMobileTapBridge() {
+  if (window.__dailyGenreMobileTapBridgeInstalled) return;
+  window.__dailyGenreMobileTapBridgeInstalled = true;
+
+  const selectors = [
+    '.tab-btn',
+    '#topTodayBtn',
+    '#topCrateDigBtn',
+    '#topAlbumDiveBtn',
+    '.song-focus-nav',
+    '.song-focus-reaction',
+    '.song-focus-trophy',
+    '.song-focus-details-btn',
+    '.view-rating-star',
+    '.view-rating-zanger',
+    '.album-focus-nav',
+    '.album-focus-reaction',
+    '.album-focus-trophy',
+    '.album-slot-card',
+    '.listening-focus-tab',
+    '.sp-play-btn',
+    '.spotify-mini-play',
+    '.spotify-sticky-close',
+    '.dg-back-to-top'
+  ].join(',');
+
+  const isMobilePointer = () => {
+    try {
+      return window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse), (max-width: 820px)').matches;
+    } catch (_) {
+      return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+    }
+  };
+
+  const state = { target: null, x: 0, y: 0, time: 0, suppressTarget: null, suppressUntil: 0 };
+
+  const actionable = (eventTarget) => {
+    if (!eventTarget || !isMobilePointer()) return null;
+    const el = eventTarget.closest?.(selectors);
+    if (!el || el.disabled || el.getAttribute('aria-disabled') === 'true') return null;
+    if (eventTarget.closest?.('input, textarea, select, option, label')) return null;
+    return el;
+  };
+
+  document.addEventListener('pointerdown', (event) => {
+    if (event.pointerType && event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+    const el = actionable(event.target);
+    if (!el) return;
+    state.target = el;
+    state.x = event.clientX || 0;
+    state.y = event.clientY || 0;
+    state.time = Date.now();
+  }, true);
+
+  document.addEventListener('pointerup', (event) => {
+    if (event.pointerType && event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+    const el = actionable(event.target);
+    if (!el || el !== state.target) return;
+    const dx = Math.abs((event.clientX || 0) - state.x);
+    const dy = Math.abs((event.clientY || 0) - state.y);
+    if (dx > 12 || dy > 12 || Date.now() - state.time > 900) return;
+
+    // Some mobile browsers/elements show tap feedback but lose the follow-up click
+    // when fixed overlays, transforms, or hover-only styles are present. Dispatch a
+    // controlled synthetic click immediately and suppress the delayed native duplicate.
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+
+    state.suppressTarget = el;
+    state.suppressUntil = Date.now() + 650;
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+    try { Object.defineProperty(click, '__dailyGenreTapBridge', { value: true }); } catch (_) {}
+    el.dispatchEvent(click);
+  }, true);
+
+  document.addEventListener('click', (event) => {
+    if (event.__dailyGenreTapBridge) return;
+    if (!state.suppressTarget || Date.now() > state.suppressUntil) return;
+    const el = event.target?.closest?.(selectors);
+    if (el && el === state.suppressTarget) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+    }
+  }, true);
+}
+
 function ensureBackToTopButton() {
   if (document.getElementById('dgBackToTopBtn')) return;
   const btn = document.createElement('button');
@@ -7897,6 +7966,7 @@ function ensureBackToTopButton() {
   sync();
 }
 
+installMobileTapBridge();
 bootApp().catch(err => {
   console.error('App boot failed:', err);
   if (remainingCount) remainingCount.textContent = 'Could not start app. Check console.';

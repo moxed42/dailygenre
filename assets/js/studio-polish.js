@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v189-pending-rollup";
+  const VERSION = "studio-polish-v188-repair-clean-helper";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -77,13 +77,17 @@
       .replace(/'/g, "&#39;");
   }
 
-
-  /* Daily Genre v189: Repair Bay clean helper.
-     Repair Bay URL applies read manual title/artist overrides through clean(). */
+  /* Daily Genre v188: Repair Bay clean helper
+     Repair Bay Apply URL uses clean() for manual title/artist overrides. */
   function clean(value) {
     return String(value ?? "").trim();
   }
 
+  /* Daily Genre v190: Repair Bay clean helper.
+     Repair Bay URL applies read manual title/artist overrides through clean(). */
+  function clean(value) {
+    return String(value ?? "").trim();
+  }
   function studioArtworkUrl(song) {
     return String(song?.artwork || song?.albumArt || song?.image || song?.thumbnail || song?.cover || "").trim();
   }
@@ -975,11 +979,7 @@
         ev.target?.id === "studioGlobalSearch" ||
         ev.target?.id === "studioPriorityFilter"
       ) {
-        if (mount.__dgStudioFilterRaf) cancelAnimationFrame(mount.__dgStudioFilterRaf);
-        mount.__dgStudioFilterRaf = requestAnimationFrame(() => {
-          mount.__dgStudioFilterRaf = 0;
-          filterStudioRows(mount);
-        });
+        filterStudioRows(mount);
       }
     });
     mount.addEventListener("change", (ev) => {
