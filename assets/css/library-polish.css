@@ -10496,3 +10496,32 @@ body:not(.spotify-player-open) #spotifyStickyPlayer:not(.open) {
     pointer-events: none !important;
   }
 }
+
+/* === Daily Genre v187: expanded song carousel description lines ===
+   Fixes clipped song descriptions in the genre-page song carousel/focus player. */
+#screen-listen.listen-experience-mode .song-focus-reason,
+.song-focus-reason {
+  display: block !important;
+  max-height: none !important;
+  overflow: visible !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-detail-card.song-focus-fit-card p,
+.song-focus-detail-card.song-focus-fit-card p {
+  display: block !important;
+  max-height: none !important;
+  overflow: visible !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+}
+
+#screen-listen.listen-experience-mode .song-focus-row-relation {
+  white-space: normal !important;
+  max-height: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
