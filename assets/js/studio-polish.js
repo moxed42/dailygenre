@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v188-repair-clean-helper";
+  const VERSION = "studio-polish-v196-url-override-save-flow";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -77,17 +77,12 @@
       .replace(/'/g, "&#39;");
   }
 
-  /* Daily Genre v188: Repair Bay clean helper
-     Repair Bay Apply URL uses clean() for manual title/artist overrides. */
-  function clean(value) {
-    return String(value ?? "").trim();
-  }
-
   /* Daily Genre v190: Repair Bay clean helper.
      Repair Bay URL applies read manual title/artist overrides through clean(). */
   function clean(value) {
     return String(value ?? "").trim();
   }
+
   function studioArtworkUrl(song) {
     return String(song?.artwork || song?.albumArt || song?.image || song?.thumbnail || song?.cover || "").trim();
   }
@@ -681,7 +676,7 @@
         const titleOverrideId = `${inputId}_title`;
         const artistOverrideId = `${inputId}_artist`;
         const inlineRepair = isRepair
-          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify / YouTube / Apple Music URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/... or https://music.apple.com/... or https://youtu.be/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Apply to copies" : "Apply URL"}</button></div><div class="studio-repair-manual-meta"><input id="${esc(titleOverrideId)}" type="text" placeholder="Override title if YouTube/Apple title is messy" onclick="event.stopPropagation();"><input id="${esc(artistOverrideId)}" type="text" placeholder="Override artist/channel if needed" onclick="event.stopPropagation();"></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite"></div></div>`
+          ? `<div class="studio-inline-track-edit" data-studio-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Spotify / YouTube / Apple Music URL${row.targetCount > 1 ? ` · updates ${esc(String(row.targetCount))} matching copies` : ""}</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/track/... or https://music.apple.com/... or https://youtu.be/..." value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-repair-form]'); const btn=wrap?.querySelector('[data-studio-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioRepairGroupUrlFromQueue === 'function' ? updateStudioRepairGroupUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">${row.targetCount > 1 ? "Apply to copies / Overrides" : "Apply URL / Overrides"}</button></div><div class="studio-repair-manual-meta"><input id="${esc(titleOverrideId)}" type="text" value="${esc(row.song?.title || row.song?.name || '')}" placeholder="Override title if YouTube/Apple title is messy" onclick="event.stopPropagation();"><input id="${esc(artistOverrideId)}" type="text" value="${esc(row.song?.artist || (Array.isArray(row.song?.artists) ? row.song.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed" onclick="event.stopPropagation();"></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite">Edit title/artist, then Apply URL / Overrides. Use Save cleanup to persist.</div></div>`
           : "";
         const skipKey = isRepair ? encodeURIComponent(repairSkipKey(row) || "") : "";
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
@@ -1380,10 +1375,24 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
     const manualTitle = clean(String(document.getElementById(`${inputId}_title`)?.value || "")).trim();
     const manualArtist = clean(String(document.getElementById(`${inputId}_artist`)?.value || "")).trim();
     if (!rawUrl) return { ok: false, error: "Paste a Spotify, YouTube, or Apple Music URL first." };
-    const located = findRepairTargetSong(target);
+    const kind = classifyRepairUrl(rawUrl);
+    // v196: Repair Bay rows can become stale after the first URL apply because the
+    // song identity key changes from the old missing-metadata row to the repaired
+    // YouTube/Apple/Spotify row. If the user then edits title/artist overrides and
+    // clicks Apply again, find by the current URL and/or typed override fields before
+    // giving up. This lets Apply URL / Overrides behave like a save action.
+    let located = findRepairTargetSong(target);
+    if (!located) {
+      located = findRepairTargetSong({
+        ...target,
+        url: rawUrl,
+        title: manualTitle || target?.title || "",
+        artist: manualArtist || target?.artist || "",
+      });
+    }
     if (!located) return { ok: false, error: "Could not find that track in the current library rows." };
 
-    const kind = classifyRepairUrl(rawUrl);
+
     const canonical = kind === "spotify" ? canonicalSpotifyTrackUrl(rawUrl) : rawUrl;
     const oldSong = {
       title: located.song.title || located.song.name || target?.title || "",
@@ -1395,11 +1404,16 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
     let refreshError = "";
     if (kind !== "spotify") {
       const metadata = await fetchExternalRepairMetadata(canonical);
-      const hasLookupIdentity = !!(metadata.title || metadata.artist);
-      if (hasLookupIdentity && !confirmStudioRepairUrlOverwrite(oldSong, metadata, kind)) {
+      const proposedExternal = {
+        ...metadata,
+        title: manualTitle || metadata.title || "",
+        artist: manualArtist || metadata.artist || "",
+      };
+      const hasLookupIdentity = !!(proposedExternal.title || proposedExternal.artist);
+      if (!manualTitle && !manualArtist && hasLookupIdentity && !confirmStudioRepairUrlOverwrite(oldSong, metadata, kind)) {
         return { ok: false, cancelled: true, error: "Apply cancelled." };
       }
-      applyExternalRepairMetadata(located.song, canonical, metadata);
+      applyExternalRepairMetadata(located.song, canonical, proposedExternal);
       refreshed = !!(metadata.artwork || metadata.title || metadata.artist || metadata.album || metadata.releaseYear || metadata.releaseDate);
       if (!metadata.artwork && kind === "youtube") {
         located.song.artwork = youTubePlaceholderIcon();
@@ -1591,9 +1605,9 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
         markRepairResolved(item.displayKey || item.key || repairSkipKey(item.song));
       });
       const refreshedCount = resolved.filter((item) => item.song && (item.song.artwork || item.song.albumArt)).length;
-      setStatus(refreshedCount ? `Applied · artwork found for ${refreshedCount} ${refreshedCount === 1 ? "track" : "tracks"}. Save cleanup to persist.` : "Applied URL · no artwork returned yet. Try a different Spotify track URL if this remains in the list.", !refreshedCount);
+      setStatus(refreshedCount ? `Applied URL / overrides · artwork found for ${refreshedCount} ${refreshedCount === 1 ? "track" : "tracks"}. Save cleanup to persist.` : "Applied URL / overrides. Save cleanup to persist.", false);
       if (updated > 1) toast(`Applied URL to ${updated} matching copies — Save cleanup to persist.`, false);
-      else toast(refreshedCount ? "Artwork updated in place — Save cleanup to persist." : "URL applied, but artwork is still missing.", !refreshedCount);
+      else toast("URL / overrides applied — Save cleanup to persist.", false);
     } catch (err) {
       console.error("Repair Bay apply failed", err);
       setStatus(`Apply failed: ${err?.message || err || "Unknown error"}`, true);

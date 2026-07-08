@@ -2606,9 +2606,21 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           }
         } else if (isYoutubeUrl(nextUrl) || isAppleMusicUrl(nextUrl)) {
           const externalMetadata = await fetchExternalTrackMetadata(nextUrl);
-          applyExternalTrackMetadata(target, nextUrl, externalMetadata, savedTitle, savedArtist);
+          // v196: Treat typed title/artist as authoritative overrides. The old flow
+          // fetched YouTube/Apple metadata first and made it look like Apply had wiped
+          // the user's edits. Preserve the typed values through the metadata apply.
+          applyExternalTrackMetadata(target, nextUrl, {
+            ...externalMetadata,
+            title: overrideTitle || externalMetadata.title || '',
+            artist: overrideArtist || externalMetadata.artist || '',
+          }, savedTitle, savedArtist);
         } else {
-          applyExternalTrackMetadata(target, nextUrl, { source: 'web', url: nextUrl }, savedTitle, savedArtist);
+          applyExternalTrackMetadata(target, nextUrl, {
+            source: 'web',
+            url: nextUrl,
+            title: overrideTitle || '',
+            artist: overrideArtist || '',
+          }, savedTitle, savedArtist);
         }
 
         if (overrideTitle) target.title = overrideTitle;
@@ -2737,7 +2749,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
             : `URL saved, but Spotify metadata did not refresh: ${metadataWarning}`,
             !recovered);
         } else {
-          showSaveToast('Queue row updated — use the floating Save button to keep it.', false);
+          showSaveToast('URL / overrides applied — use the floating Save button to keep them.', false);
         }
       } catch (err) {
         console.error('Track URL update failed', err);
@@ -2746,7 +2758,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         if (button && document.body.contains(button)) {
           button.disabled = false;
           button.classList.remove('is-saving');
-          button.textContent = oldButtonText || 'Update Track';
+          button.textContent = oldButtonText || 'Apply URL / Overrides';
         }
       }
     }

@@ -823,12 +823,13 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
           <h4>Track URL</h4>
           <div class="song-focus-url-row">
             <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify, YouTube, or Apple Music URL">
-            <button type="button" class="btn btn-primary btn-tiny" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply / Refresh</button>
+            <button type="button" class="btn btn-primary btn-tiny" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply URL / Overrides</button>
           </div>
           <div class="track-card-manual-meta song-focus-manual-meta">
-            <input data-track-title-input type="text" placeholder="Override title if metadata is messy">
-            <input data-track-artist-input type="text" placeholder="Override artist/channel if needed">
+            <input data-track-title-input type="text" value="${html(song.title || '')}" placeholder="Override title if metadata is messy">
+            <input data-track-artist-input type="text" value="${html(song.artist || (Array.isArray(song.artists) ? song.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed">
           </div>
+          <p class="song-focus-helper">Title/artist overrides are staged here. Click Apply URL / Overrides, then use the floating Save button to persist.</p>
         </div>
         <div class="song-focus-detail-card song-focus-meta-card">
           <h4>Metadata</h4>
