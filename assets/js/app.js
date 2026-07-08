@@ -1214,21 +1214,44 @@
     function refreshGenreRatingVisuals(value) {
       const active = String(value || '');
       const activeNumber = /^\d+$/.test(active) ? Number(active) : 0;
+      const activeLabel = genreRatingLabel(active);
       document.querySelectorAll('.view-rating-star, .genre-header-star, .star-btn').forEach(btn => {
         const rating = String(btn.dataset?.rating || btn.getAttribute('data-rating') || (btn.getAttribute('onclick') || '').match(/setGenreRatingFromView\((\d+)\)/)?.[1] || '');
         const on = rating && (btn.classList.contains('genre-header-star') ? activeNumber >= Number(rating) : active === rating);
         btn.classList.toggle('active', !!on);
+        btn.classList.toggle('is-active', !!on);
+        btn.dataset.active = on ? 'true' : 'false';
         if (btn.classList.contains('genre-header-star') && rating) btn.textContent = on ? '★' : '☆';
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       document.querySelectorAll('.view-rating-zanger, .genre-header-zanger').forEach(btn => {
         const isZ = active === 'zanger' && /zanger|Mark genre as Zanger|setGenreRatingFromView\('zanger'\)/i.test(`${btn.textContent || ''} ${btn.title || ''} ${btn.getAttribute('onclick') || ''}`);
         btn.classList.toggle('active', isZ);
+        btn.classList.toggle('is-active', isZ);
+        btn.dataset.active = isZ ? 'true' : 'false';
         btn.setAttribute('aria-pressed', isZ ? 'true' : 'false');
       });
-      document.querySelectorAll('.genre-header-rating-label').forEach(el => { el.textContent = genreRatingLabel(active); });
+      document.querySelectorAll('.genre-header-rating-label').forEach(el => { el.textContent = activeLabel; });
       const status = document.getElementById('ratingStatus');
       if (status) status.textContent = active === 'zanger' ? 'Marked as Zanger' : (active ? `${active} star${active === '1' ? '' : 's'} selected` : 'No rating selected');
+      document.querySelectorAll('.view-rating-panel, .detail-record-card, .setup-editor, .rating-panel').forEach(el => {
+        el.dataset.genreRating = active;
+        el.classList.toggle('rating-dirty-repaint', true);
+      });
+      // v208: force a synchronous style flush so Firefox paints star changes immediately.
+      // Earlier builds updated state correctly, but the heavy genre-page DOM sometimes did
+      // not repaint until a second interaction such as a song reaction occurred.
+      try { document.body.offsetHeight; } catch (_) {}
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.rating-dirty-repaint').forEach(el => el.classList.remove('rating-dirty-repaint'));
+      });
+    }
+
+    function repaintGenreRatingAfterInput(value) {
+      refreshGenreRatingVisuals(value);
+      setTimeout(() => refreshGenreRatingVisuals(value), 0);
+      requestAnimationFrame(() => refreshGenreRatingVisuals(value));
+      setTimeout(() => refreshGenreRatingVisuals(value), 80);
     }
 
     function genreRatingStarsOnly(genre) {
@@ -1436,17 +1459,59 @@
       libraryUpdatesPending = true;
       setUnsavedState(true);
       toggleLibrarySaveButton(true);
-      // v197: update the visible stars immediately. Full detail re-render can lag
-      // behind in Firefox until another control repaints the screen.
-      refreshGenreRatingVisuals(currentGenre.rating);
-      const restore = preserveScrollSnapshot();
-      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-      applyDetailEditMode(detailEditMode);
-      restore();
-      requestAnimationFrame(() => refreshGenreRatingVisuals(currentGenre.rating));
-      showSaveToast('Genre rating updated — use the floating Save button to persist it.', false);
-      if (!appPassword) promptLibrarySaveLogin();
+      // v208: rating clicks are intentionally local UI updates. Rebuilding the full
+      // genre page here can block Firefox's repaint until another control is clicked.
+      // The save flow persists currentGenre.rating; full renders happen when changing pages.
+      repaintGenreRatingAfterInput(currentGenre.rating);
+      showSaveToast(appPassword ? 'Genre rating updated — use the floating Save button to persist it.' : 'Genre rating updated — enter the save password to persist it.', false);
+      // v209: let the browser paint the selected stars before opening the save-password modal.
+      if (!appPassword) requestAnimationFrame(() => promptLibrarySaveLogin());
     }
+    window.setGenreRatingFromView = setGenreRatingFromView;
+
+    /* Daily Genre v209: genre star clicks must be immediate first interactions.
+       Firefox occasionally delayed painting inline onclick-driven star state until a later
+       song/reaction control fired. Capture the star click, repaint synchronously, then run
+       the normal rating/save-password flow once. */
+    function genreRatingValueFromControl(btn) {
+      if (!btn) return null;
+      if (btn.classList?.contains('view-rating-progress')) return null;
+      if (btn.classList?.contains('genre-header-zanger')) return 'zanger';
+      if (btn.classList?.contains('view-rating-zanger')) {
+        const text = `${btn.textContent || ''} ${btn.title || ''} ${btn.getAttribute('onclick') || ''}`;
+        return /zanger/i.test(text) ? 'zanger' : null;
+      }
+      if (btn.classList?.contains('genre-header-star') || btn.classList?.contains('view-rating-star')) {
+        const raw = btn.dataset?.rating || btn.getAttribute('data-rating') || (btn.getAttribute('onclick') || '').match(/setGenreRatingFromView\((\d+)\)/)?.[1] || '';
+        const n = Number(raw);
+        return Number.isFinite(n) && n >= 1 && n <= 5 ? String(n) : null;
+      }
+      return null;
+    }
+
+    function genreRatingControlFromEvent(event) {
+      const btn = event.target?.closest?.('.genre-header-star, .genre-header-zanger, .view-rating-panel:not(.listening-actions-panel) .view-rating-star, .view-rating-panel:not(.listening-actions-panel) .view-rating-zanger');
+      if (!btn || btn.disabled) return null;
+      if (btn.closest?.('.listening-actions-panel')) return null;
+      const value = genreRatingValueFromControl(btn);
+      return value == null ? null : { btn, value };
+    }
+
+    document.addEventListener('pointerdown', (event) => {
+      const hit = genreRatingControlFromEvent(event);
+      if (!hit || !currentGenre) return;
+      refreshGenreRatingVisuals(hit.value);
+    }, true);
+
+    document.addEventListener('click', (event) => {
+      const hit = genreRatingControlFromEvent(event);
+      if (!hit || !currentGenre) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+      refreshGenreRatingVisuals(hit.value);
+      setGenreRatingFromView(hit.value);
+    }, true);
 
     function makeSongFavorite(encodedKey) {
       if (!currentGenre) return;
@@ -3121,12 +3186,9 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           const newlyDated = setListenDateTodayIfNeeded(currentGenre);
           currentGenre.rating = selectedRating;
           currentGenre.status = 'listened';
-          refreshGenreRatingVisuals(selectedRating);
-          const restore = preserveScrollSnapshot();
-          loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-          applyDetailEditMode(true);
-          restore();
-          requestAnimationFrame(() => refreshGenreRatingVisuals(selectedRating));
+          // v208: keep setup-editor stars responsive without rebuilding the heavy
+          // listen screen. A later navigation/save can do the full render.
+          repaintGenreRatingAfterInput(selectedRating);
           markDirty();
           showSaveToast(newlyDated
             ? `Rated ${selectedRating}★ and marked as listened today — click Save Changes to keep it.`

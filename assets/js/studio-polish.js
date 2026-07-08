@@ -1129,7 +1129,7 @@
           </div>
           <div class="studio-mini-actions">
             ${isRepair && !isAlbumRepair ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof skipStudioRepairRow === 'function' ? skipStudioRepairRow('${skipKey}', this) : null; return false;">Skip for now</button><button type="button" class="btn btn-danger btn-tiny studio-hard-delete-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof hardDeleteStudioRepairGroup === 'function' ? hardDeleteStudioRepairGroup('${encodedTargets}', this) : null; return false;" title="Permanently delete this track from every genre and every queue">Delete everywhere</button>` : ""}
-            <button type="button" class="btn btn-secondary btn-tiny" onclick="event.stopPropagation(); openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "albumRepair" || row.type === "duplicate"})">Open genre</button>${isAlbumRepair ? `<button type="button" class="btn btn-primary btn-tiny" onclick="event.stopPropagation(); openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', true); setTimeout(() => document.getElementById('topAlbumDiveBtn')?.click?.(), 120);">Open Album Dive</button>` : ""}
+            <button type="button" class="btn btn-secondary btn-tiny" onclick="event.stopPropagation(); openGenreByIdEncoded('${encodeURIComponent(String(row.genre?.id ?? ""))}', ${row.type === "missingArt" || row.type === "missingYear" || row.type === "missingMeta" || row.type === "albumRepair" || row.type === "duplicate"})">Open genre</button>
           </div>
         </article>`;
       })
@@ -2408,7 +2408,116 @@ This removes it from every genre queue and pending list. It becomes permanent af
   window.refreshStudioRepairList = refreshStudioRepairList;
 
 
-  function updateStudioAlbumRepairUrlFromQueue(encodedTargets, inputId, btn) {
+  /* Daily Genre v209: album repair URL applies artwork/metadata and updates thumbnails. */
+  function spotifyAlbumIdFromUrl(rawUrl = "") {
+    const raw = String(rawUrl || "").trim();
+    const uri = raw.match(/spotify:album:([A-Za-z0-9]{22})/i);
+    if (uri) return uri[1];
+    const web = raw.match(/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?album\/([A-Za-z0-9]{22})/i);
+    return web ? web[1] : "";
+  }
+
+  function appleAlbumIdFromUrl(rawUrl = "") {
+    const raw = String(rawUrl || "");
+    const matches = Array.from(raw.matchAll(/\/(\d{6,})(?:[/?#]|$)/g)).map((m) => m[1]);
+    return matches.length ? matches[matches.length - 1] : "";
+  }
+
+  async function fetchAlbumRepairMetadata(rawUrl = "") {
+    const url = String(rawUrl || "").trim();
+    const metadata = { url, source: "album-url", album: "", artist: "", artwork: "", releaseDate: "", releaseYear: null };
+    if (!url) return metadata;
+    if (/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?album\//i.test(url)) {
+      metadata.source = "spotify";
+      metadata.spotifyAlbumUrl = url;
+      metadata.spotifyAlbumId = spotifyAlbumIdFromUrl(url);
+      try {
+        const response = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(url)}`, { cache: "no-store" });
+        if (response.ok) {
+          const data = await response.json();
+          if (data?.thumbnail_url) metadata.artwork = data.thumbnail_url;
+          if (data?.title) {
+            const title = String(data.title || "").trim();
+            const by = title.match(/^(.+?)\s+by\s+(.+)$/i);
+            if (by) { metadata.album = by[1].trim(); metadata.artist = by[2].trim(); }
+            else metadata.album = title;
+          }
+        }
+      } catch (_) {}
+      return metadata;
+    }
+    if (/music\.apple\.com|itunes\.apple\.com/i.test(url)) {
+      metadata.source = "apple";
+      metadata.appleAlbumUrl = url;
+      const id = appleAlbumIdFromUrl(url);
+      if (id) {
+        try {
+          const response = await fetch(`https://itunes.apple.com/lookup?id=${encodeURIComponent(id)}`);
+          if (response.ok) {
+            const data = await response.json();
+            const item = Array.isArray(data?.results) ? (data.results.find((r) => r.wrapperType === "collection") || data.results[0]) : null;
+            if (item) {
+              metadata.album = item.collectionName || metadata.album;
+              metadata.artist = item.artistName || metadata.artist;
+              metadata.artwork = String(item.artworkUrl100 || "").replace(/100x100bb\./, "600x600bb.");
+              metadata.releaseDate = item.releaseDate || "";
+              metadata.releaseYear = item.releaseDate ? Number(String(item.releaseDate).slice(0, 4)) || null : null;
+            }
+          }
+        } catch (_) {}
+      }
+      return metadata;
+    }
+    if (/(youtube\.com|youtu\.be)/i.test(url)) {
+      const id = extractYouTubeId(url);
+      metadata.source = "youtube";
+      metadata.artwork = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
+      try {
+        const response = await fetch(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data?.thumbnail_url) metadata.artwork = data.thumbnail_url;
+          if (data?.title) metadata.album = data.title;
+          if (data?.author_name) metadata.artist = data.author_name;
+        }
+      } catch (_) {}
+    }
+    return metadata;
+  }
+
+  function applyAlbumRepairMetadataToSlot(slot, rawUrl, metadata = {}) {
+    if (!slot) return;
+    slot.albumProviderUrl = rawUrl;
+    slot.url = rawUrl;
+    if (/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?album\//i.test(rawUrl)) slot.spotifyAlbumUrl = rawUrl;
+    if (/music\.apple\.com|itunes\.apple\.com/i.test(rawUrl)) slot.appleAlbumUrl = rawUrl;
+    if (metadata.album) { slot.album = metadata.album; slot.albumTitle = metadata.album; }
+    if (metadata.artist) { slot.artist = metadata.artist; slot.albumArtist = metadata.artist; }
+    if (metadata.artwork) {
+      slot.albumArt = metadata.artwork;
+      slot.manualAlbumArt = metadata.artwork;
+      slot.artwork = metadata.artwork;
+      slot.cover = metadata.artwork;
+      slot.image = metadata.artwork;
+    }
+    if (metadata.releaseDate) { slot.releaseDate = metadata.releaseDate; slot.albumReleaseDate = metadata.releaseDate; }
+    if (metadata.releaseYear) { slot.year = metadata.releaseYear; slot.releaseYear = metadata.releaseYear; slot.albumYear = metadata.releaseYear; }
+    slot.needsMetadataRefresh = !metadata.artwork && !metadata.album && !metadata.artist && !metadata.releaseYear;
+    slot.albumMetadataFetchedAt = new Date().toISOString();
+  }
+
+  function updateVisibleAlbumRepairThumb(form, metadata = {}) {
+    const row = form?.closest?.(".studio-mini-row");
+    if (!row || !metadata.artwork) return;
+    const img = row.querySelector("img.studio-thumb, .studio-thumb img");
+    if (img) { img.src = metadata.artwork; return; }
+    const empty = row.querySelector(".studio-thumb-empty, .studio-thumb");
+    if (empty) {
+      empty.outerHTML = `<img class="studio-thumb" src="${esc(metadata.artwork)}" alt="Album art" loading="lazy">`;
+    }
+  }
+
+  async function updateStudioAlbumRepairUrlFromQueue(encodedTargets, inputId, btn) {
     const form = btn?.closest?.("[data-studio-album-repair-form]");
     const status = form?.querySelector?.("[data-studio-repair-status]");
     const input = document.getElementById(inputId);
@@ -2417,9 +2526,14 @@ This removes it from every genre queue and pending list. It becomes permanent af
       if (status) status.textContent = "Paste an album URL first.";
       return toast("Paste an album URL first.", true);
     }
+    const originalText = btn?.textContent || "Apply album URL";
+    if (btn) { btn.disabled = true; btn.textContent = "Applying…"; }
+    if (status) status.textContent = "Fetching album art/metadata…";
     let targets = [];
     try { targets = JSON.parse(decodeURIComponent(encodedTargets || "%5B%5D")); } catch (_) { targets = []; }
     let updated = 0;
+    let metadata = {};
+    try { metadata = await fetchAlbumRepairMetadata(rawUrl); } catch (_) { metadata = { url: rawUrl }; }
     targets.forEach((target) => {
       const genre = findGenreByIdOrName(target.genreId || target.genreName);
       if (!genre) return;
@@ -2430,20 +2544,20 @@ This removes it from every genre queue and pending list. It becomes permanent af
           norm(candidate?.album || candidate?.albumTitle || "") === norm(target.title || "");
       }) || slots.find((candidate) => norm(candidate?.album || candidate?.albumTitle || "") === norm(target.title || ""));
       if (!slot) return;
-      slot.albumProviderUrl = rawUrl;
-      slot.url = rawUrl;
-      if (/open\.spotify\.com\/album\//i.test(rawUrl)) slot.spotifyAlbumUrl = rawUrl;
-      if (/music\.apple\.com/i.test(rawUrl)) slot.appleAlbumUrl = rawUrl;
-      slot.needsMetadataRefresh = true;
+      applyAlbumRepairMetadataToSlot(slot, rawUrl, metadata);
       updated += 1;
     });
+    if (btn) { btn.disabled = false; btn.textContent = originalText; }
     if (!updated) {
       if (status) status.textContent = "No matching Album Dive slot was updated. Open the genre and check the album row.";
       return toast("No matching Album Dive slot was updated.", true);
     }
-    markStudioLibraryDirty(`Applied album URL to ${updated} Album Dive row${updated === 1 ? "" : "s"} — save cleanup to persist.`);
-    if (status) status.textContent = "Album URL applied — Save cleanup to persist.";
-    if (typeof renderReview === "function") setTimeout(() => renderReview(), 60);
+    updateVisibleAlbumRepairThumb(form, metadata);
+    const foundArt = !!metadata.artwork;
+    const foundMeta = !!(metadata.album || metadata.artist || metadata.releaseYear || metadata.releaseDate);
+    markStudioLibraryDirty(`Applied album URL to ${updated} Album Dive row${updated === 1 ? "" : "s"}${foundArt ? " and updated artwork" : ""} — save cleanup to persist.`);
+    if (status) status.textContent = foundArt || foundMeta ? "Album URL, art, and metadata applied — Save cleanup to persist." : "Album URL applied — Save cleanup to persist.";
+    if (typeof renderReview === "function") setTimeout(() => renderReview(), foundArt ? 220 : 60);
   }
 
   window.updateStudioRepairGroupUrlFromQueue = updateStudioRepairGroupUrlFromQueue;
@@ -2455,6 +2569,16 @@ This removes it from every genre queue and pending list. It becomes permanent af
   // clicks must also run the apply action here; otherwise stopPropagation prevents
   // the inline onclick from ever reaching the target in some browsers.
   document.addEventListener("click", (event) => {
+    const albumButton = event.target?.closest?.("[data-studio-album-repair-update]");
+    if (albumButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      const form = albumButton.closest?.("[data-studio-album-repair-form]");
+      const encodedTargets = form?.getAttribute?.("data-studio-repair-targets") || "";
+      const inputId = form?.getAttribute?.("data-studio-repair-input") || "";
+      updateStudioAlbumRepairUrlFromQueue(encodedTargets, inputId, albumButton);
+      return;
+    }
     const button = event.target?.closest?.("[data-studio-repair-update]");
     if (button) {
       event.preventDefault();
@@ -2465,7 +2589,7 @@ This removes it from every genre queue and pending list. It becomes permanent af
       updateStudioRepairGroupUrlFromQueue(encodedTargets, inputId, button);
       return;
     }
-    const edit = event.target?.closest?.(".studio-inline-track-edit, [data-studio-repair-form]");
+    const edit = event.target?.closest?.(".studio-inline-track-edit, [data-studio-repair-form], [data-studio-album-repair-form]");
     if (!edit) return;
     event.stopPropagation();
   }, true);
