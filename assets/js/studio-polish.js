@@ -366,7 +366,7 @@
 
 
 
-  /* Daily Genre v210: listened-only identity cleanup + non-destructive duplicate QA actions. */
+  /* Daily Genre v211: same-genre duplicate merge collapses visible QA rows. */
   function isListenedGenreForStudio(genre) {
     /* v210: Genre DNA only applies after a genre has actually been listened to.
        Do not count genres merely because songs have been nominated/routed to them. */
@@ -830,6 +830,28 @@
     return true;
   }
 
+  function updateDuplicateGroupDomAfterSameGenreMerge(button, clusterKey) {
+    /* v211: after a same-genre merge, rebuild just this duplicate card from the
+       canonical song arrays. The old v210 behavior changed the button label but
+       left stale duplicate rows visible, making it unsafe to know whether Mark
+       valid / resolved would hide real leftovers. */
+    const groupEl = button?.closest?.(".studio-duplicate-group");
+    if (!groupEl) return false;
+    const freshGroup = duplicateGroups(200).find((group) => String(group.key || "") === String(clusterKey || ""));
+    if (!freshGroup || freshGroup.entries.length <= 1) {
+      groupEl.remove();
+      return true;
+    }
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = renderDuplicateGroup(freshGroup, 0).trim();
+    const freshEl = wrapper.firstElementChild;
+    if (freshEl) {
+      groupEl.replaceWith(freshEl);
+      return true;
+    }
+    return false;
+  }
+
   function renderDuplicateGroup(group, idx) {
     const first = group.entries[0] || {};
     const title = songTitle(first.song);
@@ -949,17 +971,7 @@
     const key = decodeMaybe(encodedClusterKey);
     const removed = mergeSameGenreDuplicatesForCluster(key);
     if (!removed) return toast("No same-genre duplicate rows were found to merge.", true);
-    if (button) {
-      button.disabled = true;
-      button.classList.remove("btn-primary");
-      button.classList.add("btn-secondary");
-      button.textContent = "Same-genre dupes merged";
-    }
-    const group = button?.closest?.(".studio-duplicate-group");
-    if (group) {
-      const copy = group.querySelector("[data-studio-duplicate-copy]");
-      if (copy) copy.innerHTML = `${group.dataset.studioDuplicateRemaining || ""} appearances remain. Same-genre duplicates were merged; review/reroute the remaining cross-genre appearances or mark valid / resolved.`;
-    }
+    updateDuplicateGroupDomAfterSameGenreMerge(button, key);
     toast(`Merged ${removed} same-genre duplicate row${removed === 1 ? "" : "s"}. Save cleanup to persist.`);
   };
 
