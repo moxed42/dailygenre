@@ -701,9 +701,27 @@
         if (!displayLabel && !url && first && !isScore(first)) displayLabel = first;
         if (isPlaceholderUrl(url)) url = '';
 
-        const genreTagMatch = reason.match(/@([A-Za-z0-9_'&/\-\s]+?)(?=\s*\||$)/);
-        const pendingGenreTag = genreTagMatch ? genreTagMatch[1].replace(/_/g, ' ').trim().toLowerCase() : '';
-        const cleanReason = pendingGenreTag ? reason.replace(/@([A-Za-z0-9_'&/\-\s]+?)(?=\s*\||$)/, '').replace(/\s+\|\s*$/,'').trim() : reason;
+        const extractPendingGenreTag = (value, { strict = false } = {}) => {
+          let textValue = String(value || '');
+          if (!textValue.trim()) return { text: textValue, tag: '' };
+          // v217: legacy @genre routing tags may be typed at the end of the song label
+          // itself, e.g. "Missy Elliott — Work It @hip_hop | 3 | reason".
+          // Strip only a trailing @tag so legitimate mid-title text is left alone.
+          const tagPattern = strict
+            ? /(?:^|\s)@([A-Za-z0-9][A-Za-z0-9_'&/-]*)(?=\s*$)/
+            : /(?:^|\s)@([A-Za-z0-9][A-Za-z0-9_'&/-]*(?:\s+[A-Za-z0-9][A-Za-z0-9_'&/-]*)*)(?=\s*$)/;
+          const match = textValue.match(tagPattern);
+          if (!match) return { text: textValue, tag: '' };
+          return {
+            text: textValue.slice(0, match.index).trim(),
+            tag: String(match[1] || '').replace(/_/g, ' ').trim().toLowerCase()
+          };
+        };
+        const reasonTag = extractPendingGenreTag(reason);
+        const labelTag = extractPendingGenreTag(displayLabel, { strict: true });
+        const pendingGenreTag = reasonTag.tag || labelTag.tag || '';
+        const cleanReason = reasonTag.text.trim();
+        displayLabel = labelTag.text.trim();
         const label = normalizeSongArtistAndTitle(displayLabel || '', '');
 
         const song = {
@@ -902,6 +920,23 @@
       return '';
     }
     
+  function extractTrailingGenreTagFromText(value='', { allowSpaces = false } = {}) {
+    const text = String(value || '');
+    if (!text.trim()) return { text, tag: '' };
+    // v217: support old @genre routing tags typed at the end of a song label/title.
+    // Example: "Missy Elliott — Work It @hip_hop" should route by hip hop,
+    // not display/save the title as "Work It @hip_hop".
+    const tagPattern = allowSpaces
+      ? /(?:^|\s)@([A-Za-z0-9][A-Za-z0-9_'&/-]*(?:\s+[A-Za-z0-9][A-Za-z0-9_'&/-]*)*)(?=\s*$)/
+      : /(?:^|\s)@([A-Za-z0-9][A-Za-z0-9_'&/-]*)(?=\s*$)/;
+    const match = text.match(tagPattern);
+    if (!match) return { text, tag: '' };
+    return {
+      text: text.slice(0, match.index).trim(),
+      tag: String(match[1] || '').replace(/_/g, ' ').trim().toLowerCase()
+    };
+  }
+
   function normalizeSongArtistAndTitle(title='', artist='') {
     let normalizedTitle = cleanPastedCitationArtifacts(title);
     let normalizedArtist = cleanPastedCitationArtifacts(artist);
@@ -912,7 +947,9 @@
         normalizedTitle = cleanPastedCitationArtifacts(match[2]);
       }
     }
-    return { title: normalizedTitle, artist: normalizedArtist };
+    const titleTag = extractTrailingGenreTagFromText(normalizedTitle);
+    normalizedTitle = titleTag.text;
+    return { title: normalizedTitle, artist: normalizedArtist, pendingGenreTag: titleTag.tag };
   }
 
   function normalizeSongsListened(arr) {
@@ -960,7 +997,7 @@
         isLevelUp,
         isAdd,
         isPromote: !!s?.isPromote,
-        _pendingGenreTag: s?._pendingGenreTag || '',
+        _pendingGenreTag: s?._pendingGenreTag || songLabel.pendingGenreTag || '',
         levelUp: s?.levelUp ? normalizeSongsListened([s.levelUp])[0] : null,
       };
     });
