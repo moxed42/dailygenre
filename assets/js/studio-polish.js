@@ -915,10 +915,7 @@
         </div>
       </div>`;
     }).join("");
-    const copyLine = [`Duplicate QA | ${title}`, ...group.entries.map((r) => {
-      const bits = [r.genre?.genre || "Unknown genre", r.song?.score ? `fit ${r.song.score}/5` : "", r.song?.levelUp ? `Level Up → ${songTitle(r.song.levelUp)}` : ""].filter(Boolean);
-      return bits.join(" · ");
-    })].join(" | ");
+    const copyLine = studioCompactCopyLine(first.song, "track", Array.from(new Set(group.entries.map((r) => r.genre?.genre || "Unknown genre").filter(Boolean))).join("; "));
     return `<article class="studio-duplicate-group" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-duplicate-group="1" data-studio-duplicate-key="${esc(String(group.key || ""))}" data-studio-duplicate-remaining="${esc(String(group.entries.length))}" data-studio-text="${esc(norm([title, ...group.entries.map((r) => r.genre?.genre || "")].join(" ")))}" data-studio-type="review" data-studio-priority="high">
       <div class="studio-duplicate-head">
         ${renderSongThumb(first.song)}
@@ -1148,7 +1145,7 @@
   }
 
 
-  /* Daily Genre v215: Studio subsections get the same LLM-friendly
+  /* Daily Genre v216: Studio copy output uses compact artist/title/type/genre lines; v215 added
      "Copy first 25" workflow as Pending nominations. */
   function studioCopyButton(kind, title = "Copy the first 25 visible rows from this Studio subsection") {
     return `<button type="button" class="btn btn-secondary btn-tiny studio-copy-first25-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof copyStudioSubsectionFirst25 === 'function' ? copyStudioSubsectionFirst25('${esc(kind)}') : null; return false;" title="${esc(title)}">⧉ Copy first 25</button>`;
@@ -1159,6 +1156,20 @@
       .replace(/\s+/g, " ")
       .replace(/\s+([,;:])/g, "$1")
       .trim();
+  }
+
+  function studioSongArtist(song) {
+    return String(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(", ") : "") || "").trim();
+  }
+
+  function studioSongPlainTitle(song) {
+    return String(song?.title || song?.name || song?.albumTitle || song?.album || song?.url || "Untitled").trim();
+  }
+
+  function studioCompactCopyLine(song, itemType, genreName) {
+    const artist = studioSongArtist(song);
+    const title = studioSongPlainTitle(song);
+    return [artist || "Unknown artist", title || "Untitled", itemType || "track", genreName || "Unknown genre"].map(cleanStudioCopyLine).join(" | ");
   }
 
   window.copyStudioSubsectionFirst25 = async function(kind) {
@@ -1246,7 +1257,7 @@
             ? `<div class="studio-inline-track-edit studio-inline-album-repair" data-studio-album-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Correct Album Dive URL</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/album/... or Apple/YouTube album link" value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-album-repair-form]'); const btn=wrap?.querySelector('[data-studio-album-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-album-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioAlbumRepairUrlFromQueue === 'function' ? updateStudioAlbumRepairUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">Apply album URL</button></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite">Paste the correct album URL, apply it, then Save cleanup to persist.</div></div>`
             : "";
         const skipKey = isRepair ? encodeURIComponent(repairSkipKey(row) || "") : "";
-        const copyLine = [isAlbumRepair ? "Album Dive Repair" : "Track Repair", problem, genreName, songTitle(row.song), fit ? `fit ${fit}/5` : "", row.targetCount > 1 ? `${row.targetCount} copies` : "", row.song?.pendingFrom ? `from ${row.song.pendingFrom}` : ""].filter(Boolean).join(" | ");
+        const copyLine = studioCompactCopyLine(row.song, isAlbumRepair ? "album" : "track", genreName);
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
           <div class="studio-mini-main">
@@ -1317,7 +1328,7 @@
           const genreId = encodeURIComponent(String(genre?.id ?? ""));
           const textId = `studioIdentityBlock_${String(genre?.id ?? idx).replace(/[^a-z0-9_-]/gi, "_")}`;
           const issueText = row.issues.length ? row.issues.join(", ") : "identity block";
-          const copyLine = `Genre Identity | ${genreName} | missing: ${issueText}`;
+          const copyLine = ["", "", "genre_dna", genreName].join(" | ");
           return `<article class="studio-identity-cleanup-row" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-text="${esc(norm([genreName, issueText].join(" ")))}" data-studio-type="identity" data-studio-priority="high">
             <div class="studio-identity-row-main">
               <div class="studio-mini-title">${esc(genreName)}</div>
