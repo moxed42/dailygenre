@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Genre</title>
-    <meta name="daily-genre-version" content="v196" />
-    <meta name="daily-genre-updated" content="2026-07-07 08:36 PM ET" />
+    <meta name="daily-genre-version" content="v197" />
+    <meta name="daily-genre-updated" content="2026-07-07 09:55 PM ET" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <link rel="stylesheet" href="./assets/css/core-loader.css?v=spin-today-mobile-v183" />
-    <link rel="stylesheet" href="./assets/css/library-polish.css?v=safe-pending-fixes-v190" />
+    <link rel="stylesheet" href="./assets/css/library-polish.css?v=pending-ui-fixes-v197" />
     <link rel="stylesheet" href="./assets/css/studio-polish.css?v=genre-back-v184" />
     <link rel="stylesheet" href="./assets/css/ranks-polish.css?v=spin-today-mobile-v183" />
     <link rel="stylesheet" href="./assets/css/genre-identity.css?v=genre-dna-description-v195" />
@@ -46,6 +46,28 @@
         border-radius: 999px;
         background: rgba(255, 245, 223, 0.06);
         border: 1px solid rgba(255, 224, 161, 0.12);
+      }
+
+      /* Daily Genre v197: de-emphasize title metadata like featured artists. */
+      .song-title-edition,
+      .song-title-extra {
+        display: inline;
+        margin-left: 0.28em;
+        color: color-mix(in srgb, currentColor 64%, transparent);
+        font-size: 0.72em;
+        font-weight: 760;
+        letter-spacing: -0.01em;
+        vertical-align: baseline;
+      }
+      .song-focus-title .song-title-edition,
+      .song-focus-title .song-title-extra {
+        font-size: 0.38em;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .song-focus-row-title .song-title-edition,
+      .song-focus-row-title .song-title-extra {
+        font-size: 0.78em;
       }
       @media (max-width: 680px) {
         .dg-build-footer {
@@ -801,8 +823,8 @@
       </section>
 
       <footer class="dg-build-footer" aria-label="Daily Genre build information">
-        <span>Daily Genre v196</span>
-        <span>Updated 2026-07-07 08:36 PM ET</span>
+        <span>Daily Genre v197</span>
+        <span>Updated 2026-07-07 09:55 PM ET</span>
       </footer>
     </div>
 
@@ -1031,10 +1053,10 @@
     <script src="./assets/js/genre-data.js?v=spin-today-mobile-v183"></script>
     <script src="./assets/js/spotify.js?v=genre-back-v184"></script>
     <script src="./assets/js/album-dive.js?v=spin-today-mobile-v183"></script>
-    <script src="./assets/js/app.js?v=youtube-override-save-v196"></script>
+    <script src="./assets/js/app.js?v=pending-ui-fixes-v197"></script>
     <script src="./assets/js/studio-polish.js?v=youtube-override-save-v196"></script>
     <script src="./assets/js/genre-identity.js?v=genre-dna-description-v195"></script>
-    <script src="./assets/js/songs.js?v=youtube-override-save-v196"></script>
+    <script src="./assets/js/songs.js?v=pending-ui-fixes-v197"></script>
     <script src="./assets/js/listening-room.js?v=spin-today-mobile-v183"></script>
     <script src="./assets/js/library-polish.js?v=spin-today-mobile-v183"></script>
     <script src="./assets/js/visuals.js?v=spin-today-mobile-v183"></script>

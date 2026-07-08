@@ -23,8 +23,9 @@
   function songTitleWithMetaMarkup(value) {
     const text = String(value || '').trim();
     if (!text) return '';
-    const metaWords = '(?:b\s*[-–—]?\s*side|remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+|anniversary|concert|soundtrack|ost|\b(?:19|20)\d{2}\b|dino synth|dungeon synth)';
+    const metaWords = '(?:b\s*[-–—]?\s*side|remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+|anniversary|concert|soundtrack|ost|\b(?:19|20)\d{2}\b|dino synth|dungeon synth|feat\.?|ft\.?|featuring)';
     const patterns = [
+      /^(.*?)(\s*(?:\((?:feat\.?|ft\.?|featuring)\s+[^)]{1,120}\)|\[(?:feat\.?|ft\.?|featuring)\s+[^\]]{1,120}\])\s*)$/i,
       /^(.*?)(\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\])(?:\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\]))+\s*)$/i,
       new RegExp('^(.*?)(\\s*(?:\\([^)]*' + metaWords + '[^)]*\\)|\\[[^\\]]*' + metaWords + '[^\\]]*\\])\\s*)$', 'i'),
       new RegExp('^(.*?)(\\s+(?:-|–|—)\\s*' + metaWords + '\\b.*)$', 'i'),
@@ -644,8 +645,45 @@
     }
   }
 
+  function v197SongMatchesDeleteTarget(song, target) {
+    if (!song || !target) return false;
+    const norm = (value) => String(value || "").trim().toLowerCase();
+    const songUrl = norm(safeCall(() => normalizeSongUrl(song.spotifyUrl || song.url || ""), song.spotifyUrl || song.url || ""));
+    const targetUrl = norm(safeCall(() => normalizeSongUrl(target.spotifyUrl || target.url || ""), target.spotifyUrl || target.url || ""));
+    if (songUrl && targetUrl && songUrl === targetUrl) return true;
+    if (norm(song.spotifyId) && norm(song.spotifyId) === norm(target.spotifyId)) return true;
+    if (norm(song.isrc) && norm(song.isrc) === norm(target.isrc)) return true;
+    if (target.key && norm(songKey(song)) === norm(target.key)) return true;
+    const songMeta = `${norm(song.artist || (Array.isArray(song.artists) ? song.artists.join(" ") : ""))}|${norm(song.title || song.name || "")}`;
+    const targetMeta = `${norm(target.artist)}|${norm(target.title)}`;
+    return songMeta !== "|" && songMeta === targetMeta;
+  }
+
+  function v197PruneCurrentGenreForHardDelete(target) {
+    if (typeof currentGenre === "undefined" || !currentGenre) return 0;
+    const songs = Array.isArray(currentGenre.songs_listened) ? currentGenre.songs_listened : [];
+    let removed = 0;
+    const kept = [];
+    songs.forEach((song) => {
+      if (v197SongMatchesDeleteTarget(song, target)) {
+        removed += 1;
+        return;
+      }
+      if (song?.levelUp && v197SongMatchesDeleteTarget(song.levelUp, target)) {
+        song.levelUp = null;
+        removed += 1;
+      }
+      kept.push(song);
+    });
+    if (removed) currentGenre.songs_listened = kept;
+    return removed;
+  }
+
   function hardDeleteSongFromDetails(encodedKey, encodedPath = "", button = null) {
     if (typeof currentGenre === "undefined" || !currentGenre) return;
+    try {
+      if (typeof syncBulkDraftIntoSongModel === "function") syncBulkDraftIntoSongModel();
+    } catch {}
     const path = decodeFocusPath(encodedPath);
     const result = typeof findEditableSongTarget === "function"
       ? findEditableSongTarget(encodedKey, -1, path)
@@ -678,13 +716,15 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
         isrc: song.isrc || "",
       };
       const outcome = window.hardDeleteSongEverywhere(target, { renderStudio: false });
-      if (!outcome?.deleted) {
+      const localRemoved = v197PruneCurrentGenreForHardDelete(target);
+      if (!outcome?.deleted && !localRemoved) {
         if (typeof showSaveToast === "function") showSaveToast("No matching songs were found to delete.", true);
         return;
       }
       window.__dailyGenreSuppressBulkSongSyncUntil = Date.now() + 60000;
       window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;
       if (typeof syncSongsBulkEditorFromModel === "function") syncSongsBulkEditorFromModel();
+      if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
       const nextEntries = songListForFocus(currentGenre);
       try {
         if (nextEntries.length) localStorage.setItem(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
@@ -692,7 +732,8 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
       } catch {}
       if (!nextEntries.length) setSongDetailsOpen(false);
       enhanceSongListeningExperience();
-      if (typeof showSaveToast === "function") showSaveToast(`Deleted ${outcome.deleted} ${outcome.deleted === 1 ? "copy" : "copies"} everywhere — Save Library Updates to persist.`, false);
+      const deletedCount = (outcome?.deleted || 0) + (localRemoved && !outcome?.deleted ? localRemoved : 0);
+      if (typeof showSaveToast === "function") showSaveToast(`Deleted ${deletedCount} ${deletedCount === 1 ? "copy" : "copies"} everywhere — Save Library Updates to persist.`, false);
     } catch (error) {
       console.error("Could not delete song everywhere", error);
       if (typeof showSaveToast === "function") showSaveToast(`Could not delete song everywhere: ${error?.message || error || "Unknown error"}`, true);
@@ -1066,8 +1107,17 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
   if (originalLoadListenScreen && !window.__dailyGenreSongFocusWrapped) {
     window.__dailyGenreSongFocusWrapped = true;
     loadListenScreen = function patchedLoadListenScreen(...args) {
+      const beforeX = window.scrollX || window.pageXOffset || 0;
+      const beforeY = window.scrollY || window.pageYOffset || 0;
       const result = originalLoadListenScreen.apply(this, args);
-      setTimeout(enhanceSongListeningExperience, 0);
+      setTimeout(() => {
+        enhanceSongListeningExperience();
+        // v197: the carousel enhancement must not pull the viewport down to the songs
+        // when entering or refreshing a genre page.
+        if (!window.__dailyGenreAllowSongFocusAutoScroll) {
+          window.scrollTo({ top: beforeY, left: beforeX, behavior: 'auto' });
+        }
+      }, 0);
       return result;
     };
   }

@@ -1211,6 +1211,26 @@
       return GENRE_RATING_LABELS[String(value || '')] || 'Unrated';
     }
 
+    function refreshGenreRatingVisuals(value) {
+      const active = String(value || '');
+      const activeNumber = /^\d+$/.test(active) ? Number(active) : 0;
+      document.querySelectorAll('.view-rating-star, .genre-header-star, .star-btn').forEach(btn => {
+        const rating = String(btn.dataset?.rating || btn.getAttribute('data-rating') || (btn.getAttribute('onclick') || '').match(/setGenreRatingFromView\((\d+)\)/)?.[1] || '');
+        const on = rating && (btn.classList.contains('genre-header-star') ? activeNumber >= Number(rating) : active === rating);
+        btn.classList.toggle('active', !!on);
+        if (btn.classList.contains('genre-header-star') && rating) btn.textContent = on ? '★' : '☆';
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      document.querySelectorAll('.view-rating-zanger, .genre-header-zanger').forEach(btn => {
+        const isZ = active === 'zanger' && /zanger|Mark genre as Zanger|setGenreRatingFromView\('zanger'\)/i.test(`${btn.textContent || ''} ${btn.title || ''} ${btn.getAttribute('onclick') || ''}`);
+        btn.classList.toggle('active', isZ);
+        btn.setAttribute('aria-pressed', isZ ? 'true' : 'false');
+      });
+      document.querySelectorAll('.genre-header-rating-label').forEach(el => { el.textContent = genreRatingLabel(active); });
+      const status = document.getElementById('ratingStatus');
+      if (status) status.textContent = active === 'zanger' ? 'Marked as Zanger' : (active ? `${active} star${active === '1' ? '' : 's'} selected` : 'No rating selected');
+    }
+
     function genreRatingStarsOnly(genre) {
       if (!genre || !genre.rating) return 'Unrated';
       if (String(genre.rating) === 'zanger') return 'Z Zanger';
@@ -1416,8 +1436,14 @@
       libraryUpdatesPending = true;
       setUnsavedState(true);
       toggleLibrarySaveButton(true);
+      // v197: update the visible stars immediately. Full detail re-render can lag
+      // behind in Firefox until another control repaints the screen.
+      refreshGenreRatingVisuals(currentGenre.rating);
+      const restore = preserveScrollSnapshot();
       loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
       applyDetailEditMode(detailEditMode);
+      restore();
+      requestAnimationFrame(() => refreshGenreRatingVisuals(currentGenre.rating));
       showSaveToast('Genre rating updated — use the floating Save button to persist it.', false);
       if (!appPassword) promptLibrarySaveLogin();
     }
@@ -2956,8 +2982,9 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
     function songTitleWithEditionMarkup(value) {
       const text = String(value || '').trim();
       if (!text) return '';
-      const metaWords = '(?:b\s*[-–—]?\s*side|remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+|anniversary|concert|soundtrack|ost|mono|stereo|\b(?:19|20)\d{2}\b|dino synth|dungeon synth)';
+      const metaWords = '(?:b\s*[-–—]?\s*side|remaster(?:ed)?|radio edit|single edit|album version|extended mix|club mix|original mix|vinyl|mono|stereo|live(?:\s+(?:at|from|in|on|@))?|live recording|demo|bonus track|explicit|clean|edit|version|alternate(?:\s+take)?|alt(?:\.|ernate)?\s+version|acoustic|session|take\s+\d+|anniversary|concert|soundtrack|ost|mono|stereo|\b(?:19|20)\d{2}\b|dino synth|dungeon synth|feat\.?|ft\.?|featuring)';
       const patterns = [
+        /^(.*?)(\s*(?:\((?:feat\.?|ft\.?|featuring)\s+[^)]{1,120}\)|\[(?:feat\.?|ft\.?|featuring)\s+[^\]]{1,120}\])\s*)$/i,
         // Multiple trailing parentheticals/brackets are almost always metadata: (B-Side) (2019) (Dino Synth, Dungeon Synth).
         /^(.*?)(\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\])(?:\s*(?:\([^)]{1,90}\)|\[[^\]]{1,90}\]))+\s*)$/i,
         new RegExp('^(.*?)(\\s*(?:\\([^)]*' + metaWords + '[^)]*\\)|\\[[^\\]]*' + metaWords + '[^\\]]*\\])\\s*)$', 'i'),
@@ -3094,8 +3121,12 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           const newlyDated = setListenDateTodayIfNeeded(currentGenre);
           currentGenre.rating = selectedRating;
           currentGenre.status = 'listened';
+          refreshGenreRatingVisuals(selectedRating);
+          const restore = preserveScrollSnapshot();
           loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
           applyDetailEditMode(true);
+          restore();
+          requestAnimationFrame(() => refreshGenreRatingVisuals(selectedRating));
           markDirty();
           showSaveToast(newlyDated
             ? `Rated ${selectedRating}★ and marked as listened today — click Save Changes to keep it.`
@@ -5703,9 +5734,9 @@ function blockSaveIfDuplicateGenres() {
           }
         } catch (_) {}
       }
-      // v178: opening/re-rendering a genre should not auto-jump to the carousel or otherwise move the viewport.
-      // Callers that truly want a top jump can pass { scrollTop: true }.
-      if (options.scrollTop) {
+      // v197: opening a genre should start at the genre header, never at the song carousel.
+      // Internal re-renders/save refreshes can pass preserveScroll to keep the current viewport.
+      if (!options.preserveScroll || options.scrollTop) {
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
       }
       return true;
