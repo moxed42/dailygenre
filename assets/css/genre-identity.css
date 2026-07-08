@@ -712,3 +712,31 @@ button[aria-busy="true"] {
 }
 
 /* Daily Genre v65 cache-bust marker */
+
+
+/* === Genre Identity v195: restored top description in Genre DNA === */
+.genre-identity-description-card {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(153, 102, 37, 0.18);
+}
+
+.genre-identity-description-card span {
+  color: var(--muted, #735a3c);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.genre-identity-description-card p {
+  margin: 0;
+  color: var(--text, #22160d);
+  font-size: clamp(0.9rem, 1.25vw, 1rem);
+  line-height: 1.45;
+  font-weight: 700;
+}

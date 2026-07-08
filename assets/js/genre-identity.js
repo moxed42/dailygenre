@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.4.0-identity-overwrite-v87";
+  const VERSION = "genre-dna-description-v195";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
@@ -776,16 +776,29 @@
 
 
 
+  function genreDescriptionText(genre) {
+    return String(
+      genre?.summary ||
+        genre?.description ||
+        genre?.genre_description ||
+        genre?.identity?.summary ||
+        genre?.identity?.description ||
+        "",
+    ).trim();
+  }
+
   function renderDnaCard(genre) {
     const aliases = aliasList(genre);
     const sem = getSeminal(genre);
     const media = getMedia(genre);
+    const description = genreDescriptionText(genre);
     const hasSem = sem?.title || sem?.artist || sem?.spotifyUrl || sem?.url;
-    if (!aliases.length && !hasSem && !media.length) return "";
+    if (!description && !aliases.length && !hasSem && !media.length) return "";
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
         <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
       </div>
+      ${description ? `<div class="genre-identity-description-card"><span>Genre description</span><p>${esc(description)}</p></div>` : ""}
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">
         ${hasSem ? identityTrackCard(sem, "Seminal track") : ""}
