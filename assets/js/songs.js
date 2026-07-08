@@ -219,6 +219,7 @@
     return entry.type === "seminal" ? 0 : 100 + Math.max(0, Number(entry.index) || 0);
   }
 
+  /* Daily Genre v198: detached Level Up annotations keep their source-song label after routing cleanup. */
   function songListForFocus(genre) {
     safeCall(() => window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(genre, false), false);
     const identityEntries = identityTrackEntriesForGenre(genre);
@@ -232,11 +233,21 @@
       const identityEntry = identityEntryForSong(song, genre);
       if (identityEntry) stampSongAsIdentity(song, identityEntry);
       else clearStaleIdentityStamp(song);
+      const detachedLevelUpParent = song.isDetachedLevelUp
+        ? {
+            title: song.levelUpFromTitle || song.levelUpFrom || "routed source song",
+            artist: song.levelUpFromArtist || "",
+            url: song.levelUpFromUrl || "",
+            genre: song.levelUpFromGenre || "",
+          }
+        : null;
       out.push({
         song,
         path: `song:${index}`,
-        label: song.isAdd ? "Add" : song.isPromote ? "Promote" : "Canon",
-        isChild: false,
+        label: song.isDetachedLevelUp ? "Level Up" : song.isAdd ? "Add" : song.isPromote ? "Promote" : "Canon",
+        isChild: !!song.isDetachedLevelUp,
+        parentSong: detachedLevelUpParent,
+        parentKey: song.isDetachedLevelUp ? `detached:${song.levelUpFromKey || song.levelUpFromUrl || song.levelUpFromTitle || index}` : null,
         identityEntry,
       });
       if (song.levelUp) {
@@ -328,7 +339,7 @@
         return '<span class="song-focus-badge media">Media</span>';
       return `<span class="song-focus-badge identity">${html(entry.song?.identityLabel || "Anchor")}</span>`;
     }
-    if (entry.label === "Level Up")
+    if (entry.label === "Level Up" || entry.song?.isDetachedLevelUp)
       return '<span class="song-focus-badge level">Level Up</span>';
     if (entry.song?.promotedFrom || entry.song?.promotedTo || entry.song?.reviewedAt || entry.label === "Routed")
       return '<span class="song-focus-badge routed">Routed</span>';
@@ -799,7 +810,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
       activeFilter && activeFilter !== "all" ? ` in current filter` : "";
     const relation =
       entry.isChild && entry.parentSong
-        ? `<div class="song-focus-relation-hero">↳ Level up from ${html(entry.parentSong.title || "previous pick")}</div>`
+        ? `<div class="song-focus-relation-hero">↳ Level up from ${html([entry.parentSong.artist, entry.parentSong.title].filter(Boolean).join(" — ") || entry.parentSong.title || "previous pick")}</div>`
         : "";
     const sequenceCount =
       filterSongEntries(entries, activeFilter).length || entries.length;
@@ -906,7 +917,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
     const collapsedPreview = `<div class="song-focus-queue-collapsed">
       <div>
         <div class="song-focus-queue-summary-title">${entries.length} songs · ${reactedCount} reacted · ${favoriteCount} favorite${favoriteCount === 1 ? "" : "s"} · ${unratedCount} unrated</div>
-        ${selectedEntry ? `<div class="song-focus-queue-summary-sub">Current: ${html(selectedEntry.song?.title || "Selected song")}${selectedEntry.isChild && selectedEntry.parentSong ? ` · Level up from ${html(selectedEntry.parentSong.title || "previous pick")}` : ""}</div>` : ""}
+        ${selectedEntry ? `<div class="song-focus-queue-summary-sub">Current: ${html(selectedEntry.song?.title || "Selected song")}${selectedEntry.isChild && selectedEntry.parentSong ? ` · Level up from ${html([selectedEntry.parentSong.artist, selectedEntry.parentSong.title].filter(Boolean).join(" — ") || selectedEntry.parentSong.title || "previous pick")}` : ""}</div>` : ""}
       </div>
       <div class="song-focus-cover-strip" aria-label="Upcoming songs">
         ${nextEntries
@@ -959,7 +970,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
                     : "";
                   const childRelation =
                     entry.isChild && entry.parentSong
-                      ? `<span class="song-focus-row-relation">↳ Level up from ${html(entry.parentSong.title || "previous pick")}</span>`
+                      ? `<span class="song-focus-row-relation">↳ Level up from ${html([entry.parentSong.artist, entry.parentSong.title].filter(Boolean).join(" — ") || entry.parentSong.title || "previous pick")}</span>`
                       : "";
                   const childReason =
                     entry.isChild && song.reason
