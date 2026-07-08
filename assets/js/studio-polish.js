@@ -737,12 +737,27 @@
       .slice(0, limit);
   }
 
+  function encodeStudioInline(value) {
+    /* Daily Genre v213: encode inline onclick payloads so apostrophes / parentheses
+       in song titles (for example Oingo Boingo-style names) cannot break the
+       generated JavaScript before Send to Pending runs. */
+    return encodeURIComponent(String(value ?? "")).replace(/[!'()*]/g, (ch) => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+  }
+
   function encodeStudioPayload(value) {
-    return encodeURIComponent(JSON.stringify(value || {}));
+    return encodeStudioInline(JSON.stringify(value || {}));
   }
 
   function decodeStudioPayload(encoded) {
     try { return JSON.parse(decodeURIComponent(String(encoded || ""))); } catch (_) { return {}; }
+  }
+
+  function encodeStudioScalar(value) {
+    return encodeStudioInline(value);
+  }
+
+  function decodeStudioScalar(value) {
+    return decodeMaybe(value);
   }
 
   function clonePlain(value) {
@@ -855,7 +870,7 @@
   function renderDuplicateGroup(group, idx) {
     const first = group.entries[0] || {};
     const title = songTitle(first.song);
-    const clusterPayload = encodeURIComponent(group.key);
+    const clusterPayload = encodeStudioScalar(group.key);
     const sameGenreDuplicateCount = sameGenreDuplicateCountForGroup(group);
     const rows = group.entries.map((row) => {
       const fit = row.song?.score || row.song?.originFit || row.song?.nominatedFit || "";
@@ -893,7 +908,7 @@
           <p data-studio-duplicate-copy><span data-studio-duplicate-count>${esc(String(group.entries.length))}</span> appearances. Keep valid cross-genre uses, send low-fit source rows to Pending, or mark the remaining appearances valid.</p>
         </div>
         <div class="studio-duplicate-head-actions">
-          ${sameGenreDuplicateCount ? `<button type="button" class="btn btn-primary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof mergeSameGenreDuplicateCluster === 'function' ? mergeSameGenreDuplicateCluster('${clusterPayload}', this) : null; return false;">Merge same-genre duplicates</button>` : `<button type="button" class="btn btn-secondary btn-tiny" disabled title="No same-genre duplicate rows in this cluster">No same-genre duplicates</button>`}
+          ${sameGenreDuplicateCount ? `<button type="button" class="btn btn-primary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof mergeSameGenreDuplicateCluster === 'function' ? mergeSameGenreDuplicateCluster('${clusterPayload}', this) : null; return false;">Merge same-genre duplicates</button>` : `<button type="button" class="btn btn-primary btn-tiny studio-duplicate-no-same" disabled aria-disabled="true" title="No same-genre duplicate rows in this cluster">Merge same-genre duplicates</button>`}
           <button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); typeof markDuplicateGroupValid === 'function' ? markDuplicateGroupValid('${clusterPayload}', this) : null; return false;">Mark valid / resolved</button>
         </div>
       </div>
@@ -907,7 +922,7 @@
   }
 
   window.markDuplicateGroupValid = function(encodedClusterKey, button) {
-    const key = decodeURIComponent(String(encodedClusterKey || ""));
+    const key = decodeStudioScalar(encodedClusterKey);
     markDuplicateClusterResolved(key);
     button?.closest?.(".studio-duplicate-group")?.remove?.();
     markStudioLibraryDirty("Duplicate marked resolved locally — save if you changed song data.");
@@ -968,7 +983,7 @@
   }
 
   window.mergeSameGenreDuplicateCluster = function(encodedClusterKey, button) {
-    const key = decodeMaybe(encodedClusterKey);
+    const key = decodeStudioScalar(encodedClusterKey);
     const removed = mergeSameGenreDuplicatesForCluster(key);
     if (!removed) return toast("No same-genre duplicate rows were found to merge.", true);
     updateDuplicateGroupDomAfterSameGenreMerge(button, key);
@@ -994,9 +1009,10 @@
   }
 
   window.routeDuplicateSourceKeepLevelUp = function(encodedPayload, button) {
+    /* Daily Genre v212-v213: allow rows with no genre id to route by genreName, and keep header disabled controls from blocking row actions. */
     const payload = decodeStudioPayload(encodedPayload);
-    const origin = findGenreByIdOrName(payload.genreId);
-    if (!origin) return toast("Could not find source genre for that duplicate row.", true);
+    const origin = findGenreByIdOrName(payload.genreId || payload.genreName);
+    if (!origin) return toast(`Could not find source genre for that duplicate row${payload?.genreName ? ` (${payload.genreName})` : ""}. Refresh Studio and try again.`, true);
 
     const found = findSongIndexForDuplicate(origin, payload.songKey, payload.displayKey, payload.songIndex);
     if (!found.song || found.index < 0) return toast("Could not find the source song in that genre. Refresh Studio and try again.", true);

@@ -859,7 +859,14 @@ function renderAlbumDiveSidePeek(slot, sideLabel) {
 }
 
 function renderAlbumDiveFocusRail(dive, selectedKey) {
-  return `<div class="album-focus-rail" role="list" aria-label="Album Dive shelf">
+  /* Daily Genre v212: shelf slots can be deleted directly from the Album Shelf. */
+  const shelfDeleteStyles = `<style id="album-shelf-delete-v212">
+    .album-rail-card-wrap{position:relative;display:flex;align-items:stretch;justify-content:center;}
+    .album-rail-card-wrap .album-rail-card{width:100%;}
+    .album-rail-delete{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:999px;border:1px solid rgba(78,45,25,.28);background:rgba(255,248,232,.96);color:#4e2d19;font-weight:900;line-height:1;box-shadow:0 2px 8px rgba(44,24,12,.18);opacity:.76;cursor:pointer;z-index:3;}
+    .album-rail-delete:hover,.album-rail-delete:focus{opacity:1;transform:translateY(-1px);outline:2px solid rgba(244,178,69,.42);}
+  </style>`;
+  return `${shelfDeleteStyles}<div class="album-focus-rail" role="list" aria-label="Album Dive shelf">
         ${(dive?.slots || [])
           .map((slot) => {
             const art =
@@ -875,13 +882,16 @@ function renderAlbumDiveFocusRail(dive, selectedKey) {
             const isSampled = slot.listenState === "sampled";
             const reaction = albumDiveSlotReaction(slot);
             const hasRating = Number(reaction) > 0;
-            return `<button type="button" role="listitem" class="album-rail-card ${isActive ? "active" : ""} ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${hasRating ? "has-rating" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" data-album-slot-key="${escapeHtml(slot.key)}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}', { event })" title="${escapeHtml(label)}">
-            ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(label)} cover" loading="lazy">` : '<span class="album-rail-placeholder"></span>'}
-            <span>${escapeHtml(slot.label)}</span>
-            <em class="album-rail-status-dot" aria-hidden="true"></em>
-            ${slot.favoriteAlbum ? '<span class="album-rail-trophy" title="Favorite album">🏆</span>' : ""}
-            ${hasRating ? `<strong>${albumDiveReactionEmoji(reaction)}</strong>` : ""}
-          </button>`;
+            return `<div role="listitem" class="album-rail-card-wrap ${isActive ? "active" : ""}" data-album-slot-key="${escapeHtml(slot.key)}">
+            <button type="button" class="album-rail-card ${isActive ? "active" : ""} ${isFinished ? "finished" : ""} ${isSampled ? "sampled" : ""} ${hasRating ? "has-rating" : ""} ${slot.favoriteAlbum ? "favorite-album" : ""}" data-album-slot-key="${escapeHtml(slot.key)}" onclick="setAlbumDiveFocusSlot('${escapeHtml(slot.key)}', { event })" title="${escapeHtml(label)}">
+              ${art ? `<img src="${escapeHtml(art)}" alt="${escapeHtml(label)} cover" loading="lazy">` : '<span class="album-rail-placeholder"></span>'}
+              <span>${escapeHtml(slot.label)}</span>
+              <em class="album-rail-status-dot" aria-hidden="true"></em>
+              ${slot.favoriteAlbum ? '<span class="album-rail-trophy" title="Favorite album">🏆</span>' : ""}
+              ${hasRating ? `<strong>${albumDiveReactionEmoji(reaction)}</strong>` : ""}
+            </button>
+            <button type="button" class="album-rail-delete" onclick="deleteAlbumDiveSlotFromShelf('${escapeHtml(slot.key)}', event)" title="Delete ${escapeHtml(slot.label)} slot" aria-label="Delete ${escapeHtml(slot.label)} album slot">×</button>
+          </div>`;
           })
           .join("")}
       </div>`;
@@ -1742,6 +1752,13 @@ function startAlbumDive() {
     skipSpotifyHydration: true,
   });
   showSaveToast("Album Dive started — save changes to keep it.", false);
+}
+
+function deleteAlbumDiveSlotFromShelf(slotKey, event) {
+  /* Daily Genre v212: this is intentionally stronger than clearing album fields:
+     it removes the selected shelf slot from the current Album Dive and records
+     the deleted slot key so normalizeAlbumDive() does not immediately recreate it. */
+  return clearAlbumDiveSlot(slotKey, event);
 }
 
 function clearAlbumDiveSlot(slotKey, event) {
