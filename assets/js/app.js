@@ -1326,6 +1326,7 @@
        Studio cleanup mutations through this bridge so Album repair and
        duplicate cleanup actually persist in the normal library save payload. */
     window.markLibraryUpdatesPending = function(message, options = {}) {
+      if (options && options.studioMutation) window.__dgStudioCleanupSavePending = true;
       markListeningUpdatePending();
       if (message && typeof showSaveToast === 'function') showSaveToast(message, false);
       if (options && options.openPasswordPrompt && !appPassword && typeof openPasswordModal === 'function') {
@@ -2488,8 +2489,15 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
 
     function finalizeListeningUpdatesBeforeSave() {
       if (currentGenre) {
-        try { syncBulkDraftIntoSongModel(); } catch (error) { console.warn('Could not sync song draft before save', error); }
-        applyPendingSongNotesToCurrentGenreSilently();
+        const studioCleanupSave = !!window.__dgStudioCleanupSavePending && document.getElementById('screen-review')?.classList.contains('active');
+        try {
+          if (!studioCleanupSave) {
+            syncBulkDraftIntoSongModel();
+          }
+        } catch (error) { console.warn('Could not sync song draft before save', error); }
+        if (!studioCleanupSave) {
+          applyPendingSongNotesToCurrentGenreSilently();
+        }
         ensureCurrentGenreIsInLibrary();
       }
     }
@@ -6717,6 +6725,7 @@ async function loadData() {
         if (activeScreenId === 'screen-viz') renderVisuals();
         if (pendingSaveAction === 'library_save') {
           libraryUpdatesPending = false;
+          window.__dgStudioCleanupSavePending = false;
           stagedQueueReactionKeys.clear();
           toggleLibrarySaveButton(false);
           setUnsavedState(false);
@@ -7997,6 +8006,7 @@ async function loadData() {
       try {
         await doSaveWithPassword(appPassword);
         libraryUpdatesPending = false;
+        window.__dgStudioCleanupSavePending = false;
         stagedQueueReactionKeys.clear();
         toggleLibrarySaveButton(false);
         setUnsavedState(false);

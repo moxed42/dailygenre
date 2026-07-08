@@ -725,6 +725,7 @@
          instead of deleting every matching song from the duplicate cluster. */
       if (row?.song?.qaPendingRouteStaged || row?.song?.duplicateQaPendingRouteStaged) return;
       const key = duplicateClusterKeyForSong(row.song);
+      if (row?.song?.duplicateQaResolved && (!row.song.duplicateQaResolvedKey || String(row.song.duplicateQaResolvedKey) === String(key || ""))) return;
       if (!key || duplicateClusterIsResolved(key)) return;
       const group = groups.get(key) || { key, entries: [], priority: 0 };
       group.priority = Math.max(group.priority || 0, row.priority || 0);
@@ -807,15 +808,13 @@
   }
 
   function markStudioLibraryDirty(message = "Cleanup staged — save pending.") {
-    /* Daily Genre v214: Studio cleanup must enter the real app save pipeline.
-       Previous patches set window.libraryUpdatesPending, but app.js keeps the
-       save gate in a lexical variable, so album repairs / duplicate routing
-       could look dirty in Studio yet saveLibraryUpdates() would say there was
-       nothing to save. */
+    /* Daily Genre v216: Studio cleanup changes must persist as Studio mutations,
+       not be overwritten by a stale genre-page bulk textarea during save. */
     let bridged = false;
+    window.__dgStudioCleanupSavePending = true;
     try {
       if (typeof window.markLibraryUpdatesPending === "function") {
-        window.markLibraryUpdatesPending(message);
+        window.markLibraryUpdatesPending(message, { studioMutation: true });
         bridged = true;
       } else if (typeof window.markListeningUpdatePending === "function") {
         window.markListeningUpdatePending();
@@ -915,12 +914,15 @@
         </div>
       </div>`;
     }).join("");
-    const copyLine = studioCompactCopyLine(first.song, "track", Array.from(new Set(group.entries.map((r) => r.genre?.genre || "Unknown genre").filter(Boolean))).join("; "));
+    const copyLine = [`Duplicate QA | ${title}`, ...group.entries.map((r) => {
+      const bits = [r.genre?.genre || "Unknown genre", r.song?.score ? `fit ${r.song.score}/5` : "", r.song?.levelUp ? `Level Up → ${songTitle(r.song.levelUp)}` : ""].filter(Boolean);
+      return bits.join(" · ");
+    })].join(" | ");
     return `<article class="studio-duplicate-group" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-duplicate-group="1" data-studio-duplicate-key="${esc(String(group.key || ""))}" data-studio-duplicate-remaining="${esc(String(group.entries.length))}" data-studio-text="${esc(norm([title, ...group.entries.map((r) => r.genre?.genre || "")].join(" ")))}" data-studio-type="review" data-studio-priority="high">
       <div class="studio-duplicate-head">
         ${renderSongThumb(first.song)}
         <div>
-          <h4 class="studio-title-with-copy"><span>${esc(title)}</span>${studioTitleCopyButton(first.song, "Copy song title")}</h4>
+          <h4>${esc(title)}</h4>
           <p data-studio-duplicate-copy><span data-studio-duplicate-count>${esc(String(group.entries.length))}</span> appearances. Keep valid cross-genre uses, send low-fit source rows to Pending, or mark the remaining appearances valid.</p>
         </div>
         <div class="studio-duplicate-head-actions">
@@ -940,8 +942,23 @@
   window.markDuplicateGroupValid = function(encodedClusterKey, button) {
     const key = decodeStudioScalar(encodedClusterKey);
     markDuplicateClusterResolved(key);
+    let stamped = 0;
+    getGenres().forEach((genre) => {
+      const songs = inflateSongs(genre?.songs_listened || []);
+      let changed = false;
+      songs.forEach((song) => {
+        if (String(duplicateClusterKeyForSong(song) || "") === String(key || "")) {
+          song.duplicateQaResolved = true;
+          song.duplicateQaResolvedKey = key;
+          song.duplicateQaResolvedAt = new Date().toISOString();
+          stamped += 1;
+          changed = true;
+        }
+      });
+      if (changed) genre.songs_listened = storageReadySongs(songs);
+    });
     button?.closest?.(".studio-duplicate-group")?.remove?.();
-    markStudioLibraryDirty("Duplicate marked resolved locally — save if you changed song data.");
+    markStudioLibraryDirty(stamped ? "Duplicate marked resolved and will persist after Save." : "Duplicate marked resolved locally — save if you changed song data.");
   };
 
 
@@ -1006,6 +1023,26 @@
     toast(`Merged ${removed} same-genre duplicate row${removed === 1 ? "" : "s"}. Save cleanup to persist.`);
   };
 
+  function makeDetachedLevelUpSongForDuplicateRouting(levelUp, source, origin) {
+    const detached = clonePlain(levelUp) || {};
+    detached.isDetachedLevelUp = true;
+    detached.isPending = false;
+    detached.isAdd = false;
+    delete detached.isLevelUp;
+    delete detached.levelUp;
+    detached.levelUpFromTitle = source?.title || source?.name || songTitle(source);
+    detached.levelUpFromArtist = source?.artist || (Array.isArray(source?.artists) ? source.artists.join(", ") : "");
+    detached.levelUpFromUrl = source?.url || source?.spotifyUrl || "";
+    detached.levelUpFromGenre = origin?.genre || origin?.name || "";
+    detached.levelUpFromGenreId = String(origin?.id ?? "");
+    detached.levelUpFromKey = normalizeSongKeyForCompare(source) || duplicateClusterKeyForSong(source) || "";
+    detached.cleanupSource = "duplicate-qa-detached-levelup";
+    detached.routedFromSourceTitle = detached.levelUpFromTitle;
+    detached.routedFromSourceArtist = detached.levelUpFromArtist;
+    detached.reviewedAt = new Date().toISOString();
+    return detached;
+  }
+
   function makePendingSongFromDuplicateSource(source, origin) {
     const moved = clonePlain(source) || {};
     delete moved.levelUp;
@@ -1018,6 +1055,13 @@
     moved.originFit = source?.score != null ? Number(source.score) : (source?.originFit ?? source?.nominatedFit ?? null);
     moved.nominatedFit = null;
     moved.cleanupSource = "duplicate-qa";
+    if (source?.levelUp) {
+      const child = clonePlain(source.levelUp) || {};
+      moved.pendingLevelUpTitle = child.title || child.name || "";
+      moved.pendingLevelUpArtist = child.artist || (Array.isArray(child.artists) ? child.artists.join(", ") : "");
+      moved.pendingLevelUpUrl = child.url || child.spotifyUrl || "";
+      moved.pendingLevelUpReason = child.reason || "";
+    }
     moved.routedFromGenre = origin?.genre || origin?.name || "";
     moved.routedFromGenreId = String(origin?.id ?? "");
     moved.reviewedAt = new Date().toISOString();
@@ -1035,31 +1079,19 @@
     const source = clonePlain(found.song);
     const sourceLabel = songTitle(source);
     const detachedLevelUp = source.levelUp ? clonePlain(source.levelUp) : null;
-    /* v210: do not remove the source song from the actual genre here. This action
-       stages a scoped routing item in Pending/Routing Desk and hides only this QA
-       appearance, so no other Xtal-style genre appearances can disappear. */
+    /* v216: make Send to Pending a real persisted move. Earlier versions only
+       staged a hidden flag on the listened row; that could be overwritten before
+       save and the duplicate QA card would return after refresh. Remove only this
+       exact source appearance from its source genre, and keep a detached Level Up
+       annotation behind when needed. */
     const nextOriginSongs = found.songs.slice();
-    const stagedSource = nextOriginSongs[found.index] && typeof nextOriginSongs[found.index] === "object"
-      ? { ...nextOriginSongs[found.index] }
-      : clonePlain(source);
-    stagedSource.qaPendingRouteStaged = true;
-    stagedSource.duplicateQaPendingRouteStaged = true;
-    stagedSource.qaPendingRouteStagedAt = new Date().toISOString();
-    stagedSource.qaPendingRouteKey = normalizeSongKeyForCompare(source);
     if (detachedLevelUp) {
-      stagedSource.detachedLevelUpPreview = {
-        title: detachedLevelUp.title || detachedLevelUp.name || "",
-        artist: detachedLevelUp.artist || (Array.isArray(detachedLevelUp.artists) ? detachedLevelUp.artists.join(", ") : ""),
-        url: detachedLevelUp.url || detachedLevelUp.spotifyUrl || "",
-        reason: detachedLevelUp.reason || "",
-        levelUpFromTitle: source.title || source.name || sourceLabel,
-        levelUpFromArtist: source.artist || (Array.isArray(source.artists) ? source.artists.join(", ") : ""),
-      };
+      nextOriginSongs.splice(found.index, 1, makeDetachedLevelUpSongForDuplicateRouting(detachedLevelUp, source, origin));
+    } else {
+      nextOriginSongs.splice(found.index, 1);
     }
-    nextOriginSongs[found.index] = stagedSource;
 
     const pendingSong = makePendingSongFromDuplicateSource(source, origin);
-    if (detachedLevelUp) pendingSong.levelUp = clonePlain(detachedLevelUp);
     origin.songs_listened = storageReadySongs(nextOriginSongs);
     const pending = Array.isArray(origin.pending_songs) ? origin.pending_songs.slice() : [];
     const alreadyPending = pending.some((song) => songsMatchForRouting(song, normalizeSongKeyForCompare(pendingSong), duplicateClusterKeyForSong(pendingSong)));
@@ -1145,7 +1177,7 @@
   }
 
 
-  /* Daily Genre v216: Studio copy output uses compact artist/title/type/genre lines; v215 added
+  /* Daily Genre v215: Studio subsections get the same LLM-friendly
      "Copy first 25" workflow as Pending nominations. */
   function studioCopyButton(kind, title = "Copy the first 25 visible rows from this Studio subsection") {
     return `<button type="button" class="btn btn-secondary btn-tiny studio-copy-first25-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof copyStudioSubsectionFirst25 === 'function' ? copyStudioSubsectionFirst25('${esc(kind)}') : null; return false;" title="${esc(title)}">⧉ Copy first 25</button>`;
@@ -1157,53 +1189,6 @@
       .replace(/\s+([,;:])/g, "$1")
       .trim();
   }
-
-  function studioSongArtist(song) {
-    return String(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(", ") : "") || "").trim();
-  }
-
-  function studioSongPlainTitle(song) {
-    return String(song?.title || song?.name || song?.albumTitle || song?.album || song?.url || "Untitled").trim();
-  }
-
-  function studioCompactCopyLine(song, itemType, genreName) {
-    const artist = studioSongArtist(song);
-    const title = studioSongPlainTitle(song);
-    return [artist || "Unknown artist", title || "Untitled", itemType || "track", genreName || "Unknown genre"].map(cleanStudioCopyLine).join(" | ");
-  }
-
-  function studioPlainTitleCopyText(song) {
-    /* Daily Genre v217: tiny per-row copy buttons copy only Artist — Title. v218: album URL mismatch confirmation. */
-    const artist = cleanStudioCopyLine(studioSongArtist(song));
-    const title = cleanStudioCopyLine(studioSongPlainTitle(song));
-    if (artist && title) return `${artist} — ${title}`;
-    return title || artist || "Untitled";
-  }
-
-  function studioTitleCopyButton(song, label = "Copy title") {
-    const text = studioPlainTitleCopyText(song);
-    return `<button type="button" class="studio-title-copy-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof copyStudioPlainTitle === 'function' ? copyStudioPlainTitle('${encodeStudioScalar(text)}', this) : null; return false;" title="${esc(label)}" aria-label="${esc(label)}">⧉</button>`;
-  }
-
-  window.copyStudioPlainTitle = async function(encodedText, button) {
-    const text = cleanStudioCopyLine(decodeStudioScalar(encodedText));
-    if (!text) {
-      toast("Nothing to copy.", true);
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(text);
-      if (button) {
-        const old = button.textContent;
-        button.textContent = "✓";
-        window.setTimeout(() => { button.textContent = old || "⧉"; }, 900);
-      }
-      toast(`Copied ${text}`);
-    } catch (error) {
-      console.warn("Could not copy Studio row title", error);
-      toast("Could not copy title. Browser blocked clipboard access.", true);
-    }
-  };
 
   window.copyStudioSubsectionFirst25 = async function(kind) {
     const selectors = {
@@ -1290,11 +1275,11 @@
             ? `<div class="studio-inline-track-edit studio-inline-album-repair" data-studio-album-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Correct Album Dive URL</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/album/... or Apple/YouTube album link" value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-album-repair-form]'); const btn=wrap?.querySelector('[data-studio-album-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-album-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioAlbumRepairUrlFromQueue === 'function' ? updateStudioAlbumRepairUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">Apply album URL</button></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite">Paste the correct album URL, apply it, then Save cleanup to persist.</div></div>`
             : "";
         const skipKey = isRepair ? encodeURIComponent(repairSkipKey(row) || "") : "";
-        const copyLine = studioCompactCopyLine(row.song, isAlbumRepair ? "album" : "track", genreName);
+        const copyLine = [isAlbumRepair ? "Album Dive Repair" : "Track Repair", problem, genreName, songTitle(row.song), fit ? `fit ${fit}/5` : "", row.targetCount > 1 ? `${row.targetCount} copies` : "", row.song?.pendingFrom ? `from ${row.song.pendingFrom}` : ""].filter(Boolean).join(" | ");
         return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
           <div class="studio-mini-main">
-            <div class="studio-mini-title studio-title-with-copy">${href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(songTitle(row.song))}</a>` : `<span>${esc(songTitle(row.song))}</span>`}${studioTitleCopyButton(row.song, isAlbumRepair ? "Copy album title" : "Copy song title")}</div>
+            <div class="studio-mini-title">${href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(songTitle(row.song))}</a>` : esc(songTitle(row.song))}</div>
             <div class="studio-mini-meta">${copyChip}${problemChips}<span>${esc(genreName)}</span>${fit ? `<span>fit ${esc(fit)}/5</span>` : ""}${row.song?.pendingFrom ? `<span>from ${esc(row.song.pendingFrom)}</span>` : ""}</div>
             ${inlineRepair}
           </div>
@@ -1361,7 +1346,7 @@
           const genreId = encodeURIComponent(String(genre?.id ?? ""));
           const textId = `studioIdentityBlock_${String(genre?.id ?? idx).replace(/[^a-z0-9_-]/gi, "_")}`;
           const issueText = row.issues.length ? row.issues.join(", ") : "identity block";
-          const copyLine = ["", "", "genre_dna", genreName].join(" | ");
+          const copyLine = `Genre Identity | ${genreName} | missing: ${issueText}`;
           return `<article class="studio-identity-cleanup-row" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-text="${esc(norm([genreName, issueText].join(" ")))}" data-studio-type="identity" data-studio-priority="high">
             <div class="studio-identity-row-main">
               <div class="studio-mini-title">${esc(genreName)}</div>
@@ -2689,69 +2674,6 @@ This removes it from every genre queue and pending list. It becomes permanent af
     }
   }
 
-  /* Daily Genre v218: warn before applying an album URL that resolves to a different album/artist. */
-  function albumRepairComparableText(value = "") {
-    return String(value || "")
-      .toLowerCase()
-      .replace(/&/g, " and ")
-      .replace(/\b(deluxe|expanded|remaster(?:ed)?|anniversary|edition|version|bonus|explicit|clean|mono|stereo)\b/g, " ")
-      .replace(/\([^)]*\)|\[[^\]]*\]/g, " ")
-      .replace(/[^a-z0-9]+/g, " ")
-      .trim();
-  }
-
-  function albumRepairTokens(value = "") {
-    const stop = new Set(["a", "an", "and", "the", "of", "to", "in", "for", "with", "vol", "volume"]);
-    return albumRepairComparableText(value).split(/\s+/).filter((token) => token && !stop.has(token));
-  }
-
-  function albumRepairSimilarity(a = "", b = "") {
-    const aa = albumRepairComparableText(a);
-    const bb = albumRepairComparableText(b);
-    if (!aa || !bb) return null;
-    if (aa === bb) return 1;
-    if (aa.includes(bb) || bb.includes(aa)) return 0.92;
-    const at = albumRepairTokens(aa);
-    const bt = albumRepairTokens(bb);
-    if (!at.length || !bt.length) return 0;
-    const bs = new Set(bt);
-    const overlap = at.filter((token) => bs.has(token)).length;
-    return overlap / Math.max(at.length, bt.length);
-  }
-
-  function albumRepairDisplayPair(artist = "", title = "") {
-    const a = clean(artist || "");
-    const t = clean(title || "");
-    if (a && t) return `${a} — ${t}`;
-    return a || t || "Unknown album";
-  }
-
-  function albumRepairNeedsMismatchConfirm(metadata = {}, targets = []) {
-    const target = Array.isArray(targets) ? (targets.find((item) => item?.title || item?.artist) || targets[0] || {}) : {};
-    const currentTitle = clean(target?.title || "");
-    const currentArtist = clean(target?.artist || "");
-    const fetchedTitle = clean(metadata?.album || metadata?.albumTitle || "");
-    const fetchedArtist = clean(metadata?.artist || metadata?.albumArtist || "");
-    const titleScore = albumRepairSimilarity(currentTitle, fetchedTitle);
-    const artistScore = albumRepairSimilarity(currentArtist, fetchedArtist);
-    const titleMismatch = titleScore !== null && titleScore < 0.45;
-    const artistMismatch = artistScore !== null && artistScore < 0.35;
-    const sourceLooksRisky = metadata?.source === "youtube" && fetchedTitle && titleScore !== null && titleScore < 0.65;
-    if (!titleMismatch && !artistMismatch && !sourceLooksRisky) return { needsConfirm: false };
-    const reasons = [];
-    if (titleMismatch) reasons.push("album title looks different");
-    if (artistMismatch) reasons.push("artist looks different");
-    if (sourceLooksRisky && !titleMismatch) reasons.push("YouTube title is not a close album-title match");
-    return {
-      needsConfirm: true,
-      reason: reasons.join("; "),
-      current: albumRepairDisplayPair(currentArtist, currentTitle),
-      fetched: albumRepairDisplayPair(fetchedArtist, fetchedTitle),
-      titleScore,
-      artistScore,
-    };
-  }
-
   async function updateStudioAlbumRepairUrlFromQueue(encodedTargets, inputId, btn) {
     const form = btn?.closest?.("[data-studio-album-repair-form]");
     const status = form?.querySelector?.("[data-studio-repair-status]");
@@ -2769,18 +2691,6 @@ This removes it from every genre queue and pending list. It becomes permanent af
     let updated = 0;
     let metadata = {};
     try { metadata = await fetchAlbumRepairMetadata(rawUrl); } catch (_) { metadata = { url: rawUrl }; }
-    const mismatch = albumRepairNeedsMismatchConfirm(metadata, targets);
-    if (mismatch.needsConfirm) {
-      if (btn) { btn.disabled = false; btn.textContent = originalText; }
-      if (status) status.textContent = `URL resolved to ${mismatch.fetched}; current slot is ${mismatch.current}. Confirm to apply if this is intentional.`;
-      const ok = window.confirm(`This album URL may not match the current Album Dive slot.\n\nCurrent slot:\n${mismatch.current}\n\nURL resolved to:\n${mismatch.fetched}\n\nReason: ${mismatch.reason}.\n\nApply anyway?`);
-      if (!ok) {
-        if (status) status.textContent = "Album URL not applied. Paste a closer matching album URL or apply again if intentional.";
-        return toast("Album URL not applied.", true);
-      }
-      if (btn) { btn.disabled = true; btn.textContent = "Applying…"; }
-      if (status) status.textContent = "Confirmed mismatch — applying album URL…";
-    }
     targets.forEach((target) => {
       const genre = findGenreByIdOrName(target.genreId || target.genreName);
       if (!genre) return;
@@ -2953,10 +2863,6 @@ This removes it from every genre queue and pending list. It becomes permanent af
       .studio-duplicate-head-actions{display:flex;flex-direction:column;gap:8px;align-items:stretch;min-width:260px;justify-self:end;}
       .studio-duplicate-head-actions .btn{width:100%;min-height:42px;white-space:normal;line-height:1.12;}.studio-duplicate-head-actions .btn[disabled]{opacity:.68;cursor:not-allowed;transform:none;}
       .studio-copy-first25-btn{white-space:nowrap;}
-      .studio-title-with-copy{display:inline-flex;align-items:center;gap:6px;min-width:0;}
-      .studio-title-with-copy>a,.studio-title-with-copy>span{min-width:0;overflow:hidden;text-overflow:ellipsis;}
-      .studio-title-copy-btn{appearance:none;border:1px solid rgba(120,74,27,.18);background:rgba(255,248,229,.74);color:var(--muted,#735a3c);border-radius:999px;min-width:24px;height:24px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:900;line-height:1;cursor:pointer;flex:0 0 auto;}
-      .studio-title-copy-btn:hover{background:rgba(255,234,178,.95);color:var(--ink,#2a170e);}
       .studio-subsection-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 8px;}
       .studio-subsection-head h4{margin:0;}
       .studio-lane-counts .studio-copy-first25-btn{margin-left:4px;}
