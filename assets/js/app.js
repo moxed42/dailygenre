@@ -1319,6 +1319,21 @@
     }
     window.markListeningUpdatePending = markListeningUpdatePending;
 
+    /* Daily Genre v214: shared save-pipeline bridge for Studio/Album scripts.
+       Setting window.libraryUpdatesPending from another file only changes a
+       window property; it does not touch this module's lexical
+       libraryUpdatesPending flag that saveLibraryUpdates() checks. Route all
+       Studio cleanup mutations through this bridge so Album repair and
+       duplicate cleanup actually persist in the normal library save payload. */
+    window.markLibraryUpdatesPending = function(message, options = {}) {
+      markListeningUpdatePending();
+      if (message && typeof showSaveToast === 'function') showSaveToast(message, false);
+      if (options && options.openPasswordPrompt && !appPassword && typeof openPasswordModal === 'function') {
+        setTimeout(() => openPasswordModal('library_save'), 0);
+      }
+      return true;
+    };
+
     async function applySongsBulkAndSave(button = null, options = {}) {
       if (!currentGenre) {
         showSaveToast('Open a genre before applying songs.', true);

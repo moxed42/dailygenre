@@ -807,10 +807,25 @@
   }
 
   function markStudioLibraryDirty(message = "Cleanup staged — save pending.") {
+    /* Daily Genre v214: Studio cleanup must enter the real app save pipeline.
+       Previous patches set window.libraryUpdatesPending, but app.js keeps the
+       save gate in a lexical variable, so album repairs / duplicate routing
+       could look dirty in Studio yet saveLibraryUpdates() would say there was
+       nothing to save. */
+    let bridged = false;
+    try {
+      if (typeof window.markLibraryUpdatesPending === "function") {
+        window.markLibraryUpdatesPending(message);
+        bridged = true;
+      } else if (typeof window.markListeningUpdatePending === "function") {
+        window.markListeningUpdatePending();
+        bridged = true;
+      }
+    } catch (_) { bridged = false; }
     window.libraryUpdatesPending = true;
     window.hasUnsavedChanges = true;
     if (typeof window.updateSaveState === "function") window.updateSaveState();
-    toast(message, false);
+    if (!bridged) toast(message, false);
   }
 
   function sameGenreDuplicateCountForGroup(group) {
@@ -1009,7 +1024,7 @@
   }
 
   window.routeDuplicateSourceKeepLevelUp = function(encodedPayload, button) {
-    /* Daily Genre v212-v213: allow rows with no genre id to route by genreName, and keep header disabled controls from blocking row actions. */
+    /* Daily Genre v212-v214: allow rows with no genre id to route by genreName, keep header disabled controls from blocking row actions, and persist through the real save pipeline. */
     const payload = decodeStudioPayload(encodedPayload);
     const origin = findGenreByIdOrName(payload.genreId || payload.genreName);
     if (!origin) return toast(`Could not find source genre for that duplicate row${payload?.genreName ? ` (${payload.genreName})` : ""}. Refresh Studio and try again.`, true);
