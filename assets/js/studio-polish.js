@@ -366,16 +366,37 @@
 
 
 
-  /* Daily Genre v202: Studio cleanup queue revision + duplicate action layout v203 revision + v204 pending-route merge refinement + v205 scoped routing + v206 QA cluster refinement + v207 visible Routing Desk refresh. */
+  /* Daily Genre v210: listened-only identity cleanup + non-destructive duplicate QA actions. */
   function isListenedGenreForStudio(genre) {
-    const status = String(genre?.status || "").toLowerCase();
+    /* v210: Genre DNA only applies after a genre has actually been listened to.
+       Do not count genres merely because songs have been nominated/routed to them. */
+    const status = String(genre?.status || "").trim().toLowerCase();
+    const rating = String(genre?.rating || "").trim().toLowerCase();
+    let canonicalDate = "";
+    try {
+      if (typeof dateValue === "function") canonicalDate = String(dateValue(genre) || "").trim();
+    } catch (_) {
+      canonicalDate = "";
+    }
     return !!(
+      canonicalDate ||
       genre?.date ||
+      genre?.date_normalized ||
+      genre?.datenormalized ||
+      genre?.date_raw ||
+      genre?.dateraw ||
       genre?.listenedAt ||
       genre?.listened_at ||
       genre?.listenedDate ||
       status === "listened" ||
-      allNonPendingSongs(genre).length
+      status === "in_progress" ||
+      status === "in-progress" ||
+      status === "veto" ||
+      status === "zanger" ||
+      rating === "zanger" ||
+      genre?.monthlycontender ||
+      genre?.monthfavorite ||
+      genre?.monthleastfavorite
     );
   }
 
@@ -700,6 +721,9 @@
   function duplicateGroups(limit = 12) {
     const groups = new Map();
     stats().rows.filter((r) => r.type === "duplicate").forEach((row) => {
+      /* v210: hide only the individual appearance that was staged for Routing Desk,
+         instead of deleting every matching song from the duplicate cluster. */
+      if (row?.song?.qaPendingRouteStaged || row?.song?.duplicateQaPendingRouteStaged) return;
       const key = duplicateClusterKeyForSong(row.song);
       if (!key || duplicateClusterIsResolved(key)) return;
       const group = groups.get(key) || { key, entries: [], priority: 0 };
@@ -914,7 +938,9 @@
          same-genre duplicate rows are merged. Re-render so the remaining issues
          stay visible until explicitly resolved. */
       markStudioLibraryDirty(`Merged ${removed} same-genre duplicate row${removed === 1 ? "" : "s"} — save cleanup to persist.`);
-      if (typeof renderReview === "function") renderReview();
+      /* v210: do not rebuild/resolve the whole duplicate card after a same-genre
+         merge. The remaining cross-genre appearances stay available until Mark
+         valid / resolved is clicked. */
     }
     return removed;
   }
@@ -923,6 +949,17 @@
     const key = decodeMaybe(encodedClusterKey);
     const removed = mergeSameGenreDuplicatesForCluster(key);
     if (!removed) return toast("No same-genre duplicate rows were found to merge.", true);
+    if (button) {
+      button.disabled = true;
+      button.classList.remove("btn-primary");
+      button.classList.add("btn-secondary");
+      button.textContent = "Same-genre dupes merged";
+    }
+    const group = button?.closest?.(".studio-duplicate-group");
+    if (group) {
+      const copy = group.querySelector("[data-studio-duplicate-copy]");
+      if (copy) copy.innerHTML = `${group.dataset.studioDuplicateRemaining || ""} appearances remain. Same-genre duplicates were merged; review/reroute the remaining cross-genre appearances or mark valid / resolved.`;
+    }
     toast(`Merged ${removed} same-genre duplicate row${removed === 1 ? "" : "s"}. Save cleanup to persist.`);
   };
 
@@ -954,24 +991,31 @@
     const source = clonePlain(found.song);
     const sourceLabel = songTitle(source);
     const detachedLevelUp = source.levelUp ? clonePlain(source.levelUp) : null;
+    /* v210: do not remove the source song from the actual genre here. This action
+       stages a scoped routing item in Pending/Routing Desk and hides only this QA
+       appearance, so no other Xtal-style genre appearances can disappear. */
     const nextOriginSongs = found.songs.slice();
-    nextOriginSongs.splice(found.index, 1);
-
+    const stagedSource = nextOriginSongs[found.index] && typeof nextOriginSongs[found.index] === "object"
+      ? { ...nextOriginSongs[found.index] }
+      : clonePlain(source);
+    stagedSource.qaPendingRouteStaged = true;
+    stagedSource.duplicateQaPendingRouteStaged = true;
+    stagedSource.qaPendingRouteStagedAt = new Date().toISOString();
+    stagedSource.qaPendingRouteKey = normalizeSongKeyForCompare(source);
     if (detachedLevelUp) {
-      detachedLevelUp.isDetachedLevelUp = true;
-      detachedLevelUp.isLevelUp = false;
-      detachedLevelUp.isAdd = false;
-      detachedLevelUp.levelUp = null;
-      detachedLevelUp.levelUpFromTitle = source.title || source.name || sourceLabel;
-      detachedLevelUp.levelUpFromArtist = source.artist || (Array.isArray(source.artists) ? source.artists.join(", ") : "");
-      detachedLevelUp.levelUpFromUrl = source.url || source.spotifyUrl || "";
-      detachedLevelUp.levelUpFromKey = normalizeSongKeyForCompare(source);
-      detachedLevelUp.levelUpFromGenre = origin.genre || origin.name || "";
-      detachedLevelUp.reason = detachedLevelUp.reason || `Better fit than ${sourceLabel}.`;
-      nextOriginSongs.push(detachedLevelUp);
+      stagedSource.detachedLevelUpPreview = {
+        title: detachedLevelUp.title || detachedLevelUp.name || "",
+        artist: detachedLevelUp.artist || (Array.isArray(detachedLevelUp.artists) ? detachedLevelUp.artists.join(", ") : ""),
+        url: detachedLevelUp.url || detachedLevelUp.spotifyUrl || "",
+        reason: detachedLevelUp.reason || "",
+        levelUpFromTitle: source.title || source.name || sourceLabel,
+        levelUpFromArtist: source.artist || (Array.isArray(source.artists) ? source.artists.join(", ") : ""),
+      };
     }
+    nextOriginSongs[found.index] = stagedSource;
 
     const pendingSong = makePendingSongFromDuplicateSource(source, origin);
+    if (detachedLevelUp) pendingSong.levelUp = clonePlain(detachedLevelUp);
     origin.songs_listened = storageReadySongs(nextOriginSongs);
     const pending = Array.isArray(origin.pending_songs) ? origin.pending_songs.slice() : [];
     const alreadyPending = pending.some((song) => songsMatchForRouting(song, normalizeSongKeyForCompare(pendingSong), duplicateClusterKeyForSong(pendingSong)));
@@ -984,21 +1028,13 @@
     markStudioLibraryDirty(detachedLevelUp ? `Sent ${sourceLabel} to Pending; kept Level Up annotation in ${origin.genre || "original genre"}.` : `Sent ${sourceLabel} to Pending for routing.`);
     toast(detachedLevelUp ? `Sent to Pending and kept Level Up context in ${origin.genre || "original genre"}.` : "Sent to Pending for routing.", false);
 
-    /* v207: after creating the real pending_songs entry, rebuild Studio so the
-       native Routing Desk immediately shows the new queued item. The duplicate
-       cluster is recomputed from canonical data, so only the routed appearance
-       disappears while remaining appearances stay visible for review. */
-    if (typeof renderReview === "function") {
-      const keepY = window.scrollY || 0;
-      renderReview();
-      setTimeout(() => {
-        const routeLane = document.getElementById("studio-route-lane");
-        if (routeLane) setSectionCollapsed(routeLane, false);
-        window.scrollTo({ top: keepY, behavior: "auto" });
-      }, 0);
-    } else {
-      updateDuplicateGroupDomAfterPendingRoute(button);
-    }
+    /* v210: no full Studio rebuild here. Remove only this visible QA row and open
+       Routing Desk so the newly staged pending item can be handled after save/reload. */
+    updateDuplicateGroupDomAfterPendingRoute(button);
+    setTimeout(() => {
+      const routeLane = document.getElementById("studio-route-lane");
+      if (routeLane && typeof setSectionCollapsed === "function") setSectionCollapsed(routeLane, false);
+    }, 0);
   };
 
   function severity(n) {
