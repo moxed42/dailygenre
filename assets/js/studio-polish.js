@@ -915,7 +915,11 @@
         </div>
       </div>`;
     }).join("");
-    return `<article class="studio-duplicate-group" data-studio-row data-studio-duplicate-group="1" data-studio-duplicate-key="${esc(String(group.key || ""))}" data-studio-duplicate-remaining="${esc(String(group.entries.length))}" data-studio-text="${esc(norm([title, ...group.entries.map((r) => r.genre?.genre || "")].join(" ")))}" data-studio-type="review" data-studio-priority="high">
+    const copyLine = [`Duplicate QA | ${title}`, ...group.entries.map((r) => {
+      const bits = [r.genre?.genre || "Unknown genre", r.song?.score ? `fit ${r.song.score}/5` : "", r.song?.levelUp ? `Level Up → ${songTitle(r.song.levelUp)}` : ""].filter(Boolean);
+      return bits.join(" · ");
+    })].join(" | ");
+    return `<article class="studio-duplicate-group" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-duplicate-group="1" data-studio-duplicate-key="${esc(String(group.key || ""))}" data-studio-duplicate-remaining="${esc(String(group.entries.length))}" data-studio-text="${esc(norm([title, ...group.entries.map((r) => r.genre?.genre || "")].join(" ")))}" data-studio-type="review" data-studio-priority="high">
       <div class="studio-duplicate-head">
         ${renderSongThumb(first.song)}
         <div>
@@ -1143,6 +1147,49 @@
     </div>`;
   }
 
+
+  /* Daily Genre v215: Studio subsections get the same LLM-friendly
+     "Copy first 25" workflow as Pending nominations. */
+  function studioCopyButton(kind, title = "Copy the first 25 visible rows from this Studio subsection") {
+    return `<button type="button" class="btn btn-secondary btn-tiny studio-copy-first25-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof copyStudioSubsectionFirst25 === 'function' ? copyStudioSubsectionFirst25('${esc(kind)}') : null; return false;" title="${esc(title)}">⧉ Copy first 25</button>`;
+  }
+
+  function cleanStudioCopyLine(text) {
+    return String(text || "")
+      .replace(/\s+/g, " ")
+      .replace(/\s+([,;:])/g, "$1")
+      .trim();
+  }
+
+  window.copyStudioSubsectionFirst25 = async function(kind) {
+    const selectors = {
+      identity: "#studio-identity-cleanup-lane [data-studio-copy-line]",
+      repair: "#studio-repair-lane [data-studio-copy-line]",
+      "repair-track": "#studio-repair-lane .studio-repair-track-subsection [data-studio-copy-line]",
+      "repair-album": "#studio-repair-lane .studio-repair-album-subsection [data-studio-copy-line]",
+      qa: "#studio-review-lane [data-studio-copy-line]",
+      studio: "#screen-review .studio-lane [data-studio-copy-line]",
+    };
+    const selector = selectors[String(kind || "")] || selectors.studio;
+    const rows = $$(selector)
+      .filter((row) => !row.classList.contains("is-hidden") && !row.classList.contains("is-resolved") && row.offsetParent !== null)
+      .slice(0, 25);
+    const lines = rows
+      .map((row) => cleanStudioCopyLine(row.dataset.studioCopyLine || row.innerText || row.textContent || ""))
+      .filter(Boolean);
+    if (!lines.length) {
+      toast("No visible Studio rows to copy.", true);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      toast(`Copied ${lines.length} Studio row${lines.length === 1 ? "" : "s"}.`);
+    } catch (error) {
+      console.warn("Could not copy Studio subsection rows", error);
+      toast("Could not copy Studio rows. Browser blocked clipboard access.", true);
+    }
+  };
+
   function renderSongThumb(song) {
     const art = studioArtworkUrl(song);
     if (!art) return '<div class="studio-thumb studio-thumb-empty">♪</div>';
@@ -1199,7 +1246,8 @@
             ? `<div class="studio-inline-track-edit studio-inline-album-repair" data-studio-album-repair-form="1" data-studio-repair-targets="${encodedTargets}" data-studio-repair-input="${esc(inputId)}" onpointerdown="event.preventDefault(); event.stopPropagation();" onmousedown="event.stopPropagation();" onclick="event.stopPropagation();"><label for="${esc(inputId)}">Correct Album Dive URL</label><div><input id="${esc(inputId)}" type="url" placeholder="https://open.spotify.com/album/... or Apple/YouTube album link" value="${esc(currentUrl)}" onclick="event.stopPropagation();" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); event.stopPropagation(); const wrap=this.closest('[data-studio-album-repair-form]'); const btn=wrap?.querySelector('[data-studio-album-repair-update]'); if(btn) btn.click(); }"><button type="button" class="btn btn-primary btn-tiny" data-studio-album-repair-update="1" onclick="event.preventDefault(); event.stopPropagation(); typeof updateStudioAlbumRepairUrlFromQueue === 'function' ? updateStudioAlbumRepairUrlFromQueue('${encodedTargets}', '${esc(inputId)}', this) : null; return false;">Apply album URL</button></div><div class="studio-inline-repair-status" data-studio-repair-status aria-live="polite">Paste the correct album URL, apply it, then Save cleanup to persist.</div></div>`
             : "";
         const skipKey = isRepair ? encodeURIComponent(repairSkipKey(row) || "") : "";
-        return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
+        const copyLine = [isAlbumRepair ? "Album Dive Repair" : "Track Repair", problem, genreName, songTitle(row.song), fit ? `fit ${fit}/5` : "", row.targetCount > 1 ? `${row.targetCount} copies` : "", row.song?.pendingFrom ? `from ${row.song.pendingFrom}` : ""].filter(Boolean).join(" | ");
+        return `<article class="studio-mini-row ${isRepair ? "studio-mini-row-repair studio-mini-row-repair-grouped" : ""}" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-text="${esc(norm([problem, genreName, songTitle(row.song), row.song?.reason, row.song?.pendingFrom, row.targetCount > 1 ? `${row.targetCount} copies` : ""].join(" ")))}" data-studio-type="${esc(row.type)}" data-studio-priority="${row.priority >= 70 ? "high" : row.priority >= 45 ? "med" : "low"}">
           ${renderSongThumb(row.song)}
           <div class="studio-mini-main">
             <div class="studio-mini-title">${href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(songTitle(row.song))}</a>` : esc(songTitle(row.song))}</div>
@@ -1269,7 +1317,8 @@
           const genreId = encodeURIComponent(String(genre?.id ?? ""));
           const textId = `studioIdentityBlock_${String(genre?.id ?? idx).replace(/[^a-z0-9_-]/gi, "_")}`;
           const issueText = row.issues.length ? row.issues.join(", ") : "identity block";
-          return `<article class="studio-identity-cleanup-row" data-studio-row data-studio-text="${esc(norm([genreName, issueText].join(" ")))}" data-studio-type="identity" data-studio-priority="high">
+          const copyLine = `Genre Identity | ${genreName} | missing: ${issueText}`;
+          return `<article class="studio-identity-cleanup-row" data-studio-row data-studio-copy-line="${esc(copyLine)}" data-studio-text="${esc(norm([genreName, issueText].join(" ")))}" data-studio-type="identity" data-studio-priority="high">
             <div class="studio-identity-row-main">
               <div class="studio-mini-title">${esc(genreName)}</div>
               <div class="studio-mini-meta"><span>missing ${esc(issueText)}</span></div>
@@ -1293,7 +1342,7 @@
     return `<section class="studio-lane studio-identity-cleanup-lane" id="studio-identity-cleanup-lane" data-studio-lane="identity">
       <div class="studio-lane-head">
         <div><div class="eyebrow">Genre Identity</div><h3>Listened genres missing Genre DNA</h3><p>Each row expands into a structured block paste tool. The big manual form stays hidden so this works like Repair Bay cleanup.</p></div>
-        <div class="studio-lane-counts"><span>${rows.length} missing</span></div>
+        <div class="studio-lane-counts"><span>${rows.length} missing</span>${studioCopyButton("identity", "Copy the first 25 visible Genre Identity cleanup rows")}</div>
       </div>
       ${body}
     </section>`;
@@ -1350,15 +1399,15 @@
     return `<section class="studio-lane" id="studio-repair-lane" data-studio-lane="repair">
       <div class="studio-lane-head">
         <div><div class="eyebrow">Repair Bay</div><h3>Metadata and artwork cleanup</h3><p>Track and Album Dive issues live here together so Library, Stats, song carousels, and album carousels stay trustworthy.</p></div>
-        <div class="studio-lane-counts"><span>${repairCounts.art || 0} track art</span><span>${repairCounts.year || 0} track years</span><span>${repairCounts.metadata || 0} track metadata</span><span>${repairCounts["album art"] || 0} album art</span><span>${repairCounts["album year"] || 0} album years</span><span>${repairCounts["album metadata"] || 0} album metadata</span></div>
+        <div class="studio-lane-counts"><span>${repairCounts.art || 0} track art</span><span>${repairCounts.year || 0} track years</span><span>${repairCounts.metadata || 0} track metadata</span><span>${repairCounts["album art"] || 0} album art</span><span>${repairCounts["album year"] || 0} album years</span><span>${repairCounts["album metadata"] || 0} album metadata</span>${studioCopyButton("repair", "Copy the first 25 visible Repair Bay rows")}</div>
       </div>
       <div class="studio-action-strip studio-repair-actions-compact">
         <button type="button" class="btn btn-secondary" onclick="typeof refreshNextSpotifyTracks === 'function' ? refreshNextSpotifyTracks(5) : null">Auto-refresh next 5 tracks</button>
         <button type="button" class="btn btn-secondary" onclick="typeof refreshStudioRepairList === 'function' ? refreshStudioRepairList(this) : (typeof renderReview === 'function' ? renderReview() : null)">Refresh repair list</button>
         <div class="studio-action-helper">Track rows support inline URL/override repair. Album Dive rows are visible here and open the genre/Album Dive editor for album art, year, and album metadata repair.</div>
       </div>
-      <div class="studio-repair-subsection"><h4>Track metadata/artwork</h4>${trackBody}</div>
-      <div class="studio-repair-subsection studio-repair-album-subsection"><h4>Album Dive metadata/artwork</h4>${albumBody}</div>
+      <div class="studio-repair-subsection studio-repair-track-subsection"><div class="studio-subsection-head"><h4>Track metadata/artwork</h4>${studioCopyButton("repair-track", "Copy the first 25 visible track repair rows")}</div>${trackBody}</div>
+      <div class="studio-repair-subsection studio-repair-album-subsection"><div class="studio-subsection-head"><h4>Album Dive metadata/artwork</h4>${studioCopyButton("repair-album", "Copy the first 25 visible Album Dive repair rows")}</div>${albumBody}</div>
     </section>`;
   }
 
@@ -1367,7 +1416,7 @@
     return `<section class="studio-lane" id="studio-review-lane" data-studio-lane="review">
       <div class="studio-lane-head">
         <div><div class="eyebrow">QA Lab</div><h3>Taste pass and structural checks</h3><p>Resolve duplicate-looking songs, route low-fit source rows, and keep Level Up context attached to the original genre.</p></div>
-        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span></div>
+        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span>${studioCopyButton("qa", "Copy the first 25 visible QA duplicate clusters")}</div>
       </div>
       ${renderDuplicateGroups(groups)}
     </section>`;
@@ -1394,7 +1443,7 @@
       route.className = "studio-lane studio-route-lane";
       route.dataset.studioLane = "route";
       route.innerHTML =
-        '<div class="studio-lane-head"><div><div class="eyebrow">Routing Desk</div><h3>Pending nominations and ambiguous tags</h3><p>Decide whether a track is misplaced, a crossover, a Level Up, an Add, or simply needs dismissal.</p></div></div>';
+        `<div class="studio-lane-head"><div><div class="eyebrow">Routing Desk</div><h3>Pending nominations and ambiguous tags</h3><p>Decide whether a track is misplaced, a crossover, a Level Up, an Add, or simply needs dismissal.</p></div><div class="studio-lane-counts"><button type="button" class="btn btn-secondary btn-tiny studio-copy-first25-btn" onclick="event.preventDefault(); event.stopPropagation(); typeof copyReviewPendingQueueFirst25 === 'function' ? copyReviewPendingQueueFirst25() : null; return false;" title="Copy the first 25 visible pending nominations">⧉ Copy first 25</button></div></div>`;
       pending.parentNode.insertBefore(route, pending);
       route.appendChild(pending);
       if (manual) route.appendChild(manual);
@@ -2784,7 +2833,11 @@ This removes it from every genre queue and pending list. It becomes permanent af
       .studio-duplicate-actions{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap;}
       .studio-duplicate-head-actions{display:flex;flex-direction:column;gap:8px;align-items:stretch;min-width:260px;justify-self:end;}
       .studio-duplicate-head-actions .btn{width:100%;min-height:42px;white-space:normal;line-height:1.12;}.studio-duplicate-head-actions .btn[disabled]{opacity:.68;cursor:not-allowed;transform:none;}
-      @media(max-width:760px){.studio-duplicate-head,.studio-duplicate-instance{grid-template-columns:1fr}.studio-duplicate-actions{justify-content:flex-start}.studio-duplicate-head-actions{min-width:0;justify-self:stretch}}
+      .studio-copy-first25-btn{white-space:nowrap;}
+      .studio-subsection-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 8px;}
+      .studio-subsection-head h4{margin:0;}
+      .studio-lane-counts .studio-copy-first25-btn{margin-left:4px;}
+      @media(max-width:760px){.studio-duplicate-head,.studio-duplicate-instance{grid-template-columns:1fr}.studio-duplicate-actions{justify-content:flex-start}.studio-duplicate-head-actions{min-width:0;justify-self:stretch}.studio-subsection-head{align-items:flex-start;flex-direction:column}}
     `;
     document.head.appendChild(style);
   }
