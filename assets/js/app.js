@@ -42,7 +42,7 @@
     function getListeningFocusMode(genre = currentGenre) {
       const key = listeningFocusStorageKey(genre);
       let saved = '';
-      try { saved = localStorage.getItem(key) || ''; } catch {}
+      try { saved = localStorage.getItem(key) || ''; } catch(e){console.warn("DG silent catch", e)}
       const hasAlbums = genreHasAlbumDiveContent(genre);
       const mode = saved || (hasAlbums ? 'albums' : 'songs');
       return mode === 'albums' && hasAlbums ? 'albums' : 'songs';
@@ -55,10 +55,10 @@
       const previousActive = document.activeElement;
       const previousBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = 'auto';
-      try { previousActive?.blur?.(); } catch {}
+      try { previousActive?.blur?.(); } catch(e){console.warn("DG silent catch", e)}
 
       listeningFocusMode = mode === 'albums' ? 'albums' : 'songs';
-      try { localStorage.setItem(listeningFocusStorageKey(currentGenre), listeningFocusMode); } catch {}
+      try { localStorage.setItem(listeningFocusStorageKey(currentGenre), listeningFocusMode); } catch(e){console.warn("DG silent catch", e)}
 
       const restoreListeningToggleScroll = () => {
         try { window.scrollTo({ left: previousScrollX, top: previousScrollY, behavior: 'auto' }); }
@@ -524,7 +524,7 @@
       try {
         localStorage.setItem(listeningFocusStorageKey(genre), 'albums');
         if (activeState?.slotKey) localStorage.setItem(`dailyGenreAlbumDiveFocusSlot:${albumDiveStateGenreId(genre)}`, activeState.slotKey);
-      } catch {}
+      } catch(e){console.warn("DG silent catch", e)}
       openGenreDetail(genre, false, { skipSpotifyHydration: true });
       if (typeof setAlbumDiveEditorMode === 'function') setAlbumDiveEditorMode(false);
       refreshTopAlbumDiveButton();
@@ -2648,12 +2648,12 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         const updatedFocusKey = songIdentity(target);
         try {
           if (updatedFocusKey && typeof setSongFocus === 'function') setSongFocus(updatedFocusKey);
-        } catch {}
+        } catch(e){console.warn("DG silent catch", e)}
         const restore = preserveScrollSnapshot();
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
         try {
           if (updatedFocusKey && typeof setSongFocus === 'function') setSongFocus(updatedFocusKey);
-        } catch {}
+        } catch(e){console.warn("DG silent catch", e)}
         applyDetailEditMode(detailEditMode);
         restore();
         markListeningUpdatePending();
@@ -5249,7 +5249,7 @@ function blockSaveIfDuplicateGenres() {
         const names = [genre?.genre || ''];
         try {
           if (typeof genreAliasListForSearch === 'function') names.push(...genreAliasListForSearch(genre));
-        } catch {}
+        } catch(e){console.warn("DG silent catch", e)}
         return [...new Set(names.filter(Boolean))];
       };
 
@@ -5274,7 +5274,7 @@ function blockSaveIfDuplicateGenres() {
           if (c.includes(rawCompact) || rawCompact.includes(c)) best = Math.max(best, 66);
           try {
             if (Math.min(p.length, normPending.length) >= 5 && levenshtein(p, normPending) <= 2) best = Math.max(best, 60);
-          } catch {}
+          } catch(e){console.warn("DG silent catch", e)}
         });
         return { genre: g, score: best };
       }).filter(item => item.score > 0).sort((a,b) => b.score - a.score || String(a.genre.genre || '').localeCompare(String(b.genre.genre || '')));
@@ -8284,8 +8284,8 @@ async function bootApp() {
   const hasSpotifyCallback = params.has('code') || params.has('error');
   // Remove stale return intents from older patched builds so they cannot trigger auth loops.
   (typeof SPOTIFY_OLD_RETURN_STORAGE_KEYS !== 'undefined' ? SPOTIFY_OLD_RETURN_STORAGE_KEYS : []).forEach(key => {
-    try { sessionStorage.removeItem(key); } catch {}
-    try { localStorage.removeItem(key); } catch {}
+    try { sessionStorage.removeItem(key); } catch(e){console.warn("DG silent catch", e)}
+    try { localStorage.removeItem(key); } catch(e){console.warn("DG silent catch", e)}
   });
 
   loadSpotifySession();

@@ -388,7 +388,7 @@
           open ? "1" : "0",
         );
       }
-    } catch {}
+    } catch(e){console.warn("DG silent catch", e)}
     enhanceSongListeningExperience();
   }
 
@@ -415,7 +415,7 @@
       if (typeof currentGenre !== "undefined" && currentGenre) {
         localStorage.setItem(genreFilterStorageKey(currentGenre), next);
       }
-    } catch {}
+    } catch(e){console.warn("DG silent catch", e)}
     enhanceSongListeningExperience();
   }
 
@@ -520,7 +520,7 @@
     let stored = "";
     try {
       stored = localStorage.getItem(genreFocusStorageKey(genre)) || "";
-    } catch {}
+    } catch(e){console.warn("DG silent catch", e)}
     const storedMatch = stored
       ? entries.find((entry) => songKey(entry.song) === stored)
       : null;
@@ -534,7 +534,7 @@
       if (typeof currentGenre !== "undefined" && currentGenre) {
         localStorage.setItem(genreFocusStorageKey(currentGenre), key || "");
       }
-    } catch {}
+    } catch(e){console.warn("DG silent catch", e)}
     enhanceSongListeningExperience();
   }
 
@@ -569,7 +569,7 @@
           open ? "1" : "0",
         );
       }
-    } catch {}
+    } catch(e){console.warn("DG silent catch", e)}
     enhanceSongListeningExperience();
   }
 
@@ -645,7 +645,7 @@
       try {
         if (nextEntries.length) localStorage.setItem(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
         else localStorage.removeItem(genreFocusStorageKey(currentGenre));
-      } catch {}
+      } catch(e){console.warn("DG silent catch", e)}
       if (!nextEntries.length) setSongDetailsOpen(false);
 
       if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
@@ -700,7 +700,7 @@
     if (typeof currentGenre === "undefined" || !currentGenre) return;
     try {
       if (typeof syncBulkDraftIntoSongModel === "function") syncBulkDraftIntoSongModel();
-    } catch {}
+    } catch(e){console.warn("DG silent catch", e)}
     const path = decodeFocusPath(encodedPath);
     const result = typeof findEditableSongTarget === "function"
       ? findEditableSongTarget(encodedKey, -1, path)
@@ -746,7 +746,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
       try {
         if (nextEntries.length) localStorage.setItem(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
         else localStorage.removeItem(genreFocusStorageKey(currentGenre));
-      } catch {}
+      } catch(e){console.warn("DG silent catch", e)}
       if (!nextEntries.length) setSongDetailsOpen(false);
       enhanceSongListeningExperience();
       const deletedCount = (outcome?.deleted || 0) + (localRemoved && !outcome?.deleted ? localRemoved : 0);
@@ -1041,7 +1041,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
     const selectedKey = songKey(selected.song);
     try {
       localStorage.setItem(genreFocusStorageKey(currentGenre), selectedKey);
-    } catch {}
+    } catch(e){console.warn("DG silent catch", e)}
     const detailsOpen = isSongDetailsOpen(currentGenre);
     const queueOpen = isSongQueueOpen(currentGenre);
 
@@ -1084,7 +1084,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
       const beforeScroll = window.scrollY || window.pageYOffset || 0;
       try {
         document.activeElement?.blur?.();
-      } catch {}
+      } catch(e){console.warn("DG silent catch", e)}
       const result = original.apply(this, args);
       const restore = () => {
         const nextAnchor =
