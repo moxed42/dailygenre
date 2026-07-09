@@ -86,15 +86,10 @@
 
       restoreListeningToggleScroll();
       requestAnimationFrame(() => {
-        restoreListeningToggleScroll();
-        requestAnimationFrame(restoreListeningToggleScroll);
-      });
-      setTimeout(() => {
         if (typeof enhanceSongListeningExperience === 'function') enhanceSongListeningExperience();
         if (typeof hydrateAlbumDiveAmbient === 'function') hydrateAlbumDiveAmbient();
         restoreListeningToggleScroll();
-      }, 0);
-      [40, 120, 260, 520, 900].forEach(delay => setTimeout(restoreListeningToggleScroll, delay));
+      });
       setTimeout(() => { document.documentElement.style.scrollBehavior = previousBehavior; }, 940);
     }
     window.setListeningFocusMode = setListeningFocusMode;
