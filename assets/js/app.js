@@ -3,11 +3,26 @@
 
     function setUnsavedState(isDirty) {
       hasUnsavedChanges = !!isDirty;
+      // Daily Genre v219: expose the real dirty flag for add-on modules and
+      // mobile diagnostics. Some Studio actions previously set window-level
+      // flags that did not reflect the lexical save state used by Save.
+      try { window.__dgHasUnsavedChanges = hasUnsavedChanges; } catch (_) {}
       const saveBtn = document.getElementById('saveBtn');
       if (saveBtn) saveBtn.dataset.dirty = hasUnsavedChanges ? 'true' : 'false';
       const listenTab = document.querySelector('.tab-btn[data-screen="listen"]');
       if (listenTab) listenTab.classList.toggle('dirty', hasUnsavedChanges);
     }
+
+    function isDailyGenreMobilePerfMode() {
+      try {
+        return Boolean(
+          window.__dgForceMobilePerf ||
+          (window.matchMedia && window.matchMedia('(max-width: 760px)').matches) ||
+          /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '')
+        );
+      } catch (_) { return false; }
+    }
+    window.isDailyGenreMobilePerfMode = isDailyGenreMobilePerfMode;
 
 
 
@@ -1676,22 +1691,50 @@
     function buildGenreReactionRecap(includeTracks=false) {
       if (!currentGenre) return '';
       const counts = genreReactionCounts(currentGenre);
-      let text = `**${String(currentGenre.genre || 'UNKNOWN').toUpperCase()} — Track Reactions**\n\n`;
-      text += `👍 I Fuck With This: ${counts[3]}\n`;
-      text += `🤷 Meh, It’s Fine: ${counts[2]}\n`;
-      text += `👎 Fuck Off: ${counts[1]}\n`;
+      let text = `**${String(currentGenre.genre || 'UNKNOWN').toUpperCase()} — Track Reactions**
+
+`;
+      text += `👍 I Fuck With This: ${counts[3]}
+`;
+      text += `🤷 Meh, It’s Fine: ${counts[2]}
+`;
+      text += `👎 Fuck Off: ${counts[1]}
+`;
       text += `— Unrated: ${counts.unrated}`;
       if (includeTracks) {
         const songs = genreReactionSongs(currentGenre);
+        const songFit = song => Number(song?.score || song?.fit || 0);
+        // Daily Genre v218: reaction track copy should foreground only strong-fit tracks.
+        const strongFitSongs = songs.filter(song => [4, 5].includes(songFit(song)));
+        const weakFitSongs = songs.filter(song => {
+          const fit = songFit(song);
+          return Number.isFinite(fit) && fit > 0 && fit < 4;
+        });
         [3,2,1,0].forEach(value => {
-          const group = songs.filter(song => value ? Number(song.reaction) === value : ![1,2,3].includes(Number(song.reaction)));
+          const group = strongFitSongs.filter(song => value ? Number(song.reaction) === value : ![1,2,3].includes(Number(song.reaction)));
           if (!group.length) return;
-          text += `\n\n${reactionEmoji(value)} ${reactionLabel(value)}\n`;
+          text += `
+
+${reactionEmoji(value)} ${reactionLabel(value)} · fit 4/5 or 5/5
+`;
           text += group.map(song => {
             const base = `${song.artist ? `${song.artist} — ` : ''}${song.title || 'Untitled track'}`;
             return `• ${isSameFavoriteSong(currentGenre, song) ? '🏆 ' : ''}${base}${isSameFavoriteSong(currentGenre, song) ? ' — FAVORITE' : ''}`;
           }).join('\n');
         });
+        if (weakFitSongs.length) {
+          text += `
+
+⚠ Not a good fit for this genre
+`;
+          text += weakFitSongs.map(song => {
+            const base = `${song.artist ? `${song.artist} — ` : ''}${song.title || 'Untitled track'}`;
+            const fit = songFit(song);
+            const reaction = Number(song.reaction || 0);
+            const reactionCopy = [1,2,3].includes(reaction) ? ` · ${reactionEmoji(reaction)} ${reactionLabel(reaction)}` : '';
+            return `• ${isSameFavoriteSong(currentGenre, song) ? '🏆 ' : ''}${base} — fit ${fit}/5${reactionCopy}${isSameFavoriteSong(currentGenre, song) ? ' — FAVORITE' : ''}`;
+          }).join('\n');
+        }
       }
       return text;
     }
@@ -3718,12 +3761,22 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
       const listenedDate = dateValue(genre);
       const hasListenMarkers = genreHasListenMarkers(genre);
+      const mobileGenrePerf = isDailyGenreMobilePerfMode();
       const songs = inflateSongsFromStorage(genre.songs_listened || []);
       const activeSongs = songs.filter(s => !s.isPending);
       const pendingSongs = normalizePendingSongs(getPendingSongs(genre));
       const songCount = countSongsForDisplay(activeSongs);
       const art = getGenreArtwork(genre);
       const ratingHero = genreRatingHeroMarkup(genre);
+      // Daily Genre v220: mobile genre pages should paint/tap quickly.  The
+      // focused song carousel is the primary mobile interface, so the legacy
+      // hidden list is rendered without heavy edit/details controls on phones.
+      // Album Dive markup is also lazy-rendered unless the Album tab is active.
+      const songCardOptions = (idx) => ({ allowTrackEdit: !mobileGenrePerf, songIndex: idx });
+      const pendingCardOptions = (idx) => ({ pendingIndex: idx, allowTrackEdit: !mobileGenrePerf });
+      const albumPaneHtml = (!mobileGenrePerf || listeningFocusMode === 'albums')
+        ? renderAlbumDivePanel(genre)
+        : '<div class="pending-song-empty">Album shelf will load when you tap Albums.</div>';
       document.getElementById('listenDetails').innerHTML = `
         <div class="detail-hero">
           <div class="detail-record-card">
@@ -3777,11 +3830,11 @@ async function prepareAndSaveCurrentGenre(options = {}) {
             ${renderListeningFocusTabs(genre)}
             <div class="listening-focus-pane listening-focus-songs ${listeningFocusMode === 'songs' ? '' : 'hidden'}">
               <div class="eyebrow listening-focus-pane-label">Song Queue</div>
-              ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map((song, idx) => renderSongEntry(song, false, { allowTrackEdit: true, songIndex: idx })).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
-              <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: true })).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
+              ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map((song, idx) => renderSongEntry(song, false, songCardOptions(idx))).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
+              <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, pendingCardOptions(idx))).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
             </div>
             <div class="listening-focus-pane listening-focus-albums ${listeningFocusMode === 'albums' ? '' : 'hidden'}">
-              ${renderAlbumDivePanel(genre)}
+              ${albumPaneHtml}
             </div>
           </div>
         </div>
@@ -3879,6 +3932,19 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       }
 
       const payload = genresForSave();
+      // v219: leave a lightweight breadcrumb before the network save starts.
+      // This does not store the whole library on mobile, but it makes it clear
+      // that the canonical save pipeline actually began if a browser/network
+      // interruption happens mid-save.
+      try {
+        window.__dgLastSaveAttemptAt = new Date().toISOString();
+        localStorage.setItem('dailyGenreLastSaveAttempt:v220', JSON.stringify({
+          at: window.__dgLastSaveAttemptAt,
+          genres: Array.isArray(payload) ? payload.length : 0,
+          studioMutation: !!window.__dgStudioCleanupSavePending,
+          activeScreen: document.querySelector('.screen.active')?.id || ''
+        }));
+      } catch (_) {}
       let res;
       try {
         res = await fetch(WORKER_URL, {

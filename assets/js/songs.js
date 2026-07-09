@@ -6,6 +6,13 @@
   const FILTER_STORAGE_PREFIX = "dailyGenreSongQueueFilter:";
   const QUEUE_OPEN_STORAGE_PREFIX = "dailyGenreSongQueueOpen:";
 
+  function isMobilePerfMode() {
+    try {
+      if (typeof window.isDailyGenreMobilePerfMode === "function") return window.isDailyGenreMobilePerfMode();
+      return Boolean(window.matchMedia && window.matchMedia("(max-width: 760px)").matches);
+    } catch (_) { return false; }
+  }
+
   function safeCall(fn, fallback = "") {
     try {
       return typeof fn === "function" ? fn() : fallback;
@@ -898,7 +905,12 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
     activeFilter = "all",
     queueOpen = false,
   ) {
-    const visibleEntries = filterSongEntries(entries, activeFilter);
+    const allVisibleEntries = filterSongEntries(entries, activeFilter);
+    const mobilePerf = isMobilePerfMode();
+    const selectedVisibleIndex = Math.max(0, allVisibleEntries.findIndex((entry) => songKey(entry.song) === selectedKey));
+    const mobileWindowStart = mobilePerf ? Math.max(0, selectedVisibleIndex - 8) : 0;
+    const visibleEntries = mobilePerf ? allVisibleEntries.slice(mobileWindowStart, mobileWindowStart + 18) : allVisibleEntries;
+    const hiddenMobileEntries = mobilePerf ? Math.max(0, allVisibleEntries.length - visibleEntries.length) : 0;
     const reactedCount = entries.filter((entry) => entry.song?.reaction).length;
     const favoriteCount = entries.filter((entry) =>
       isFavoriteEntry(entry),
@@ -937,7 +949,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
       <div class="song-focus-section-head">
         <div>
           <div class="eyebrow">Song queue</div>
-          <div class="small">${reactedCount}/${entries.length} reacted · ${favoriteCount} favorite${activeFilter !== "all" ? ` · ${visibleEntries.length} shown` : ""}</div>
+          <div class="small">${reactedCount}/${entries.length} reacted · ${favoriteCount} favorite${activeFilter !== "all" ? ` · ${allVisibleEntries.length} shown` : ""}</div>
         </div>
         <button type="button" class="song-focus-queue-toggle" onclick="setSongQueueOpen(${queueOpen ? "false" : "true"})">${queueOpen ? "Collapse queue" : "Show queue"}</button>
       </div>
@@ -992,7 +1004,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
             ${renderReactionButtons(song, "queue")}
           </div>`;
                 })
-                .join("")
+                .join("") + (hiddenMobileEntries ? `<div class="song-focus-empty-filter">Showing nearby 18 of ${allVisibleEntries.length} songs on mobile. Use Next/Previous or filters to move through the queue.</div>` : "")
             : '<div class="song-focus-empty-filter">No songs match this filter.</div>'
         }
       </div>`
@@ -1128,13 +1140,13 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
         if (!window.__dailyGenreAllowSongFocusAutoScroll) {
           window.scrollTo({ top: beforeY, left: beforeX, behavior: 'auto' });
         }
-      }, 0);
+      }, isMobilePerfMode() ? 60 : 0);
       return result;
     };
   }
 
   document.addEventListener("DOMContentLoaded", () =>
-    setTimeout(enhanceSongListeningExperience, 0),
+    setTimeout(enhanceSongListeningExperience, isMobilePerfMode() ? 80 : 0),
   );
 })();
 

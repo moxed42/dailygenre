@@ -32,6 +32,20 @@
     return document.getElementById("screen-review")?.classList.contains("active");
   }
 
+  function isMobileStudioPerfMode() {
+    try {
+      if (typeof window.isDailyGenreMobilePerfMode === "function") return !!window.isDailyGenreMobilePerfMode();
+      return Boolean((window.matchMedia && window.matchMedia('(max-width: 760px)').matches) || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || ''));
+    } catch (_) { return false; }
+  }
+
+  function deferStudioWork(fn) {
+    if (typeof fn !== "function") return;
+    const run = () => { try { fn(); } catch (error) { console.warn("Deferred Studio work failed", error); } };
+    if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(run, { timeout: 900 });
+    else window.setTimeout(run, isMobileStudioPerfMode() ? 80 : 0);
+  }
+
   function isStudioTextEntryActive() {
     return isReviewActive() && isEditableStudioTarget(document.activeElement);
   }
@@ -1931,10 +1945,17 @@
     mount.appendChild(details);
   }
 
+  let lastMobileApplyAt = 0;
   function apply() {
     if (isApplying) return;
     const mount = document.getElementById("reviewContent");
     if (!mount) return;
+    const now = Date.now();
+    // v219 mobile stabilization: Studio wraps a large native Review DOM. On
+    // phones, accidental double-applies during tab/navigation clicks made the
+    // page feel frozen. Skip no-op wrapper passes that happen back-to-back.
+    if (isMobileStudioPerfMode() && mount.classList.contains("studio-workbench") && (now - lastMobileApplyAt) < 450) return;
+    lastMobileApplyAt = now;
     isApplying = true;
     try {
       if (!mount.classList.contains("studio-workbench"))
@@ -1988,15 +2009,23 @@
       const sectionState = captureStudioSectionState(mount);
       if (mount) mount.classList.add("studio-rendering");
       const result = original.apply(this, arguments);
-      apply();
-      restoreStudioSectionState(mount, sectionState);
-      restoreInboxDraft(draft);
-      if (mount) {
-        requestAnimationFrame(() => mount.classList.remove("studio-rendering"));
+      const finishApply = () => {
+        apply();
+        restoreStudioSectionState(mount, sectionState);
+        restoreInboxDraft(draft);
+        if (mount) requestAnimationFrame(() => mount.classList.remove("studio-rendering"));
+      };
+      if (isMobileStudioPerfMode()) {
+        // v219: let the Review/Pending list paint first on mobile, then install
+        // the heavy Studio lanes in idle time instead of blocking the tap.
+        deferStudioWork(finishApply);
+      } else {
+        finishApply();
       }
       return result;
     }
     wrappedRenderReview.__studioWrapped = true;
+    window.__dgStudioRenderReviewWrapped = true;
     window.renderReview = wrappedRenderReview;
     return true;
   }
@@ -2788,13 +2817,17 @@ This removes it from every genre queue and pending list. It becomes permanent af
         }
         const reviewTab = ev.target.closest?.('[data-screen="review"]');
         if (reviewTab) {
+          // v219: renderReview is already wrapped and will apply Studio once.
+          // Avoid the old second immediate apply that made mobile tab switches
+          // slow and sometimes interrupted taps/save prompts.
+          if (window.__dgStudioRenderReviewWrapped) return;
           const mount = document.getElementById("reviewContent");
           if (mount) mount.classList.add("studio-rendering");
-          setTimeout(() => {
+          deferStudioWork(() => {
             if (isStudioTextEntryActive() || isInboxPasteGuardActive()) return;
             apply();
             requestAnimationFrame(() => mount?.classList.remove("studio-rendering"));
-          }, 0);
+          });
           return;
         }
         // Avoid re-applying Studio wrappers while a text field is being clicked/focused.
