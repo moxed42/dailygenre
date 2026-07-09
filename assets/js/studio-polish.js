@@ -34,8 +34,7 @@
 
   function isMobileStudioPerfMode() {
     try {
-      if (typeof window.isDailyGenreMobilePerfMode === "function") return !!window.isDailyGenreMobilePerfMode();
-      return Boolean((window.matchMedia && window.matchMedia('(max-width: 760px)').matches) || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || ''));
+      return !!window.isDailyGenreMobilePerfMode?.();
     } catch (_) { return false; }
   }
 

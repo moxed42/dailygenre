@@ -8,8 +8,7 @@
 
   function isMobilePerfMode() {
     try {
-      if (typeof window.isDailyGenreMobilePerfMode === "function") return window.isDailyGenreMobilePerfMode();
-      return Boolean(window.matchMedia && window.matchMedia("(max-width: 760px)").matches);
+      return !!window.isDailyGenreMobilePerfMode?.();
     } catch (_) { return false; }
   }
 

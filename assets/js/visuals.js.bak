@@ -138,7 +138,57 @@ function openMetadataQueue(filter = "spotify", mode = "alltime") {
   );
 }
 
+function statsPolishApply() {
+  const root = document.getElementById("screen-viz");
+  if (!root) return;
+  root.classList.add("dg-stats-polished");
 
+  root.querySelectorAll(".viz-card-metadata").forEach((card) => {
+    card.classList.add("dg-viz-hide-card");
+  });
+
+  root
+    .querySelectorAll(".viz-card-copy, .viz-chart-hint, .viz-spotlight-copy")
+    .forEach((el) => {
+      const text = String(el.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!text) return;
+      el.dataset.dgTooltipText = text;
+      el.title = text;
+      el.classList.add("dg-viz-tooltip-source");
+      const parent = el.parentElement;
+      if (parent && !parent.querySelector(":scope > .dg-viz-info")) {
+        const info = document.createElement("button");
+        info.type = "button";
+        info.className = "dg-viz-info";
+        info.title = text;
+        info.setAttribute("aria-label", text);
+        info.textContent = "ⓘ";
+        const label = parent.querySelector(
+          ":scope > .viz-card-label, :scope > .viz-spotlight-label",
+        );
+        label?.insertAdjacentElement("afterend", info);
+      }
+    });
+
+  root.querySelectorAll(".viz-drill-actions button").forEach((btn) => {
+    if (/^spotify$/i.test(String(btn.textContent || "").trim())) btn.remove();
+  });
+  root.querySelectorAll(".viz-drill-explain").forEach((el) => {
+    const text = String(el.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (text) {
+      el.title = text;
+      el.classList.add("dg-viz-tooltip-source");
+    }
+  });
+
+  root.querySelectorAll(".viz-hl-card").forEach((card) => {
+    card.classList.add("dg-viz-summary-card");
+  });
+}
 
 /* === Stats / Visuals polish v3.4 ===
    Analytics pass: preserve chart layout on drilldown, compress instruction copy,
@@ -188,9 +238,119 @@ function renderDecadeCoverageNote(note, decadeStats, mode) {
   }
 }
 
+function renderVisualDrilldown() {
+  clearVisualDrilldownMounts();
+  if (!vizDrilldownState) return;
+  const mount = document.getElementById(
+    visualDrilldownMountId(vizDrilldownState),
+  );
+  if (!mount) return;
+  const activeCard = mount.closest(".viz-card");
+  activeCard?.classList.add("viz-card-selected");
+  activeCard?.classList.add("viz-card-with-local-drilldown");
+  activeCard?.classList.add("dg-viz-side-drill-card");
 
+  const items = vizRowsForCurrentScope();
+  const {
+    title,
+    rows: allRows,
+    explainer,
+  } = vizDrilldownRowsForState(items, vizDrilldownState);
+  const totalRows = allRows.length;
+  const rows = allRows.slice(0, 48);
+  const modeLabel =
+    vizDrilldownState.mode === "monthly"
+      ? `Monthly · ${vizMonthTitle(vizSelectedMonth())}`
+      : "All time";
+  const focus = vizFocusedGenre();
+  const focusLabel = focus ? focus.genre : "All genres";
+  const rated = rows.filter((row) =>
+    [1, 2, 3].includes(Number(row.song.reaction)),
+  ).length;
+  const fitRows = rows.filter((row) => Number(row.song.score));
+  const avgFit = fitRows.length
+    ? (
+        fitRows.reduce(
+          (sum, row) => sum + (Number(row.song.score || 0) || 0),
+          0,
+        ) / fitRows.length
+      ).toFixed(1)
+    : "—";
 
+  mount.innerHTML = `<div class="viz-drilldown is-active dg-viz-side-drill"><div class="viz-drilldown-head"><div><div class="eyebrow" style="margin:0;">Selected crate · ${escapeHtml(modeLabel)}</div><strong>${escapeHtml(title)}</strong><div class="small">${totalRows} track${totalRows === 1 ? "" : "s"}${totalRows > rows.length ? ` · showing ${rows.length}` : ""}</div><div class="viz-drill-context"><span>${escapeHtml(focusLabel)}</span><span>${rated}/${rows.length} rated</span><span>Avg fit ${escapeHtml(avgFit)}</span></div><button type="button" class="dg-viz-info dg-viz-info-inline" title="${escapeHtml(explainer)}" aria-label="${escapeHtml(explainer)}">ⓘ</button></div><button type="button" class="btn btn-secondary btn-tiny" onclick="clearVisualDrilldown()">Close</button></div>${
+    rows.length
+      ? `<div class="viz-drilldown-list">${rows
+          .map((row, idx) => {
+            const effective = songEffectiveYear(row.song);
+            const inputId = `eraOverride_${idx}_${String(row.genre.id).replace(/[^a-zA-Z0-9]/g, "")}`;
+            const savedEra = row.song.eraYear || row.song.eraDecade || "";
+            const reaction = Number(row.song.reaction || 0);
+            const fit = Number(row.song.score || 0) || null;
+            const art = row.song.artwork
+              ? `<img class="viz-drill-art" src="${escapeHtml(row.song.artwork)}" alt="" loading="lazy">`
+              : '<div class="viz-drill-art"></div>';
+            const eraLine = effective.year
+              ? `${effective.source}: ${effective.year}`
+              : "No year";
+            const spotifyLine =
+              row.song.releaseYear &&
+              (effective.source !== "Spotify" || savedEra)
+                ? ` · Spotify: ${row.song.releaseYear}`
+                : "";
+            return `<div class="viz-drill-row viz-record-row">${art}<div><div class="viz-drill-title-line">${vizSongTitleLink(row.song)}</div><div class="viz-drill-meta">${escapeHtml(row.genre.genre || "Unknown genre")} · ${reactionEmoji(reaction)} ${escapeHtml(reactionLabel(reaction))}${fit ? ` · Fit ${fit}/5` : ""}</div><div class="viz-drill-meta">${escapeHtml(eraLine)}${escapeHtml(spotifyLine)} · ${escapeHtml(vizSourceLabel(row.song))}</div></div><div class="viz-drill-actions"><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || "")}')">Open</button></div></div>`;
+          })
+          .join("")}</div>`
+      : '<div class="viz-empty">No songs found for this drilldown.</div>'
+  }</div>`;
+}
 
+function statsPolishApply() {
+  const root = document.getElementById("screen-viz");
+  if (!root) return;
+  root.classList.add("dg-stats-polished", "dg-stats-v34");
+
+  root.querySelectorAll(".viz-card-metadata").forEach((card) => {
+    card.classList.add("dg-viz-hide-card");
+  });
+
+  root
+    .querySelectorAll(".viz-card-copy, .viz-chart-hint, .viz-spotlight-copy")
+    .forEach((el) => {
+      const text = String(el.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!text) return;
+      el.dataset.dgTooltipText = text;
+      el.title = text;
+      el.classList.add("dg-viz-tooltip-source");
+      const parent = el.parentElement;
+      if (parent && !parent.querySelector(":scope > .dg-viz-info")) {
+        const info = document.createElement("button");
+        info.type = "button";
+        info.className = "dg-viz-info";
+        info.title = text;
+        info.setAttribute("aria-label", text);
+        info.textContent = "ⓘ";
+        const label = parent.querySelector(
+          ":scope > .viz-card-label, :scope > .viz-spotlight-label",
+        );
+        label?.insertAdjacentElement("afterend", info);
+      }
+    });
+
+  root.querySelectorAll(".viz-drill-actions button").forEach((btn) => {
+    if (/^spotify$/i.test(String(btn.textContent || "").trim())) btn.remove();
+  });
+
+  root.querySelectorAll(".viz-hl-card").forEach((card) => {
+    card.classList.add("dg-viz-summary-card");
+  });
+
+  // Data-viz pass: keep note content as metadata/tooltip, not a second hero card.
+  root.querySelectorAll(".viz-spotlight-card").forEach((card) => {
+    card.classList.add("dg-viz-compact-note");
+  });
+}
 
 /* === Stats / Wrapped-style insight layer v3.5 ===
    Story-first Stats pass: stable inspector, shareable visual card, and
