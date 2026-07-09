@@ -143,6 +143,10 @@
     .screen { display:none; }
     .screen.active { display:block; }
 
+/* v223: Performance: content-visibility to lazy-render heavy screens */
+.screen { content-visibility: auto; contain-intrinsic-size: auto 60vh; }
+.list-item { content-visibility: auto; contain-intrinsic-size: auto 60px; }
+
     .card, .panel {
       background:var(--surface);
       border:1px solid var(--border);
