@@ -1,4 +1,21 @@
 
+/* v222: Safe localStorage wrapper to prevent silent QuotaExceededError on mobile Safari */
+const _DG_ORIG_LS_SETITEM = localStorage.setItem;
+const _DG_ORIG_LS_GETITEM = localStorage.getItem;
+const _DG_ORIG_LS_REMOVEITEM = localStorage.removeItem;
+localStorage.setItem = function(key, value) {
+  try { _DG_ORIG_LS_SETITEM.apply(this, arguments); }
+  catch(e) { console.warn("[DG] localStorage quota full:", key, e.message || e); }
+}
+localStorage.getItem = function(key) {
+  try { return _DG_ORIG_LS_GETITEM.apply(this, arguments); }
+  catch(e) { console.warn("[DG] localStorage read error:", key, e.message || e); return null; }
+}
+localStorage.removeItem = function(key) {
+  try { _DG_ORIG_LS_REMOVEITEM.apply(this, arguments); }
+  catch(e) { console.warn("[DG] localStorage remove error:", key, e.message || e); }
+}
+
     let hasUnsavedChanges = false;
 
     function setUnsavedState(isDirty) {
