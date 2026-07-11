@@ -212,7 +212,7 @@
   }
 
   function stampSongAsIdentity(song, entry) {
-    // v227: Badge the visible row, but never move it. Existing recommendation rows
+    // v228: Badge the visible row, but never move it. Existing recommendation rows
     // stay where they are; missing identity anchors are appended by genre-identity.js.
     if (!song || !entry) return song;
     song.__dgIdentityMatched = true;
@@ -230,9 +230,9 @@
 
   /* Daily Genre v198: detached Level Up annotations keep their source-song label after routing cleanup. */
   function songListForFocus(genre) {
-    // v227: Genre DNA tracks are listenable anchors. Preserve the user's existing
-    // queue order, badge matching rows in place, and append missing Seminal/Media
-    // anchors to the bottom instead of sorting them to the top.
+    // v228: Genre DNA tracks are listenable anchors. Preserve existing matching
+    // queue rows in place; newly missing Seminal/Media anchors are inserted at the
+    // top by genre-identity.js so they are visible in the list/carousel.
     safeCall(() => window.DailyGenreIdentity?.ensureIdentityTracksInSongQueue?.(genre, false), false);
     const rawSongs = safeCall(
       () => inflateSongsFromStorage(genre?.songs_listened || []),

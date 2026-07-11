@@ -1160,7 +1160,7 @@
           const src = String(prior?.source || prior?.origin || '').toLowerCase();
           return !!(prior?.isIdentityTrack || prior?.identityType || src === 'genre_identity' || src === 'genre-identity' || src === 'identity');
         });
-        // v227: if Genre Identity was loaded first, that track already has a
+        // v228: if Genre Identity was loaded first, that track already has a
         // listenable Seminal/Media anchor at its existing position. Do not add a
         // duplicate recommendation row later. If the prior match was just a normal
         // recommendation, keep the pasted row so it can retain/update queue order.
@@ -3629,7 +3629,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       currentGenre.songs_listened = resolvedOfficial;
       restoreGenreIdentityData(currentGenre, identitySnapshot);
       if (options.overwriteSongs) {
-        // v227: after a song overwrite, keep Genre Identity tracks listenable:
+        // v228: after a song overwrite, keep Genre Identity tracks listenable:
         // matching rows are badged in place and missing anchors are appended.
         try {
           if (window.DailyGenreIdentity?.ensureIdentityTracksInSongQueue) window.DailyGenreIdentity.ensureIdentityTracksInSongQueue(currentGenre, false);

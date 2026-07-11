@@ -637,8 +637,8 @@
   }
 
   function syncIdentityTracksToSongQueue(genre, mark = false) {
-    // v227: Genre Identity tracks are listenable anchors. Keep existing queue
-    // matches in place, and append missing Seminal/Media anchors to the bottom.
+    // v228: Genre Identity tracks are listenable anchors. Keep existing queue
+    // matches in place, and prepend missing Seminal/Media anchors to the top.
     return ensureIdentityTracksInSongQueue(genre, mark);
   }
 
@@ -725,17 +725,19 @@
   }
 
   function ensureIdentityTracksInSongQueue(genre, mark = false) {
-    // v227: Identity tracks are listenable, but they must not reorder the queue.
-    // If an identity track already exists as a recommendation, badge that row in
-    // place. If it does not exist anywhere in the song queue, append a dedicated
-    // Seminal/Media row to the bottom.
+    // v228: Identity tracks are listenable, but existing recommendation rows must
+    // not move. If an identity track already exists, badge/update that row in
+    // place. If the identity track does not exist anywhere in the queue, insert a
+    // dedicated Seminal/Media anchor at the top of the queue in identity order so
+    // it is immediately visible in the list/carousel.
     if (!genre) return false;
     if (!Array.isArray(genre.songs_listened)) genre.songs_listened = [];
     const before = (() => { try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ''; } })();
     const rows = genre.songs_listened;
+    const missingIdentityAnchors = [];
     identityEntries(genre).forEach((entry) => {
       if (!entry || !entry.track || identityTrackIsPlaceholderish(entry.track)) return;
-      const existing = findIdentitySongInQueueRows(rows, entry);
+      const existing = findIdentitySongInQueueRows(rows, entry) || findIdentitySongInQueueRows(missingIdentityAnchors, entry);
       if (existing) {
         const src = identityQueueAnchorSource(existing);
         const isDedicatedAnchor = src === 'genre_identity' || src === 'genre-identity' || src === 'identity';
@@ -763,8 +765,11 @@
       }
       const payload = identitySongPayload(genre, entry, {});
       stampQueueSongAsIdentityAnchor(payload, entry, { created: true });
-      rows.push(payload);
+      missingIdentityAnchors.push(payload);
     });
+    if (missingIdentityAnchors.length) {
+      rows.unshift(...missingIdentityAnchors);
+    }
     const after = (() => { try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ''; } })();
     const changed = before !== after;
     if (changed && mark) markDirty();
@@ -772,7 +777,7 @@
   }
 
   function purgeIdentityRowsFromSongQueue(genre, mark = false) {
-    // v227: keep valid, current Genre Identity anchors in the song queue. This
+    // v228: keep valid, current Genre Identity anchors in the song queue. This
     // cleanup now only removes stale identity helper rows that no longer match any
     // Seminal/Media entry, and clears impossible stale child anchors.
     if (!genre || !Array.isArray(genre.songs_listened)) return false;
@@ -1257,8 +1262,8 @@
       );
     id.mediaTouchstones = overwrite ? incomingMedia : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], incomingMedia);
     g.media_touchstones = id.mediaTouchstones;
-    // v227: keep identity anchors listenable. Existing queue matches are badged in
-    // place; missing Seminal/Media tracks are appended to the bottom.
+    // v228: keep identity anchors listenable. Existing queue matches are badged in
+    // place; missing Seminal/Media tracks are inserted at the top.
     ensureIdentityTracksInSongQueue(g);
     selectedGenreId = String(g.id ?? selectedGenreId);
     markDirty();
@@ -1341,8 +1346,8 @@
     const mediaRows = readMediaRows(form);
     id.mediaTouchstones = overwrite ? mediaRows : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], mediaRows);
     g.media_touchstones = id.mediaTouchstones;
-    // v227: keep identity anchors listenable. Existing queue matches are badged in
-    // place; missing Seminal/Media tracks are appended to the bottom.
+    // v228: keep identity anchors listenable. Existing queue matches are badged in
+    // place; missing Seminal/Media tracks are inserted at the top.
     ensureIdentityTracksInSongQueue(g);
     markDirty();
     injectDnaCard();
