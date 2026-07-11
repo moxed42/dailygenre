@@ -212,12 +212,14 @@
   }
 
   function stampSongAsIdentity(song, entry) {
+    // v227: Badge the visible row, but never move it. Existing recommendation rows
+    // stay where they are; missing identity anchors are appended by genre-identity.js.
     if (!song || !entry) return song;
+    song.__dgIdentityMatched = true;
     song.isIdentityTrack = true;
     song.identityType = entry.type;
     song.identityIndex = entry.index;
     song.identityLabel = entry.label;
-    song.__dgIdentityMatched = true;
     return song;
   }
 
@@ -228,8 +230,10 @@
 
   /* Daily Genre v198: detached Level Up annotations keep their source-song label after routing cleanup. */
   function songListForFocus(genre) {
-    safeCall(() => window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(genre, false), false);
-    const identityEntries = identityTrackEntriesForGenre(genre);
+    // v227: Genre DNA tracks are listenable anchors. Preserve the user's existing
+    // queue order, badge matching rows in place, and append missing Seminal/Media
+    // anchors to the bottom instead of sorting them to the top.
+    safeCall(() => window.DailyGenreIdentity?.ensureIdentityTracksInSongQueue?.(genre, false), false);
     const rawSongs = safeCall(
       () => inflateSongsFromStorage(genre?.songs_listened || []),
       genre?.songs_listened || [],
@@ -237,9 +241,8 @@
     const out = [];
     (rawSongs || []).forEach((song, index) => {
       if (!song || song.isPending) return;
+      clearStaleIdentityStamp(song);
       const identityEntry = identityEntryForSong(song, genre);
-      if (identityEntry) stampSongAsIdentity(song, identityEntry);
-      else clearStaleIdentityStamp(song);
       const detachedLevelUpParent = song.isDetachedLevelUp
         ? {
             title: song.levelUpFromTitle || song.levelUpFrom || "routed source song",
@@ -259,8 +262,7 @@
       });
       if (song.levelUp) {
         const childIdentityEntry = identityEntryForSong(song.levelUp, genre);
-        if (childIdentityEntry) stampSongAsIdentity(song.levelUp, childIdentityEntry);
-        else clearStaleIdentityStamp(song.levelUp);
+        if (!childIdentityEntry) clearStaleIdentityStamp(song.levelUp);
         out.push({
           song: song.levelUp,
           path: `song:${index}.levelUp`,
@@ -273,7 +275,7 @@
       }
     });
     const seen = new Set();
-    const deduped = out.filter((entry) => {
+    return out.filter((entry) => {
       const key = displayedSongDuplicateKey(entry.song);
       if (!key) return true;
       // v194: Level Up rows are relationship rows. Keep them visible even when
@@ -283,14 +285,6 @@
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
-    });
-    return deduped.sort((a, b) => {
-      const aEntry = a.identityEntry || identityEntryForSong(a.song, genre);
-      const bEntry = b.identityEntry || identityEntryForSong(b.song, genre);
-      const aOrder = identityEntryOrder(aEntry);
-      const bOrder = identityEntryOrder(bEntry);
-      if (aOrder !== bOrder) return aOrder - bOrder;
-      return 0;
     });
   }
 
@@ -1151,3 +1145,5 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
 })();
 
 /* Daily Genre v65 cache-bust marker */
+
+/* Daily Genre v226: identity listening lanes stay separate from queue order; matching queue rows get badges in place. */

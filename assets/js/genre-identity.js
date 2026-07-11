@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "genre-dna-description-v195";
+  const VERSION = "4.4.0-identity-overwrite-v87";
   let lastListenGenre = null;
   let selectedGenreId = "";
   let applying = false;
@@ -636,73 +636,169 @@
     return !identitySongHasUsefulData(song);
   }
 
-
-  function shouldRemoveStaleIdentityQueueSong(song, genre) {
-    if (!song || !song.isIdentityTrack) return false;
-    if (song.reaction != null || song.listenerNote || song.songNote || song.favorite || song.isFavorite) return false;
-    const favUrl = identityTrackUrl({ url: genre?.favoritesongurl || "" });
-    const songUrl = identityTrackUrl(song);
-    if (favUrl && songUrl && favUrl === songUrl) return false;
-    const favText = identityQueueTextKey({ title: genre?.favoritesong || "", artist: genre?.favoriteartist || "" });
-    const songText = identityQueueTextKey(song);
-    if (favText && favText !== "|" && favText === songText) return false;
-    const source = String(song.source || "").toLowerCase();
-    return !source || source === "genre_identity" || source === "identity" || source === "spotify" || source === "youtube" || source === "apple";
+  function syncIdentityTracksToSongQueue(genre, mark = false) {
+    // v227: Genre Identity tracks are listenable anchors. Keep existing queue
+    // matches in place, and append missing Seminal/Media anchors to the bottom.
+    return ensureIdentityTracksInSongQueue(genre, mark);
   }
 
-  function syncIdentityTracksToSongQueue(genre, mark = false) {
-    if (!genre) return false;
-    const beforeSnapshot = (() => {
-      try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ""; }
-    })();
-    const entries = identityEntries(genre).filter((entry) => entry.track && (identityTrackId(entry.track) !== "name:"));
-    const songs = queueSongs(genre);
-    const remaining = songs.slice();
-    const pinned = [];
-
-    entries.forEach((entry) => {
-      const matches = [];
-      for (let i = remaining.length - 1; i >= 0; i -= 1) {
-        const song = remaining[i];
-        if (queueSongMatchesIdentityEntry(song, entry)) {
-          matches.unshift(song);
-          remaining.splice(i, 1);
-        }
+  // v224/v225: Genre Identity and the listened song queue are separate data lanes.
+  // Applying Genre DNA must never inject Seminal/Media touchstone rows into
+  // songs_listened; that positional mutation can shift Level Up children under
+  // the wrong parent after save/reload. Existing rows that were previously
+  // stamped as identity tracks are kept as normal listened songs, but their
+  // identity-only flags are removed so future queue saves do not treat them as
+  // DNA anchors.
+  function detachIdentityFlagsFromSongQueue(genre) {
+    if (!genre || !Array.isArray(genre.songs_listened)) return false;
+    let changed = false;
+    const clearOne = (song) => {
+      if (!song || typeof song !== "object") return;
+      if (song.levelUp) clearOne(song.levelUp);
+      if (song.isIdentityTrack || song.identityType || song.identityLabel || song.identityIndex != null) {
+        clearIdentityStamp(song);
+        changed = true;
       }
-      const prior = matches.shift() || {};
-      matches.forEach((dupe) => mergeQueueSongPreservingExisting(prior, dupe));
-      const payload = identitySongPayload(genre, entry, prior);
-      payload.isIdentityTrack = true;
-      payload.identityType = entry.type;
-      payload.identityIndex = entry.index;
-      payload.identityLabel = entry.label;
-      pinned.push(payload);
-    });
+    };
+    genre.songs_listened.forEach(clearOne);
+    return changed;
+  }
 
-    const seen = new Map();
-    const dedupedRemaining = [];
-    remaining.forEach((song) => {
-      // v64: repair old bad stamps. If a row no longer matches current identity anchors,
-      // do not let stale isIdentityTrack/identityType keep rendering as Seminal/Media.
-      const stillMatchesIdentity = entries.some((entry) => identityEntryContentMatchesSong(song, entry));
-      // v190: stale identity queue cleanup. When an identity anchor is overwritten,
-      // remove the old auto-created identity queue row only if it looks untouched.
-      if (!stillMatchesIdentity && shouldRemoveStaleIdentityQueueSong(song, genre)) return;
-      if (!stillMatchesIdentity) clearIdentityStamp(song);
-      const key = identitySongDuplicateKey(song);
-      if (key && seen.has(key)) {
-        mergeQueueSongPreservingExisting(seen.get(key), song);
+  function identityInjectedQueueRow(song) {
+    if (!song || typeof song !== "object") return false;
+    const source = String(song.source || song.origin || "").toLowerCase();
+    return Boolean(
+      song.isIdentityTrack ||
+      song.identityType ||
+      song.identityLabel ||
+      song.identityIndex != null ||
+      source === "genre_identity" ||
+      source === "genre-identity" ||
+      source === "identity"
+    );
+  }
+
+  function identityQueueAnchorSource(song) {
+    return String(song?.source || song?.origin || '').toLowerCase();
+  }
+
+  function identityQueueRowIsAnchor(song) {
+    const src = identityQueueAnchorSource(song);
+    return Boolean(
+      song &&
+      (song.isIdentityTrack ||
+        song.identityType ||
+        song.identityLabel ||
+        song.identityIndex != null ||
+        src === 'genre_identity' ||
+        src === 'genre-identity' ||
+        src === 'identity')
+    );
+  }
+
+  function stampQueueSongAsIdentityAnchor(song, entry, { created = false } = {}) {
+    if (!song || !entry) return song;
+    song.isIdentityTrack = true;
+    song.identityType = entry.type;
+    song.identityIndex = entry.index;
+    song.identityLabel = entry.label;
+    if (created && !song.source) song.source = 'genre_identity';
+    if (song.score == null || song.score === '') song.score = 5;
+    return song;
+  }
+
+  function findIdentitySongInQueueRows(rows, entry) {
+    let found = null;
+    (Array.isArray(rows) ? rows : []).some((row) => {
+      if (!row || typeof row !== 'object') return false;
+      if (identityEntryContentMatchesSong(row, entry) || identityStoredFlagMatchesEntry(row, entry)) {
+        found = row;
+        return true;
+      }
+      if (row.levelUp && (identityEntryContentMatchesSong(row.levelUp, entry) || identityStoredFlagMatchesEntry(row.levelUp, entry))) {
+        found = row.levelUp;
+        return true;
+      }
+      return false;
+    });
+    return found;
+  }
+
+  function ensureIdentityTracksInSongQueue(genre, mark = false) {
+    // v227: Identity tracks are listenable, but they must not reorder the queue.
+    // If an identity track already exists as a recommendation, badge that row in
+    // place. If it does not exist anywhere in the song queue, append a dedicated
+    // Seminal/Media row to the bottom.
+    if (!genre) return false;
+    if (!Array.isArray(genre.songs_listened)) genre.songs_listened = [];
+    const before = (() => { try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ''; } })();
+    const rows = genre.songs_listened;
+    identityEntries(genre).forEach((entry) => {
+      if (!entry || !entry.track || identityTrackIsPlaceholderish(entry.track)) return;
+      const existing = findIdentitySongInQueueRows(rows, entry);
+      if (existing) {
+        const src = identityQueueAnchorSource(existing);
+        const isDedicatedAnchor = src === 'genre_identity' || src === 'genre-identity' || src === 'identity';
+        if (isDedicatedAnchor) {
+          const keep = {
+            reaction: existing.reaction,
+            listenerNote: existing.listenerNote,
+            songNote: existing.songNote,
+            favorite: existing.favorite,
+            isFavorite: existing.isFavorite,
+            trophy: existing.trophy,
+            added: existing.added,
+          };
+          const payload = identitySongPayload(genre, entry, {});
+          Object.assign(existing, payload);
+          Object.keys(keep).forEach((key) => {
+            if (keep[key] != null && keep[key] !== '') existing[key] = keep[key];
+          });
+        } else {
+          const payload = identitySongPayload(genre, entry, existing);
+          mergeQueueSongPreservingExisting(existing, payload);
+        }
+        stampQueueSongAsIdentityAnchor(existing, entry, { created: isDedicatedAnchor });
         return;
       }
-      if (key) seen.set(key, song);
-      dedupedRemaining.push(song);
+      const payload = identitySongPayload(genre, entry, {});
+      stampQueueSongAsIdentityAnchor(payload, entry, { created: true });
+      rows.push(payload);
     });
+    const after = (() => { try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ''; } })();
+    const changed = before !== after;
+    if (changed && mark) markDirty();
+    return changed;
+  }
 
-    genre.songs_listened = [...pinned, ...dedupedRemaining];
-    const afterSnapshot = (() => {
-      try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ""; }
-    })();
-    const changed = beforeSnapshot !== afterSnapshot;
+  function purgeIdentityRowsFromSongQueue(genre, mark = false) {
+    // v227: keep valid, current Genre Identity anchors in the song queue. This
+    // cleanup now only removes stale identity helper rows that no longer match any
+    // Seminal/Media entry, and clears impossible stale child anchors.
+    if (!genre || !Array.isArray(genre.songs_listened)) return false;
+    const before = (() => { try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ''; } })();
+    const rows = Array.isArray(genre.songs_listened) ? genre.songs_listened : [];
+    const cleaned = [];
+    rows.forEach((row) => {
+      if (!row || typeof row !== 'object') {
+        cleaned.push(row);
+        return;
+      }
+      if (identityQueueRowIsAnchor(row)) {
+        const entry = findIdentityEntryForQueueSong(genre, row);
+        if (!entry) return;
+        stampQueueSongAsIdentityAnchor(row, entry, { created: identityQueueAnchorSource(row) === 'genre_identity' });
+      }
+      if (row.levelUp && identityQueueRowIsAnchor(row.levelUp)) {
+        const childEntry = findIdentityEntryForQueueSong(genre, row.levelUp);
+        if (childEntry) stampQueueSongAsIdentityAnchor(row.levelUp, childEntry, { created: false });
+        else delete row.levelUp;
+      }
+      cleaned.push(row);
+    });
+    genre.songs_listened = cleaned;
+    const after = (() => { try { return JSON.stringify(genre.songs_listened || []); } catch (_) { return ''; } })();
+    const changed = before !== after;
     if (changed && mark) markDirty();
     return changed;
   }
@@ -776,29 +872,16 @@
 
 
 
-  function genreDescriptionText(genre) {
-    return String(
-      genre?.summary ||
-        genre?.description ||
-        genre?.genre_description ||
-        genre?.identity?.summary ||
-        genre?.identity?.description ||
-        "",
-    ).trim();
-  }
-
   function renderDnaCard(genre) {
     const aliases = aliasList(genre);
     const sem = getSeminal(genre);
     const media = getMedia(genre);
-    const description = genreDescriptionText(genre);
     const hasSem = sem?.title || sem?.artist || sem?.spotifyUrl || sem?.url;
-    if (!description && !aliases.length && !hasSem && !media.length) return "";
+    if (!aliases.length && !hasSem && !media.length) return "";
     return `<section class="genre-identity-dna" aria-label="Genre DNA">
       <div class="genre-identity-dna-head">
         <div><div class="eyebrow">Genre DNA</div><h3>Aliases and listening anchors</h3><p class="small">Reference tracks for identity, not automatically counted as logged listens.</p></div>
       </div>
-      ${description ? `<div class="genre-identity-description-card"><span>Genre description</span><p>${esc(description)}</p></div>` : ""}
       ${aliases.length ? `<div class="genre-identity-alias-card"><span>Known aliases</span><strong>${esc(aliases.slice(0, 8).join(", "))}</strong></div>` : ""}
       <div class="genre-identity-track-grid">
         ${hasSem ? identityTrackCard(sem, "Seminal track") : ""}
@@ -1174,7 +1257,9 @@
       );
     id.mediaTouchstones = overwrite ? incomingMedia : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], incomingMedia);
     g.media_touchstones = id.mediaTouchstones;
-    syncIdentityTracksToSongQueue(g, false);
+    // v227: keep identity anchors listenable. Existing queue matches are badged in
+    // place; missing Seminal/Media tracks are appended to the bottom.
+    ensureIdentityTracksInSongQueue(g);
     selectedGenreId = String(g.id ?? selectedGenreId);
     markDirty();
     refreshStudioEditor();
@@ -1185,15 +1270,14 @@
 
 
   async function persistIdentityApplyNow(message = '') {
-    const priorIdentitySaveFlag = window.__dgIdentitySaveInFlight;
-    const priorSkipListenRefresh = window.__dgSkipNextListenRefreshAfterSave;
     try {
-      // v192: identity saves should persist the mutated genre data without forcing
-      // a full listen-screen rebuild after the Worker returns. That rebuild was
-      // the main source of post-save Firefox lag on large annotated genres.
-      window.__dgIdentitySaveInFlight = true;
-      window.__dgSkipNextListenRefreshAfterSave = true;
       if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
+      // v222: identity saves just mutated genre.songs_listened in memory. Tell the
+      // app save finalizer that the queue model is authoritative so a stale hidden
+      // bulk textarea cannot reparse flattened Level Up rows and shift children to
+      // the wrong parent during password save.
+      try { window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000; } catch (_) {}
+      try { window.__dgIdentitySaveInFlight = true; } catch (_) {}
       if (typeof saveLibraryUpdates === "function") {
         await saveLibraryUpdates();
         if (message) toast(message, false);
@@ -1205,8 +1289,7 @@
       console.warn("Could not save identity update", error);
       toast(`Identity applied, but save failed: ${error?.message || error || "Unknown error"}`, true);
     } finally {
-      window.__dgIdentitySaveInFlight = priorIdentitySaveFlag || false;
-      window.__dgSkipNextListenRefreshAfterSave = priorSkipListenRefresh || false;
+      try { window.__dgIdentitySaveInFlight = false; } catch (_) {}
     }
   }
 
@@ -1258,7 +1341,9 @@
     const mediaRows = readMediaRows(form);
     id.mediaTouchstones = overwrite ? mediaRows : mergeMediaTouchstones(id.mediaTouchstones || g.media_touchstones || [], mediaRows);
     g.media_touchstones = id.mediaTouchstones;
-    syncIdentityTracksToSongQueue(g, false);
+    // v227: keep identity anchors listenable. Existing queue matches are badged in
+    // place; missing Seminal/Media tracks are appended to the bottom.
+    ensureIdentityTracksInSongQueue(g);
     markDirty();
     injectDnaCard();
     await persistIdentityApplyNow(`Updated and saved identity for ${g.genre || "genre"}.`);
@@ -1717,43 +1802,25 @@
         editMode = false,
         options = {},
       ) {
-        const targetHash =
-          genre && genre.id != null
-            ? `#genre=${encodeURIComponent(String(genre.id))}`
-            : "";
-        const sameGenreHash = !!targetHash && location.hash === targetHash;
-
-        // v191: Do not push/replace history for same-genre refreshes. Genre
-        // Identity saves re-open the current genre to refresh DNA cards; in
-        // Firefox each redundant history mutation wakes expensive navigation
-        // observers and can freeze tab switching for seconds.
         if (genre && !suppress && !options.skipHistory && genre.id != null) {
           try {
-            if (!sameGenreHash) {
+            const targetHash = `#genre=${encodeURIComponent(String(genre.id))}`;
+            if (location.hash !== targetHash)
               history.pushState(
                 stateForGenre(genre, editMode),
                 "",
                 genreUrl(genre.id),
               );
-            }
           } catch (_) {}
         }
-
-        const nextOptions = sameGenreHash
-          ? { ...options, skipHistory: true }
-          : options;
-        const result = originalOpen.call(this, genre, editMode, nextOptions);
-
-        if (result !== false && genre?.id != null && !nextOptions.skipHistory) {
+        const result = originalOpen.apply(this, arguments);
+        if (result !== false && genre?.id != null) {
           try {
-            const nextHash = `#genre=${encodeURIComponent(String(genre.id))}`;
-            if (location.hash !== nextHash) {
-              history.replaceState(
-                stateForGenre(genre, editMode),
-                "",
-                genreUrl(genre.id),
-              );
-            }
+            history.replaceState(
+              stateForGenre(genre, editMode),
+              "",
+              genreUrl(genre.id),
+            );
           } catch (_) {}
         }
         return result;
@@ -1862,13 +1929,8 @@
     if (listenRoot && typeof MutationObserver === "function") {
       let listenTimer = null;
       const observer = new MutationObserver(() => {
-        if (window.__dgIdentitySaveInFlight) return;
         clearTimeout(listenTimer);
-        listenTimer = setTimeout(() => {
-          if (window.__dgIdentitySaveInFlight) return;
-          injectDnaCard();
-          injectDetailIdentityImport();
-        }, 160);
+        listenTimer = setTimeout(() => { injectDnaCard(); injectDetailIdentityImport(); }, 120);
       });
       observer.observe(listenRoot, { childList: true, subtree: true });
     }
@@ -1883,6 +1945,9 @@
     importStructuredIdentityBlock,
     injectDetailIdentityImport,
     syncIdentityTracksToSongQueue,
+    ensureIdentityTracksInSongQueue,
+    detachIdentityFlagsFromSongQueue,
+    purgeIdentityRowsFromSongQueue,
     updateTrackFromQueueOverwrite,
     openStudio(id) {
       selectedGenreId = String(id || selectedGenreId || "");
@@ -1946,3 +2011,5 @@
 })();
 
 /* Daily Genre v65 cache-bust marker */
+
+/* Daily Genre v226: identity listening lanes stay separate from queue order; matching queue rows get badges in place. */

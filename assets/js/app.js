@@ -758,6 +758,7 @@
         if (!isLevelUp && !isAdd && !isPromote && !song.url && !song.title) continue;
 
         if (isLevelUp && songs.length > 0) {
+          stampLevelUpParent(song, songs[songs.length - 1]);
           songs[songs.length - 1].levelUp = song;
         } else {
           songs.push(song);
@@ -979,7 +980,7 @@
       const parsedReleaseYear = Number(s?.releaseYear || String(s?.releaseDate || '').slice(0, 4));
       const releaseYear = Number.isInteger(parsedReleaseYear) && parsedReleaseYear > 1800 && parsedReleaseYear < 2200 ? parsedReleaseYear : null;
       const songLabel = normalizeSongArtistAndTitle(s?.title || '', s?.artist || '');
-      return {
+      const normalized = {
         url: rawUrl,
         score: s?.score ?? null,
         reason: cleanPastedCitationArtifacts(s?.reason || ''),
@@ -1013,8 +1014,15 @@
         isAdd,
         isPromote: !!s?.isPromote,
         _pendingGenreTag: s?._pendingGenreTag || songLabel.pendingGenreTag || '',
+        __levelUpParentKey: s?.__levelUpParentKey || s?.levelUpParentKey || s?.levelUpForKey || '',
+        levelUpParentKey: s?.levelUpParentKey || s?.__levelUpParentKey || s?.levelUpForKey || '',
+        levelUpParentTitle: s?.levelUpParentTitle || s?.levelUpForTitle || '',
+        levelUpParentArtist: s?.levelUpParentArtist || s?.levelUpForArtist || '',
+        levelUpParentUrl: s?.levelUpParentUrl || s?.levelUpForUrl || '',
         levelUp: s?.levelUp ? normalizeSongsListened([s.levelUp])[0] : null,
       };
+      if (normalized.levelUp) stampLevelUpParent(normalized.levelUp, normalized);
+      return normalized;
     });
   }
 
@@ -1075,6 +1083,109 @@
       const aKeys = new Set(songIdentityKeys(a));
       if (typeof bOrKey === 'string') return aKeys.has(String(bOrKey || '').trim().toLowerCase());
       return songIdentityKeys(bOrKey).some(key => aKeys.has(key));
+    }
+
+    function identityTrackAsSongLike(track = {}) {
+      const artist = String(track.artist || (Array.isArray(track.artists) ? track.artists.join(', ') : '') || '').trim();
+      const title = String(track.title || track.name || '').trim();
+      const url = normalizeSongUrl(track.spotifyUrl || track.url || track.spotify_url || '');
+      return {
+        title,
+        name: title,
+        artist,
+        artists: artist ? [artist] : (Array.isArray(track.artists) ? track.artists.slice() : []),
+        url,
+        spotifyUrl: url,
+        spotifyId: track.spotifyId || '',
+        isrc: track.isrc || '',
+      };
+    }
+
+    function identityEntriesForSongSave(genre) {
+      if (!genre) return [];
+      const entries = [];
+      const id = genre.identity && typeof genre.identity === 'object' ? genre.identity : {};
+      const sem = id.seminalTrack || id.seminal_track || genre.seminal_song || genre.seminalTrack || null;
+      if (sem && typeof sem === 'object') {
+        const song = identityTrackAsSongLike(sem);
+        if (song.title || song.artist || song.spotifyUrl || song.spotifyId || song.isrc) {
+          entries.push({ type: 'seminal', label: 'Seminal', index: -1, track: sem, song });
+        }
+      }
+      const media = Array.isArray(id.mediaTouchstones) && id.mediaTouchstones.length
+        ? id.mediaTouchstones
+        : (Array.isArray(genre.media_touchstones) ? genre.media_touchstones : []);
+      (Array.isArray(media) ? media : []).forEach((track, index) => {
+        if (!track || typeof track !== 'object') return;
+        const song = identityTrackAsSongLike(track);
+        if (song.title || song.artist || song.spotifyUrl || song.spotifyId || song.isrc) {
+          entries.push({ type: 'media', label: 'Media', index, track, song });
+        }
+      });
+      return entries;
+    }
+
+    function songMatchesIdentitySaveEntry(song, entry) {
+      if (!song || !entry?.song) return false;
+      if (songsIdentityMatch(song, entry.song)) return true;
+      const clean = value => String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/\b(the|a|an|feat|ft)\b/g, ' ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      const songTitle = clean(song.title || song.name || '');
+      const entryTitle = clean(entry.song.title || entry.song.name || '');
+      const songArtist = clean(song.artist || (Array.isArray(song.artists) ? song.artists.join(' ') : ''));
+      const entryArtist = clean(entry.song.artist || (Array.isArray(entry.song.artists) ? entry.song.artists.join(' ') : ''));
+      return Boolean(songTitle && entryTitle && songTitle === entryTitle && (!songArtist || !entryArtist || songArtist === entryArtist));
+    }
+
+    function filterNewSongsAlreadyRepresentedByGenreIdentity(candidateSongs, previousSongs, genre) {
+      const identityEntries = identityEntriesForSongSave(genre);
+      if (!identityEntries.length) return { songs: candidateSongs || [], skipped: [] };
+      const previous = inflateSongsFromStorage(previousSongs || []).filter(song => song && !song.isPending);
+      const skipped = [];
+      const filtered = [];
+      (candidateSongs || []).forEach(song => {
+        const entry = identityEntries.find(identityEntry => songMatchesIdentitySaveEntry(song, identityEntry));
+        if (!entry) {
+          filtered.push(song);
+          return;
+        }
+        const priorMatches = previous.filter(prior => songsIdentityMatch(prior, song) || songMatchesIdentitySaveEntry(prior, entry));
+        const existingIdentityAnchor = priorMatches.some(prior => {
+          const src = String(prior?.source || prior?.origin || '').toLowerCase();
+          return !!(prior?.isIdentityTrack || prior?.identityType || src === 'genre_identity' || src === 'genre-identity' || src === 'identity');
+        });
+        // v227: if Genre Identity was loaded first, that track already has a
+        // listenable Seminal/Media anchor at its existing position. Do not add a
+        // duplicate recommendation row later. If the prior match was just a normal
+        // recommendation, keep the pasted row so it can retain/update queue order.
+        if (existingIdentityAnchor) {
+          skipped.push({ song, entry });
+          return;
+        }
+        if (priorMatches.length) {
+          filtered.push(song);
+          return;
+        }
+        filtered.push(song);
+      });
+      return { songs: filtered, skipped };
+    }
+
+    function identitySkipNotice(skipped = []) {
+      const count = skipped.length;
+      if (!count) return '';
+      const names = skipped.slice(0, 3).map(item => {
+        const song = item.song || {};
+        const name = [song.artist, song.title || song.name].filter(Boolean).join(' — ') || song.url || 'identity track';
+        return `${name} (${item.entry?.label || 'Identity'})`;
+      }).join('; ');
+      return `Skipped ${count} song${count === 1 ? '' : 's'} already represented by Genre Identity: ${names}${count > 3 ? `; +${count - 3} more` : ''}.`;
     }
 
     function eachSongInLog(arr, callback) {
@@ -2019,10 +2130,14 @@ ${reactionEmoji(value)} ${reactionLabel(value)} · fit 4/5 or 5/5
       if (genre.identity && Array.isArray(genre.identity.mediaTouchstones)) {
         genre.media_touchstones = genre.identity.mediaTouchstones;
       }
+      // v224: Genre Identity data is separate from the listened-song queue.
+      // Restoring identity metadata after a song save must not inject Seminal/Media
+      // tracks into songs_listened or Level Up rows can shift under the wrong parent.
       try {
-        window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(genre, false);
+        if (window.DailyGenreIdentity?.purgeIdentityRowsFromSongQueue) window.DailyGenreIdentity.purgeIdentityRowsFromSongQueue(genre, false);
+        else window.DailyGenreIdentity?.detachIdentityFlagsFromSongQueue?.(genre);
       } catch (error) {
-        console.warn('Could not re-sync preserved identity tracks after song apply/save', error);
+        console.warn('Could not detach stale identity queue flags after song apply/save', error);
       }
     }
 
@@ -3042,17 +3157,83 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       markListeningUpdatePending();
     }
 
+
+    /* Daily Genre v223: stable parent-key Level Up anchoring prevents identity saves from reattaching children.
+       Level Up children need a stable parent anchor.
+       Older saves inferred the parent from the previous row in the flattened
+       textarea/JSON list. Genre DNA sync and identity backfills can rewrite or
+       dedupe top-level rows, which made a child attach to whatever song happened
+       to be immediately above it. Stamp the intended parent on every child and
+       prefer that explicit parent during inflation. */
+    function levelUpParentAnchorKey(song) {
+      if (!song) return '';
+      try {
+        const key = songIdentity(song);
+        if (key && key !== 'meta:|') return key;
+      } catch (_) {}
+      const artist = String(song.artist || (Array.isArray(song.artists) ? song.artists.join(', ') : '') || '').trim().toLowerCase();
+      const title = String(song.title || song.name || '').trim().toLowerCase();
+      const url = normalizeSongUrl(song.url || song.spotifyUrl || '').trim().toLowerCase();
+      if (url) return `url:${url}`;
+      return `meta:${artist}|${title}`;
+    }
+
+    function levelUpParentAnchorKeys(song) {
+      const keys = [];
+      ['__levelUpParentKey','levelUpParentKey','levelUpForKey'].forEach(field => {
+        const value = String(song?.[field] || '').trim();
+        if (value) keys.push(value);
+      });
+      const title = String(song?.levelUpParentTitle || song?.levelUpForTitle || '').trim().toLowerCase();
+      const artist = String(song?.levelUpParentArtist || song?.levelUpForArtist || '').trim().toLowerCase();
+      const url = normalizeSongUrl(song?.levelUpParentUrl || song?.levelUpForUrl || '').trim().toLowerCase();
+      if (url) keys.push(`url:${url}`);
+      if (title || artist) keys.push(`meta:${artist}|${title}`);
+      return [...new Set(keys.filter(Boolean))];
+    }
+
+    function stampLevelUpParent(child, parent) {
+      if (!child || !parent) return child;
+      const key = levelUpParentAnchorKey(parent);
+      if (key) {
+        child.__levelUpParentKey = key;
+        child.levelUpParentKey = key;
+      }
+      child.levelUpParentTitle = parent.title || parent.name || '';
+      child.levelUpParentArtist = parent.artist || (Array.isArray(parent.artists) ? parent.artists.join(', ') : '') || '';
+      child.levelUpParentUrl = normalizeSongUrl(parent.url || parent.spotifyUrl || '');
+      return child;
+    }
+    window.stampLevelUpParent = stampLevelUpParent;
+
+    function levelUpChildMatchesParent(child, parent) {
+      if (!child || !parent) return false;
+      const childKeys = levelUpParentAnchorKeys(child);
+      if (!childKeys.length) return false;
+      const parentKeys = [levelUpParentAnchorKey(parent), ...songIdentityKeys(parent)].filter(Boolean);
+      return childKeys.some(key => parentKeys.includes(key));
+    }
+
     function inflateSongsFromStorage(arr) {
       const inflated = [];
       normalizeSongsListened(arr || []).forEach(song => {
         song.url = normalizeSongUrl(song.url);
-        if (song.isLevelUp && inflated.length) {
+        if (song.isLevelUp) {
           song.isLevelUp = true;
           song.isAdd = false;
-          inflated[inflated.length - 1].levelUp = song;
-          return;
+          // Prefer the explicit v223 parent key. Fall back to the immediately
+          // previous top-level row only for older data with no parent metadata.
+          let parent = inflated.find(candidate => levelUpChildMatchesParent(song, candidate));
+          if (!parent && inflated.length) parent = inflated[inflated.length - 1];
+          if (parent) {
+            stampLevelUpParent(song, parent);
+            parent.levelUp = song;
+            return;
+          }
+          // Orphaned Level Up rows should not silently attach to the wrong song.
+          song.isLevelUp = false;
         }
-        if (song.isLevelUp && !inflated.length) song.isLevelUp = false;
+        if (song.levelUp) stampLevelUpParent(song.levelUp, song);
         inflated.push(song);
       });
       return inflated;
@@ -3115,7 +3296,11 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const flat = [];
       inflateSongsFromStorage(arr || []).filter(song => !song.isPending).forEach(song => {
         flat.push(cleanSongForSave(song, false));
-        if (song.levelUp) flat.push(cleanSongForSave(song.levelUp, true));
+        if (song.levelUp) {
+          const childForSave = { ...(song.levelUp || {}) };
+          stampLevelUpParent(childForSave, song);
+          flat.push(cleanSongForSave(childForSave, true));
+        }
       });
       return flat;
     }
@@ -3423,6 +3608,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
 
       const previousOfficial = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
       let resolvedOfficial = previousOfficial;
+      let identityDuplicateSkips = [];
       if (queueModelIsAuthoritative() && !options.overwriteSongs) {
         // A recent inline queue edit is the source of truth. Do not reparse a stale
         // bulk textarea during setup/save, or earlier URL corrections can disappear.
@@ -3432,15 +3618,32 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         const parsedOfficial = mergeSongMetadata(parsedFromBulk, previousOfficial);
         resolvedOfficial = await resolveSpotifyTitles(parsedOfficial);
         resolvedOfficial = reattachParsedLevelUpRelationships(resolvedOfficial, parsedOfficial);
+        // v226: if Genre Identity was loaded first, Seminal/Media tracks already
+        // have their own listenable DNA lane. Do not add a duplicate queue row
+        // when recommendations later include the same track; keep existing queue
+        // rows in place when they were already there before the song save.
+        const identityFiltered = filterNewSongsAlreadyRepresentedByGenreIdentity(resolvedOfficial, previousOfficial, currentGenre);
+        resolvedOfficial = identityFiltered.songs;
+        identityDuplicateSkips = identityFiltered.skipped || [];
       }
       currentGenre.songs_listened = resolvedOfficial;
       restoreGenreIdentityData(currentGenre, identitySnapshot);
       if (options.overwriteSongs) {
-        try { window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(currentGenre, false); } catch (_) {}
+        // v227: after a song overwrite, keep Genre Identity tracks listenable:
+        // matching rows are badged in place and missing anchors are appended.
+        try {
+          if (window.DailyGenreIdentity?.ensureIdentityTracksInSongQueue) window.DailyGenreIdentity.ensureIdentityTracksInSongQueue(currentGenre, false);
+          else window.DailyGenreIdentity?.syncIdentityTracksToSongQueue?.(currentGenre, false);
+        } catch (_) {}
       }
       currentGenre.pending_songs = normalizePendingSongs(getPendingSongs(currentGenre));
       removeLoggedSongsFromPending(currentGenre);
       processPendingNominationsForGenre(currentGenre);
+
+      const identitySkippedNotice = identitySkipNotice(identityDuplicateSkips);
+      if (identitySkippedNotice) {
+        showSaveToast(identitySkippedNotice, false);
+      }
 
       if (markListened && !dateValue(currentGenre)) {
         currentGenre.date_normalized = new Date().toISOString().slice(0,10);
@@ -3938,7 +4141,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       // interruption happens mid-save.
       try {
         window.__dgLastSaveAttemptAt = new Date().toISOString();
-        localStorage.setItem('dailyGenreLastSaveAttempt:v220', JSON.stringify({
+        localStorage.setItem('dailyGenreLastSaveAttempt:v221', JSON.stringify({
           at: window.__dgLastSaveAttemptAt,
           genres: Array.isArray(payload) ? payload.length : 0,
           studioMutation: !!window.__dgStudioCleanupSavePending,
@@ -5186,7 +5389,12 @@ function blockSaveIfDuplicateGenres() {
         if (show) visible += 1;
       });
       const count = document.getElementById('reviewPendingVisibleCount');
-      if (count) count.textContent = `${visible} shown`;
+      const card = document.getElementById('reviewPendingQueueCard');
+      const total = Number(card?.dataset.reviewPendingTotal || rows.length || 0);
+      const rendered = Number(card?.dataset.reviewPendingVisible || rows.length || 0);
+      if (count) count.textContent = term
+        ? `${visible} matching in current ${rendered}${total > rendered ? ` of ${total} total` : ''}`
+        : `${visible} shown${total > rendered ? ` of ${total} total · ${total - rendered} more available` : ''}`;
     }
 
     async function copyReviewPendingQueueFirst25() {
@@ -5217,6 +5425,37 @@ function blockSaveIfDuplicateGenres() {
       const target = document.getElementById('reviewManualQueueCard');
       target?.scrollIntoView({ behavior:'smooth', block:'start' });
     }
+
+    /* Daily Genre v221: Pending nominations are now an explicit visible batch.
+       Clearing one batch should reveal/allow loading the next instead of making
+       save+refresh feel like new surprise entries appeared. */
+    const REVIEW_PENDING_BATCH_SIZE = 25;
+
+    function reviewPendingVisibleLimit(total) {
+      const count = Math.max(0, Number(total || 0));
+      const current = Number(window.__dailyGenreReviewPendingVisibleLimit || REVIEW_PENDING_BATCH_SIZE);
+      const limit = Math.max(REVIEW_PENDING_BATCH_SIZE, Number.isFinite(current) ? current : REVIEW_PENDING_BATCH_SIZE);
+      const next = Math.min(count, limit);
+      window.__dailyGenreReviewPendingVisibleLimit = next || REVIEW_PENDING_BATCH_SIZE;
+      return next;
+    }
+
+    function loadNextReviewPendingQueue(batchSize = REVIEW_PENDING_BATCH_SIZE) {
+      const card = document.getElementById('reviewPendingQueueCard');
+      const total = Number(card?.dataset.reviewPendingTotal || 0);
+      const current = Number(window.__dailyGenreReviewPendingVisibleLimit || REVIEW_PENDING_BATCH_SIZE);
+      window.__dailyGenreReviewPendingVisibleLimit = Math.min(total || current + batchSize, current + batchSize);
+      renderReview();
+      setTimeout(scrollToReviewPendingQueue, 40);
+    }
+
+    function refreshReviewPendingQueueList() {
+      renderReview();
+      setTimeout(scrollToReviewPendingQueue, 40);
+    }
+
+    window.loadNextReviewPendingQueue = loadNextReviewPendingQueue;
+    window.refreshReviewPendingQueueList = refreshReviewPendingQueueList;
 
     function reviewGenreOptions(excludeId='') {
       return (genres || [])
@@ -5776,6 +6015,12 @@ function blockSaveIfDuplicateGenres() {
         ...queuedRows.map(row => ({ type: 'queued', row })),
         ...manualRows.map(row => ({ type: 'manual', row }))
       ];
+      const pendingVisibleLimit = reviewPendingVisibleLimit(combinedRows.length);
+      const visiblePendingRows = combinedRows.slice(0, pendingVisibleLimit);
+      const hiddenPendingRows = Math.max(0, combinedRows.length - visiblePendingRows.length);
+      const pendingShownCopy = combinedRows.length
+        ? `${visiblePendingRows.length} shown of ${combinedRows.length} total`
+        : '0 shown';
       mount.innerHTML = renderSongInboxCard() + `
         <div class="review-stat-grid">
           <button type="button" class="review-stat" onclick="scrollToReviewPendingQueue()"><strong>${combinedRows.length}</strong><span>Pending nominations</span></button>
@@ -5783,7 +6028,7 @@ function blockSaveIfDuplicateGenres() {
           <div class="review-stat"><strong>${manualRows.length}</strong><span>Need best-match genre</span></div>
           <div class="review-stat"><strong>${libraryUpdatesPending || hasUnsavedChanges ? 'Yes' : 'No'}</strong><span>Unsaved cleanup</span></div>
         </div>
-        <div class="review-card" id="reviewPendingQueueCard">
+        <div class="review-card" id="reviewPendingQueueCard" data-review-pending-total="${combinedRows.length}" data-review-pending-visible="${visiblePendingRows.length}">
           <div class="review-card-head">
             <div>
               <h3>Pending nominations</h3>
@@ -5792,14 +6037,16 @@ function blockSaveIfDuplicateGenres() {
             <div class="review-card-copy-actions">
               ${libraryUpdatesPending ? '<button type="button" class="btn btn-primary" onclick="saveLibraryUpdates()">Save Library Updates</button>' : ''}
               <button type="button" class="btn btn-secondary review-pending-copy-btn" onclick="copyReviewPendingQueueFirst25()" title="Copy the first 25 visible pending nominations">⧉ Copy first 25</button>
-              <span class="review-chip">${combinedRows.length} total</span>
+              <button type="button" class="btn btn-secondary btn-tiny" onclick="refreshReviewPendingQueueList()" title="Refresh this visible routing batch from current data">Refresh list</button>
+              ${hiddenPendingRows ? `<button type="button" class="btn btn-primary btn-tiny" onclick="loadNextReviewPendingQueue(25)" title="Show the next 25 pending nominations">Load next 25</button>` : ''}
+              <span class="review-chip">${pendingShownCopy}${hiddenPendingRows ? ` · ${hiddenPendingRows} more` : ''}</span>
             </div>
           </div>
           <div class="review-filter-row">
             <input id="reviewPendingSearch" type="search" placeholder="Search queued songs, source genre, or target genre…" oninput="filterReviewPendingQueue('reviewPendingSearch')">
-            <span class="small" id="reviewPendingVisibleCount">${combinedRows.length} shown</span>
+            <span class="small" id="reviewPendingVisibleCount">${pendingShownCopy}${hiddenPendingRows ? ` · ${hiddenPendingRows} more available` : ''}</span>
           </div>
-          ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll">${combinedRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
+          ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll" data-review-pending-total="${combinedRows.length}" data-review-pending-visible="${visiblePendingRows.length}">${visiblePendingRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>${hiddenPendingRows ? `<div class="review-load-next-wrap"><button type="button" class="btn btn-primary" onclick="loadNextReviewPendingQueue(25)">Load next 25 pending nominations</button><span class="small">${hiddenPendingRows} more remain after this visible batch.</span></div>` : ''}` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
         </div>`
     }
 
@@ -8307,3 +8554,5 @@ async function bootApp() {
   const activeScreen = document.querySelector('.screen.active');
   if (activeScreen) applyScreenInertState(activeScreen);
 }
+
+/* Daily Genre v226: identity listening lanes stay separate from queue order; matching queue rows get badges in place. */
