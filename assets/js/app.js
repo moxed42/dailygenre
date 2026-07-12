@@ -13,19 +13,6 @@
       if (listenTab) listenTab.classList.toggle('dirty', hasUnsavedChanges);
     }
 
-    function isDailyGenreMobilePerfMode() {
-      try {
-        return Boolean(
-          window.__dgForceMobilePerf ||
-          (window.matchMedia && window.matchMedia('(max-width: 760px)').matches) ||
-          /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '')
-        );
-      } catch (_) { return false; }
-    }
-    window.isDailyGenreMobilePerfMode = isDailyGenreMobilePerfMode;
-
-
-
     let listeningFocusMode = 'songs';
 
     function listeningFocusStorageKey(genre = currentGenre) {
@@ -42,7 +29,7 @@
     function getListeningFocusMode(genre = currentGenre) {
       const key = listeningFocusStorageKey(genre);
       let saved = '';
-      try { saved = localStorage.getItem(key) || ''; } catch {}
+      try { saved = safeStorageGet(key) || ''; } catch {}
       const hasAlbums = genreHasAlbumDiveContent(genre);
       const mode = saved || (hasAlbums ? 'albums' : 'songs');
       return mode === 'albums' && hasAlbums ? 'albums' : 'songs';
@@ -58,7 +45,7 @@
       try { previousActive?.blur?.(); } catch {}
 
       listeningFocusMode = mode === 'albums' ? 'albums' : 'songs';
-      try { localStorage.setItem(listeningFocusStorageKey(currentGenre), listeningFocusMode); } catch {}
+      try { safeStorageSet(listeningFocusStorageKey(currentGenre), listeningFocusMode); } catch {}
 
       const restoreListeningToggleScroll = () => {
         try { window.scrollTo({ left: previousScrollX, top: previousScrollY, behavior: 'auto' }); }
@@ -510,7 +497,7 @@
 
     function readActiveAlbumDiveState() {
       try {
-        return JSON.parse(localStorage.getItem(ACTIVE_ALBUM_DIVE_STORAGE_KEY) || 'null') || null;
+        return JSON.parse(safeStorageGet(ACTIVE_ALBUM_DIVE_STORAGE_KEY) || 'null') || null;
       } catch {
         return null;
       }
@@ -569,8 +556,8 @@
       }
       listeningFocusMode = 'albums';
       try {
-        localStorage.setItem(listeningFocusStorageKey(genre), 'albums');
-        if (activeState?.slotKey) localStorage.setItem(`dailyGenreAlbumDiveFocusSlot:${albumDiveStateGenreId(genre)}`, activeState.slotKey);
+        safeStorageSet(listeningFocusStorageKey(genre), 'albums');
+        if (activeState?.slotKey) safeStorageSet(`dailyGenreAlbumDiveFocusSlot:${albumDiveStateGenreId(genre)}`, activeState.slotKey);
       } catch {}
       openGenreDetail(genre, false, { skipSpotifyHydration: true });
       if (typeof setAlbumDiveEditorMode === 'function') setAlbumDiveEditorMode(false);
@@ -1549,7 +1536,7 @@
       const previousFocusKey = (() => {
         try {
           return currentGenre
-            ? (localStorage.getItem(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`) || '')
+            ? (safeStorageGet(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`) || '')
             : '';
         } catch (_) {
           return '';
@@ -1566,7 +1553,7 @@
         if (previousFocusKey) {
           try {
             if (currentGenre) {
-              localStorage.setItem(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`, previousFocusKey);
+              safeStorageSet(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`, previousFocusKey);
             }
             if (typeof setSongFocus === 'function') {
               setTimeout(() => setSongFocus(previousFocusKey), 0);
@@ -2545,7 +2532,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
 
     function readPendingSongNotesMap() {
       try {
-        const raw = localStorage.getItem(PENDING_SONG_NOTES_STORAGE_KEY) || '{}';
+        const raw = safeStorageGet(PENDING_SONG_NOTES_STORAGE_KEY) || '{}';
         const parsed = JSON.parse(raw);
         return parsed && typeof parsed === 'object' ? parsed : {};
       } catch (err) {
@@ -2555,7 +2542,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
     }
 
     function writePendingSongNotesMap(map) {
-      try { localStorage.setItem(PENDING_SONG_NOTES_STORAGE_KEY, JSON.stringify(map || {})); }
+      try { safeStorageSet(PENDING_SONG_NOTES_STORAGE_KEY, JSON.stringify(map || {})); }
       catch (err) { console.warn('Could not save pending song notes', err); }
     }
 
@@ -3078,7 +3065,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         })();
         try {
           if (nextFocusKey && currentGenre) {
-            localStorage.setItem(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`, nextFocusKey);
+            safeStorageSet(`dailyGenreSongFocusKey:${currentGenre.id || currentGenre.genre || 'unknown'}`, nextFocusKey);
           }
         } catch (_) {}
         const restore = preserveScrollSnapshot();
@@ -4172,7 +4159,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       // interruption happens mid-save.
       try {
         window.__dgLastSaveAttemptAt = new Date().toISOString();
-        localStorage.setItem('dailyGenreLastSaveAttempt:v221', JSON.stringify({
+        safeStorageSet('dailyGenreLastSaveAttempt:v221', JSON.stringify({
           at: window.__dgLastSaveAttemptAt,
           genres: Array.isArray(payload) ? payload.length : 0,
           studioMutation: !!window.__dgStudioCleanupSavePending,
@@ -8584,8 +8571,8 @@ async function bootApp() {
   const hasSpotifyCallback = params.has('code') || params.has('error');
   // Remove stale return intents from older patched builds so they cannot trigger auth loops.
   (typeof SPOTIFY_OLD_RETURN_STORAGE_KEYS !== 'undefined' ? SPOTIFY_OLD_RETURN_STORAGE_KEYS : []).forEach(key => {
-    try { sessionStorage.removeItem(key); } catch {}
-    try { localStorage.removeItem(key); } catch {}
+    try { safeSessionStorageRemove(key); } catch {}
+    try { safeStorageRemove(key); } catch {}
   });
 
   loadSpotifySession();

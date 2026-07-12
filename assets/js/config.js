@@ -1,13 +1,13 @@
 function spotifyStorageGet(key) {
-  try { return localStorage.getItem(key); } catch { return null; }
+  return safeStorageGet(key, null);
 }
 
 function spotifyStorageSet(key, value) {
-  try { localStorage.setItem(key, value); } catch {}
+  return safeStorageSet(key, value);
 }
 
 function spotifyStorageRemove(key) {
-  try { localStorage.removeItem(key); } catch {}
+  return safeStorageRemove(key);
 }
 
 const DATA_URL = 'https://raw.githubusercontent.com/moxed42/dailygenre/main/genres_data.json';

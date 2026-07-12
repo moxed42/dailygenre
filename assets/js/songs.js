@@ -369,7 +369,7 @@
 
   function isSongQueueOpen(genre) {
     try {
-      return localStorage.getItem(genreQueueOpenStorageKey(genre)) === "1";
+      return safeStorageGet(genreQueueOpenStorageKey(genre)) === "1";
     } catch {
       return false;
     }
@@ -378,7 +378,7 @@
   function setSongQueueOpen(open) {
     try {
       if (typeof currentGenre !== "undefined" && currentGenre) {
-        localStorage.setItem(
+        safeStorageSet(
           genreQueueOpenStorageKey(currentGenre),
           open ? "1" : "0",
         );
@@ -389,7 +389,7 @@
 
   function getSongQueueFilter(genre) {
     try {
-      return localStorage.getItem(genreFilterStorageKey(genre)) || "all";
+      return safeStorageGet(genreFilterStorageKey(genre)) || "all";
     } catch {
       return "all";
     }
@@ -408,7 +408,7 @@
     const next = allowed.has(filter) ? filter : "all";
     try {
       if (typeof currentGenre !== "undefined" && currentGenre) {
-        localStorage.setItem(genreFilterStorageKey(currentGenre), next);
+        safeStorageSet(genreFilterStorageKey(currentGenre), next);
       }
     } catch {}
     enhanceSongListeningExperience();
@@ -514,7 +514,7 @@
     if (!entries.length) return null;
     let stored = "";
     try {
-      stored = localStorage.getItem(genreFocusStorageKey(genre)) || "";
+      stored = safeStorageGet(genreFocusStorageKey(genre)) || "";
     } catch {}
     const storedMatch = stored
       ? entries.find((entry) => songKey(entry.song) === stored)
@@ -527,7 +527,7 @@
   function setSelectedSongKey(key) {
     try {
       if (typeof currentGenre !== "undefined" && currentGenre) {
-        localStorage.setItem(genreFocusStorageKey(currentGenre), key || "");
+        safeStorageSet(genreFocusStorageKey(currentGenre), key || "");
       }
     } catch {}
     enhanceSongListeningExperience();
@@ -542,7 +542,7 @@
     const sequence = visibleEntries.length ? visibleEntries : entries;
     const currentKey = (() => {
       try {
-        return localStorage.getItem(genreFocusStorageKey(currentGenre)) || "";
+        return safeStorageGet(genreFocusStorageKey(currentGenre)) || "";
       } catch {
         return "";
       }
@@ -559,7 +559,7 @@
   function setSongDetailsOpen(open) {
     try {
       if (typeof currentGenre !== "undefined" && currentGenre) {
-        localStorage.setItem(
+        safeStorageSet(
           genreDetailsStorageKey(currentGenre),
           open ? "1" : "0",
         );
@@ -570,7 +570,7 @@
 
   function isSongDetailsOpen(genre) {
     try {
-      return localStorage.getItem(genreDetailsStorageKey(genre)) === "1";
+      return safeStorageGet(genreDetailsStorageKey(genre)) === "1";
     } catch {
       return false;
     }
@@ -638,8 +638,8 @@
 
       const nextEntries = songListForFocus(currentGenre);
       try {
-        if (nextEntries.length) localStorage.setItem(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
-        else localStorage.removeItem(genreFocusStorageKey(currentGenre));
+        if (nextEntries.length) safeStorageSet(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
+        else safeStorageRemove(genreFocusStorageKey(currentGenre));
       } catch {}
       if (!nextEntries.length) setSongDetailsOpen(false);
 
@@ -739,8 +739,8 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
       if (typeof markListeningUpdatePending === "function") markListeningUpdatePending();
       const nextEntries = songListForFocus(currentGenre);
       try {
-        if (nextEntries.length) localStorage.setItem(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
-        else localStorage.removeItem(genreFocusStorageKey(currentGenre));
+        if (nextEntries.length) safeStorageSet(genreFocusStorageKey(currentGenre), songKey(nextEntries[0].song));
+        else safeStorageRemove(genreFocusStorageKey(currentGenre));
       } catch {}
       if (!nextEntries.length) setSongDetailsOpen(false);
       enhanceSongListeningExperience();
@@ -1035,7 +1035,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
     }
     const selectedKey = songKey(selected.song);
     try {
-      localStorage.setItem(genreFocusStorageKey(currentGenre), selectedKey);
+      safeStorageSet(genreFocusStorageKey(currentGenre), selectedKey);
     } catch {}
     const detailsOpen = isSongDetailsOpen(currentGenre);
     const queueOpen = isSongQueueOpen(currentGenre);
