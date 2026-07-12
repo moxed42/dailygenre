@@ -181,6 +181,7 @@
         setTimeout(() => {
           if (typeof initVisuals === 'function') {
             initVisuals();
+          } else if (typeof renderVisuals === 'function') {
             renderVisuals();
           }
         }, 50);
@@ -7697,10 +7698,21 @@ async function loadData() {
 
       const canvas = document.getElementById(chartId);
       if (canvas) {
-        _vizCharts[chartId] = new Chart(canvas.getContext('2d'), {
+        const reactionChart = new Chart(canvas.getContext('2d'), {
           type:'doughnut',
           data:{ labels:['I Fuck With This','Meh, It’s Fine','Fuck Off','Unrated'], datasets:[{ data:[overall[3], overall[2], overall[1], overall.unrated], backgroundColor:[3,2,1,0].map((value, i) => (vizDrilldownState?.type === 'reaction' && Number(vizDrilldownState.value) === value && vizDrilldownState.mode === vizMode()) ? ['#6faa43','#f0a33a','#d94842','#8a7d68'][i] : ['#4e8a35','#d88a22','#b83230','#cabca6'][i]), borderWidth:2, borderColor:'#fffdf8' }] },
-          options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%', onClick:(event, elements) => { if (!elements.length) return; const reactionValues = [3,2,1,0]; setVisualDrilldown('reaction', reactionValues[elements[0].index], vizMode()); }, onHover:(event, elements) => { if (event?.native?.target) event.native.target.style.cursor = elements.length ? 'pointer' : 'default'; } }
+          options:{ responsive:true, maintainAspectRatio:false, events:[], plugins:{legend:{display:false}}, cutout:'62%' }
+        });
+        _vizCharts[chartId] = reactionChart;
+        canvas.addEventListener('click', event => {
+          const elements = reactionChart.getElementsAtEventForMode(event, 'nearest', { intersect:true }, false);
+          if (!elements.length) return;
+          const reactionValues = [3,2,1,0];
+          setVisualDrilldown('reaction', reactionValues[elements[0].index], vizMode());
+        });
+        canvas.addEventListener('mousemove', event => {
+          const elements = reactionChart.getElementsAtEventForMode(event, 'nearest', { intersect:true }, false);
+          canvas.style.cursor = elements.length ? 'pointer' : 'default';
         });
       }
     }
