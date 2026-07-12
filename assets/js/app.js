@@ -6286,13 +6286,6 @@ function blockSaveIfDuplicateGenres() {
       });
     }
 
-    function toggleSongLog(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const isOpen = el.style.display === 'grid' || el.style.display === 'block';
-      el.style.display = isOpen ? 'none' : 'grid';
-    }
-
     function renderArchiveSummary(items, label) {
       const summary = document.getElementById('archiveSummary');
       if (!summary) return;
@@ -6446,10 +6439,9 @@ function blockSaveIfDuplicateGenres() {
               <span class="small archive-card-date">${escapeHtml(dateValue(g) || 'No date')}</span>
               <button class="btn btn-primary archive-primary-action" data-open-id="${g.id}">Open / Edit</button>
               ${songCount ? `<label class="archive-select-genre"><input type="checkbox" data-archive-playlist-genre="${escapeHtml(String(g.id))}" ${archivePlaylistSelectedGenreIds.has(String(g.id)) ? 'checked' : ''} onchange="archivePlaylistSelectionChanged(this)" /> Playlist</label>` : ''}
-              ${songCount ? `<button type="button" class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.8rem;font-weight:900;white-space:nowrap;" onclick="toggleSongLog('sl-h-${g.id}')">▶ ${songCount} song${songCount===1?'':'s'} logged</button>` : ''}
+              ${songCount ? `<span class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.8rem;font-weight:900;white-space:nowrap;cursor:default;">${songCount} song${songCount===1?'':'s'} logged</span>` : ''}
             </div>
           </div>
-          ${songCount ? `<div class="song-log-wrap" id="sl-h-${g.id}"><div class="song-log-list">${songs.map(song => renderSongEntry(song, false)).join('')}</div></div>` : ''}
         </div>`;
       }).join('');
 
