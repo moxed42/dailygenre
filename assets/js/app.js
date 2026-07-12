@@ -1400,29 +1400,83 @@
       return targets;
     }
 
+    // Daily Genre v246.2: surgical song-reaction fast path.
+    let songReactionFastPathHits = 0;
+    let songReactionFallbackRenders = 0;
+
     function setSongReaction(encodedKey, value) {
       if (!currentGenre) return;
       const key = decodeURIComponent(encodedKey || '');
       const reaction = [1,2,3].includes(Number(value)) ? Number(value) : null;
-      const songs = inflateSongsFromStorage(currentGenre.songs_listened || []);
+      const songs = officialSongsForLookup(currentGenre);
+      const resultingReactions = new Set();
       let updated = false;
+
       eachSongInLog(songs, song => {
         if (songIdentity(song) === key) {
           song.reaction = song.reaction === reaction ? null : reaction;
+          resultingReactions.add(song.reaction == null ? 'none' : String(song.reaction));
           updated = true;
         }
       });
+
       if (!updated) return;
-      currentGenre.songs_listened = songs;
+
       stagedQueueReactionKeys.add(stagedReactionKey(currentGenre.id, key));
       libraryUpdatesPending = true;
       setUnsavedState(true);
       toggleLibrarySaveButton(true);
-      const restore = preserveScrollSnapshot();
-      loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
-      applyDetailEditMode(detailEditMode);
-      restore();
-      showSaveToast('Reaction selected — use the floating Save button to persist it.', false);
+
+      const nextReactionValue =
+        resultingReactions.size === 1
+          ? [...resultingReactions][0]
+          : null;
+      const nextReaction =
+        nextReactionValue && nextReactionValue !== 'none'
+          ? Number(nextReactionValue)
+          : null;
+
+      let repaintResult = null;
+      try {
+        if (resultingReactions.size === 1) {
+          if (typeof window.refreshSongReactionUI === 'function') {
+            repaintResult = window.refreshSongReactionUI(
+              encodedKey,
+              nextReaction,
+            );
+          } else {
+            repaintResult =
+              window.DailyGenreSongReaction?.repaint?.(
+                document,
+                encodedKey,
+                nextReaction,
+              ) || null;
+          }
+        }
+      } catch (error) {
+        console.warn(
+          '[Daily Genre] Song reaction fast repaint failed; using full render.',
+          error,
+        );
+      }
+
+      if (repaintResult?.repainted) {
+        songReactionFastPathHits += 1;
+      } else {
+        songReactionFallbackRenders += 1;
+        const restore = preserveScrollSnapshot();
+        loadListenScreen(currentGenre, {
+          preserveDirty: true,
+          skipSpotifyHydration: true,
+        });
+        applyDetailEditMode(detailEditMode);
+        restore();
+      }
+
+      showSaveToast(
+        'Reaction selected — use the floating Save button to persist it.',
+        false,
+      );
     }
 
     const GENRE_RATING_LABELS = {
@@ -2005,17 +2059,109 @@ ${reactionEmoji(value)} ${reactionLabel(value)} · fit 4/5 or 5/5
       window.__dailyGenreQueueModelAuthoritativeUntil = Date.now() + 60000;
     }
 
+    // Daily Genre v246: cache inflated official songs per genre and use a
+    // self-healing identity index for parent and nested Level Up lookups.
+    // Track arrays produced by inflateSongsFromStorage, including arrays created
+    // by existing unsaved reaction/edit handlers outside officialSongsForLookup.
+    const knownInflatedOfficialSongArrays = new WeakSet();
+
+    const officialSongIdentityIndex =
+      window.DailyGenreSongIndex?.createPerGenreSongIdentityIndex?.({
+        keysForSong: songIdentityKeys,
+        childForSong: song => song?.levelUp || null,
+      }) || null;
+
+    const inflatedOfficialSongsByGenre = new WeakMap();
+
+    function officialSongsForLookup(genre = currentGenre) {
+      if (!genre) return [];
+
+      const source = Array.isArray(genre.songs_listened)
+        ? genre.songs_listened
+        : [];
+      const cached = inflatedOfficialSongsByGenre.get(genre);
+      const sourceAlreadyInflated =
+        knownInflatedOfficialSongArrays.has(source);
+
+      if (cached?.source === source || sourceAlreadyInflated) {
+        if (cached?.source !== source) {
+          inflatedOfficialSongsByGenre.set(genre, { source });
+          officialSongIdentityIndex?.invalidate(genre);
+        }
+        return source;
+      }
+
+      const songs = inflateSongsFromStorage(source)
+        .filter(song => !song.isPending);
+
+      // filter() creates a second array, so mark the final assigned array too.
+      knownInflatedOfficialSongArrays.add(songs);
+      genre.songs_listened = songs;
+      inflatedOfficialSongsByGenre.set(genre, { source: songs });
+      officialSongIdentityIndex?.invalidate(genre);
+      return songs;
+    }
+
     function findOfficialSongByIdentity(key) {
-      const songs = inflateSongsFromStorage(currentGenre?.songs_listened || []).filter(song => !song.isPending);
-      currentGenre.songs_listened = songs;
+      if (!currentGenre) return null;
+
+      const songs = officialSongsForLookup(currentGenre);
+      const indexed = officialSongIdentityIndex?.get(
+        currentGenre,
+        songs,
+        key,
+      );
+
+      if (indexed?.song) return indexed;
+
+      // Preserve a fully independent correctness fallback if the helper script
+      // is unavailable or a malformed legacy row defeats indexed matching.
       for (let index = 0; index < songs.length; index += 1) {
-        if (songsIdentityMatch(songs[index], key)) return { song: songs[index], parent: null, index, songs };
-        if (songs[index].levelUp && songsIdentityMatch(songs[index].levelUp, key)) {
-          return { song: songs[index].levelUp, parent: songs[index], index, songs };
+        if (songsIdentityMatch(songs[index], key)) {
+          return { song: songs[index], parent: null, index, songs };
+        }
+        if (
+          songs[index].levelUp &&
+          songsIdentityMatch(songs[index].levelUp, key)
+        ) {
+          return {
+            song: songs[index].levelUp,
+            parent: songs[index],
+            index,
+            songs,
+          };
         }
       }
       return null;
     }
+
+    window.dailyGenreSongIndexDiagnostics = () => {
+      const currentSongs = Array.isArray(currentGenre?.songs_listened)
+        ? currentGenre.songs_listened
+        : [];
+
+      return {
+        genreId: currentGenre?.id ?? null,
+        inflationReady: Boolean(
+          currentGenre &&
+          (
+            knownInflatedOfficialSongArrays.has(currentSongs) ||
+            inflatedOfficialSongsByGenre.get(currentGenre)?.source === currentSongs
+          )
+        ),
+        ...(officialSongIdentityIndex
+          ? officialSongIdentityIndex.stats(currentGenre, currentSongs)
+          : {
+              ready: false,
+              stale: false,
+              indexedLength: -1,
+              size: 0,
+              builds: 0,
+            }),
+        reactionFastPathHits: songReactionFastPathHits,
+        reactionFallbackRenders: songReactionFallbackRenders,
+      };
+    };
 
 
     function encodeSongKeyForInline(song) {
@@ -2032,8 +2178,7 @@ ${reactionEmoji(value)} ${reactionLabel(value)} · fit 4/5 or 5/5
       if (!currentGenre) return null;
       const match = String(path || '').match(/^song:(\d+)(?:\.(levelUp))?$/);
       if (!match) return null;
-      const songs = inflateSongsFromStorage(currentGenre.songs_listened || []).filter(song => !song.isPending);
-      currentGenre.songs_listened = songs;
+      const songs = officialSongsForLookup(currentGenre);
       const index = Number(match[1]);
       if (!Number.isInteger(index) || index < 0 || index >= songs.length) return null;
       if (match[2] === 'levelUp') {
@@ -3300,6 +3445,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         if (song.levelUp) stampLevelUpParent(song.levelUp, song);
         inflated.push(song);
       });
+      knownInflatedOfficialSongArrays.add(inflated);
       return inflated;
     }
 
