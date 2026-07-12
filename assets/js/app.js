@@ -3935,17 +3935,6 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       markDirty();
     }
 
-    function renderPendingSongs(genre) {
-      const panel = document.getElementById('pendingSongsPanel');
-      if (!panel) return;
-      const pending = getPendingSongs(genre);
-      if (!pending.length) {
-        panel.innerHTML = '<div class="pending-song-empty">No pending songs queued.</div>';
-        return;
-      }
-      panel.innerHTML = pending.map((song, idx) => renderSongEntry(song, false, { pendingIndex: idx, allowTrackEdit: true })).join('');
-    }
-
     function renderLevelUpIntegrityPanel(genre) {
       const issues = levelUpIssuesForGenre(genre);
       if (!issues.length) return '';
@@ -4053,7 +4042,6 @@ async function prepareAndSaveCurrentGenre(options = {}) {
         </div>
       `;
 
-      renderPendingSongs(genre);
       renderStars();
       updateDiscordBlock();
       const markBtn = document.getElementById('markListenedBtn');
