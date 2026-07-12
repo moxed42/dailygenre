@@ -280,8 +280,17 @@
       return status === '' || status === 'unlistened';
     }
 
+    let cachedUnlistenedGenres = null;
+
+    function invalidateUnlistenedCache() {
+      cachedUnlistenedGenres = null;
+    }
+
     function getUnlistened() {
-      return genres.filter(isGenreRemaining);
+      if (!cachedUnlistenedGenres) {
+        cachedUnlistenedGenres = genres.filter(isGenreRemaining);
+      }
+      return cachedUnlistenedGenres;
     }
 
     function remainingExclusionReason(genre) {
@@ -396,6 +405,7 @@
     }
 
     function updateRemainingCount() {
+      invalidateUnlistenedCache();
       const stats = getRemainingCountDiagnostics();
       remainingCount.textContent = `${stats.remaining} genres remaining`;
       remainingCount.title = remainingCountMessage(stats) + '\n\nClick for excluded samples.';
