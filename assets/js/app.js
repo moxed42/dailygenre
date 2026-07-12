@@ -247,36 +247,70 @@
 
     
 
-    let genreByIdIndex = null;
-    let genreByIdIndexSource = null;
-    let genreByIdIndexLength = -1;
+    // Daily Genre v245: revisioned library index foundation.
+    const genreByIdIndexState =
+      window.DailyGenreLibraryIndex?.createRevisionedGenreIndex?.() || null;
+
     let reviewGenreDatalistHtml = null;
     let reviewGenreDatalistSource = null;
     let reviewGenreDatalistLength = -1;
 
-    function invalidateGenreIndexes() {
-      genreByIdIndex = null;
-      genreByIdIndexSource = null;
-      genreByIdIndexLength = -1;
+    function invalidateGenreIndexes(reason = 'mutation') {
+      if (genreByIdIndexState) {
+        genreByIdIndexState.invalidate();
+        try {
+          window.__dailyGenreLibraryRevision = genreByIdIndexState.revision();
+          window.__dailyGenreLibraryRevisionReason = String(reason || 'mutation');
+        } catch (_) {}
+      }
       reviewGenreDatalistHtml = null;
       reviewGenreDatalistSource = null;
       reviewGenreDatalistLength = -1;
     }
 
-    function getGenreById(id) {
-      if (
-        genreByIdIndexSource !== genres ||
-        genreByIdIndexLength !== genres.length ||
-        !genreByIdIndex
-      ) {
-        genreByIdIndex = new Map(
-          genres.map(genre => [String(genre?.id ?? ''), genre])
-        );
-        genreByIdIndexSource = genres;
-        genreByIdIndexLength = genres.length;
+    function replaceGenreLibrary(nextGenres, reason = 'replace-all') {
+      genres = Array.isArray(nextGenres) ? nextGenres : [];
+      window.genres = genres;
+      invalidateGenreIndexes(reason);
+      if (typeof invalidateUnlistenedCache === 'function') {
+        invalidateUnlistenedCache();
       }
-      return genreByIdIndex.get(String(id)) || null;
+      return genres;
     }
+
+    function replaceGenreAtIndex(index, nextGenre, reason = 'replace-one') {
+      if (
+        !Array.isArray(genres) ||
+        !Number.isInteger(index) ||
+        index < 0 ||
+        index >= genres.length
+      ) {
+        return false;
+      }
+      genres[index] = nextGenre;
+      invalidateGenreIndexes(reason);
+      return true;
+    }
+
+    function getGenreById(id) {
+      if (genreByIdIndexState) {
+        return genreByIdIndexState.getById(genres, id);
+      }
+      return (Array.isArray(genres) ? genres : []).find(
+        genre => String(genre?.id ?? '') === String(id)
+      ) || null;
+    }
+
+    window.dailyGenreLibraryIndexDiagnostics = () =>
+      genreByIdIndexState
+        ? genreByIdIndexState.stats()
+        : {
+            revision: null,
+            indexedRevision: null,
+            indexedLength: Array.isArray(genres) ? genres.length : 0,
+            size: null,
+            ready: false,
+          };
 
     function isProgramListenedDate(genre) {
       // Daily Genre 2026 should only treat 2026 listen dates as proof that a genre
@@ -2708,8 +2742,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       if (!currentGenre || !Array.isArray(genres)) return;
       const idx = genres.findIndex(g => String(g?.id) === String(currentGenre.id));
       if (idx >= 0 && genres[idx] !== currentGenre) {
-        genres[idx] = currentGenre;
-        invalidateGenreIndexes();
+        replaceGenreAtIndex(idx, currentGenre, 'current-genre-sync');
       }
     }
 
@@ -6950,7 +6983,7 @@ async function loadData() {
     window.DailyGenreNormalize?.normalizeGenreLibraryForRuntime;
   const normalizedAtLoad = typeof runtimeLibraryNormalizer === 'function';
 
-  genres = normalizedAtLoad
+  const nextGenreLibrary = normalizedAtLoad
     ? runtimeLibraryNormalizer(loaded.data)
     : loaded.data;
 
@@ -6960,9 +6993,8 @@ async function loadData() {
     );
   }
 
-  invalidateGenreIndexes();
+  replaceGenreLibrary(nextGenreLibrary, 'data-load');
   serverFileSha = loaded.sha || '';
-  window.genres = genres;
   window.dailyGenreDataSource = {
     source: loaded.source,
     normalizedAtLoad,
