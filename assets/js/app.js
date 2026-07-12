@@ -6834,6 +6834,20 @@ function spotifyRestoreReturnAfterDataLoad() {
   spotifyReturnStateAfterCallback = null;
 }
 
+function rerenderActiveScreenAfterDataLoad() {
+  const activeScreenId = document.querySelector('.screen.active')?.id || '';
+
+  if (activeScreenId === 'screen-review' && typeof renderReview === 'function') {
+    renderReview();
+  } else if (activeScreenId === 'screen-viz' && typeof renderVisuals === 'function') {
+    renderVisuals();
+  } else if (activeScreenId === 'screen-history' && typeof renderHistory === 'function') {
+    renderHistory();
+  } else if (activeScreenId === 'screen-ranking' && typeof renderRankings === 'function') {
+    renderRankings();
+  }
+}
+
 async function loadData() {
   remainingCount.textContent = 'Loading genres...';
 
@@ -6932,6 +6946,7 @@ async function loadData() {
   populateMonthFilter();
   renderHistory();
   renderRankings();
+  rerenderActiveScreenAfterDataLoad();
 
   const hashMatch = location.hash.match(/^#genre=(.+)$/);
   if (hashMatch) {
