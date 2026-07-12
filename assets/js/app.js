@@ -6943,12 +6943,30 @@ async function loadData() {
     return;
   }
 
-  genres = loaded.data;
+  // Daily Genre v244: normalize the selected library once after source
+  // selection. This runtime path is intentionally storage-safe: it fixes
+  // collection shape without coercing values that would cause broad save diffs.
+  const runtimeLibraryNormalizer =
+    window.DailyGenreNormalize?.normalizeGenreLibraryForRuntime;
+  const normalizedAtLoad = typeof runtimeLibraryNormalizer === 'function';
+
+  genres = normalizedAtLoad
+    ? runtimeLibraryNormalizer(loaded.data)
+    : loaded.data;
+
+  if (!normalizedAtLoad) {
+    console.warn(
+      '[Daily Genre] Runtime normalizer was unavailable; using the legacy load path.'
+    );
+  }
+
   invalidateGenreIndexes();
   serverFileSha = loaded.sha || '';
   window.genres = genres;
   window.dailyGenreDataSource = {
     source: loaded.source,
+    normalizedAtLoad,
+    normalizerMode: normalizedAtLoad ? 'runtime-storage-safe' : 'legacy',
     loadedCount: uniqueGenreCount(loaded.data),
     loadedMaxId: maxGenreId(loaded.data),
     workerCount,

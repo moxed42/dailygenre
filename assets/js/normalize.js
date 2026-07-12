@@ -65,6 +65,26 @@
     return cloneArray(value).map(normalizeSongRecord);
   }
 
+  // Storage-safe normalization is the production-load path. It guarantees
+  // collection shape and fresh object references without trimming strings,
+  // coercing scores, or otherwise creating unrelated full-library save churn.
+  function normalizeGenreRecordForRuntime(rawGenre) {
+    const source =
+      rawGenre && typeof rawGenre === "object" && !Array.isArray(rawGenre)
+        ? rawGenre
+        : {};
+
+    const genre = cloneRecord(source);
+    genre.songs_listened = cloneArray(source.songs_listened);
+    genre.pending_songs = cloneArray(source.pending_songs);
+    return genre;
+  }
+
+  function normalizeGenreLibraryForRuntime(rawGenres) {
+    if (!Array.isArray(rawGenres)) return [];
+    return rawGenres.map(normalizeGenreRecordForRuntime);
+  }
+
   function normalizeGenreRecord(rawGenre) {
     const source =
       rawGenre && typeof rawGenre === "object" && !Array.isArray(rawGenre)
@@ -98,6 +118,8 @@
     cloneRecord,
     normalizeSongRecord,
     normalizeSongList,
+    normalizeGenreRecordForRuntime,
+    normalizeGenreLibraryForRuntime,
     normalizeGenreRecord,
     normalizeGenreLibrary,
   };

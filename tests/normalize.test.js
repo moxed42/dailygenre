@@ -3,6 +3,8 @@ const assert = require("node:assert/strict");
 
 const {
   normalizeSongRecord,
+  normalizeGenreRecordForRuntime,
+  normalizeGenreLibraryForRuntime,
   normalizeGenreRecord,
   normalizeGenreLibrary,
 } = require("../assets/js/normalize.js");
@@ -92,3 +94,46 @@ test("normalizeGenreLibrary handles invalid input and returns new records", () =
   assert.notEqual(result[0], source[0]);
   assert.equal(result[0].genre, "Punk");
 });
+
+test("runtime normalization preserves storage scalar values", () => {
+  const input = {
+    id: 77,
+    genre: "  Dream Pop  ",
+    status: " listened ",
+    songs_listened: {
+      artist: "  Cocteau Twins ",
+      title: " Heaven or Las Vegas  ",
+      score: "5",
+      customField: { keep: true },
+    },
+    pending_songs: null,
+  };
+
+  const result = normalizeGenreRecordForRuntime(input);
+
+  assert.equal(result.genre, "  Dream Pop  ");
+  assert.equal(result.status, " listened ");
+  assert.equal(result.songs_listened[0].artist, "  Cocteau Twins ");
+  assert.equal(result.songs_listened[0].score, "5");
+  assert.deepEqual(result.songs_listened[0].customField, { keep: true });
+  assert.deepEqual(result.pending_songs, []);
+});
+
+test("runtime library normalization is idempotent and does not mutate input", () => {
+  const input = [{
+    id: 1,
+    genre: "Art Pop",
+    songs_listened: [{ score: "4", nested: { value: 1 } }],
+  }];
+  const snapshot = structuredClone(input);
+
+  const once = normalizeGenreLibraryForRuntime(input);
+  const twice = normalizeGenreLibraryForRuntime(once);
+
+  assert.deepEqual(input, snapshot);
+  assert.deepEqual(twice, once);
+  assert.notEqual(once, input);
+  assert.notEqual(once[0], input[0]);
+  assert.notEqual(once[0].songs_listened[0], input[0].songs_listened[0]);
+});
+
