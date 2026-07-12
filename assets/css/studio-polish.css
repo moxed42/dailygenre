@@ -1748,3 +1748,9 @@
 .studio-inline-track-edit input::placeholder {
   opacity: 0.72;
 }
+
+/* v234: filtered Review rows must override later grid rules. */
+
+#reviewPendingQueueCard .review-row[data-review-pending-row].is-hidden {
+  display: none !important;
+}

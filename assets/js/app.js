@@ -262,11 +262,17 @@
     let genreByIdIndex = null;
     let genreByIdIndexSource = null;
     let genreByIdIndexLength = -1;
+    let reviewGenreDatalistHtml = null;
+    let reviewGenreDatalistSource = null;
+    let reviewGenreDatalistLength = -1;
 
     function invalidateGenreIndexes() {
       genreByIdIndex = null;
       genreByIdIndexSource = null;
       genreByIdIndexLength = -1;
+      reviewGenreDatalistHtml = null;
+      reviewGenreDatalistSource = null;
+      reviewGenreDatalistLength = -1;
     }
 
     function getGenreById(id) {
@@ -4654,7 +4660,7 @@ function blockSaveIfDuplicateGenres() {
           <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value="${escapeHtml(String(currentFit))}"></div>
           <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendReviewPendingAsAdd('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
           <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Remove this stuck/incorrect nomination from the pending queue" onclick="dismissReviewPendingFromDesk('${targetArg}', ${idx}, '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
-          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
+          ${spotifyHref(row.song) ? `<a class="btn btn-secondary review-pending-mini-action" href="${escapeHtml(spotifyHref(row.song))}" target="_blank" rel="noopener noreferrer" aria-label="Open track">▶</a>` : ''}
         </div>
       </div>`;
     }
@@ -4699,7 +4705,7 @@ function blockSaveIfDuplicateGenres() {
           <div class="review-pending-fitline review-pending-fitline-strong"><span>Fit</span>${fitBtns}<input id="${escapeHtml(fitInputId)}" type="hidden" value=""></div>
           <button type="button" class="btn btn-primary review-pending-send-primary" title="Send this as an ADD to the selected genre" onclick="sendManualPendingTagAsAdd('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}', '${escapeHtml(fitInputId)}')">Send ADD</button>
           <button type="button" class="btn btn-ghost review-pending-dismiss-inline" title="Clear this unresolved pending tag" onclick="dismissManualPendingTag('${sourceArg}', '${keyArg}', '${escapeHtml(genreInputId)}')">Dismiss</button>
-          ${spotifyHref(row.song) ? `<button type="button" class="btn btn-secondary review-pending-mini-action" onclick="window.open('${escapeHtml(spotifyHref(row.song))}', '_blank', 'noopener')">▶</button>` : ''}
+          ${spotifyHref(row.song) ? `<a class="btn btn-secondary review-pending-mini-action" href="${escapeHtml(spotifyHref(row.song))}" target="_blank" rel="noopener noreferrer" aria-label="Open track">▶</a>` : ''}
         </div>
       </div>`;
     }
@@ -5492,11 +5498,20 @@ function blockSaveIfDuplicateGenres() {
 
 
     function reviewGenreDatalistOptions() {
-      return (genres || [])
-        .filter(g => g && g.genre)
-        .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
-        .map(g => `<option value="${escapeHtml(g.genre || '')}" data-id="${escapeHtml(String(g.id))}"></option>`)
-        .join('');
+      if (
+        reviewGenreDatalistSource !== genres ||
+        reviewGenreDatalistLength !== genres.length ||
+        reviewGenreDatalistHtml == null
+      ) {
+        reviewGenreDatalistHtml = (genres || [])
+          .filter(g => g && g.genre)
+          .sort((a,b) => String(a.genre || '').localeCompare(String(b.genre || '')))
+          .map(g => `<option value="${escapeHtml(g.genre || '')}" data-id="${escapeHtml(String(g.id))}"></option>`)
+          .join('');
+        reviewGenreDatalistSource = genres;
+        reviewGenreDatalistLength = genres.length;
+      }
+      return reviewGenreDatalistHtml;
     }
 
     function resolveReviewMoveGenre(inputValue, currentTargetId = '') {
