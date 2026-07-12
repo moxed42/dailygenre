@@ -259,6 +259,31 @@
 
     
 
+    let genreByIdIndex = null;
+    let genreByIdIndexSource = null;
+    let genreByIdIndexLength = -1;
+
+    function invalidateGenreIndexes() {
+      genreByIdIndex = null;
+      genreByIdIndexSource = null;
+      genreByIdIndexLength = -1;
+    }
+
+    function getGenreById(id) {
+      if (
+        genreByIdIndexSource !== genres ||
+        genreByIdIndexLength !== genres.length ||
+        !genreByIdIndex
+      ) {
+        genreByIdIndex = new Map(
+          genres.map(genre => [String(genre?.id ?? ''), genre])
+        );
+        genreByIdIndexSource = genres;
+        genreByIdIndexLength = genres.length;
+      }
+      return genreByIdIndex.get(String(id)) || null;
+    }
+
     function isProgramListenedDate(genre) {
       // Daily Genre 2026 should only treat 2026 listen dates as proof that a genre
       // has been consumed. Some imported/legacy rows can carry older date_normalized
@@ -498,7 +523,8 @@
     function findActiveAlbumDiveGenre() {
       const saved = readActiveAlbumDiveState();
       if (saved?.genreId) {
-        const fromSaved = genres.find(g => albumDiveStateGenreId(g) === String(saved.genreId));
+        const fromSaved = getGenreById(saved.genreId)
+          || genres.find(g => albumDiveStateGenreId(g) === String(saved.genreId));
         const savedScore = albumDiveProgressScore(fromSaved);
         if (fromSaved && savedScore.total > 0 && savedScore.active) return fromSaved;
       }
@@ -2689,6 +2715,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const idx = genres.findIndex(g => String(g?.id) === String(currentGenre.id));
       if (idx >= 0 && genres[idx] !== currentGenre) {
         genres[idx] = currentGenre;
+        invalidateGenreIndexes();
       }
     }
 
@@ -6185,7 +6212,7 @@ function blockSaveIfDuplicateGenres() {
     }
 
     function moveRank(id, direction) {
-      const item = genres.find(g => String(g.id) === String(id));
+      const item = getGenreById(id);
       if (!item || !item.rating || item.rating === 'zanger') return;
 
       const tierItems = rankedGenresForTier(item.rating);
@@ -6253,7 +6280,7 @@ function blockSaveIfDuplicateGenres() {
 
       wrap.querySelectorAll('[data-rank-open-id]').forEach(btn => {
         btn.addEventListener('click', () => {
-          const genre = genres.find(g => String(g.id) === String(btn.dataset.rankOpenId));
+          const genre = getGenreById(btn.dataset.rankOpenId);
           if (genre) openGenreDetail(genre, false);
         });
       });
@@ -6428,7 +6455,7 @@ function blockSaveIfDuplicateGenres() {
 
       [...list.querySelectorAll('[data-open-id]')].forEach(btn => {
         btn.addEventListener('click', () => {
-          const genre = genres.find(g => String(g.id) === btn.dataset.openId);
+          const genre = getGenreById(btn.dataset.openId);
           if (genre) openGenreDetail(genre, false);
         });
       });
@@ -6662,7 +6689,7 @@ function blockSaveIfDuplicateGenres() {
 
       [...resultsEl.querySelectorAll('[data-id]')].forEach(btn => {
         const openPicked = () => {
-          const picked = genres.find(g => String(g.id) === btn.dataset.id);
+          const picked = getGenreById(btn.dataset.id);
           if (!picked) return;
           openGenreDetail(picked, true);
         };
@@ -6861,6 +6888,7 @@ async function loadData() {
   }
 
   genres = loaded.data;
+  invalidateGenreIndexes();
   serverFileSha = loaded.sha || '';
   window.genres = genres;
   window.dailyGenreDataSource = {
@@ -6901,7 +6929,7 @@ async function loadData() {
   const hashMatch = location.hash.match(/^#genre=(.+)$/);
   if (hashMatch) {
     const id = decodeURIComponent(hashMatch[1]);
-    const genre = genres.find(g => String(g.id) === String(id));
+    const genre = getGenreById(id);
     if (genre) openGenreDetail(genre, false);
   }
   spotifyRestoreReturnAfterDataLoad();
@@ -7995,7 +8023,7 @@ async function loadData() {
       if (!window.confirm('Permanently delete this track from this genre? Use Delete everywhere in Studio to remove every copy everywhere. This cannot be undone until you reload without saving.')) return;
       const genreId = decodeURIComponent(encodedGenreId || '');
       const key = decodeURIComponent(encodedKey || '');
-      const genre = genres.find(g => String(g.id) === String(genreId));
+      const genre = getGenreById(genreId);
       if (!genre) return;
       const songs = inflateSongsFromStorage(genre.songs_listened || []).filter(s => !s.isPending);
       const filtered = [];
