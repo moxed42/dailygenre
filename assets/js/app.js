@@ -1422,6 +1422,16 @@
 
       if (!updated) return;
 
+      // Daily Genre v247: explicit song reaction timing.
+      const reactionPerformanceToken =
+        window.__dailyGenrePerformanceTracker?.start?.(
+          'app.songReaction',
+          {
+            genreId: currentGenre.id ?? null,
+            matches: resultingReactions.size,
+          },
+        ) || null;
+
       stagedQueueReactionKeys.add(stagedReactionKey(currentGenre.id, key));
       libraryUpdatesPending = true;
       setUnsavedState(true);
@@ -1477,6 +1487,18 @@
         'Reaction selected — use the floating Save button to persist it.',
         false,
       );
+
+      if (reactionPerformanceToken) {
+        window.__dailyGenrePerformanceTracker?.end?.(
+          reactionPerformanceToken,
+          {
+            fastPath: Boolean(repaintResult?.repainted),
+            fallbackRender: !repaintResult?.repainted,
+            matchedControls: Number(repaintResult?.matchedControls || 0),
+            structuralRefresh: Boolean(repaintResult?.structuralRefresh),
+          },
+        );
+      }
     }
 
     const GENRE_RATING_LABELS = {
@@ -2160,6 +2182,8 @@ ${reactionEmoji(value)} ${reactionLabel(value)} · fit 4/5 or 5/5
             }),
         reactionFastPathHits: songReactionFastPathHits,
         reactionFallbackRenders: songReactionFallbackRenders,
+        performanceRecording:
+          Boolean(window.__dailyGenrePerformanceTracker),
       };
     };
 
