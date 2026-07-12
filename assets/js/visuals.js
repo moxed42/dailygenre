@@ -138,7 +138,7 @@ function openMetadataQueue(filter = "spotify", mode = "alltime") {
   );
 }
 
-function statsPolishApply() {
+function statsPolishApplyV33Legacy() {
   const root = document.getElementById("screen-viz");
   if (!root) return;
   root.classList.add("dg-stats-polished");
@@ -238,7 +238,7 @@ function renderDecadeCoverageNote(note, decadeStats, mode) {
   }
 }
 
-function renderVisualDrilldown() {
+function renderVisualDrilldownV34Legacy() {
   clearVisualDrilldownMounts();
   if (!vizDrilldownState) return;
   const mount = document.getElementById(
@@ -304,7 +304,7 @@ function renderVisualDrilldown() {
   }</div>`;
 }
 
-function statsPolishApply() {
+function statsPolishApplyV34Legacy() {
   const root = document.getElementById("screen-viz");
   if (!root) return;
   root.classList.add("dg-stats-polished", "dg-stats-v34");
@@ -716,7 +716,7 @@ function dgStatsInstallReviewNudge() {
   });
 }
 
-function renderVisualDrilldown() {
+function renderBaseVisualDrilldown() {
   clearVisualDrilldownMounts();
   const globalMount = document.getElementById("vizDrilldownPanel");
   if (!globalMount) return;
@@ -770,7 +770,7 @@ function renderVisualDrilldown() {
   }</div>`;
 }
 
-function statsPolishApply() {
+function applyBaseStatsPolish() {
   const root = document.getElementById("screen-viz");
   if (!root) return;
   root.classList.add("dg-stats-polished", "dg-stats-v34", "dg-stats-v35");
@@ -990,12 +990,6 @@ function dgStatsV36Apply() {
   dgStatsInstallFocusedMonthEmptyNote(root);
 }
 
-const dgStatsPreviousPolishApplyV36 =
-  typeof statsPolishApply === "function" ? statsPolishApply : null;
-statsPolishApply = function statsPolishApplyV36() {
-  dgStatsPreviousPolishApplyV36?.();
-  dgStatsV36Apply();
-};
 
 /* === Stats polish v3.7: genre focus typeahead + category-aware depth chart ===
    Data-viz pass: make focus selection faster, keep single-genre charts contextual,
@@ -1332,12 +1326,6 @@ vizAllTimeCharts = function vizAllTimeChartsV37(items) {
   dgStatsRenderDepthChart(items || []);
 };
 
-const dgStatsPreviousPolishApplyV37 =
-  typeof statsPolishApply === "function" ? statsPolishApply : null;
-statsPolishApply = function statsPolishApplyV37() {
-  dgStatsPreviousPolishApplyV37?.();
-  document.getElementById("screen-viz")?.classList.add("dg-stats-v37");
-};
 
 /* === Stats polish v3.8: parent-category focus, category drilldowns, legend-aware chart copy ===
    Scope: Visuals only. No app loader, carousel, Spotify, save-flow, or JSON changes. */
@@ -1728,17 +1716,6 @@ function dgStatsRenderCategoryDrilldown() {
   mount.innerHTML = `<div class="viz-drilldown is-active dg-viz-side-drill dg-category-drill-panel"><div class="viz-drilldown-head"><div><div class="eyebrow" style="margin:0;">Parent category drilldown · ${escapeHtml(modeLabel)}</div><strong>${escapeHtml(categories.join(' + '))}</strong><div class="small">${rows.length} genre${rows.length === 1 ? '' : 's'} · ${totalSongs} logged song${totalSongs === 1 ? '' : 's'}</div><div class="viz-drill-context"><span>Click another pie slice to replace this drilldown</span><span>Cmd/Ctrl/Shift-click to combine categories</span></div></div><div class="dg-category-drill-actions"><button type="button" class="btn btn-primary btn-tiny" onclick="dgStatsSetCategoryFocus(${JSON.stringify(categories).replace(/"/g, '&quot;')})">Use as filter</button><button type="button" class="btn btn-secondary btn-tiny" onclick="clearVisualDrilldown()">Close</button></div></div><div class="dg-category-drill-chips">${categoryChips}</div>${rows.length ? `<div class="viz-drilldown-list dg-category-genre-list">${rows.map((row) => { const rating = row.rating === 'zanger' ? 'Zanger' : row.rating ? `${escapeHtml(row.rating)}★` : 'Unrated'; const date = row.date ? ` · ${escapeHtml(row.date)}` : ''; const favorite = row.favorite ? `<div class="viz-drill-meta">Favorite: ${escapeHtml(row.favorite)}</div>` : ''; return `<div class="viz-drill-row viz-record-row dg-category-genre-row"><div class="dg-category-genre-badge">${escapeHtml(row.category.slice(0, 2).toUpperCase())}</div><div><div class="viz-drill-title-line"><strong>${escapeHtml(row.genre.genre || 'Unknown genre')}</strong></div><div class="viz-drill-meta">${escapeHtml(row.category)} · ${rating}${date} · ${row.songCount} song${row.songCount === 1 ? '' : 's'}</div>${favorite}</div><div class="viz-drill-actions"><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open</button></div></div>`; }).join('')}</div>` : '<div class="viz-empty">No genres found for this category in the current scope.</div>'}</div>`;
 }
 
-const dgStatsPreviousRenderVisualDrilldownV38 =
-  typeof renderVisualDrilldown === 'function' ? renderVisualDrilldown : null;
-renderVisualDrilldown = function renderVisualDrilldownV38() {
-  const state = typeof vizDrilldownState !== 'undefined' ? vizDrilldownState : null;
-  if (state?.type === 'category') {
-    dgStatsRenderCategoryDrilldown();
-    return;
-  }
-  dgStatsPreviousRenderVisualDrilldownV38?.();
-};
-
 const dgStatsPreviousSetVisualDrilldownV38 =
   typeof setVisualDrilldown === 'function' ? setVisualDrilldown : null;
 setVisualDrilldown = function setVisualDrilldownV38(type, value, mode = 'alltime') {
@@ -1882,13 +1859,6 @@ function dgStatsV38InstallStyles() {
   document.head.appendChild(style);
 }
 
-const dgStatsPreviousPolishApplyV38 =
-  typeof statsPolishApply === 'function' ? statsPolishApply : null;
-statsPolishApply = function statsPolishApplyV38() {
-  dgStatsPreviousPolishApplyV38?.();
-  dgStatsV38InstallStyles();
-  document.getElementById('screen-viz')?.classList.add('dg-stats-v38');
-};
 
 window.DailyGenreStatsCategoryHotfix = {
   version: 'stats-category-v11',
@@ -2021,16 +1991,6 @@ function dgStatsRenderReactiveCategoryDrilldown() {
   mount.innerHTML = `<div class="viz-drilldown is-active dg-viz-side-drill dg-category-drill-panel"><div class="viz-drilldown-head"><div><div class="eyebrow" style="margin:0;">Active category filter · ${escapeHtml(modeLabel)}</div><strong>${escapeHtml(selected.join(' + '))}</strong><div class="small">Every visible chart is now scoped to these categories · ${rows.length} genre${rows.length === 1 ? '' : 's'} · ${totalSongs} logged song${totalSongs === 1 ? '' : 's'}</div><div class="viz-drill-context"><span>Click another pie slice to replace this filter</span><span>Cmd/Ctrl/Shift-click to add/remove categories</span><span>Click a chip to remove it</span></div></div><div class="dg-category-drill-actions"><button type="button" class="btn btn-secondary btn-tiny" onclick="dgStatsSetCategoryFocus([])">Clear categories</button></div></div><div class="dg-category-drill-chips">${categoryChips}</div>${rows.length ? `<div class="viz-drilldown-list dg-category-genre-list">${rows.map((row) => { const rating = row.rating === 'zanger' ? 'Zanger' : row.rating ? `${escapeHtml(row.rating)}★` : 'Unrated'; const date = row.date ? ` · ${escapeHtml(row.date)}` : ''; const favorite = row.favorite ? `<div class="viz-drill-meta">Favorite: ${escapeHtml(row.favorite)}</div>` : ''; return `<div class="viz-drill-row viz-record-row dg-category-genre-row"><div class="dg-category-genre-badge">${escapeHtml(row.category.slice(0, 2).toUpperCase())}</div><div><div class="viz-drill-title-line"><strong>${escapeHtml(row.genre.genre || 'Unknown genre')}</strong></div><div class="viz-drill-meta">${escapeHtml(row.category)} · ${rating}${date} · ${row.songCount} song${row.songCount === 1 ? '' : 's'}</div>${favorite}</div><div class="viz-drill-actions"><button type="button" onclick="vizOpenGenreEncoded('${visualActionArg(row.genre.genre || '')}')">Open</button></div></div>`; }).join('')}</div>` : '<div class="viz-empty">No genres found for this category in the current scope.</div>'}</div>`;
 }
 
-renderVisualDrilldown = function renderVisualDrilldownV39() {
-  const selected = dgStatsGetCategoryFocus();
-  const state = typeof vizDrilldownState !== 'undefined' ? vizDrilldownState : null;
-  if (selected.length || state?.type === 'category') {
-    dgStatsRenderReactiveCategoryDrilldown();
-    return;
-  }
-  dgStatsPreviousRenderVisualDrilldownV38?.();
-};
-
 clearVisualDrilldown = function clearVisualDrilldownV39(rerender = true) {
   dgStatsSelectedCategoriesV38 = [];
   dgStatsCategoryDrilldownSelectionV38 = [];
@@ -2142,12 +2102,6 @@ function dgStatsV39InstallStyles() {
   document.head.appendChild(style);
 }
 
-const dgStatsPreviousPolishApplyV39 = typeof statsPolishApply === 'function' ? statsPolishApply : null;
-statsPolishApply = function statsPolishApplyV39() {
-  dgStatsPreviousPolishApplyV39?.();
-  dgStatsV39InstallStyles();
-  document.getElementById('screen-viz')?.classList.add('dg-stats-v39');
-};
 
 window.DailyGenreStatsCategoryHotfix = {
   version: 'stats-category-v12-reactive-pie',
@@ -2231,17 +2185,6 @@ function dgStatsRenderReactiveCategoryDrilldownV40() {
 
 // Override the v3.9 renderer so category selections stay attached to the pie
 // chart instead of using the page-level drilldown well above the dashboard.
-renderVisualDrilldown = function renderVisualDrilldownV40() {
-  const selected = dgStatsGetCategoryFocus();
-  const state = typeof vizDrilldownState !== 'undefined' ? vizDrilldownState : null;
-  if (selected.length || state?.type === 'category') {
-    dgStatsRenderReactiveCategoryDrilldownV40();
-    return;
-  }
-  dgStatsClearCategoryInlineDrilldownsV40();
-  dgStatsPreviousRenderVisualDrilldownV38?.();
-};
-
 dgStatsSetCategoryDrilldown = function dgStatsSetCategoryDrilldownV40(category, mode = 'alltime', event = null) {
   const rawLabel = String(category || '').trim();
   let label = rawLabel;
@@ -2343,12 +2286,6 @@ function dgStatsV40InstallStyles() {
   document.head.appendChild(style);
 }
 
-const dgStatsPreviousPolishApplyV40 = typeof statsPolishApply === 'function' ? statsPolishApply : null;
-statsPolishApply = function statsPolishApplyV40() {
-  dgStatsPreviousPolishApplyV40?.();
-  dgStatsV40InstallStyles();
-  document.getElementById('screen-viz')?.classList.add('dg-stats-v40');
-};
 
 window.DailyGenreStatsCategoryHotfix = {
   ...(window.DailyGenreStatsCategoryHotfix || {}),
@@ -2548,12 +2485,6 @@ function dgStatsV41InstallStyles() {
   document.head.appendChild(style);
 }
 
-const dgStatsPreviousPolishApplyV41 = typeof statsPolishApply === 'function' ? statsPolishApply : null;
-statsPolishApply = function statsPolishApplyV41() {
-  dgStatsPreviousPolishApplyV41?.();
-  dgStatsV41InstallStyles();
-  document.getElementById('screen-viz')?.classList.add('dg-stats-v41');
-};
 
 window.DailyGenreStatsCategoryHotfix = {
   ...(window.DailyGenreStatsCategoryHotfix || {}),
@@ -2820,12 +2751,54 @@ function dgStatsV42InstallStyles() {
   document.head.appendChild(style);
 }
 
-const dgStatsPreviousPolishApplyV42 = typeof statsPolishApply === 'function' ? statsPolishApply : null;
-statsPolishApply = function statsPolishApplyV42() {
-  dgStatsPreviousPolishApplyV42?.();
+
+
+/* === Stats polish v4.3: consolidated final pipeline ===
+   Preserve the current V42 UI while avoiding chained runtime overrides. */
+function installStatsStyles() {
+  dgStatsV38InstallStyles();
+  dgStatsV39InstallStyles();
+  dgStatsV40InstallStyles();
+  dgStatsV41InstallStyles();
   dgStatsV42InstallStyles();
-  document.getElementById('screen-viz')?.classList.add('dg-stats-v42');
-};
+}
+
+function applyFinalStatsVersionClasses() {
+  document
+    .getElementById("screen-viz")
+    ?.classList.add(
+      "dg-stats-v37",
+      "dg-stats-v38",
+      "dg-stats-v39",
+      "dg-stats-v40",
+      "dg-stats-v41",
+      "dg-stats-v42",
+    );
+}
+
+function statsPolishApply() {
+  applyBaseStatsPolish();
+  dgStatsV36Apply();
+  installStatsStyles();
+  applyFinalStatsVersionClasses();
+}
+
+function renderVisualDrilldown() {
+  const selected =
+    typeof dgStatsGetCategoryFocus === "function"
+      ? dgStatsGetCategoryFocus()
+      : [];
+  const state =
+    typeof vizDrilldownState !== "undefined" ? vizDrilldownState : null;
+
+  if (selected.length || state?.type === "category") {
+    dgStatsRenderReactiveCategoryDrilldownV40();
+    return;
+  }
+
+  dgStatsClearCategoryInlineDrilldownsV40();
+  renderBaseVisualDrilldown();
+}
 
 window.DailyGenreStatsCategoryHotfix = {
   ...(window.DailyGenreStatsCategoryHotfix || {}),
