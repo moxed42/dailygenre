@@ -6754,30 +6754,46 @@ function blockSaveIfDuplicateGenres() {
     }
 
 
-    function decodeBase64Utf8(value='') {
-      const clean = String(value || '').replace(/\s/g, '');
-      const binary = atob(clean);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
-      return new TextDecoder().decode(bytes);
+    // Daily Genre v242: Worker-first data loading.
+    // GitHub's object media type returns the blob SHA and size without embedding
+    // the multi-megabyte file contents, so normal launches can verify freshness
+    // without downloading and parsing genres_data.json twice.
+    async function fetchProductionDataMetadata() {
+      try {
+        const apiRes = await fetch(DATA_API_URL, {
+          cache: 'no-store',
+          headers: { Accept: 'application/vnd.github.object+json' }
+        });
+        const meta = await apiRes.json().catch(() => ({}));
+        if (apiRes.ok && meta && meta.sha) {
+          return {
+            sha: String(meta.sha || ''),
+            size: Number(meta.size || 0) || 0
+          };
+        }
+        console.info('[Daily Genre] GitHub revision metadata unavailable; continuing with Worker data.', {
+          status: apiRes.status
+        });
+      } catch (apiError) {
+        console.info('[Daily Genre] GitHub revision check failed; continuing with Worker data.', apiError);
+      }
+      return null;
     }
 
-    async function fetchProductionDataFallback() {
-      try {
-        const apiRes = await fetch(DATA_API_URL, { cache: 'no-store' });
-        const meta = await apiRes.json().catch(() => ({}));
-        if (apiRes.ok && meta && meta.content) {
-          const parsed = JSON.parse(decodeBase64Utf8(meta.content));
-          if (Array.isArray(parsed)) return { data: parsed, sha: meta.sha || '', source: 'github-api' };
-        }
-      } catch (apiError) {
-        console.warn('GitHub contents fallback failed', apiError);
-      }
+    async function fetchProductionDataFallback(metadata = null) {
+      const meta = metadata || await fetchProductionDataMetadata();
 
       try {
         const rawRes = await fetch(DATA_URL, { cache: 'no-store' });
         const parsed = await rawRes.json().catch(() => null);
-        if (rawRes.ok && Array.isArray(parsed)) return { data: parsed, sha: '', source: 'raw-json' };
+        if (rawRes.ok && Array.isArray(parsed)) {
+          return {
+            data: parsed,
+            sha: String(meta?.sha || ''),
+            size: Number(meta?.size || 0) || 0,
+            source: 'github-raw'
+          };
+        }
       } catch (rawError) {
         console.warn('Raw JSON fallback failed', rawError);
       }
@@ -6841,23 +6857,8 @@ async function loadData() {
 
   let workerLoaded = null;
   let githubLoaded = null;
+  let githubMetadata = null;
   let loaded = null;
-
-  try {
-    const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
-    const data = await res.json().catch(() => ({}));
-    if (res.ok && data.ok && Array.isArray(data.data)) {
-      workerLoaded = { data: data.data, sha: data.sha || '', source: 'worker' };
-    } else {
-      console.warn('Production Worker data load did not return the expected shape; checking GitHub JSON.', data);
-    }
-  } catch (workerError) {
-    console.warn('Production Worker data load failed; checking GitHub JSON.', workerError);
-  }
-
-  // Always check GitHub too. The Worker can return a valid-but-stale snapshot;
-  // if that happens, the app would otherwise silently miss newly added genres.
-  githubLoaded = await fetchProductionDataFallback();
 
   function uniqueGenreCount(rows) {
     return new Set((rows || []).map(g => String(g && g.id != null ? g.id : (g && g.genre) || ''))).size;
@@ -6870,25 +6871,71 @@ async function loadData() {
     }, -1);
   }
 
+  // Start the lightweight SHA request alongside the Worker request. This keeps
+  // the freshness check without putting a second full JSON transfer on startup.
+  const githubMetadataPromise = fetchProductionDataMetadata();
+
+  try {
+    const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.ok && Array.isArray(data.data)) {
+      workerLoaded = {
+        data: data.data,
+        sha: String(data.sha || ''),
+        source: 'worker'
+      };
+    } else {
+      console.warn('Production Worker data load did not return the expected shape; checking GitHub JSON.', data);
+    }
+  } catch (workerError) {
+    console.warn('Production Worker data load failed; checking GitHub JSON.', workerError);
+  }
+
+  githubMetadata = await githubMetadataPromise;
+
+  if (workerLoaded) {
+    loaded = workerLoaded;
+
+    const workerSha = String(workerLoaded.sha || '');
+    const githubSha = String(githubMetadata?.sha || '');
+
+    // A missing Worker SHA cannot be safely compared, so treat it like a
+    // mismatch. The expensive raw download occurs only on this exceptional path.
+    if (githubSha && (!workerSha || workerSha !== githubSha)) {
+      githubLoaded = await fetchProductionDataFallback(githubMetadata);
+
+      const workerCountForCheck = uniqueGenreCount(workerLoaded.data);
+      const githubCountForCheck = uniqueGenreCount(githubLoaded?.data);
+
+      if (githubLoaded && githubCountForCheck >= workerCountForCheck) {
+        loaded = githubLoaded;
+        console.warn('[Daily Genre] Worker revision differs from GitHub; using current GitHub data.', {
+          workerCount: workerCountForCheck,
+          githubCount: githubCountForCheck,
+          workerSha,
+          githubSha
+        });
+        showSaveToast('Worker revision was stale; loaded the current GitHub library.', false);
+      } else if (githubLoaded) {
+        console.warn('[Daily Genre] GitHub revision differed but returned fewer genres; keeping Worker data.', {
+          workerCount: workerCountForCheck,
+          githubCount: githubCountForCheck,
+          workerSha,
+          githubSha
+        });
+      }
+    }
+  } else {
+    // The Worker is unavailable or malformed, so pay the cost of the full raw
+    // GitHub download only as a true fallback.
+    githubLoaded = await fetchProductionDataFallback(githubMetadata);
+    loaded = githubLoaded;
+  }
+
   const workerCount = uniqueGenreCount(workerLoaded && workerLoaded.data);
   const githubCount = uniqueGenreCount(githubLoaded && githubLoaded.data);
   const workerMaxId = maxGenreId(workerLoaded && workerLoaded.data);
   const githubMaxId = maxGenreId(githubLoaded && githubLoaded.data);
-
-  if (githubLoaded && githubCount > workerCount) {
-    loaded = githubLoaded;
-    console.warn('[Daily Genre] Worker data appears stale; using newer GitHub data instead.', {
-      workerCount,
-      githubCount,
-      workerMaxId,
-      githubMaxId,
-      workerSha: workerLoaded && workerLoaded.sha,
-      githubSha: githubLoaded.sha
-    });
-    showSaveToast(`Loaded ${githubCount} genres from GitHub; Worker only returned ${workerCount}.`, false);
-  } else {
-    loaded = workerLoaded || githubLoaded;
-  }
 
   if (!loaded || !Array.isArray(loaded.data)) {
     remainingCount.textContent = 'Could not load production data.';
@@ -6908,8 +6955,11 @@ async function loadData() {
     workerMaxId,
     githubCount,
     githubMaxId,
+    githubDataFetched: Boolean(githubLoaded),
+    githubRevisionChecked: Boolean(githubMetadata),
+    githubDataSize: Number(githubMetadata?.size || githubLoaded?.size || 0) || 0,
     workerSha: workerLoaded && workerLoaded.sha,
-    githubSha: githubLoaded && githubLoaded.sha
+    githubSha: String(githubMetadata?.sha || githubLoaded?.sha || '')
   };
   console.info('[Daily Genre] Data source selected', window.dailyGenreDataSource);
 
