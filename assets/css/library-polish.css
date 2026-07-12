@@ -10525,3 +10525,10 @@ body:not(.spotify-player-open) #spotifyStickyPlayer:not(.open) {
   overflow: visible !important;
   text-overflow: clip !important;
 }
+
+/* === Album carousel navigation fix v239 ===
+   Keep both previous and next controls anchored inside the focused carousel. */
+.album-focus-view-shelf-top .album-focus-carousel .album-focus-nav,
+.album-focus-carousel.album-focus-carousel-arrows-only .album-focus-nav {
+  position: absolute !important;
+}
