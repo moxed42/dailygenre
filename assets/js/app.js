@@ -168,7 +168,148 @@
       });
     }
 
-    function switchScreen(name, options = {}) {
+
+    // Daily Genre v248.1: direct navigation render cache.
+    const navigationScreenRenderCache =
+      window.DailyGenreScreenCache?.createScreenRenderCache?.({
+        getRevision: () => {
+          try {
+            const diagnostics = window.dailyGenreLibraryIndexDiagnostics?.();
+            if (diagnostics?.revision != null) return diagnostics.revision;
+          } catch {}
+          return `${Array.isArray(genres) ? genres.length : 0}:${serverFileSha || ''}`;
+        },
+        getSignature: screen => {
+          const value = id => String(document.getElementById(id)?.value || '');
+
+          if (screen === 'history') {
+            return JSON.stringify({
+              archiveView: String(archiveView || ''),
+              search: value('archiveSearchInput'),
+              sort: value('archiveSortFilter'),
+              month: value('historyMonthFilter'),
+              rating: value('historyRatingFilter'),
+              flag: value('archiveFlagFilter'),
+            });
+          }
+
+          if (screen === 'review') {
+            return JSON.stringify({
+              search: value('reviewPendingSearch'),
+              inboxSong: value('inboxSongInput'),
+              inboxTarget: value('inboxTargetGenre'),
+              queueLimit: Number(vizQueueLimits?.reviewPending || 0),
+            });
+          }
+
+          if (screen === 'ranking') {
+            return JSON.stringify({
+              tier: value('ranksPolishTierFilter'),
+              category: value('ranksPolishCategoryFilter'),
+              parent: value('ranksPolishParentFilter'),
+              search: value('ranksPolishSearch'),
+            });
+          }
+
+          return '';
+        },
+        isReady: screen => {
+          const targets = {
+            history: [
+              '#historyContent',
+              '#historyList',
+              '#historyWrap',
+              '#screen-history .archive-list',
+              '#screen-history .history-list',
+            ],
+            review: ['#reviewContent'],
+            ranking: ['#rankingWrap'],
+          };
+          return (targets[screen] || []).some(selector => {
+            const element = document.querySelector(selector);
+            return Boolean(
+              element &&
+              (
+                element.childElementCount > 0 ||
+                String(element.textContent || '').trim()
+              )
+            );
+          });
+        },
+        isAllowed: () => {
+          if (libraryUpdatesPending) return false;
+          const floatingSave = document.getElementById('floatingListeningSave');
+          return !floatingSave || floatingSave.classList.contains('hidden');
+        },
+        onEvent: (type, detail) => {
+          window.__dailyGenrePerformanceTracker?.event?.(
+            `screenCache.${type}`,
+            detail,
+          );
+          if (type === 'hit') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'screenCache.hits',
+            );
+          }
+          if (type === 'render') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'screenCache.renders',
+            );
+          }
+          if (type === 'bypass') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'screenCache.bypasses',
+            );
+          }
+        },
+      }) || null;
+
+    function renderNavigationScreen(screen, renderFn, options = {}) {
+      if (typeof renderFn !== 'function') return undefined;
+
+      const shouldRender =
+        !navigationScreenRenderCache ||
+        navigationScreenRenderCache.shouldRender(screen, options);
+
+      if (!shouldRender) return undefined;
+
+      const token =
+        window.__dailyGenrePerformanceTracker?.start?.(
+          `screen.${screen}.render`,
+          { directNavigationCache: true },
+        ) || null;
+
+      try {
+        const result = renderFn();
+        navigationScreenRenderCache?.markRendered(screen);
+        return result;
+      } finally {
+        if (token) {
+          window.__dailyGenrePerformanceTracker?.end?.(
+            token,
+            { directNavigationCache: true },
+          );
+        }
+      }
+    }
+
+    window.dailyGenreScreenCacheInvalidate = (
+      screen = null,
+      reason = 'manual',
+    ) => navigationScreenRenderCache?.invalidate(screen, reason);
+
+    window.dailyGenreScreenCacheDiagnostics = () => ({
+      installed: Boolean(navigationScreenRenderCache),
+      strategy: 'direct-switchScreen',
+      ...(
+        navigationScreenRenderCache?.snapshot?.() || {
+          entries: {},
+          counters: {},
+        }
+      ),
+    });
+
+function switchScreen(name, options = {}) {
       const currentActive = document.querySelector('.screen.active');
       const currentName = currentActive?.id?.replace('screen-', '') || '';
 
@@ -190,20 +331,20 @@
       if (name === 'review') {
         setTimeout(() => {
           if (typeof renderReview === 'function') {
-            renderReview();
+            renderNavigationScreen('review', renderReview);
           }
         }, 20);
       }
 
       if (name === 'history' && !options.skipRender) {
         setTimeout(() => {
-          if (typeof renderHistory === 'function') renderHistory();
+          if (typeof renderHistory === 'function') renderNavigationScreen('history', renderHistory);
         }, 0);
       }
 
       if (name === 'ranking' && !options.skipRender) {
         setTimeout(() => {
-          if (typeof renderRankings === 'function') renderRankings();
+          if (typeof renderRankings === 'function') renderNavigationScreen('ranking', renderRankings);
         }, 0);
       }
 
