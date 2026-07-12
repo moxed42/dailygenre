@@ -6932,8 +6932,10 @@ async function loadData() {
   refreshTopAlbumDiveButton();
   buildSpinnerPool();
   populateMonthFilter();
-  renderHistory();
-  renderRankings();
+
+  // Daily Genre v241: defer expensive inactive-screen rendering.
+  // switchScreen() renders Archive/Rankings when opened, while this helper
+  // still restores either screen if it was already active during data load.
   rerenderActiveScreenAfterDataLoad();
 
   const hashMatch = location.hash.match(/^#genre=(.+)$/);
