@@ -7431,8 +7431,22 @@ function blockSaveIfDuplicateGenres() {
       progressive: { ...archiveProgressiveRenderDiagnostics },
     });
 
-    // Daily Genre v253: bound Archive DOM work with progressive batches.
-    const ARCHIVE_RENDER_BATCH_SIZE = 80;
+    // Daily Genre v256: measured 80-card Archive changes caused 83–100 ms frame gaps.
+    const ARCHIVE_DESKTOP_BATCH_SIZE = 48;
+    const ARCHIVE_MOBILE_BATCH_SIZE = 32;
+    const ARCHIVE_MOBILE_BATCH_QUERY = '(max-width: 760px)';
+
+    function archiveRenderBatchSize() {
+      try {
+        return window.matchMedia?.(ARCHIVE_MOBILE_BATCH_QUERY)?.matches
+          ? ARCHIVE_MOBILE_BATCH_SIZE
+          : ARCHIVE_DESKTOP_BATCH_SIZE;
+      } catch (_) {
+        return ARCHIVE_DESKTOP_BATCH_SIZE;
+      }
+    }
+
+    const ARCHIVE_RENDER_BATCH_SIZE = archiveRenderBatchSize();
     const archiveProgressiveState =
       window.DailyGenreArchiveProgressive?.createArchiveProgressiveState?.({
         batchSize: ARCHIVE_RENDER_BATCH_SIZE,
@@ -7707,7 +7721,11 @@ function blockSaveIfDuplicateGenres() {
 
       return {
         installed: Boolean(archiveProgressiveState),
-        strategy: 'batch-80-delegated',
+        strategy: 'adaptive-batch-48-32-delegated',
+        desktopBatchSize: ARCHIVE_DESKTOP_BATCH_SIZE,
+        mobileBatchSize: ARCHIVE_MOBILE_BATCH_SIZE,
+        mobileQuery: ARCHIVE_MOBILE_BATCH_QUERY,
+        activeBatchSize: ARCHIVE_RENDER_BATCH_SIZE,
         ...state,
         domCards:
           document.querySelectorAll('#historyList .archive-card').length,
