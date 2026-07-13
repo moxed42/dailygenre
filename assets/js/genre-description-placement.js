@@ -1,8 +1,8 @@
-/* Daily Genre v262 — place genre definition inside Genre DNA above aliases. */
-(function installDailyGenreDnaDefinitionPlacement() {
+/* Daily Genre v265 — always show genre.summary in Genre DNA above aliases. */
+(function installDailyGenreAlwaysVisibleDnaDefinition() {
   'use strict';
 
-  const BUILD = 'v262';
+  const BUILD = 'v265';
   let observer = null;
   let scheduled = false;
 
@@ -33,20 +33,15 @@
     return genres().find(genre => String(genre?.genre || '').trim() === title) || null;
   }
 
-  function definitionForGenre(genre) {
-    return String(
-      genre?.summary ??
-      genre?.description ??
-      genre?.genre_description ??
-      genre?.genreDescription ??
-      ''
-    ).trim();
+  function summaryForGenre(genre) {
+    // This is intentionally the exact field used by the genre page/Discord copy.
+    return String(genre?.summary || '').trim();
   }
 
   function ensureStyles() {
-    if (document.getElementById('dg-v262-dna-definition-style')) return;
+    if (document.getElementById('dg-v265-dna-definition-style')) return;
     const style = document.createElement('style');
-    style.id = 'dg-v262-dna-definition-style';
+    style.id = 'dg-v265-dna-definition-style';
     style.textContent = `
       #listenDetails .genre-identity-dna .genre-identity-definition-card {
         margin: 0 0 12px;
@@ -70,26 +65,82 @@
         font-size: .96rem;
         line-height: 1.55;
       }
+      #listenDetails .genre-identity-dna[data-v265-summary-only="true"] {
+        margin-top: 16px;
+      }
     `;
     document.head.appendChild(style);
+  }
+
+  function createMinimalDna(root) {
+    const section = document.createElement('section');
+    section.className = 'genre-identity-dna';
+    section.setAttribute('aria-label', 'Genre DNA');
+    section.dataset.v265SummaryOnly = 'true';
+    section.innerHTML = `
+      <div class="genre-identity-dna-head">
+        <div>
+          <div class="eyebrow">Genre DNA</div>
+          <h3>Definition and identity</h3>
+          <p class="small">Core context for this genre.</p>
+        </div>
+      </div>
+    `;
+
+    const anchor = root.querySelector(
+      '.song-listening-room, .dc-song-listening-section, .listening-focus-section-shell, .album-dive-panel, .detail-log-section, #dc-songs'
+    );
+
+    if (anchor) {
+      anchor.insertAdjacentElement('beforebegin', section);
+      return section;
+    }
+
+    const consoleWrap = root.querySelector('.discovery-console');
+    if (consoleWrap) {
+      const insertAfter = consoleWrap.querySelector(
+        '.dc-vibe-line, .dc-progress-strip, .detail-record-card'
+      );
+      if (insertAfter) insertAfter.insertAdjacentElement('afterend', section);
+      else consoleWrap.insertAdjacentElement('afterbegin', section);
+      return section;
+    }
+
+    const hero = root.querySelector('.detail-hero');
+    if (hero) hero.insertAdjacentElement('afterend', section);
+    else root.insertAdjacentElement('afterbegin', section);
+    return section;
+  }
+
+  function ensureDnaSection(root, genre) {
+    let dna = root.querySelector('.genre-identity-dna');
+    if (dna) return dna;
+
+    if (!summaryForGenre(genre)) return null;
+    return createMinimalDna(root);
   }
 
   function restoreDefinition() {
     const root = document.getElementById('listenDetails');
     if (!root) return false;
 
-    // Remove the incorrect v261 header placement if it exists.
+    // Remove the old incorrect header-level placement if present.
     root.querySelectorAll('.genre-identity-description-line').forEach(element => element.remove());
 
     const genre = currentGenreValue();
-    const dna = root.querySelector('.genre-identity-dna');
-    if (!genre || !dna) return false;
+    if (!genre) return false;
 
-    const definition = definitionForGenre(genre);
+    const summary = summaryForGenre(genre);
+    const dna = ensureDnaSection(root, genre);
+    if (!dna) return false;
+
     let card = dna.querySelector('.genre-identity-definition-card');
 
-    if (!definition) {
+    if (!summary) {
       card?.remove();
+
+      // Remove only the minimal section created by this patch.
+      if (dna.dataset.v265SummaryOnly === 'true') dna.remove();
       return false;
     }
 
@@ -99,12 +150,13 @@
     }
 
     card.dataset.genreId = String(genre.id ?? genre.genre ?? '');
-    card.innerHTML = `<span>Definition</span><p>${esc(definition)}</p>`;
+    card.innerHTML = `<span>Definition</span><p>${esc(summary)}</p>`;
 
     const aliasCard = dna.querySelector('.genre-identity-alias-card');
     const trackGrid = dna.querySelector('.genre-identity-track-grid');
     const head = dna.querySelector('.genre-identity-dna-head');
 
+    // Required order: heading → definition → aliases → tracks.
     if (aliasCard) {
       aliasCard.insertAdjacentElement('beforebegin', card);
     } else if (trackGrid) {
@@ -131,19 +183,24 @@
     ensureStyles();
     restoreDefinition();
 
-    const listenRoot = document.getElementById('screen-listen') || document.getElementById('listenDetails');
-    if (listenRoot && typeof MutationObserver === 'function') {
+    const listenRoot =
+      document.getElementById('screen-listen') ||
+      document.getElementById('listenDetails') ||
+      document.body;
+
+    if (typeof MutationObserver === 'function') {
       observer = new MutationObserver(scheduleRestore);
       observer.observe(listenRoot, { childList: true, subtree: true });
     }
 
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', event => {
       if (
         event.target.closest('[data-screen="listen"], #screen-listen') ||
         event.target.closest('[onclick*="openGenre"], [data-genre-id]')
       ) {
-        setTimeout(restoreDefinition, 80);
-        setTimeout(restoreDefinition, 180);
+        setTimeout(restoreDefinition, 60);
+        setTimeout(restoreDefinition, 160);
+        setTimeout(restoreDefinition, 320);
       }
     }, true);
   }
@@ -154,13 +211,25 @@
     const dna = root?.querySelector('.genre-identity-dna');
     const card = dna?.querySelector('.genre-identity-definition-card');
     const alias = dna?.querySelector('.genre-identity-alias-card');
+
     return {
       build: BUILD,
       installed: true,
       genre: genre?.genre || '',
-      definitionPresent: Boolean(definitionForGenre(genre)),
+      listenedDate: String(
+        genre?.date_normalized ||
+        genre?.datenormalized ||
+        genre?.date ||
+        ''
+      ).slice(0, 10),
+      summaryPresent: Boolean(summaryForGenre(genre)),
+      dnaVisible: Boolean(dna),
       definitionVisibleInDna: Boolean(card),
-      definitionImmediatelyBeforeAliases: Boolean(card && alias && card.nextElementSibling === alias),
+      definitionImmediatelyBeforeAliases: Boolean(
+        card && alias && card.nextElementSibling === alias
+      ),
+      minimalDnaCreated: dna?.dataset.v265SummaryOnly === 'true',
+      exactSourceField: 'summary',
       headerDefinitionRemoved: !root?.querySelector('.genre-identity-description-line'),
     };
   };
@@ -171,5 +240,5 @@
     boot();
   }
 
-  console.info('[Daily Genre] v262 Genre DNA definition placement installed.');
+  console.info('[Daily Genre] v265 always-visible Genre DNA definition installed.');
 })();
