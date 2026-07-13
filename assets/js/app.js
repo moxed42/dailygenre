@@ -4186,10 +4186,11 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       };
     }
 
+    // Daily Genre v250: restore Archive state before one cache-aware render.
     function restoreArchiveUiState() {
-      switchScreen('history');
+      switchScreen('history', { skipRender: true });
       if (!archiveUiState) {
-        renderHistory();
+        renderNavigationScreen('history', renderHistory);
         return;
       }
       archiveView = archiveUiState.archiveView || archiveView;
@@ -4199,7 +4200,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       if (document.getElementById('historyRatingFilter')) document.getElementById('historyRatingFilter').value = archiveUiState.rating || '';
       if (document.getElementById('archiveFlagFilter')) document.getElementById('archiveFlagFilter').value = archiveUiState.flag || '';
       if (document.getElementById('archiveSortFilter')) document.getElementById('archiveSortFilter').value = archiveUiState.sort || 'newest';
-      renderHistory();
+      renderNavigationScreen('history', renderHistory);
       setTimeout(() => window.scrollTo({ top: archiveUiState.scrollY || 0, behavior: 'auto' }), 0);
     }
 
