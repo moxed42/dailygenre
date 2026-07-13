@@ -496,6 +496,7 @@ function switchScreen(name, options = {}) {
     let reviewGenreDatalistLength = -1;
 
     function invalidateGenreIndexes(reason = 'mutation') {
+      window.dailyGenreArchiveRenderReuseInvalidate?.('genre-index-invalidation');
       if (genreByIdIndexState) {
         genreByIdIndexState.invalidate();
         try {
@@ -7366,7 +7367,10 @@ function blockSaveIfDuplicateGenres() {
 
     window.dailyGenreArchiveViewModelCacheInvalidate = (
       reason = 'manual',
-    ) => archiveViewModelCache?.clear(reason);
+    ) => {
+      archiveViewModelCache?.clear(reason);
+      window.dailyGenreArchiveRenderReuseInvalidate?.(reason);
+    };
 
     window.dailyGenreArchiveViewModelCacheDiagnostics = () => ({
       installed: Boolean(archiveViewModelCache),
@@ -7383,6 +7387,50 @@ function blockSaveIfDuplicateGenres() {
       ),
     });
 
+    // Daily Genre v255: reuse unchanged Archive DOM on same-signature refreshes.
+    const archiveRenderReuse =
+      window.DailyGenreArchiveRenderReuse?.createArchiveRenderReuse?.({
+        onEvent: (type, detail) => {
+          window.__dailyGenrePerformanceTracker?.event?.(
+            `archiveDomReuse.${type}`,
+            detail,
+          );
+          if (type === 'reuse') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'archiveDomReuse.reuses',
+            );
+          }
+          if (type === 'forced') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'archiveDomReuse.forced',
+            );
+          }
+        },
+      }) || null;
+
+    window.dailyGenreArchiveRenderReuseInvalidate = (
+      reason = 'manual',
+    ) => archiveRenderReuse?.invalidate(reason);
+
+    window.dailyGenreArchiveRenderReuseDiagnostics = () => ({
+      installed: Boolean(archiveRenderReuse),
+      strategy: 'same-signature-dom-reuse',
+      ...(
+        archiveRenderReuse?.snapshot?.() || {
+          current: {
+            signature: '',
+            total: 0,
+            rendered: 0,
+            domCards: 0,
+          },
+          lastOutcome: '',
+          lastReason: '',
+          counters: {},
+        }
+      ),
+      progressive: { ...archiveProgressiveRenderDiagnostics },
+    });
+
     // Daily Genre v253: bound Archive DOM work with progressive batches.
     const ARCHIVE_RENDER_BATCH_SIZE = 80;
     const archiveProgressiveState =
@@ -7393,6 +7441,8 @@ function blockSaveIfDuplicateGenres() {
     const archiveProgressiveRenderDiagnostics = {
       renderPasses: 0,
       appendPasses: 0,
+      reusePasses: 0,
+      forcedPasses: 0,
       delegatedBindings: 0,
     };
 
@@ -7477,7 +7527,12 @@ function blockSaveIfDuplicateGenres() {
       });
     }
 
-    function renderArchiveProgressiveList(list, items, signature) {
+    function renderArchiveProgressiveList(
+      list,
+      items,
+      signature,
+      options = {},
+    ) {
       ensureArchiveListDelegation(list);
 
       const snapshot =
@@ -7493,9 +7548,67 @@ function blockSaveIfDuplicateGenres() {
         };
 
       archiveRenderedItems = items.slice(0, snapshot.rendered);
+
+      const forceDomRender = Boolean(
+        options.forceDomRender ||
+        hasUnsavedChanges ||
+        libraryUpdatesPending
+      );
+      const forceReason = options.forceDomRender
+        ? 'explicit'
+        : (hasUnsavedChanges || libraryUpdatesPending)
+          ? 'unsaved-library-state'
+          : '';
+      const domCards =
+        list.querySelectorAll('.archive-card').length;
+      const canReuseArchiveDom =
+        archiveRenderReuse?.shouldReuse?.({
+          signature,
+          total: snapshot.total,
+          rendered: snapshot.rendered,
+          domCards,
+          force: forceDomRender,
+          forceReason,
+        }) || false;
+
+      if (canReuseArchiveDom) {
+        archiveProgressiveRenderDiagnostics.reusePasses += 1;
+        window.__dailyGenrePerformanceTracker?.increment?.(
+          'archiveProgressive.reusePasses',
+        );
+        window.__dailyGenrePerformanceTracker?.event?.(
+          'archiveProgressive.reuse',
+          {
+            total: snapshot.total,
+            rendered: snapshot.rendered,
+            remaining: snapshot.remaining,
+          },
+        );
+        archiveUpdatePlaylistButtons();
+        return {
+          reused: true,
+          snapshot,
+        };
+      }
+
+      if (forceDomRender) {
+        archiveProgressiveRenderDiagnostics.forcedPasses += 1;
+      }
+
       list.innerHTML =
         archiveRenderedItems.map(archiveCardHtml).join('') +
         archiveLoadMoreHtml(snapshot);
+
+      archiveRenderReuse?.remember?.(
+        {
+          signature,
+          total: snapshot.total,
+          rendered: snapshot.rendered,
+          domCards:
+            list.querySelectorAll('.archive-card').length,
+        },
+        'render',
+      );
 
       archiveProgressiveRenderDiagnostics.renderPasses += 1;
       window.__dailyGenrePerformanceTracker?.increment?.(
@@ -7510,6 +7623,10 @@ function blockSaveIfDuplicateGenres() {
         },
       );
       archiveUpdatePlaylistButtons();
+      return {
+        reused: false,
+        snapshot,
+      };
     }
 
     function loadMoreArchiveEntries() {
@@ -7540,6 +7657,19 @@ function blockSaveIfDuplicateGenres() {
 
       const controls = archiveLoadMoreHtml(after);
       if (controls) list.insertAdjacentHTML('beforeend', controls);
+
+      archiveRenderReuse?.remember?.(
+        {
+          signature: String(
+            after.signature || before.signature || '',
+          ),
+          total: after.total,
+          rendered: after.rendered,
+          domCards:
+            list.querySelectorAll('.archive-card').length,
+        },
+        'append',
+      );
 
       archiveProgressiveRenderDiagnostics.appendPasses += 1;
       window.__dailyGenrePerformanceTracker?.increment?.(
@@ -7585,7 +7715,7 @@ function blockSaveIfDuplicateGenres() {
       };
     };
 
-        function renderHistory() {
+    function renderHistory(options = {}) {
       const monthEl =
         document.getElementById('historyMonthFilter');
       const ratingEl =
@@ -7617,8 +7747,6 @@ function blockSaveIfDuplicateGenres() {
 
       archiveCurrentItems = items;
       archiveCurrentLabel = label;
-      renderArchiveSummary(items, label);
-      archiveUpdatePlaylistButtons();
 
       const archiveSignature = JSON.stringify({
         revision: viewModel.revision,
@@ -7627,23 +7755,48 @@ function blockSaveIfDuplicateGenres() {
       window._archiveItems = items;
 
       if (!items.length) {
-        archiveProgressiveState?.prepare(
-          archiveSignature,
-          0,
-        );
+        const emptySnapshot =
+          archiveProgressiveState?.prepare(
+            archiveSignature,
+            0,
+          ) || {
+            signature: archiveSignature,
+            total: 0,
+            rendered: 0,
+          };
         archiveRenderedItems = [];
         ensureArchiveListDelegation(list);
         list.innerHTML =
           `<div class="small">No matching entries yet.</div>`;
+        archiveRenderReuse?.remember?.(
+          {
+            signature: archiveSignature,
+            total: Number(emptySnapshot.total || 0),
+            rendered: 0,
+            domCards: 0,
+          },
+          'empty',
+        );
+        renderArchiveSummary(items, label);
         archiveUpdatePlaylistButtons();
         return;
       }
 
-      renderArchiveProgressiveList(
+      const renderResult = renderArchiveProgressiveList(
         list,
         items,
         archiveSignature,
+        {
+          forceDomRender: Boolean(
+            options.forceDomRender ||
+            viewModel.cacheOutcome === 'bypass'
+          ),
+        },
       );
+
+      if (!renderResult?.reused) {
+        renderArchiveSummary(items, label);
+      }
     }
 
     function archiveVisiblePlaylistGenreIds() {
@@ -7683,7 +7836,7 @@ function blockSaveIfDuplicateGenres() {
         if (allVisibleSelected) archivePlaylistSelectedGenreIds.delete(id);
         else archivePlaylistSelectedGenreIds.add(id);
       });
-      renderHistory();
+      renderHistory({ forceDomRender: true });
       archiveUpdatePlaylistButtons();
     }
 
