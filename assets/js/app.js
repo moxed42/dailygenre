@@ -6864,6 +6864,208 @@ function blockSaveIfDuplicateGenres() {
       `;
     }
 
+    // Daily Genre v253: bound Archive DOM work with progressive batches.
+    const ARCHIVE_RENDER_BATCH_SIZE = 80;
+    const archiveProgressiveState =
+      window.DailyGenreArchiveProgressive?.createArchiveProgressiveState?.({
+        batchSize: ARCHIVE_RENDER_BATCH_SIZE,
+      }) || null;
+    let archiveRenderedItems = [];
+    const archiveProgressiveRenderDiagnostics = {
+      renderPasses: 0,
+      appendPasses: 0,
+      delegatedBindings: 0,
+    };
+
+    function archiveCardHtml(g) {
+      const songs = normalizeSongsListened(g.songs_listened || []);
+      const songCount = countSongsForDisplay(songs);
+      const ratingLabel = escapeHtml(genreRatingStarsOnly(g));
+      const art = getGenreArtwork(g);
+
+      return `
+        <div class="list-item archive-card">
+          ${artworkHtml(art, 'archive-artwork', g.genre || 'Genre artwork')}
+          <div class="archive-card-main">
+            <div class="archive-card-body">
+              <h3 class="archive-card-title">${escapeHtml(g.genre || 'Unknown')}</h3>
+              <div class="small archive-card-meta">${escapeHtml(categoryLine(g))}</div>
+              <div class="status-row">
+                <span class="tag">${ratingLabel}</span>
+                ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
+                ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : (songCount > 0 && !g.rank_order && g.rating !== 'zanger' ? '<span class="tag tag-warn">No rank yet</span>' : '')}
+                ${hasAltTake(g) ? '<span class="tag">Alt Take</span>' : ''}
+                ${hasPending(g) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
+                ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'}</span>` : '<span class="tag">Needs songs</span>'}
+              </div>
+              ${g.favoritesong ? `<div class="small" style="margin-top:8px;">Favorite song: ${
+                g.favoritesongurl
+                  ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
+                  : escapeHtml(g.favoritesong)
+              }</div>` : ''}
+            </div>
+            <div class="archive-card-right">
+              <span class="small archive-card-date">${escapeHtml(dateValue(g) || 'No date')}</span>
+              <button class="btn btn-primary archive-primary-action" data-open-id="${g.id}">Open / Edit</button>
+              ${songCount ? `<label class="archive-select-genre"><input type="checkbox" data-archive-playlist-genre="${escapeHtml(String(g.id))}" ${archivePlaylistSelectedGenreIds.has(String(g.id)) ? 'checked' : ''} /> Playlist</label>` : ''}
+              ${songCount ? `<span class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.8rem;font-weight:900;white-space:nowrap;cursor:default;">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function archiveLoadMoreHtml(snapshot) {
+      if (!snapshot?.hasMore) return '';
+      const nextCount = Math.min(
+        Number(snapshot.batchSize || ARCHIVE_RENDER_BATCH_SIZE),
+        Number(snapshot.remaining || 0),
+      );
+
+      return `
+        <div class="review-load-next-wrap archive-load-more-wrap" data-archive-load-more-wrap>
+          <button type="button" class="btn btn-primary" data-archive-load-more>
+            Load next ${nextCount}
+          </button>
+          <span class="small">${snapshot.rendered} shown of ${snapshot.total} · ${snapshot.remaining} more</span>
+        </div>`;
+    }
+
+    function ensureArchiveListDelegation(list) {
+      if (!list || list.dataset.archiveDelegated === 'true') return;
+      list.dataset.archiveDelegated = 'true';
+      archiveProgressiveRenderDiagnostics.delegatedBindings += 1;
+
+      list.addEventListener('click', event => {
+        const loadMore = event.target?.closest?.('[data-archive-load-more]');
+        if (loadMore && list.contains(loadMore)) {
+          event.preventDefault();
+          loadMoreArchiveEntries();
+          return;
+        }
+
+        const openButton = event.target?.closest?.('[data-open-id]');
+        if (!openButton || !list.contains(openButton)) return;
+
+        const genre = getGenreById(openButton.dataset.openId);
+        if (genre) openGenreDetail(genre, false);
+      });
+
+      list.addEventListener('change', event => {
+        const checkbox =
+          event.target?.closest?.('[data-archive-playlist-genre]');
+        if (!checkbox || !list.contains(checkbox)) return;
+        archivePlaylistSelectionChanged(checkbox);
+      });
+    }
+
+    function renderArchiveProgressiveList(list, items, signature) {
+      ensureArchiveListDelegation(list);
+
+      const snapshot =
+        archiveProgressiveState?.prepare(signature, items.length) || {
+          batchSize: items.length,
+          signature,
+          total: items.length,
+          rendered: items.length,
+          remaining: 0,
+          hasMore: false,
+          resets: 0,
+          loads: 0,
+        };
+
+      archiveRenderedItems = items.slice(0, snapshot.rendered);
+      list.innerHTML =
+        archiveRenderedItems.map(archiveCardHtml).join('') +
+        archiveLoadMoreHtml(snapshot);
+
+      archiveProgressiveRenderDiagnostics.renderPasses += 1;
+      window.__dailyGenrePerformanceTracker?.increment?.(
+        'archiveProgressive.renderPasses',
+      );
+      window.__dailyGenrePerformanceTracker?.event?.(
+        'archiveProgressive.render',
+        {
+          total: snapshot.total,
+          rendered: snapshot.rendered,
+          remaining: snapshot.remaining,
+        },
+      );
+      archiveUpdatePlaylistButtons();
+    }
+
+    function loadMoreArchiveEntries() {
+      const list = document.getElementById('historyList');
+      if (!list || !archiveProgressiveState) return false;
+
+      const before = archiveProgressiveState.snapshot();
+      if (!before.hasMore) return false;
+
+      const after = archiveProgressiveState.loadMore();
+      const nextItems = (archiveCurrentItems || []).slice(
+        before.rendered,
+        after.rendered,
+      );
+
+      list.querySelector('[data-archive-load-more-wrap]')?.remove();
+      if (nextItems.length) {
+        list.insertAdjacentHTML(
+          'beforeend',
+          nextItems.map(archiveCardHtml).join(''),
+        );
+      }
+
+      archiveRenderedItems = (archiveCurrentItems || []).slice(
+        0,
+        after.rendered,
+      );
+
+      const controls = archiveLoadMoreHtml(after);
+      if (controls) list.insertAdjacentHTML('beforeend', controls);
+
+      archiveProgressiveRenderDiagnostics.appendPasses += 1;
+      window.__dailyGenrePerformanceTracker?.increment?.(
+        'archiveProgressive.appendPasses',
+      );
+      window.__dailyGenrePerformanceTracker?.event?.(
+        'archiveProgressive.append',
+        {
+          added: nextItems.length,
+          total: after.total,
+          rendered: after.rendered,
+          remaining: after.remaining,
+        },
+      );
+      archiveUpdatePlaylistButtons();
+      return true;
+    }
+
+    window.loadMoreArchiveEntries = loadMoreArchiveEntries;
+    window.dailyGenreArchiveProgressiveDiagnostics = () => {
+      const state =
+        archiveProgressiveState?.snapshot?.() || {
+          batchSize: null,
+          signature: '',
+          total: (archiveCurrentItems || []).length,
+          rendered: archiveRenderedItems.length,
+          remaining: Math.max(
+            0,
+            (archiveCurrentItems || []).length - archiveRenderedItems.length,
+          ),
+          hasMore: false,
+          resets: 0,
+          loads: 0,
+        };
+
+      return {
+        installed: Boolean(archiveProgressiveState),
+        strategy: 'batch-80-delegated',
+        ...state,
+        domCards:
+          document.querySelectorAll('#historyList .archive-card').length,
+        ...archiveProgressiveRenderDiagnostics,
+      };
+    };
+
     function renderHistory() {
       const monthEl = document.getElementById('historyMonthFilter');
       const ratingEl = document.getElementById('historyRatingFilter');
@@ -6962,58 +7164,30 @@ function blockSaveIfDuplicateGenres() {
       renderArchiveSummary(items, label);
       archiveUpdatePlaylistButtons();
 
+      const archiveSignature = JSON.stringify({
+        archiveView: String(archiveView || ''),
+        month: String(effectiveMonth || ''),
+        rating: String(rating || ''),
+        query: String(query || ''),
+        flag: String(flag || ''),
+        sort: String(sort || ''),
+      });
+      window._archiveItems = items;
+
       if (!items.length) {
+        archiveProgressiveState?.prepare(archiveSignature, 0);
+        archiveRenderedItems = [];
+        ensureArchiveListDelegation(list);
         list.innerHTML = `<div class="small">No matching entries yet.</div>`;
+        archiveUpdatePlaylistButtons();
         return;
       }
 
-      window._archiveItems = items;
-      list.innerHTML = items.map(g => {
-        const songs = normalizeSongsListened(g.songs_listened || []);
-        const songCount = countSongsForDisplay(songs);
-        const ratingLabel = escapeHtml(genreRatingStarsOnly(g));
-        const art = getGenreArtwork(g);
-        return `
-        <div class="list-item archive-card">
-          ${artworkHtml(art, 'archive-artwork', g.genre || 'Genre artwork')}
-          <div class="archive-card-main">
-            <div class="archive-card-body">
-              <h3 class="archive-card-title">${escapeHtml(g.genre || 'Unknown')}</h3>
-              <div class="small archive-card-meta">${escapeHtml(categoryLine(g))}</div>
-              <div class="status-row">
-                <span class="tag">${ratingLabel}</span>
-                ${g.monthlycontender ? '<span class="tag">📌 Monthly contender</span>' : ''}
-                ${(g.rank_order && g.rating !== 'zanger') ? `<span class="tag">Tier rank #${escapeHtml(String(g.rank_order))}</span>` : (countSongsForDisplay(songs) > 0 && !g.rank_order && g.rating !== 'zanger' ? '<span class="tag tag-warn">No rank yet</span>' : '')}
-                ${hasAltTake(g) ? '<span class="tag">Alt Take</span>' : ''}
-                ${hasPending(g) ? '<span class="tag tag-pending">⏳ Pending</span>' : ''}
-                ${songCount ? `<span class="tag">${songCount} song${songCount===1?'':'s'}</span>` : '<span class="tag">Needs songs</span>'}
-              </div>
-              ${g.favoritesong ? `<div class="small" style="margin-top:8px;">Favorite song: ${
-                g.favoritesongurl
-                  ? `<a href="${escapeHtml(g.favoritesongurl)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800;text-decoration:none;">${escapeHtml(g.favoritesong)} ↗</a>`
-                  : escapeHtml(g.favoritesong)
-              }</div>` : ''}
-            </div>
-            <div class="archive-card-right">
-              <span class="small archive-card-date">${escapeHtml(dateValue(g) || 'No date')}</span>
-              <button class="btn btn-primary archive-primary-action" data-open-id="${g.id}">Open / Edit</button>
-              ${songCount ? `<label class="archive-select-genre"><input type="checkbox" data-archive-playlist-genre="${escapeHtml(String(g.id))}" ${archivePlaylistSelectedGenreIds.has(String(g.id)) ? 'checked' : ''} onchange="archivePlaylistSelectionChanged(this)" /> Playlist</label>` : ''}
-              ${songCount ? `<span class="btn btn-ghost song-log-toggle" style="padding:5px 10px;font-size:.8rem;font-weight:900;white-space:nowrap;cursor:default;">${songCount} song${songCount===1?'':'s'} logged</span>` : ''}
-            </div>
-          </div>
-        </div>`;
-      }).join('');
-
-      [...list.querySelectorAll('[data-open-id]')].forEach(btn => {
-        btn.addEventListener('click', () => {
-          const genre = getGenreById(btn.dataset.openId);
-          if (genre) openGenreDetail(genre, false);
-        });
-      });
+      renderArchiveProgressiveList(list, items, archiveSignature);
     }
 
     function archiveVisiblePlaylistGenreIds() {
-      return (archiveCurrentItems || [])
+      return (archiveRenderedItems || [])
         .filter(g => spotifyPlaylistSongRows(g).length > 0)
         .map(g => String(g.id));
     }
