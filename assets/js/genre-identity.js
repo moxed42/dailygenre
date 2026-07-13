@@ -1366,32 +1366,9 @@
   }
 
   function identityBlockFromGenre(genre) {
-    if (!identityBlockHasContent(genre)) return "";
-    const lines = [];
-    lines.push(`GENRE: ${genre.genre || genre.name || ""}`.trim());
-    const aliases = aliasList(genre);
-    if (aliases.length) {
-      lines.push("", "ALIASES:");
-      aliases.forEach((alias) => lines.push(alias));
-    }
-    const sem = getSeminal(genre) || {};
-    if (sem.artist || sem.title || sem.name || sem.spotifyUrl || sem.url || sem.reason) {
-      lines.push("", "SEMINAL_TRACK:");
-      if (sem.artist) lines.push(`ARTIST: ${sem.artist}`);
-      if (sem.title || sem.name) lines.push(`TITLE: ${sem.title || sem.name}`);
-      if (sem.spotifyUrl || sem.url || sem.spotify_url) lines.push(`SPOTIFY_URL: ${sem.spotifyUrl || sem.url || sem.spotify_url}`);
-      if (sem.reason) lines.push(`REASON: ${sem.reason}`);
-    }
-    getMedia(genre).forEach((m) => {
-      if (!(m && (m.artist || m.title || m.name || m.mediaTitle || m.media || m.mediaType || m.spotifyUrl || m.url || m.reason))) return;
-      lines.push("", "MEDIA_TOUCHSTONE:");
-      if (m.artist) lines.push(`ARTIST: ${m.artist}`);
-      if (m.title || m.name) lines.push(`TITLE: ${m.title || m.name}`);
-      if (m.mediaTitle || m.media) lines.push(`MEDIA_TITLE: ${m.mediaTitle || m.media}`);
-      if (m.mediaType) lines.push(`MEDIA_TYPE: ${m.mediaType}`);
-      if (m.spotifyUrl || m.url || m.spotify_url) lines.push(`SPOTIFY_URL: ${m.spotifyUrl || m.url || m.spotify_url}`);
-      if (m.reason) lines.push(`REASON: ${m.reason}`);
-    });
+    if (!genre) return "";
+    const lines = [`GENRE: ${genre.genre || genre.name || ""}`.trim(), "", "ALIASES:"];
+    aliasList(genre).forEach((alias) => lines.push(alias));
     return lines.join("\n").trim();
   }
 
@@ -1428,10 +1405,11 @@
     section.innerHTML = `
       <div class="eyebrow" style="margin:0 0 6px;">Genre Identity</div>
       <div class="genre-identity-form genre-identity-detail-form" data-genre-id="${esc(String(g.id ?? ""))}">
-        <textarea id="detailGenreIdentityBlock" rows="11" spellcheck="false" data-dg-identity-textarea="1" style="font-family: monospace; font-size: 0.86rem; width:100%; max-width:none;" placeholder="GENRE: ${esc(g.genre || "Genre name")}&#10;&#10;ALIASES:&#10;known synonym&#10;&#10;SEMINAL_TRACK:&#10;ARTIST: Artist&#10;TITLE: Song&#10;SPOTIFY_URL: https://open.spotify.com/track/...&#10;REASON: Why this defines the genre&#10;&#10;MEDIA_TOUCHSTONE:&#10;ARTIST: Artist&#10;TITLE: Song&#10;MEDIA_TITLE: Movie / game / show&#10;MEDIA_TYPE: film&#10;REASON: Why this matters">${esc(identityBlockFromGenre(g))}</textarea>
+        <textarea id="detailGenreIdentityBlock" rows="5" spellcheck="false" data-dg-identity-textarea="1" style="font-family: monospace; font-size: 0.86rem; width:100%; max-width:none; min-height:112px; max-height:210px; resize:vertical;" placeholder="GENRE: ${esc(g.genre || "Genre name")}&#10;&#10;ALIASES:&#10;known synonym">${esc(identityBlockFromGenre(g))}</textarea>
+        <div class="small" style="margin-top:7px;">Enter the canonical genre name and one alias per line. Seminal and Media tracks belong in Songs listened.</div>
         <div class="genre-identity-actions genre-identity-full" style="margin-top:10px;">
-          <button type="button" class="btn btn-primary btn-tiny" id="detailGenreIdentityApplyBtn">Apply &amp; Save Genre Identity</button>
-          <button type="button" class="btn btn-secondary btn-tiny" id="detailGenreIdentityOverwriteBtn">Overwrite Identity</button>
+          <button type="button" class="btn btn-primary btn-tiny" id="detailGenreIdentityApplyBtn">Apply &amp; Save Aliases</button>
+          <button type="button" class="btn btn-secondary btn-tiny" id="detailGenreIdentityOverwriteBtn">Overwrite Aliases</button>
         </div>
       </div>`;
     const songBulk = document.getElementById("songsListenedBulk")?.closest("div");
@@ -1447,19 +1425,20 @@
 
     const saveBlock = async (overwrite = false) => {
       const target = currentGenre() || g;
-      if (!target) return toast("Open a genre before saving identity.", true);
+      if (!target) return toast("Open a genre before saving aliases.", true);
       const text = section.querySelector("#detailGenreIdentityBlock")?.value || "";
       const parsed = parseIdentityBlock(text);
-      if (!parsed.genre) parsed.genre = target.genre || target.name || "";
-      const matches = identityEntriesMatchingExistingSongs(target, parsed);
-      if (matches.length) {
-        const ok = window.confirm(`${matches.length} identity item${matches.length === 1 ? "" : "s"} already exist in Songs listened. Update the existing row instead of creating a duplicate?`);
-        if (!ok) return;
-      }
-      const ok = await importStructuredIdentityBlock(text, { overwrite, genreFallback: target.genre || target.name || "" });
-      if (ok !== false) {
-        setTimeout(() => injectDetailIdentityImport(target, { force: true }), 120);
-      }
+      const incomingAliases = Array.isArray(parsed.aliases) ? parsed.aliases : [];
+      const nextAliases = overwrite
+        ? incomingAliases
+        : [...aliasList(target), ...incomingAliases];
+      setAliases(target, nextAliases);
+      markDirty();
+      injectDnaCard(target);
+      await persistIdentityApplyNow(
+        `${overwrite ? "Overwrote" : "Updated"} and saved aliases for ${target.genre || "genre"}.`
+      );
+      setTimeout(() => injectDetailIdentityImport(target, { force: true }), 120);
     };
     section.querySelector("#detailGenreIdentityApplyBtn")?.addEventListener("click", () => saveBlock(false));
     section.querySelector("#detailGenreIdentityOverwriteBtn")?.addEventListener("click", () => saveBlock(true));
