@@ -35,6 +35,54 @@
       return mode === 'albums' && hasAlbums ? 'albums' : 'songs';
     }
 
+    // Daily Genre v251: render the Album Dive pane once per mounted genre view.
+    const albumDiveMountDiagnostics = {
+      renders: 0,
+      reuses: 0,
+    };
+
+    function ensureMountedAlbumDivePanel(pane, genre = currentGenre) {
+      if (!pane || !genre || typeof renderAlbumDivePanel !== 'function') {
+        return false;
+      }
+
+      if (pane.dataset.albumDiveMounted === 'true') {
+        albumDiveMountDiagnostics.reuses += 1;
+        window.__dailyGenrePerformanceTracker?.increment?.(
+          'albumDiveMount.reuses',
+        );
+        return true;
+      }
+
+      const token =
+        window.__dailyGenrePerformanceTracker?.start?.(
+          'albumDiveMount.render',
+          { genreId: String(genre.id || genre.genre || '') },
+        ) || null;
+
+      try {
+        pane.innerHTML = renderAlbumDivePanel(genre);
+        pane.dataset.albumDiveMounted = 'true';
+        albumDiveMountDiagnostics.renders += 1;
+        window.__dailyGenrePerformanceTracker?.increment?.(
+          'albumDiveMount.renders',
+        );
+        return true;
+      } finally {
+        if (token) {
+          window.__dailyGenrePerformanceTracker?.end?.(
+            token,
+            { genreId: String(genre.id || genre.genre || '') },
+          );
+        }
+      }
+    }
+
+    window.dailyGenreAlbumDiveMountDiagnostics = () => ({
+      strategy: 'mounted-pane-flag',
+      ...albumDiveMountDiagnostics,
+    });
+
     function setListeningFocusMode(mode, event = null) {
       if (event) { event.preventDefault?.(); event.stopPropagation?.(); }
       const previousScrollY = window.scrollY || document.documentElement.scrollTop || 0;
@@ -64,8 +112,8 @@
         });
         songsPane.classList.toggle('hidden', listeningFocusMode !== 'songs');
         albumsPane.classList.toggle('hidden', listeningFocusMode !== 'albums');
-        if (listeningFocusMode === 'albums' && typeof renderAlbumDivePanel === 'function') {
-          albumsPane.innerHTML = renderAlbumDivePanel(currentGenre);
+        if (listeningFocusMode === 'albums') {
+          ensureMountedAlbumDivePanel(albumsPane, currentGenre);
         }
       } else if (currentGenre && typeof loadListenScreen === 'function') {
         loadListenScreen(currentGenre, { preserveDirty: true, skipSpotifyHydration: true });
@@ -4449,7 +4497,9 @@ function loadListenScreen(genre, options = {}) {
       // Album Dive markup is also lazy-rendered unless the Album tab is active.
       const songCardOptions = (idx) => ({ allowTrackEdit: !mobileGenrePerf, songIndex: idx });
       const pendingCardOptions = (idx) => ({ pendingIndex: idx, allowTrackEdit: !mobileGenrePerf });
-      const albumPaneHtml = (!mobileGenrePerf || listeningFocusMode === 'albums')
+      const albumPaneMounted =
+        !mobileGenrePerf || listeningFocusMode === 'albums';
+      const albumPaneHtml = albumPaneMounted
         ? renderAlbumDivePanel(genre)
         : '<div class="pending-song-empty">Album shelf will load when you tap Albums.</div>';
       document.getElementById('listenDetails').innerHTML = `
@@ -4508,7 +4558,7 @@ function loadListenScreen(genre, options = {}) {
               ${activeSongs.length ? `<div class="detail-song-list">${activeSongs.map((song, idx) => renderSongEntry(song, false, songCardOptions(idx))).join('')}</div>` : '<div class="small">No songs logged yet. Add songs on the right and save to update this page.</div>'}
               <div class="pending-section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;margin-bottom:8px;"><div><div class="eyebrow" style="margin:0;">Pending Nominations</div><div class="small">Routing cleanup now lives in Review so cross-genre fixes happen in one place.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="switchScreen('review')">Open Review</button></div>${pendingSongs.length ? `<div class="detail-song-list">${pendingSongs.map((song, idx) => renderSongEntry(song, false, pendingCardOptions(idx))).join('')}</div>` : '<div class="pending-song-empty">No pending songs queued.</div>'}</div>
             </div>
-            <div class="listening-focus-pane listening-focus-albums ${listeningFocusMode === 'albums' ? '' : 'hidden'}">
+            <div class="listening-focus-pane listening-focus-albums ${listeningFocusMode === 'albums' ? '' : 'hidden'}" data-album-dive-mounted="${albumPaneMounted ? 'true' : 'false'}">
               ${albumPaneHtml}
             </div>
           </div>
