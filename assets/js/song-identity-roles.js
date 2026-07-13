@@ -1,8 +1,8 @@
-/* Daily Genre v258 — queue-native Seminal/Media roles + duplicate review. */
+/* Daily Genre v260 — queue-native Seminal/Media roles + purge protection + duplicate review. */
 (function installDailyGenreQueueIdentityRoles() {
   'use strict';
 
-  const BUILD = 'v258';
+  const BUILD = 'v260';
   const PLACEHOLDER_URL_RE = /^https?:\/\/(?:www\.)?(?:url\.com|example\.com|example\.org)(?:\/)?$/i;
   const ROLE_SEMINAL = 'seminal';
   const ROLE_MEDIA = 'media';
@@ -597,8 +597,13 @@
 
   const originalFinalize = getBinding('finalizeListeningUpdatesBeforeSave');
   function patchedFinalizeListeningUpdatesBeforeSave() {
-    const result = typeof originalFinalize === 'function' ? originalFinalize() : undefined;
     const genre = currentGenreValue();
+    markQueueModeFromTextarea(genre);
+    reconcileQueueRolesFromTextarea(genre);
+    syncIdentityMirrorsFromQueue(genre);
+
+    const result = typeof originalFinalize === 'function' ? originalFinalize() : undefined;
+
     reconcileQueueRolesFromTextarea(genre);
     syncIdentityMirrorsFromQueue(genre);
     return result;
@@ -676,7 +681,27 @@
         return original.call(this, genre, ...args);
       };
     });
+
+    const originalPurge = typeof api.purgeIdentityRowsFromSongQueue === 'function'
+      ? api.purgeIdentityRowsFromSongQueue
+      : null;
+    if (originalPurge) {
+      api.purgeIdentityRowsFromSongQueue = function queueRoleAwareIdentityPurge(genre, ...args) {
+        const queueMode = Boolean(
+          genre?.identityQueueRolesEnabled ||
+          genre?.identityRolesSource === QUEUE_ROLE_MARKER ||
+          hasQueueRoles(genre?.songs_listened)
+        );
+        if (queueMode) {
+          syncIdentityMirrorsFromQueue(genre);
+          return false;
+        }
+        return originalPurge.call(this, genre, ...args);
+      };
+    }
+
     api.__queueRolesV258Wrapped = true;
+    api.__queueRolesV260PurgeGuard = true;
   }
 
   function hideIdentityTrackControl(selector) {
