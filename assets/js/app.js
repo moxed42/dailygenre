@@ -506,6 +506,7 @@ function switchScreen(name, options = {}) {
       reviewGenreDatalistHtml = null;
       reviewGenreDatalistSource = null;
       reviewGenreDatalistLength = -1;
+      try { archiveViewModelCache?.clear?.(reason); } catch (_) {}
     }
 
     function replaceGenreLibrary(nextGenres, reason = 'replace-all') {
@@ -4690,74 +4691,244 @@ function loadListenScreen(genre, options = {}) {
     }
 
 
-  async function doSaveWithPassword(password) {
+    // Daily Genre v254: carry forward one in-flight save and interrupted-response recovery.
+  let productionSaveRequestInFlight = null;
+  const productionSaveRecoveryDiagnostics = {
+    attempts: 0,
+    joined: 0,
+    successes: 0,
+    recovered: 0,
+    failures: 0,
+    recoveryChecks: 0,
+    lastOutcome: '',
+    lastError: '',
+    lastExpectedSha: '',
+    lastConfirmedSha: '',
+  };
+
+  function waitForProductionSaveRecovery(delayMs) {
+    return new Promise(resolve => setTimeout(resolve, delayMs));
+  }
+
+  async function fetchLatestProductionFileSha() {
+    const separator = DATA_API_URL.includes('?') ? '&' : '?';
+    const response = await fetch(
+      `${DATA_API_URL}${separator}_dgSaveRecovery=${Date.now()}`,
+      {
+        cache: 'no-store',
+        headers: {
+          Accept: 'application/vnd.github+json',
+        },
+      },
+    );
+    const metadata = await response.json().catch(() => ({}));
+    if (!response.ok || !metadata?.sha) {
+      throw new Error(
+        metadata?.message ||
+        `GitHub revision check failed (${response.status}).`,
+      );
+    }
+    return String(metadata.sha);
+  }
+
+  async function confirmProductionSaveAfterNetworkError(expectedSha) {
+    for (const delayMs of [900, 1800]) {
+      await waitForProductionSaveRecovery(delayMs);
+      productionSaveRecoveryDiagnostics.recoveryChecks += 1;
+
+      try {
+        const latestSha = await fetchLatestProductionFileSha();
+        if (latestSha && latestSha !== expectedSha) {
+          return latestSha;
+        }
+      } catch (recoveryError) {
+        console.warn(
+          '[Daily Genre] Could not verify GitHub revision after the Worker response was interrupted.',
+          recoveryError,
+        );
+      }
+    }
+
+    return '';
+  }
+
+  async function performSaveWithPassword(password) {
     finalizeListeningUpdatesBeforeSave();
 
     if (blockSaveIfDuplicateGenres()) {
-      const error = new Error('Duplicate genres detected. Clean the JSON before saving.');
+      const error = new Error(
+        'Duplicate genres detected. Clean the JSON before saving.',
+      );
       error.code = 'DUPLICATE_GENRES';
       throw error;
     }
 
-    if (!serverFileSha) await refreshServerFileSha();      
-    
+    if (!serverFileSha) await refreshServerFileSha();
+
     if (!serverFileSha) {
-        const error = new Error('No loaded data revision is available. Reload before saving.');
-        error.code = 'NO_REVISION';
-        throw error;
-      }
-
-      const payload = genresForSave();
-      // v219: leave a lightweight breadcrumb before the network save starts.
-      // This does not store the whole library on mobile, but it makes it clear
-      // that the canonical save pipeline actually began if a browser/network
-      // interruption happens mid-save.
-      try {
-        window.__dgLastSaveAttemptAt = new Date().toISOString();
-        safeStorageSet('dailyGenreLastSaveAttempt:v221', JSON.stringify({
-          at: window.__dgLastSaveAttemptAt,
-          genres: Array.isArray(payload) ? payload.length : 0,
-          studioMutation: !!window.__dgStudioCleanupSavePending,
-          activeScreen: document.querySelector('.screen.active')?.id || ''
-        }));
-      } catch (_) {}
-      let res;
-      try {
-        res = await fetch(WORKER_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Password': password,
-            'X-Expected-Sha': serverFileSha
-          },
-          body: JSON.stringify(payload)
-        });
-      } catch (networkError) {
-        const error = new Error('Could not reach the production Worker.');
-        error.code = 'NETWORK_ERROR';
-        throw error;
-      }
-
-      const data = await res.json().catch(() => ({}));
-      if (res.status === 401) {
-        const error = new Error('That password did not work.');
-        error.code = 'AUTH_FAILED';
-        throw error;
-      }
-      if (res.status === 409 || data.conflict) {
-        const error = new Error('Newer saved data exists. Reload this development page before saving.');
-        error.code = 'STALE_DATA';
-        throw error;
-      }
-      if (!res.ok || !data.ok) {
-        const error = new Error(data.error || `Save failed (${res.status}).`);
-        error.code = data.code || 'SAVE_FAILED';
-        throw error;
-      }
-
-      serverFileSha = data.sha || serverFileSha;
-      return data;
+      const error = new Error(
+        'No loaded data revision is available. Reload before saving.',
+      );
+      error.code = 'NO_REVISION';
+      throw error;
     }
+
+    const expectedSha = String(serverFileSha);
+    productionSaveRecoveryDiagnostics.lastExpectedSha = expectedSha;
+    window.__dgLastSaveRecovered = false;
+
+    const payload = genresForSave();
+    let serializedPayload;
+
+    try {
+      serializedPayload = JSON.stringify(payload);
+    } catch (serializationError) {
+      console.error(
+        '[Daily Genre] Could not serialize the library for saving.',
+        serializationError,
+      );
+      const error = new Error(
+        'The library could not be prepared for saving.',
+      );
+      error.code = 'SERIALIZE_FAILED';
+      error.cause = serializationError;
+      throw error;
+    }
+
+    try {
+      window.__dgLastSaveAttemptAt = new Date().toISOString();
+      safeStorageSet('dailyGenreLastSaveAttempt:v254', JSON.stringify({
+        at: window.__dgLastSaveAttemptAt,
+        genres: Array.isArray(payload) ? payload.length : 0,
+        bytes: serializedPayload.length,
+        expectedSha,
+        studioMutation: !!window.__dgStudioCleanupSavePending,
+        activeScreen: document.querySelector('.screen.active')?.id || '',
+      }));
+    } catch (_) {}
+
+    let response;
+    try {
+      response = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Password': password,
+          'X-Expected-Sha': expectedSha,
+        },
+        body: serializedPayload,
+      });
+    } catch (networkError) {
+      console.error(
+        '[Daily Genre] Production Worker save request ended without a readable response.',
+        networkError,
+      );
+
+      const recoveredSha =
+        await confirmProductionSaveAfterNetworkError(expectedSha);
+
+      if (recoveredSha) {
+        serverFileSha = recoveredSha;
+        productionSaveRecoveryDiagnostics.recovered += 1;
+        productionSaveRecoveryDiagnostics.lastConfirmedSha = recoveredSha;
+        window.__dgLastSaveRecovered = true;
+
+        console.info(
+          '[Daily Genre] GitHub confirmed a new file revision after the Worker response was interrupted.',
+          {
+            expectedSha,
+            confirmedSha: recoveredSha,
+          },
+        );
+
+        return {
+          ok: true,
+          file: 'genres_data.json',
+          sha: recoveredSha,
+          recovered: true,
+          responseInterrupted: true,
+        };
+      }
+
+      const error = new Error(
+        'The save response was interrupted and GitHub did not confirm a new revision. Wait a moment and check GitHub before retrying.',
+      );
+      error.code = 'NETWORK_ERROR';
+      error.cause = networkError;
+      throw error;
+    }
+
+    const data = await response.json().catch(() => ({}));
+
+    if (response.status === 401) {
+      const error = new Error('That password did not work.');
+      error.code = 'AUTH_FAILED';
+      throw error;
+    }
+
+    if (response.status === 409 || data.conflict) {
+      const error = new Error(
+        'Newer saved data exists. Reload this page before saving.',
+      );
+      error.code = 'STALE_DATA';
+      throw error;
+    }
+
+    if (!response.ok || !data.ok) {
+      const error = new Error(
+        data.error || `Save failed (${response.status}).`,
+      );
+      error.code = data.code || 'SAVE_FAILED';
+      throw error;
+    }
+
+    serverFileSha = data.sha || serverFileSha;
+    productionSaveRecoveryDiagnostics.lastConfirmedSha =
+      String(serverFileSha || '');
+    return data;
+  }
+
+  async function doSaveWithPassword(password) {
+    if (productionSaveRequestInFlight) {
+      productionSaveRecoveryDiagnostics.joined += 1;
+      console.info(
+        '[Daily Genre] Reusing the save already in progress instead of creating another commit.',
+      );
+      return productionSaveRequestInFlight;
+    }
+
+    productionSaveRecoveryDiagnostics.attempts += 1;
+    productionSaveRecoveryDiagnostics.lastOutcome = 'saving';
+    productionSaveRecoveryDiagnostics.lastError = '';
+
+    const request = performSaveWithPassword(password);
+    productionSaveRequestInFlight = request;
+
+    try {
+      const result = await request;
+      productionSaveRecoveryDiagnostics.successes += 1;
+      productionSaveRecoveryDiagnostics.lastOutcome =
+        result?.recovered ? 'recovered' : 'success';
+      return result;
+    } catch (error) {
+      productionSaveRecoveryDiagnostics.failures += 1;
+      productionSaveRecoveryDiagnostics.lastOutcome = 'failed';
+      productionSaveRecoveryDiagnostics.lastError =
+        String(error?.message || error || 'Unknown save error');
+      throw error;
+    } finally {
+      if (productionSaveRequestInFlight === request) {
+        productionSaveRequestInFlight = null;
+      }
+    }
+  }
+
+  window.dailyGenreSaveRecoveryDiagnostics = () => ({
+    installed: true,
+    strategy: 'single-flight-sha-recovery',
+    inFlight: Boolean(productionSaveRequestInFlight),
+    ...productionSaveRecoveryDiagnostics,
+  });
 
     function ensureRankOrderForRating(rating) {
       const tierItems = genres
@@ -6864,6 +7035,354 @@ function blockSaveIfDuplicateGenres() {
       `;
     }
 
+    // Daily Genre v254: cache Archive filtering/search/sort by data revision.
+    const archiveViewModelCache =
+      window.DailyGenreArchiveViewModelCache?.createArchiveViewModelCache?.({
+        maxEntries: 12,
+        onEvent: (type, detail) => {
+          window.__dailyGenrePerformanceTracker?.event?.(
+            `archiveViewModelCache.${type}`,
+            detail,
+          );
+          if (type === 'hit') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'archiveViewModelCache.hits',
+            );
+          }
+          if (type === 'miss') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'archiveViewModelCache.misses',
+            );
+          }
+          if (type === 'write') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'archiveViewModelCache.writes',
+            );
+          }
+        },
+      }) || null;
+
+    const archiveViewModelRuntimeDiagnostics = {
+      derivations: 0,
+      bypasses: 0,
+      lastOutcome: '',
+      lastRevision: '',
+      lastSignature: '',
+    };
+
+    function archiveViewModelRevision() {
+      let revision = '';
+      try {
+        const diagnostics = window.dailyGenreLibraryIndexDiagnostics?.();
+        if (diagnostics?.revision != null) {
+          revision = String(diagnostics.revision);
+        }
+      } catch (_) {}
+
+      return [
+        revision || String(window.__dailyGenreLibraryRevision ?? ''),
+        String(Array.isArray(genres) ? genres.length : 0),
+        String(serverFileSha || ''),
+      ].join(':');
+    }
+
+    function deriveArchiveViewModel({
+      month = '',
+      rating = '',
+      query = '',
+      flag = '',
+      sort = 'newest',
+    } = {}) {
+      const listenedAll = genres
+        .filter(g =>
+          ['listened', 'veto'].includes(
+            (g.status || '').toLowerCase(),
+          ),
+        )
+        .filter(g => dateValue(g));
+
+      const months = [
+        ...new Set(
+          listenedAll.map(g => dateValue(g).slice(0, 7)),
+        ),
+      ].sort((a, b) => b.localeCompare(a));
+      const latestMonth = months[0] || '';
+      const effectiveMonth =
+        archiveView === 'monthly' && !month ? latestMonth : month;
+
+      let items = listenedAll.slice();
+      let label = 'All logs';
+
+      if (archiveView === 'monthly') {
+        label = effectiveMonth
+          ? `Monthly view · ${effectiveMonth}`
+          : 'Monthly view';
+        if (effectiveMonth) {
+          items = items.filter(g =>
+            dateValue(g).startsWith(effectiveMonth),
+          );
+        }
+      } else if (archiveView === 'contenders') {
+        label = 'Monthly contenders';
+        items = items.filter(g => !!g.monthlycontender);
+      } else if (archiveView === 'zangers') {
+        label = 'Zangers';
+        items = items.filter(g =>
+          String(g.rating || '') === 'zanger' ||
+          (g.status || '').toLowerCase() === 'veto',
+        );
+      } else if (archiveView === 'alttakes') {
+        label = 'Genres with Alt Takes';
+        items = items.filter(hasAltTake);
+      } else if (archiveView === 'pending') {
+        label = 'Genres with Pending Nominations';
+        items = items.filter(hasPending);
+      }
+
+      if (flag === 'album-dive') {
+        items = genres.filter(g => genreHasAlbumDiveContent(g));
+        label = 'Genres with Album Dive';
+      } else if (flag === 'unlistened') {
+        items = genres.filter(g => {
+          const status = String(g.status || '').toLowerCase();
+          return (
+            !dateValue(g) &&
+            (!status || status === 'unlistened')
+          );
+        });
+        label = 'Unlistened genres';
+      }
+
+      if (
+        effectiveMonth &&
+        archiveView !== 'monthly' &&
+        flag !== 'album-dive' &&
+        flag !== 'unlistened'
+      ) {
+        items = items.filter(g =>
+          dateValue(g).startsWith(effectiveMonth),
+        );
+      }
+
+      if (rating) {
+        items = items.filter(
+          g => String(g.rating || '') === rating,
+        );
+      }
+
+      if (flag === 'contender') {
+        items = items.filter(g => !!g.monthlycontender);
+      }
+      if (flag === 'alt') items = items.filter(hasAltTake);
+      if (flag === 'pending') items = items.filter(hasPending);
+      if (flag === 'songs') {
+        items = items.filter(
+          g => countSongsForDisplay(g.songs_listened || []) > 0,
+        );
+      }
+      if (flag === 'favorite') {
+        items = items.filter(
+          g => !!(g.favoritesong || g.favoritesongurl),
+        );
+      }
+      if (flag === 'missing-songs') {
+        items = items.filter(
+          g => countSongsForDisplay(g.songs_listened || []) === 0,
+        );
+      }
+      if (flag === 'missing-favorite') {
+        items = items.filter(
+          g => !(g.favoritesong || g.favoritesongurl),
+        );
+      }
+      if (flag === 'non-spotify-links') {
+        items = items.filter(g =>
+          genreHasSongMatching(g, songUrlIsNonSpotifyLink),
+        );
+      }
+      if (flag === 'youtube-links') {
+        items = items.filter(g =>
+          genreHasSongMatching(g, songUrlIsYoutubeLink),
+        );
+      }
+      if (flag === 'level-up-issues') {
+        items = items.filter(genreHasLevelUpIssues);
+      }
+      if (flag === 'missing-identity') {
+        items = items.filter(g => !genreHasMeaningfulIdentity(g));
+      }
+      if (flag === 'notes') {
+        items = items.filter(g => !!g.notes);
+      }
+      if (flag === 'zanger') {
+        items = items.filter(g =>
+          String(g.rating || '') === 'zanger' ||
+          (g.status || '').toLowerCase() === 'veto',
+        );
+      }
+      if (flag === 'unranked') {
+        items = items.filter(g =>
+          countSongsForDisplay(g.songs_listened || []) > 0 &&
+          !g.rank_order &&
+          g.rating !== 'zanger',
+        );
+      }
+
+      if (query) {
+        const normalizedQuery = normalizeGenreSearchText(query);
+        items = items
+          .map(g => ({
+            g,
+            rank: genreSearchRank(g, query),
+            blob: normalizeGenreSearchText(genreSearchBlob(g)),
+          }))
+          .filter(
+            row =>
+              row.rank < 9 ||
+              row.blob.includes(normalizedQuery),
+          )
+          .sort(
+            (a, b) =>
+              a.rank - b.rank ||
+              String(a.g.genre || '').localeCompare(
+                String(b.g.genre || ''),
+              ),
+          )
+          .map(row => row.g);
+      }
+
+      const byGenre = (a, b) =>
+        String(a.genre || '').localeCompare(
+          String(b.genre || ''),
+        );
+
+      if (!query) {
+        if (sort === 'oldest') {
+          items.sort(
+            (a, b) =>
+              (dateValue(a) || '').localeCompare(
+                dateValue(b) || '',
+              ) || byGenre(a, b),
+          );
+        } else if (sort === 'rating-desc') {
+          items.sort(
+            (a, b) =>
+              numericRating(b) - numericRating(a) ||
+              byGenre(a, b),
+          );
+        } else if (sort === 'rating-asc') {
+          items.sort(
+            (a, b) =>
+              numericRating(a) - numericRating(b) ||
+              byGenre(a, b),
+          );
+        } else if (sort === 'genre') {
+          items.sort(byGenre);
+        } else if (sort === 'rank') {
+          items.sort(
+            (a, b) =>
+              (a.rank_order ?? 9999) -
+                (b.rank_order ?? 9999) ||
+              numericRating(b) - numericRating(a) ||
+              byGenre(a, b),
+          );
+        } else {
+          items.sort(
+            (a, b) =>
+              (dateValue(b) || '').localeCompare(
+                dateValue(a) || '',
+              ) || byGenre(a, b),
+          );
+        }
+      }
+
+      archiveViewModelRuntimeDiagnostics.derivations += 1;
+      window.__dailyGenrePerformanceTracker?.increment?.(
+        'archiveViewModelCache.derivations',
+      );
+
+      return {
+        items,
+        label,
+        effectiveMonth,
+      };
+    }
+
+    function getArchiveViewModel(filters) {
+      const revision = archiveViewModelRevision();
+      const signature = JSON.stringify({
+        archiveView: String(archiveView || ''),
+        month: String(filters.month || ''),
+        rating: String(filters.rating || ''),
+        query: String(filters.query || ''),
+        flag: String(filters.flag || ''),
+        sort: String(filters.sort || ''),
+      });
+      const canUseCache =
+        !hasUnsavedChanges && !libraryUpdatesPending;
+
+      archiveViewModelRuntimeDiagnostics.lastRevision = revision;
+      archiveViewModelRuntimeDiagnostics.lastSignature = signature;
+
+      if (canUseCache && archiveViewModelCache) {
+        const cached = archiveViewModelCache.get(
+          revision,
+          signature,
+        );
+        if (cached) {
+          archiveViewModelRuntimeDiagnostics.lastOutcome = 'hit';
+          return {
+            ...cached,
+            revision,
+            signature,
+            cacheOutcome: 'hit',
+          };
+        }
+      } else {
+        archiveViewModelRuntimeDiagnostics.bypasses += 1;
+        archiveViewModelRuntimeDiagnostics.lastOutcome = 'bypass';
+        window.__dailyGenrePerformanceTracker?.increment?.(
+          'archiveViewModelCache.bypasses',
+        );
+      }
+
+      const derived = deriveArchiveViewModel(filters);
+      if (canUseCache && archiveViewModelCache) {
+        archiveViewModelCache.set(
+          revision,
+          signature,
+          derived,
+        );
+        archiveViewModelRuntimeDiagnostics.lastOutcome = 'miss';
+      }
+
+      return {
+        ...derived,
+        revision,
+        signature,
+        cacheOutcome: canUseCache ? 'miss' : 'bypass',
+      };
+    }
+
+    window.dailyGenreArchiveViewModelCacheInvalidate = (
+      reason = 'manual',
+    ) => archiveViewModelCache?.clear(reason);
+
+    window.dailyGenreArchiveViewModelCacheDiagnostics = () => ({
+      installed: Boolean(archiveViewModelCache),
+      strategy: 'revision-signature-lru-12',
+      currentRevision: archiveViewModelRevision(),
+      ...archiveViewModelRuntimeDiagnostics,
+      ...(
+        archiveViewModelCache?.snapshot?.() || {
+          maxEntries: null,
+          size: 0,
+          lastClearReason: '',
+          counters: {},
+        }
+      ),
+    });
+
     // Daily Genre v253: bound Archive DOM work with progressive batches.
     const ARCHIVE_RENDER_BATCH_SIZE = 80;
     const archiveProgressiveState =
@@ -7066,98 +7585,35 @@ function blockSaveIfDuplicateGenres() {
       };
     };
 
-    function renderHistory() {
-      const monthEl = document.getElementById('historyMonthFilter');
-      const ratingEl = document.getElementById('historyRatingFilter');
-      const searchEl = document.getElementById('archiveSearchInput') || document.getElementById('historyCategoryFilter');
-      const flagEl = document.getElementById('archiveFlagFilter');
-      const sortEl = document.getElementById('archiveSortFilter');
+        function renderHistory() {
+      const monthEl =
+        document.getElementById('historyMonthFilter');
+      const ratingEl =
+        document.getElementById('historyRatingFilter');
+      const searchEl =
+        document.getElementById('archiveSearchInput') ||
+        document.getElementById('historyCategoryFilter');
+      const flagEl =
+        document.getElementById('archiveFlagFilter');
+      const sortEl =
+        document.getElementById('archiveSortFilter');
       const list = document.getElementById('historyList');
       if (!list) return;
 
-      const month = monthEl ? monthEl.value : '';
-      const rating = ratingEl ? ratingEl.value : '';
-      const query = searchEl ? searchEl.value.trim().toLowerCase() : '';
-      const flag = flagEl ? flagEl.value : '';
-      const sort = sortEl ? sortEl.value : 'newest';
+      const filters = {
+        month: monthEl ? monthEl.value : '',
+        rating: ratingEl ? ratingEl.value : '',
+        query: searchEl
+          ? searchEl.value.trim().toLowerCase()
+          : '',
+        flag: flagEl ? flagEl.value : '',
+        sort: sortEl ? sortEl.value : 'newest',
+      };
 
-      const listenedAll = genres
-        .filter(g => ['listened', 'veto'].includes((g.status || '').toLowerCase()))
-        .filter(g => dateValue(g));
-
-      const months = [...new Set(listenedAll.map(g => dateValue(g).slice(0,7)))].sort((a,b) => b.localeCompare(a));
-      const latestMonth = months[0] || '';
-      const effectiveMonth = archiveView === 'monthly' && !month ? latestMonth : month;
-
-      let items = listenedAll.slice();
-      let label = 'All logs';
-
-      if (archiveView === 'monthly') {
-        label = effectiveMonth ? `Monthly view · ${effectiveMonth}` : 'Monthly view';
-        if (effectiveMonth) items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
-      } else if (archiveView === 'contenders') {
-        label = 'Monthly contenders';
-        items = items.filter(g => !!g.monthlycontender);
-      } else if (archiveView === 'zangers') {
-        label = 'Zangers';
-        items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
-      } else if (archiveView === 'alttakes') {
-        label = 'Genres with Alt Takes';
-        items = items.filter(hasAltTake);
-      } else if (archiveView === 'pending') {
-        label = 'Genres with Pending Nominations';
-        items = items.filter(hasPending);
-      }
-
-      if (flag === 'album-dive') {
-        items = genres.filter(g => genreHasAlbumDiveContent(g));
-        label = 'Genres with Album Dive';
-      } else if (flag === 'unlistened') {
-        items = genres.filter(g => {
-          const status = String(g.status || '').toLowerCase();
-          return !dateValue(g) && (!status || status === 'unlistened');
-        });
-        label = 'Unlistened genres';
-      }
-
-      if (effectiveMonth && archiveView !== 'monthly' && flag !== 'album-dive' && flag !== 'unlistened') items = items.filter(g => dateValue(g).startsWith(effectiveMonth));
-      if (rating) items = items.filter(g => String(g.rating || '') === rating);
-
-      if (flag === 'contender') items = items.filter(g => !!g.monthlycontender);
-      if (flag === 'alt') items = items.filter(hasAltTake);
-      if (flag === 'pending') items = items.filter(hasPending);
-      if (flag === 'songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0);
-      if (flag === 'favorite') items = items.filter(g => !!(g.favoritesong || g.favoritesongurl));
-      if (flag === 'missing-songs') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) === 0);
-      if (flag === 'missing-favorite') items = items.filter(g => !(g.favoritesong || g.favoritesongurl));
-      if (flag === 'non-spotify-links') items = items.filter(g => genreHasSongMatching(g, songUrlIsNonSpotifyLink));
-      if (flag === 'youtube-links') items = items.filter(g => genreHasSongMatching(g, songUrlIsYoutubeLink));
-      if (flag === 'level-up-issues') items = items.filter(genreHasLevelUpIssues);
-      if (flag === 'missing-identity') items = items.filter(g => !genreHasMeaningfulIdentity(g));
-      if (flag === 'notes') items = items.filter(g => !!g.notes);
-      if (flag === 'zanger') items = items.filter(g => String(g.rating || '') === 'zanger' || (g.status || '').toLowerCase() === 'veto');
-      if (flag === 'unranked') items = items.filter(g => countSongsForDisplay(g.songs_listened || []) > 0 && !g.rank_order && g.rating !== 'zanger');
-
-      if (query) {
-        const normalizedQuery = normalizeGenreSearchText(query);
-        items = items
-          .map(g => ({ g, rank: genreSearchRank(g, query), blob: normalizeGenreSearchText(genreSearchBlob(g)) }))
-          .filter(row => row.rank < 9 || row.blob.includes(normalizedQuery))
-          .sort((a, b) => a.rank - b.rank || String(a.g.genre || '').localeCompare(String(b.g.genre || '')))
-          .map(row => row.g);
-      }
-
-      const byGenre = (a,b) => String(a.genre || '').localeCompare(String(b.genre || ''));
-      // When searching, relevance must stay primary. Otherwise an exact hit like
-      // "funk" can get buried under date/rating/archive sort behind "free funk".
-      if (!query) {
-        if (sort === 'oldest') items.sort((a,b) => (dateValue(a) || '').localeCompare(dateValue(b) || '') || byGenre(a,b));
-        else if (sort === 'rating-desc') items.sort((a,b) => numericRating(b) - numericRating(a) || byGenre(a,b));
-        else if (sort === 'rating-asc') items.sort((a,b) => numericRating(a) - numericRating(b) || byGenre(a,b));
-        else if (sort === 'genre') items.sort(byGenre);
-        else if (sort === 'rank') items.sort((a,b) => (a.rank_order ?? 9999) - (b.rank_order ?? 9999) || numericRating(b) - numericRating(a) || byGenre(a,b));
-        else items.sort((a,b) => (dateValue(b) || '').localeCompare(dateValue(a) || '') || byGenre(a,b));
-      }
+      const viewModel = getArchiveViewModel(filters);
+      const items = viewModel.items;
+      const label = viewModel.label;
+      const effectiveMonth = viewModel.effectiveMonth;
 
       archiveCurrentItems = items;
       archiveCurrentLabel = label;
@@ -7165,25 +7621,29 @@ function blockSaveIfDuplicateGenres() {
       archiveUpdatePlaylistButtons();
 
       const archiveSignature = JSON.stringify({
-        archiveView: String(archiveView || ''),
-        month: String(effectiveMonth || ''),
-        rating: String(rating || ''),
-        query: String(query || ''),
-        flag: String(flag || ''),
-        sort: String(sort || ''),
+        revision: viewModel.revision,
+        view: viewModel.signature,
       });
       window._archiveItems = items;
 
       if (!items.length) {
-        archiveProgressiveState?.prepare(archiveSignature, 0);
+        archiveProgressiveState?.prepare(
+          archiveSignature,
+          0,
+        );
         archiveRenderedItems = [];
         ensureArchiveListDelegation(list);
-        list.innerHTML = `<div class="small">No matching entries yet.</div>`;
+        list.innerHTML =
+          `<div class="small">No matching entries yet.</div>`;
         archiveUpdatePlaylistButtons();
         return;
       }
 
-      renderArchiveProgressiveList(list, items, archiveSignature);
+      renderArchiveProgressiveList(
+        list,
+        items,
+        archiveSignature,
+      );
     }
 
     function archiveVisiblePlaylistGenreIds() {
