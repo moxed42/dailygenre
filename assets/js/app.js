@@ -357,6 +357,51 @@
       ),
     });
 
+    // Daily Genre v252: cancel delayed work from superseded navigation.
+    let screenNavigationRevision = 0;
+    const screenNavigationScheduleDiagnostics = {
+      scheduled: 0,
+      executed: 0,
+      cancelled: 0,
+    };
+
+    function scheduleCurrentScreenWork(name, revision, delay, work) {
+      screenNavigationScheduleDiagnostics.scheduled += 1;
+
+      setTimeout(() => {
+        const isActive =
+          document.getElementById(`screen-${name}`)
+            ?.classList.contains('active') === true;
+
+        if (revision !== screenNavigationRevision || !isActive) {
+          screenNavigationScheduleDiagnostics.cancelled += 1;
+          window.__dailyGenrePerformanceTracker?.increment?.(
+            'screenSchedule.cancelled',
+          );
+          window.__dailyGenrePerformanceTracker?.event?.(
+            'screenSchedule.cancelled',
+            {
+              screen: name,
+              revision,
+              currentRevision: screenNavigationRevision,
+            },
+          );
+          return;
+        }
+
+        screenNavigationScheduleDiagnostics.executed += 1;
+        window.__dailyGenrePerformanceTracker?.increment?.(
+          'screenSchedule.executed',
+        );
+        work();
+      }, delay);
+    }
+
+    window.dailyGenreScreenScheduleDiagnostics = () => ({
+      revision: screenNavigationRevision,
+      ...screenNavigationScheduleDiagnostics,
+    });
+
 function switchScreen(name, options = {}) {
       const currentActive = document.querySelector('.screen.active');
       const currentName = currentActive?.id?.replace('screen-', '') || '';
@@ -366,38 +411,10 @@ function switchScreen(name, options = {}) {
         if (!shouldLeave) return false;
       }
 
-      if (name === 'viz') {
-        setTimeout(() => {
-          if (typeof initVisuals === 'function') {
-            initVisuals();
-          } else if (typeof renderVisuals === 'function') {
-            renderVisuals();
-          }
-        }, 50);
-      }
-
-      if (name === 'review') {
-        setTimeout(() => {
-          if (typeof renderReview === 'function') {
-            renderNavigationScreen('review', renderReview);
-          }
-        }, 20);
-      }
-
-      if (name === 'history' && !options.skipRender) {
-        setTimeout(() => {
-          if (typeof renderHistory === 'function') renderNavigationScreen('history', renderHistory);
-        }, 0);
-      }
-
-      if (name === 'ranking' && !options.skipRender) {
-        setTimeout(() => {
-          if (typeof renderRankings === 'function') renderNavigationScreen('ranking', renderRankings);
-        }, 0);
-      }
-
       const screen = document.getElementById(`screen-${name}`);
       if (!screen) return false;
+
+      const navigationRevision = ++screenNavigationRevision;
 
       applyScreenInertState(screen);
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -407,6 +424,40 @@ function switchScreen(name, options = {}) {
 
       if (name !== 'listen') {
         document.title = screenTitle(name);
+      }
+
+      if (name === 'viz') {
+        scheduleCurrentScreenWork('viz', navigationRevision, 50, () => {
+          if (typeof initVisuals === 'function') {
+            initVisuals();
+          } else if (typeof renderVisuals === 'function') {
+            renderVisuals();
+          }
+        });
+      }
+
+      if (name === 'review') {
+        scheduleCurrentScreenWork('review', navigationRevision, 20, () => {
+          if (typeof renderReview === 'function') {
+            renderNavigationScreen('review', renderReview);
+          }
+        });
+      }
+
+      if (name === 'history' && !options.skipRender) {
+        scheduleCurrentScreenWork('history', navigationRevision, 0, () => {
+          if (typeof renderHistory === 'function') {
+            renderNavigationScreen('history', renderHistory);
+          }
+        });
+      }
+
+      if (name === 'ranking' && !options.skipRender) {
+        scheduleCurrentScreenWork('ranking', navigationRevision, 0, () => {
+          if (typeof renderRankings === 'function') {
+            renderNavigationScreen('ranking', renderRankings);
+          }
+        });
       }
 
       if (!options.preserveScroll && name !== 'listen') {
