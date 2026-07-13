@@ -4306,7 +4306,114 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       return `<div class="levelup-integrity-panel"><strong>Possible Level Up cleanup</strong><div class="small">Review these before saving if this genre was bulk-overwritten or imported from old annotations.</div><ul>${issues.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`;
     }
 
-    function loadListenScreen(genre, options = {}) {
+
+    // Daily Genre v249: preserve the mounted genre screen on same-genre revisits.
+    const mountedListenScreenCache =
+      window.DailyGenreListenScreenCache?.createMountedListenScreenCache?.({
+        getRevision: () => {
+          try {
+            const diagnostics = window.dailyGenreLibraryIndexDiagnostics?.();
+            if (diagnostics?.revision != null) return diagnostics.revision;
+          } catch {}
+          return window.__dailyGenreLibraryRevision ?? '';
+        },
+        isReady: () => {
+          const details = document.getElementById('listenDetails');
+          return Boolean(details && details.childElementCount > 0);
+        },
+        onEvent: (type, detail) => {
+          window.__dailyGenrePerformanceTracker?.event?.(
+            `listenScreenCache.${type}`,
+            detail,
+          );
+          if (type === 'hit') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'listenScreenCache.hits',
+            );
+          }
+          if (type === 'render') {
+            window.__dailyGenrePerformanceTracker?.increment?.(
+              'listenScreenCache.renders',
+            );
+          }
+        },
+      }) || null;
+
+    let pendingMountedListenReuse = null;
+
+    function mountedListenGenreKey(genre) {
+      return String(genre?.id ?? genre?.genre ?? '');
+    }
+
+    function requestMountedListenScreenReuse(genre) {
+      const genreId = mountedListenGenreKey(genre);
+      pendingMountedListenReuse = genreId
+        ? {
+            genreId,
+            expiresAt: Date.now() + 5000,
+          }
+        : null;
+    }
+
+    function shouldReuseMountedListenScreen(genre, options = {}) {
+      const genreId = mountedListenGenreKey(genre);
+      const pendingMatches =
+        pendingMountedListenReuse &&
+        pendingMountedListenReuse.genreId === genreId &&
+        pendingMountedListenReuse.expiresAt >= Date.now();
+
+      const requested =
+        options.reuseMounted === true ||
+        Boolean(pendingMatches);
+
+      if (pendingMatches) {
+        pendingMountedListenReuse = null;
+      } else if (
+        pendingMountedListenReuse &&
+        pendingMountedListenReuse.expiresAt < Date.now()
+      ) {
+        pendingMountedListenReuse = null;
+      }
+
+      if (!requested || !mountedListenScreenCache) return false;
+
+      return mountedListenScreenCache.canReuse(genre, {
+        force: options.forceRender === true,
+      });
+    }
+
+    function markMountedListenScreenRendered(genre) {
+      mountedListenScreenCache?.markRendered(genre);
+    }
+
+    window.dailyGenreListenScreenCacheInvalidate = (
+      reason = 'manual',
+    ) => mountedListenScreenCache?.invalidate(reason);
+
+    window.dailyGenreListenScreenCacheDiagnostics = () => ({
+      installed: Boolean(mountedListenScreenCache),
+      strategy: 'same-genre-mounted-dom',
+      ...(
+        mountedListenScreenCache?.snapshot?.() || {
+          state: null,
+          counters: {},
+        }
+      ),
+    });
+
+function loadListenScreen(genre, options = {}) {
+      if (shouldReuseMountedListenScreen(genre, options)) {
+        currentGenre = genre;
+        document.title = `${genre.genre || 'Genre'} | Daily Genre`;
+        selectedRating =
+          genre.rating && genre.rating !== 'zanger'
+            ? String(genre.rating)
+            : '';
+        listeningFocusMode = getListeningFocusMode(genre);
+        refreshTopAlbumDiveButton();
+        return true;
+      }
+
       currentGenre = genre;
       document.title = `${genre.genre || 'Genre'} | Daily Genre`;
       const preserveDirty = !!options.preserveDirty;
@@ -4420,6 +4527,7 @@ async function prepareAndSaveCurrentGenre(options = {}) {
       }
 
       refreshTopAlbumDiveButton();
+      markMountedListenScreenRendered(genre);
       // Existing saved artwork/metadata is displayed here. Missing metadata is enriched
       // only through the explicit Refresh Metadata action in Visuals.
     }
@@ -6517,6 +6625,8 @@ function blockSaveIfDuplicateGenres() {
     }
 
     function openGenreDetail(genre, editMode=false, options = {}) {
+      requestMountedListenScreenReuse(genre);
+
       if (!genre) return false;
       saveArchiveUiState();
       detailEditMode = !!editMode;
