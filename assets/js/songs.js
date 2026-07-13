@@ -757,6 +757,67 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
     }
   }
 
+  function refreshSongReactionUI(encodedKey, reaction) {
+    const repaintResult =
+      window.DailyGenreSongReaction?.repaint?.(
+        document,
+        encodedKey,
+        reaction,
+      ) || {
+        repainted: false,
+        matchedControls: 0,
+        groupsUpdated: 0,
+      };
+
+    if (typeof currentGenre === "undefined" || !currentGenre) {
+      return repaintResult;
+    }
+
+    const activeFilter = getSongQueueFilter(currentGenre);
+
+    // A reaction changes membership in the Unrated lane. Rebuild only the
+    // focused carousel/queue, not the complete listening screen.
+    if (activeFilter === "unrated") {
+      enhanceSongListeningExperience();
+      return {
+        ...repaintResult,
+        repainted: true,
+        structuralRefresh: true,
+      };
+    }
+
+    // Keep the visible Unrated count accurate without rebuilding song data.
+    // The hidden canonical cards remain mounted for edit/save helpers, so their
+    // reaction groups provide a cheap source of truth for this badge.
+    const reactionByKey = new Map();
+    Array.from(document.querySelectorAll(".song-quick-actions")).forEach((group) => {
+      const controls = Array.from(
+        group.querySelectorAll(".song-reaction-btn"),
+      );
+      const metadata = controls
+        .map((button) =>
+          window.DailyGenreSongReaction?.controlMetadata?.(button),
+        )
+        .find(Boolean);
+      if (!metadata?.encodedKey) return;
+      reactionByKey.set(
+        metadata.encodedKey,
+        controls.some((button) => button.classList.contains("active")),
+      );
+    });
+    const unratedCount = Array.from(reactionByKey.values())
+      .filter((isRated) => !isRated)
+      .length;
+    Array.from(document.querySelectorAll(".song-focus-filter")).forEach((button) => {
+      const onclick = button.getAttribute("onclick") || "";
+      if (!/setSongQueueFilter\(['"]unrated['"]\)/.test(onclick)) return;
+      const count = button.querySelector("span");
+      if (count) count.textContent = String(unratedCount);
+    });
+
+    return repaintResult;
+  }
+
   function renderReactionButtons(song, extraClass = "") {
     const encodedKey = encodedSongKey(song);
     const isFavorite = safeCall(
@@ -1116,6 +1177,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
   window.moveSongFocus = moveSongFocus;
+  window.refreshSongReactionUI = refreshSongReactionUI;
   window.enhanceSongListeningExperience = enhanceSongListeningExperience;
   installNoJumpReactionWrapper();
 

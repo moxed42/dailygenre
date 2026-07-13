@@ -1,6 +1,9 @@
 /* Daily Genre Visuals / Stats polish v3.3
    Add-on-safe: no app.js or loader changes. */
 
+// Daily Genre v240: bind Visuals lifecycle handlers only once.
+let visualsLifecycleInitialized = false;
+
 function renderVisuals() {
   if (typeof Chart === "undefined") return;
   vizDestroyAll();
@@ -71,13 +74,16 @@ function initVisuals() {
       if (months.length) sel.value = months[months.length - 1];
     }
   }
-  document.querySelectorAll("[data-viz-mode]").forEach((btn) => {
-    btn.onclick = () => setVizMode(btn.dataset.vizMode || "monthly");
-  });
-  document
-    .getElementById("vizMonthSelect")
-    ?.addEventListener("change", renderVisuals);
-  document.addEventListener("click", statsMaintenanceDelegatedClick, true);
+  if (!visualsLifecycleInitialized) {
+    document.querySelectorAll("[data-viz-mode]").forEach((btn) => {
+      btn.onclick = () => setVizMode(btn.dataset.vizMode || "monthly");
+    });
+    document
+      .getElementById("vizMonthSelect")
+      ?.addEventListener("change", renderVisuals);
+    document.addEventListener("click", statsMaintenanceDelegatedClick, true);
+    visualsLifecycleInitialized = true;
+  }
   applyVizModeDisplay();
   renderVisuals();
 }
@@ -1642,7 +1648,17 @@ function dgStatsRenderCategoryDonut(items = [], mode = 'monthly') {
       onClick: (event, elements) => {
         if (!elements.length) return;
         const label = labels[elements[0].index];
-        dgStatsSetCategoryDrilldown(label, mode, event);
+        // Let Chart.js finish its event/plugin cycle before the drilldown
+        // rerender destroys and recreates this chart.
+        const nativeEvent = event?.native || event || {};
+        const modifierState = {
+          shiftKey: Boolean(nativeEvent.shiftKey),
+          ctrlKey: Boolean(nativeEvent.ctrlKey),
+          metaKey: Boolean(nativeEvent.metaKey),
+        };
+        setTimeout(() => {
+          dgStatsSetCategoryDrilldown(label, mode, modifierState);
+        }, 0);
       },
       onHover: (event, elements) => {
         if (event?.native?.target) event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
