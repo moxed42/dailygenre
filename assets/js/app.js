@@ -2013,9 +2013,21 @@ function switchScreen(name, options = {}) {
         currentGenre.status = 'listened';
         selectedRating = String(rating);
         if (currentGenre.rank_order == null) {
-          currentGenre.rank_order = nextRankOrderForRating(currentGenre.rating);
+          const sameTier = (Array.isArray(genres) ? genres : [])
+            .filter((genre) =>
+              genre &&
+              genre !== currentGenre &&
+              String(genre.rating || '') === String(currentGenre.rating || '') &&
+              Number.isFinite(Number(genre.rank_order))
+            )
+            .map((genre) => Number(genre.rank_order));
+          currentGenre.rank_order = sameTier.length
+            ? Math.max(...sameTier) + 1
+            : 1;
         }
-        ensureRankOrderForRating(currentGenre);
+        if (typeof ensureRankOrderForRating === 'function') {
+          ensureRankOrderForRating(currentGenre);
+        }
       }
       libraryUpdatesPending = true;
       setUnsavedState(true);
