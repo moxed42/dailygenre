@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v196-url-override-save-flow";
+  const VERSION = "studio-polish-v274-qa-lab-25-refresh";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -1455,15 +1455,41 @@
   }
 
   function renderReviewLane(s) {
-    const groups = duplicateGroups(12);
+    const groups = duplicateGroups(25);
     return `<section class="studio-lane" id="studio-review-lane" data-studio-lane="review">
       <div class="studio-lane-head">
         <div><div class="eyebrow">QA Lab</div><h3>Taste pass and structural checks</h3><p>Resolve duplicate-looking songs, route low-fit source rows, and keep Level Up context attached to the original genre.</p></div>
-        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span>${studioCopyButton("qa", "Copy the first 25 visible QA duplicate clusters")}</div>
+        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span><button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); refreshStudioQaLab(); return false;">Refresh checks</button>${studioCopyButton("qa", "Copy the first 25 visible QA duplicate clusters")}</div>
       </div>
       ${renderDuplicateGroups(groups)}
     </section>`;
   }
+
+  window.refreshStudioQaLab = function refreshStudioQaLab() {
+    const mount = document.getElementById("reviewContent");
+    const current = document.getElementById("studio-review-lane");
+    if (!mount || !current) {
+      if (typeof window.renderReview === "function") window.renderReview();
+      return;
+    }
+
+    const wasOpen = !current.classList.contains("studio-section-collapsed");
+    const currentScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    current.insertAdjacentHTML("afterend", renderReviewLane(stats()));
+    current.remove();
+
+    const next = document.getElementById("studio-review-lane");
+    if (next) {
+      next.classList.add("studio-collapsible-section");
+      next.dataset.studioCollapsible = "1";
+      ensureCollapsibleHeader(next);
+      setSectionCollapsed(next, !wasOpen);
+    }
+
+    filterStudioRows(mount);
+    requestAnimationFrame(() => window.scrollTo({ top: currentScrollY, left: 0, behavior: "auto" }));
+    toast("QA Lab refreshed with up to 25 current checks.");
+  };
 
   function decorateExistingReviewSections(mount) {
     const inbox = $(".inbox-card", mount);
