@@ -2186,69 +2186,148 @@ function switchScreen(name, options = {}) {
           <div class="track-reaction-counter"><span class="emoji">—</span><strong>${counts.unrated}</strong><small>Unrated</small></div>
         </div>
         <div class="genre-share-actions">
-          <button type="button" class="btn btn-secondary btn-tiny" onclick="copyGenreReactionRecap(false)">Copy Reaction Totals</button>
-          <button type="button" class="btn btn-secondary btn-tiny" onclick="copyGenreReactionRecap(true)">Copy Reaction Track List</button>
+          <button type="button" class="btn btn-secondary btn-tiny" onclick="copyGenreReactionRecap(true)">Copy Track Reactions</button>
         </div>
         <div class="small" style="margin-top:8px;">Reaction recaps are separate from the genre summary / description post.</div>
       </div>`;
     }
 
+    function reactionRecapBetterFit(song) {
+      const direct = [
+        song?.preferredGenre,
+        song?.preferred_genre,
+        song?.betterFitGenre,
+        song?.better_fit_genre,
+        song?.betterFit,
+        song?.better_fit,
+        song?.targetGenre,
+        song?.target_genre,
+        song?.routedTo,
+        song?.routed_to,
+        song?.pendingRoutedTo,
+        song?.pending_routed_to,
+        song?.suggestedGenre,
+        song?.suggested_genre,
+        song?._pendingGenreTag,
+        song?.pendingGenre,
+        song?.pending_genre,
+      ]
+        .map(value => String(value || '').trim().replace(/^@+/, ''))
+        .find(Boolean);
+
+      if (direct) return direct;
+
+      const text = [
+        song?.reason,
+        song?.notes,
+        song?.routingNote,
+        song?.routing_note,
+      ].filter(Boolean).join(' ');
+
+      const tagged = text.match(/(?:better\s+fit(?:\s+for)?|preferred\s+genre|belongs\s+in|route(?:d)?\s+to)\s*[:\-–—>]*\s*@?([^.;,\n]+)/i);
+      if (tagged?.[1]) return String(tagged[1]).trim().replace(/^@+/, '');
+
+      const atTag = text.match(/@([a-z0-9][a-z0-9 _&+/'-]{1,60})/i);
+      return atTag?.[1] ? String(atTag[1]).trim() : '';
+    }
+
+    function reactionRecapIsFavorite(song, genre=currentGenre) {
+      if (!song) return false;
+      if (song.favorite || song.isFavorite || song.is_favorite || song.trophy) return true;
+
+      const favoriteTitle = String(
+        genre?.favorite_song ||
+        genre?.favoritesong ||
+        genre?.favoriteSong ||
+        ''
+      ).trim().toLowerCase();
+
+      const favoriteUrl = String(
+        genre?.favorite_song_url ||
+        genre?.favoritesongurl ||
+        genre?.favoriteSongUrl ||
+        ''
+      ).trim();
+
+      const title = String(song.title || song.name || '').trim().toLowerCase();
+      const url = String(song.spotifyUrl || song.url || '').trim();
+
+      return Boolean(
+        (favoriteTitle && title && favoriteTitle === title) ||
+        (favoriteUrl && url && favoriteUrl === url)
+      );
+    }
+
+    function reactionRecapTrackLine(song, options={}) {
+      const title = String(song?.title || song?.name || 'Untitled track').trim();
+      const artist = String(
+        song?.artist ||
+        (Array.isArray(song?.artists) ? song.artists.join(', ') : '')
+      ).trim();
+      const favorite = reactionRecapIsFavorite(song) ? '🏆 ' : '';
+
+      if (options.nonFit) {
+        const betterFit = reactionRecapBetterFit(song);
+        return `• ${title}${betterFit ? ` -> Better fit: *${betterFit}*` : ''}`;
+      }
+
+      return `• ${favorite}${artist ? `${artist} - ` : ''}${title}`;
+    }
+
     function buildGenreReactionRecap(includeTracks=false) {
       if (!currentGenre) return '';
-      const counts = genreReactionCounts(currentGenre);
-      let text = `**${String(currentGenre.genre || 'UNKNOWN').toUpperCase()} — Track Reactions**
 
-`;
-      text += `👍 I Fuck With This: ${counts[3]}
-`;
-      text += `🤷 Meh, It’s Fine: ${counts[2]}
-`;
-      text += `👎 Fuck Off: ${counts[1]}
-`;
-      text += `— Unrated: ${counts.unrated}`;
-      if (includeTracks) {
-        const songs = genreReactionSongs(currentGenre);
-        const songFit = song => Number(song?.score || song?.fit || 0);
-        // Daily Genre v218: reaction track copy should foreground only strong-fit tracks.
-        const strongFitSongs = songs.filter(song => [4, 5].includes(songFit(song)));
-        const weakFitSongs = songs.filter(song => {
-          const fit = songFit(song);
-          return Number.isFinite(fit) && fit > 0 && fit < 4;
-        });
-        [3,2,1,0].forEach(value => {
-          const group = strongFitSongs.filter(song => value ? Number(song.reaction) === value : ![1,2,3].includes(Number(song.reaction)));
-          if (!group.length) return;
-          text += `
+      const genreName = String(currentGenre.genre || 'Unknown genre').trim();
+      const rating = String(currentGenre.rating || '').trim();
+      const ratingText = rating
+        ? `**${genreName}** gets a ${rating}`
+        : `**${genreName}**`;
 
-${reactionEmoji(value)} ${reactionLabel(value)} · fit 4/5 or 5/5
-`;
-          text += group.map(song => {
-            const base = `${song.artist ? `${song.artist} — ` : ''}${song.title || 'Untitled track'}`;
-            return `• ${isSameFavoriteSong(currentGenre, song) ? '🏆 ' : ''}${base}${isSameFavoriteSong(currentGenre, song) ? ' — FAVORITE' : ''}`;
-          }).join('\n');
-        });
-        if (weakFitSongs.length) {
-          text += `
+      const songs = genreReactionSongs(currentGenre);
+      const nonFit = songs.filter(song => {
+        const fit = Number(song?.score);
+        return Number.isFinite(fit) && fit > 0 && fit <= 2;
+      });
+      const nonFitSet = new Set(nonFit);
+      const regular = songs.filter(song => !nonFitSet.has(song));
+      const sections = [];
 
-⚠ Not a good fit for this genre
-`;
-          text += weakFitSongs.map(song => {
-            const base = `${song.artist ? `${song.artist} — ` : ''}${song.title || 'Untitled track'}`;
-            const fit = songFit(song);
-            const reaction = Number(song.reaction || 0);
-            const reactionCopy = [1,2,3].includes(reaction) ? ` · ${reactionEmoji(reaction)} ${reactionLabel(reaction)}` : '';
-            return `• ${isSameFavoriteSong(currentGenre, song) ? '🏆 ' : ''}${base} — fit ${fit}/5${reactionCopy}${isSameFavoriteSong(currentGenre, song) ? ' — FAVORITE' : ''}`;
-          }).join('\n');
-        }
+      [
+        { value: 3, label: 'I Fuck With This' },
+        { value: 2, label: 'Meh, It’s Fine' },
+        { value: 1, label: 'Fuck Off' },
+      ].forEach(({ value, label }) => {
+        const group = regular.filter(song => Number(song?.reaction) === value);
+        if (!group.length) return;
+        sections.push(
+          `**${label}**\n` +
+          group.map(song => reactionRecapTrackLine(song)).join('\n')
+        );
+      });
+
+      const unrated = regular.filter(song => ![1, 2, 3].includes(Number(song?.reaction)));
+      if (unrated.length) {
+        sections.push(
+          `**Unrated**\n` +
+          unrated.map(song => reactionRecapTrackLine(song)).join('\n')
+        );
       }
-      return text;
+
+      if (nonFit.length) {
+        sections.push(
+          `Not a good fit for this genre\n` +
+          nonFit.map(song => reactionRecapTrackLine(song, { nonFit: true })).join('\n')
+        );
+      }
+
+      return [ratingText, ...sections].filter(Boolean).join('\n\n');
     }
 
     async function copyGenreReactionRecap(includeTracks=false) {
-      const text = buildGenreReactionRecap(includeTracks);
+      const text = buildGenreReactionRecap(true);
       if (!text) return;
       await navigator.clipboard.writeText(text);
-      showSaveToast(includeTracks ? 'Reaction track list copied.' : 'Reaction totals copied.', false);
+      showSaveToast('Track reactions copied.', false);
     }
 
 
