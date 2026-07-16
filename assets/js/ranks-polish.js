@@ -442,7 +442,7 @@
           <button type="button" class="linklike ranks-polish-title" data-rank-open-id="${esc(genre.id)}">${esc(genre.genre || "Unknown genre")}</button>
           <div class="ranks-polish-meta-row">
             <div class="ranks-polish-meta">${esc(catLine(genre))}${stats ? ` · ${esc(stats)}` : ""}</div>
-            <span class="ranks-album-dive-badge ${albumDiveReady ? "has-dive" : "no-dive"}" title="${albumDiveReady ? "Album Dive present" : "No Album Dive present"}">${albumDiveReady ? "Album Dive" : "No Album Dive"}</span>
+            <button type="button" class="ranks-album-dive-badge ${albumDiveReady ? "has-dive" : "no-dive"}" data-rank-album-dive-id="${esc(genre.id)}" title="${albumDiveReady ? "Open this Album Dive editor" : "Open Album Dive JSON import"}" aria-label="${albumDiveReady ? `Open Album Dive editor for ${esc(genre.genre || "genre")}` : `Start Album Dive JSON import for ${esc(genre.genre || "genre")}`}">${albumDiveReady ? "Album Dive" : "No Album Dive"}</button>
           </div>
           <div class="ranks-polish-audition ${canPlay ? "" : "muted"}">${esc(auditionLine)}</div>
         </div>
@@ -759,6 +759,71 @@
     setTimeout(renderRankingsPolished, 0);
   }
 
+  function openRankAlbumDiveEditor(id) {
+    const genre = allGenres().find((g) => String(g.id) === String(id));
+    if (!genre || typeof window.openGenreDetail !== "function") return;
+
+    window.openGenreDetail(genre, false);
+
+    const revealImport = () => {
+      if (typeof window.setListeningFocusMode === "function") {
+        window.setListeningFocusMode("albums");
+      }
+
+      requestAnimationFrame(() => {
+        if (
+          (genre.albumDive || genre.album_dive) &&
+          typeof window.setAlbumDiveEditorMode === "function"
+        ) {
+          window.setAlbumDiveEditorMode(true);
+        }
+
+        requestAnimationFrame(() => {
+          const panel =
+            document.getElementById("albumDivePanel") ||
+            document.querySelector(".album-dive-empty-panel");
+          if (panel && "open" in panel) panel.open = true;
+
+          const input =
+            document.getElementById("albumDiveJsonImport") ||
+            document.getElementById("albumDiveJsonImportStart");
+
+          const importBlock = input?.closest?.(".album-dive-json-import");
+          const positionImportTextarea = (behavior = "auto") => {
+            if (!input) return;
+            const rect = input.getBoundingClientRect();
+            const desiredTop = Math.max(78, window.innerHeight * 0.16);
+            const targetTop = Math.max(
+              0,
+              window.scrollY + rect.top - desiredTop,
+            );
+            window.scrollTo({
+              top: targetTop,
+              behavior,
+            });
+          };
+
+          // setListeningFocusMode intentionally restores the previous viewport
+          // for roughly 940ms. Wait until that sequence is finished, then place
+          // the JSON textarea near the top of the viewport.
+          setTimeout(() => positionImportTextarea("auto"), 1020);
+          setTimeout(() => positionImportTextarea("smooth"), 1160);
+          setTimeout(() => positionImportTextarea("auto"), 1380);
+
+          setTimeout(() => {
+            input?.focus?.({ preventScroll: true });
+            input?.select?.();
+            positionImportTextarea("auto");
+          }, 1440);
+        });
+      });
+    };
+
+    setTimeout(revealImport, 0);
+    setTimeout(revealImport, 120);
+    setTimeout(revealImport, 360);
+  }
+
   function playAudition(id) {
     const genre = allGenres().find((g) => String(g.id) === String(id));
     const audition = bestAudition(genre);
@@ -833,6 +898,14 @@
         );
         if (genre && typeof window.openGenreDetail === "function")
           window.openGenreDetail(genre, false);
+      });
+    });
+
+    wrap.querySelectorAll("[data-rank-album-dive-id]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        openRankAlbumDiveEditor(btn.dataset.rankAlbumDiveId);
       });
     });
 
@@ -915,6 +988,7 @@
     toggleRankReviewed,
     setRankReviewed,
     restoreZangerToSpin,
+    openRankAlbumDiveEditor,
     playAudition,
     copyRankList,
   };
