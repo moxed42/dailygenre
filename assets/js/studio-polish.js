@@ -2729,6 +2729,96 @@ This removes it from every genre queue and pending list. It becomes permanent af
     }
   }
 
+  function studioAlbumMatchTokens(value = "") {
+    const stop = new Set([
+      "a", "an", "and", "at", "by", "deluxe", "edition", "expanded", "feat",
+      "featuring", "from", "in", "live", "mix", "of", "official", "original",
+      "remaster", "remastered", "special", "the", "version",
+    ]);
+    return norm(value)
+      .split(" ")
+      .filter((token) => token && token.length > 1 && !stop.has(token));
+  }
+
+  function studioAlbumNameSimilarity(expected = "", detected = "") {
+    const a = studioAlbumMatchTokens(expected);
+    const b = studioAlbumMatchTokens(detected);
+    if (!a.length || !b.length) return null;
+    const aSet = new Set(a);
+    const bSet = new Set(b);
+    let shared = 0;
+    aSet.forEach((token) => {
+      if (bSet.has(token)) shared += 1;
+    });
+    const containment = shared / Math.max(1, Math.min(aSet.size, bSet.size));
+    const union = new Set([...aSet, ...bSet]).size;
+    const jaccard = shared / Math.max(1, union);
+    return Math.max(containment * 0.72 + jaccard * 0.28, 0);
+  }
+
+  function studioAlbumRepairMismatch(targetOrSlot = {}, metadata = {}) {
+    const target = Array.isArray(targetOrSlot)
+      ? ((targetOrSlot || []).find((item) => item && (item.title || item.artist)) || {})
+      : (targetOrSlot || {});
+    const expectedAlbum = clean(
+      target.album ||
+      target.albumTitle ||
+      target.title ||
+      ""
+    );
+    const expectedArtist = clean(
+      target.artist ||
+      target.albumArtist ||
+      ""
+    );
+    const detectedAlbum = clean(metadata.album || "");
+    const detectedArtist = clean(metadata.artist || "");
+    const albumScore = studioAlbumNameSimilarity(expectedAlbum, detectedAlbum);
+    const artistScore = studioAlbumNameSimilarity(expectedArtist, detectedArtist);
+    const reasons = [];
+
+    if (expectedAlbum && !detectedAlbum) reasons.push("album title could not be verified");
+    else if (albumScore !== null && albumScore < 0.58) reasons.push("album title");
+
+    if (expectedArtist && !detectedArtist) reasons.push("artist could not be verified");
+    else if (artistScore !== null && artistScore < 0.48) reasons.push("artist");
+
+    if (!expectedAlbum && !expectedArtist) reasons.push("existing album identity is incomplete");
+    if (!detectedAlbum && !detectedArtist) reasons.push("submitted URL metadata could not be verified");
+
+    return {
+      suspicious: reasons.length > 0,
+      reasons,
+      expectedAlbum,
+      expectedArtist,
+      detectedAlbum,
+      detectedArtist,
+      albumScore,
+      artistScore,
+    };
+  }
+
+  function confirmStudioAlbumRepairMismatch(match, rawUrl) {
+    if (!match?.suspicious) return true;
+    const expected = [
+      match.expectedArtist,
+      match.expectedAlbum,
+    ].filter(Boolean).join(" — ") || "Unknown current album";
+    const detected = [
+      match.detectedArtist,
+      match.detectedAlbum,
+    ].filter(Boolean).join(" — ") || "No recognizable album metadata";
+    const reason = match.reasons.join("; ");
+
+    return window.confirm(
+      `Studio could not confidently verify this album URL against the existing Album Dive entry.\n\n` +
+      `Current entry:\n${expected}\n\n` +
+      `URL appears to be:\n${detected}\n\n` +
+      `Possible mismatch: ${reason}.\n\n` +
+      `Apply this URL anyway?\n\n${rawUrl}`
+    );
+  }
+
   async function updateStudioAlbumRepairUrlFromQueue(encodedTargets, inputId, btn) {
     const form = btn?.closest?.("[data-studio-album-repair-form]");
     const status = form?.querySelector?.("[data-studio-repair-status]");
@@ -2746,6 +2836,8 @@ This removes it from every genre queue and pending list. It becomes permanent af
     let updated = 0;
     let metadata = {};
     try { metadata = await fetchAlbumRepairMetadata(rawUrl); } catch (_) { metadata = { url: rawUrl }; }
+
+    const resolved = [];
     targets.forEach((target) => {
       const genre = findGenreByIdOrName(target.genreId || target.genreName);
       if (!genre) return;
@@ -2755,7 +2847,24 @@ This removes it from every genre queue and pending list. It becomes permanent af
         return norm(candidate?.key || candidate?.id || candidate?.label || candidate?.album || candidate?.albumTitle || "") === wanted ||
           norm(candidate?.album || candidate?.albumTitle || "") === norm(target.title || "");
       }) || slots.find((candidate) => norm(candidate?.album || candidate?.albumTitle || "") === norm(target.title || ""));
-      if (!slot) return;
+      if (slot) resolved.push({ genre, slot, target });
+    });
+
+    const suspiciousMatches = resolved
+      .map(({ slot }) => studioAlbumRepairMismatch(slot, metadata))
+      .filter((match) => match.suspicious);
+
+    if (suspiciousMatches.length) {
+      if (status) status.textContent = "Album identity needs confirmation before applying…";
+      const match = suspiciousMatches[0];
+      if (!confirmStudioAlbumRepairMismatch(match, rawUrl)) {
+        if (btn) { btn.disabled = false; btn.textContent = originalText; }
+        if (status) status.textContent = "Album URL update cancelled — existing Album Dive entry was left unchanged.";
+        return toast("Album URL update cancelled.", false);
+      }
+    }
+
+    resolved.forEach(({ slot }) => {
       applyAlbumRepairMetadataToSlot(slot, rawUrl, metadata);
       updated += 1;
     });
