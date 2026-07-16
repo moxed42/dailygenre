@@ -442,7 +442,10 @@
           <button type="button" class="linklike ranks-polish-title" data-rank-open-id="${esc(genre.id)}">${esc(genre.genre || "Unknown genre")}</button>
           <div class="ranks-polish-meta-row">
             <div class="ranks-polish-meta">${esc(catLine(genre))}${stats ? ` · ${esc(stats)}` : ""}</div>
-            <button type="button" class="ranks-album-dive-badge ${albumDiveReady ? "has-dive" : "no-dive"}" data-rank-album-dive-id="${esc(genre.id)}" title="${albumDiveReady ? "Open this Album Dive editor" : "Open Album Dive JSON import"}" aria-label="${albumDiveReady ? `Open Album Dive editor for ${esc(genre.genre || "genre")}` : `Start Album Dive JSON import for ${esc(genre.genre || "genre")}`}">${albumDiveReady ? "Album Dive" : "No Album Dive"}</button>
+            <span class="ranks-album-dive-tools">
+              <button type="button" class="ranks-album-dive-badge ${albumDiveReady ? "has-dive" : "no-dive"}" data-rank-album-dive-id="${esc(genre.id)}" title="${albumDiveReady ? "Open this Album Dive editor" : "Open Album Dive JSON import"}" aria-label="${albumDiveReady ? `Open Album Dive editor for ${esc(genre.genre || "genre")}` : `Start Album Dive JSON import for ${esc(genre.genre || "genre")}`}">${albumDiveReady ? "Album Dive" : "No Album Dive"}</button>
+              ${albumDiveReady ? `<button type="button" class="ranks-album-dive-copy-btn" data-rank-album-dive-copy-id="${esc(genre.id)}" title="Copy the same Album Dive stats shown on the genre page" aria-label="Copy Album Dive stats for ${esc(genre.genre || "genre")}">⧉ Stats</button>` : ""}
+            </span>
           </div>
           <div class="ranks-polish-audition ${canPlay ? "" : "muted"}">${esc(auditionLine)}</div>
         </div>
@@ -759,6 +762,20 @@
     setTimeout(renderRankingsPolished, 0);
   }
 
+  function copyRankAlbumDiveStats(id) {
+    const genre = allGenres().find((g) => String(g.id) === String(id));
+    if (!genre) return;
+
+    if (typeof window.copyAlbumDiveStats === "function") {
+      window.copyAlbumDiveStats(genre);
+      return;
+    }
+
+    if (typeof window.showSaveToast === "function") {
+      window.showSaveToast("Album Dive copy tools are not loaded yet.", true);
+    }
+  }
+
   function openRankAlbumDiveEditor(id) {
     const genre = allGenres().find((g) => String(g.id) === String(id));
     if (!genre || typeof window.openGenreDetail !== "function") return;
@@ -909,6 +926,14 @@
       });
     });
 
+    wrap.querySelectorAll("[data-rank-album-dive-copy-id]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        copyRankAlbumDiveStats(btn.dataset.rankAlbumDiveCopyId);
+      });
+    });
+
     wrap.querySelectorAll("[data-rank-play-id]").forEach((btn) => {
       btn.addEventListener("click", (event) => {
         event.preventDefault();
@@ -989,6 +1014,7 @@
     setRankReviewed,
     restoreZangerToSpin,
     openRankAlbumDiveEditor,
+    copyRankAlbumDiveStats,
     playAudition,
     copyRankList,
   };
