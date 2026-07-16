@@ -2743,10 +2743,33 @@ This removes it from every genre queue and pending list. It becomes permanent af
 
   function applyAlbumRepairMetadataToSlot(slot, rawUrl, metadata = {}) {
     if (!slot) return;
+    const isSpotifyAlbum = /open\.spotify\.com\/(?:intl-[a-z]{2}\/)?album\//i.test(rawUrl);
+    const isAppleAlbum = /music\.apple\.com|itunes\.apple\.com/i.test(rawUrl);
+
+    // v287: keep every legacy URL alias in agreement. Metadata Cleanup previously
+    // rediscovered repaired albums because slot.url was correct while spotifyUrl
+    // still contained the original http://url.com placeholder.
     slot.albumProviderUrl = rawUrl;
     slot.url = rawUrl;
-    if (/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?album\//i.test(rawUrl)) slot.spotifyAlbumUrl = rawUrl;
-    if (/music\.apple\.com|itunes\.apple\.com/i.test(rawUrl)) slot.appleAlbumUrl = rawUrl;
+    slot.albumUrl = rawUrl;
+
+    if (isSpotifyAlbum) {
+      slot.spotifyAlbumUrl = rawUrl;
+      slot.spotifyUrl = rawUrl;
+      slot.spotifyAlbumId = metadata.spotifyAlbumId || spotifyAlbumIdFromUrl(rawUrl) || "";
+      slot.appleAlbumUrl = "";
+    } else if (isAppleAlbum) {
+      slot.appleAlbumUrl = rawUrl;
+      slot.spotifyAlbumUrl = "";
+      slot.spotifyUrl = "";
+      slot.spotifyAlbumId = "";
+    } else {
+      slot.spotifyAlbumUrl = "";
+      slot.spotifyUrl = "";
+      slot.spotifyAlbumId = "";
+      slot.appleAlbumUrl = "";
+    }
+
     if (metadata.album) { slot.album = metadata.album; slot.albumTitle = metadata.album; }
     if (metadata.artist) { slot.artist = metadata.artist; slot.albumArtist = metadata.artist; }
     if (metadata.artwork) {
@@ -2894,16 +2917,39 @@ This removes it from every genre queue and pending list. It becomes permanent af
     try { metadata = await fetchAlbumRepairMetadata(rawUrl); } catch (_) { metadata = { url: rawUrl }; }
 
     const resolved = [];
+    const resolvedSlots = new Set();
     targets.forEach((target) => {
       const genre = findGenreByIdOrName(target.genreId || target.genreName);
       if (!genre) return;
       const slots = albumDiveSlotsForGenre(genre);
       const wanted = norm(target.albumDiveSlotKey || target.title || "");
-      const slot = slots.find((candidate) => {
+      const targetAlbum = norm(target.title || target.album || "");
+
+      const primary = slots.find((candidate) => {
         return norm(candidate?.key || candidate?.id || candidate?.label || candidate?.album || candidate?.albumTitle || "") === wanted ||
-          norm(candidate?.album || candidate?.albumTitle || "") === norm(target.title || "");
-      }) || slots.find((candidate) => norm(candidate?.album || candidate?.albumTitle || "") === norm(target.title || ""));
-      if (slot) resolved.push({ genre, slot, target });
+          norm(candidate?.album || candidate?.albumTitle || "") === targetAlbum;
+      }) || slots.find((candidate) => norm(candidate?.album || candidate?.albumTitle || "") === targetAlbum);
+
+      if (!primary) return;
+
+      const primaryAlbum = norm(primary?.album || primary?.albumTitle || target.title || "");
+      const primaryArtist = norm(primary?.artist || primary?.albumArtist || target.artist || "");
+
+      // v287: update every exact duplicate album slot in the same genre. The old
+      // code used Array.find(), so only the first matching slot was repaired.
+      const matchingSlots = slots.filter((candidate) => {
+        const candidateAlbum = norm(candidate?.album || candidate?.albumTitle || "");
+        const candidateArtist = norm(candidate?.artist || candidate?.albumArtist || "");
+        if (!candidateAlbum || candidateAlbum !== primaryAlbum) return false;
+        if (primaryArtist && candidateArtist) return candidateArtist === primaryArtist;
+        return true;
+      });
+
+      (matchingSlots.length ? matchingSlots : [primary]).forEach((slot) => {
+        if (resolvedSlots.has(slot)) return;
+        resolvedSlots.add(slot);
+        resolved.push({ genre, slot, target });
+      });
     });
 
     const suspiciousMatches = resolved
