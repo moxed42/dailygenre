@@ -1,4 +1,4 @@
-/* Daily Genre Ranks Polish v9
+/* Daily Genre Ranks Polish v10
    Safe add-on: ranking workbench, tier moves, copyable rank lists, direct rank jumps, and manual rank review markers. Does not touch loading/save core. */
 (function () {
   "use strict";
@@ -174,6 +174,174 @@
     if (!stamp) return "Reviewed/ranked manually";
     const date = String(stamp).slice(0, 10);
     return `Reviewed/ranked manually${date ? ` · ${date}` : ""}`;
+  }
+
+  function refinedRatingValue(genre) {
+    const raw = genre?.refinedRating ?? genre?.refined_rating;
+    if (raw === "" || raw == null) return null;
+    const value = Number(raw);
+    if (!Number.isFinite(value)) return null;
+    return Math.min(5, Math.max(1, Math.round(value * 4) / 4));
+  }
+
+  function initialRatingValue(genre) {
+    const value = Number(genre?.rating);
+    return Number.isFinite(value) && value >= 1 && value <= 5 ? value : null;
+  }
+
+  function formatRefinedRating(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number.toFixed(2) : "";
+  }
+
+  function refinedRatingDelta(genre) {
+    const refined = refinedRatingValue(genre);
+    const initial = initialRatingValue(genre);
+    if (refined == null || initial == null) return "";
+    const delta = refined - initial;
+    if (Math.abs(delta) < 0.001) return "No change";
+    return `${delta > 0 ? "+" : "−"}${Math.abs(delta).toFixed(2)}`;
+  }
+
+  function setRefinedRating(id, rawValue, options = {}) {
+    const genre = allGenres().find((g) => String(g.id) === String(id));
+    if (!genre) return false;
+
+    if (options.clear) {
+      delete genre.refinedRating;
+      delete genre.refined_rating;
+      markRanksDirty(`Cleared refined rating for ${genre.genre || "genre"}. Save Library Updates to persist.`);
+      renderRankingsPolished();
+      return true;
+    }
+
+    let value = Number(rawValue);
+    if (!Number.isFinite(value)) value = initialRatingValue(genre);
+    if (!Number.isFinite(value)) return false;
+    value = Math.min(5, Math.max(1, Math.round(value * 4) / 4));
+
+    genre.refinedRating = value;
+    genre.refined_rating = value;
+
+    // A refined score represents a deliberate revisit, so mark the row reviewed
+    // without touching the original whole-star rating or rank_order.
+    if (!rankReviewed(genre)) {
+      const stamp = new Date().toISOString();
+      genre.rank_reviewed = true;
+      genre.rankReviewed = true;
+      genre.rank_reviewed_at = stamp;
+      genre.rankReviewedAt = stamp;
+      genre.rank_reviewed_source = "refined-rating";
+    }
+
+    markRanksDirty(
+      `Refined rating for ${genre.genre || "genre"} set to ${value.toFixed(2)}. Original ${genre.rating || "—"}★ rating was preserved.`,
+    );
+    renderRankingsPolished();
+    return true;
+  }
+
+  function stepRefinedRating(id, direction) {
+    const genre = allGenres().find((g) => String(g.id) === String(id));
+    if (!genre) return false;
+    const current = refinedRatingValue(genre) ?? initialRatingValue(genre);
+    if (!Number.isFinite(current)) return false;
+    return setRefinedRating(id, current + (direction < 0 ? -0.25 : 0.25));
+  }
+
+  function renderRefinedRatingControl(genre, enabled) {
+    const initial = initialRatingValue(genre);
+    const refined = refinedRatingValue(genre);
+    if (!enabled && refined == null) return "";
+
+    const display = refined ?? initial;
+    if (display == null) return "";
+    const delta = refinedRatingDelta(genre);
+    const stateLabel = refined == null
+      ? `Initial ${formatRefinedRating(initial)} · not refined yet`
+      : `Initial ${formatRefinedRating(initial)} · ${delta}`;
+
+    return `
+      <div class="ranks-refined-rating ${refined == null ? "is-unset" : "is-set"}" data-refined-rating-id="${esc(genre.id)}">
+        <span class="ranks-refined-label">Refined</span>
+        <button type="button" class="ranks-refined-step" data-refined-step="-1" data-refined-id="${esc(genre.id)}" aria-label="Decrease refined rating by 0.25">−</button>
+        <input
+          class="ranks-refined-input"
+          type="number"
+          min="1"
+          max="5"
+          step="0.25"
+          inputmode="decimal"
+          value="${esc(formatRefinedRating(display))}"
+          data-refined-input-id="${esc(genre.id)}"
+          aria-label="Refined rating for ${esc(genre.genre || "genre")}"
+        />
+        <button type="button" class="ranks-refined-step" data-refined-step="1" data-refined-id="${esc(genre.id)}" aria-label="Increase refined rating by 0.25">+</button>
+        ${refined != null ? `<button type="button" class="ranks-refined-clear" data-refined-clear-id="${esc(genre.id)}" title="Clear refined rating and fall back to the original whole-star rating" aria-label="Clear refined rating">×</button>` : ""}
+        <span class="ranks-refined-delta">${esc(stateLabel)}</span>
+      </div>
+    `;
+  }
+
+  function ensureRefinedRatingStyles() {
+    if (document.getElementById("dg-ranks-refined-v289")) return;
+    const style = document.createElement("style");
+    style.id = "dg-ranks-refined-v289";
+    style.textContent = `
+      .ranks-refined-rating {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px;
+        margin-top: 8px;
+      }
+      .ranks-refined-label {
+        font-size: .7rem;
+        font-weight: 900;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        opacity: .75;
+      }
+      .ranks-refined-step,
+      .ranks-refined-clear {
+        display: grid;
+        place-items: center;
+        min-width: 28px;
+        height: 28px;
+        padding: 0 7px;
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 8px;
+        background: rgba(255,255,255,.06);
+        color: inherit;
+        font: inherit;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .ranks-refined-input {
+        width: 70px;
+        min-height: 30px;
+        padding: 4px 6px;
+        text-align: center;
+        font-weight: 900;
+      }
+      .ranks-refined-rating.is-set .ranks-refined-input {
+        border-color: rgba(239,188,82,.55);
+      }
+      .ranks-refined-rating.is-unset .ranks-refined-input {
+        opacity: .76;
+      }
+      .ranks-refined-delta {
+        flex-basis: 100%;
+        font-size: .69rem;
+        opacity: .68;
+      }
+      @media (max-width: 720px) {
+        .ranks-refined-rating {
+          margin-top: 10px;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   function setRankReviewed(id, value) {
@@ -417,6 +585,7 @@
     const rank = genre.rank_order || idx + 1;
     const reviewed = rankReviewed(genre);
     const albumDiveReady = hasAlbumDive(genre);
+    const refinedRatingReady = albumDiveReady || reviewed || refinedRatingValue(genre) != null;
     const stats = [
       `${songs} song${songs === 1 ? "" : "s"}`,
       likes ? `${likes} 👍` : "",
@@ -448,6 +617,7 @@
             </span>
           </div>
           <div class="ranks-polish-audition ${canPlay ? "" : "muted"}">${esc(auditionLine)}</div>
+          ${renderRefinedRatingControl(genre, refinedRatingReady)}
         </div>
         <div class="ranks-polish-actions">
           <button type="button" class="ranks-play-btn" data-rank-play-id="${esc(genre.id)}" ${canPlay ? "" : "disabled"} title="Play audition track">▶</button>
@@ -513,11 +683,12 @@
         <button type="button" class="btn btn-secondary ranks-copy-btn" id="ranksCopyVisibleBtn" title="Copy this filtered rank list for Discord">Copy list</button>
         <button type="button" class="btn btn-secondary ranks-save-btn" onclick="saveLibraryUpdates()">Save rank changes</button>
       </div>
-      <div class="ranks-polish-note">Use ▶ to audition. Use ✓ to mark a genre as manually reviewed/ranked after a revisit or Album Dive. Move genres between star tiers, fine-tune order with ↑/↓, or type a number for a bigger jump. Copy list uses the current search/tier/category filters.</div>
+      <div class="ranks-polish-note">Use ▶ to audition. Use ✓ after a revisit or Album Dive to unlock an optional quarter-step refined rating. Refined ratings never replace the original whole-star rating or rank order. Move genres between star tiers, fine-tune order with ↑/↓, or type a number for a bigger jump.</div>
     `;
   }
 
   function renderRankingsPolished() {
+    ensureRefinedRatingStyles();
     const wrap = document.getElementById("rankingWrap");
     if (!wrap) return;
 
@@ -996,6 +1167,39 @@
       });
       input.addEventListener("change", apply);
     });
+
+    wrap.querySelectorAll("[data-refined-step]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        stepRefinedRating(
+          btn.dataset.refinedId,
+          Number(btn.dataset.refinedStep) < 0 ? -1 : 1,
+        );
+      });
+    });
+
+    wrap.querySelectorAll("[data-refined-input-id]").forEach((input) => {
+      const apply = () => setRefinedRating(input.dataset.refinedInputId, input.value);
+      input.addEventListener("click", (event) => event.stopPropagation());
+      input.addEventListener("focus", () => input.select?.());
+      input.addEventListener("keydown", (event) => {
+        event.stopPropagation();
+        if (event.key === "Enter") {
+          event.preventDefault();
+          apply();
+        }
+      });
+      input.addEventListener("change", apply);
+    });
+
+    wrap.querySelectorAll("[data-refined-clear-id]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setRefinedRating(btn.dataset.refinedClearId, null, { clear: true });
+      });
+    });
   }
 
   function moveRankPolished(id, direction) {
@@ -1012,6 +1216,9 @@
     moveGenreToRank,
     toggleRankReviewed,
     setRankReviewed,
+    setRefinedRating,
+    stepRefinedRating,
+    refinedRatingValue,
     restoreZangerToSpin,
     openRankAlbumDiveEditor,
     copyRankAlbumDiveStats,
