@@ -2821,11 +2821,23 @@ This removes it from every genre queue and pending list. It becomes permanent af
     const artistScore = studioAlbumNameSimilarity(expectedArtist, detectedArtist);
     const reasons = [];
 
-    if (expectedAlbum && !detectedAlbum) reasons.push("album title could not be verified");
-    else if (albumScore !== null && albumScore < 0.58) reasons.push("album title");
+    const strongAlbumMatch = albumScore !== null && albumScore >= 0.82;
+    const strongArtistMatch = artistScore !== null && artistScore >= 0.72;
 
-    if (expectedArtist && !detectedArtist) reasons.push("artist could not be verified");
-    else if (artistScore !== null && artistScore < 0.48) reasons.push("artist");
+    if (expectedAlbum && !detectedAlbum) {
+      reasons.push("album title could not be verified");
+    } else if (albumScore !== null && albumScore < 0.58) {
+      reasons.push("album title");
+    }
+
+    // A strongly matching album title is enough to accept providers that return
+    // album identity but omit the artist in oEmbed/preview metadata. Only warn
+    // about an unavailable artist when the album evidence is also weak.
+    if (expectedArtist && !detectedArtist) {
+      if (!strongAlbumMatch) reasons.push("artist could not be verified");
+    } else if (artistScore !== null && artistScore < 0.48) {
+      if (!strongAlbumMatch || !strongArtistMatch) reasons.push("artist");
+    }
 
     if (!expectedAlbum && !expectedArtist) reasons.push("existing album identity is incomplete");
     if (!detectedAlbum && !detectedArtist) reasons.push("submitted URL metadata could not be verified");
