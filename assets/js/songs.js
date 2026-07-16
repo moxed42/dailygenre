@@ -936,7 +936,7 @@ This removes it from every genre and Studio queue. It becomes permanent after Sa
         <div class="song-focus-detail-card song-focus-url-card">
           <h4>Track URL</h4>
           <div class="song-focus-url-row">
-            <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify, YouTube, or Apple Music URL">
+            <input data-track-url-input type="url" value="${html(trackUrl)}" placeholder="Paste Spotify, YouTube, Apple Music, SoundCloud, or Bandcamp URL">
             <button type="button" class="btn btn-primary btn-tiny" onclick="updateTrackUrlFromCard('${encodedKey}', -1, this, '${encodedPath}')">Apply URL / Overrides</button>
           </div>
           <div class="track-card-manual-meta song-focus-manual-meta">

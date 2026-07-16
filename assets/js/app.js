@@ -3356,6 +3356,70 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       }
     }
 
+    function classifySupportedTrackUrl(rawUrl = '') {
+      const raw = String(rawUrl || '').trim();
+      if (/^spotify:track:[A-Za-z0-9]{22}$/i.test(raw) || /open\.spotify\.com\/(?:intl-[a-z]{2}\/)?track\/[A-Za-z0-9]{22}/i.test(raw)) return 'spotify';
+
+      let parsed = null;
+      try { parsed = new URL(raw); } catch (_) { return ''; }
+      if (!/^https?:$/i.test(parsed.protocol)) return '';
+
+      const host = parsed.hostname.toLowerCase().replace(/^www\./, '');
+      const path = parsed.pathname || '';
+
+      if (host === 'youtu.be' || host === 'youtube.com' || host.endsWith('.youtube.com')) {
+        return /\/watch|\/shorts\/|\/embed\//i.test(path) || host === 'youtu.be' ? 'youtube' : '';
+      }
+      if (host === 'music.apple.com' || host === 'itunes.apple.com') return 'apple';
+      if (host === 'soundcloud.com' || host.endsWith('.soundcloud.com') || host === 'on.soundcloud.com') return 'soundcloud';
+      if (host === 'bandcamp.com' || host.endsWith('.bandcamp.com')) return 'bandcamp';
+      return '';
+    }
+
+    async function fetchSoundCloudTrackMetadata(rawUrl) {
+      const endpoint = `https://soundcloud.com/oembed?format=json&maxheight=450&url=${encodeURIComponent(rawUrl)}`;
+      const response = await fetch(endpoint, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+        headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) throw new Error(`SoundCloud metadata lookup returned ${response.status}.`);
+      const data = await response.json();
+      const title = String(data?.title || '').trim();
+      const artist = String(data?.author_name || '').trim();
+      const artwork = String(data?.thumbnail_url || '').trim();
+      if (!title && !artist && !artwork) throw new Error('SoundCloud did not return track metadata for that URL.');
+      return {
+        source: 'soundcloud',
+        url: rawUrl,
+        title,
+        artist,
+        artists: artist ? [artist] : [],
+        artwork,
+        albumArt: artwork,
+        externalMetadataFetched: true,
+        externalMetadataFetchedAt: new Date().toISOString()
+      };
+    }
+
+    function clearPlatformSpecificTrackMetadata(song) {
+      if (!song) return;
+      song.spotifyId = '';
+      song.spotifyUrl = '';
+      song.spotifyMetadataFetched = false;
+      song.spotifyMetadataFetchedAt = '';
+      song.isrc = '';
+      song.album = '';
+      song.artwork = '';
+      song.albumArt = '';
+      song.releaseDate = '';
+      song.releaseYear = null;
+      song.releasePrecision = '';
+      song.releaseSource = '';
+      song.durationMs = null;
+    }
+
     async function updateTrackUrlFromCard(encodedKey, pendingIndex, button, path = '') {
       if (!currentGenre) return;
       // The inline detail editor and the focused Song Queue details drawer use
@@ -3376,8 +3440,9 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
       const overrideArtistInput = editor?.querySelector?.('[data-track-artist-input]') || null;
       const overrideTitle = cleanPastedCitationArtifacts(overrideTitleInput?.value || '').trim();
       const overrideArtist = cleanPastedCitationArtifacts(overrideArtistInput?.value || '').trim();
-      if (!/^https?:\/\//i.test(nextUrl) && !/^spotify:track:/i.test(nextUrl)) {
-        showSaveToast('Please provide a valid Spotify track URL or web track link.', true);
+      const trackPlatform = classifySupportedTrackUrl(nextUrl);
+      if (!trackPlatform) {
+        showSaveToast('Use a valid Spotify, YouTube, Apple Music, SoundCloud, or Bandcamp track URL.', true);
         return;
       }
 
@@ -3420,7 +3485,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         let proposedMetadataSong = null;
         let confirmedMetadataMismatch = false;
 
-        const isSpotifyTrack = /spotify\.com\/track\//i.test(nextUrl) || /^spotify:track:/i.test(nextUrl);
+        const isSpotifyTrack = trackPlatform === 'spotify';
         let metadataWarning = '';
 
         if (isSpotifyTrack) {
@@ -3479,23 +3544,54 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
           } catch (identityError) {
             console.warn('Could not sync queue URL overwrite back to Genre DNA', identityError);
           }
-        } else if (isYoutubeUrl(nextUrl) || isAppleMusicUrl(nextUrl)) {
-          const externalMetadata = await fetchExternalTrackMetadata(nextUrl);
-          // v196: Treat typed title/artist as authoritative overrides. The old flow
-          // fetched YouTube/Apple metadata first and made it look like Apply had wiped
-          // the user's edits. Preserve the typed values through the metadata apply.
+        } else {
+          let externalMetadata = null;
+
+          if (trackPlatform === 'soundcloud') {
+            externalMetadata = await fetchSoundCloudTrackMetadata(nextUrl);
+          } else if (trackPlatform === 'youtube' || trackPlatform === 'apple') {
+            externalMetadata = await fetchExternalTrackMetadata(nextUrl);
+          } else if (trackPlatform === 'bandcamp') {
+            externalMetadata = {
+              source: 'bandcamp',
+              url: nextUrl,
+              title: overrideTitle || savedTitle || '',
+              artist: overrideArtist || savedArtist || '',
+              artists: (overrideArtist || savedArtist) ? [overrideArtist || savedArtist] : []
+            };
+          }
+
+          if (!externalMetadata) throw new Error('No metadata handler is available for that URL.');
+
+          const proposedExternal = {
+            ...target,
+            ...externalMetadata,
+            title: overrideTitle || externalMetadata.title || savedTitle || '',
+            artist: overrideArtist || externalMetadata.artist || savedArtist || '',
+          };
+
+          if (
+            trackPlatform === 'soundcloud' &&
+            !queueMetadataLooksClose(beforeOverwrite, proposedExternal) &&
+            !confirmQueueUrlOverwrite(beforeOverwrite, proposedExternal)
+          ) {
+            showSaveToast('URL update cancelled. No queue rows were changed.', false);
+            return;
+          }
+
+          clearPlatformSpecificTrackMetadata(target);
           applyExternalTrackMetadata(target, nextUrl, {
             ...externalMetadata,
-            title: overrideTitle || externalMetadata.title || '',
-            artist: overrideArtist || externalMetadata.artist || '',
+            title: overrideTitle || externalMetadata.title || savedTitle || '',
+            artist: overrideArtist || externalMetadata.artist || savedArtist || '',
           }, savedTitle, savedArtist);
-        } else {
-          applyExternalTrackMetadata(target, nextUrl, {
-            source: 'web',
-            url: nextUrl,
-            title: overrideTitle || '',
-            artist: overrideArtist || '',
-          }, savedTitle, savedArtist);
+
+          target.source = trackPlatform;
+          target.url = nextUrl;
+          if (trackPlatform === 'soundcloud') {
+            target.externalMetadataFetched = true;
+            target.externalMetadataFetchedAt = new Date().toISOString();
+          }
         }
 
         if (overrideTitle) target.title = overrideTitle;
@@ -3977,7 +4073,7 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
         : '';
       const canSpotifyRefresh = !s.isPending && (/spotify\.com\/track\//i.test(rawUrl || s.spotifyUrl || '') || /^spotify:track:/i.test(rawUrl || s.spotifyUrl || ''));
       const trackEditHtml = canShowTrackTools
-        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste corrected Spotify, YouTube, Apple Music, or web track URL"><div class="track-card-manual-meta"><input type="text" data-track-title-input value="${escapeHtml(s.title || '')}" placeholder="Override title if YouTube/Apple title is messy"><input type="text" data-track-artist-input value="${escapeHtml(s.artist || (Array.isArray(s.artists) ? s.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed"></div><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Apply URL / Overrides</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove from genre</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, Apple Music, or web track links. Optional title/artist overrides replace messy YouTube or Apple metadata. Use the floating Save button to persist.</div></div></details>`
+        ? `<details class="track-card-editor"><summary>Edit / refresh track</summary><div class="track-card-edit-body"><input type="url" data-track-url-input value="${escapeHtml(rawUrl)}" placeholder="Paste Spotify, YouTube, Apple Music, SoundCloud, or Bandcamp track URL"><div class="track-card-manual-meta"><input type="text" data-track-title-input value="${escapeHtml(s.title || '')}" placeholder="Override title if YouTube/Apple title is messy"><input type="text" data-track-artist-input value="${escapeHtml(s.artist || (Array.isArray(s.artists) ? s.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed"></div><div class="track-card-edit-actions"><button type="button" class="btn btn-primary" onclick="updateTrackUrlFromCard('${encodedKey}', ${editPendingIndex}, this, '${encodedPath}')">Apply URL / Overrides</button>${canSpotifyRefresh ? `<button type="button" class="btn btn-secondary" onclick="refreshGenrePageSpotifyTrack('${encodedKey}', this, '${encodedPath}')">Refresh Spotify</button>` : ''}<button type="button" class="btn btn-danger" onclick="removeTrackFromCard('${encodedKey}', ${editPendingIndex}, '${encodedPath}')">Remove from genre</button></div><div class="track-card-edit-note">Update accepts Spotify, YouTube, Apple Music, SoundCloud, or Bandcamp track links. Optional title/artist overrides replace messy YouTube or Apple metadata. Use the floating Save button to persist.</div></div></details>`
         : '';
       const reactionStaged = currentGenre && stagedQueueReactionKeys.has(stagedReactionKey(currentGenre.id, songIdentity(s)));
       const isFavorite = currentGenre && isSameFavoriteSong(currentGenre, s);
