@@ -4575,9 +4575,10 @@ function loadListenScreen(genre, options = {}) {
               <div class="eyebrow">Genre Detail</div>
               <h2>${escapeHtml(genre.genre || 'Unknown')}</h2>
               <div class="subtle">${escapeHtml(categoryLine(genre))}</div>
+              ${listenedDate ? `<div class="detail-listened-date">Listened ${escapeHtml(listenedDate)}</div>` : ''}
               <div class="status-row">
                 ${ratingHero}
-                ${listenedDate ? `<span class="tag">Listened on ${escapeHtml(listenedDate)}</span>` : (hasListenMarkers ? '<span class="tag tag-warn">Marked listened — reset if mistaken</span>' : '')}
+                ${!listenedDate && hasListenMarkers ? '<span class="tag tag-warn">Marked listened — reset if mistaken</span>' : ''}
                 ${['in_progress','in-progress'].includes(String(genre.status || '').toLowerCase()) ? '<span class="tag tag-pending">⏳ In progress</span>' : ''}
                 ${songCount ? `<span class="tag">${songCount} song${songCount === 1 ? '' : 's'} logged</span>` : '<span class="tag">Needs song log</span>'}
                 ${hasAltTake(genre) ? '<span class="tag">Alt Take</span>' : ''}
