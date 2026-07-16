@@ -120,6 +120,26 @@
     return songs.length;
   }
 
+  function hasAlbumDive(genre) {
+    const dive = genre?.albumDive || genre?.album_dive || null;
+    if (!dive) return false;
+    const slots = Array.isArray(dive.slots) ? dive.slots : [];
+    return slots.some((slot) =>
+      slot &&
+      (
+        slot.album ||
+        slot.artist ||
+        slot.spotify_url ||
+        slot.spotifyUrl ||
+        slot.albumUrl ||
+        slot.url ||
+        slot.rationale ||
+        slot.albumArt ||
+        slot.manualAlbumArt
+      )
+    );
+  }
+
   function likedCount(genre) {
     return getSongs(genre).filter((song) => Number(song.reaction) === 1).length;
   }
@@ -396,6 +416,7 @@
     const canPlay = audition?.url;
     const rank = genre.rank_order || idx + 1;
     const reviewed = rankReviewed(genre);
+    const albumDiveReady = hasAlbumDive(genre);
     const stats = [
       `${songs} song${songs === 1 ? "" : "s"}`,
       likes ? `${likes} 👍` : "",
@@ -419,7 +440,10 @@
         </div>
         <div class="ranks-polish-main">
           <button type="button" class="linklike ranks-polish-title" data-rank-open-id="${esc(genre.id)}">${esc(genre.genre || "Unknown genre")}</button>
-          <div class="ranks-polish-meta">${esc(catLine(genre))}${stats ? ` · ${esc(stats)}` : ""}</div>
+          <div class="ranks-polish-meta-row">
+            <div class="ranks-polish-meta">${esc(catLine(genre))}${stats ? ` · ${esc(stats)}` : ""}</div>
+            <span class="ranks-album-dive-badge ${albumDiveReady ? "has-dive" : "no-dive"}" title="${albumDiveReady ? "Album Dive present" : "No Album Dive present"}">${albumDiveReady ? "Album Dive" : "No Album Dive"}</span>
+          </div>
           <div class="ranks-polish-audition ${canPlay ? "" : "muted"}">${esc(auditionLine)}</div>
         </div>
         <div class="ranks-polish-actions">

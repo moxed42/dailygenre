@@ -265,6 +265,52 @@
   font-weight: 650;
 }
 
+.ranks-polish-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ranks-polish-meta-row .ranks-polish-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.ranks-album-dive-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--border, #c89548) 46%, transparent);
+}
+
+.ranks-album-dive-badge.has-dive {
+  color: color-mix(in srgb, #2f6b3b 78%, var(--text, #22160d));
+  background: color-mix(in srgb, #2f6b3b 14%, var(--surface, #fff4dc));
+  border-color: color-mix(in srgb, #2f6b3b 42%, transparent);
+}
+
+.ranks-album-dive-badge.no-dive {
+  color: var(--muted, #735a3c);
+  background: color-mix(in srgb, var(--surface-2, #ead0a0) 52%, white);
+  opacity: 0.72;
+}
+
+@media (max-width: 680px) {
+  .ranks-polish-meta-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
 .ranks-polish-actions {
   display: grid;
   grid-template-columns: auto auto auto auto;
