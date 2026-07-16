@@ -278,6 +278,7 @@
 }
 
 .ranks-album-dive-badge {
+  appearance: none;
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
@@ -289,6 +290,26 @@
   letter-spacing: 0.025em;
   white-space: nowrap;
   border: 1px solid color-mix(in srgb, var(--border, #c89548) 46%, transparent);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    opacity 120ms ease;
+}
+
+.ranks-album-dive-badge:hover,
+.ranks-album-dive-badge:focus-visible {
+  opacity: 1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(65, 34, 13, 0.12);
+  outline: none;
+}
+
+.ranks-album-dive-badge:focus-visible {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent, #d98d25) 28%, transparent),
+    0 4px 10px rgba(65, 34, 13, 0.12);
 }
 
 .ranks-album-dive-badge.has-dive {
