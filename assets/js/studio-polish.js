@@ -1289,7 +1289,12 @@
     const visibleRepairRows = topRepairRows(100000);
     const repairSample = visibleRepairRows[0] || null;
     const visibleRepairCount = visibleRepairRows.length;
-    const reviewSample = topRows("duplicate", 1)[0];
+    const unresolvedQaGroups = duplicateGroups(100000);
+    const unresolvedQaCount = unresolvedQaGroups.reduce(
+      (total, group) => total + group.entries.length,
+      0,
+    );
+    const reviewSample = unresolvedQaGroups[0]?.entries?.[0] || null;
     return `<section class="studio-workbench-hero" aria-label="Studio workbench">
       <div class="studio-workbench-copy">
         <div class="eyebrow">Studio Workbench</div>
@@ -1304,7 +1309,7 @@
         ${laneCard("studio-route-lane", "Needs decision", s.pending, "Pending nominations and unresolved routing choices.", "Route", pendingSample ? songTitle(pendingSample.song) : "")}
         ${laneCard("genreIdentityWorkbench", "Quick editor", identity.missing, identity.missing ? `${identity.missing} listened genre${identity.missing === 1 ? "" : "s"} missing a Genre DNA block.` : "No listened identity backlog. Editor stays available for targeted fixes.", "Identity", identity.missing ? "Paste a structured block when needed" : "0 missing")}
         ${laneCard("studio-repair-lane", "Needs repair", visibleRepairCount, "Album art, years, IDs, and suspicious metadata.", "Repair", repairSample ? songTitle(repairSample.song) : "")}
-        ${laneCard("studio-review-lane", "Needs taste / QA", s.unrated + s.duplicate + s.drafts, "Unrated songs, possible duplicates, and draft inconsistencies.", "Review", reviewSample ? songTitle(reviewSample.song) : "")}
+        ${laneCard("studio-review-lane", "Needs taste / QA", unresolvedQaCount, "Unresolved duplicate-looking appearances currently shown in QA Lab.", "Review", reviewSample ? songTitle(reviewSample.song) : "")}
       </div>
     </section>`;
   }
