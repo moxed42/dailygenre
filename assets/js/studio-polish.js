@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v274-qa-lab-25-refresh";
+  const VERSION = "studio-polish-v290-repair-bay-linear-metadata-index";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -378,6 +378,76 @@
     return missing;
   }
 
+  // Daily Genre v290: Repair Bay may encounter the same recording in several
+  // genres. Build one linear metadata index per Studio stats pass so a sparse
+  // copy is not falsely reported when another copy already has authoritative
+  // artwork/year/Spotify metadata. This intentionally avoids per-song library scans.
+  function repairMetadataKeys(song) {
+    const keys = [];
+    const spotifyId = String(song?.spotifyId || "").trim().toLowerCase();
+    const isrc = String(song?.isrc || "").trim().toLowerCase();
+    const url = String(spotifyUrl(song) || "").trim().toLowerCase().replace(/[?#].*$/, "");
+    const title = norm(song?.title || song?.name || "");
+    const artist = norm(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
+    if (spotifyId) keys.push(`spotify:${spotifyId}`);
+    if (isrc) keys.push(`isrc:${isrc}`);
+    if (url) keys.push(`url:${url}`);
+    if (title && artist) keys.push(`artist-title:${artist}::${title}`);
+    return keys;
+  }
+
+  function repairMetadataScore(song) {
+    let score = 0;
+    if (studioArtworkUrl(song)) score += 8;
+    if (song?.spotifyId) score += 5;
+    if (song?.isrc) score += 4;
+    if (song?.releaseYear || song?.releaseDate || song?.eraYear) score += 3;
+    if (song?.durationMs) score += 2;
+    if (song?.spotifyMetadataFetched || song?.externalMetadataFetched) score += 2;
+    if (song?.title || song?.name) score += 1;
+    if (song?.artist || (Array.isArray(song?.artists) && song.artists.length)) score += 1;
+    return score;
+  }
+
+  function buildRepairMetadataIndex() {
+    const index = new Map();
+    getGenres().forEach((genre) => {
+      allNonPendingSongs(genre).forEach((song) => {
+        const score = repairMetadataScore(song);
+        repairMetadataKeys(song).forEach((key) => {
+          const current = index.get(key);
+          if (!current || score > current.score) index.set(key, { song, score });
+        });
+      });
+    });
+    return index;
+  }
+
+  function repairMetadataView(song, index) {
+    if (!song || !index) return song;
+    let donor = null;
+    for (const key of repairMetadataKeys(song)) {
+      const candidate = index.get(key);
+      if (candidate && (!donor || candidate.score > donor.score)) donor = candidate;
+    }
+    if (!donor?.song || donor.song === song) return song;
+    const source = donor.song;
+    return {
+      ...source,
+      ...song,
+      artwork: song.artwork || song.albumArt || source.artwork || source.albumArt || "",
+      albumArt: song.albumArt || song.artwork || source.albumArt || source.artwork || "",
+      spotifyId: song.spotifyId || source.spotifyId || "",
+      isrc: song.isrc || source.isrc || "",
+      releaseYear: song.releaseYear || source.releaseYear || "",
+      releaseDate: song.releaseDate || source.releaseDate || "",
+      eraYear: song.eraYear || source.eraYear || "",
+      durationMs: song.durationMs || source.durationMs || 0,
+      spotifyMetadataFetched: song.spotifyMetadataFetched || source.spotifyMetadataFetched || false,
+      externalMetadataFetched: song.externalMetadataFetched || source.externalMetadataFetched || false,
+    };
+  }
+
 
 
   /* Daily Genre v211: same-genre duplicate merge collapses visible QA rows. */
@@ -511,6 +581,7 @@
 
   function stats() {
     const genres = getGenres();
+    const repairMetadataIndex = buildRepairMetadataIndex();
     const rows = [];
     let pending = 0;
     let missingArt = 0;
@@ -541,7 +612,7 @@
         drafts += 1;
 
       songs.forEach((song, songIndex) => {
-        const missing = missingKinds(song);
+        const missing = missingKinds(repairMetadataView(song, repairMetadataIndex));
         if (missing.includes("art")) missingArt += 1;
         if (missing.includes("year")) missingYear += 1;
         if (missing.includes("metadata")) missingMeta += 1;
