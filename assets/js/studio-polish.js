@@ -924,6 +924,72 @@
     return duplicates;
   }
 
+
+  /* Daily Genre v297: conservative bulk resolve for obvious valid crossovers. */
+  function duplicateGenreKey(row) {
+    const genre = row?.genre || {};
+    const id = String(genre?.id ?? "").trim();
+    if (id) return `id:${id}`;
+    const name = norm(genre?.genre || genre?.name || "");
+    return name ? `name:${name}` : "";
+  }
+
+  function isSafeHighFitCrossGenreGroup(group) {
+    const entries = Array.isArray(group?.entries) ? group.entries : [];
+    if (entries.length < 2) return false;
+    const genres = new Set();
+    for (const row of entries) {
+      const fit = Number(row?.song?.score ?? row?.song?.originFit ?? row?.song?.nominatedFit ?? 0);
+      const genreKey = duplicateGenreKey(row);
+      if (!genreKey || (fit !== 4 && fit !== 5) || genres.has(genreKey)) return false;
+      genres.add(genreKey);
+    }
+    return genres.size === entries.length;
+  }
+
+  function safeHighFitCrossGenreGroups(limit = 100000) {
+    return duplicateGroups(limit).filter(isSafeHighFitCrossGenreGroup);
+  }
+
+  window.bulkResolveSafeHighFitQa = function bulkResolveSafeHighFitQa(button) {
+    const groups = safeHighFitCrossGenreGroups(100000);
+    if (!groups.length) return toast("No unresolved 4–5 fit cross-genre clusters qualify right now.", true);
+
+    const appearances = groups.reduce((total, group) => total + group.entries.length, 0);
+    const ok = window.confirm(
+      `Mark ${groups.length} QA cluster${groups.length === 1 ? "" : "s"} valid/resolved?\n\n` +
+      `${appearances} appearances qualify because every fit is 4 or 5 and no genre repeats inside a cluster.\n\n` +
+      `Mixed-fit clusters and same-genre duplicates will remain untouched.`
+    );
+    if (!ok) return;
+
+    const keys = new Set(groups.map((group) => String(group.key || "")).filter(Boolean));
+    keys.forEach(markDuplicateClusterResolved);
+
+    let stamped = 0;
+    getGenres().forEach((genre) => {
+      const songs = inflateSongs(genre?.songs_listened || []);
+      let changed = false;
+      songs.forEach((song) => {
+        const key = String(duplicateClusterKeyForSong(song) || "");
+        if (!keys.has(key)) return;
+        song.duplicateQaResolved = true;
+        song.duplicateQaResolvedKey = key;
+        song.duplicateQaResolvedAt = new Date().toISOString();
+        stamped += 1;
+        changed = true;
+      });
+      if (changed) genre.songs_listened = storageReadySongs(songs);
+    });
+
+    markStudioLibraryDirty(
+      `Marked ${groups.length} safe 4–5 cross-genre QA cluster${groups.length === 1 ? "" : "s"} resolved — save cleanup to persist.`
+    );
+    if (button) button.disabled = true;
+    if (typeof window.refreshStudioQaLab === "function") window.refreshStudioQaLab();
+    toast(`Resolved ${groups.length} safe QA cluster${groups.length === 1 ? "" : "s"} (${stamped} appearances). Save cleanup to persist.`);
+  };
+
   function updateDuplicateGroupDomAfterPendingRoute(button) {
     const instance = button?.closest?.(".studio-duplicate-instance");
     const group = button?.closest?.(".studio-duplicate-group");
@@ -1529,11 +1595,14 @@
 
   function renderReviewLane(s) {
     const groups = duplicateGroups(25);
+    const safeGroups = safeHighFitCrossGenreGroups(100000);
+    const safeAppearances = safeGroups.reduce((total, group) => total + group.entries.length, 0);
     return `<section class="studio-lane" id="studio-review-lane" data-studio-lane="review">
       <div class="studio-lane-head">
         <div><div class="eyebrow">QA Lab</div><h3>Taste pass and structural checks</h3><p>Resolve duplicate-looking songs, route low-fit source rows, and keep Level Up context attached to the original genre.</p></div>
-        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span><button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); refreshStudioQaLab(); return false;">Refresh checks</button>${studioCopyButton("qa", "Copy the first 25 visible QA duplicate clusters")}</div>
+        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span><button type="button" class="btn btn-primary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); bulkResolveSafeHighFitQa(this); return false;" ${safeGroups.length ? "" : "disabled aria-disabled="true""} title="Resolve clusters where every appearance is fit 4–5 and every genre is unique">✓ Resolve safe 4–5 crossovers (${safeGroups.length})</button><button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); refreshStudioQaLab(); return false;">Refresh checks</button>${studioCopyButton("qa", "Copy the first 25 visible QA duplicate clusters")}</div>
       </div>
+      ${safeGroups.length ? `<div class="studio-action-strip"><div class="studio-action-helper">${safeGroups.length} cluster${safeGroups.length === 1 ? "" : "s"} / ${safeAppearances} appearances currently qualify: all fits are 4–5 and no genre repeats within a cluster.</div></div>` : ""}
       ${renderDuplicateGroups(groups)}
     </section>`;
   }
