@@ -1217,10 +1217,12 @@
   function renderHero(s) {
     const identity = genreIdentityStats();
     const pendingSample = topRows("pending", 1)[0];
-    const repairSample =
-      topRows("missingArt", 1)[0] ||
-      topRows("missingYear", 1)[0] ||
-      topRows("missingMeta", 1)[0] || topRows("albumRepair", 1)[0];
+    /* Daily Genre v296: use the exact same filtered/consolidated rows shown in
+       Repair Bay. Raw stats include rows temporarily hidden after repair, which
+       made the Control Room count and “Next” sample point to invisible work. */
+    const visibleRepairRows = topRepairRows(100000);
+    const repairSample = visibleRepairRows[0] || null;
+    const visibleRepairCount = visibleRepairRows.length;
     const reviewSample = topRows("duplicate", 1)[0];
     return `<section class="studio-workbench-hero" aria-label="Studio workbench">
       <div class="studio-workbench-copy">
@@ -1235,7 +1237,7 @@
       <div class="studio-lane-grid">
         ${laneCard("studio-route-lane", "Needs decision", s.pending, "Pending nominations and unresolved routing choices.", "Route", pendingSample ? songTitle(pendingSample.song) : "")}
         ${laneCard("genreIdentityWorkbench", "Quick editor", identity.missing, identity.missing ? `${identity.missing} listened genre${identity.missing === 1 ? "" : "s"} missing a Genre DNA block.` : "No listened identity backlog. Editor stays available for targeted fixes.", "Identity", identity.missing ? "Paste a structured block when needed" : "0 missing")}
-        ${laneCard("studio-repair-lane", "Needs repair", s.missingArt + s.missingYear + s.missingMeta, "Album art, years, IDs, and suspicious metadata.", "Repair", repairSample ? songTitle(repairSample.song) : "")}
+        ${laneCard("studio-repair-lane", "Needs repair", visibleRepairCount, "Album art, years, IDs, and suspicious metadata.", "Repair", repairSample ? songTitle(repairSample.song) : "")}
         ${laneCard("studio-review-lane", "Needs taste / QA", s.unrated + s.duplicate + s.drafts, "Unrated songs, possible duplicates, and draft inconsistencies.", "Review", reviewSample ? songTitle(reviewSample.song) : "")}
       </div>
     </section>`;
