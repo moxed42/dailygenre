@@ -32,3 +32,45 @@
     transform: none;
   }
 }
+
+/* Daily Genre v295: compact Repair Bay row actions */
+#studio-repair-lane .studio-mini-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: nowrap;
+  min-width: auto;
+}
+
+#studio-repair-lane .studio-row-icon-btn {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  line-height: 1;
+  font-weight: 950;
+}
+
+#studio-repair-lane .studio-row-icon-btn[aria-label="Open genre"] {
+  font-size: 1rem;
+}
+
+@media (max-width: 700px) {
+  #studio-repair-lane .studio-mini-actions {
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+
+  #studio-repair-lane .studio-row-icon-btn {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+  }
+}

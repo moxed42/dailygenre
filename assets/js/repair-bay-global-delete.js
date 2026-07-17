@@ -348,9 +348,11 @@
       if (!actions.querySelector("[data-remove-local]")) {
         const local = document.createElement("button");
         local.type = "button";
-        local.className = "btn btn-secondary btn-tiny";
+        local.className = "btn btn-secondary btn-tiny studio-row-icon-btn";
         local.dataset.removeLocal = "1";
-        local.textContent = "Remove from this genre";
+        local.textContent = "−";
+        local.title = "Remove from this genre";
+        local.setAttribute("aria-label", "Remove from this genre");
         local.addEventListener("click", e => {
           e.preventDefault(); e.stopPropagation();
           album ? window.removeStudioAlbumFromGenre(encoded, local) : window.removeStudioRepairGroupFromGenre(encoded, local);
@@ -361,15 +363,34 @@
       if (album && !actions.querySelector("[data-delete-album-everywhere]")) {
         const global = document.createElement("button");
         global.type = "button";
-        global.className = "btn btn-danger btn-tiny studio-hard-delete-btn";
+        global.className = "btn btn-danger btn-tiny studio-hard-delete-btn studio-row-icon-btn";
         global.dataset.deleteAlbumEverywhere = "1";
-        global.textContent = "Delete everywhere";
+        global.textContent = "×";
+        global.title = "Delete everywhere";
+        global.setAttribute("aria-label", "Delete everywhere");
         global.addEventListener("click", e => {
           e.preventDefault(); e.stopPropagation();
           window.hardDeleteStudioAlbumGroup(encoded, global);
         });
         actions.insertBefore(global, actions.querySelector("button:last-child"));
       }
+
+      actions.querySelectorAll(".studio-hard-delete-btn").forEach(button => {
+        button.classList.add("studio-row-icon-btn");
+        button.textContent = "×";
+        button.title = "Delete everywhere";
+        button.setAttribute("aria-label", "Delete everywhere");
+      });
+
+      actions.querySelectorAll("button").forEach(button => {
+        const label = (button.textContent || "").trim().toLowerCase();
+        if (label === "open genre") {
+          button.classList.add("studio-row-icon-btn");
+          button.textContent = "↗";
+          button.title = "Open genre";
+          button.setAttribute("aria-label", "Open genre");
+        }
+      });
     });
   }
 
