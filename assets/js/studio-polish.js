@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "studio-polish-v290-shared-metadata";
+  const VERSION = "studio-polish-v290-repair-bay-linear-metadata-index";
   let isApplying = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -366,69 +366,7 @@
     );
   }
 
-
-  // Daily Genre v290: Repair Bay must classify the effective song metadata,
-  // not only the incomplete copy stored under one genre.
-  function repairIdentityTokens(song) {
-    const artist = norm(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
-    const title = norm(song?.title || song?.name || "");
-    const spotifyId = norm(song?.spotifyId || "");
-    const isrc = norm(song?.isrc || "");
-    return {
-      artistTitle: artist && title ? `${artist}::${title}` : "",
-      spotifyId,
-      isrc,
-    };
-  }
-
-  function repairSongsMatch(left, right) {
-    if (!left || !right) return false;
-    const a = repairIdentityTokens(left);
-    const b = repairIdentityTokens(right);
-    if (a.isrc && b.isrc && a.isrc === b.isrc) return true;
-    if (a.spotifyId && b.spotifyId && a.spotifyId === b.spotifyId) return true;
-    return !!(a.artistTitle && b.artistTitle && a.artistTitle === b.artistTitle);
-  }
-
-  function repairMetadataScore(song) {
-    return [
-      studioArtworkUrl(song), song?.album, song?.spotifyId, song?.spotifyUrl,
-      song?.isrc, song?.releaseYear, song?.durationMs, song?.releaseDate,
-      song?.spotifyMetadataFetched
-    ].filter(Boolean).length;
-  }
-
-  function effectiveRepairSong(song) {
-    if (!song) return song;
-    let donor = null;
-    let donorScore = repairMetadataScore(song);
-    getGenres().forEach((genre) => {
-      allNonPendingSongs(genre).forEach((candidate) => {
-        if (candidate === song || !repairSongsMatch(song, candidate)) return;
-        const score = repairMetadataScore(candidate);
-        if (score > donorScore) {
-          donor = candidate;
-          donorScore = score;
-        }
-      });
-    });
-    if (!donor) return song;
-    const merged = { ...donor, ...song };
-    [
-      'artwork','albumArt','image','thumbnail','cover','album','spotifyId','spotifyUrl',
-      'isrc','releaseYear','releaseDate','releasePrecision','releaseSource','durationMs',
-      'artists','spotifyMetadataFetched','spotifyMetadataFetchedAt'
-    ].forEach((field) => {
-      if ((merged[field] === undefined || merged[field] === null || merged[field] === '') && donor[field] != null) {
-        merged[field] = donor[field];
-      }
-    });
-    return merged;
-  }
-  window.dailyGenreEffectiveRepairSong = effectiveRepairSong;
-
   function missingKinds(song) {
-    song = effectiveRepairSong(song);
     const missing = [];
     const url = spotifyUrl(song);
     const isSpotify = /open\.spotify\.com\/track\//i.test(url || "") || /spotify:track:/i.test(url || "");
@@ -438,6 +376,76 @@
       missing.push("year");
     if (url && !hasTrackMetadata(song)) missing.push("metadata");
     return missing;
+  }
+
+  // Daily Genre v290: Repair Bay may encounter the same recording in several
+  // genres. Build one linear metadata index per Studio stats pass so a sparse
+  // copy is not falsely reported when another copy already has authoritative
+  // artwork/year/Spotify metadata. This intentionally avoids per-song library scans.
+  function repairMetadataKeys(song) {
+    const keys = [];
+    const spotifyId = String(song?.spotifyId || "").trim().toLowerCase();
+    const isrc = String(song?.isrc || "").trim().toLowerCase();
+    const url = String(spotifyUrl(song) || "").trim().toLowerCase().replace(/[?#].*$/, "");
+    const title = norm(song?.title || song?.name || "");
+    const artist = norm(song?.artist || (Array.isArray(song?.artists) ? song.artists.join(" ") : ""));
+    if (spotifyId) keys.push(`spotify:${spotifyId}`);
+    if (isrc) keys.push(`isrc:${isrc}`);
+    if (url) keys.push(`url:${url}`);
+    if (title && artist) keys.push(`artist-title:${artist}::${title}`);
+    return keys;
+  }
+
+  function repairMetadataScore(song) {
+    let score = 0;
+    if (studioArtworkUrl(song)) score += 8;
+    if (song?.spotifyId) score += 5;
+    if (song?.isrc) score += 4;
+    if (song?.releaseYear || song?.releaseDate || song?.eraYear) score += 3;
+    if (song?.durationMs) score += 2;
+    if (song?.spotifyMetadataFetched || song?.externalMetadataFetched) score += 2;
+    if (song?.title || song?.name) score += 1;
+    if (song?.artist || (Array.isArray(song?.artists) && song.artists.length)) score += 1;
+    return score;
+  }
+
+  function buildRepairMetadataIndex() {
+    const index = new Map();
+    getGenres().forEach((genre) => {
+      allNonPendingSongs(genre).forEach((song) => {
+        const score = repairMetadataScore(song);
+        repairMetadataKeys(song).forEach((key) => {
+          const current = index.get(key);
+          if (!current || score > current.score) index.set(key, { song, score });
+        });
+      });
+    });
+    return index;
+  }
+
+  function repairMetadataView(song, index) {
+    if (!song || !index) return song;
+    let donor = null;
+    for (const key of repairMetadataKeys(song)) {
+      const candidate = index.get(key);
+      if (candidate && (!donor || candidate.score > donor.score)) donor = candidate;
+    }
+    if (!donor?.song || donor.song === song) return song;
+    const source = donor.song;
+    return {
+      ...source,
+      ...song,
+      artwork: song.artwork || song.albumArt || source.artwork || source.albumArt || "",
+      albumArt: song.albumArt || song.artwork || source.albumArt || source.artwork || "",
+      spotifyId: song.spotifyId || source.spotifyId || "",
+      isrc: song.isrc || source.isrc || "",
+      releaseYear: song.releaseYear || source.releaseYear || "",
+      releaseDate: song.releaseDate || source.releaseDate || "",
+      eraYear: song.eraYear || source.eraYear || "",
+      durationMs: song.durationMs || source.durationMs || 0,
+      spotifyMetadataFetched: song.spotifyMetadataFetched || source.spotifyMetadataFetched || false,
+      externalMetadataFetched: song.externalMetadataFetched || source.externalMetadataFetched || false,
+    };
   }
 
 
@@ -573,6 +581,7 @@
 
   function stats() {
     const genres = getGenres();
+    const repairMetadataIndex = buildRepairMetadataIndex();
     const rows = [];
     let pending = 0;
     let missingArt = 0;
@@ -603,7 +612,7 @@
         drafts += 1;
 
       songs.forEach((song, songIndex) => {
-        const missing = missingKinds(song);
+        const missing = missingKinds(repairMetadataView(song, repairMetadataIndex));
         if (missing.includes("art")) missingArt += 1;
         if (missing.includes("year")) missingYear += 1;
         if (missing.includes("metadata")) missingMeta += 1;
@@ -915,6 +924,72 @@
     return duplicates;
   }
 
+
+  /* Daily Genre v297: conservative bulk resolve for obvious valid crossovers. */
+  function duplicateGenreKey(row) {
+    const genre = row?.genre || {};
+    const id = String(genre?.id ?? "").trim();
+    if (id) return `id:${id}`;
+    const name = norm(genre?.genre || genre?.name || "");
+    return name ? `name:${name}` : "";
+  }
+
+  function isSafeHighFitCrossGenreGroup(group) {
+    const entries = Array.isArray(group?.entries) ? group.entries : [];
+    if (entries.length < 2) return false;
+    const genres = new Set();
+    for (const row of entries) {
+      const fit = Number(row?.song?.score ?? row?.song?.originFit ?? row?.song?.nominatedFit ?? 0);
+      const genreKey = duplicateGenreKey(row);
+      if (!genreKey || (fit !== 4 && fit !== 5) || genres.has(genreKey)) return false;
+      genres.add(genreKey);
+    }
+    return genres.size === entries.length;
+  }
+
+  function safeHighFitCrossGenreGroups(limit = 100000) {
+    return duplicateGroups(limit).filter(isSafeHighFitCrossGenreGroup);
+  }
+
+  window.bulkResolveSafeHighFitQa = function bulkResolveSafeHighFitQa(button) {
+    const groups = safeHighFitCrossGenreGroups(100000);
+    if (!groups.length) return toast("No unresolved 4–5 fit cross-genre clusters qualify right now.", true);
+
+    const appearances = groups.reduce((total, group) => total + group.entries.length, 0);
+    const ok = window.confirm(
+      `Mark ${groups.length} QA cluster${groups.length === 1 ? "" : "s"} valid/resolved?\n\n` +
+      `${appearances} appearances qualify because every fit is 4 or 5 and no genre repeats inside a cluster.\n\n` +
+      `Mixed-fit clusters and same-genre duplicates will remain untouched.`
+    );
+    if (!ok) return;
+
+    const keys = new Set(groups.map((group) => String(group.key || "")).filter(Boolean));
+    keys.forEach(markDuplicateClusterResolved);
+
+    let stamped = 0;
+    getGenres().forEach((genre) => {
+      const songs = inflateSongs(genre?.songs_listened || []);
+      let changed = false;
+      songs.forEach((song) => {
+        const key = String(duplicateClusterKeyForSong(song) || "");
+        if (!keys.has(key)) return;
+        song.duplicateQaResolved = true;
+        song.duplicateQaResolvedKey = key;
+        song.duplicateQaResolvedAt = new Date().toISOString();
+        stamped += 1;
+        changed = true;
+      });
+      if (changed) genre.songs_listened = storageReadySongs(songs);
+    });
+
+    markStudioLibraryDirty(
+      `Marked ${groups.length} safe 4–5 cross-genre QA cluster${groups.length === 1 ? "" : "s"} resolved — save cleanup to persist.`
+    );
+    if (button) button.disabled = true;
+    if (typeof window.refreshStudioQaLab === "function") window.refreshStudioQaLab();
+    toast(`Resolved ${groups.length} safe QA cluster${groups.length === 1 ? "" : "s"} (${stamped} appearances). Save cleanup to persist.`);
+  };
+
   function updateDuplicateGroupDomAfterPendingRoute(button) {
     const instance = button?.closest?.(".studio-duplicate-instance");
     const group = button?.closest?.(".studio-duplicate-group");
@@ -1208,11 +1283,18 @@
   function renderHero(s) {
     const identity = genreIdentityStats();
     const pendingSample = topRows("pending", 1)[0];
-    const repairSample =
-      topRows("missingArt", 1)[0] ||
-      topRows("missingYear", 1)[0] ||
-      topRows("missingMeta", 1)[0] || topRows("albumRepair", 1)[0];
-    const reviewSample = topRows("duplicate", 1)[0];
+    /* Daily Genre v296: use the exact same filtered/consolidated rows shown in
+       Repair Bay. Raw stats include rows temporarily hidden after repair, which
+       made the Control Room count and “Next” sample point to invisible work. */
+    const visibleRepairRows = topRepairRows(100000);
+    const repairSample = visibleRepairRows[0] || null;
+    const visibleRepairCount = visibleRepairRows.length;
+    const unresolvedQaGroups = duplicateGroups(100000);
+    const unresolvedQaCount = unresolvedQaGroups.reduce(
+      (total, group) => total + group.entries.length,
+      0,
+    );
+    const reviewSample = unresolvedQaGroups[0]?.entries?.[0] || null;
     return `<section class="studio-workbench-hero" aria-label="Studio workbench">
       <div class="studio-workbench-copy">
         <div class="eyebrow">Studio Workbench</div>
@@ -1226,8 +1308,8 @@
       <div class="studio-lane-grid">
         ${laneCard("studio-route-lane", "Needs decision", s.pending, "Pending nominations and unresolved routing choices.", "Route", pendingSample ? songTitle(pendingSample.song) : "")}
         ${laneCard("genreIdentityWorkbench", "Quick editor", identity.missing, identity.missing ? `${identity.missing} listened genre${identity.missing === 1 ? "" : "s"} missing a Genre DNA block.` : "No listened identity backlog. Editor stays available for targeted fixes.", "Identity", identity.missing ? "Paste a structured block when needed" : "0 missing")}
-        ${laneCard("studio-repair-lane", "Needs repair", s.missingArt + s.missingYear + s.missingMeta, "Album art, years, IDs, and suspicious metadata.", "Repair", repairSample ? songTitle(repairSample.song) : "")}
-        ${laneCard("studio-review-lane", "Needs taste / QA", s.unrated + s.duplicate + s.drafts, "Unrated songs, possible duplicates, and draft inconsistencies.", "Review", reviewSample ? songTitle(reviewSample.song) : "")}
+        ${laneCard("studio-repair-lane", "Needs repair", visibleRepairCount, "Album art, years, IDs, and suspicious metadata.", "Repair", repairSample ? songTitle(repairSample.song) : "")}
+        ${laneCard("studio-review-lane", "Needs taste / QA", unresolvedQaCount, "Unresolved duplicate-looking appearances currently shown in QA Lab.", "Review", reviewSample ? songTitle(reviewSample.song) : "")}
       </div>
     </section>`;
   }
@@ -1518,11 +1600,14 @@
 
   function renderReviewLane(s) {
     const groups = duplicateGroups(25);
+    const safeGroups = safeHighFitCrossGenreGroups(100000);
+    const safeAppearances = safeGroups.reduce((total, group) => total + group.entries.length, 0);
     return `<section class="studio-lane" id="studio-review-lane" data-studio-lane="review">
       <div class="studio-lane-head">
         <div><div class="eyebrow">QA Lab</div><h3>Taste pass and structural checks</h3><p>Resolve duplicate-looking songs, route low-fit source rows, and keep Level Up context attached to the original genre.</p></div>
-        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span><button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); refreshStudioQaLab(); return false;">Refresh checks</button>${studioCopyButton("qa", "Copy the first 25 visible QA duplicate clusters")}</div>
+        <div class="studio-lane-counts"><span>${s.unrated} unrated</span><span>${groups.reduce((total, group) => total + group.entries.length, 0)} duplicate hits</span><span>${s.drafts} drafts</span><button type="button" class="btn btn-primary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); bulkResolveSafeHighFitQa(this); return false;" ${safeGroups.length ? "" : "disabled aria-disabled="true""} title="Resolve clusters where every appearance is fit 4–5 and every genre is unique">✓ Resolve safe 4–5 crossovers (${safeGroups.length})</button><button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); refreshStudioQaLab(); return false;">Refresh checks</button>${studioCopyButton("qa", "Copy the first 25 visible QA duplicate clusters")}</div>
       </div>
+      ${safeGroups.length ? `<div class="studio-action-strip"><div class="studio-action-helper">${safeGroups.length} cluster${safeGroups.length === 1 ? "" : "s"} / ${safeAppearances} appearances currently qualify: all fits are 4–5 and no genre repeats within a cluster.</div></div>` : ""}
       ${renderDuplicateGroups(groups)}
     </section>`;
   }
