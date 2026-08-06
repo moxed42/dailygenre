@@ -1,11 +1,11 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Genre</title>
-    <meta name="daily-genre-version" content="v299" />
-    <meta name="daily-genre-updated" content="2026-07-19 10:04 PM ET" />
+    <meta name="daily-genre-version" content="v300" />
+    <meta name="daily-genre-updated" content="2026-08-05 11:54 PM ET" />
     <style id="dg-critical-bg-v209">
       html, body { min-height: 100%; background: #21150d; }
       body { background-color: #21150d; }
@@ -18,14 +18,14 @@
       href="./apple-touch-icon.png"
     />
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
-    <link rel="stylesheet" href="./assets/css/styles.css?v=build-v299" />
-    <link rel="stylesheet" href="./assets/css/core-loader.css?v=build-v299" />
-    <link rel="stylesheet" href="./assets/css/library-polish.css?v=build-v299" />
-    <link rel="stylesheet" href="./assets/css/studio-polish.css?v=build-v299" />
-    <link rel="stylesheet" href="./assets/css/ranks-polish.css?v=build-v299" />
-    <link rel="stylesheet" href="./assets/css/genre-identity.css?v=build-v299" />
-    <link rel="stylesheet" href="./assets/css/game-room.css?v=build-v299" />
-    <link rel="stylesheet" href="./assets/css/repair-bay-global-delete.css?v=build-v299" />
+    <link rel="stylesheet" href="./assets/css/styles.css?v=build-v300" />
+    <link rel="stylesheet" href="./assets/css/core-loader.css?v=build-v300" />
+    <link rel="stylesheet" href="./assets/css/library-polish.css?v=build-v300" />
+    <link rel="stylesheet" href="./assets/css/studio-polish.css?v=build-v300" />
+    <link rel="stylesheet" href="./assets/css/ranks-polish.css?v=build-v300" />
+    <link rel="stylesheet" href="./assets/css/genre-identity.css?v=build-v300" />
+    <link rel="stylesheet" href="./assets/css/game-room.css?v=build-v300" />
+    <link rel="stylesheet" href="./assets/css/repair-bay-global-delete.css?v=build-v300" />
     <script
       src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"
       crossorigin="anonymous"
@@ -208,7 +208,7 @@
             <div class="form-section detail-editor-intro compact-editor-intro">
               <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
                 <div class="eyebrow" style="margin: 0">Add Songs / Genre DNA</div>
-                <button type="button" class="btn btn-secondary btn-tiny editor-x-btn" data-dg-close-song-editor onclick="toggleDetailEditMode()" title="Close Add Songs / Genre DNA panel" aria-label="Close Add Songs / Genre DNA panel">×</button>
+                <button type="button" class="btn btn-secondary btn-tiny editor-x-btn" data-dg-close-song-editor onclick="toggleDetailEditMode()" title="Close Add Songs / Genre DNA panel" aria-label="Close Add Songs / Genre DNA panel">Ã—</button>
               </div>
             </div>
             <div class="form-section share-section collapsed" id="shareSection">
@@ -255,7 +255,7 @@
 
             <div>
               <label for="songsListenedBulk"
-                >Songs listened — one per line</label
+                >Songs listened â€” one per line</label
               >
               <div
                 class="small"
@@ -271,12 +271,12 @@
                   font-size: 0.88rem;
                   font-family: monospace;
                 "
-                placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title — Artist&#10;🔼 LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title"
+                placeholder="https://open.spotify.com/track/abc | 4 | reason it fits | Track Title â€” Artist&#10;ðŸ”¼ LEVEL UP: https://open.spotify.com/track/xyz | 5 | better fit reason | Better Title"
               ></textarea>
               <div class="row" style="margin-top: 10px; gap: 10px; align-items: center;">
                 <button type="button" class="btn btn-primary btn-tiny" onclick="applySongsBulkAndSave(this)">Apply &amp; Save Songs</button>
                 <button type="button" class="btn btn-secondary btn-tiny" onclick="overwriteSongsBulkAndSave(this)">Overwrite &amp; Save Songs</button>
-                <span class="small" style="color: var(--muted);">Apply merges. Overwrite replaces this genre’s song list only; Genre Identity stays separate.</span>
+                <span class="small" style="color: var(--muted);">Apply merges. Overwrite replaces this genreâ€™s song list only; Genre Identity stays separate.</span>
               </div>
             </div>
 
@@ -381,7 +381,7 @@
                   class="btn btn-primary"
                   id="archivePlaylistSelectedBtn"
                 >
-                  ＋ Playlist selected
+                  ï¼‹ Playlist selected
                 </button>
               </div>
             </div>
@@ -419,11 +419,11 @@
             </select>
             <select id="historyRatingFilter">
               <option value="">All ratings</option>
-              <option value="1">1★ Get This Off My Turntable</option>
-              <option value="2">2★ Respectfully, Nah</option>
-              <option value="3">3★ Glad I Heard It</option>
-              <option value="4">4★ Hell Yeah, Run It Back</option>
-              <option value="5">5★ Inject This Into My Veins</option>
+              <option value="1">1â˜… Get This Off My Turntable</option>
+              <option value="2">2â˜… Respectfully, Nah</option>
+              <option value="3">3â˜… Glad I Heard It</option>
+              <option value="4">4â˜… Hell Yeah, Run It Back</option>
+              <option value="5">5â˜… Inject This Into My Veins</option>
               <option value="zanger">Zanger</option>
             </select>
             <select id="archiveFlagFilter">
@@ -450,7 +450,7 @@
               <option value="oldest">Oldest first</option>
               <option value="rating-desc">Rating high to low</option>
               <option value="rating-asc">Rating low to high</option>
-              <option value="genre">Genre A–Z</option>
+              <option value="genre">Genre Aâ€“Z</option>
               <option value="rank">Rank order</option>
             </select>
           </div>
@@ -493,7 +493,7 @@
                     onclick="refreshVisualMetadata()"
                     style="padding: 6px 12px; font-size: 0.82rem"
                   >
-                    ↺ Refresh Next 5 Spotify Tracks
+                    â†º Refresh Next 5 Spotify Tracks
                   </button>
                   <button
                     class="btn btn-primary hidden"
@@ -509,7 +509,7 @@
                     onclick="downloadGenreBackup()"
                     style="padding: 6px 12px; font-size: 0.82rem"
                   >
-                    ↓ Backup JSON
+                    â†“ Backup JSON
                   </button>
                   <div
                     class="small viz-refresh-status"
@@ -611,7 +611,7 @@
                   <div class="viz-card viz-card-crossovers">
                     <div class="viz-card-label">Genre Crossovers</div>
                     <p class="viz-card-copy">
-                      Songs with a strong theme fit (4–5) in more than one
+                      Songs with a strong theme fit (4â€“5) in more than one
                       logged genre.
                     </p>
                     <div id="vizCrossoversMonthly"></div>
@@ -688,7 +688,7 @@
                   <div class="viz-card" style="grid-column: 1/-1">
                     <div class="viz-card-label">Most Replayed Tracks</div>
                     <p class="viz-card-copy">
-                      Songs you actually keep coming back to — tracked live from
+                      Songs you actually keep coming back to â€” tracked live from
                       Spotify.
                     </p>
                     <div id="vizMostReplayed">
@@ -830,7 +830,7 @@
             Within each star tier
           </h2>
           <p class="small" style="margin-bottom: 14px">
-            This preserves your “top of the 4★ list beats bottom of the 4★ list”
+            This preserves your â€œtop of the 4â˜… list beats bottom of the 4â˜… listâ€
             system by storing a `rank_order` per genre. Zangers are excluded
             from ranking.
           </p>
@@ -840,8 +840,8 @@
       </section>
 
       <footer class="dg-build-footer" aria-label="Daily Genre build information">
-        <span>Daily Genre v299</span>
-        <span>Updated 2026-07-19 10:04 PM ET</span>
+        <span>Daily Genre v300</span>
+        <span>Updated 2026-08-05 11:54 PM ET</span>
       </footer>
     </div>
 
@@ -876,7 +876,7 @@
           <label for="spotifyPlaylistSelect">Existing playlist</label>
           <div class="spotify-playlist-target-grid">
             <select id="spotifyPlaylistSelect">
-              <option value="">Loading playlists…</option>
+              <option value="">Loading playlistsâ€¦</option>
             </select>
             <button
               type="button"
@@ -896,7 +896,7 @@
           <input
             id="spotifyPlaylistName"
             type="text"
-            placeholder="Daily Genre — Playlist name"
+            placeholder="Daily Genre â€” Playlist name"
           />
           <label
             style="
@@ -1021,7 +1021,7 @@
         onclick="stickyPlayerClose()"
         aria-label="Close Spotify player"
       >
-        ×
+        Ã—
       </button>
     </div>
 
@@ -1044,7 +1044,7 @@
           title="Move save bar"
           aria-label="Move save bar"
         >
-          ↕
+          â†•
         </button>
         <button
           type="button"
@@ -1053,7 +1053,7 @@
           title="Collapse save bar"
           aria-label="Collapse save bar"
         >
-          ×
+          Ã—
         </button>
       </div>
       <button
@@ -1065,41 +1065,42 @@
       </button>
     </div>
 
-    <script src="./assets/js/utils.js?v=build-v299"></script>
-    <script src="./assets/js/config.js?v=build-v299"></script>
-    <script src="./assets/js/genre-data.js?v=build-v299"></script>
-    <script src="./assets/js/spotify.js?v=build-v299"></script>
-    <script src="./assets/js/album-dive.js?v=build-v299"></script>
-    <script src="./assets/js/normalize.js?v=build-v299"></script>
-    <script src="./assets/js/library-index.js?v=build-v299"></script>
-    <script src="./assets/js/song-index.js?v=build-v299"></script>
-    <script src="./assets/js/song-reaction.js?v=build-v299"></script>
-    <script src="./assets/js/performance.js?v=build-v299"></script>
-    <script src="./assets/js/screen-cache.js?v=build-v299"></script>
-    <script src="./assets/js/listen-screen-cache.js?v=build-v299"></script>
-    <script src="./assets/js/archive-view-model-cache.js?v=build-v299"></script>
-    <script src="./assets/js/archive-render-reuse.js?v=build-v299"></script>
-    <script src="./assets/js/archive-progressive.js?v=build-v299"></script>
-    <script src="./assets/js/app.js?v=build-v299"></script>
-    <script src="./assets/js/song-import-hotfix.js?v=build-v299"></script>
-    <script src="./assets/js/studio-polish.js?v=build-v299"></script>
-    <script src="./assets/js/genre-identity.js?v=build-v299"></script>
-    <script src="./assets/js/song-identity-roles.js?v=build-v299"></script>
-    <script src="./assets/js/genre-identity-alias-editor.js?v=build-v299"></script>
-    <script src="./assets/js/genre-description-placement.js?v=build-v299"></script>
-    <script src="./assets/js/listened-history-navigation.js?v=build-v299"></script>
-    <script src="./assets/js/library-parent-category-filter.js?v=build-v299"></script>
-    <script src="./assets/js/songs.js?v=build-v299"></script>
-    <script src="./assets/js/listening-room.js?v=build-v299"></script>
-    <script src="./assets/js/library-polish.js?v=build-v299"></script>
-    <script src="./assets/js/visuals.js?v=build-v299"></script>
-    <script src="./assets/js/ranks-polish.js?v=build-v299"></script>
-      <script src="./assets/js/layout-fixes-v267.js?v=build-v299"></script>
-    <script src="./assets/js/compact-genre-identity-editor.js?v=build-v299"></script>
-    <script src="./assets/js/save-reliability-v271.js?v=build-v299"></script>
-    <script src="./assets/js/rating-save-sync-v272.js?v=build-v299"></script>
-    <script src="./assets/js/similar-genres.js?v=build-v299"></script>
-    <script src="./assets/js/game-room.js?v=build-v299"></script>
-    <script src="./assets/js/repair-bay-global-delete.js?v=build-v299"></script>
+    <script src="./assets/js/utils.js?v=build-v300"></script>
+    <script src="./assets/js/config.js?v=build-v300"></script>
+    <script src="./assets/js/genre-data.js?v=build-v300"></script>
+    <script src="./assets/js/spotify.js?v=build-v300"></script>
+    <script src="./assets/js/album-dive.js?v=build-v300"></script>
+    <script src="./assets/js/normalize.js?v=build-v300"></script>
+    <script src="./assets/js/library-index.js?v=build-v300"></script>
+    <script src="./assets/js/song-index.js?v=build-v300"></script>
+    <script src="./assets/js/song-reaction.js?v=build-v300"></script>
+    <script src="./assets/js/performance.js?v=build-v300"></script>
+    <script src="./assets/js/screen-cache.js?v=build-v300"></script>
+    <script src="./assets/js/listen-screen-cache.js?v=build-v300"></script>
+    <script src="./assets/js/archive-view-model-cache.js?v=build-v300"></script>
+    <script src="./assets/js/archive-render-reuse.js?v=build-v300"></script>
+    <script src="./assets/js/archive-progressive.js?v=build-v300"></script>
+    <script src="./assets/js/app.js?v=build-v300"></script>
+    <script src="./assets/js/song-import-hotfix.js?v=build-v300"></script>
+    <script src="./assets/js/studio-polish.js?v=build-v300"></script>
+    <script src="./assets/js/genre-identity.js?v=build-v300"></script>
+    <script src="./assets/js/song-identity-roles.js?v=build-v300"></script>
+    <script src="./assets/js/genre-identity-alias-editor.js?v=build-v300"></script>
+    <script src="./assets/js/genre-description-placement.js?v=build-v300"></script>
+    <script src="./assets/js/listened-history-navigation.js?v=build-v300"></script>
+    <script src="./assets/js/library-parent-category-filter.js?v=build-v300"></script>
+    <script src="./assets/js/songs.js?v=build-v300"></script>
+    <script src="./assets/js/listening-room.js?v=build-v300"></script>
+    <script src="./assets/js/library-polish.js?v=build-v300"></script>
+    <script src="./assets/js/visuals.js?v=build-v300"></script>
+    <script src="./assets/js/ranks-polish.js?v=build-v300"></script>
+      <script src="./assets/js/layout-fixes-v267.js?v=build-v300"></script>
+    <script src="./assets/js/compact-genre-identity-editor.js?v=build-v300"></script>
+    <script src="./assets/js/save-reliability-v271.js?v=build-v300"></script>
+    <script src="./assets/js/rating-save-sync-v272.js?v=build-v300"></script>
+    <script src="./assets/js/similar-genres.js?v=build-v300"></script>
+    <script src="./assets/js/game-room.js?v=build-v300"></script>
+    <script src="./assets/js/repair-bay-global-delete.js?v=build-v300"></script>
 </body>
 </html>
+

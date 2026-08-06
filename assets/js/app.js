@@ -163,6 +163,7 @@
       return JSON.stringify({
         id: currentGenre.id || '',
         rating: currentGenre.rating || '',
+        listenedDate: dateValue(currentGenre) || '',
         favoriteSong: document.getElementById('favoriteSong')?.value?.trim() || '',
         favoriteSongUrl: document.getElementById('favoriteSongUrl')?.value?.trim() || '',
         notes: document.getElementById('notes')?.value || '',
@@ -193,6 +194,45 @@
     function markDirty() {
       refreshDirtyFromSnapshot();
     }
+
+    function setGenreListenedDateFromHeader(inputOrValue = null) {
+      if (!currentGenre) return false;
+
+      const rawValue =
+        typeof inputOrValue === 'string'
+          ? inputOrValue
+          : String(inputOrValue?.value || '');
+      const listenedDate = rawValue.trim();
+
+      if (listenedDate && !/^\d{4}-\d{2}-\d{2}$/.test(listenedDate)) {
+        showSaveToast('Choose a valid listened date.', true);
+        return false;
+      }
+
+      currentGenre.date_normalized = listenedDate;
+      if (!listenedDate) {
+        currentGenre.date = '';
+        currentGenre.listened_date = '';
+        currentGenre.listenedDate = '';
+      }
+
+      const restore = preserveScrollSnapshot();
+      loadListenScreen(currentGenre, {
+        preserveDirty: true,
+        skipSpotifyHydration: true
+      });
+      restore();
+
+      markListeningUpdatePending();
+      showSaveToast(
+        listenedDate
+          ? `Genre listened date set to ${listenedDate} — use Save to persist.`
+          : 'Genre listened date cleared — use Save to persist.',
+        false
+      );
+      return true;
+    }
+    window.setGenreListenedDateFromHeader = setGenreListenedDateFromHeader;
 
     function screenTitle(name) {
       const labels = {
@@ -4750,7 +4790,30 @@ function loadListenScreen(genre, options = {}) {
               <div class="eyebrow">Genre Detail</div>
               <h2>${escapeHtml(genre.genre || 'Unknown')}</h2>
               <div class="subtle">${escapeHtml(categoryLine(genre))}</div>
-              ${listenedDate ? `<div class="detail-listened-date">Listened ${escapeHtml(listenedDate)}</div>` : ''}
+              <div class="detail-listened-date">
+                <div class="detail-listened-date-display">
+                  <span>Listened ${escapeHtml(listenedDate || 'Not set')}</span>
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-tiny"
+                    onclick="const editor=document.getElementById('genreListenedDateEditor'); editor?.classList.toggle('hidden'); this.textContent=editor?.classList.contains('hidden') ? 'Edit' : 'Cancel';"
+                  >Edit</button>
+                </div>
+                <div id="genreListenedDateEditor" class="detail-listened-date-editor hidden">
+                  <input
+                    id="genreListenedDateOverride"
+                    type="date"
+                    value="${escapeHtml(listenedDate || '')}"
+                    aria-label="Genre listened date"
+                  >
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-tiny"
+                    onclick="setGenreListenedDateFromHeader(document.getElementById('genreListenedDateOverride'))"
+                  >Apply date</button>
+                  ${listenedDate ? `<button type="button" class="btn btn-secondary btn-tiny" onclick="const input=document.getElementById('genreListenedDateOverride'); input.value=''; setGenreListenedDateFromHeader(input)">Clear</button>` : ''}
+                </div>
+              </div>
               <div class="status-row">
                 ${ratingHero}
                 ${!listenedDate && hasListenMarkers ? '<span class="tag tag-warn">Marked listened — reset if mistaken</span>' : ''}
