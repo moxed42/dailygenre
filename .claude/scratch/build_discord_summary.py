@@ -117,3 +117,14 @@ for g in aug:
     overview_blocks.append(line)
 
 write_chunks(overview_blocks, 'discord_overview')
+
+# ---- Ultra overview: date | genre | rating, one line each, single message ----
+ultra_lines = [
+    f"{date_label(g['date_normalized'])} — {g['genre']} — {stars(g.get('rating'))}"
+    for g in aug
+]
+ultra = '\n'.join(ultra_lines)
+with open('/tmp/discord_ultra_overview.txt', 'w') as f:
+    f.write(ultra)
+print(f"=== discord_ultra_overview ({len(ultra)} chars) -> /tmp/discord_ultra_overview.txt ===")
+print(ultra)
