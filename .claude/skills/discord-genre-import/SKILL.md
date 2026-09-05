@@ -53,6 +53,7 @@ For each CANON song:
 - **Score 1-5** on real musical fit to the genre — be honest even when it's a poor fit; a community rec never gets rejected for scoring low.
 - **Reason**: assess the track on its own musical merits against the genre (production, instrumentation, structure, scene/era) — **never meta** (no mentioning Discord, who posted it, the date, "the day's genre was X", etc.). This has been a recurring correction in this project; get it right the first time.
 - **LEVEL UP required for any score ≤3**: add a second, different track that's a genuine strong fit (4-5) for the same genre, preserving whatever "DNA" (artist, tone, era, scene) made the original rec appealing, tagged `isLevelUp: true` with `levelUpParentTitle`/`levelUpParentArtist` pointing back.
+  - **`isLevelUp: true` goes ONLY on the new second track, never on the original low-scoring pick.** The original stays a plain CANON entry — same as any other song, just with its honest low score and no `isLevelUp`/`isPending`/`isAdd` flag at all. Tagging both has actually happened and corrupted production data: the app's own sync/cleanup logic reads `isLevelUp: true` as "this is a replacement, not a standalone entry" and will drop a row carrying that flag, which — when wrongly applied to the original too — deleted the original pick outright and caused the level-up track's parent link to silently reattach to whatever unrelated song happened to sit next to it in the array. After adding a level-up pair, double check: exactly one of the two entries has `isLevelUp: true`, and `levelUpParentTitle`/`levelUpParentArtist` on that one entry match the *other* entry's title/artist exactly.
 - **Never mark these `isAdd: true`** — that flag means the assistant/LLM sourced the pick itself, not a community member. Getting this backwards has happened before (17 tracks needed relabeling in one pass) and undermines the whole point of tracking who actually recommended what. Plain CANON entries carry no `isAdd`/`isLevelUp`/`isPending` flag at all.
 - **No duplicates**: check title+artist doesn't already exist in that genre before adding.
 
@@ -69,23 +70,32 @@ git show origin/main:genres_data.json > /tmp/dgi_work.json
 python3 -c "import json; json.load(open('/tmp/dgi_work.json')); print('valid')"
 ```
 Make all edits against `/tmp/dgi_work.json` in one pass (all genres touched in this run), then:
+
+**CRITICAL — reset the local branch to `origin/main`'s current tip immediately before committing, every time, no matter how recently you fetched.** This has caused real production incidents (twice, including a full accidental revert of an unrelated redesign the app had shipped to `main` mid-session): if the local checkout of the feature branch predates *any* change the app pushed to `main` — even one totally unrelated to `genres_data.json`, like a code redesign — then `cp /tmp/dgi_work.json genres_data.json; git commit` bakes stale versions of every other file into the new commit's tree. A later `-s ours` merge (or any merge) treats that stale tree as authoritative and pushing it to `main` silently reverts everything the app shipped since your branch last synced — while the push itself reports success. Never assume the local branch is current just because you fetched earlier in the session; reset it explicitly, right before the commit:
+
 ```bash
 cd /home/user/dailygenre
+git fetch origin main -q
+git checkout -B claude/genre-spinner-august-backlog-6lomg9 origin/main   # hard-reset local branch to the live tip, immediately before editing/committing
+git status --short   # must be empty — if not, stop and figure out why before touching anything
 cp /tmp/dgi_work.json genres_data.json
 python3 -c "import json; json.load(open('genres_data.json')); print('valid')"
 git add genres_data.json
+git status --short   # must show ONLY genres_data.json — stop and investigate if any other file appears here
 git commit -m "$(cat <<'EOF'
 Import Discord recs: <date range / genres touched>
 
 Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 EOF
 )"
-git fetch origin main -q
-git merge -s ours origin/main -m "Merge origin/main into feature branch" -q
 git push -u origin claude/genre-spinner-august-backlog-6lomg9
+git fetch origin main -q   # main may have moved again during the steps above
 git push origin claude/genre-spinner-august-backlog-6lomg9:main
 ```
-If `git diff` between the pre- and post-fetch file shows the *same* genre you're editing was also touched by the live app in between, stop and reconcile field-by-field instead of blindly overwriting (a full 3-way merge by genre `id`, keeping both sides' distinct changes).
+
+Because the branch was just reset to `origin/main`'s tip before editing, the final push is a plain fast-forward — no merge commit, no `-s ours`, nothing that can silently discard content from other files. If that push is rejected as non-fast-forward, `main` moved again after your reset: re-fetch, diff `genres_data.json` specifically (see below) to check for a genre-level collision, and redo the commit on the new tip rather than forcing or merging.
+
+If `git diff` between the pre- and post-fetch `genres_data.json` shows the *same* genre you're editing was also touched by the live app in between, stop and reconcile field-by-field instead of blindly overwriting (a full 3-way merge by genre `id`, keeping both sides' distinct changes).
 
 ## 8. Report back
 

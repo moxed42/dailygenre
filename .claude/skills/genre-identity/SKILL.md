@@ -98,24 +98,31 @@ If the genre already has an existing seminal or media that's a placeholder (`htt
 
 This repo's convention (see git history): work happens on `claude/genre-spinner-august-backlog-6lomg9`, mirrored to `main`, because the user's own app writes to `main` concurrently. Always re-fetch immediately before merging — `origin/main` moves between steps in this workflow regularly.
 
+**CRITICAL — reset the local branch to `origin/main`'s current tip before committing, every time.** This has caused real production incidents (twice): if your local checkout of the feature branch predates a change the live app pushed to `main` (a redesign, a dependency bump, anything outside `genres_data.json`), then `cp .../gid_work.json genres_data.json; git commit` bakes your *stale* versions of every other file into the new commit's tree. The subsequent `-s ours` merge then treats that stale tree as authoritative, and pushing it to `main` silently reverts everything the app shipped in the meantime — while looking like a normal, successful push. `-s ours` only stays safe if the working tree is otherwise byte-identical to `origin/main`; a stale checkout breaks that invariant invisibly.
+
 ```bash
 cd /home/user/dailygenre
+git fetch origin main -q
+git checkout -B claude/genre-spinner-august-backlog-6lomg9 origin/main   # hard-reset local branch to the live tip — do not skip even if you "just fetched" earlier in this session
+git status --short   # must be empty before proceeding — if not, something is still stale
 cp /tmp/gid_work.json genres_data.json
 python3 -c "import json; json.load(open('genres_data.json')); print('valid')"
 git add genres_data.json
+git status --short   # must show ONLY genres_data.json as modified — stop and investigate if anything else appears
 git commit -m "$(cat <<'EOF'
 Add seminal and media tracks for <Genre>
 
 Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 EOF
 )"
-git fetch origin main -q
-git merge -s ours origin/main -m "Merge origin/main into feature branch" -q
 git push -u origin claude/genre-spinner-august-backlog-6lomg9
+git fetch origin main -q   # main may have moved again during the steps above
 git push origin claude/genre-spinner-august-backlog-6lomg9:main
 ```
 
-`-s ours` is correct here specifically because the working tree at commit time already has the fully-reconciled content (this skill only ever touches one genre's identity fields, so there's essentially never a real conflict with concurrent app edits elsewhere in the file) — it just needs the merge commit to record both parents. If `git diff` between the pre-fetch and post-fetch `genres_data.json` shows the *same* genre was also touched by the live app in between, stop and do a manual field-level reconciliation instead of blindly overwriting.
+Because the branch was just reset to `origin/main`'s tip, the branch-to-main push is a plain fast-forward — no merge commit, no `-s ours`, nothing that can silently discard content. If the final `git push ...:main` is rejected as non-fast-forward, `main` moved again after your reset: re-fetch, re-verify with `git diff origin/main -- . ':!genres_data.json'` that nothing but your intended file differs, and redo the commit on the new tip rather than forcing.
+
+If `git diff` between the pre-fetch and post-fetch `genres_data.json` shows the *same* genre was also touched by the live app in between, stop and do a manual field-level reconciliation instead of blindly overwriting.
 
 ## 6. Report back
 
