@@ -1302,8 +1302,7 @@
         <p>Route ambiguous songs, repair Spotify metadata, and keep the library clean without turning the listening pages into admin screens.</p>
       </div>
       <div class="studio-save-state ${s.libraryDirty ? "is-dirty" : ""}">
-        <span>${s.libraryDirty ? "Unsaved cleanup pending" : "No unsaved cleanup"}</span>
-        ${s.libraryDirty ? '<button type="button" class="btn btn-primary btn-tiny" onclick="saveLibraryUpdates()">Save cleanup</button>' : ""}
+        <span>${s.libraryDirty ? "Unsaved cleanup pending — use Save in the top bar." : "No unsaved cleanup"}</span>
       </div>
       <div class="studio-lane-grid">
         ${laneCard("studio-route-lane", "Needs decision", s.pending, "Pending nominations and unresolved routing choices.", "Route", pendingSample ? songTitle(pendingSample.song) : "")}
@@ -2100,6 +2099,32 @@
     }
   }
 
+  /* Part 3 Phase 11: the old "X genres remaining" pill used to stuff this
+     developer-facing spin-pool/ID-gap audit into its title attribute and a
+     raw alert() on click. Moved here, collapsed by default, so it's still
+     reachable for anyone who needs it without confronting every visitor. */
+  function renderDiagnosticsLane() {
+    if (typeof getRemainingCountDiagnostics !== "function") return "";
+    const stats = getRemainingCountDiagnostics();
+    const summary = typeof remainingCountMessage === "function" ? remainingCountMessage(stats) : "";
+    const missingIds = (stats.idAudit?.missingIdPreview || []).join(", ") || "(none)";
+    const sampleLines = (stats.excludedSamples || []).map((g, idx) => {
+      const bits = [g.reason, g.status ? `status=${g.status}` : "", g.date ? `date=${g.date}` : "", g.rating ? `rating=${g.rating}` : ""].filter(Boolean).join(" · ");
+      return `${idx + 1}. ${g.title} — ${bits}`;
+    }).join("\n");
+    return `<details class="studio-diagnostics-lane" id="studio-diagnostics-lane">
+      <summary><strong>Library diagnostics</strong><span>Spin-pool audit, ID gaps, exclusion samples</span></summary>
+      <div class="studio-diagnostics-body">
+        <p class="small">Advanced/developer-facing detail. Most people never need this.</p>
+        <pre class="studio-diagnostics-pre">${esc(summary)}</pre>
+        <h4>Missing numeric IDs (${stats.idAudit?.missingIdCount || 0})</h4>
+        <p class="small">${esc(missingIds)}</p>
+        <h4>First excluded loaded-row samples</h4>
+        <pre class="studio-diagnostics-pre">${esc(sampleLines || "(none)")}</pre>
+      </div>
+    </details>`;
+  }
+
   /* v201: Move legacy @tag import to the bottom of Studio, collapsed by default. */
   function moveLegacyTagImport(mount) {
     const hero = document.querySelector("#screen-review .review-hero");
@@ -2145,6 +2170,14 @@
       if (oldIdentityCleanup) oldIdentityCleanup.remove();
       tuneIdentityEditorForV200(mount);
       moveLegacyTagImport(mount);
+      if (!$("#studio-diagnostics-lane", mount)) {
+        const diagnosticsHtml = renderDiagnosticsLane();
+        if (diagnosticsHtml) {
+          const legacy = $(".studio-legacy-tag-import", mount);
+          if (legacy) legacy.insertAdjacentHTML("afterend", diagnosticsHtml);
+          else mount.insertAdjacentHTML("beforeend", diagnosticsHtml);
+        }
+      }
       const routeLane = $("#studio-route-lane", mount) || $("#studio-inbox-lane", mount);
       if (routeLane) routeLane.insertAdjacentHTML("afterend", renderIdentityCleanupLane());
       else mount.insertAdjacentHTML("beforeend", renderIdentityCleanupLane());
@@ -2162,11 +2195,22 @@
     }
   }
 
+  // renderReview() (core/review-queue.js) now calls
+  // dgRunOverrideHooks('renderReview') as its literal first line, and
+  // dgRunPreHooks/dgRunPostHooks around its real logic. This used to be a
+  // straight monkey-patch, but its early-exit branch (skip the original
+  // entirely while Studio's text/paste guard is active, running apply()
+  // instead) is a genuine bypass -- not expressible as a plain pre/post
+  // wrap -- so it needed the override-hook registry (added for
+  // song-identity-roles.js's save-pipeline conversion) rather than a
+  // simple hook conversion.
   function wrapRenderReview() {
-    const original = window.renderReview;
-    if (typeof original !== "function" || original.__studioWrapped)
-      return false;
-    function wrappedRenderReview() {
+    if (window.__dgStudioRenderReviewWrapped) return false;
+    window.__dgStudioRenderReviewWrapped = true;
+
+    const pendingRenderState = [];
+
+    window.dgRegisterOverrideHook?.("renderReview", () => {
       // Do not rebuild Studio while the Song Inbox/editor is actively receiving keyboard paste.
       // Ctrl/Cmd+V fires before the textarea value changes; replacing the textarea in that
       // window makes the paste appear as a flash and then disappear. Context-menu paste did
@@ -2175,13 +2219,21 @@
         const draft = captureInboxDraft();
         apply();
         restoreInboxDraft(draft);
-        return null;
+        return { result: null };
       }
+      return undefined;
+    });
+
+    window.dgRegisterPreHook?.("renderReview", () => {
       const draft = captureInboxDraft();
       const mount = document.getElementById("reviewContent");
       const sectionState = captureStudioSectionState(mount);
       if (mount) mount.classList.add("studio-rendering");
-      const result = original.apply(this, arguments);
+      pendingRenderState.push({ draft, mount, sectionState });
+    });
+
+    window.dgRegisterPostHook?.("renderReview", () => {
+      const { draft, mount, sectionState } = pendingRenderState.pop() || {};
       const finishApply = () => {
         apply();
         restoreStudioSectionState(mount, sectionState);
@@ -2195,11 +2247,8 @@
       } else {
         finishApply();
       }
-      return result;
-    }
-    wrappedRenderReview.__studioWrapped = true;
-    window.__dgStudioRenderReviewWrapped = true;
-    window.renderReview = wrappedRenderReview;
+    });
+
     return true;
   }
 
@@ -2725,7 +2774,7 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
     const copyCount = unique.length > 1 ? ` and ${unique.length - 1} matching ${unique.length === 2 ? "copy" : "copies"}` : "";
     if (!window.confirm(`Delete ${label}${copyCount} everywhere?
 
-This removes it from every genre queue and pending list. It becomes permanent after Save Library Updates.`)) return;
+This removes it from every genre queue and pending list. It becomes permanent after you Save in the top bar.`)) return;
     const previous = button?.textContent || "Delete everywhere";
     if (button) {
       button.disabled = true;
@@ -2751,7 +2800,7 @@ This removes it from every genre queue and pending list. It becomes permanent af
           meta.insertAdjacentHTML("afterbegin", '<span class="studio-repair-resolved-chip">deleted everywhere · save pending</span>');
         }
       }
-      toast(`Deleted ${result.deleted} ${result.deleted === 1 ? "track" : "tracks"} everywhere from ${result.genresTouched} ${result.genresTouched === 1 ? "genre" : "genres"} — Save Library Updates to persist.`, false);
+      toast(`Deleted ${result.deleted} ${result.deleted === 1 ? "track" : "tracks"} everywhere from ${result.genresTouched} ${result.genresTouched === 1 ? "genre" : "genres"} — Save in the top bar to persist.`, false);
       setTimeout(() => refreshStudioRepairList(null), 180);
     } catch (error) {
       console.error("Studio delete everywhere failed", error);

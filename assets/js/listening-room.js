@@ -814,26 +814,17 @@
   function installRouteAwareness() {
     if (window.__dailyGenreDiscoveryRoutesInstalled) return;
     window.__dailyGenreDiscoveryRoutesInstalled = true;
-    const originalOpenCrateDig =
-      typeof openCrateDig === "function" ? openCrateDig : null;
-    if (originalOpenCrateDig) {
-      openCrateDig = function patchedOpenCrateDig(...args) {
-        DC.crateDigIntent = true;
-        return originalOpenCrateDig.apply(this, args);
-      };
-    }
-    const originalOpenRandomListenedGenre =
-      typeof openRandomListenedGenre === "function"
-        ? openRandomListenedGenre
-        : null;
-    if (originalOpenRandomListenedGenre) {
-      openRandomListenedGenre = function patchedOpenRandomListenedGenre(
-        ...args
-      ) {
-        DC.crateDigIntent = true;
-        return originalOpenRandomListenedGenre.apply(this, args);
-      };
-    }
+    // Both used to reassign the function to set DC.crateDigIntent before
+    // calling the original -- app.js's openCrateDig/openRandomListenedGenre
+    // now call dgRunPreHooks('name', ...) as their own literal first line,
+    // so this is a pre-hook registration instead (same "before, unconditional"
+    // timing the reassignment had).
+    window.dgRegisterPreHook?.("openCrateDig", () => {
+      DC.crateDigIntent = true;
+    });
+    window.dgRegisterPreHook?.("openRandomListenedGenre", () => {
+      DC.crateDigIntent = true;
+    });
   }
 
   function ensureListenModeClasses() {
@@ -845,23 +836,25 @@
   }
 
   function installLoadWrapper() {
-    const original =
-      typeof loadListenScreen === "function" ? loadListenScreen : null;
-    if (original && !window.__dailyGenreDiscoveryLoadWrapped) {
-      window.__dailyGenreDiscoveryLoadWrapped = true;
-      loadListenScreen = function discoveryLoadListenScreen(...args) {
-        ensureListenModeClasses();
-        const result = original.apply(this, args);
-        setTimeout(() => {
-          try {
-            if (typeof enhanceSongListeningExperience === "function")
-              enhanceSongListeningExperience();
-          } catch {}
-          restructureListenPage();
-        }, 20);
-        return result;
-      };
-    }
+    if (window.__dailyGenreDiscoveryLoadWrapped) return;
+    window.__dailyGenreDiscoveryLoadWrapped = true;
+    // loadListenScreen already calls dgRunPreHooks/dgRunPostHooks (added when
+    // songs.js's own wrap of it was converted in Phase 3) -- register into
+    // that instead of reassigning it again. ensureListenModeClasses() ran
+    // before the original call, so it's a pre-hook; the deferred
+    // enhance/restructure work ran after, so it's a post-hook.
+    window.dgRegisterPreHook?.("loadListenScreen", () => {
+      ensureListenModeClasses();
+    });
+    window.dgRegisterPostHook?.("loadListenScreen", () => {
+      setTimeout(() => {
+        try {
+          if (typeof enhanceSongListeningExperience === "function")
+            enhanceSongListeningExperience();
+        } catch {}
+        restructureListenPage();
+      }, 20);
+    });
   }
 
   function boot() {
@@ -1242,98 +1235,16 @@
     );
   }
 
-  function spinStatusLocal(genre) {
-    return String(genre?.status || "")
-      .trim()
-      .toLowerCase();
-  }
-
-  function spinDateLocal(genre) {
-    return String(
-      genre?.date_normalized || genre?.date || genre?.date_raw || "",
-    ).trim();
-  }
-
-  function spinIsZangerLocal(genre) {
-    return (
-      String(genre?.rating || "")
-        .trim()
-        .toLowerCase() === "zanger" || spinStatusLocal(genre) === "veto"
-    );
-  }
-
-  function spinIsListenedLocal(genre) {
-    const status = spinStatusLocal(genre);
-    const date = spinDateLocal(genre);
-    return (
-      !spinIsZangerLocal(genre) &&
-      (status === "listened" || String(date || "").startsWith("2026-"))
-    );
-  }
-
-  function spinIsRemainingLocal(genre) {
-    const status = spinStatusLocal(genre);
-    if (spinIsZangerLocal(genre) || spinIsListenedLocal(genre)) return false;
-    return status === "" || status === "unlistened";
-  }
-
-  function buildCompactRemainingAudit() {
-    const rows = Array.isArray(window.genres) ? window.genres : [];
-    if (!rows.length) return "Genre counts unavailable.";
-    const remaining = rows.filter(spinIsRemainingLocal).length;
-    const total = rows.length;
-    const notInSpinner = Math.max(0, total - remaining);
-    const listened = rows.filter(spinIsListenedLocal).length;
-    const listened2026 = rows.filter(
-      (g) =>
-        !spinIsZangerLocal(g) && String(spinDateLocal(g)).startsWith("2026-"),
-    ).length;
-    const listenedNoOrOlderDate = rows.filter(
-      (g) =>
-        !spinIsZangerLocal(g) &&
-        spinStatusLocal(g) === "listened" &&
-        !String(spinDateLocal(g)).startsWith("2026-"),
-    ).length;
-    const zangers = rows.filter(spinIsZangerLocal).length;
-    const excludedOther = rows.filter((g) => {
-      const status = spinStatusLocal(g);
-      return (
-        !spinIsRemainingLocal(g) &&
-        !spinIsListenedLocal(g) &&
-        !spinIsZangerLocal(g) &&
-        status &&
-        status !== "unlistened"
-      );
-    }).length;
-    const blankRemaining = rows.filter(
-      (g) => spinStatusLocal(g) === "" && spinIsRemainingLocal(g),
-    ).length;
-    return [
-      `${remaining} spin-eligible genres remaining`,
-      `${total} loaded genre rows`,
-      `${notInSpinner} loaded rows not in spinner`,
-      `• ${listened} listened (${listened2026} dated 2026, ${listenedNoOrOlderDate} no/older date)`,
-      `• ${zangers} zanger/veto`,
-      `• ${excludedOther} excluded/other status`,
-      `• ${blankRemaining} blank-status rows counted as remaining`,
-    ].join("\n");
-  }
-
-  function compactRemainingClick() {
-    const remaining = document.getElementById("remainingCount");
-    if (!remaining || remaining.dataset.spinPolishRemaining === "1") return;
-    remaining.dataset.spinPolishRemaining = "1";
-    remaining.title = "Spin count summary";
-    remaining.addEventListener(
-      "click",
-      (event) => {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        alert(buildCompactRemainingAudit());
-      },
-      true,
-    );
-  }
+  /* Part 3 Phase 11 removed this file's own remaining-count diagnostic
+     click handler (previously spinStatusLocal..compactRemainingClick):
+     it captured clicks on #remainingCount with useCapture + a click
+     listener that called stopImmediatePropagation() and alert()ed a raw
+     audit, which silently broke the new progress popover added in
+     app.js's toggleRemainingCountPopover(). app.js's own
+     getRemainingCountDiagnostics()/remainingCountMessage() already
+     compute the same audit; it's now surfaced through that popover and
+     Studio's "Library diagnostics" disclosure instead of two competing
+     click handlers on the same element. */
 
   function genreEmojiLocal(genre) {
     if (typeof genreEmoji === "function") return genreEmoji(genre);
@@ -1410,7 +1321,6 @@
 
   function bootSpinPolish() {
     installBetterManualSearch();
-    compactRemainingClick();
     installSpinResultCopyObserver();
     loadGenreRows();
   }

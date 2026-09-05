@@ -35,6 +35,7 @@ function renderVisuals() {
     renderUnratedSongs("vizUnratedSongsMonthly", items);
     clearStatsMetadataQueue("vizMetadataQueueMonthly");
     vizMonthlyCharts(items);
+    renderVizCalendar("vizCalendarMonthly", month, genres);
     renderVisualDrilldown();
   } else {
     vizRenderKPIs(document.getElementById("vizKpiAlltime"), [
@@ -57,6 +58,56 @@ function renderVisuals() {
   toggleLibrarySaveButton(libraryUpdatesPending);
   if (Date.now() < spotifyRefreshPausedUntil) updateSpotifyPauseDisplay();
   statsPolishApply();
+}
+
+/* Listening Calendar: a compact grid, one small tile per day of the
+   selected month, showing which genre (if any) was logged that day.
+   Deliberately not a full calendar layout (no weekday header/alignment)
+   -- just a dense day-1-through-N grid. Built from the full, unfiltered
+   genre list (not vizBaseGenres(), which only includes listened/veto --
+   that silently dropped in_progress genres, whose date is set the
+   moment they're marked in-progress from Spin, from the calendar
+   entirely) and not the genre-focus-filtered items either, so it keeps
+   showing the whole month regardless of status or the focus selector --
+   that selector narrows the other cards to one genre's stats, but this
+   grid's whole point is the full month's day-by-day picture. */
+function renderVizCalendar(mountId, month, allGenres) {
+  const mount = document.getElementById(mountId);
+  if (!mount) return;
+  if (!month) {
+    mount.innerHTML = '<div class="viz-empty">No month selected.</div>';
+    return;
+  }
+  const [year, monthNum] = month.split("-").map(Number);
+  const daysInMonth = new Date(year, monthNum, 0).getDate();
+  const byDay = {};
+  (allGenres || []).forEach((genre) => {
+    if (typeof isGenreZanger === "function" && isGenreZanger(genre)) return;
+    const d = dateValue(genre);
+    if (!d || !d.startsWith(month)) return;
+    const day = Number(d.slice(8, 10));
+    if (!day) return;
+    if (!byDay[day]) byDay[day] = genre;
+  });
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+  const cells = [];
+  for (let day = 1; day <= daysInMonth; day++) {
+    const primary = byDay[day];
+    const dateKey = `${month}-${String(day).padStart(2, "0")}`;
+    const isToday = dateKey === todayKey;
+    if (!primary) {
+      cells.push(`<div class="viz-cal-cell ${isToday ? "is-today" : ""}"><span class="viz-cal-daynum">${day}</span></div>`);
+      continue;
+    }
+    cells.push(`<button type="button" class="viz-cal-cell has-genre ${isToday ? "is-today" : ""}" onclick="openGenreByIdEncoded('${visualActionArg(primary.id)}', false)" title="${escapeHtml(primary.genre || "Unknown")}">
+      <span class="viz-cal-daynum">${day}</span>
+      <span class="viz-cal-genre">${escapeHtml(primary.genre || "Unknown")}</span>
+    </button>`);
+  }
+
+  mount.innerHTML = `<div class="viz-cal-grid">${cells.join("")}</div>`;
 }
 
 function initVisuals() {
