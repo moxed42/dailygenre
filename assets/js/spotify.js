@@ -961,13 +961,15 @@ function spotifyPlaylistTypeKey(rowOrType) {
 function spotifyPlaylistSelectedRows() {
   const rows = spotifyPlaylistContext?.rows || [];
   const selected = spotifyPlaylistContext?.selected || [];
-  return rows.filter((row, idx) => selected[idx] !== false);
+  const excludedIdx = spotifyPlaylistContext?.excludedIdx || new Set();
+  return rows.filter((row, idx) => !excludedIdx.has(idx) && selected[idx] !== false);
 }
 
 function spotifyUpdatePlaylistTypeControls() {
   if (!spotifyPlaylistContext) return;
   const rows = spotifyPlaylistContext.rows || [];
   const selected = spotifyPlaylistContext.selected || [];
+  const excludedIdx = spotifyPlaylistContext.excludedIdx || new Set();
   const controlMap = {
     direct: 'spotifyPlaylistIncludeDirect',
     levelUp: 'spotifyPlaylistIncludeLevelUps',
@@ -976,7 +978,7 @@ function spotifyUpdatePlaylistTypeControls() {
   Object.entries(controlMap).forEach(([type, id]) => {
     const box = document.getElementById(id);
     if (!box) return;
-    const indexes = rows.map((row, idx) => spotifyPlaylistTypeKey(row) === type ? idx : -1).filter(idx => idx >= 0);
+    const indexes = rows.map((row, idx) => spotifyPlaylistTypeKey(row) === type ? idx : -1).filter(idx => idx >= 0 && !excludedIdx.has(idx));
     const checkedCount = indexes.filter(idx => selected[idx] !== false).length;
     box.disabled = false;
     box.checked = indexes.length > 0 && checkedCount === indexes.length;
@@ -991,10 +993,69 @@ function spotifyPlaylistTrackCheckboxChanged(box) {
   if (!spotifyPlaylistContext || !box) return;
   const idx = Number(box.dataset.spotifyPlaylistTrack);
   if (!Number.isFinite(idx)) return;
+  if (spotifyPlaylistContext.excludedIdx?.has(idx)) { box.checked = false; return; }
   spotifyPlaylistContext.selected[idx] = !!box.checked;
   box.closest('.spotify-playlist-row')?.classList.toggle('is-unselected', !box.checked);
   spotifyUpdatePlaylistTypeControls();
   spotifyUpdatePlaylistIntro();
+}
+
+async function spotifyFetchPlaylistTrackUris(playlistId) {
+  const uris = new Set();
+  let url = `playlists/${encodeURIComponent(playlistId)}/tracks?fields=items(track(uri)),next&limit=100`;
+  while (url) {
+    const res = await spotifyApiFetch(url);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(spotifyPlaylistApiError(data, res, 'load playlist tracks'));
+    (data.items || []).forEach(item => {
+      const uri = item?.track?.uri;
+      if (uri) uris.add(uri);
+    });
+    const next = data.next || null;
+    url = (next && next.startsWith('https://api.spotify.com/v1/'))
+      ? next.slice('https://api.spotify.com/v1/'.length)
+      : null;
+  }
+  return uris;
+}
+
+async function spotifyOnPlaylistTargetChanged(playlistId) {
+  if (!spotifyPlaylistContext) return;
+  const status = document.getElementById('spotifyPlaylistStatus');
+
+  if (!playlistId) {
+    spotifyPlaylistContext.excludedIdx = new Set();
+    spotifyPlaylistContext.excludedTargetId = '';
+    spotifyRenderPlaylistSongs();
+    return;
+  }
+
+  spotifyPlaylistContext.excludedTargetId = playlistId;
+  if (status) status.textContent = 'Checking playlist for songs already added…';
+  try {
+    const existingUris = await spotifyFetchPlaylistTrackUris(playlistId);
+    if (spotifyPlaylistContext.excludedTargetId !== playlistId) return; // selection changed mid-fetch
+    const rows = spotifyPlaylistContext.rows || [];
+    const excludedIdx = new Set();
+    rows.forEach((row, idx) => {
+      if (row.uri && existingUris.has(row.uri)) {
+        excludedIdx.add(idx);
+        spotifyPlaylistContext.selected[idx] = false;
+      }
+    });
+    spotifyPlaylistContext.excludedIdx = excludedIdx;
+    spotifyRenderPlaylistSongs();
+    if (status) {
+      status.textContent = excludedIdx.size > 0
+        ? `${excludedIdx.size} song${excludedIdx.size === 1 ? '' : 's'} already on this playlist — excluded below.`
+        : '';
+    }
+  } catch (err) {
+    console.error('Spotify playlist track check failed', err);
+    if (spotifyPlaylistContext.excludedTargetId === playlistId && status) {
+      status.textContent = `Could not check existing playlist tracks: ${err.message || 'Unknown error'}`;
+    }
+  }
 }
 
 function spotifySetPlaylistTypeSelection(type, checked) {
@@ -1034,19 +1095,25 @@ function spotifyRenderPlaylistSongs() {
   }
 
   const selected = spotifyPlaylistContext.selected || rows.map(() => true);
+  const excludedIdx = spotifyPlaylistContext.excludedIdx || new Set();
   songMount.innerHTML = rows.map((row, idx) => {
     const typeClass = row.type === 'levelUp' ? 'levelup' : (row.type === 'add' ? 'add' : 'direct');
-    const isChecked = selected[idx] !== false;
+    const isExcluded = excludedIdx.has(idx);
+    const isChecked = !isExcluded && selected[idx] !== false;
     const parentMeta = row.parentTitle
       ? ` <span class="spotify-playlist-relation-meta">· ${row.parentType === 'albumDive' ? 'Album' : 'Level Up from'}: ${escapeHtml(row.parentTitle)}${row.trackPosition ? ` · ${escapeHtml(row.trackPosition)}` : ''}</span>`
       : '';
     const genreMeta = row.genreName ? `<span class="spotify-playlist-genre-meta">${escapeHtml(row.genreName)}</span>${row.date ? ` · ${escapeHtml(row.date)}` : ''} · ` : '';
+    const excludedNote = isExcluded ? ' <span class="spotify-playlist-excluded-note">Already on this playlist</span>' : '';
+    const rowClasses = ['spotify-playlist-row'];
+    if (!isChecked && !isExcluded) rowClasses.push('is-unselected');
+    if (isExcluded) rowClasses.push('is-excluded');
     return `
-      <label class="spotify-playlist-row ${isChecked ? '' : 'is-unselected'}">
-        <input type="checkbox" data-spotify-playlist-track="${idx}" ${isChecked ? 'checked' : ''} onchange="spotifyPlaylistTrackCheckboxChanged(this)" />
+      <label class="${rowClasses.join(' ')}">
+        <input type="checkbox" data-spotify-playlist-track="${idx}" ${isChecked ? 'checked' : ''} ${isExcluded ? 'disabled' : ''} onchange="spotifyPlaylistTrackCheckboxChanged(this)" />
         <span>
           <span class="spotify-playlist-song-title">${escapeHtml(row.title)}<span class="spotify-playlist-type-badge ${escapeHtml(typeClass)}">${escapeHtml(row.sourceLabel)}</span></span>
-          <span class="spotify-playlist-song-meta">${genreMeta}${escapeHtml(row.artist || 'Unknown artist')}${row.score != null ? ` · fit ${escapeHtml(String(row.score))}/5` : ''}${parentMeta}</span>
+          <span class="spotify-playlist-song-meta">${genreMeta}${escapeHtml(row.artist || 'Unknown artist')}${row.score != null ? ` · fit ${escapeHtml(String(row.score))}/5` : ''}${parentMeta}${excludedNote}</span>
         </span>
       </label>
     `;
@@ -1068,11 +1135,15 @@ function spotifyOpenPlaylistModalWithRows({ rows = [], sourceName = 'this select
     genreName: sourceName,
     sourceName,
     rows,
-    selected: rows.map(() => true)
+    selected: rows.map(() => true),
+    excludedIdx: new Set(),
+    excludedTargetId: ''
   };
   const modal = document.getElementById('spotifyPlaylistModal');
   const nameInput = document.getElementById('spotifyPlaylistName');
   const status = document.getElementById('spotifyPlaylistStatus');
+  const select = document.getElementById('spotifyPlaylistSelect');
+  if (select) select.value = '';
   if (nameInput) nameInput.value = playlistName;
   if (status) status.textContent = '';
   spotifyRenderPlaylistSongs();

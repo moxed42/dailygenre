@@ -4231,6 +4231,16 @@ body.spotify-player-open { padding-bottom: 116px; }
 .spotify-playlist-row.is-unselected {
   opacity:.58;
 }
+.spotify-playlist-row.is-excluded {
+  opacity:.45;
+  filter:grayscale(.4);
+}
+.spotify-playlist-row.is-excluded input { cursor:not-allowed; }
+.spotify-playlist-excluded-note {
+  color:var(--muted);
+  font-weight:900;
+  font-style:italic;
+}
 .spotify-playlist-genre-meta {
   color:var(--accent-dark);
   font-weight:900;

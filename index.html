@@ -852,7 +852,10 @@
         <div class="form-section" style="margin: 14px 0">
           <label for="spotifyPlaylistSelect">Existing playlist</label>
           <div class="spotify-playlist-target-grid">
-            <select id="spotifyPlaylistSelect">
+            <select
+              id="spotifyPlaylistSelect"
+              onchange="spotifyOnPlaylistTargetChanged(this.value)"
+            >
               <option value="">Loading playlists…</option>
             </select>
             <button
