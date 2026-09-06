@@ -1000,6 +1000,21 @@ function spotifyPlaylistTrackCheckboxChanged(box) {
   spotifyUpdatePlaylistIntro();
 }
 
+// Case/diacritic-insensitive normalization, mirroring the norm() helper in
+// genre-identity-alias-editor.js, scoped locally since that one is not exported.
+function spotifyNormalizeForCompare(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[‐-―_/-]+/g, ' ')
+    .replace(/[^a-z0-9\s]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+let spotifyPlaylistDuplicateConfirmedName = '';
+
 async function spotifyFetchPlaylistTrackUris(playlistId) {
   const uris = new Set();
   let url = `playlists/${encodeURIComponent(playlistId)}/tracks?fields=items(track(uri)),next&limit=100`;
@@ -1022,6 +1037,7 @@ async function spotifyFetchPlaylistTrackUris(playlistId) {
 async function spotifyOnPlaylistTargetChanged(playlistId) {
   if (!spotifyPlaylistContext) return;
   const status = document.getElementById('spotifyPlaylistStatus');
+  spotifyPlaylistDuplicateConfirmedName = '';
 
   if (!playlistId) {
     spotifyPlaylistContext.excludedIdx = new Set();
@@ -1139,6 +1155,7 @@ function spotifyOpenPlaylistModalWithRows({ rows = [], sourceName = 'this select
     excludedIdx: new Set(),
     excludedTargetId: ''
   };
+  spotifyPlaylistDuplicateConfirmedName = '';
   const modal = document.getElementById('spotifyPlaylistModal');
   const nameInput = document.getElementById('spotifyPlaylistName');
   const status = document.getElementById('spotifyPlaylistStatus');
@@ -1262,7 +1279,19 @@ async function spotifyAddSelectedTracksToPlaylist() {
     if (status) status.textContent = 'Preparing Spotify playlist…';
 
     if (!playlistId) {
-      const playlist = await spotifyCreatePlaylist(name || `Daily Genre — ${spotifyPlaylistContext.genreName}`, isPublic);
+      const finalName = name || `Daily Genre — ${spotifyPlaylistContext.genreName}`;
+      const normName = spotifyNormalizeForCompare(finalName);
+      const duplicate = spotifyPlaylistCache.find(pl => spotifyNormalizeForCompare(pl?.name) === normName);
+      const alreadyConfirmed = normName && spotifyNormalizeForCompare(spotifyPlaylistDuplicateConfirmedName) === normName;
+      if (duplicate && !alreadyConfirmed) {
+        if (status) {
+          status.innerHTML = `${escapeHtml(`A playlist named "${duplicate.name}" already exists.`)} <button type="button" class="btn-inline" onclick="spotifyConfirmDuplicatePlaylistName()">Create anyway</button>`;
+        }
+        if (button) { button.disabled = false; button.textContent = 'Add to Spotify Playlist'; }
+        return;
+      }
+      const playlist = await spotifyCreatePlaylist(finalName, isPublic);
+      spotifyPlaylistDuplicateConfirmedName = '';
       playlistId = playlist.id;
       spotifyPlaylistCache.unshift(playlist);
     } else {
@@ -1304,6 +1333,13 @@ async function spotifyAddSelectedTracksToPlaylist() {
   }
 }
 
+
+function spotifyConfirmDuplicatePlaylistName() {
+  const name = (document.getElementById('spotifyPlaylistName')?.value || '').trim()
+    || `Daily Genre — ${spotifyPlaylistContext?.genreName || 'Playlist'}`;
+  spotifyPlaylistDuplicateConfirmedName = name;
+  spotifyAddSelectedTracksToPlaylist();
+}
 
 function spotifyReconnectForPlaylistPermissions() {
   spotifySession = null;
