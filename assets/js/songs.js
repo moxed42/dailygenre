@@ -883,7 +883,7 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
       </div>
       <div class="song-focus-main">
         <div class="song-focus-kicker">Now Listening · ${songTypeBadge(entry)}</div>
-        <h3 class="song-focus-title">${hasHref ? `<a href="${html(href)}" target="_blank" rel="noopener noreferrer">${titleMarkup} <span class="song-link-arrow">↗</span></a>` : titleMarkup}</h3>
+        <h3 class="song-focus-title">${hasHref ? `<a href="${html(href)}" target="_blank" rel="noopener noreferrer">${titleMarkup}&nbsp;<span class="song-link-arrow">↗</span></a>` : titleMarkup}</h3>
         ${subline ? `<div class="song-focus-subline">${html(subline)}</div>` : ""}
         ${relation}
         ${reason ? `<p class="song-focus-reason">${html(reason)}</p>` : ""}
@@ -915,24 +915,24 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
     if (song.isrc) meta.push(`ISRC: ${song.isrc}`);
     if (song.releaseDate) meta.push(`Release: ${song.releaseDate}`);
     if (song.releaseSource) meta.push(`Source: ${song.releaseSource}`);
+    const mediaLabel = song.media || song.mediaTitle;
+    if ((song.role === "MEDIA" || song.identityType === "media") && mediaLabel) {
+      meta.push(`Media: ${mediaLabel}${song.mediaType ? ` (${song.mediaType})` : ""}`);
+    }
     return `<section class="song-focus-details-drawer song-focus-details-compact">
       <div class="song-focus-details-head">
         <div>
           <div class="eyebrow">Song details</div>
           <h3>${songTitleWithMetaMarkup(song.title || "Selected song")}</h3>
         </div>
-        <div class="song-focus-details-actions">
-          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)">Remove from genre</button>
-          <button type="button" class="btn btn-danger btn-tiny song-focus-delete-inline" onclick="event.preventDefault(); event.stopPropagation(); hardDeleteSongFromDetails('${encodedKey}', '${encodedPath}', this)" title="Permanently delete this song from every genre and every queue">Delete everywhere</button>
-          <button type="button" class="btn btn-secondary btn-tiny" onclick="setSongFocusDetailsOpen(false)">Close</button>
+        <div class="song-focus-details-actions song-focus-details-actions-icons">
+          <button type="button" class="icon-btn song-focus-icon-btn" onclick="event.preventDefault(); event.stopPropagation(); document.querySelector('.song-focus-url-card [data-track-url-input]')?.focus();" title="Apply URL / overrides" aria-label="Apply URL / overrides">🔗<span>Apply URL</span></button>
+          <button type="button" class="icon-btn song-focus-icon-btn" onclick="event.preventDefault(); event.stopPropagation(); deleteSongFromDetails('${encodedKey}', '${encodedPath}', this)" title="Remove from this genre" aria-label="Remove from this genre">➖<span>X Here</span></button>
+          <button type="button" class="icon-btn song-focus-icon-btn song-focus-icon-danger" onclick="event.preventDefault(); event.stopPropagation(); hardDeleteSongFromDetails('${encodedKey}', '${encodedPath}', this)" title="Permanently delete this song from every genre and every queue" aria-label="Delete everywhere">🗑<span>X Everywhere</span></button>
+          <button type="button" class="icon-btn song-focus-icon-btn" onclick="setSongFocusDetailsOpen(false)" title="Close details" aria-label="Close">✕<span>Close</span></button>
         </div>
       </div>
       <div class="song-focus-details-grid compact">
-        <div class="song-focus-detail-card song-focus-fit-card">
-          <button type="button" class="song-focus-pencil-btn" onclick="if (typeof openStudioMode === 'function') openStudioMode(); else if (typeof toggleDetailEditMode === 'function') toggleDetailEditMode();" title="Edit reason" aria-label="Edit reason">✎</button>
-          <h4>Why this song fits</h4>
-          <p>${song.reason ? html(song.reason) : "No fit note yet."}</p>
-        </div>
         <div class="song-focus-detail-card song-focus-url-card">
           <h4>Track URL</h4>
           <div class="song-focus-url-row">
@@ -943,7 +943,15 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
             <input data-track-title-input type="text" value="${html(song.title || '')}" placeholder="Override title if metadata is messy">
             <input data-track-artist-input type="text" value="${html(song.artist || (Array.isArray(song.artists) ? song.artists.join(', ') : ''))}" placeholder="Override artist/channel if needed">
           </div>
+          <div class="song-focus-url-row-secondary">
+            <button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); clearTrackOverrideFromCard('${encodedKey}', -1, this, '${encodedPath}')" title="Clear the manual title/artist/artwork override and fall back to fetched metadata">Clear override</button>
+          </div>
           <p class="song-focus-helper">Title/artist overrides are staged here. Click Apply URL / Overrides, then use Save in the top bar to persist.</p>
+        </div>
+        <div class="song-focus-detail-card song-focus-fit-card">
+          <button type="button" class="song-focus-pencil-btn" onclick="if (typeof openStudioMode === 'function') openStudioMode(); else if (typeof toggleDetailEditMode === 'function') toggleDetailEditMode();" title="Edit reason" aria-label="Edit reason">✎</button>
+          <h4>Why this song fits</h4>
+          <p>${song.reason ? html(song.reason) : "No fit note yet."}</p>
         </div>
         <div class="song-focus-detail-card song-focus-meta-card">
           <h4>Metadata</h4>
@@ -1006,6 +1014,7 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
           <div class="eyebrow">Song queue</div>
           <div class="small">${reactedCount}/${entries.length} reacted · ${favoriteCount} favorite${activeFilter !== "all" ? ` · ${allVisibleEntries.length} shown` : ""}</div>
         </div>
+        <button type="button" class="btn btn-secondary btn-tiny" onclick="event.preventDefault(); event.stopPropagation(); if (typeof bulkFillMissingSongOverrides === 'function') bulkFillMissingSongOverrides(this);" title="Fetch artwork/name/artist for every song on this page that's missing it">Fill missing overrides</button>
         <button type="button" class="song-focus-queue-toggle" onclick="setSongQueueOpen(${queueOpen ? "false" : "true"})">${queueOpen ? "Collapse queue" : "Show queue"}</button>
       </div>
       ${
@@ -1026,7 +1035,7 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
                   const hasHref = /^https?:\/\//i.test(href);
                   const safeKeyAttr = html(key).replace(/'/g, "&#39;");
                   const titleMarkup = hasHref
-                    ? `<a class="song-focus-row-title" href="${html(href)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${html(title)} <span class="song-link-arrow">↗</span></a>`
+                    ? `<a class="song-focus-row-title" href="${html(href)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${html(title)}&nbsp;<span class="song-link-arrow">↗</span></a>`
                     : `<span class="song-focus-row-title">${html(title)}</span>`;
                   const rowMiniTitle = encodeURIComponent(title || "Spotify track");
                   const rowMiniArtist = encodeURIComponent(song.artist || (Array.isArray(song.artists) ? song.artists.join(", ") : ""));
