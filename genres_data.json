@@ -193563,6 +193563,17 @@
         "levelUpParentUrl": "https://open.spotify.com/track/6WuqJLVZcyJklg7lIozAO8"
       },
       {
+        "url": "https://open.spotify.com/track/3bQoMbPYOvvseHaSOWAQ3Q",
+        "score": 2,
+        "reason": "Slam-riff brutality and guttural death growls sit squarely in death metal's low-tuned, groove-driven attack, with none of black metal's tremolo-picked, atmospheric signature.",
+        "title": "I Cum Blood",
+        "artist": "Cannibal Corpse",
+        "source": "spotify",
+        "added": "2026-09-06",
+        "spotifyId": "3bQoMbPYOvvseHaSOWAQ3Q",
+        "spotifyUrl": "https://open.spotify.com/track/3bQoMbPYOvvseHaSOWAQ3Q"
+      },
+      {
         "url": "https://open.spotify.com/track/2r6DIwcPghaU5Q7JbhVEYH",
         "score": 5,
         "reason": "Preserves the same unrelenting extremity and ritualistic intensity but channels it through proper tremolo-picked riffing and a raw, occult atmosphere that is core Swedish black metal rather than death metal's slam-and-groove attack.",
@@ -193599,6 +193610,17 @@
         "levelUpParentArtist": "Cannibal Corpse",
         "levelUpParentUrl": "https://open.spotify.com/track/3bQoMbPYOvvseHaSOWAQ3Q",
         "isLevelUp": true
+      },
+      {
+        "url": "https://open.spotify.com/track/31YYjY3LO3Gzta0wOJj6es",
+        "score": 2,
+        "reason": "Polished symphonic-deathcore production, chugging breakdowns, and a fry-scream/gutturals vocal split sit in modern deathcore's lane, missing the raw tremolo-picked riffing and lo-fi atmosphere that define black metal.",
+        "title": "Glenwood",
+        "artist": "Lorna Shore",
+        "source": "spotify",
+        "added": "2026-09-06",
+        "spotifyId": "31YYjY3LO3Gzta0wOJj6es",
+        "spotifyUrl": "https://open.spotify.com/track/31YYjY3LO3Gzta0wOJj6es"
       },
       {
         "url": "https://open.spotify.com/track/6l3A2EWZSOA8LTMmzRCyD3",
@@ -193639,6 +193661,17 @@
         "isLevelUp": true
       },
       {
+        "url": "https://open.spotify.com/track/1nGuoNxvmeJJRuRfCZaSgK",
+        "score": 2,
+        "reason": "Melodic clean-sung hooks over metalcore breakdowns and djent-tinged riffing land this in modern deathcore/metalcore territory, without the raw tremolo-picked riffing or cold atmosphere that defines black metal.",
+        "title": "Let Me Sleep",
+        "artist": "Paleface Swiss",
+        "source": "spotify",
+        "added": "2026-09-06",
+        "spotifyId": "1nGuoNxvmeJJRuRfCZaSgK",
+        "spotifyUrl": "https://open.spotify.com/track/1nGuoNxvmeJJRuRfCZaSgK"
+      },
+      {
         "url": "https://open.spotify.com/track/50dpeks48j0zMECIKVAGUG",
         "score": 5,
         "reason": "Keeps the same melodic, emotionally-driven core and shifts between soft and heavy textures that made Let Me Sleep appealing, but delivers it through genuine blackgaze tremolo riffing and shrieked vocals rather than metalcore breakdowns.",
@@ -193675,39 +193708,6 @@
         "levelUpParentArtist": "Paleface Swiss",
         "levelUpParentUrl": "https://open.spotify.com/track/5kBPE6xOdCQ3QkPUIzKGlT",
         "isLevelUp": true
-      },
-      {
-        "url": "https://open.spotify.com/track/3bQoMbPYOvvseHaSOWAQ3Q",
-        "score": 2,
-        "reason": "Slam-riff brutality and guttural death growls sit squarely in death metal's low-tuned, groove-driven attack, with none of black metal's tremolo-picked, atmospheric signature.",
-        "title": "I Cum Blood",
-        "artist": "Cannibal Corpse",
-        "source": "spotify",
-        "added": "2026-09-06",
-        "spotifyId": "3bQoMbPYOvvseHaSOWAQ3Q",
-        "spotifyUrl": "https://open.spotify.com/track/3bQoMbPYOvvseHaSOWAQ3Q"
-      },
-      {
-        "url": "https://open.spotify.com/track/31YYjY3LO3Gzta0wOJj6es",
-        "score": 2,
-        "reason": "Polished symphonic-deathcore production, chugging breakdowns, and a fry-scream/gutturals vocal split sit in modern deathcore's lane, missing the raw tremolo-picked riffing and lo-fi atmosphere that define black metal.",
-        "title": "Glenwood",
-        "artist": "Lorna Shore",
-        "source": "spotify",
-        "added": "2026-09-06",
-        "spotifyId": "31YYjY3LO3Gzta0wOJj6es",
-        "spotifyUrl": "https://open.spotify.com/track/31YYjY3LO3Gzta0wOJj6es"
-      },
-      {
-        "url": "https://open.spotify.com/track/1nGuoNxvmeJJRuRfCZaSgK",
-        "score": 2,
-        "reason": "Melodic clean-sung hooks over metalcore breakdowns and djent-tinged riffing land this in modern deathcore/metalcore territory, without the raw tremolo-picked riffing or cold atmosphere that defines black metal.",
-        "title": "Let Me Sleep",
-        "artist": "Paleface Swiss",
-        "source": "spotify",
-        "added": "2026-09-06",
-        "spotifyId": "1nGuoNxvmeJJRuRfCZaSgK",
-        "spotifyUrl": "https://open.spotify.com/track/1nGuoNxvmeJJRuRfCZaSgK"
       }
     ],
     "rank_order": 83,
