@@ -795,16 +795,12 @@ function switchScreen(name, options = {}) {
     function openCrateDig(event) {
       window.dgRunPreHooks?.('openCrateDig', event);
       if (event) event.preventDefault();
-      const opened = openRandomListenedGenre();
-      if (opened) {
-        // Part 3 Phase 6: used to force-highlight this button itself as
-        // the "active tab" -- correct back when it was a real top-level
-        // tab, stale now that it's an action button inside the Listen
-        // screen. openRandomListenedGenre() -> openGenreDetail() already
-        // calls switchScreen('listen'), which correctly highlights the
-        // real "Listen" nav tab; doing it again here would just undo that.
-        requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
-      }
+      // Part 7: used to force-scroll to top (and, further down the chain,
+      // jump-scroll to the song carousel) on every Dig click -- both were
+      // unwanted scroll jumps. openRandomListenedGenre() -> openGenreDetail()
+      // already calls switchScreen('listen'), which correctly highlights the
+      // real "Listen" nav tab; no scroll adjustment belongs here.
+      openRandomListenedGenre();
     }
 
     const ACTIVE_ALBUM_DIVE_STORAGE_KEY = 'dailyGenreActiveAlbumDive:v1';
