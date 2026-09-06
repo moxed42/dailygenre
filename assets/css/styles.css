@@ -924,57 +924,6 @@
       line-height:1.4;
     }
 
-    .onboarding-banner {
-      position:relative;
-      margin-bottom:18px;
-      padding:16px 44px 16px 18px;
-      border-radius:16px;
-      background:linear-gradient(180deg, rgba(255,248,229,.98), rgba(234,210,169,.98));
-      border:1px solid rgba(244,203,128,.55);
-      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.58);
-      color:var(--text);
-    }
-
-    .onboarding-banner-steps {
-      display:flex;
-      flex-wrap:wrap;
-      gap:14px;
-      margin-top:10px;
-    }
-
-    .onboarding-banner-step {
-      flex:1 1 160px;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-
-    .onboarding-banner-step strong {
-      font-size:.9rem;
-    }
-
-    .onboarding-banner-step span {
-      font-size:.78rem;
-      color:var(--muted);
-    }
-
-    .onboarding-banner-close {
-      position:absolute;
-      top:10px;
-      right:12px;
-      border:none;
-      background:transparent;
-      color:var(--muted);
-      font-size:1.3rem;
-      line-height:1;
-      cursor:pointer;
-      padding:4px 8px;
-    }
-
-    .onboarding-banner-close:hover {
-      color:var(--text);
-    }
-
     .tab-btn {
       border-radius:14px;
       color:#fff5df;
@@ -1203,7 +1152,7 @@
       text-overflow:ellipsis;
       white-space:nowrap;
     }
-    .song-link-arrow { color:var(--accent); font-size:.8rem; margin-left:4px; }
+    .song-link-arrow { color:var(--accent); font-size:.8rem; margin-left:4px; white-space:nowrap; }
     .song-reason {
       margin-top:6px;
       color:var(--muted) !important;
@@ -1419,7 +1368,7 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .song-link-arrow { color:var(--accent); font-size:.8rem; margin-left:4px; }
+    .song-link-arrow { color:var(--accent); font-size:.8rem; margin-left:4px; white-space:nowrap; }
     .song-score-badge {
       display:inline-flex;
       align-items:center;
@@ -1954,8 +1903,8 @@
     .viz-mode-btn.active { background:var(--accent, #b8600c); color:#fff; border-color:transparent; }
     .viz-month-sel { flex:1; min-width:140px; max-width:220px; font-size:.85rem; padding:6px 10px; border-radius:8px; border:1px solid var(--border, rgba(127,82,28,.3)); background:var(--surface); color:var(--text); }
     .viz-kpi-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin:0 0 16px; padding:0 2px; }
-    .viz-kpi { background:var(--surface); border:1px solid var(--border, rgba(127,82,28,.18)); border-radius:14px; padding:14px 14px 12px; text-align:center; }
-    .viz-kpi-val { font-size:1.9rem; font-weight:900; letter-spacing:-.03em; color:var(--accent, #b8600c); line-height:1; }
+    .viz-kpi { background:var(--surface); border:1px solid var(--border, rgba(127,82,28,.18)); border-radius:14px; padding:14px 14px 12px; text-align:center; min-width:0; }
+    .viz-kpi-val { font-size:1.9rem; font-weight:900; letter-spacing:-.03em; color:var(--accent, #b8600c); line-height:1; overflow-wrap:break-word; }
     .viz-kpi-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted, #7a5c38); margin-top:4px; }
     .viz-bento { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
     .viz-card { background:var(--surface); border:1px solid var(--border, rgba(127,82,28,.18)); border-radius:18px; padding:16px 18px 14px; box-shadow:0 4px 16px rgba(0,0,0,.06); overflow:hidden; }
@@ -4056,6 +4005,18 @@
   border: 1px solid color-mix(in oklab, #1DB954 30%, transparent);
   border-radius: 10px; padding: 10px 14px;
 }
+/* Persistent topbar variant: compact single-line chip instead of the roomy
+   hero-card block, since this now renders on every screen (mirrors
+   #saveStatusChip's persistent-topbar treatment). */
+#spotifyNowPlaying.spotify-now-playing-topbar {
+  margin:0; padding:6px 12px; max-width:260px;
+}
+#spotifyNowPlaying.spotify-now-playing-topbar .spotify-now-playing-inner { gap:8px; }
+#spotifyNowPlaying.spotify-now-playing-topbar .spotify-now-playing-text { min-width:0; }
+#spotifyNowPlaying.spotify-now-playing-topbar .spotify-now-playing-match { display:none; }
+@media (max-width: 600px) {
+  #spotifyNowPlaying.spotify-now-playing-topbar { max-width:100%; width:100%; order:99; }
+}
 .spotify-now-playing-inner { display:flex; align-items:center; gap:10px; }
 .spotify-now-playing-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
 .spotify-now-playing-label { font-size:0.7rem; font-weight:700; color:#1DB954; text-transform:uppercase; letter-spacing:.05em; }
@@ -4101,11 +4062,12 @@ body.spotify-player-open { padding-bottom: 116px; }
 
 #spotifyStickyPlayer {
   position:fixed;
-  left:50%;
-  right:auto;
+  left:14px;
+  right:14px;
   bottom:16px;
-  transform:translate(-50%, 130%);
-  width:min(920px, calc(100vw - 28px));
+  margin:0 auto;
+  transform:translateY(130%);
+  max-width:920px;
   z-index:4500;
   display:grid;
   grid-template-columns:auto minmax(170px, 1fr) minmax(280px, 430px) auto;
@@ -4119,7 +4081,7 @@ body.spotify-player-open { padding-bottom: 116px; }
   color:#fff8e8;
   transition:transform .22s ease;
 }
-#spotifyStickyPlayer.open { transform:translate(-50%, 0); }
+#spotifyStickyPlayer.open { transform:translateY(0); }
 .spotify-sticky-art {
   width:58px;
   height:58px;
