@@ -10653,15 +10653,26 @@ body:not(.spotify-player-open) #spotifyStickyPlayer:not(.open) {
     padding: 8px 4px !important;
     font-size: 0.7rem !important;
     line-height: 1.15 !important;
-    white-space: normal !important;
+    /* Forced single line (not white-space:normal) so the bar has a fixed,
+       predictable height -- a wrapped two-word label like "Game Room"
+       used to grow the bar past the .app clearance below and overlap
+       whatever content (e.g. the build footer) sat at the bottom of a
+       short page. Long labels ellipsize instead of wrapping. */
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
     text-align: center !important;
     box-shadow: none !important;
   }
   /* Room at the bottom of the page so content doesn't hide behind the
      fixed bar; topbar/hero content is unaffected since the bar only
-     occupies the bottom of the viewport now, not the top of the page. */
+     occupies the bottom of the viewport now, not the top of the page.
+     Sized from the bar's own box (6px top pad + ~38px single-line button
+     + 6px base bottom pad + 1px border == ~51px measured, plus a buffer)
+     with the same safe-area inset the bar reserves for itself, rather
+     than a flat guess that could fall short on notched devices. */
   .app {
-    padding-bottom: 76px !important;
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
   }
   /* The floating save bar and toast already use position:fixed with their
      own bottom offsets -- nudge them above the new bottom nav instead of
