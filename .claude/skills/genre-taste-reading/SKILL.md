@@ -35,8 +35,13 @@ Rules for the narrative:
 - A unanimous result (all liked, or all disliked) is a legitimate, real reading — say so plainly rather than forcing a split that isn't there.
 - Don't fabricate a pattern from too little contrast — if the reacted tracks don't actually cluster around an identifiable trait, say the response has been broadly positive/negative/mixed without inventing a specific musical explanation.
 
-Optional fields, only when genuinely warranted (never force these to fill out the schema):
-- `taste_reading_predicted_hit` / `taste_reading_predicted_miss`: `{title, artist}` — a real track *not already in this genre's `songs_listened`/`pending_songs`* that the pattern predicts the user would like / dislike. Same rule as `genre-identity`: **never invent a track**. Only include a prediction when you're confident it's a real, findable song by that artist — if in doubt, use WebSearch to verify, or omit the prediction entirely rather than guess. These are separate UI elements from the narrative — never describe them inside `taste_reading`'s prose.
+**Required for every `ready` reading** — `taste_reading_predicted_hit` and `taste_reading_predicted_miss`: `{title, artist}`, a real track *not already in this genre's `songs_listened`/`pending_songs`* that the pattern predicts the user would like / dislike, respectively. Every `ready` genre needs both — a reading without them is incomplete, not a valid partial output. This was previously listed as optional and 39 of the first 43 readings shipped without it; that was a mistake, not a legitimate omission.
+- Same rule as `genre-identity`: **never invent a track.** Verify every candidate via WebSearch (confirm the artist/title is real and findable) before writing it — if a candidate can't be verified, find a different one, don't lower the bar.
+- If a genre's reception has been uniform (all liked, or all disliked, or all middling with no real contrast), you still owe both predictions — reason from the stated trait axis to what would exemplify the opposite pole, even if no example of that pole has been logged yet. Don't skip the pair just because the reading itself is uniform.
+- These are separate UI elements from the narrative — never describe them inside `taste_reading`'s prose (see the rule above).
+- Double-check each candidate against every title already logged for that genre (case-sensitive substring check is not enough — read the actual list) before finalizing; a near-duplicate under a different queue you didn't check is a real failure mode, not a hypothetical one.
+
+Optional field:
 - `taste_reading_niche_genre_id`: the numeric `id` of a *different, more specific* genre already present in `genres_data.json` that the pattern points to as a likely stronger fit than the current genre (e.g. Happy hardcore's reading pointing at Nightcore, Black metal's pointing at Symphonic black metal). Only set this when:
   1. You can name a real, specific subgenre the pattern supports (not a vague "something more mellow"), AND
   2. That subgenre already exists as an entry in `genres_data.json` — look it up by exact or close name match first.
