@@ -135,7 +135,7 @@
 
     .hero-grid {
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
       gap:20px;
       align-items:start;
     }
@@ -390,7 +390,7 @@
 
     .listen-grid {
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap:20px;
       align-items:start;
     }
@@ -513,7 +513,7 @@
 
     .ranking-row {
       display:grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto minmax(0, 1fr) auto;
       gap:10px;
       align-items:center;
       padding:12px 14px;
@@ -1567,12 +1567,12 @@
     }
     .song-card-row {
       display:grid;
-      grid-template-columns:auto 1fr auto;
+      grid-template-columns:auto minmax(0, 1fr) auto;
       gap:12px;
       align-items:center;
     }
     .song-card-row.no-art {
-      grid-template-columns:1fr auto;
+      grid-template-columns:minmax(0, 1fr) auto;
     }
     .song-artwork {
       width:58px;
@@ -1678,7 +1678,7 @@
     }
     .archive-open-row { display:none; }
     .ranking-row {
-      grid-template-columns:auto auto 1fr auto;
+      grid-template-columns:auto auto minmax(0, 1fr) auto;
     }
     .ranking-artwork {
       width:44px;
@@ -1715,7 +1715,7 @@
       .song-card-row { grid-template-columns:auto 1fr; }
       .song-score { justify-self:start; grid-column:2; }
       .song-reason, .alt-take-wrap { margin-left:0; }
-      .ranking-row { grid-template-columns:auto auto 1fr; }
+      .ranking-row { grid-template-columns:auto auto minmax(0, 1fr); }
       .rank-controls { grid-column:1 / -1; }
     }
 
