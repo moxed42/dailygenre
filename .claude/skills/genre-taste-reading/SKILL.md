@@ -1,6 +1,6 @@
 ---
 name: genre-taste-reading
-description: Analyze a genre's track reactions (songs_listened[].reaction) in genres_data.json to write a "Taste Reading" — a narrative on what the user likes/dislikes within that genre, an optional predicted-hit/predicted-miss test song pair, and an optional pointer to a more-specific niche genre already in the list. Use for one genre (named or today's genre-of-the-day) or as a retroactive batch across all listened genres. Also use to re-run the batch after more genres accumulate reactions.
+description: Analyze a genre's track reactions (songs_listened[].reaction) in genres_data.json to write a "Taste Reading" — a narrative on what the user likes/dislikes within that genre, a required predicted-hit/predicted-miss test song pair, and an optional pointer to a more-specific niche genre already in the list. Use for one genre (named or today's genre-of-the-day) or as a retroactive batch across all listened genres. Also use to re-run the batch after more genres accumulate reactions, or to backfill missing predicted-hit/predicted-miss pairs on existing readings.
 ---
 
 # Genre Taste Reading
