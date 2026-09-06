@@ -2276,6 +2276,45 @@ function switchScreen(name, options = {}) {
       </div>`;
     }
 
+    function renderTasteReadingBlock(genre) {
+      if (!genre) return '';
+      const status = genre.taste_reading_status;
+      if (!status) return '';
+      const nicheId = genre.taste_reading_niche_genre_id;
+      const nicheGenre = nicheId != null
+        ? (genres || []).find(g => String(g.id) === String(nicheId))
+        : null;
+      const nicheHtml = nicheGenre
+        ? `<button type="button" class="tag taste-reading-niche-pill" onclick="openGenreByIdEncoded('${visualActionArg(nicheGenre.id)}')">→ Try ${escapeHtml(nicheGenre.genre || 'this genre')} instead</button>`
+        : '';
+
+      if (status === 'insufficient_data') {
+        const reacted = Number(genre.taste_reading_reacted_count || 0);
+        const threshold = Number(genre.taste_reading_threshold || 0);
+        return `<div class="meta-box meta-box-full taste-reading-box taste-reading-pending">
+          <h3>Taste Reading</h3>
+          <p class="small">Not enough ranked songs yet — ${reacted} reacted, need ${threshold}.</p>
+          ${nicheHtml}
+        </div>`;
+      }
+
+      if (status !== 'ready' || !genre.taste_reading) return '';
+
+      const hit = genre.taste_reading_predicted_hit;
+      const miss = genre.taste_reading_predicted_miss;
+      const predictionsHtml = (hit || miss) ? `<div class="taste-reading-predictions">
+        ${hit ? `<div class="taste-reading-prediction taste-reading-hit"><span class="taste-reading-prediction-label">Predicted to land</span><span>${escapeHtml(hit.title || '')}${hit.artist ? ` — ${escapeHtml(hit.artist)}` : ''}</span></div>` : ''}
+        ${miss ? `<div class="taste-reading-prediction taste-reading-miss"><span class="taste-reading-prediction-label">Predicted to miss</span><span>${escapeHtml(miss.title || '')}${miss.artist ? ` — ${escapeHtml(miss.artist)}` : ''}</span></div>` : ''}
+      </div>` : '';
+
+      return `<div class="meta-box meta-box-full taste-reading-box">
+        <h3>Taste Reading</h3>
+        <p>${escapeHtml(genre.taste_reading)}</p>
+        ${predictionsHtml}
+        ${nicheHtml}
+      </div>`;
+    }
+
     function reactionRecapBetterFit(song) {
       const direct = [
         song?.preferredGenre,
@@ -2349,13 +2388,18 @@ function switchScreen(name, options = {}) {
         (Array.isArray(song?.artists) ? song.artists.join(', ') : '')
       ).trim();
       const favorite = reactionRecapIsFavorite(song) ? '🏆 ' : '';
+      const betterFit = options.nonFit ? reactionRecapBetterFit(song) : '';
+      const betterFitSuffix = betterFit ? ` -> Better fit: *${betterFit}*` : '';
 
-      if (options.nonFit) {
-        const betterFit = reactionRecapBetterFit(song);
-        return `• ${title}${betterFit ? ` -> Better fit: *${betterFit}*` : ''}`;
+      // Not-fit songs with no reaction (never listened to) only get title +
+      // better-fit note, since there's no artist context missing here that
+      // matters for an unrated pick. Reacted not-fit songs get the full
+      // artist - title line plus the same better-fit annotation.
+      if (options.nonFit && !([1, 2, 3].includes(Number(song?.reaction)))) {
+        return `• ${title}${betterFitSuffix}`;
       }
 
-      return `• ${favorite}${artist ? `${artist} - ` : ''}${title}`;
+      return `• ${favorite}${artist ? `${artist} - ` : ''}${title}${betterFitSuffix}`;
     }
 
     function buildGenreReactionRecap(includeTracks=false) {
@@ -2374,6 +2418,14 @@ function switchScreen(name, options = {}) {
       });
       const nonFitSet = new Set(nonFit);
       const regular = songs.filter(song => !nonFitSet.has(song));
+
+      // A poor genre fit doesn't mean unrated: if it's been listened to and
+      // reacted to, it belongs in its reaction bucket (annotated with the
+      // better-fit genre) rather than getting silently dropped into the
+      // catch-all "not a good fit" bucket with no rating shown.
+      const nonFitReacted = nonFit.filter(song => [1, 2, 3].includes(Number(song?.reaction)));
+      const nonFitUnrated = nonFit.filter(song => ![1, 2, 3].includes(Number(song?.reaction)));
+      const nonFitReactedSet = new Set(nonFitReacted);
       const sections = [];
 
       [
@@ -2381,11 +2433,11 @@ function switchScreen(name, options = {}) {
         { value: 2, label: 'Meh, It’s Fine' },
         { value: 1, label: 'Fuck Off' },
       ].forEach(({ value, label }) => {
-        const group = regular.filter(song => Number(song?.reaction) === value);
+        const group = [...regular, ...nonFitReacted].filter(song => Number(song?.reaction) === value);
         if (!group.length) return;
         sections.push(
           `**${label}**\n` +
-          group.map(song => reactionRecapTrackLine(song)).join('\n')
+          group.map(song => reactionRecapTrackLine(song, { nonFit: nonFitReactedSet.has(song) })).join('\n')
         );
       });
 
@@ -2397,10 +2449,10 @@ function switchScreen(name, options = {}) {
         );
       }
 
-      if (nonFit.length) {
+      if (nonFitUnrated.length) {
         sections.push(
           `Not a good fit for this genre\n` +
-          nonFit.map(song => reactionRecapTrackLine(song, { nonFit: true })).join('\n')
+          nonFitUnrated.map(song => reactionRecapTrackLine(song, { nonFit: true })).join('\n')
         );
       }
 
@@ -4965,6 +5017,7 @@ function loadListenScreen(genre, options = {}) {
               <p>${genre.suggested_songs ? escapeHtml(genre.suggested_songs) : 'Not added yet.'}</p>
             </div>
           </div>
+          ${renderTasteReadingBlock(genre)}
           ${renderGenreRatingPanel(genre)}
           ${renderListeningActionsPanel(genre)}
           ${renderGenreReactionSummary(genre)}
@@ -6236,7 +6289,8 @@ function loadListenScreen(genre, options = {}) {
       const decadeLabels = Object.keys(decades.counts).sort((a,b) => decades.counts[b] - decades.counts[a]);
       const favorite = focused.favoritesong ? `${focused.favoriteartist ? `${focused.favoriteartist} — ` : ''}${focused.favoritesong}` : 'No favorite set';
       const playlistCandidates = songs.filter(song => Number(song.reaction) === 3 || Number(song.score || 0) >= 4).length;
-      mount.innerHTML = `<div class="viz-dossier"><div class="viz-dossier-head"><div><div class="eyebrow" style="margin:0;">Genre dossier</div><h3 class="viz-dossier-title">${escapeHtml(focused.genre || 'Focused genre')}</h3><div class="small">A focused listening profile: taste, fit, era spread, and playlist readiness.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="openGenreDetail(vizFocusedGenre(), false)">Open Genre</button></div><div class="viz-dossier-grid"><div class="viz-dossier-card"><div class="viz-dossier-label">Favorite track</div><div class="viz-dossier-value">${escapeHtml(favorite)}</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Reaction split</div><div class="viz-dossier-value">👍 ${counts[3]} · 🤷 ${counts[2]} · 👎 ${counts[1]}</div><div class="viz-dossier-sub">${likeRate}% like rate across rated tracks</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Theme fit</div><div class="viz-dossier-value">${escapeHtml(avgFit)} avg · ${strongFit} strong</div><div class="viz-dossier-sub">Strong = fit 4–5</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Artists</div><div class="viz-dossier-value">${artists.length}</div><div class="viz-dossier-sub">${escapeHtml(artists.slice(0,3).join(' · ') || 'No artist metadata')}</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Era spread</div><div class="viz-dossier-value">${escapeHtml(decadeLabels.slice(0,3).join(' · ') || 'Unknown')}</div><div class="viz-dossier-sub">${decades.overrides || 0} era override${decades.overrides === 1 ? '' : 's'} · ${decades.unknown || 0} unknown</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Playlist candidates</div><div class="viz-dossier-value">${playlistCandidates}</div><div class="viz-dossier-sub">👍 tracks plus strong theme fits</div></div></div></div>`;
+      const tasteReadingHtml = renderTasteReadingBlock(focused);
+      mount.innerHTML = `<div class="viz-dossier"><div class="viz-dossier-head"><div><div class="eyebrow" style="margin:0;">Genre dossier</div><h3 class="viz-dossier-title">${escapeHtml(focused.genre || 'Focused genre')}</h3><div class="small">A focused listening profile: taste, fit, era spread, and playlist readiness.</div></div><button type="button" class="btn btn-secondary btn-tiny" onclick="openGenreDetail(vizFocusedGenre(), false)">Open Genre</button></div><div class="viz-dossier-grid"><div class="viz-dossier-card"><div class="viz-dossier-label">Favorite track</div><div class="viz-dossier-value">${escapeHtml(favorite)}</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Reaction split</div><div class="viz-dossier-value">👍 ${counts[3]} · 🤷 ${counts[2]} · 👎 ${counts[1]}</div><div class="viz-dossier-sub">${likeRate}% like rate across rated tracks</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Theme fit</div><div class="viz-dossier-value">${escapeHtml(avgFit)} avg · ${strongFit} strong</div><div class="viz-dossier-sub">Strong = fit 4–5</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Artists</div><div class="viz-dossier-value">${artists.length}</div><div class="viz-dossier-sub">${escapeHtml(artists.slice(0,3).join(' · ') || 'No artist metadata')}</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Era spread</div><div class="viz-dossier-value">${escapeHtml(decadeLabels.slice(0,3).join(' · ') || 'Unknown')}</div><div class="viz-dossier-sub">${decades.overrides || 0} era override${decades.overrides === 1 ? '' : 's'} · ${decades.unknown || 0} unknown</div></div><div class="viz-dossier-card"><div class="viz-dossier-label">Playlist candidates</div><div class="viz-dossier-value">${playlistCandidates}</div><div class="viz-dossier-sub">👍 tracks plus strong theme fits</div></div></div>${tasteReadingHtml}</div>`;
     }
 
     function vizBaseGenres() {

@@ -7454,7 +7454,10 @@ body.dc-listen-mode .song-focus-queue-card,
 body.dc-listen-mode .song-focus-details-drawer,
 body.dc-listen-mode .album-dive-panel,
 body.dc-listen-mode .album-focus-shell,
-body.dc-listen-mode .album-focus-carousel {
+body.dc-listen-mode .album-focus-carousel,
+body.dc-listen-mode .genre-identity-dna,
+body.dc-listen-mode .genre-identity-track-grid,
+body.dc-listen-mode .genre-identity-track-card {
   max-width: 100% !important;
   min-width: 0 !important;
 }
