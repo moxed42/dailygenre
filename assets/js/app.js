@@ -2328,13 +2328,18 @@ function switchScreen(name, options = {}) {
         (Array.isArray(song?.artists) ? song.artists.join(', ') : '')
       ).trim();
       const favorite = reactionRecapIsFavorite(song) ? '🏆 ' : '';
+      const betterFit = options.nonFit ? reactionRecapBetterFit(song) : '';
+      const betterFitSuffix = betterFit ? ` -> Better fit: *${betterFit}*` : '';
 
-      if (options.nonFit) {
-        const betterFit = reactionRecapBetterFit(song);
-        return `• ${title}${betterFit ? ` -> Better fit: *${betterFit}*` : ''}`;
+      // Not-fit songs with no reaction (never listened to) only get title +
+      // better-fit note, since there's no artist context missing here that
+      // matters for an unrated pick. Reacted not-fit songs get the full
+      // artist - title line plus the same better-fit annotation.
+      if (options.nonFit && !([1, 2, 3].includes(Number(song?.reaction)))) {
+        return `• ${title}${betterFitSuffix}`;
       }
 
-      return `• ${favorite}${artist ? `${artist} - ` : ''}${title}`;
+      return `• ${favorite}${artist ? `${artist} - ` : ''}${title}${betterFitSuffix}`;
     }
 
     function buildGenreReactionRecap(includeTracks=false) {
@@ -2353,6 +2358,14 @@ function switchScreen(name, options = {}) {
       });
       const nonFitSet = new Set(nonFit);
       const regular = songs.filter(song => !nonFitSet.has(song));
+
+      // A poor genre fit doesn't mean unrated: if it's been listened to and
+      // reacted to, it belongs in its reaction bucket (annotated with the
+      // better-fit genre) rather than getting silently dropped into the
+      // catch-all "not a good fit" bucket with no rating shown.
+      const nonFitReacted = nonFit.filter(song => [1, 2, 3].includes(Number(song?.reaction)));
+      const nonFitUnrated = nonFit.filter(song => ![1, 2, 3].includes(Number(song?.reaction)));
+      const nonFitReactedSet = new Set(nonFitReacted);
       const sections = [];
 
       [
@@ -2360,11 +2373,11 @@ function switchScreen(name, options = {}) {
         { value: 2, label: 'Meh, It’s Fine' },
         { value: 1, label: 'Fuck Off' },
       ].forEach(({ value, label }) => {
-        const group = regular.filter(song => Number(song?.reaction) === value);
+        const group = [...regular, ...nonFitReacted].filter(song => Number(song?.reaction) === value);
         if (!group.length) return;
         sections.push(
           `**${label}**\n` +
-          group.map(song => reactionRecapTrackLine(song)).join('\n')
+          group.map(song => reactionRecapTrackLine(song, { nonFit: nonFitReactedSet.has(song) })).join('\n')
         );
       });
 
@@ -2376,10 +2389,10 @@ function switchScreen(name, options = {}) {
         );
       }
 
-      if (nonFit.length) {
+      if (nonFitUnrated.length) {
         sections.push(
           `Not a good fit for this genre\n` +
-          nonFit.map(song => reactionRecapTrackLine(song, { nonFit: true })).join('\n')
+          nonFitUnrated.map(song => reactionRecapTrackLine(song, { nonFit: true })).join('\n')
         );
       }
 
