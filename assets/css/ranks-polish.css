@@ -476,8 +476,6 @@
   }
   .ranks-polish-actions {
     grid-column: 2 / -1;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    justify-content: stretch;
   }
   .ranks-tier-move {
     justify-content: center;
@@ -543,7 +541,6 @@
   }
   .ranks-polish-actions {
     grid-column: 1 / -1;
-    grid-template-columns: auto minmax(0, 1fr) auto;
   }
   .rank-tier-btn {
     width: 25px;
