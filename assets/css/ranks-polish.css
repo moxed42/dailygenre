@@ -465,7 +465,7 @@
 
 @media (max-width: 980px) {
   .ranks-polish-toolbar {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
   .ranks-save-btn,
   .ranks-copy-btn {
@@ -476,7 +476,7 @@
   }
   .ranks-polish-actions {
     grid-column: 2 / -1;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     justify-content: stretch;
   }
   .ranks-tier-move {
@@ -486,7 +486,7 @@
 
 @media (max-width: 680px) {
   .ranks-polish-toolbar {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .ranks-save-btn,
   .ranks-copy-btn {
@@ -543,7 +543,7 @@
   }
   .ranks-polish-actions {
     grid-column: 1 / -1;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
   .rank-tier-btn {
     width: 25px;

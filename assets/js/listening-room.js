@@ -5,7 +5,6 @@
   const DC = {
     installed: false,
     lastGenreId: null,
-    crateDigIntent: false,
   };
 
   function h(value) {
@@ -769,16 +768,10 @@
 
     installMobileJumpNav();
     installStudioClickGuard();
-    if (DC.crateDigIntent) {
-      DC.crateDigIntent = false;
-      setTimeout(
-        () =>
-          document
-            .getElementById("dc-songs")
-            ?.scrollIntoView({ behavior: "smooth", block: "start" }),
-        80,
-      );
-    }
+    // Part 7: this used to scroll-jump to the song carousel whenever the
+    // page was opened via Crate Dig, overriding songs.js's scroll-restore
+    // post-hook (which runs first and correctly preserves scroll position
+    // for every other flow, including Dig). Dig should not scroll at all.
   }
 
   function installStudioClickGuard() {
@@ -821,17 +814,10 @@
   function installRouteAwareness() {
     if (window.__dailyGenreDiscoveryRoutesInstalled) return;
     window.__dailyGenreDiscoveryRoutesInstalled = true;
-    // Both used to reassign the function to set DC.crateDigIntent before
-    // calling the original -- app.js's openCrateDig/openRandomListenedGenre
-    // now call dgRunPreHooks('name', ...) as their own literal first line,
-    // so this is a pre-hook registration instead (same "before, unconditional"
-    // timing the reassignment had).
-    window.dgRegisterPreHook?.("openCrateDig", () => {
-      DC.crateDigIntent = true;
-    });
-    window.dgRegisterPreHook?.("openRandomListenedGenre", () => {
-      DC.crateDigIntent = true;
-    });
+    // Part 7: these pre-hooks used to set DC.crateDigIntent, a flag that
+    // only existed to trigger the scroll-to-carousel jump removed above.
+    // Nothing else reads that flag, so both the flag and these hooks are
+    // gone now.
   }
 
   function ensureListenModeClasses() {

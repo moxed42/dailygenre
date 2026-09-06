@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Genre</title>
-    <meta name="daily-genre-version" content="v302" />
-    <meta name="daily-genre-updated" content="2026-09-06 10:35 AM ET" />
+    <meta name="daily-genre-version" content="v303" />
+    <meta name="daily-genre-updated" content="2026-09-06 11:34 AM ET" />
     <style id="dg-critical-bg-v209">
       html, body { min-height: 100%; background: #21150d; }
       body { background-color: #21150d; }
@@ -18,17 +18,17 @@
       href="./apple-touch-icon.png"
     />
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
-    <link rel="stylesheet" href="./assets/css/styles.min.css?v=build-v302" />
-    <link rel="stylesheet" href="./assets/css/core-loader.min.css?v=build-v302" />
-    <link rel="stylesheet" href="./assets/css/library-polish.min.css?v=build-v302" />
-    <link rel="stylesheet" href="./assets/css/studio-polish.min.css?v=build-v302" />
-    <link rel="stylesheet" href="./assets/css/ranks-polish.min.css?v=build-v302" />
+    <link rel="stylesheet" href="./assets/css/styles.min.css?v=build-v303" />
+    <link rel="stylesheet" href="./assets/css/core-loader.min.css?v=build-v303" />
+    <link rel="stylesheet" href="./assets/css/library-polish.min.css?v=build-v303" />
+    <link rel="stylesheet" href="./assets/css/studio-polish.min.css?v=build-v303" />
+    <link rel="stylesheet" href="./assets/css/ranks-polish.min.css?v=build-v303" />
     <!-- Non-blocking: these three only style screens that aren't shown on
          first paint (Genre Identity detail, Game Room, Repair Bay), and
          carry no shared/global selectors, verified by grep before deferring. -->
-    <link rel="stylesheet" href="./assets/css/genre-identity.min.css?v=build-v302" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="./assets/css/game-room.min.css?v=build-v302" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="./assets/css/repair-bay-global-delete.min.css?v=build-v302" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="./assets/css/genre-identity.min.css?v=build-v303" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="./assets/css/game-room.min.css?v=build-v303" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="./assets/css/repair-bay-global-delete.min.css?v=build-v303" media="print" onload="this.media='all'" />
     <script
       src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"
       crossorigin="anonymous"
@@ -134,6 +134,7 @@
           >
             Connect Spotify
           </button>
+          <div id="spotifyNowPlaying" class="spotify-now-playing-topbar"></div>
         </div>
       </header>
 
@@ -148,15 +149,6 @@
 
       <section class="screen active" id="screen-spin" role="tabpanel" aria-labelledby="tab-spin">
         <div class="card" style="margin-top: 20px">
-          <div class="onboarding-banner hidden" id="onboardingBanner" role="note" aria-label="How Daily Genre works">
-            <button type="button" class="onboarding-banner-close" id="onboardingBannerClose" aria-label="Dismiss">&times;</button>
-            <div class="eyebrow">How this works</div>
-            <div class="onboarding-banner-steps">
-              <div class="onboarding-banner-step"><strong>1. Spin</strong><span>Get a random genre from your library.</span></div>
-              <div class="onboarding-banner-step"><strong>2. Listen</strong><span>Open it and log what you heard.</span></div>
-              <div class="onboarding-banner-step"><strong>3. Rate</strong><span>Star it so it feeds your rankings.</span></div>
-            </div>
-          </div>
           <div class="spinner-shell">
             <div class="spinner-window">
               <div class="spinner-marker"></div>
@@ -499,7 +491,6 @@
                 <div>
                   <div class="viz-hero-eyebrow">Now spinning</div>
                   <h2 class="viz-hero-title">Your listening room.</h2>
-                  <div id="spotifyNowPlaying"></div>
                 </div>
                 <div class="viz-kpi-row" id="vizKpiMonthly"></div>
               </div>
@@ -823,8 +814,8 @@
       </section>
 
       <footer class="dg-build-footer" aria-label="Daily Genre build information">
-        <span>Daily Genre v302</span>
-        <span>Updated 2026-09-06 10:35 AM ET</span>
+        <span>Daily Genre v303</span>
+        <span>Updated 2026-09-06 11:34 AM ET</span>
       </footer>
     </div>
 
@@ -861,7 +852,10 @@
         <div class="form-section" style="margin: 14px 0">
           <label for="spotifyPlaylistSelect">Existing playlist</label>
           <div class="spotify-playlist-target-grid">
-            <select id="spotifyPlaylistSelect">
+            <select
+              id="spotifyPlaylistSelect"
+              onchange="spotifyOnPlaylistTargetChanged(this.value)"
+            >
               <option value="">Loading playlists…</option>
             </select>
             <button
@@ -1013,42 +1007,42 @@
 
     <div id="saveToast" class="save-toast" aria-live="polite"></div>
 
-    <script src="./assets/js/utils.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/data-cache.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/config.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/genre-data.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/spotify.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/album-dive.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/normalize.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/library-index.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/song-index.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/song-reaction.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/performance.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/screen-cache.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/listen-screen-cache.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/archive-view-model-cache.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/archive-render-reuse.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/review-queue.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/rankings-archive.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/data-load.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/archive-progressive.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/app.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/song-import-fixes.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/studio-polish.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/genre-identity.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/song-identity-roles.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/genre-identity-alias-editor.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/genre-description-placement.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/listened-history-navigation.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/library-parent-category-filter.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/songs.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/listening-room.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/library-polish.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/visuals.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/ranks-polish.min.js?v=build-v302" defer></script>
-      <script src="./assets/js/core/listen-library-layout-fixes.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/similar-genres.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/core/game-room.min.js?v=build-v302" defer></script>
-    <script src="./assets/js/repair-bay-global-delete.min.js?v=build-v302" defer></script>
+    <script src="./assets/js/utils.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/data-cache.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/config.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/genre-data.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/spotify.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/album-dive.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/normalize.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/library-index.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/song-index.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/song-reaction.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/performance.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/screen-cache.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/listen-screen-cache.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/archive-view-model-cache.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/archive-render-reuse.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/review-queue.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/rankings-archive.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/data-load.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/archive-progressive.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/app.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/song-import-fixes.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/studio-polish.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/genre-identity.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/song-identity-roles.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/genre-identity-alias-editor.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/genre-description-placement.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/listened-history-navigation.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/library-parent-category-filter.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/songs.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/listening-room.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/library-polish.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/visuals.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/ranks-polish.min.js?v=build-v303" defer></script>
+      <script src="./assets/js/core/listen-library-layout-fixes.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/similar-genres.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/core/game-room.min.js?v=build-v303" defer></script>
+    <script src="./assets/js/repair-bay-global-delete.min.js?v=build-v303" defer></script>
 </body>
 </html>
