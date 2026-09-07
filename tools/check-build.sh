@@ -74,7 +74,7 @@ const metaVersion =
 const metaUpdated =
   html.match(/name="daily-genre-updated"\s+content="([^"]+)"/)?.[1] || "";
 const footerVersion =
-  html.match(/<span>Daily Genre (v\d+)<\/span>/)?.[1] || "";
+  html.match(/<span>Daily Genre (v\d+(?:\.\d+)?)<\/span>/)?.[1] || "";
 const footerUpdated =
   html.match(/<span>Updated ([^<]+)<\/span>/)?.[1] || "";
 
