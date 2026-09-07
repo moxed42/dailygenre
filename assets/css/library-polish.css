@@ -10695,3 +10695,144 @@ body:not(.spotify-player-open) #spotifyStickyPlayer:not(.open) {
     bottom: 84px !important;
   }
 }
+
+/* === Song Focus Mode ===
+   A pure CSS overlay toggled by body.dc-focus-mode (see #focusModeToggleBtn
+   / toggleSongFocusMode in songs.js). Nothing is unmounted -- every panel
+   that gets hidden here is still live in the DOM, so switching the class
+   off restores the full Listen screen instantly with no re-render.
+
+   The Discovery Console (listening-room.js) restructures the genre page at
+   runtime: #listenDetails .detail-hero's children get moved into a
+   .discovery-console wrapper, and the original .detail-log-section becomes
+   #dc-songs inside it (keeping its original class). Both the restructured
+   shape and the raw .detail-hero shape (build mode skips the restructure)
+   are covered below via the .detail-log-section class, which survives
+   either way. */
+body.dc-focus-mode .discovery-console > *:not(.detail-log-section),
+body.dc-focus-mode .detail-hero > *:not(.detail-log-section):not(.discovery-console) {
+  display: none !important;
+}
+body.dc-focus-mode .detail-log-section > *:not(.listening-focus-pane) {
+  display: none !important;
+}
+body.dc-focus-mode .listening-focus-albums {
+  display: none !important;
+}
+body.dc-focus-mode .listening-focus-songs > *:not(.song-focus-experience) {
+  display: none !important;
+}
+body.dc-focus-mode .song-focus-experience > *:not(.song-focus-player) {
+  display: none !important;
+}
+
+/* Also quiet the Listen screen's own toolbar down to just the toggle
+   itself, so it doubles as the "close" control. */
+body.dc-focus-mode #listenActionsStatus,
+body.dc-focus-mode #topTodayBtn,
+body.dc-focus-mode #topCrateDigBtn,
+body.dc-focus-mode #topAlbumDiveBtn {
+  display: none !important;
+}
+
+#focusModeToggleBtn.active {
+  background: linear-gradient(180deg, #4a3322, #24170f) !important;
+  color: #fff5df !important;
+  border-color: rgba(36, 23, 15, 0.6) !important;
+}
+
+/* Blow the player card up to fill the screen and center it, instead of the
+   compact sidebar-card layout it normally shares the page with. */
+body.dc-focus-mode .listening-focus-songs {
+  display: flex !important;
+  min-height: calc(100vh - 140px);
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 0;
+}
+body.dc-focus-mode .song-focus-experience {
+  width: 100%;
+}
+/* library-polish.css has several #screen-listen/#dc-songs-scoped
+   `!important` rules (including inside mobile media queries) sizing these
+   same elements for the normal sidebar-card layout. An ID selector always
+   outranks any number of plain classes, so a body.dc-focus-mode override
+   alone loses to those regardless of !important or source order -- these
+   are written as body.dc-focus-mode #screen-listen ... to match that ID
+   tier and actually win. */
+body.dc-focus-mode #screen-listen .song-focus-player {
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: center !important;
+  text-align: center !important;
+  gap: 28px !important;
+  width: 100% !important;
+  max-width: 520px !important;
+  margin: 0 auto !important;
+  padding: 40px clamp(20px, 6vw, 64px) 48px !important;
+  min-height: 0 !important;
+  box-sizing: border-box !important;
+}
+/* Sized as a share of the (already width-capped, padded) player card
+   rather than the viewport, so it can never force the card wider than the
+   screen the way a vw-based size measured against the full viewport
+   could. */
+body.dc-focus-mode #screen-listen .song-focus-art-wrap {
+  width: 100% !important;
+  max-width: 320px !important;
+}
+body.dc-focus-mode #screen-listen .song-focus-player .song-focus-art,
+body.dc-focus-mode #screen-listen .song-focus-art-placeholder {
+  width: 100% !important;
+  max-width: 320px !important;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 32px !important;
+}
+body.dc-focus-mode .song-focus-main {
+  justify-items: center;
+  text-align: center;
+}
+body.dc-focus-mode #screen-listen .song-focus-title {
+  max-width: none !important;
+  font-size: clamp(1.9rem, 6vw, 3rem) !important;
+}
+body.dc-focus-mode .song-focus-control-row {
+  justify-content: center;
+}
+/* Scope this view to exactly what was asked for -- art, title/artist, play,
+   reactions, nav -- not the fit badge, the curator's reason blurb, the
+   level-up relation line, or the details drawer opener. */
+body.dc-focus-mode .song-focus-kicker,
+body.dc-focus-mode .song-focus-relation-hero,
+body.dc-focus-mode .song-focus-details-btn {
+  display: none !important;
+}
+/* .song-focus-reason has its own #screen-listen-scoped `display:block
+   !important` rule (v187, expanded description lines) that outranks a
+   plain-class override -- match its ID tier to actually hide it here. */
+body.dc-focus-mode #screen-listen .song-focus-reason {
+  display: none !important;
+}
+/* The mini play button is the primary transport control in this view --
+   make it a real tap target instead of the compact 34px row icon. */
+body.dc-focus-mode .song-focus-mini-btn.spotify-mini-play {
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  font-size: 1.7rem !important;
+  order: -1;
+}
+/* .song-focus-nav is centered on the whole (now much taller) player card by
+   default, which lands it over the artist line instead of the art. Anchor
+   it to the vertical center of the art box instead -- its top edge sits at
+   the card's top padding, so half its own height further down is its
+   center. */
+body.dc-focus-mode #screen-listen .song-focus-nav {
+  top: clamp(160px, 45vw, 220px) !important;
+}
+@media (max-width: 680px) {
+  body.dc-focus-mode .song-focus-player {
+    padding: 32px 20px 40px;
+  }
+}
