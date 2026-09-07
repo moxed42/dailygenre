@@ -1204,7 +1204,8 @@
     moved.pendingFrom = origin?.genre || origin?.name || "";
     moved.pendingFromGenreId = String(origin?.id ?? "");
     moved.originFit = source?.score != null ? Number(source.score) : (source?.originFit ?? source?.nominatedFit ?? null);
-    moved.nominatedFit = null;
+    moved.role = "ROUTED";
+    moved.nominatedFit = moved.originFit;
     moved.cleanupSource = "duplicate-qa";
     if (source?.levelUp) {
       const child = clonePlain(source.levelUp) || {};
@@ -1229,21 +1230,10 @@
     if (!found.song || found.index < 0) return toast("Could not find the source song in that genre. Refresh Studio and try again.", true);
     const source = clonePlain(found.song);
     const sourceLabel = songTitle(source);
-    const detachedLevelUp = source.levelUp ? clonePlain(source.levelUp) : null;
-    /* v216: make Send to Pending a real persisted move. Earlier versions only
-       staged a hidden flag on the listened row; that could be overwritten before
-       save and the duplicate QA card would return after refresh. Remove only this
-       exact source appearance from its source genre, and keep a detached Level Up
-       annotation behind when needed. */
-    const nextOriginSongs = found.songs.slice();
-    if (detachedLevelUp) {
-      nextOriginSongs.splice(found.index, 1, makeDetachedLevelUpSongForDuplicateRouting(detachedLevelUp, source, origin));
-    } else {
-      nextOriginSongs.splice(found.index, 1);
-    }
-
+    /* v217: Send to Pending now copies instead of moving. The original genre's
+       songs_listened stays byte-identical; the target genre only gains a new
+       ROUTED-role entry in pending_songs. */
     const pendingSong = makePendingSongFromDuplicateSource(source, origin);
-    origin.songs_listened = storageReadySongs(nextOriginSongs);
     const pending = Array.isArray(origin.pending_songs) ? origin.pending_songs.slice() : [];
     const alreadyPending = pending.some((song) => songsMatchForRouting(song, normalizeSongKeyForCompare(pendingSong), duplicateClusterKeyForSong(pendingSong)));
     if (!alreadyPending) pending.push(pendingSong);
@@ -1252,8 +1242,8 @@
     /* v204: keep the duplicate cluster unresolved after sending one source row to
        Pending. The remaining appearances still need either routing or explicit
        Mark valid / resolved. */
-    markStudioLibraryDirty(detachedLevelUp ? `Sent ${sourceLabel} to Pending; kept Level Up annotation in ${origin.genre || "original genre"}.` : `Sent ${sourceLabel} to Pending for routing.`);
-    toast(detachedLevelUp ? `Sent to Pending and kept Level Up context in ${origin.genre || "original genre"}.` : "Sent to Pending for routing.", false);
+    markStudioLibraryDirty(`Copied ${sourceLabel} to Pending in ${origin.genre || "original genre"}; original entry unchanged.`);
+    toast(`Copied to Pending in ${origin.genre || "original genre"}; original entry unchanged.`, false);
 
     /* v210: no full Studio rebuild here. Remove only this visible QA row and open
        Routing Desk so the newly staged pending item can be handled after save/reload. */
