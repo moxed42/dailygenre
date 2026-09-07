@@ -7523,9 +7523,11 @@ body.dc-listen-mode .sp-play-btn {
 
   body.dc-listen-mode .discovery-console {
     width: 100% !important;
+    min-width: 0 !important;
     padding: 10px !important;
     gap: 10px !important;
-    overflow: hidden !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
   }
 
   body.dc-listen-mode .dc-compact-hero,
