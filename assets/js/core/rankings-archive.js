@@ -285,6 +285,13 @@
       if (flag === 'notes') {
         items = items.filter(g => !!g.notes);
       }
+      if (flag === 'taste-reading') {
+        items = items.filter(
+          g =>
+            g.taste_reading_status === 'ready' &&
+            Boolean(g.taste_reading),
+        );
+      }
       if (flag === 'zanger') {
         items = items.filter(g =>
           String(g.rating || '') === 'zanger' ||
