@@ -556,6 +556,80 @@
     setSelectedSongKey(songKey(sequence[nextIndex].song));
   }
 
+  // Focus Mode: a distraction-free view of just the current song's art,
+  // title/artist, play button, and reaction row, with next/prev nav through
+  // the same queue moveSongFocus already walks. It is a pure CSS overlay
+  // (body.dc-focus-mode, see library-polish.css) toggled on top of the
+  // normal Listen screen -- nothing here re-renders or unmounts anything,
+  // so leaving focus mode is instant. State is a plain in-memory flag
+  // (session-only, deliberately not persisted) so it always starts off.
+  let songFocusModeActive = false;
+
+  function updateFocusModeToggleButton() {
+    const btn = document.getElementById("focusModeToggleBtn");
+    if (!btn) return;
+    btn.classList.toggle("active", songFocusModeActive);
+    btn.setAttribute("aria-pressed", songFocusModeActive ? "true" : "false");
+    btn.textContent = songFocusModeActive ? "✕ Exit Focus" : "🎧 Focus Mode";
+  }
+
+  function toggleSongFocusMode(force) {
+    songFocusModeActive =
+      typeof force === "boolean" ? force : !songFocusModeActive;
+    try {
+      document.body.classList.toggle("dc-focus-mode", songFocusModeActive);
+    } catch {}
+    updateFocusModeToggleButton();
+    if (songFocusModeActive) {
+      try {
+        document
+          .querySelector(".song-focus-player")
+          ?.scrollIntoView({ block: "start", behavior: "auto" });
+      } catch {}
+    }
+  }
+
+  // Swipe left/right over the focused player to move next/prev, mirroring
+  // the visible nav buttons. Scoped to .song-focus-player itself (not the
+  // whole document) and gated on a mostly-horizontal, deliberate drag so it
+  // doesn't fight the page's normal vertical scroll or button taps.
+  function installSongFocusSwipeNav() {
+    if (window.__dailyGenreSongFocusSwipeInstalled) return;
+    window.__dailyGenreSongFocusSwipeInstalled = true;
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+    document.addEventListener(
+      "touchstart",
+      (event) => {
+        const player = event.target.closest?.(".song-focus-player");
+        if (!player || event.touches.length !== 1) {
+          tracking = false;
+          return;
+        }
+        tracking = true;
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+      },
+      { passive: true },
+    );
+    document.addEventListener(
+      "touchend",
+      (event) => {
+        if (!tracking) return;
+        tracking = false;
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+        const SWIPE_THRESHOLD = 48;
+        if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+        moveSongFocus(dx < 0 ? 1 : -1);
+      },
+      { passive: true },
+    );
+  }
+
   function setSongDetailsOpen(open) {
     try {
       if (typeof currentGenre !== "undefined" && currentGenre) {
@@ -1193,9 +1267,11 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
   window.setSongQueueFilter = setSongQueueFilter;
   window.setSongQueueOpen = setSongQueueOpen;
   window.moveSongFocus = moveSongFocus;
+  window.toggleSongFocusMode = toggleSongFocusMode;
   window.refreshSongReactionUI = refreshSongReactionUI;
   window.enhanceSongListeningExperience = enhanceSongListeningExperience;
   installNoJumpReactionWrapper();
+  installSongFocusSwipeNav();
 
   // Phase 3 of the architectural redesign: loadListenScreen now calls
   // dgRunPreHooks/dgRunPostHooks (see assets/js/utils.js and app.js) instead
