@@ -472,7 +472,7 @@
     grid-column: 1 / -1;
   }
   .ranks-polish-row.ranking-row {
-    grid-template-columns: 48px 54px minmax(0, 1fr) !important;
+    grid-template-columns: 48px 54px minmax(0, 1fr) auto !important;
   }
   .ranks-polish-actions {
     grid-column: 2 / -1;
@@ -491,7 +491,7 @@
     grid-column: 1 / -1;
   }
   .ranks-polish-row.ranking-row {
-    grid-template-columns: 42px 48px minmax(0, 1fr) !important;
+    grid-template-columns: 42px 48px minmax(0, 1fr) auto !important;
     gap: 8px !important;
     padding: 9px !important;
   }
@@ -937,7 +937,7 @@
 
 @media (max-width: 680px) {
   .ranks-polish-row.ranking-row {
-    grid-template-columns: 62px 54px minmax(0, 1fr) !important;
+    grid-template-columns: 62px 54px minmax(0, 1fr) auto !important;
   }
 
   .ranks-jump-cell.ranks-polish-num {
