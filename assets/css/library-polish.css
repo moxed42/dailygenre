@@ -5626,6 +5626,11 @@ body.dc-listen-mode #listenDetails > .detail-hero {
 
 body.dc-listen-mode .discovery-console {
   display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   gap: 14px !important;
   padding: 16px !important;
   border-radius: 24px !important;
@@ -5635,7 +5640,8 @@ body.dc-listen-mode .discovery-console {
   box-shadow:
     0 20px 60px rgba(51, 31, 12, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
-  overflow: hidden !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
 }
 
 body.dc-listen-mode .dc-compact-hero,
