@@ -2013,6 +2013,19 @@
   margin-bottom: 12px;
 }
 
+/* .song-focus-section-head (the "SONG QUEUE" row) packs a label plus two
+   non-shrinking buttons ("Fill missing overrides", the collapse/show
+   toggle). With no flex-wrap the label had to shrink to fit both buttons,
+   squeezing its eyebrow text onto 3 lines. Let the row wrap and give the
+   label room to claim a full line first. */
+.song-focus-section-head {
+  flex-wrap: wrap;
+}
+.song-focus-section-head > div:first-child {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .song-focus-details-head h3 {
   margin: 0;
   font-size: 1.45rem;
@@ -10219,6 +10232,15 @@ textarea[data-dg-identity-textarea="1"] {
   align-items: center;
   justify-content: center;
   gap: 1px;
+  /* .icon-btn (styles.css) sets a fixed width:38px/height:38px for its
+     generic square-icon usage elsewhere. That explicit width survives here
+     unless reset -- min-width alone only raises the floor, so a fixed-width
+     box got clamped to exactly 44px regardless of label length, and a wide
+     label like "X Everywhere" (span has white-space:nowrap, no truncation)
+     overflowed the box and visually ran into the next button. Resetting to
+     auto lets each chip grow to fit its own label. */
+  width: auto;
+  height: auto;
   min-width: 44px;
   min-height: 40px;
   padding: 4px 6px;
