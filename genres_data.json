@@ -123384,23 +123384,23 @@
         "levelUpParentUrl": ""
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1jkC08qYdHAdpUBylutKZ6",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/6SpYWSDGxFq2HowCw0yvqo",
         "score": 5,
-        "reason": "Keeps the same chiming, hook-first guitar-pop instinct as \"I'm On Fire\", but delivers it through a 2000s pop-punk chorus and heartfelt lyric that's actually part of the emo pop scene.",
-        "title": "My Friends Over You",
-        "artist": "New Found Glory",
+        "reason": "Keeps the same hooky, chiming-guitar pop instinct as \"I'm On Fire\", but delivers it through dual confessional/accusatory vocals and raw emo songwriting instead of pop-punk's fun, bratty energy.",
+        "title": "Cute Without The 'E' (Cut From The Team)",
+        "artist": "Taking Back Sunday",
         "source": "spotify",
         "added": "2026-09-08",
-        "spotifyId": "1jkC08qYdHAdpUBylutKZ6",
-        "spotifyUrl": "https://open.spotify.com/track/1jkC08qYdHAdpUBylutKZ6",
+        "spotifyId": "6SpYWSDGxFq2HowCw0yvqo",
+        "spotifyUrl": "https://open.spotify.com/track/6SpYWSDGxFq2HowCw0yvqo",
         "isLevelUp": true,
         "levelUpParentTitle": "I'm On Fire - Remastered",
         "levelUpParentArtist": "Dwight Twilley Band"
       },
       {
         "url": "🔼 ADD: https://open.spotify.com/track/6yznRV5BpPX4PhPzniKiBj",
-        "score": 4,
-        "reason": "Bouncy, sugary emo-pop with bright keys and hooks that flirt with power pop, yet its scene-era synth gloss keeps it slightly outside the classic template.",
+        "score": 3,
+        "reason": "Bright, synth-tinged power pop/pop-punk energy from a band whose own genre tags run synthrock and power pop - fun and hooky, but without emo's confessional weight.",
         "title": "argh...i'm a Pirate",
         "artist": "Zolof the Rock & Roll Destroyer",
         "artwork": "https://i.scdn.co/image/ab67616d0000b273c233d1819707615e2637466f",
@@ -123436,6 +123436,20 @@
         "levelUpParentTitle": "",
         "levelUpParentArtist": "",
         "levelUpParentUrl": ""
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3kaK1EohdhDXT5ICBMRGkz",
+        "score": 5,
+        "reason": "Keeps the same bright, hooky pop energy, but wraps it around Something Corporate's piano-driven emo songwriting and genuinely confessional lyric.",
+        "title": "I Woke Up In A Car",
+        "artist": "Something Corporate",
+        "source": "spotify",
+        "added": "2026-09-08",
+        "spotifyId": "3kaK1EohdhDXT5ICBMRGkz",
+        "spotifyUrl": "https://open.spotify.com/track/3kaK1EohdhDXT5ICBMRGkz",
+        "isLevelUp": true,
+        "levelUpParentTitle": "argh...i'm a Pirate",
+        "levelUpParentArtist": "Zolof the Rock & Roll Destroyer"
       },
       {
         "url": "https://open.spotify.com/track/1JdKrFyoU05abww0Zv0ayQ",
@@ -123556,8 +123570,8 @@
       },
       {
         "url": "https://open.spotify.com/track/0JJP0IS4w0fJx01EcrfkDe",
-        "score": 5,
-        "reason": "Bright pop-punk hooks, gang vocals, and a huge singalong chorus make this a textbook emo pop anthem.",
+        "score": 3,
+        "reason": "A fun, crush-driven pop-punk singalong with gang vocals and a cheeky lyric - closer to All Time Low's pop-punk wheelhouse than emo's confessional vulnerability.",
         "title": "Dear Maria, Count Me In",
         "artist": "All Time Low",
         "artwork": "https://i.scdn.co/image/ab67616d0000b273c8913cd7b91bb7f6bbbec305",
@@ -123594,9 +123608,23 @@
         "levelUpParentUrl": ""
       },
       {
-        "url": "https://open.spotify.com/track/56Tl3UgyZTqfZtvFNS31wm",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0F2l7TDIs9qAmi0hskeDWS",
         "score": 5,
-        "reason": "Soaring pop-rock chorus and driving energy over a relationship-drama lyric is peak mainstream emo pop.",
+        "reason": "Trades Dear Maria's cheeky pop-punk energy for Dashboard Confessional's raw, diary-entry vocal delivery and melodic acoustic-to-full-band build - the actual emo pop template.",
+        "title": "Hands Down",
+        "artist": "Dashboard Confessional",
+        "source": "spotify",
+        "added": "2026-09-08",
+        "spotifyId": "0F2l7TDIs9qAmi0hskeDWS",
+        "spotifyUrl": "https://open.spotify.com/track/0F2l7TDIs9qAmi0hskeDWS",
+        "isLevelUp": true,
+        "levelUpParentTitle": "Dear Maria, Count Me In",
+        "levelUpParentArtist": "All Time Low"
+      },
+      {
+        "url": "https://open.spotify.com/track/56Tl3UgyZTqfZtvFNS31wm",
+        "score": 3,
+        "reason": "Upbeat pop-rock energy about running off with someone - melodic and hooky, but Boys Like Girls' tone here is closer to pop-punk/pop-rock than emo's confessional introspection.",
         "title": "The Great Escape",
         "artist": "BOYS LIKE GIRLS",
         "artwork": "https://i.scdn.co/image/ab67616d0000b2739d5d8ac73325fec119eecfb3",
@@ -123631,6 +123659,20 @@
         "levelUpParentTitle": "",
         "levelUpParentArtist": "",
         "levelUpParentUrl": ""
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1Up4RdOBpChNDytatxKDXP",
+        "score": 5,
+        "reason": "Keeps the same driving, melodic pop-rock energy, but through The Starting Line's genuinely vulnerable, confessional breakup lyric that defines emo pop.",
+        "title": "The Best of Me",
+        "artist": "The Starting Line",
+        "source": "spotify",
+        "added": "2026-09-08",
+        "spotifyId": "1Up4RdOBpChNDytatxKDXP",
+        "spotifyUrl": "https://open.spotify.com/track/1Up4RdOBpChNDytatxKDXP",
+        "isLevelUp": true,
+        "levelUpParentTitle": "The Great Escape",
+        "levelUpParentArtist": "BOYS LIKE GIRLS"
       },
       {
         "url": "https://open.spotify.com/track/5DazV5viPRaEq95p6i0Fyg",
@@ -123831,8 +123873,8 @@
       },
       {
         "url": "https://open.spotify.com/track/7ewT0nLFkMD8ONbRibePr9",
-        "score": 5,
-        "reason": "Glam-tinged guitar riff, a massive singalong chorus, and Patrick Stump's belted hooks make this a defining mainstream emo pop single.",
+        "score": 3,
+        "reason": "A glam-rock stomp and swaggering, self-assured lyric - Fall Out Boy leaning into arena-rock bravado rather than the confessional vulnerability emo pop is built on.",
         "title": "I Don't Care - Single Version",
         "artist": "Fall Out Boy",
         "artwork": "https://i.scdn.co/image/ab67616d0000b2739dea43e1ba135094aae5a600",
@@ -123867,6 +123909,20 @@
         "levelUpParentTitle": "",
         "levelUpParentArtist": "",
         "levelUpParentUrl": ""
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/1CA2JT135f8NgeqEDAKNkx",
+        "score": 5,
+        "reason": "Same band and the same big hooks as I Don't Care, but built around a genuinely bitter, confessional breakup lyric that's much closer to emo pop's emotional core.",
+        "title": "Thnks fr th Mmrs",
+        "artist": "Fall Out Boy",
+        "source": "spotify",
+        "added": "2026-09-08",
+        "spotifyId": "1CA2JT135f8NgeqEDAKNkx",
+        "spotifyUrl": "https://open.spotify.com/track/1CA2JT135f8NgeqEDAKNkx",
+        "isLevelUp": true,
+        "levelUpParentTitle": "I Don't Care - Single Version",
+        "levelUpParentArtist": "Fall Out Boy"
       },
       {
         "url": "https://open.spotify.com/track/0NDKrxRuw0H3tZxbpYIhze",
@@ -123949,8 +124005,8 @@
       },
       {
         "url": "https://open.spotify.com/track/1S30kHvkkdMkcuCTGSgS41",
-        "score": 4,
-        "reason": "Bouncy piano hook, orchestral flourishes, and a big pop chorus keep this in emo pop's theatrical, radio-friendly wing.",
+        "score": 3,
+        "reason": "Whimsical piano hooks and orchestral flourishes make this a fun, theatrical pop single, but it lacks the confessional emotional weight that defines emo pop.",
         "title": "Nine in the Afternoon - Single Mix",
         "artist": "Panic! At The Disco",
         "artwork": "https://i.scdn.co/image/ab67616d0000b273586acdba3a0ddc93693a313e",
@@ -123987,9 +124043,23 @@
         "levelUpParentUrl": ""
       },
       {
-        "url": "https://open.spotify.com/track/23oxJmDc1V9uLUSmN2LIvx",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/0qr1PM5HoC6EUMnqXYko4l",
         "score": 5,
-        "reason": "Violin-driven hooks over a nostalgic, driving pop-punk chorus is one of the genre's most enduring mainstream crossover singles.",
+        "reason": "Trades Nine in the Afternoon's whimsy for one of Panic!'s most genuinely melancholic, confessional ballads - squarely in emo pop's emotional register.",
+        "title": "Northern Downpour",
+        "artist": "Panic! At The Disco",
+        "source": "spotify",
+        "added": "2026-09-08",
+        "spotifyId": "0qr1PM5HoC6EUMnqXYko4l",
+        "spotifyUrl": "https://open.spotify.com/track/0qr1PM5HoC6EUMnqXYko4l",
+        "isLevelUp": true,
+        "levelUpParentTitle": "Nine in the Afternoon - Single Mix",
+        "levelUpParentArtist": "Panic! At The Disco"
+      },
+      {
+        "url": "https://open.spotify.com/track/23oxJmDc1V9uLUSmN2LIvx",
+        "score": 3,
+        "reason": "Violin-driven nostalgia with an upbeat, driving pop-punk energy - catchy and wistful, but closer to Yellowcard's pop-punk wheelhouse than confessional emo.",
         "title": "Ocean Avenue",
         "artist": "Yellowcard",
         "artwork": "https://i.scdn.co/image/ab67616d0000b273d1fd8f264564d9eef7617a45",
@@ -124024,6 +124094,20 @@
         "levelUpParentTitle": "",
         "levelUpParentArtist": "",
         "levelUpParentUrl": ""
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3UBDdFbJw8h0zLMaXGftE6",
+        "score": 5,
+        "reason": "Keeps the same nostalgic, melodic hook, but through Saves The Day's genuinely raw, confessional heartbreak lyric that helped define the emo pop sound.",
+        "title": "At Your Funeral",
+        "artist": "Saves The Day",
+        "source": "spotify",
+        "added": "2026-09-08",
+        "spotifyId": "3UBDdFbJw8h0zLMaXGftE6",
+        "spotifyUrl": "https://open.spotify.com/track/3UBDdFbJw8h0zLMaXGftE6",
+        "isLevelUp": true,
+        "levelUpParentTitle": "Ocean Avenue",
+        "levelUpParentArtist": "Yellowcard"
       },
       {
         "url": "https://open.spotify.com/track/7naGWci9bflvfdzxphFjAw",
@@ -124183,16 +124267,16 @@
         "levelUpParentUrl": ""
       },
       {
-        "url": "🔼 LEVEL UP: https://open.spotify.com/track/2m1hi0nfMR9vdGC8UcrnwU",
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/3IlY76VbP31zwPY0S2EMjh",
         "score": 5,
-        "reason": "Keeps the same big radio-friendly pop-punk chorus energy, but pairs it with the lighter, more personal, hook-first songwriting that defines emo pop rather than Holiday's political punk edge.",
-        "title": "All The Small Things",
-        "artist": "blink-182",
+        "reason": "Keeps the same big, anthemic build as \"Holiday\", but channels it through genuinely confessional, emotionally raw songwriting rather than Green Day's political punk-rock energy.",
+        "title": "The Quiet Things That No One Ever Knows",
+        "artist": "Brand New",
         "artwork": "https://i.scdn.co/image/ab67616d0000b2736da502e35a7a3e48de2b0f74",
         "source": "spotify",
         "added": "2026-09-07",
-        "spotifyId": "2m1hi0nfMR9vdGC8UcrnwU",
-        "spotifyUrl": "https://open.spotify.com/track/2m1hi0nfMR9vdGC8UcrnwU",
+        "spotifyId": "3IlY76VbP31zwPY0S2EMjh",
+        "spotifyUrl": "https://open.spotify.com/track/3IlY76VbP31zwPY0S2EMjh",
         "album": "Enema Of The State",
         "artists": [
           "blink-182"
@@ -124263,8 +124347,8 @@
       },
       {
         "url": "https://open.spotify.com/track/3px2rAPu74ltbkf9eZsZ8h",
-        "score": 4,
-        "reason": "Aggressive verses giving way to a huge, theatrical chorus keeps this in emo pop's dramatic, hook-forward register.",
+        "score": 3,
+        "reason": "Theatrical, aggressive verses building to a huge glam-pop chorus about self-reinvention - dramatic and hooky, but not confessional in the way emo pop is.",
         "title": "Emperor's New Clothes",
         "artist": "Panic! At The Disco",
         "artwork": "https://i.scdn.co/image/ab67616d0000b27323152d9337d6c57b116ed13a",
@@ -124299,6 +124383,20 @@
         "levelUpParentTitle": "",
         "levelUpParentArtist": "",
         "levelUpParentUrl": ""
+      },
+      {
+        "url": "🔼 LEVEL UP: https://open.spotify.com/track/7rVJB8DKktVinHrOBNbF7H",
+        "score": 5,
+        "reason": "Trades Emperor's New Clothes' theatrical bravado for Something Corporate's sprawling, piano-driven confessional epic - a genre-defining emo pop deep cut.",
+        "title": "Konstantine",
+        "artist": "Something Corporate",
+        "source": "spotify",
+        "added": "2026-09-08",
+        "spotifyId": "7rVJB8DKktVinHrOBNbF7H",
+        "spotifyUrl": "https://open.spotify.com/track/7rVJB8DKktVinHrOBNbF7H",
+        "isLevelUp": true,
+        "levelUpParentTitle": "Emperor's New Clothes",
+        "levelUpParentArtist": "Panic! At The Disco"
       },
       {
         "url": "https://open.spotify.com/track/7lRlq939cDG4SzWOF4VAnd",
