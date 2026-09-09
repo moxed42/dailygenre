@@ -822,6 +822,40 @@
       }
     }
 
+    .pill.icon-pill {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:2.4rem;
+      height:2.4rem;
+      padding:0;
+      flex:0 0 auto;
+    }
+
+    .pill.icon-pill svg {
+      transition: transform .2s ease;
+    }
+
+    .pill.icon-pill:disabled {
+      opacity:.6;
+      cursor:default;
+    }
+
+    .pill.icon-pill.is-refreshing svg {
+      animation: dg-refresh-spin .8s linear infinite;
+    }
+
+    @keyframes dg-refresh-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pill.icon-pill.is-refreshing svg {
+        animation: none;
+      }
+    }
+
     .save-status-chip {
       cursor:pointer;
       color:#2a1608;

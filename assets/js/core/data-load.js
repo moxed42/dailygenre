@@ -289,3 +289,29 @@ async function loadData() {
   }
   spotifyRestoreReturnAfterDataLoad();
 }
+
+// Manual refresh entry point for the topbar button. Mobile browsers often
+// make a full pull-to-refresh awkward (or it just reloads the shell without
+// forcing a fresh data fetch), so this re-runs the same loadData() path used
+// on launch -- including the cache/SHA short-circuit -- without a page reload.
+let manualRefreshInFlight = false;
+async function manualRefreshData() {
+  if (manualRefreshInFlight) return;
+  const btn = document.getElementById('manualRefreshBtn');
+
+  manualRefreshInFlight = true;
+  btn?.classList.add('is-refreshing');
+  btn?.setAttribute('disabled', 'true');
+
+  try {
+    await loadData();
+    showSaveToast('Genre list refreshed.', false);
+  } catch (refreshError) {
+    console.warn('[Daily Genre] Manual refresh failed', refreshError);
+    showSaveToast('Refresh failed. Check your connection and try again.', true);
+  } finally {
+    manualRefreshInFlight = false;
+    btn?.classList.remove('is-refreshing');
+    btn?.removeAttribute('disabled');
+  }
+}
