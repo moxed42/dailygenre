@@ -1,12 +1,29 @@
 
 
+    // Daily Genre v259: bound every network fetch in the load path with a
+    // timeout. Without this, a hung request (dead wifi, a stalled TCP
+    // connection) leaves loadData() awaiting forever with the "Loading
+    // genres..." pill stuck and no boot error ever recorded, since nothing
+    // actually throws or rejects.
+    const DATA_LOAD_FETCH_TIMEOUT_MS = 15000;
+
+    async function fetchWithTimeout(url, options = {}, timeoutMs = DATA_LOAD_FETCH_TIMEOUT_MS) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        return await fetch(url, { ...options, signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
     // Daily Genre v242: Worker-first data loading.
     // GitHub's object media type returns the blob SHA and size without embedding
     // the multi-megabyte file contents, so normal launches can verify freshness
     // without downloading and parsing genres_data.json twice.
     async function fetchProductionDataMetadata() {
       try {
-        const apiRes = await fetch(DATA_API_URL, {
+        const apiRes = await fetchWithTimeout(DATA_API_URL, {
           cache: 'no-store',
           headers: { Accept: 'application/vnd.github.object+json' }
         });
@@ -30,7 +47,7 @@
       const meta = metadata || await fetchProductionDataMetadata();
 
       try {
-        const rawRes = await fetch(DATA_URL, { cache: 'no-store' });
+        const rawRes = await fetchWithTimeout(DATA_URL, { cache: 'no-store' });
         const parsed = await rawRes.json().catch(() => null);
         if (rawRes.ok && Array.isArray(parsed)) {
           return {
@@ -140,7 +157,7 @@ async function loadData() {
     loaded = { data: cachedEntry.data, sha: cachedEntry.sha, source: 'cache' };
   } else {
     try {
-      const res = await fetch(WORKER_URL, { method: 'GET', cache: 'no-store' });
+      const res = await fetchWithTimeout(WORKER_URL, { method: 'GET', cache: 'no-store' });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok && Array.isArray(data.data)) {
         workerLoaded = {
