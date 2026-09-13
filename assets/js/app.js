@@ -2311,8 +2311,30 @@ function switchScreen(name, options = {}) {
         <h3>Taste Reading</h3>
         <p>${escapeHtml(genre.taste_reading)}</p>
         ${predictionsHtml}
+        <div class="genre-share-actions">
+          <button type="button" class="btn btn-secondary btn-tiny" onclick="copyTasteReading('${visualActionArg(genre.id)}')">Copy Taste Profile</button>
+        </div>
         ${nicheHtml}
       </div>`;
+    }
+
+    function buildTasteReadingRecap(genre) {
+      if (!genre || genre.taste_reading_status !== 'ready' || !genre.taste_reading) return '';
+      const hit = genre.taste_reading_predicted_hit;
+      const miss = genre.taste_reading_predicted_miss;
+      const lines = [`**${genre.genre || 'Genre'} — Taste Reading**`, genre.taste_reading];
+      if (hit) lines.push(`Predicted to land: ${[hit.title, hit.artist].filter(Boolean).join(' — ')}`);
+      if (miss) lines.push(`Predicted to miss: ${[miss.title, miss.artist].filter(Boolean).join(' — ')}`);
+      return lines.filter(Boolean).join('\n\n');
+    }
+
+    async function copyTasteReading(encodedGenreId) {
+      const genreId = decodeURIComponent(String(encodedGenreId || ''));
+      const genre = (genres || []).find(g => String(g.id) === String(genreId));
+      const text = buildTasteReadingRecap(genre);
+      if (!text) return;
+      await navigator.clipboard.writeText(text);
+      showSaveToast('Taste profile copied.', false);
     }
 
     function reactionRecapBetterFit(song) {
