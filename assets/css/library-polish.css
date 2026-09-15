@@ -9228,16 +9228,6 @@ textarea[data-dg-identity-textarea="1"] {
   scrollbar-gutter: stable !important;
   resize: vertical !important;
 }
-#screen-listen .detail-edit-panel label[for="favoriteSong"],
-#screen-listen .detail-edit-panel label[for="favoriteSongUrl"],
-#screen-listen .detail-edit-panel #favoriteSong,
-#screen-listen .detail-edit-panel #favoriteSongUrl,
-#screen-listen .detail-edit-panel #favoriteSongFetchStatus,
-#screen-listen .detail-edit-panel .favorite-song-section,
-#screen-listen .detail-edit-panel .favorite-track-section,
-#screen-listen .detail-edit-panel [data-favorite-song-section] {
-  display: none !important;
-}
 .song-title-edition {
   font-weight: 750 !important;
   opacity: .68 !important;

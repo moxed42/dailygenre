@@ -292,6 +292,25 @@
               </div>
             </div>
 
+            <div class="favorite-song-section" data-favorite-song-section>
+              <label for="favoriteSongUrl">Today's pick (favorite track)</label>
+              <div class="small" style="margin-bottom: 8px; color: var(--muted)">
+                Paste a track URL to set it as this genre's pick right away — it doesn't need to be added to Songs listened first.
+              </div>
+              <input
+                type="url"
+                id="favoriteSongUrl"
+                placeholder="https://open.spotify.com/track/..."
+              />
+              <input
+                type="text"
+                id="favoriteSong"
+                style="margin-top: 8px"
+                placeholder="Title (auto-fills from Spotify URL if left blank)"
+              />
+              <div class="small" id="favoriteSongFetchStatus" style="margin-top: 6px; color: var(--muted)"></div>
+            </div>
+
             <div>
               <label for="songsListenedBulk"
                 >Songs listened — one per line</label
