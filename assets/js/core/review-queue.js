@@ -609,6 +609,7 @@ function blockSaveIfDuplicateGenres() {
         suggested_songs: [],
         songs_listened: [],
         pending_songs: [],
+        rerouted_nominations: [],
         createdFromRoutingDesk: true,
         createdFromRoutingDeskAt: now
       };
@@ -809,6 +810,19 @@ function blockSaveIfDuplicateGenres() {
       const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
       if (!already) destination.songs_listened.push(official);
 
+      recordRerouteNomination(sourceTarget, {
+        title: pendingSong.title || pendingSong.name || '',
+        artist: pendingSong.artist || '',
+        url: pendingSong.url || pendingSong.spotifyUrl || '',
+        spotifyUrl: pendingSong.spotifyUrl || pendingSong.url || '',
+        spotifyId: pendingSong.spotifyId || '',
+        pendingFrom: sourceName || '',
+        originFit: sourceFit,
+        reroutedTo: destination.genre || '',
+        reroutedToId: destination.id ?? '',
+        reroutedFit: requestedFit
+      });
+
       const removedInfo = removeMatchingPendingByReviewContext({ ...rowContext, sourceName, targetName: sourceTarget.genre, destination: destination.genre }, pendingSong);
       clearManualPendingTagsByReviewContext({ ...rowContext, sourceName }, pendingSong);
 
@@ -856,6 +870,79 @@ function blockSaveIfDuplicateGenres() {
         }
       });
       return { removed, genresTouched, reference };
+    }
+
+    // A reroute record survives even though the pending_songs/CANON-tag entry it came
+    // from gets cleared out by the ADD action above -- otherwise "sent to a different
+    // genre than proposed" leaves no trace once the queue row disappears.
+    function recordRerouteNomination(sourceGenre, entry) {
+      if (!sourceGenre || !entry) return;
+      sourceGenre.rerouted_nominations = Array.isArray(sourceGenre.rerouted_nominations)
+        ? sourceGenre.rerouted_nominations
+        : [];
+      sourceGenre.rerouted_nominations.push({
+        title: entry.title || '',
+        artist: entry.artist || '',
+        url: entry.url || '',
+        spotifyUrl: entry.spotifyUrl || entry.url || '',
+        spotifyId: entry.spotifyId || '',
+        pendingFrom: entry.pendingFrom || '',
+        originFit: Number.isFinite(entry.originFit) ? entry.originFit : null,
+        reroutedTo: entry.reroutedTo || '',
+        reroutedToId: entry.reroutedToId ?? '',
+        reroutedFit: Number.isFinite(entry.reroutedFit) ? entry.reroutedFit : null,
+        reroutedAt: entry.reroutedAt || new Date().toISOString(),
+        levelUpParentKey: entry.levelUpParentKey || '',
+        levelUpParentTitle: entry.levelUpParentTitle || '',
+        levelUpParentArtist: entry.levelUpParentArtist || '',
+        levelUpParentUrl: entry.levelUpParentUrl || ''
+      });
+    }
+
+    function collectRerouteRows() {
+      return (genres || []).flatMap(sourceGenre => (Array.isArray(sourceGenre.rerouted_nominations) ? sourceGenre.rerouted_nominations : [])
+        .map((entry, index) => ({ sourceGenre, entry, index }))
+      ).sort((a, b) => String(b.entry.reroutedAt || '').localeCompare(String(a.entry.reroutedAt || '')));
+    }
+
+    function reviewRerouteRowHtml(row) {
+      const entry = row.entry || {};
+      const sourceName = row.sourceGenre?.genre || 'Unknown genre';
+      const originFit = Number.isFinite(entry.originFit) ? `<span class="review-chip">was ${escapeHtml(String(entry.originFit))}/5</span>` : '';
+      const reroutedFit = Number.isFinite(entry.reroutedFit) ? `<span class="review-chip review-chip-good">now ${escapeHtml(String(entry.reroutedFit))}/5</span>` : '';
+      const atLine = entry.reroutedAt ? `<span class="review-chip">${escapeHtml(String(entry.reroutedAt).slice(0, 10))}</span>` : '';
+      const levelUpNote = entry.levelUpParentTitle
+        ? `<p class="studio-pending-route-copy">Level Up companion stays logged in ${escapeHtml(sourceName)}: ${escapeHtml(entry.levelUpParentArtist || '')}${entry.levelUpParentArtist ? ' — ' : ''}${escapeHtml(entry.levelUpParentTitle)}.</p>`
+        : '';
+      const searchText = [entry.artist, entry.title, sourceName, entry.reroutedTo, entry.pendingFrom].join(' ').toLowerCase();
+      const song = { title: entry.title, artist: entry.artist, url: entry.url, spotifyUrl: entry.spotifyUrl };
+      return `<div class="review-row review-reroute-row" data-review-reroute-row data-review-reroute-text="${escapeHtml(searchText)}">
+        <div class="review-pending-main">
+          <div class="review-track-title">${vizSongTitleLink(song)}</div>
+          <div class="review-meta">
+            <span class="review-chip">${escapeHtml(sourceName)} → ${escapeHtml(entry.reroutedTo || 'Unknown genre')}</span>
+            ${originFit}
+            ${reroutedFit}
+            ${atLine}
+          </div>
+          ${levelUpNote}
+        </div>
+      </div>`;
+    }
+
+    function filterReviewRerouteQueue(inputId) {
+      const input = document.getElementById(inputId);
+      const term = String(input?.value || '').trim().toLowerCase();
+      const rows = Array.from(document.querySelectorAll('[data-review-reroute-row]'));
+      let visible = 0;
+      rows.forEach(row => {
+        const haystack = String(row.dataset.reviewRerouteText || '').toLowerCase();
+        const show = !term || haystack.includes(term);
+        row.classList.toggle('is-hidden', !show);
+        if (show) visible += 1;
+      });
+      const count = document.getElementById('reviewRerouteVisibleCount');
+      if (count) count.textContent = term ? `${visible} matching of ${rows.length}` : `${rows.length} shown`;
     }
 
     function clearManualPendingTagsByReviewContext(context = {}, fallbackSong = null) {
@@ -1040,6 +1127,35 @@ function blockSaveIfDuplicateGenres() {
       const key = songIdentity(official);
       const already = key ? destination.songs_listened.some(song => songIdentity(song) === key || songIdentityKeys(song).includes(key)) : false;
       if (!already) destination.songs_listened.push(official);
+
+      // Rerouting a CANON song must never orphan its LEVEL UP companion. Once
+      // inflateSongsFromStorage() runs (as it already has, building found.songs),
+      // a LEVEL UP row is nested at sourceSong.levelUp rather than living as a
+      // separate top-level entry -- so the companion is just mutated in place
+      // and stays exactly where it is; flattenSongsForStorage() re-expands it
+      // back into its own flat row (still in this same genre) on save.
+      const levelUpCompanion = sourceSong.levelUp || null;
+      if (levelUpCompanion) {
+        levelUpCompanion.levelUpParentReroutedTo = destination.genre || '';
+        levelUpCompanion.levelUpParentReroutedFit = requestedFit;
+        levelUpCompanion.levelUpParentReroutedAt = new Date().toISOString();
+      }
+
+      recordRerouteNomination(found.sourceGenre, {
+        title: sourceSong.title || sourceSong.name || '',
+        artist: sourceSong.artist || '',
+        url: sourceSong.url || sourceSong.spotifyUrl || '',
+        spotifyUrl: sourceSong.spotifyUrl || sourceSong.url || '',
+        spotifyId: sourceSong.spotifyId || '',
+        pendingFrom: found.sourceGenre.genre || '',
+        originFit: sourceSong.score != null ? Number(sourceSong.score) : null,
+        reroutedTo: destination.genre || '',
+        reroutedToId: destination.id ?? '',
+        reroutedFit: requestedFit,
+        levelUpParentTitle: levelUpCompanion ? (levelUpCompanion.title || levelUpCompanion.name || '') : '',
+        levelUpParentArtist: levelUpCompanion ? (levelUpCompanion.artist || '') : '',
+        levelUpParentUrl: levelUpCompanion ? (levelUpCompanion.url || levelUpCompanion.spotifyUrl || '') : ''
+      });
 
       found.songs[found.index] = {
         ...sourceSong,
@@ -1760,6 +1876,24 @@ function blockSaveIfDuplicateGenres() {
             <span class="small" id="reviewPendingVisibleCount">${pendingShownCopy}${hiddenPendingRows ? ` · ${hiddenPendingRows} more available` : ''}</span>
           </div>
           ${combinedRows.length ? `<datalist id="reviewPendingMoveGenreOptions">${reviewGenreDatalistOptions()}</datalist><div class="review-list-scroll" data-review-pending-total="${combinedRows.length}" data-review-pending-visible="${visiblePendingRows.length}">${visiblePendingRows.map(item => item.type === 'queued' ? reviewQueuedPendingRowHtml(item.row) : reviewManualPendingRowHtml(item.row)).join('')}</div>${hiddenPendingRows ? `<div class="review-load-next-wrap"><button type="button" class="btn btn-primary" onclick="loadNextReviewPendingQueue(25)">Load next 25 pending nominations</button><span class="small">${hiddenPendingRows} more remain after this visible batch.</span></div>` : ''}` : `<div class="viz-empty">No songs are currently queued as pending nominations.</div>`}
+        </div>
+        <div class="review-card" id="reviewRerouteCard">
+          <div class="review-card-head">
+            <div>
+              <h3>Rerouted nominations</h3>
+              <p class="small" style="margin:6px 0 0;">History of nominations sent as an ADD to a different genre than originally proposed. A LEVEL UP companion track never moves or gets deleted when its parent is rerouted — it stays logged here in the original genre with a note on where its parent went.</p>
+            </div>
+          </div>
+          ${(() => {
+            const rerouteRows = collectRerouteRows();
+            return rerouteRows.length
+              ? `<div class="review-filter-row">
+                  <input id="reviewRerouteSearch" type="search" placeholder="Search rerouted songs, source genre, or destination genre…" oninput="filterReviewRerouteQueue('reviewRerouteSearch')">
+                  <span class="small" id="reviewRerouteVisibleCount">${rerouteRows.length} shown</span>
+                </div>
+                <div class="review-list-scroll">${rerouteRows.map(reviewRerouteRowHtml).join('')}</div>`
+              : `<div class="viz-empty">No nominations have been rerouted to a different genre yet.</div>`;
+          })()}
         </div>`
       window.dgRunPostHooks?.('renderReview');
     }
