@@ -120,6 +120,8 @@ cd /home/user/dailygenre
 git fetch origin main -q
 git checkout -B claude/todays-genre-skill-ma9uw9 origin/main   # hard-reset local branch to the live tip
 git status --short   # must be empty before proceeding
+git tag "backup/pre-todays-genre-$(date +%Y%m%d-%H%M%S)" HEAD   # named, one-command restore point for this exact pre-edit state
+git push origin --tags
 cp /tmp/tg_work.json genres_data.json
 python3 -c "import json; json.load(open('genres_data.json')); print('valid')"
 git add genres_data.json
@@ -146,3 +148,4 @@ For each of today's entries, tell the user plainly:
 - Per genre: the genre name, and both picks (artist — title) with one line each on why they fit, or "already filled, skipped" if it was already done
 - Confirmation URLs were verified as real, not guessed
 - That the push succeeded to both branch and `main`
+- The backup tag name from step 5 — if anything looks wrong afterward, restoring is `git show <tag>:genres_data.json > genres_data.json` followed by a normal commit

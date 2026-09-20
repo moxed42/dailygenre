@@ -100,6 +100,8 @@ cd /home/user/dailygenre
 git fetch origin main -q
 git checkout -B claude/genre-spinner-august-backlog-6lomg9 origin/main   # hard-reset local branch to the live tip, immediately before editing/committing
 git status --short   # must be empty — if not, stop and figure out why before touching anything
+git tag "backup/pre-discord-import-$(date +%Y%m%d-%H%M%S)" HEAD   # named, one-command restore point for this exact pre-edit state
+git push origin --tags
 cp /tmp/dgi_work.json genres_data.json
 python3 -c "import json; json.load(open('genres_data.json')); print('valid')"
 git add genres_data.json
@@ -127,5 +129,6 @@ For each genre touched, tell the user:
 - What got routed to pending (`ROUTED`), to which genre, and why
 - Any track IDs that couldn't be resolved
 - Confirmation the push succeeded to both branch and `main`
+- The backup tag name from step 7 — if anything looks wrong afterward, restoring is `git show <tag>:genres_data.json > genres_data.json` followed by a normal commit
 
 Keep this proportionate — a big chat export can surface dozens of tracks; a clear per-genre breakdown beats a wall of individual song-by-song narration.

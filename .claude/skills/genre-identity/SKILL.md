@@ -118,6 +118,8 @@ cd /home/user/dailygenre
 git fetch origin main -q
 git checkout -B claude/genre-spinner-august-backlog-6lomg9 origin/main   # hard-reset local branch to the live tip — do not skip even if you "just fetched" earlier in this session
 git status --short   # must be empty before proceeding — if not, something is still stale
+git tag "backup/pre-genre-identity-$(date +%Y%m%d-%H%M%S)" HEAD   # named, one-command restore point for this exact pre-edit state
+git push origin --tags
 cp /tmp/gid_work.json genres_data.json
 python3 -c "import json; json.load(open('genres_data.json')); print('valid')"
 git add genres_data.json
@@ -144,3 +146,4 @@ Tell the user, plainly:
 - Both picks (artist — title) with one line each on why they fit
 - Confirmation both URLs were verified as real, not guessed
 - That the push succeeded to both branch and `main`
+- The backup tag name from step 5 — if anything looks wrong afterward, restoring is `git show <tag>:genres_data.json > genres_data.json` followed by a normal commit

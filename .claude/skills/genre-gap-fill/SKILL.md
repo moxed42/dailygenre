@@ -188,6 +188,8 @@ cd /home/user/dailygenre
 git fetch origin main -q
 git checkout -B <current-feature-branch> origin/main
 git status --short   # must be empty — if not, stop and investigate
+git tag "backup/pre-gap-fill-$(date +%Y%m%d-%H%M%S)" HEAD   # named, one-command restore point for this exact pre-edit state
+git push origin --tags
 cp /tmp/ggf_work.json genres_data.json
 cp /tmp/ggf_state.json genre_gap_fill_state.json
 python3 -c "import json; json.load(open('genres_data.json')); json.load(open('genre_gap_fill_state.json')); print('valid')"
@@ -223,3 +225,4 @@ field-by-field instead of blindly overwriting.
   plainly if a genre is niche enough that 5 genuinely-strong real
   candidates don't exist yet — don't force weak picks to hit the number)
 - Confirmation the push succeeded to both branch and `main`
+- The backup tag name from step 7 — if anything looks wrong afterward, restoring is `git show <tag>:genres_data.json > genres_data.json` followed by a normal commit

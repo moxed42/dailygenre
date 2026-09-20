@@ -29,7 +29,7 @@ git fetch origin main -q
 git show origin/main:genres_data.json > /tmp/gpr_work.json
 python3 -c "import json; json.load(open('/tmp/gpr_work.json')); print('valid')"
 ```
-Note the current `origin/main` commit hash (`git rev-parse origin/main`) — report it at the end as the rollback point.
+A proper named backup tag gets created right before committing, in step 4.
 
 - **No argument / "today"**: target whichever genre(s) have `date_normalized` equal to today AND a non-empty `pending_songs`.
 - **Named genre**: target that one genre by `genre` field (case-insensitive substring, if unambiguous), regardless of its `status` — reviewing pending items doesn't require the genre to be freshly listened, just for the user to want it checked.
@@ -85,6 +85,8 @@ cd /home/user/dailygenre
 git fetch origin main -q
 git checkout -B <current-feature-branch> origin/main
 git status --short   # must be empty
+git tag "backup/pre-pending-review-$(date +%Y%m%d-%H%M%S)" HEAD   # named, one-command restore point for this exact pre-edit state
+git push origin --tags
 cp /tmp/gpr_work.json genres_data.json
 python3 -c "import json; json.load(open('genres_data.json')); print('valid')"
 git add genres_data.json
@@ -107,4 +109,4 @@ If the final push is rejected as non-fast-forward, `main` moved again — re-fet
 - Each promotion: title — artist — score — (LEVEL UP if any), and which genre it landed in
 - Each item left pending, and a one-line reason it didn't fit
 - Any duplicate pending rows dropped because the song was already present
-- The pre-edit commit hash from step 1, as the rollback point, and confirmation the push succeeded to both branch and `main`
+- The backup tag name from step 4 — if anything looks wrong afterward, restoring is `git show <tag>:genres_data.json > genres_data.json` followed by a normal commit — and confirmation the push succeeded to both branch and `main`
