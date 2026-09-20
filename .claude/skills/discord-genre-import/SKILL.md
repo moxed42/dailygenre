@@ -59,7 +59,7 @@ For each track found (by any of these sources, singles or album picks), check wh
 A bare Spotify track ID has no title/artist attached. Resolve it:
 - Try `WebSearch("open.spotify.com/track/<ID>")` — often enough surfaces the track title/artist in an indexed page title.
 - If that fails, try `WebSearch('"<ID>" spotify')` or add contextual hints from the surrounding chat (an artist name mentioned, a genre keyword) to narrow it down.
-- Some IDs simply won't resolve (unindexed/obscure tracks). Don't guess a title from vibes — report those as unresolved and move on. This has happened before and is a normal, acceptable outcome, not a failure to fix by inventing something.
+- Some IDs simply won't resolve (unindexed/obscure tracks). Don't guess a title from vibes — report those as unresolved and move on. This has happened before and is a normal, acceptable outcome, not a failure to fix by inventing something. If you still add the row (real link, unknown title — e.g. `title: "Untitled (Artist Name)"` when the artist is at least known), the `reason` field still has to be pure musical assessment like any other row — never write "title couldn't be resolved," "url is the identifier," or similar bookkeeping about the resolution process itself into `reason`. That process note belongs in your chat report to the user, not in data the app displays.
 - The user may also supply corrections directly ("that ID is X by Y") — trust those over search results.
 
 ## 4. Decide: genre-relevant CANON, or off-topic → pending
