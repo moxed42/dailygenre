@@ -11,6 +11,15 @@ songs to be usable for a taste reading (`genre-taste-reading`'s threshold is
 first place, each already scored 4 or 5 so a full set of reactions would
 clear that bar).
 
+**Standing invariant — never touch an existing rating.** Every edit this
+skill makes must be additive: brand-new rows appended to `songs_listened`,
+or `satisfied_genre_ids`/`last_run_at` in the state file. Never overwrite
+`score` on a song or `rating` on a genre that already has one — that
+includes never "fixing" a score on an existing row just because it's
+inconveniently below 4 for this skill's purposes. A genre with real low
+scores stays exactly as rated; only add new rows to bring the qualifying
+count up.
+
 ## 1. Load state and the live file
 
 Always re-fetch — this project's `main` is edited concurrently by the user's own app:
@@ -112,9 +121,11 @@ is a fabrication and has burned this project before. For each genre in
 ## 5. Apply to the data
 
 Each added song is a plain assistant pick: `isAdd: true`, `role: "ADD"`,
-no `isPending`/`isLevelUp`/`isIdentityTrack`. Mirror the shape already used
-elsewhere in this file (see any existing `role: "ADD"` entry for the full
-field list); fields you can't verify (`durationMs`, `isrc`, `artwork`,
+`url` prefixed `🔼 ADD: <url>`, no `isPending`/`isLevelUp`/`isIdentityTrack`,
+and no `recommendedBy` — that field means a human posted it, which isn't
+true here. Mirror the shape already used elsewhere in this file (see any
+existing `role: "ADD"` entry for the full field list); fields you can't
+verify (`durationMs`, `isrc`, `artwork`,
 `album`, exact `releaseDate`) stay empty/null with `spotifyMetadataFetched: false`
 rather than guessed.
 
@@ -122,11 +133,12 @@ rather than guessed.
 TODAY = "YYYY-MM-DD"  # today's date
 
 def make_add(title, artist, artists, spotify_id, score, reason, release_year=None):
+    spotify_url = f"https://open.spotify.com/track/{spotify_id}"
     return {
-        "url": f"https://open.spotify.com/track/{spotify_id}",
+        "url": f"\U0001F53C ADD: {spotify_url}",  # the 🔼 ADD: prefix is literal, part of the url string
         "score": str(score), "reason": reason, "title": title, "artist": artist,
         "artists": artists, "artwork": "", "source": "spotify", "added": TODAY,
-        "spotifyId": spotify_id, "spotifyUrl": f"https://open.spotify.com/track/{spotify_id}",
+        "spotifyId": spotify_id, "spotifyUrl": spotify_url,
         "album": "", "durationMs": None, "isrc": "",
         "spotifyMetadataFetched": False, "spotifyMetadataFetchedAt": "",
         "eraYear": "", "eraDecade": "", "releaseDate": "", "releaseYear": release_year,

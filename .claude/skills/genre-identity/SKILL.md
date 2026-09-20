@@ -7,6 +7,8 @@ description: Fill in the SEMINAL track and MEDIA touchstone for a genre in genre
 
 Fills `identity.seminalTrack` and `identity.mediaTouchstones[0]` for one genre in `genres_data.json`, using real, verified tracks — never invented ones.
 
+**Standing invariant — never touch an existing rating.** Every edit here is additive: new fields on the identity object, new mirror rows appended to `songs_listened`. Never overwrite `score` on a song or `rating` on a genre that already has one.
+
 ## 1. Find the target genre
 
 - **No argument** ("today's genre", "yesterday's genre"): find the genre object whose `date_normalized` matches the relevant date (today = the session's current date; yesterday = one day back). There can be more than one entry for a date if one is `status: "veto"` (a zanger) — that's not an error, just confirm which one the user means if ambiguous.
@@ -35,8 +37,17 @@ If `seminalTrack` and `mediaTouchstones` are already populated with real (non-`h
 
 This is the step that has burned this project before: a plausible-sounding artist/title/URL invented from training knowledge is a fabrication, and past sessions have shipped several (e.g. a nonexistent "El Nazional – Tuki Tuki" for Changa tuki) that the user later couldn't find anywhere.
 
-- Use WebSearch to find a **seminal track**: the single song most commonly cited (by genre histories, RBMA/Mixmag/genre-specific press, Wikipedia, Discogs) as foundational or archetypal for the genre. Prefer a track by an artist the genre's own `key_artists` field names, if one fits.
-- Use WebSearch to find a **media touchstone**: a song with documented mainstream exposure outside the genre's core scene — a film needle-drop, a TV theme, a viral moment, a famous cover, a chart crossover single. It must be a *different* song from the seminal pick (no duplicates across seminal/media/canon).
+- Use WebSearch to find a **seminal track**: the single song most commonly cited (by genre histories, RBMA/Mixmag/genre-specific press, Wikipedia, Discogs) as foundational or archetypal for the genre — the breakout track that most defines it. Prefer a track by an artist the genre's own `key_artists` field names, if one fits.
+- Use WebSearch to find a **media touchstone**: a song someone who *isn't* into the genre might still have encountered elsewhere. Search in this preference order and take the first real, verifiable hit — don't skip ahead to a weaker category just because it's easier to find:
+  1. **Film** needle-drop
+  2. **TV show** placement
+  3. **Video game** (soundtrack or licensed placement)
+  4. **Commercial/ad**
+  5. **Documentary**
+  6. If none of the above turn up anything real: an **internet meme or viral video** moment
+  7. If even that's empty: whatever's popular within the genre's own niche — a well-known festival-lineup track, a YouTube-popular deep cut, something an outsider could plausibly have stumbled into without being a scene regular
+
+  It must be a *different* song from the seminal pick (no duplicates across seminal/media/canon).
 - Verify each candidate is **actually streamable**: search `"<artist>" "<title>" spotify track` and confirm a real `open.spotify.com/track/...` URL comes back tied to that exact song. If nothing verifiable turns up, pick a different candidate — do not fall back to a guessed URL or `http://url.com`.
 - If the genre is extremely niche (a handful of prior fills — Acid breaks, Algorave — had almost nothing indexed), it's fine for the seminal/media picks to be less iconic as long as they're real and genuinely representative; say so plainly rather than forcing a stronger claim than the evidence supports.
 
@@ -78,6 +89,7 @@ for g in d:
             "artists": [seminal["artist"]],
             "isIdentityTrack": True, "identityType": "seminal",
             "identityIndex": -1, "identityLabel": "Seminal track",
+            "role": "SEMINAL",
             "added": TODAY_ISO_DATE,
         })
         media_mirror = dict(media)
@@ -85,6 +97,7 @@ for g in d:
             "artists": [media["artist"]],
             "isIdentityTrack": True, "identityType": "media",
             "identityIndex": 0, "identityLabel": "Media track",
+            "role": "MEDIA",
             "added": TODAY_ISO_DATE,
         })
         g['songs_listened'].extend([seminal_mirror, media_mirror])

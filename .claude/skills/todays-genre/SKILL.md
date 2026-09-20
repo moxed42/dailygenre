@@ -9,6 +9,8 @@ Fills `identity.seminalTrack` and `identity.mediaTouchstones[0]` for **every** g
 
 This is the same underlying fill process as the `genre-identity` skill, just scoped to "all of today" instead of one named/ambiguous genre. If both skills are present, this one wins for "today" requests since it doesn't stop to disambiguate multi-entry days.
 
+**Standing invariant — never touch an existing rating.** Every edit here is additive: new fields on the identity object, new mirror rows appended to `songs_listened`. Never overwrite `score` on a song or `rating` on a genre that already has one.
+
 ## 1. Find every entry for today
 
 Always re-fetch the live file first — this project's `main` is edited concurrently by the user's own app:
@@ -38,8 +40,17 @@ For each entry, check whether it already has real (non-placeholder, non-`http://
 
 For each entry still needing work, independently:
 
-- Use WebSearch to find a **seminal track**: the single song most commonly cited (genre histories, RBMA/Mixmag/genre-specific press, Wikipedia, Discogs) as foundational or archetypal for that genre. Prefer an artist named in the entry's own `key_artists` field if one fits.
-- Use WebSearch to find a **media touchstone**: a song with documented mainstream exposure outside the genre's core scene — film needle-drop, TV theme, viral moment, famous cover, chart crossover. Must be a different song from the seminal pick.
+- Use WebSearch to find a **seminal track**: the single song most commonly cited (genre histories, RBMA/Mixmag/genre-specific press, Wikipedia, Discogs) as foundational or archetypal for that genre — the breakout track that most defines it. Prefer an artist named in the entry's own `key_artists` field if one fits.
+- Use WebSearch to find a **media touchstone**: a song someone who *isn't* into the genre might still have encountered elsewhere. Search in this preference order and take the first real, verifiable hit — don't skip ahead to a weaker category just because it's easier to find:
+  1. **Film** needle-drop
+  2. **TV show** placement
+  3. **Video game** (soundtrack or licensed placement)
+  4. **Commercial/ad**
+  5. **Documentary**
+  6. If none of the above turn up anything real: an **internet meme or viral video** moment
+  7. If even that's empty: whatever's popular within the genre's own niche — a well-known festival-lineup track, a YouTube-popular deep cut, something an outsider could plausibly have stumbled into without being a scene regular
+
+  Must be a different song from the seminal pick.
 - Verify each candidate is **actually streamable**: search `"<artist>" "<title>" spotify track` and confirm a real `open.spotify.com/track/...` URL tied to that exact song comes back. If nothing verifiable turns up, pick a different candidate — never fall back to a guessed URL or `http://url.com`.
 - If a genre is extremely niche and thinly indexed, it's fine for picks to be less iconic as long as they're real and genuinely representative — say so plainly rather than overstating the evidence.
 
@@ -68,6 +79,7 @@ def apply_identity(genre_id, seminal, media, today_iso):
                 "artists": [seminal["artist"]],
                 "isIdentityTrack": True, "identityType": "seminal",
                 "identityIndex": -1, "identityLabel": "Seminal track",
+                "role": "SEMINAL",
                 "added": today_iso,
             })
             media_mirror = dict(media)
@@ -75,6 +87,7 @@ def apply_identity(genre_id, seminal, media, today_iso):
                 "artists": [media["artist"]],
                 "isIdentityTrack": True, "identityType": "media",
                 "identityIndex": 0, "identityLabel": "Media track",
+                "role": "MEDIA",
                 "added": today_iso,
             })
             g['songs_listened'].extend([seminal_mirror, media_mirror])
