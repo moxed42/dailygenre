@@ -1154,7 +1154,7 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
               ${childRelation}
               ${childReason}
             </span>
-            <span class="song-focus-row-badge-wrap">${songTypeBadge(entry)}</span>
+            <span class="song-focus-row-badge-wrap">${songTypeBadge(entry)}${songRecommenderBadge(entry)}</span>
             ${renderReactionButtons(song, "queue")}
           </div>`;
                 })
