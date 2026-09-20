@@ -346,9 +346,20 @@
       return '<span class="song-focus-badge routed">Routed</span>';
     if (entry.label === "Add")
       return '<span class="song-focus-badge add">Add</span>';
-    if (entry.song?.score != null)
-      return `<span class="song-focus-badge">Fit ${html(entry.song.score)}/5</span>`;
-    return '<span class="song-focus-badge">Canon</span>';
+    const fitBadge =
+      entry.song?.score != null
+        ? ` <span class="song-focus-badge">Fit ${html(entry.song.score)}/5</span>`
+        : "";
+    return `<span class="song-focus-badge recc">Recc</span>${fitBadge}`;
+  }
+
+  function songRecommenderBadge(entry) {
+    const names = Array.isArray(entry.song?.recommendedBy)
+      ? entry.song.recommendedBy.filter(Boolean)
+      : [];
+    if (!names.length) return "";
+    const label = names.join(", ");
+    return ` <span class="song-focus-badge recommender" title="Recommended by ${html(label)}">🎙 ${html(label)}</span>`;
   }
 
   function genreFocusStorageKey(genre) {
@@ -956,7 +967,7 @@ This removes it from every genre and Studio queue. It becomes permanent after yo
         ${art ? `<img class="song-focus-art" src="${html(art)}" alt="${html(title)} artwork" loading="lazy">` : '<div class="song-focus-art song-focus-art-placeholder">♪</div>'}
       </div>
       <div class="song-focus-main">
-        <div class="song-focus-kicker">Now Listening · ${songTypeBadge(entry)}</div>
+        <div class="song-focus-kicker">Now Listening · ${songTypeBadge(entry)}${songRecommenderBadge(entry)}</div>
         <h3 class="song-focus-title">${hasHref ? `<a href="${html(href)}" target="_blank" rel="noopener noreferrer">${titleMarkup}&nbsp;<span class="song-link-arrow">↗</span></a>` : titleMarkup}</h3>
         ${subline ? `<div class="song-focus-subline">${html(subline)}</div>` : ""}
         ${relation}
