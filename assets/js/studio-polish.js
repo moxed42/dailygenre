@@ -7,6 +7,7 @@
 
   const VERSION = "studio-polish-v290-repair-bay-linear-metadata-index";
   let isApplying = false;
+  let studioBulkApplyMode = false;
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -1578,9 +1579,9 @@
         <div class="studio-lane-counts"><span>${repairCounts.art || 0} track art</span><span>${repairCounts.year || 0} track years</span><span>${repairCounts.metadata || 0} track metadata</span><span>${repairCounts["album art"] || 0} album art</span><span>${repairCounts["album year"] || 0} album years</span><span>${repairCounts["album metadata"] || 0} album metadata</span>${studioCopyButton("repair", "Copy the first 25 visible Repair Bay rows")}</div>
       </div>
       <div class="studio-action-strip studio-repair-actions-compact">
-        <button type="button" class="btn btn-secondary" onclick="typeof refreshNextSpotifyTracks === 'function' ? refreshNextSpotifyTracks(5) : null">Auto-refresh next 5 tracks</button>
+        <button type="button" class="btn btn-primary" onclick="typeof bulkApplyStudioRepairRows === 'function' ? bulkApplyStudioRepairRows(this) : null" title="Re-check every track row's existing URL and apply metadata/artwork fixes that pass the mismatch check">Apply all safe fixes</button>
         <button type="button" class="btn btn-secondary" onclick="typeof refreshStudioRepairList === 'function' ? refreshStudioRepairList(this) : (typeof renderReview === 'function' ? renderReview() : null)">Refresh repair list</button>
-        <div class="studio-action-helper">Track rows support inline URL/override repair. Album Dive rows are visible here and open the genre/Album Dive editor for album art, year, and album metadata repair.</div>
+        <div class="studio-action-helper">Track rows support inline URL/override repair. "Apply all safe fixes" re-checks every track row's stored URL and applies metadata/artwork automatically wherever the result stays close enough to the current title/artist — anything that fails that check is skipped and left for manual review. Album Dive rows are visible here and open the genre/Album Dive editor for album art, year, and album metadata repair.</div>
       </div>
       <div class="studio-repair-subsection studio-repair-track-subsection"><div class="studio-subsection-head"><h4>Track metadata/artwork</h4>${studioCopyButton("repair-track", "Copy the first 25 visible track repair rows")}</div>${trackBody}</div>
       <div class="studio-repair-subsection studio-repair-album-subsection"><div class="studio-subsection-head"><h4>Album Dive metadata/artwork</h4>${studioCopyButton("repair-album", "Copy the first 25 visible Album Dive repair rows")}</div>${albumBody}</div>
@@ -2479,6 +2480,9 @@
 
   function confirmStudioRepairUrlOverwrite(oldSong, newMetadata, kind = "") {
     if (repairMetadataLooksClose(oldSong, newMetadata)) return true;
+    // v303: bulk apply must never block on a dialog — a mismatch just means
+    // this row is left for manual review instead of being auto-applied.
+    if (studioBulkApplyMode) return false;
     const currentLabel = repairDisplayLabel(oldSong, "this repair row");
     const resultLabel = repairDisplayLabel(newMetadata, `the ${repairSourceLabel(kind)} track`);
     return window.confirm(`This ${repairSourceLabel(kind)} result does not look like a close match.
@@ -2595,7 +2599,7 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
     return applyRepairUrlTarget(target, inputId);
   };
 
-  async function updateStudioRepairGroupUrlFromQueue(encodedTargetsJson, inputId, button) {
+  async function updateStudioRepairGroupUrlFromQueue(encodedTargetsJson, inputId, button, silent = false) {
     let targets = [];
     try {
       targets = JSON.parse(decodeURIComponent(String(encodedTargetsJson || "[]")));
@@ -2616,8 +2620,8 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
       unique.push({ ...target, genreId, key });
     });
     if (!unique.length) {
-      toast("Could not find matching repair rows. Refresh Studio and try again.", true);
-      return;
+      if (!silent) toast("Could not find matching repair rows. Refresh Studio and try again.", true);
+      return { updated: 0, cancelled: 0 };
     }
 
     const originalText = button?.textContent || "Apply URL";
@@ -2670,12 +2674,12 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
       if (!updated) {
         if (cancelled) {
           setStatus("Apply cancelled — no repair rows changed.", false);
-          toast("Apply cancelled. The repair row was left unchanged.", false);
+          if (!silent) toast("Apply cancelled. The repair row was left unchanged.", false);
         } else {
           setStatus("No matching row was updated.", true);
-          toast("Could not find matching repair rows. The row may be stale; open the genre once or use the Metadata Queue delete/open tools.", true);
+          if (!silent) toast("Could not find matching repair rows. The row may be stale; open the genre once or use the Metadata Queue delete/open tools.", true);
         }
-        return;
+        return { updated, cancelled };
       }
       const rowEl = button?.closest?.(".studio-mini-row-repair");
       const metaEl = rowEl?.querySelector?.(".studio-mini-meta");
@@ -2727,17 +2731,73 @@ Overwrite the selected repair row anyway? This will replace its title, artist, a
       });
       const refreshedCount = resolved.filter((item) => item.song && (item.song.artwork || item.song.albumArt)).length;
       setStatus(refreshedCount ? `Applied URL / overrides · artwork found for ${refreshedCount} ${refreshedCount === 1 ? "track" : "tracks"}. Save cleanup to persist.` : "Applied URL / overrides. Save cleanup to persist.", false);
-      if (updated > 1) toast(`Applied URL to ${updated} matching copies — Save cleanup to persist.`, false);
-      else toast("URL / overrides applied — Save cleanup to persist.", false);
+      if (!silent) {
+        if (updated > 1) toast(`Applied URL to ${updated} matching copies — Save cleanup to persist.`, false);
+        else toast("URL / overrides applied — Save cleanup to persist.", false);
+      }
     } catch (err) {
       console.error("Repair Bay apply failed", err);
       setStatus(`Apply failed: ${err?.message || err || "Unknown error"}`, true);
-      toast("Repair Bay update failed. Check the row message and try again.", true);
+      if (!silent) toast("Repair Bay update failed. Check the row message and try again.", true);
     } finally {
       clearBusy();
     }
+    return { updated, cancelled };
   }
 
+  // v303: bulk-runs the same Apply URL / Overrides flow across every visible
+  // track repair row that already has a URL filled in, so trustworthy fixes
+  // (title/artist close enough to the current row) don't need one click each.
+  // Rows whose fetched result fails the mismatch check are left untouched —
+  // confirmStudioRepairUrlOverwrite skips its dialog and reports a skip instead.
+  async function bulkApplyStudioRepairRows(button = null) {
+    if (studioBulkApplyMode) return;
+    const mount = document.getElementById("reviewContent") || document;
+    const forms = $$(".studio-repair-track-subsection [data-studio-repair-form]", mount);
+    const eligible = forms.filter((form) => {
+      const inputId = form.dataset.studioRepairInput || "";
+      const input = inputId ? document.getElementById(inputId) : null;
+      return !!(input && String(input.value || "").trim());
+    });
+    if (!eligible.length) {
+      toast("No Repair Bay track rows have a URL ready to re-check.", true);
+      return;
+    }
+
+    const originalText = button?.textContent || "Apply all safe fixes";
+    const setBusy = (copy) => { if (button) { button.disabled = true; button.textContent = copy; } };
+    const clearBusy = () => { if (button && document.body.contains(button)) { button.disabled = false; button.textContent = originalText; } };
+
+    let applied = 0;
+    let skipped = 0;
+    setBusy(`Applying 1/${eligible.length}…`);
+    studioBulkApplyMode = true;
+    try {
+      for (let idx = 0; idx < eligible.length; idx += 1) {
+        setBusy(`Applying ${idx + 1}/${eligible.length}…`);
+        const form = eligible[idx];
+        const inputId = form.dataset.studioRepairInput || "";
+        const encodedTargets = form.dataset.studioRepairTargets || "";
+        const applyBtn = form.querySelector("[data-studio-repair-update]");
+        if (!inputId || !encodedTargets) { skipped += 1; continue; }
+        const result = await updateStudioRepairGroupUrlFromQueue(encodedTargets, inputId, applyBtn || null, true);
+        if (result?.updated) applied += result.updated;
+        else skipped += 1;
+      }
+    } finally {
+      studioBulkApplyMode = false;
+      clearBusy();
+    }
+
+    if (applied && skipped) {
+      toast(`Bulk apply: fixed ${applied}, skipped ${skipped} on a mismatch — Save cleanup to persist.`, false);
+    } else if (applied) {
+      toast(`Bulk apply: fixed ${applied} track${applied === 1 ? "" : "s"} — Save cleanup to persist.`, false);
+    } else {
+      toast(`Bulk apply found no safe fixes — ${skipped} row${skipped === 1 ? "" : "s"} failed the mismatch check and need manual review.`, true);
+    }
+  }
+  window.bulkApplyStudioRepairRows = bulkApplyStudioRepairRows;
 
   function hardDeleteStudioRepairGroup(encodedTargetsJson, button = null) {
     let targets = [];
