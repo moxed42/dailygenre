@@ -2000,9 +2000,9 @@
 }
 
 .song-focus-badge.recommender {
-  color: var(--accent-soft);
-  background: transparent;
-  border-color: rgba(255, 222, 161, 0.18);
+  color: #3a2a12;
+  background: #f0dba6;
+  border-color: rgba(58, 42, 18, 0.28);
   font-weight: 700;
   text-transform: none;
   letter-spacing: normal;
