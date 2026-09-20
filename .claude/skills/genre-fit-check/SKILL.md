@@ -84,19 +84,19 @@ don't search for one.
 
 ## 6. Output format
 
-One plain line per input song, in input order, written directly in the
-chat reply — **not** inside a code/fenced block (this is prose output for
-the user to read, not something to copy-paste verbatim):
+One markdown bullet per input song, in input order, written directly in
+the chat reply — **not** inside a code/fenced block (this is prose output
+for the user to read, not something to copy-paste verbatim):
 
-`<Artist> - <Song>: <Proposed Genre> [<fit>/5]`
+`- <Artist> - <Song>: <Proposed Genre> [<fit>/5]`
 
 For any line scoring below 4, append the better genre on the same line:
 
-`<Artist> - <Song>: <Proposed Genre> [<fit>/5] --> <Better Genre>[<fit>/5]`
+`- <Artist> - <Song>: <Proposed Genre> [<fit>/5] --> <Better Genre>[<fit>/5]`
 
 If the better genre isn't on the list, mark it, e.g.:
 
-`<Artist> - <Song>: <Proposed Genre> [<fit>/5] --> Merseybeat[5/5] (not on list)`
+`- <Artist> - <Song>: <Proposed Genre> [<fit>/5] --> Merseybeat[5/5] (not on list)`
 
 No extra commentary per line beyond this — reasons/notes only if the user
 asks, or briefly at the end for any judgment call worth flagging (e.g. a
