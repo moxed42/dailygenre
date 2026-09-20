@@ -120,6 +120,17 @@
       color:white;
     }
 
+    .dg-pinned-shortcut-btn.is-disabled {
+      opacity:.5;
+      cursor:not-allowed;
+    }
+
+    .dg-pin-toggle-btn.is-pinned {
+      background:var(--text);
+      border-color:var(--text);
+      color:white;
+    }
+
     .tab-tools-wrap {
       position:relative;
       display:inline-flex;
