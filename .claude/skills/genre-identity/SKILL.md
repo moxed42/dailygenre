@@ -107,6 +107,8 @@ json.dump(d, open('/tmp/gid_work.json', 'w'), separators=(',', ':'), ensure_asci
 
 If the genre already has an existing seminal or media that's a placeholder (`http://url.com`) or previously flagged as fabricated, replace that entry in place rather than appending a duplicate — check `songs_listened` for an existing `isIdentityTrack` row of the same `identityType` first and overwrite it.
 
+**If the seminal/media pick happens to be the same song (title+artist, case-insensitive) as an existing `CANON`/`ROUTED` row in this genre that already has a `recommendedBy`,** copy that `recommendedBy` onto the new identity mirror row too — someone recommended it AND it's the genre's defining track, both badges are true and both should show. Don't invent one if no such match exists.
+
 ## 5. Commit and push to both branch and main
 
 This repo's convention (see git history): work happens on `claude/genre-spinner-august-backlog-6lomg9`, mirrored to `main`, because the user's own app writes to `main` concurrently. Always re-fetch immediately before merging — `origin/main` moves between steps in this workflow regularly.
