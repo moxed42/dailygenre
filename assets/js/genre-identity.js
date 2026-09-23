@@ -1658,7 +1658,8 @@
       if (search && raw.trim()) {
         setTimeout(() => {
           const list = $("#historyList");
-          if (!list || list.querySelector(".archive-card")) return;
+          if (!list || list.dataset.archiveMode === "songs") return;
+          if (list.querySelector(".archive-card")) return;
           const matches = genres().filter((g) =>
             aliasList(g).some(
               (a) => norm(a).includes(norm(raw)) || norm(raw).includes(norm(a)),

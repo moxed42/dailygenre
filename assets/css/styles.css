@@ -4459,3 +4459,82 @@ body.spotify-player-open { padding-bottom: 116px; }
   color: var(--accent-dark);
   text-decoration: underline;
 }}
+    /* Archive "Songs" view: song / artist search results */
+    .song-search-results {
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:grid;
+      gap:8px;
+    }
+    .song-search-row {
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) minmax(0, auto);
+      gap:6px 16px;
+      align-items:center;
+      padding:10px 14px;
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      background:var(--surface);
+    }
+    .song-search-main { min-width:0; }
+    .song-search-title {
+      font-weight:700;
+      color:var(--text);
+      overflow-wrap:anywhere;
+    }
+    .song-search-title a { color:inherit; }
+    .song-search-score {
+      margin-left:8px;
+      font-size:.85em;
+      color:var(--accent-dark);
+    }
+    .song-search-artist {
+      color:var(--muted);
+      font-size:.92em;
+      overflow-wrap:anywhere;
+    }
+    .song-search-meta {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px 10px;
+      align-items:center;
+      justify-content:flex-end;
+      font-size:.85em;
+    }
+    .song-search-genre {
+      font:inherit;
+      font-weight:700;
+      color:var(--accent-dark);
+      background:none;
+      border:0;
+      padding:0;
+      cursor:pointer;
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+    .song-search-date { color:var(--faint); }
+    .song-search-badges {
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      align-items:center;
+    }
+    .song-search-badge {
+      padding:1px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--accent-soft);
+      color:var(--text);
+      font-size:.8em;
+      white-space:nowrap;
+    }
+    .song-search-badge--canon,
+    .song-search-badge--routed { background:var(--success-soft); }
+    .song-search-badge--pending { background:var(--danger-soft); }
+    .song-search-badge--suggested { background:transparent; color:var(--muted); }
+    .song-search-recs { color:var(--muted); }
+    @media (max-width: 640px) {
+      .song-search-row { grid-template-columns:1fr; }
+      .song-search-meta { justify-content:flex-start; }
+    }

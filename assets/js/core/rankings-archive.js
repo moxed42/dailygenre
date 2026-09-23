@@ -859,6 +859,19 @@
         sort: sortEl ? sortEl.value : 'newest',
       };
 
+      const songSearch = window.DailyGenreArchiveSongSearch;
+      if (archiveView === 'songs' && songSearch?.render) {
+        const matchedGenres = songSearch.render(list, filters);
+        archiveCurrentItems = matchedGenres;
+        archiveCurrentLabel = 'Song search';
+        archiveRenderedItems = matchedGenres;
+        window._archiveItems = matchedGenres;
+        archiveUpdatePlaylistButtons();
+        window.dgRunPostHooks?.('renderHistory', options);
+        return;
+      }
+      delete list.dataset.archiveMode;
+
       const viewModel = getArchiveViewModel(filters);
       const items = viewModel.items;
       const label = viewModel.label;
