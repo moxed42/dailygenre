@@ -86,6 +86,30 @@
     }
   }
 
+  async function copyDiscordBuilder(button, builderName, doneMessage, emptyMessage) {
+    if (!currentGenre) return;
+    let text = "";
+    try {
+      text = String(window[builderName]?.() || "").trim();
+    } catch {}
+    if (!text) {
+      showDcToast(emptyMessage);
+      return;
+    }
+    try {
+      if (button) button.classList.add("copied");
+      await navigator.clipboard.writeText(text);
+      showDcToast(
+        text.length > 2000
+          ? `${doneMessage} (${text.length} chars, over Discord's 2000 limit)`
+          : doneMessage,
+      );
+      setTimeout(() => button?.classList.remove("copied"), 900);
+    } catch {
+      alert(text);
+    }
+  }
+
   function openStudioMode() {
     try {
       // Prefer the app's own route into edit/build mode. This is more reliable
@@ -516,6 +540,24 @@
     };
     actions.appendChild(ensureCopyButton());
 
+    [
+      ["\u2726", "Copy Seminal + Media for Discord", "buildDiscordIdentityBlock", "Seminal + Media copied", "No Seminal or Media track yet"],
+      ["\u266B", "Copy all songs for Discord", "buildDiscordSongListBlock", "Song list copied", "No songs for this genre yet"],
+    ].forEach(([label, title, builderName, doneMessage, emptyMessage]) => {
+      const extra = document.createElement("button");
+      extra.type = "button";
+      extra.classList.add("btn", "btn-secondary", "dc-copy-discord-action", "dc-copy-discord-extra");
+      extra.textContent = label;
+      extra.title = title;
+      extra.setAttribute("aria-label", title);
+      extra.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        copyDiscordBuilder(extra, builderName, doneMessage, emptyMessage);
+      });
+      actions.appendChild(extra);
+    });
+
     if (edit) {
       edit.classList.add("btn", "btn-secondary", "dc-setup-action");
       edit.textContent = "⚙";
@@ -524,7 +566,7 @@
       actions.appendChild(edit);
     }
 
-    actions.querySelectorAll(".dc-copy-discord-action").forEach((btn, index) => {
+    actions.querySelectorAll(".dc-copy-discord-action:not(.dc-copy-discord-extra)").forEach((btn, index) => {
       if (index > 0) btn.remove();
     });
 
