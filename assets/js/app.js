@@ -4360,6 +4360,36 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
     }
     window.buildDiscordBlock = buildDiscordBlock;
 
+    function identityOneLiner(text) {
+      const clean = String(text || '').replace(/\s+/g, ' ').trim();
+      if (!clean) return '';
+      const first = (clean.match(/^.*?[.!?](?=\s+[A-Z"'\u2018\u201C(]|$)/) || [clean])[0].trim();
+      return first.length > 200 ? `${first.slice(0, 197).trimEnd()}...` : first;
+    }
+    function buildDiscordIdentityBlock() {
+      if (!currentGenre) return '';
+      const id = currentGenre.identity && typeof currentGenre.identity === 'object' ? currentGenre.identity : {};
+      const sem = { ...(currentGenre.seminal_song || {}), ...(id.seminalTrack || {}) };
+      const media = (Array.isArray(id.mediaTouchstones) && id.mediaTouchstones.length
+        ? id.mediaTouchstones
+        : (Array.isArray(currentGenre.media_touchstones) ? currentGenre.media_touchstones : []))
+        .filter(m => m && typeof m === 'object');
+      const line = (label, t, withMedia) => {
+        const name = [t.artist, t.title].filter(Boolean).join(' \u2014 ');
+        if (!name && !t.spotifyUrl && !t.url) return '';
+        const url = String(t.spotifyUrl || t.url || '').trim();
+        const from = withMedia ? String(t.mediaTitle || t.media || '').trim() : '';
+        const head = `${label}: **${name || 'Untitled'}**${from ? ` (${from})` : ''}`;
+        const why = identityOneLiner(t.reason);
+        return [head, why, url ? `<${url}>` : ''].filter(Boolean).join('\n');
+      };
+      const parts = [line('\u2726 Seminal', sem, false), ...media.map(m => line('\u25A3 Media', m, true))].filter(Boolean);
+      if (!parts.length) return '';
+      return [`**${String(currentGenre.genre || '').toUpperCase()}**`, ...parts].join('\n\n');
+    }
+    window.buildDiscordIdentityBlock = buildDiscordIdentityBlock;
+
+
     function mountDiscordShareSection() {
       const share = document.getElementById('shareSection');
       const slot = document.getElementById('discordShareSlot');
@@ -5831,6 +5861,12 @@ function loadListenScreen(genre, options = {}) {
       updateDiscordBlock();
       await navigator.clipboard.writeText(buildDiscordBlock());
       showSaveToast('Copied Discord genre details.', false);
+    });
+    document.getElementById('copyDiscordIdentityBtn')?.addEventListener('click', async () => {
+      const text = buildDiscordIdentityBlock();
+      if (!text) { showSaveToast('No Seminal or Media track for this genre yet.', true); return; }
+      await navigator.clipboard.writeText(text);
+      showSaveToast('Copied Seminal + Media tracks.', false);
     });
     document.getElementById('saveBtn').addEventListener('click', async () => {
       if (typeof setLibrarySaveBusy === 'function') setLibrarySaveBusy(true);
