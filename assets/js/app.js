@@ -4389,6 +4389,35 @@ Overwrite the selected queue row anyway? This will replace its title, artist, ar
     }
     window.buildDiscordIdentityBlock = buildDiscordIdentityBlock;
 
+    function buildDiscordSongListBlock() {
+      if (!currentGenre) return '';
+      const id = currentGenre.identity && typeof currentGenre.identity === 'object' ? currentGenre.identity : {};
+      const sem = { ...(currentGenre.seminal_song || {}), ...(id.seminalTrack || {}) };
+      const media = Array.isArray(id.mediaTouchstones) ? id.mediaTouchstones : [];
+      const listened = Array.isArray(currentGenre.songs_listened) ? currentGenre.songs_listened : [];
+      const all = [{ ...sem, role: 'SEMINAL' }, ...media.map(m => ({ ...m, role: 'MEDIA' }))];
+      listened.forEach(song => {
+        if (!song || typeof song !== 'object') return;
+        all.push(song);
+        if (song.levelUp && typeof song.levelUp === 'object') all.push({ ...song.levelUp, role: 'LEVEL UP' });
+      });
+      const seen = new Set();
+      const lines = [];
+      all.forEach(t => {
+        const url = String(t.spotifyUrl || (/^https?:/i.test(t.url || '') ? t.url : '') || '').trim();
+        const name = [t.artist, t.title].filter(Boolean).join(' \u2014 ');
+        if (!name && !url) return;
+        const key = String(t.spotifyId || url || name).toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        const tag = t.role === 'SEMINAL' ? '\u2726 ' : (t.role === 'MEDIA' ? '\u25A3 ' : '\u2022 ');
+        lines.push(`${tag}${name || 'Untitled'}${url ? ` <${url}>` : ''}`);
+      });
+      if (!lines.length) return '';
+      return [`\uD83C\uDFB6 **${String(currentGenre.genre || '').toUpperCase()}** \u2014 all songs`, ...lines].join('\n');
+    }
+    window.buildDiscordSongListBlock = buildDiscordSongListBlock;
+
 
     function mountDiscordShareSection() {
       const share = document.getElementById('shareSection');
@@ -5867,6 +5896,12 @@ function loadListenScreen(genre, options = {}) {
       if (!text) { showSaveToast('No Seminal or Media track for this genre yet.', true); return; }
       await navigator.clipboard.writeText(text);
       showSaveToast('Copied Seminal + Media tracks.', false);
+    });
+    document.getElementById('copyDiscordSongListBtn')?.addEventListener('click', async () => {
+      const text = buildDiscordSongListBlock();
+      if (!text) { showSaveToast('No songs for this genre yet.', true); return; }
+      await navigator.clipboard.writeText(text);
+      showSaveToast(text.length > 2000 ? `Copied song list (${text.length} chars \u2014 over Discord's 2000 limit, split it).` : 'Copied song list.', text.length > 2000);
     });
     document.getElementById('saveBtn').addEventListener('click', async () => {
       if (typeof setLibrarySaveBusy === 'function') setLibrarySaveBusy(true);
